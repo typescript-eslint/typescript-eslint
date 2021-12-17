@@ -28,7 +28,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ClassBody]: ts.ClassDeclaration | ts.ClassExpression;
   [AST_NODE_TYPES.ClassDeclaration]: ts.ClassDeclaration;
   [AST_NODE_TYPES.ClassExpression]: ts.ClassExpression;
-  [AST_NODE_TYPES.ClassProperty]: ts.PropertyDeclaration;
+  [AST_NODE_TYPES.PropertyDefinition]: ts.PropertyDeclaration;
   [AST_NODE_TYPES.ConditionalExpression]: ts.ConditionalExpression;
   [AST_NODE_TYPES.ContinueStatement]: ts.ContinueStatement;
   [AST_NODE_TYPES.DebuggerStatement]: ts.DebuggerStatement;
@@ -72,7 +72,9 @@ export interface EstreeToTsNodeTypes {
     | ts.Identifier
     | ts.ConstructorDeclaration
     | ts.Token<ts.SyntaxKind.NewKeyword | ts.SyntaxKind.ImportKeyword>;
+  [AST_NODE_TYPES.PrivateIdentifier]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.IfStatement]: ts.IfStatement;
+  [AST_NODE_TYPES.ImportAttribute]: ts.AssertEntry;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
   [AST_NODE_TYPES.ImportExpression]: ts.CallExpression;
@@ -100,7 +102,6 @@ export interface EstreeToTsNodeTypes {
     | ts.StringLiteral
     | ts.NumericLiteral
     | ts.RegularExpressionLiteral
-    | ts.JsxText
     | ts.NullLiteral
     | ts.BooleanLiteral
     | ts.BigIntLiteral;
@@ -135,6 +136,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ReturnStatement]: ts.ReturnStatement;
   [AST_NODE_TYPES.SequenceExpression]: ts.BinaryExpression;
   [AST_NODE_TYPES.SpreadElement]: ts.SpreadElement | ts.SpreadAssignment;
+  [AST_NODE_TYPES.StaticBlock]: ts.ClassStaticBlockDeclaration;
   [AST_NODE_TYPES.Super]: ts.SuperExpression;
   [AST_NODE_TYPES.SwitchCase]: ts.CaseClause | ts.DefaultClause;
   [AST_NODE_TYPES.SwitchStatement]: ts.SwitchStatement;
@@ -150,7 +152,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ThisExpression]: ts.ThisExpression | ts.KeywordTypeNode;
   [AST_NODE_TYPES.ThrowStatement]: ts.ThrowStatement;
   [AST_NODE_TYPES.TryStatement]: ts.TryStatement;
-  [AST_NODE_TYPES.TSAbstractClassProperty]: ts.PropertyDeclaration;
+  [AST_NODE_TYPES.TSAbstractPropertyDefinition]: ts.PropertyDeclaration;
   [AST_NODE_TYPES.TSAbstractMethodDefinition]:
     | ts.GetAccessorDeclaration
     | ts.SetAccessorDeclaration
@@ -191,7 +193,6 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSNonNullExpression]: ts.NonNullExpression;
   [AST_NODE_TYPES.TSOptionalType]: ts.OptionalTypeNode;
   [AST_NODE_TYPES.TSParameterProperty]: ts.ParameterDeclaration;
-  [AST_NODE_TYPES.TSParenthesizedType]: ts.ParenthesizedTypeNode;
   [AST_NODE_TYPES.TSPropertySignature]: ts.PropertySignature;
   [AST_NODE_TYPES.TSQualifiedName]: ts.QualifiedName;
   [AST_NODE_TYPES.TSRestType]:

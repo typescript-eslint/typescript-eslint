@@ -7,7 +7,7 @@ It adds support for handling TypeScript specific code that would otherwise trigg
 
 One example of valid TypeScript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -75,7 +75,7 @@ class Foo {
 }
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -85,6 +85,14 @@ class Foo {
 }
 ```
 
----
+<sup>
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-empty-function.md)</sup>
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-empty-function.md)
+
+</sup>
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

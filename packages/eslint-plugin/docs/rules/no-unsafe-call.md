@@ -7,7 +7,11 @@ The arguments to, and return value of calling an `any` typed variable are not ch
 
 This rule disallows calling any variable that is typed as `any`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare const anyVar: any;
@@ -26,7 +30,7 @@ anyVar`foo`;
 nestedAny.prop`foo`;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 declare const typedVar: () => void;
@@ -42,7 +46,13 @@ new Map();
 String.raw`foo`;
 ```
 
-## Related to
+## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

@@ -5,7 +5,9 @@
 This rule extends the base [`eslint/default-param-last`](https://eslint.org/docs/rules/default-param-last) rule.
 It adds support for optional parameters.
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/default-param-last: ["error"] */
@@ -21,7 +23,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/default-param-last: ["error"] */
@@ -39,7 +41,7 @@ class Foo {
 }
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -53,4 +55,14 @@ class Foo {
 
 See [`eslint/default-param-last` options](https://eslint.org/docs/rules/default-param-last#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/default-param-last.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/default-param-last.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

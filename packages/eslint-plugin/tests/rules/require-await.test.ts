@@ -161,6 +161,57 @@ async function* test1() {
   yield* asyncGenerator();
 }
     `,
+    `
+async function* asyncGenerator() {
+  await Promise.resolve();
+  yield 1;
+}
+async function* test1() {
+  yield* asyncGenerator();
+  yield* 2;
+}
+    `,
+    `
+async function* test(source: AsyncIterable<any>) {
+  yield* source;
+}
+    `,
+    `
+async function* test(source: Iterable<any> & AsyncIterable<any>) {
+  yield* source;
+}
+    `,
+    `
+async function* test(source: Iterable<any> | AsyncIterable<any>) {
+  yield* source;
+}
+    `,
+    `
+type MyType = {
+  [Symbol.iterator](): Iterator<any>;
+  [Symbol.asyncIterator](): AsyncIterator<any>;
+};
+async function* test(source: MyType) {
+  yield* source;
+}
+    `,
+    `
+type MyType = {
+  [Symbol.asyncIterator]: () => AsyncIterator<any>;
+};
+async function* test(source: MyType) {
+  yield* source;
+}
+    `,
+    `
+type MyFunctionType = () => AsyncIterator<any>;
+type MyType = {
+  [Symbol.asyncIterator]: MyFunctionType;
+};
+async function* test(source: MyType) {
+  yield* source;
+}
+    `,
     'const foo: () => void = async function* () {};',
     `
 async function* foo(): Promise<string> {
@@ -294,6 +345,41 @@ async function* asyncGenerator() {
     },
     {
       code: `
+async function* asyncGenerator(source: Iterable<any>) {
+  yield* source;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'asyncGenerator'",
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function isAsyncIterable(value: unknown): value is AsyncIterable<any> {
+  return true;
+}
+async function* asyncGenerator(source: Iterable<any> | AsyncIterable<any>) {
+  if (!isAsyncIterable(source)) {
+    yield* source;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'asyncGenerator'",
+          },
+        },
+      ],
+    },
+    {
+      code: `
 function* syncGenerator() {
   yield 1;
 }
@@ -375,7 +461,7 @@ async function foo() {
   for await (x of xs);
 }
     `,
-    // global await
+    // -- global await
     {
       code: 'await foo();',
     },

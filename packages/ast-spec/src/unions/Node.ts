@@ -12,12 +12,13 @@ import type { TSModuleDeclaration } from '../declaration/TSModuleDeclaration/spe
 import type { TSNamespaceExportDeclaration } from '../declaration/TSNamespaceExportDeclaration/spec';
 import type { TSTypeAliasDeclaration } from '../declaration/TSTypeAliasDeclaration/spec';
 import type { VariableDeclaration } from '../declaration/VariableDeclaration/spec';
-import type { ClassProperty } from '../element/ClassProperty/spec';
 import type { MethodDefinition } from '../element/MethodDefinition/spec';
 import type { Property } from '../element/Property/spec';
+import type { PropertyDefinition } from '../element/PropertyDefinition/spec';
 import type { SpreadElement } from '../element/SpreadElement/spec';
-import type { TSAbstractClassProperty } from '../element/TSAbstractClassProperty/spec';
+import type { StaticBlock } from '../element/StaticBlock/spec';
 import type { TSAbstractMethodDefinition } from '../element/TSAbstractMethodDefinition/spec';
+import type { TSAbstractPropertyDefinition } from '../element/TSAbstractPropertyDefinition/spec';
 import type { TSCallSignatureDeclaration } from '../element/TSCallSignatureDeclaration/spec';
 import type { TSConstructSignatureDeclaration } from '../element/TSConstructSignatureDeclaration/spec';
 import type { TSEnumMember } from '../element/TSEnumMember/spec';
@@ -78,9 +79,11 @@ import type { ClassBody } from '../special/ClassBody/spec';
 import type { Decorator } from '../special/Decorator/spec';
 import type { EmptyStatement } from '../special/EmptyStatement/spec';
 import type { ExportSpecifier } from '../special/ExportSpecifier/spec';
+import type { ImportAttribute } from '../special/ImportAttribute/spec';
 import type { ImportDefaultSpecifier } from '../special/ImportDefaultSpecifier/spec';
 import type { ImportNamespaceSpecifier } from '../special/ImportNamespaceSpecifier/spec';
 import type { ImportSpecifier } from '../special/ImportSpecifier/spec';
+import type { PrivateIdentifier } from '../special/PrivateIdentifier/spec';
 import type { Program } from '../special/Program/spec';
 import type { SwitchCase } from '../special/SwitchCase/spec';
 import type { TemplateElement } from '../special/TemplateElement/spec';
@@ -141,7 +144,6 @@ import type { TSNullKeyword } from '../type/TSNullKeyword/spec';
 import type { TSNumberKeyword } from '../type/TSNumberKeyword/spec';
 import type { TSObjectKeyword } from '../type/TSObjectKeyword/spec';
 import type { TSOptionalType } from '../type/TSOptionalType/spec';
-import type { TSParenthesizedType } from '../type/TSParenthesizedType/spec';
 import type { TSQualifiedName } from '../type/TSQualifiedName/spec';
 import type { TSRestType } from '../type/TSRestType/spec';
 import type { TSStringKeyword } from '../type/TSStringKeyword/spec';
@@ -181,7 +183,6 @@ export type Node =
   | ClassBody
   | ClassDeclaration
   | ClassExpression
-  | ClassProperty
   | ConditionalExpression
   | ContinueStatement
   | DebuggerStatement
@@ -200,6 +201,7 @@ export type Node =
   | FunctionExpression
   | Identifier
   | IfStatement
+  | ImportAttribute
   | ImportDeclaration
   | ImportDefaultSpecifier
   | ImportExpression
@@ -229,12 +231,15 @@ export type Node =
   | NewExpression
   | ObjectExpression
   | ObjectPattern
+  | PrivateIdentifier
   | Program
   | Property
+  | PropertyDefinition
   | RestElement
   | ReturnStatement
   | SequenceExpression
   | SpreadElement
+  | StaticBlock
   | Super
   | SwitchCase
   | SwitchStatement
@@ -244,9 +249,9 @@ export type Node =
   | ThisExpression
   | ThrowStatement
   | TryStatement
-  | TSAbstractClassProperty
   | TSAbstractKeyword
   | TSAbstractMethodDefinition
+  | TSAbstractPropertyDefinition
   | TSAnyKeyword
   | TSArrayType
   | TSAsExpression
@@ -291,7 +296,6 @@ export type Node =
   | TSObjectKeyword
   | TSOptionalType
   | TSParameterProperty
-  | TSParenthesizedType
   | TSPrivateKeyword
   | TSPropertySignature
   | TSProtectedKeyword

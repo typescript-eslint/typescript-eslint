@@ -4,6 +4,7 @@ exports[`typescript basics function-overloads.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "async": false,
         "body": undefined,
@@ -151,6 +152,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "async": false,
         "body": undefined,
@@ -298,6 +300,7 @@ Object {
       "type": "ExportNamedDeclaration",
     },
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "async": false,
         "body": Object {

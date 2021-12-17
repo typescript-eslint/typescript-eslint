@@ -5,7 +5,11 @@
 This rule aims to let users know when a namespace or enum qualifier is unnecessary,
 whether used for a type or for a value.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 namespace A {
@@ -37,7 +41,7 @@ namespace A {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 namespace X {
@@ -74,6 +78,12 @@ namespace X {
 
 If you don't care about having unneeded namespace or enum qualifiers, then you don't need to use this rule.
 
-## Further Reading
+## Related To
 
 - TSLint: [no-unnecessary-qualifier](https://palantir.github.io/tslint/rules/no-unnecessary-qualifier/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

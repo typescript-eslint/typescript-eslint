@@ -14,7 +14,11 @@ This directive operates in the same manner as `@ts-ignore`, but will error if th
 
 This rule looks for usages of `@ts-ignore`, and flags them to be replaced with `@ts-expect-error`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // @ts-ignore
@@ -35,7 +39,7 @@ const isOptionEnabled = (key: string): boolean => {
 };
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 // @ts-expect-error
@@ -63,3 +67,9 @@ If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able 
 ## Further Reading
 
 - [Original Implementing PR](https://github.com/microsoft/TypeScript/pull/36014)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

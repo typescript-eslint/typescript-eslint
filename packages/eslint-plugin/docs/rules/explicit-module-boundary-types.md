@@ -2,13 +2,13 @@
 
 Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.
 
-Consider using this rule in place of [`no-untyped-public-signature`](./no-untyped-public-signature.md) which has been deprecated.
-
 ## Rule Details
 
 This rule aims to ensure that the values returned from a module are of the expected type.
 
-The following patterns are considered warnings:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -36,7 +36,7 @@ export class Test {
 }
 ```
 
-The following patterns are not warnings:
+### ✅ Correct
 
 ```ts
 // Function is not exported
@@ -130,13 +130,17 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `allowArgumentsExplicitlyTypedAsAny`
 
-Examples of **incorrect** code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false }`:
+Examples of code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 export const func = (value: any): number => value + 1;
 ```
 
-Examples of **correct** code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: true }`:
+#### ✅ Correct
 
 ```ts
 export const func = (value: number): number => value + 1;
@@ -144,7 +148,11 @@ export const func = (value: number): number => value + 1;
 
 ### `allowDirectConstAssertionInArrowFunctions`
 
-Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: false }`:
+Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value });
@@ -155,7 +163,7 @@ export const foo = () =>
 export const bar = () => 1;
 ```
 
-Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+#### ✅ Correct
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value } as const);
@@ -183,21 +191,25 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 ### `allowHigherOrderFunctions`
 
-Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: false }`:
+Examples of code for this rule with `{ allowHigherOrderFunctions: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
-export const arrowFn = () => (): void => {};
+export const arrowFn = () => () => {};
 
 export function fn() {
-  return function (): void {};
+  return function () {};
 }
 
 export function foo(outer: string) {
-  return function (inner: string): void {};
+  return function (inner: string) {};
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
+#### ✅ Correct
 
 ```ts
 export const arrowFn = () => (): void => {};
@@ -213,7 +225,11 @@ export function foo(outer: string) {
 
 ### `allowTypedFunctionExpressions`
 
-Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressions: false }`:
+Examples of code for this rule with `{ allowTypedFunctionExpressions: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 export let arrowFn = () => 'test';
@@ -229,7 +245,7 @@ export let objectProp = {
 export const foo = bar => {};
 ```
 
-Examples of additional **correct** code for this rule with `{ allowTypedFunctionExpressions: true }`:
+#### ✅ Correct
 
 ```ts
 type FuncType = () => string;
@@ -267,3 +283,9 @@ If you wish to make sure all functions have explicit return types, as opposed to
 ## Further Reading
 
 - TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

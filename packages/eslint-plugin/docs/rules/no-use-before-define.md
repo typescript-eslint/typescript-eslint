@@ -1,13 +1,11 @@
 # Disallow the use of variables before they are defined (`no-use-before-define`)
 
-## PLEASE READ THIS ISSUE BEFORE USING THIS RULE [#1856](https://github.com/typescript-eslint/typescript-eslint/issues/1856)
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-use-before-define`](https://eslint.org/docs/rules/no-use-before-define) rule.
 It adds support for `type`, `interface` and `enum` declarations.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -42,10 +40,14 @@ const defaultOptions: Options = {
 If this is `true`, this rule warns every reference to a enum before the enum declaration.
 If this is `false`, this rule will ignore references to enums, when the reference is in a child scope.
 
-Examples of **incorrect** code for the `{ "enums": false }` option:
+Examples of code for the `{ "enums": true }` option:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
-/*eslint no-use-before-define: ["error", { "enums": false }]*/
+/*eslint no-use-before-define: ["error", { "enums": true }]*/
 
 const x = Foo.FOO;
 
@@ -54,7 +56,7 @@ enum Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "enums": false }` option:
+#### ✅ Correct
 
 ```ts
 /*eslint no-use-before-define: ["error", { "enums": false }]*/
@@ -103,4 +105,14 @@ enum Enum {}
 
 See [`eslint/no-use-before-define` options](https://eslint.org/docs/rules/no-use-before-define#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-use-before-define.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-use-before-define.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

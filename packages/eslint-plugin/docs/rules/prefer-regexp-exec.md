@@ -12,7 +12,11 @@ From [`String#match` on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaSc
 
 `RegExp#exec` may also be slightly faster than `String#match`; this is the reason to choose it as the preferred usage.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 'something'.match(/thing/);
@@ -24,7 +28,7 @@ const search = /thing/;
 text.match(search);
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /thing/.exec('something');
@@ -49,3 +53,9 @@ There are no options.
 ## When Not To Use It
 
 If you prefer consistent use of `String#match` for both, with `g` flag and without it, you can turn this rule off.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

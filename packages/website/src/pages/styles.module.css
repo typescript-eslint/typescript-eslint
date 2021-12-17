@@ -1,0 +1,83 @@
+/* stylelint-disable docusaurus/copyright-header */
+
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.hero {
+  background-color: var(--ifm-color-primary-darkest);
+  background-image: linear-gradient(
+    135deg,
+    var(--ifm-color-primary-darker) 0%,
+    var(--ifm-color-primary-darkest) 100%
+  );
+  --ifm-font-color-base: var(--ifm-color-white);
+  --ifm-button-color: var(--ifm-color-white);
+  text-align: center;
+}
+
+.hero__subtitle {
+  margin-bottom: 24px;
+}
+
+.buttons {
+  --ifm-button-size-multiplier: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons a {
+  margin: 1rem 1rem;
+}
+
+.lightBackground {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.features,
+.sponsors {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sponsors {
+  text-align: center;
+}
+
+.featureImage {
+  height: 7rem;
+  width: 7rem;
+}
+
+.sponsorsTier {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 10px auto;
+  padding: 0;
+}
+
+.sponsorsTier li {
+  list-style: none;
+  margin: 5px;
+}
+
+.sponsorsTier a,
+.sponsorsTier a:hover {
+  background: none;
+  border: none;
+}
+.tier-sponsor img {
+  max-height: 90px;
+  width: 90px;
+}
+.tier-supporter img {
+  max-height: 60px;
+  width: 60px;
+}

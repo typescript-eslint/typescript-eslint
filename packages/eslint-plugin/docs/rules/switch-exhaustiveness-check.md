@@ -2,7 +2,13 @@
 
 Union type may have a lot of parts. It's easy to forget to consider all cases in switch. This rule reminds which parts are missing. If domain of the problem requires to have only a partial switch, developer may _explicitly_ add a default clause.
 
-Examples of **incorrect** code for this rule:
+## Rule Details
+
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 type Day =
@@ -25,7 +31,7 @@ switch (day) {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 type Day =
@@ -72,7 +78,7 @@ switch (day) {
 }
 ```
 
-or
+### ✅ Correct
 
 ```ts
 type Day =
@@ -101,3 +107,9 @@ switch (day) {
 ## When Not To Use It
 
 If program doesn't have union types with many parts. Downside of this rule is the need for type information, so it's slower than regular rules.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

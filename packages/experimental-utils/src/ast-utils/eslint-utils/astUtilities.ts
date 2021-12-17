@@ -1,6 +1,6 @@
 import * as eslintUtils from 'eslint-utils';
-import { TSESTree } from '../../ts-estree';
 import * as TSESLint from '../../ts-eslint';
+import { TSESTree } from '../../ts-estree';
 
 /**
  * Get the proper location of a given function node to report.
@@ -25,6 +25,7 @@ const getFunctionNameWithKind = eslintUtils.getFunctionNameWithKind as (
     | TSESTree.FunctionDeclaration
     | TSESTree.FunctionExpression
     | TSESTree.ArrowFunctionExpression,
+  sourceCode?: TSESLint.SourceCode,
 ) => string;
 
 /**
@@ -38,7 +39,8 @@ const getPropertyName = eslintUtils.getPropertyName as (
   node:
     | TSESTree.MemberExpression
     | TSESTree.Property
-    | TSESTree.MethodDefinition,
+    | TSESTree.MethodDefinition
+    | TSESTree.PropertyDefinition,
   initialScope?: TSESLint.Scope.Scope,
 ) => string | null;
 
@@ -101,19 +103,23 @@ const hasSideEffect = eslintUtils.hasSideEffect as (
   },
 ) => boolean;
 
-/**
- * Check whether a given node is parenthesized or not.
- * This function detects it correctly even if it's parenthesized by specific syntax.
- *
- * @see {@link https://eslint-utils.mysticatea.dev/api/ast-utils.html#isparenthesized}
- * @returns `true` if the node is parenthesized.
- * If `times` was given, it returns `true` only if the node is parenthesized the `times` times.
- * For example, `isParenthesized(2, node, sourceCode)` returns true for `((foo))`, but not for `(foo)`.
- */
-const isParenthesized = eslintUtils.isParenthesized as (
-  node: TSESTree.Node,
-  sourceCode: TSESLint.SourceCode,
-) => boolean;
+const isParenthesized = eslintUtils.isParenthesized as {
+  /**
+   * Check whether a given node is parenthesized or not.
+   * This function detects it correctly even if it's parenthesized by specific syntax.
+   *
+   * @see {@link https://eslint-utils.mysticatea.dev/api/ast-utils.html#isparenthesized}
+   * @returns `true` if the node is parenthesized.
+   * If `times` was given, it returns `true` only if the node is parenthesized the `times` times.
+   * For example, `isParenthesized(2, node, sourceCode)` returns true for `((foo))`, but not for `(foo)`.
+   */
+  (node: TSESTree.Node, sourceCode: TSESLint.SourceCode): boolean;
+  (
+    times: number,
+    node: TSESTree.Node,
+    sourceCode: TSESLint.SourceCode,
+  ): boolean;
+};
 
 export {
   getFunctionHeadLocation,

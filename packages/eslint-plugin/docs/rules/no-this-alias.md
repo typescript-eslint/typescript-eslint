@@ -35,7 +35,7 @@ Examples of **correct** code for this rule:
 
 (see the rationale above)
 
-### Options
+## Options
 
 You can pass an object option:
 
@@ -55,6 +55,12 @@ You can pass an object option:
 
 If you need to assign `this` to variables, you shouldn’t use this rule.
 
-## Related to
+## Related To
 
 - TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

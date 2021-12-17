@@ -15,7 +15,11 @@ There are such types: `String`, `Array`, `ReadonlyArray`, and typed arrays.
 
 Additionally, this rule reports the tests of simple regular expressions in favor of `String#includes`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 let str: string;
@@ -39,7 +43,7 @@ userDefined.indexOf(value) >= 0;
 /foo/.test(str);
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 let array: any[];
@@ -71,3 +75,9 @@ There are no options.
 ## When Not To Use It
 
 If you don't want to suggest `includes`, you can safely turn this rule off.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

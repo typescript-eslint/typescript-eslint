@@ -19,7 +19,11 @@ for (const [index, value] of array.entries()) { ... }
 for (let i = 0; i < array.length; i++) { ... }
 ```
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```js
 for (const x in [3, 4, 5]) {
@@ -27,7 +31,7 @@ for (const x in [3, 4, 5]) {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```js
 for (const x in { a: 3, b: 4, c: 5 }) {
@@ -39,6 +43,12 @@ for (const x in { a: 3, b: 4, c: 5 }) {
 
 If you want to iterate through a loop using the indices in an array as strings, you can turn off this rule.
 
-## Related to
+## Related To
 
 - TSLint: ['no-for-in-array'](https://palantir.github.io/tslint/rules/no-for-in-array/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

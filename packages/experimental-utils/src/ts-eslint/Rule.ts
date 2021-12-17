@@ -1,19 +1,11 @@
-import { JSONSchema4 } from '../json-schema';
-import { ParserServices, TSESTree } from '../ts-estree';
-import { AST } from './AST';
-import { Linter } from './Linter';
-import { Scope } from './Scope';
-import { SourceCode } from './SourceCode';
+import type { JSONSchema4 } from '../json-schema';
+import type { ParserServices, TSESTree } from '../ts-estree';
+import type { AST } from './AST';
+import type { Linter } from './Linter';
+import type { Scope } from './Scope';
+import type { SourceCode } from './SourceCode';
 
 interface RuleMetaDataDocs {
-  /**
-   * The general category the rule falls within
-   */
-  category:
-    | 'Best Practices'
-    | 'Stylistic Issues'
-    | 'Variables'
-    | 'Possible Errors';
   /**
    * Concise description of the rule
    */
@@ -27,7 +19,7 @@ interface RuleMetaDataDocs {
   /**
    * The URL of the rule's docs
    */
-  url: string;
+  url?: string;
   /**
    * Specifies whether the rule can return suggestions.
    */
@@ -58,6 +50,10 @@ interface RuleMetaData<TMessageIds extends string> {
    */
   fixable?: 'code' | 'whitespace';
   /**
+   * Specifies whether rules can return suggestions. Omit if there is no suggestions
+   */
+  hasSuggestions?: boolean;
+  /**
    * A map of messages which the rule can report.
    * The key is the messageId, and the string is the parameterised error string.
    * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids
@@ -73,15 +69,15 @@ interface RuleMetaData<TMessageIds extends string> {
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
-  replacedBy?: string[];
+  replacedBy?: readonly string[];
   /**
    * The options schema. Supply an empty array if there are no options.
    */
-  schema: JSONSchema4 | JSONSchema4[];
+  schema: JSONSchema4 | readonly JSONSchema4[];
 }
 
 interface RuleFix {
-  range: AST.Range;
+  range: Readonly<AST.Range>;
   text: string;
 }
 
@@ -91,32 +87,37 @@ interface RuleFixer {
     text: string,
   ): RuleFix;
 
-  insertTextAfterRange(range: AST.Range, text: string): RuleFix;
+  insertTextAfterRange(range: Readonly<AST.Range>, text: string): RuleFix;
 
   insertTextBefore(
     nodeOrToken: TSESTree.Node | TSESTree.Token,
     text: string,
   ): RuleFix;
 
-  insertTextBeforeRange(range: AST.Range, text: string): RuleFix;
+  insertTextBeforeRange(range: Readonly<AST.Range>, text: string): RuleFix;
 
   remove(nodeOrToken: TSESTree.Node | TSESTree.Token): RuleFix;
 
-  removeRange(range: AST.Range): RuleFix;
+  removeRange(range: Readonly<AST.Range>): RuleFix;
 
   replaceText(
     nodeOrToken: TSESTree.Node | TSESTree.Token,
     text: string,
   ): RuleFix;
 
-  replaceTextRange(range: AST.Range, text: string): RuleFix;
+  replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
+}
+
+interface SuggestionReportDescriptor<TMessageIds extends string>
+  extends Omit<ReportDescriptorBase<TMessageIds>, 'fix'> {
+  readonly fix: ReportFixFunction;
 }
 
 type ReportFixFunction = (
   fixer: RuleFixer,
-) => null | RuleFix | RuleFix[] | IterableIterator<RuleFix>;
+) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
 type ReportSuggestionArray<TMessageIds extends string> =
-  ReportDescriptorBase<TMessageIds>[];
+  SuggestionReportDescriptor<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -153,13 +154,13 @@ interface ReportDescriptorNodeOptionalLoc {
    */
   readonly loc?:
     | Readonly<TSESTree.SourceLocation>
-    | Readonly<TSESTree.LineAndColumnData>;
+    | Readonly<TSESTree.Position>;
 }
 interface ReportDescriptorLocOnly {
   /**
    * An override of the location of the report
    */
-  loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.LineAndColumnData>;
+  loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.Position>;
 }
 type ReportDescriptor<TMessageIds extends string> =
   ReportDescriptorWithSuggestion<TMessageIds> &
@@ -215,7 +216,7 @@ interface RuleContext<
    * Returns a list of variables declared by the given node.
    * This information can be used to track references to variables.
    */
-  getDeclaredVariables(node: TSESTree.Node): Scope.Variable[];
+  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
 
   /**
    * Returns the current working directory passed to Linter.
@@ -229,6 +230,13 @@ interface RuleContext<
    * Returns the filename associated with the source.
    */
   getFilename(): string;
+
+  /**
+   * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
+   * This was added in v7.28.0
+   * @since 7.28.0
+   */
+  getPhysicalFilename?(): string;
 
   /**
    * Returns the scope of the currently-traversed node.
@@ -263,8 +271,8 @@ interface RuleListener {
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
-  AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
+  AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
   BigIntLiteral?: RuleFunction<TSESTree.BigIntLiteral>;
   BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
@@ -276,8 +284,6 @@ interface RuleListener {
   ClassBody?: RuleFunction<TSESTree.ClassBody>;
   ClassDeclaration?: RuleFunction<TSESTree.ClassDeclaration>;
   ClassExpression?: RuleFunction<TSESTree.ClassExpression>;
-  ClassProperty?: RuleFunction<TSESTree.ClassProperty>;
-  Comment?: RuleFunction<TSESTree.Comment>;
   ConditionalExpression?: RuleFunction<TSESTree.ConditionalExpression>;
   ContinueStatement?: RuleFunction<TSESTree.ContinueStatement>;
   DebuggerStatement?: RuleFunction<TSESTree.DebuggerStatement>;
@@ -326,6 +332,7 @@ interface RuleListener {
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
+  PropertyDefinition?: RuleFunction<TSESTree.PropertyDefinition>;
   RestElement?: RuleFunction<TSESTree.RestElement>;
   ReturnStatement?: RuleFunction<TSESTree.ReturnStatement>;
   SequenceExpression?: RuleFunction<TSESTree.SequenceExpression>;
@@ -338,11 +345,10 @@ interface RuleListener {
   TemplateLiteral?: RuleFunction<TSESTree.TemplateLiteral>;
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
-  Token?: RuleFunction<TSESTree.Token>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
-  TSAbstractClassProperty?: RuleFunction<TSESTree.TSAbstractClassProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
   TSAbstractMethodDefinition?: RuleFunction<TSESTree.TSAbstractMethodDefinition>;
+  TSAbstractPropertyDefinition?: RuleFunction<TSESTree.TSAbstractPropertyDefinition>;
   TSAnyKeyword?: RuleFunction<TSESTree.TSAnyKeyword>;
   TSArrayType?: RuleFunction<TSESTree.TSArrayType>;
   TSAsExpression?: RuleFunction<TSESTree.TSAsExpression>;
@@ -354,8 +360,8 @@ interface RuleListener {
   TSConditionalType?: RuleFunction<TSESTree.TSConditionalType>;
   TSConstructorType?: RuleFunction<TSESTree.TSConstructorType>;
   TSConstructSignatureDeclaration?: RuleFunction<TSESTree.TSConstructSignatureDeclaration>;
-  TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
+  TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSEmptyBodyFunctionExpression?: RuleFunction<TSESTree.TSEmptyBodyFunctionExpression>;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
@@ -385,7 +391,6 @@ interface RuleListener {
   TSObjectKeyword?: RuleFunction<TSESTree.TSObjectKeyword>;
   TSOptionalType?: RuleFunction<TSESTree.TSOptionalType>;
   TSParameterProperty?: RuleFunction<TSESTree.TSParameterProperty>;
-  TSParenthesizedType?: RuleFunction<TSESTree.TSParenthesizedType>;
   TSPrivateKeyword?: RuleFunction<TSESTree.TSPrivateKeyword>;
   TSPropertySignature?: RuleFunction<TSESTree.TSPropertySignature>;
   TSProtectedKeyword?: RuleFunction<TSESTree.TSProtectedKeyword>;
@@ -424,7 +429,7 @@ interface RuleListener {
 
 interface RuleModule<
   TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  TOptions extends readonly unknown[] = [],
   // for extending base rules
   TRuleListener extends RuleListener = RuleListener,
 > {

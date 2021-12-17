@@ -8,7 +8,11 @@ Returned `any` typed values are not checked at all by TypeScript, so it creates 
 This rule disallows returning `any` or `any[]` from a function.
 This rule also compares the return type to the function's declared/inferred return type to ensure you don't return an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you return `Set<any>` from a function declared as returning `Set<string>`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 function foo1() {
@@ -49,7 +53,7 @@ type TAssign = () => Set<string>;
 const assignability2: TAssign = () => new Set<any>([true]);
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 function foo1() {
@@ -69,6 +73,8 @@ type TAssign = () => Set<string>;
 const assignability2: TAssign = () => new Set(['foo']);
 ```
 
+<!--/tabs-->
+
 There are cases where the rule allows to return `any` to `unknown`.
 
 Examples of `any` to `unknown` return that are allowed.
@@ -83,7 +89,13 @@ function foo2(): unknown[] {
 }
 ```
 
-## Related to
+## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

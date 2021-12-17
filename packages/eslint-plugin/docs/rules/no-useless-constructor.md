@@ -9,7 +9,7 @@ It adds support for:
 - `public` constructors when there is no superclass,
 - constructors with only parameter properties.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -23,4 +23,14 @@ It adds support for:
 
 See [`eslint/no-useless-constructor` options](https://eslint.org/docs/rules/no-useless-constructor#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-useless-constructor.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-useless-constructor.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -304,6 +304,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {
@@ -1292,7 +1293,7 @@ Object {
               56,
             ],
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {

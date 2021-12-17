@@ -30,7 +30,6 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Requires expressions of type void to appear in statement position',
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -57,7 +56,7 @@ export default util.createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
-      voidExprWrapVoid: 'Mark with an explicit `void` operator',
+      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
     },
     schema: [
       {
@@ -71,6 +70,7 @@ export default util.createRule<Options, MessageId>({
     ],
     type: 'problem',
     fixable: 'code',
+    hasSuggestions: true,
   },
   defaultOptions: [{}],
 
@@ -266,6 +266,11 @@ export default util.createRule<Options, MessageId>({
             return null;
           }
         }
+      }
+
+      if (parent.type === AST_NODE_TYPES.ChainExpression) {
+        // e.g. `console?.log('foo')`
+        return findInvalidAncestor(parent);
       }
 
       // any other parent is invalid

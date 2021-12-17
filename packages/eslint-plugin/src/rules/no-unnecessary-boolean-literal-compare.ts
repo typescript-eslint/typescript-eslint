@@ -21,7 +21,7 @@ type Options = [
 ];
 
 interface BooleanComparison {
-  expression: TSESTree.Expression;
+  expression: TSESTree.Expression | TSESTree.PrivateIdentifier;
   literalBooleanInComparison: boolean;
   forTruthy: boolean;
   negated: boolean;
@@ -38,7 +38,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Flags unnecessary equality comparisons against boolean literals',
-      category: 'Stylistic Issues',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -186,7 +185,7 @@ export default util.createRule<Options, MessageIds>({
           range:
             expression.range[0] < against.range[0]
               ? [expression.range[1], against.range[1]]
-              : [against.range[1], expression.range[1]],
+              : [against.range[0], expression.range[0]],
         };
       }
 

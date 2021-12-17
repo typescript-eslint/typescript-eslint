@@ -4,13 +4,17 @@ TypeScript 4.0 added support for adding an explicit `any` or `unknown` type anno
 
 By default, TypeScript will type a catch clause variable as `any`, so explicitly annotating it as `unknown` can add a lot of safety to your codebase.
 
-The `noImplicitAny` flag in TypeScript does not cover this for backwards compatibility reasons.
+The `noImplicitAny` flag in TypeScript does not cover this for backwards compatibility reasons, however you can use `useUnknownInCatchVariables` (part of `strict`) instead of this rule.
 
 ## Rule Details
 
 This rule requires an explicit type to be declared on a catch clause variable.
 
-The following pattern is considered a warning:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 try {
@@ -20,7 +24,7 @@ try {
 }
 ```
 
-The following pattern is **_not_** considered a warning:
+### ✅ Correct
 
 <!-- TODO: prettier currently removes the type annotations, re-enable this once prettier is updated -->
 <!-- prettier-ignore-start -->
@@ -73,4 +77,10 @@ If you are not using TypeScript 4.0 (or greater), then you will not be able to u
 
 ## Further Reading
 
-- [TypeScript 4.0 Beta Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0-beta/#unknown-on-catch)
+- [TypeScript 4.0 Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/#unknown-on-catch)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

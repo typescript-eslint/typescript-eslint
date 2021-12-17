@@ -26,10 +26,10 @@ These options allow to specify how to group the members and sort their groups.
 type TypeOptions<T> =
   | {
     memberTypes: Array<T> | 'never',
-    order?: 'alphabetically' | 'as-written',
+    order?: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written',
   }
   | {
-    order: 'alphabetically',
+    order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written',
   };
 
 {
@@ -77,6 +77,64 @@ There are multiple ways to specify the member types. The most explicit and granu
   "protected-constructor",
   "private-constructor",
 
+  // Getters
+  "public-static-get",
+  "protected-static-get",
+  "private-static-get",
+
+  "public-decorated-get",
+  "protected-decorated-get",
+  "private-decorated-get",
+
+  "public-instance-get",
+  "protected-instance-get",
+  "private-instance-get",
+
+  "public-abstract-get",
+  "protected-abstract-get",
+  "private-abstract-get",
+
+  "public-get",
+  "protected-get",
+  "private-get",
+
+  "static-get",
+  "instance-get",
+  "abstract-get",
+
+  "decorated-get",
+
+  "get",
+
+  // Setters
+  "public-static-set",
+  "protected-static-set",
+  "private-static-set",
+
+  "public-decorated-set",
+  "protected-decorated-set",
+  "private-decorated-set",
+
+  "public-instance-set",
+  "protected-instance-set",
+  "private-instance-set",
+
+  "public-abstract-set",
+  "protected-abstract-set",
+  "private-abstract-set",
+
+  "public-set",
+  "protected-set",
+  "private-set",
+
+  "static-set",
+  "instance-set",
+  "abstract-set",
+
+  "decorated-set",
+
+  "set",
+
   // Methods
   "public-static-method",
   "protected-static-method",
@@ -112,6 +170,16 @@ It is also possible to group member types by their accessibility (`static`, `ins
   // Constructors
   // Only the accessibility of constructors is configurable. See below.
 
+  // Getters
+  "public-get", // = ["public-static-get", "public-instance-get"]
+  "protected-get", // = ["protected-static-get", "protected-instance-get"]
+  "private-get", // = ["private-static-get", "private-instance-get"]
+
+  // Setters
+  "public-set", // = ["public-static-set", "public-instance-set"]
+  "protected-set", // = ["protected-static-set", "protected-instance-set"]
+  "private-set", // = ["private-static-set", "private-instance-set"]
+
   // Methods
   "public-method", // = ["public-static-method", "public-instance-method"]
   "protected-method", // = ["protected-static-method", "protected-instance-method"]
@@ -139,6 +207,21 @@ their accessibility.
   // Constructors
   // There are no decorators for constructors.
 
+  // Getters
+  "public-decorated-get",
+  "protected-decorated-get",
+  "private-decorated-get",
+
+  "decorated-get" // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
+
+  // Setters
+  "public-decorated-set",
+  "protected-decorated-set",
+  "private-decorated-set",
+
+  "decorated-set" // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
+
+  // Methods
   "public-decorated-method",
   "protected-decorated-method",
   "private-decorated-method",
@@ -164,6 +247,16 @@ Another option is to group the member types by their scope (`public`, `protected
   // Constructors
   "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
 
+  // Getters
+  "static-get", // = ["public-static-get", "protected-static-get", "private-static-get"]
+  "instance-get", // = ["public-instance-get", "protected-instance-get", "private-instance-get"]
+  "abstract-get" // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+
+  // Setters
+  "static-set", // = ["public-static-set", "protected-static-set", "private-static-set"]
+  "instance-set", // = ["public-instance-set", "protected-instance-set", "private-instance-set"]
+  "abstract-set" // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+
   // Methods
   "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
   "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
@@ -186,6 +279,14 @@ The third grouping option is to ignore both scope and accessibility.
 
   // Constructors
   // Only the accessibility of constructors is configurable. See above.
+
+  // Getters
+  "get" // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
+  //                "public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+
+  // Setters
+  "set" // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
+  //                "public-abstract-set", "protected-abstract-set", "private-abstract-set"]
 
   // Methods
   "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
@@ -238,6 +339,64 @@ The default configuration looks as follows:
     "private-constructor",
 
     "constructor",
+
+    // Getters
+    "public-static-get",
+    "protected-static-get",
+    "private-static-get",
+
+    "public-decorated-get",
+    "protected-decorated-get",
+    "private-decorated-get",
+
+    "public-instance-get",
+    "protected-instance-get",
+    "private-instance-get",
+
+    "public-abstract-get",
+    "protected-abstract-get",
+    "private-abstract-get",
+
+    "public-get",
+    "protected-get",
+    "private-get",
+
+    "static-get",
+    "instance-get",
+    "abstract-get",
+
+    "decorated-get",
+
+    "get",
+
+    // Setters
+    "public-static-set",
+    "protected-static-set",
+    "private-static-set",
+
+    "public-decorated-set",
+    "protected-decorated-set",
+    "private-decorated-set",
+
+    "public-instance-set",
+    "protected-instance-set",
+    "private-instance-set",
+
+    "public-abstract-set",
+    "protected-abstract-set",
+    "private-abstract-set",
+
+    "public-set",
+    "protected-set",
+    "private-set",
+
+    "static-set",
+    "instance-set",
+    "abstract-set",
+
+    "decorated-set",
+
+    "set",
 
     // Methods
     "public-static-method",
@@ -797,21 +956,21 @@ It is possible to sort all members within a group alphabetically.
 
 #### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically" } }`
 
-This will apply the default order (see above) and enforce an alphabetic order within each group.
+This will apply the default order (see above) and enforce an alphabetic case-sensitive order within each group.
 
 ##### Incorrect examples
 
 ```ts
 interface Foo {
+  B: x;
   a: x;
-  b: x;
   c: x;
 
   new (): Bar;
   (): Baz;
 
+  B(): void;
   a(): void;
-  b(): void;
   c(): void;
 
   // Wrong group order, should be placed before all field definitions
@@ -823,8 +982,8 @@ interface Foo {
 interface Foo {
   [a: string]: number;
 
+  B: x;
   a: x;
-  b: x;
   c: x;
 
   new (): Bar;
@@ -832,7 +991,7 @@ interface Foo {
 
   // Wrong alphabetic order within group
   c(): void;
-  b(): void;
+  B(): void;
   a(): void;
 }
 ```
@@ -858,10 +1017,83 @@ interface Foo {
 
 Note: Wrong alphabetic order `b(): void` should come after `a: b`.
 
+### Sorting alphabetically case-insensitive within member groups
+
+It is possible to sort all members within a group alphabetically with case insensitivity.
+
+#### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically-case-insensitive" } }`
+
+This will apply the default order (see above) and enforce an alphabetic case-insensitive order within each group.
+
+##### Incorrect examples
+
+```ts
+interface Foo {
+  a: x;
+  B: x;
+  c: x;
+
+  new (): Bar;
+  (): Baz;
+
+  a(): void;
+  b(): void;
+  C(): void;
+
+  // Wrong group order, should be placed before all field definitions
+  [a: string]: number;
+}
+```
+
+```ts
+interface Foo {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  new (): Bar;
+  (): Baz;
+
+  // Wrong alphabetic order within group
+  C(): void;
+  b(): void;
+  a(): void;
+}
+```
+
+### Sorting alphabetically case-insensitive while ignoring member groups
+
+It is also possible to sort all members with case insensitivity and ignore the member groups completely.
+
+#### Configuration: `{ "default": { "memberTypes": "never", "order": "alphabetically-case-insensitive" } }`
+
+##### Incorrect example
+
+```ts
+interface Foo {
+  B(): void;
+  a: number;
+
+  [a: string]: number; // Order doesn't matter (no sortable identifier)
+  new (): Bar; // Order doesn't matter (no sortable identifier)
+  (): Baz; // Order doesn't matter (no sortable identifier)
+}
+```
+
+Note: Wrong alphabetic order `B(): void` should come after `a: number`.
+
 ## When Not To Use It
 
 If you don't care about the general structure of your classes and interfaces, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

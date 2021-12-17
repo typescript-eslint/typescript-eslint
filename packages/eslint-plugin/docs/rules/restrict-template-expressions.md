@@ -1,6 +1,22 @@
 # Enforce template literal expressions to be of string type (`restrict-template-expressions`)
 
-Examples of **correct** code:
+## Rule Details
+
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+const arg1 = [1, 2];
+const msg1 = `arg1 = ${arg1}`;
+
+const arg2 = { name: 'Foo' };
+const msg2 = `arg2 = ${arg2 || null}`;
+```
+
+### ✅ Correct
 
 ```ts
 const arg = 'foo';
@@ -9,16 +25,6 @@ const msg2 = `arg = ${arg || 'default'}`;
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
-```
-
-Examples of **incorrect** code:
-
-```ts
-const arg1 = [1, 2];
-const msg1 = `arg1 = ${arg1}`;
-
-const arg2 = { name: 'Foo' };
-const msg2 = `arg2 = ${arg2 || null}`;
 ```
 
 ## Options
@@ -35,6 +41,8 @@ type Options = {
   allowAny?: boolean;
   // if true, also allow null and undefined in template expressions
   allowNullish?: boolean;
+  // if true, also allow RegExp in template expressions
+  allowRegExp?: boolean;
 };
 
 const defaults = {
@@ -42,6 +50,7 @@ const defaults = {
   allowBoolean: false,
   allowAny: false,
   allowNullish: false,
+  allowRegExp: false,
 };
 ```
 
@@ -83,3 +92,23 @@ Examples of additional **correct** code for this rule with `{ allowNullish: true
 const arg = condition ? 'ok' : null;
 const msg1 = `arg = ${arg}`;
 ```
+
+### `allowRegExp`
+
+Examples of additional **correct** code for this rule with `{ allowRegExp: true }`:
+
+```ts
+const arg = new RegExp('foo');
+const msg1 = `arg = ${arg}`;
+```
+
+```ts
+const arg = /foo/;
+const msg1 = `arg = ${arg}`;
+```
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

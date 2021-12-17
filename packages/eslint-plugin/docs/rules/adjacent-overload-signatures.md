@@ -6,7 +6,9 @@ Grouping overloaded members together can improve readability of the code.
 
 This rule aims to standardize the way overloaded members are organized.
 
-The following patterns are considered warnings:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare namespace Foo {
@@ -43,7 +45,7 @@ export function bar(): void;
 export function foo(sn: string | number): void;
 ```
 
-The following patterns are not warnings:
+### ✅ Correct
 
 ```ts
 declare namespace Foo {
@@ -84,6 +86,12 @@ export function foo(sn: string | number): void;
 
 If you don't care about the general structure of the code, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

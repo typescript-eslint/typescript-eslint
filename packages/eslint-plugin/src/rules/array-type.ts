@@ -15,6 +15,7 @@ function isSimpleType(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSBooleanKeyword:
     case AST_NODE_TYPES.TSNeverKeyword:
     case AST_NODE_TYPES.TSNumberKeyword:
+    case AST_NODE_TYPES.TSBigIntKeyword:
     case AST_NODE_TYPES.TSObjectKeyword:
     case AST_NODE_TYPES.TSStringKeyword:
     case AST_NODE_TYPES.TSSymbolKeyword:
@@ -80,9 +81,9 @@ type Options = [
 ];
 type MessageIds =
   | 'errorStringGeneric'
-  | 'errorStringGenericSimple'
   | 'errorStringArray'
-  | 'errorStringArraySimple';
+  | 'errorStringArraySimple'
+  | 'errorStringGenericSimple';
 
 const arrayOption = { enum: ['array', 'generic', 'array-simple'] };
 
@@ -92,20 +93,19 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Requires using either `T[]` or `Array<T>` for arrays',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },
     fixable: 'code',
     messages: {
       errorStringGeneric:
-        "Array type using '{{type}}[]' is forbidden. Use 'Array<{{type}}>' instead.",
-      errorStringGenericSimple:
-        "Array type using '{{type}}[]' is forbidden for non-simple types. Use 'Array<{{type}}>' instead.",
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
       errorStringArray:
-        "Array type using 'Array<{{type}}>' is forbidden. Use '{{type}}[]' instead.",
+        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
       errorStringArraySimple:
-        "Array type using 'Array<{{type}}>' is forbidden for simple types. Use '{{type}}[]' instead.",
+        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
+      errorStringGenericSimple:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
     schema: [
       {
@@ -132,13 +132,8 @@ export default util.createRule<Options, MessageIds>({
      * @param node the node to be evaluated.
      */
     function getMessageType(node: TSESTree.Node): string {
-      if (node) {
-        if (node.type === AST_NODE_TYPES.TSParenthesizedType) {
-          return getMessageType(node.typeAnnotation);
-        }
-        if (isSimpleType(node)) {
-          return sourceCode.getText(node);
-        }
+      if (node && isSimpleType(node)) {
+        return sourceCode.getText(node);
       }
       return 'T';
     }
@@ -169,14 +164,12 @@ export default util.createRule<Options, MessageIds>({
           node: errorNode,
           messageId,
           data: {
+            className: isReadonly ? 'ReadonlyArray' : 'Array',
+            readonlyPrefix: isReadonly ? 'readonly ' : '',
             type: getMessageType(node.elementType),
           },
           fix(fixer) {
-            const typeNode =
-              node.elementType.type === AST_NODE_TYPES.TSParenthesizedType
-                ? node.elementType.typeAnnotation
-                : node.elementType;
-
+            const typeNode = node.elementType;
             const arrayType = isReadonly ? 'ReadonlyArray' : 'Array';
 
             return [
@@ -226,6 +219,8 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId,
             data: {
+              className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
+              readonlyPrefix,
               type: 'any',
             },
             fix(fixer) {
@@ -244,9 +239,12 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const type = typeParams[0];
-        const typeParens = typeNeedsParentheses(type);
+        const typeParens =
+          !util.isParenthesized(type, sourceCode) && typeNeedsParentheses(type);
         const parentParens =
-          readonlyPrefix && node.parent?.type === AST_NODE_TYPES.TSArrayType;
+          readonlyPrefix &&
+          node.parent?.type === AST_NODE_TYPES.TSArrayType &&
+          !util.isParenthesized(node.parent.elementType, sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''
@@ -257,6 +255,8 @@ export default util.createRule<Options, MessageIds>({
           node,
           messageId,
           data: {
+            className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
+            readonlyPrefix,
             type: getMessageType(type),
           },
           fix(fixer) {

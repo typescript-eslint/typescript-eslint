@@ -23,7 +23,11 @@ The best practice is to avoid using `new Function()` or `execScript()` and alway
 
 This rule aims to eliminate implied `eval()` through the use of `new Function()`, `setTimeout()`, `setInterval()`, `setImmediate()` or `execScript()`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/no-implied-eval: "error" */
@@ -51,7 +55,7 @@ setTimeout(fn(), 100);
 const fn = new Function('a', 'b', 'return a + b');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/no-implied-eval: "error" */
@@ -88,7 +92,7 @@ class Foo {
 setTimeout(Foo.fn, 100);
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -102,4 +106,14 @@ setTimeout(Foo.fn, 100);
 
 If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can safely disable this rule.
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-implied-eval.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-implied-eval.md)
+
+</sup>
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

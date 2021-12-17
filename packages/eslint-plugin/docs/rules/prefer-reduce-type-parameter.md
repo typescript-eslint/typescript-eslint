@@ -17,7 +17,11 @@ This means that TypeScript doesn't have to try to infer the type, and avoids the
 This rule looks for calls to `Array#reduce`, and warns if an initial value is being passed & casted,
 suggesting instead to pass the cast type to `Array#reduce` as its generic parameter.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 [1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
@@ -31,7 +35,7 @@ Examples of **incorrect** code for this rule:
 );
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 [1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
@@ -52,3 +56,9 @@ There are no options.
 ## When Not To Use It
 
 If you don't want to use typechecking in your linting, you can't use this rule.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

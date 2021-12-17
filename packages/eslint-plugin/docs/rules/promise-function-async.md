@@ -12,7 +12,11 @@ This rule's practice removes a requirement for creating code to handle both case
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule
+Examples of code for this rule
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const arrowFunctionReturnsPromise = () => Promise.resolve('value');
@@ -22,7 +26,7 @@ function functionReturnsPromise() {
 }
 ```
 
-Examples of **correct** code for this rule
+### ✅ Correct
 
 ```ts
 const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
@@ -64,3 +68,9 @@ In addition, each of the following properties may be provided, and default to `t
 ## Related To
 
 - TSLint: [promise-function-async](https://palantir.github.io/tslint/rules/promise-function-async)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

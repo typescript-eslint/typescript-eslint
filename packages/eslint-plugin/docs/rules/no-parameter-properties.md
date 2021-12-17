@@ -24,7 +24,11 @@ If you would like to allow certain types of parameter properties then you may pa
 
 ### default
 
-Examples of **incorrect** code for this rule with no options at all:
+Examples of code for this rule with no options at all:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -56,7 +60,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for this rule with no options at all:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -66,7 +70,11 @@ class Foo {
 
 ### readonly
 
-Examples of **incorrect** code for the `{ "allows": ["readonly"] }` options:
+Examples of code for the `{ "allows": ["readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -94,7 +102,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -108,7 +116,11 @@ class Foo {
 
 ### private
 
-Examples of **incorrect** code for the `{ "allows": ["private"] }` options:
+Examples of code for the `{ "allows": ["private"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -136,7 +148,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["private"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -150,7 +162,11 @@ class Foo {
 
 ### protected
 
-Examples of **incorrect** code for the `{ "allows": ["protected"] }` options:
+Examples of code for the `{ "allows": ["protected"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -178,7 +194,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["protected"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -192,7 +208,11 @@ class Foo {
 
 ### public
 
-Examples of **incorrect** code for the `{ "allows": ["public"] }` options:
+Examples of code for the `{ "allows": ["public"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -220,7 +240,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["public"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -234,7 +254,11 @@ class Foo {
 
 ### private readonly
 
-Examples of **incorrect** code for the `{ "allows": ["private readonly"] }` options:
+Examples of code for the `{ "allows": ["private readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -262,7 +286,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["private readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -276,7 +300,11 @@ class Foo {
 
 ### protected readonly
 
-Examples of **incorrect** code for the `{ "allows": ["protected readonly"] }` options:
+Examples of code for the `{ "allows": ["protected readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -304,7 +332,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["protected readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -318,7 +346,11 @@ class Foo {
 
 ### public readonly
 
-Examples of **incorrect** code for the `{ "allows": ["public readonly"] }` options:
+Examples of code for the `{ "allows": ["public readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -346,7 +378,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["public readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -362,6 +394,12 @@ class Foo {
 
 If you don't care about the using parameter properties in constructors, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "4.28.3",
+  "version": "5.7.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "keywords": [
     "eslint",
@@ -8,7 +8,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "files": [
     "dist",

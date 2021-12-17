@@ -77,14 +77,18 @@ For example, with the following configuration:
 
 Whether to enforce type annotations on variables declared using array destructuring.
 
-Examples of **incorrect** code with `{ "arrayDestructuring": true }`:
+Examples of code with `{ "arrayDestructuring": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const [a] = [1];
 const [b, c] = [1, 2];
 ```
 
-Examples of **correct** code with `{ "arrayDestructuring": true }`:
+#### ✅ Correct
 
 ```ts
 const [a]: number[] = [1];
@@ -99,7 +103,11 @@ for (const [key, val] of new Map([['key', 1]])) {
 
 Whether to enforce type annotations for parameters of arrow functions.
 
-Examples of **incorrect** code with `{ "arrowParameter": true }`:
+Examples of code with `{ "arrowParameter": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const logsSize = size => console.log(size);
@@ -111,7 +119,7 @@ const mapper = {
 };
 ```
 
-Examples of **correct** code with `{ "arrowParameter": true }`:
+#### ✅ Correct
 
 ```ts
 const logsSize = (size: number) => console.log(size);
@@ -127,7 +135,11 @@ const mapper = {
 
 Whether to enforce type annotations on member variables of classes.
 
-Examples of **incorrect** code with `{ "memberVariableDeclaration": true }`:
+Examples of code with `{ "memberVariableDeclaration": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class ContainsText {
@@ -136,7 +148,7 @@ class ContainsText {
 }
 ```
 
-Examples of **correct** code with `{ "memberVariableDeclaration": true }`:
+#### ✅ Correct
 
 ```ts
 class ContainsText {
@@ -149,14 +161,18 @@ class ContainsText {
 
 Whether to enforce type annotations on variables declared using object destructuring.
 
-Examples of **incorrect** code with `{ "objectDestructuring": true }`:
+Examples of code with `{ "objectDestructuring": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const { length } = 'text';
 const [b, c] = Math.random() ? [1, 2] : [3, 4];
 ```
 
-Examples of **correct** code with `{ "objectDestructuring": true }`:
+#### ✅ Correct
 
 ```ts
 const { length }: { length: number } = 'text';
@@ -170,7 +186,11 @@ for (const { key, val } of [{ key: 'key', val: 1 }]) {
 
 Whether to enforce type annotations for parameters of functions and methods.
 
-Examples of **incorrect** code with `{ "parameter": true }`:
+Examples of code with `{ "parameter": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 function logsSize(size): void {
@@ -198,7 +218,7 @@ class Logger {
 }
 ```
 
-Examples of **correct** code with `{ "parameter": true }`:
+#### ✅ Correct
 
 ```ts
 function logsSize(size: number): void {
@@ -230,7 +250,11 @@ class Logger {
 
 Whether to enforce type annotations for properties of interfaces and types.
 
-Examples of **incorrect** code with `{ "propertyDeclaration": true }`:
+Examples of code with `{ "propertyDeclaration": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 type Members = {
@@ -239,7 +263,7 @@ type Members = {
 };
 ```
 
-Examples of **correct** code with `{ "propertyDeclaration": true }`:
+#### ✅ Correct
 
 ```ts
 type Members = {
@@ -252,7 +276,11 @@ type Members = {
 
 Whether to enforce type annotations for variable declarations, excluding array and object destructuring.
 
-Examples of **incorrect** code with `{ "variableDeclaration": true }`:
+Examples of code with `{ "variableDeclaration": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const text = 'text';
@@ -260,7 +288,7 @@ let initialText = 'text';
 let delayedText;
 ```
 
-Examples of **correct** code with `{ "variableDeclaration": true }`:
+#### ✅ Correct
 
 ```ts
 const text: string = 'text';
@@ -272,13 +300,17 @@ let delayedText: string;
 
 Ignore variable declarations for non-arrow and arrow functions.
 
-Examples of **incorrect** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+Examples of code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const text = 'text';
 ```
 
-Examples of **correct** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+#### ✅ Correct
 
 ```ts
 const a = (): void => {};
@@ -303,6 +335,12 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 
-## Compatibility
+## Related To
 
 - TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

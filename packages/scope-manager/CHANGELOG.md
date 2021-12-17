@@ -3,6 +3,204 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.6.0...v5.7.0) (2021-12-13)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.6.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.5.0...v5.6.0) (2021-12-06)
+
+
+### Features
+
+* **scope-manager:** support TS4.5 import/export specifier kind ([#4234](https://github.com/typescript-eslint/typescript-eslint/issues/4234)) ([833f822](https://github.com/typescript-eslint/typescript-eslint/commit/833f8221ce00aecb7d08c519bab9568353850f48))
+* **scope-manager:** update lib types ([#4240](https://github.com/typescript-eslint/typescript-eslint/issues/4240)) ([8377e6e](https://github.com/typescript-eslint/typescript-eslint/commit/8377e6ea422ee2d52455da8955ff055e09c238d3))
+
+
+
+
+
+# [5.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.4.0...v5.5.0) (2021-11-29)
+
+
+### Bug Fixes
+
+* **scope-manager:** support static class blocks ([#4211](https://github.com/typescript-eslint/typescript-eslint/issues/4211)) ([f8e9125](https://github.com/typescript-eslint/typescript-eslint/commit/f8e91256e0a721aaa906a5c40a92784da9433b53))
+
+
+
+
+
+# [5.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.1...v5.4.0) (2021-11-15)
+
+
+### Bug Fixes
+
+* correct issues with circular imports ([#4140](https://github.com/typescript-eslint/typescript-eslint/issues/4140)) ([4c87b24](https://github.com/typescript-eslint/typescript-eslint/commit/4c87b2486a9c90794d972a4d093c1dc22ffb418b))
+
+
+### Features
+
+* **typescript-estree:** support Import Assertions ([#4074](https://github.com/typescript-eslint/typescript-eslint/issues/4074)) ([ae0fb5a](https://github.com/typescript-eslint/typescript-eslint/commit/ae0fb5a591958216b7df656e66b1dfe464898167))
+
+
+
+
+
+## [5.3.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.3.0...v5.3.1) (2021-11-08)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.2.0...v5.3.0) (2021-11-01)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.1.0...v5.2.0) (2021-10-25)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.0.0...v5.1.0) (2021-10-18)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.33.0...v5.0.0) (2021-10-11)
+
+
+### Features
+
+* align class property representation with ESTree ([#3806](https://github.com/typescript-eslint/typescript-eslint/issues/3806)) ([22fa5c0](https://github.com/typescript-eslint/typescript-eslint/commit/22fa5c0c4705ed2898f00b7cacc5dd642d859275)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#3077](https://github.com/typescript-eslint/typescript-eslint/issues/3077)
+* support `PrivateIdentifier` ([#3808](https://github.com/typescript-eslint/typescript-eslint/issues/3808)) ([0eefe5e](https://github.com/typescript-eslint/typescript-eslint/commit/0eefe5e49d21af3f1e3e2d9a90c2e49929863ac2)), closes [#3430](https://github.com/typescript-eslint/typescript-eslint/issues/3430) [#2933](https://github.com/typescript-eslint/typescript-eslint/issues/2933)
+* **eslint-plugin:** removed value from abstract property nodes ([#3765](https://github.com/typescript-eslint/typescript-eslint/issues/3765)) ([5823524](https://github.com/typescript-eslint/typescript-eslint/commit/58235241714596b641a1e8b39c569e561e0039b4)), closes [#3748](https://github.com/typescript-eslint/typescript-eslint/issues/3748)
+
+
+
+
+
+# [4.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.32.0...v4.33.0) (2021-10-04)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.2...v4.32.0) (2021-09-27)
+
+
+### Features
+
+* **eslint-plugin-internal:** [prefer-ast-types-enum] add `DefinitionType` enum ([#3916](https://github.com/typescript-eslint/typescript-eslint/issues/3916)) ([13b7de5](https://github.com/typescript-eslint/typescript-eslint/commit/13b7de508e0f8eac492879ff9ab99acd8d3e977e))
+* Support `'latest'` as `ecmaVersion` ([#3873](https://github.com/typescript-eslint/typescript-eslint/issues/3873)) ([25a42c0](https://github.com/typescript-eslint/typescript-eslint/commit/25a42c0bbe92d1ecbc2e8ff9ef3a3ef413f728b0))
+
+
+
+
+
+## [4.31.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.1...v4.31.2) (2021-09-20)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.31.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.31.0...v4.31.1) (2021-09-13)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.30.0...v4.31.0) (2021-09-06)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.3...v4.30.0) (2021-08-30)
+
+
+### Features
+
+* **typescript-estree:** add support for class static blocks ([#3730](https://github.com/typescript-eslint/typescript-eslint/issues/3730)) ([f81831b](https://github.com/typescript-eslint/typescript-eslint/commit/f81831bd279a32da6dbab0f1c061053ea43965f6))
+
+
+
+
+
+## [4.29.3](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.2...v4.29.3) (2021-08-23)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.29.2](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.1...v4.29.2) (2021-08-16)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.29.1](https://github.com/typescript-eslint/typescript-eslint/compare/v4.29.0...v4.29.1) (2021-08-09)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [4.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.5...v4.29.0) (2021-08-02)
+
+
+### Features
+
+* **eslint-plugin:** Catch unused React import with new JSX transform ([#3577](https://github.com/typescript-eslint/typescript-eslint/issues/3577)) ([02998ea](https://github.com/typescript-eslint/typescript-eslint/commit/02998eac510665758b9a093d43afc310f3ac980d))
+
+
+
+
+
+## [4.28.5](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.4...v4.28.5) (2021-07-26)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [4.28.4](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.3...v4.28.4) (2021-07-19)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
 ## [4.28.3](https://github.com/typescript-eslint/typescript-eslint/compare/v4.28.2...v4.28.3) (2021-07-12)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

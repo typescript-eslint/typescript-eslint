@@ -6,14 +6,28 @@ ScopeManager {
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
       defs: Array [
-        TypeDefinition$1 {
+        VariableDefinition$1 {
           name: Identifier<"T">,
-          node: TSTypeAliasDeclaration$1,
+          node: VariableDeclarator$1,
+        },
+        TypeDefinition$2 {
+          name: Identifier<"T">,
+          node: TSTypeAliasDeclaration$2,
         },
       ],
       name: "T",
       references: Array [
         Reference$1 {
+          identifier: Identifier<"T">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$2,
+          writeExpr: Literal$3,
+        },
+        Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
@@ -22,13 +36,13 @@ ScopeManager {
           resolved: Variable$2,
         },
       ],
-      isValueVariable: false,
+      isValueVariable: true,
       isTypeVariable: true,
     },
   ],
   scopes: Array [
     GlobalScope$1 {
-      block: Program$2,
+      block: Program$4,
       isStrict: false,
       references: Array [],
       set: Map {
@@ -41,10 +55,11 @@ ScopeManager {
       ],
     },
     ModuleScope$2 {
-      block: Program$2,
+      block: Program$4,
       isStrict: true,
       references: Array [
         Reference$1,
+        Reference$2,
       ],
       set: Map {
         "T" => Variable$2,

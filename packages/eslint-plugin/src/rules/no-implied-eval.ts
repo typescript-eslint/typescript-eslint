@@ -20,7 +20,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow the use of `eval()`-like methods',
-      category: 'Best Practices',
       recommended: 'error',
       extendsBaseRule: true,
       requiresTypeChecking: true,
@@ -99,6 +98,12 @@ export default util.createRule({
       return signatures.length > 0;
     }
 
+    function isBind(node: TSESTree.Node): boolean {
+      return node.type === AST_NODE_TYPES.MemberExpression
+        ? isBind(node.property)
+        : node.type === AST_NODE_TYPES.Identifier && node.name === 'bind';
+    }
+
     function isFunction(node: TSESTree.Node): boolean {
       switch (node.type) {
         case AST_NODE_TYPES.ArrowFunctionExpression:
@@ -106,21 +111,25 @@ export default util.createRule({
         case AST_NODE_TYPES.FunctionExpression:
           return true;
 
-        case AST_NODE_TYPES.MemberExpression:
-        case AST_NODE_TYPES.Identifier:
-        case AST_NODE_TYPES.ConditionalExpression:
-          return isFunctionType(node);
+        case AST_NODE_TYPES.Literal:
+        case AST_NODE_TYPES.TemplateLiteral:
+          return false;
 
         case AST_NODE_TYPES.CallExpression:
-          return (
-            (node.callee.type === AST_NODE_TYPES.Identifier &&
-              node.callee.name === 'bind') ||
-            isFunctionType(node)
-          );
+          return isBind(node.callee) || isFunctionType(node);
 
         default:
-          return false;
+          return isFunctionType(node);
       }
+    }
+
+    function isReferenceToGlobalFunction(calleeName: string): boolean {
+      const ref = context
+        .getScope()
+        .references.find(ref => ref.identifier.name === calleeName);
+
+      // ensure it's the "global" version
+      return !ref?.resolved || ref.resolved.defs.length === 0;
     }
 
     function checkImpliedEval(
@@ -156,7 +165,11 @@ export default util.createRule({
       }
 
       const [handler] = node.arguments;
-      if (EVAL_LIKE_METHODS.has(calleeName) && !isFunction(handler)) {
+      if (
+        EVAL_LIKE_METHODS.has(calleeName) &&
+        !isFunction(handler) &&
+        isReferenceToGlobalFunction(calleeName)
+      ) {
         context.report({ node: handler, messageId: 'noImpliedEvalError' });
       }
     }

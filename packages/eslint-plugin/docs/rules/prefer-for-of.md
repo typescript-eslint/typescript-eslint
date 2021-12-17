@@ -6,7 +6,11 @@ This rule recommends a for-of loop when the loop index is only used to read from
 
 For cases where the index is only used to read from the array being iterated, a for-of loop is easier to read and write.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```js
 for (let i = 0; i < arr.length; i++) {
@@ -14,7 +18,7 @@ for (let i = 0; i < arr.length; i++) {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```js
 for (const x of arr) {
@@ -36,6 +40,12 @@ for (let i = 0; i < arr.length; i++) {
 
 If you transpile for browsers that do not support for-of loops, you may wish to use traditional for loops that produce more compact code.
 
-## Related to
+## Related To
 
 - TSLint: ['prefer-for-of'](https://palantir.github.io/tslint/rules/prefer-for-of/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -8,7 +8,7 @@ It adds:
 - Support for optionally ignoring computed `private` and/or `protected` member access.
 - Compatibility with TypeScript's `noPropertyAccessFromIndexSignature` option.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -80,4 +80,14 @@ x['hello'] = 123;
 
 If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to `true`, then the above code is always allowed, even if `allowIndexSignaturePropertyAccess` is `false`.
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/dot-notation.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/dot-notation.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

@@ -25,7 +25,7 @@ export type Options = [
 export type MessageIds = 'bannedTypeMessage';
 
 function removeSpaces(str: string): string {
-  return str.replace(/ /g, '');
+  return str.replace(/\s/g, '');
 }
 
 function stringifyNode(
@@ -96,12 +96,6 @@ const defaultTypes: Types = {
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
     ].join('\n'),
   },
-  object: {
-    message: [
-      'The `object` type is currently hard to use ([see this issue](https://github.com/microsoft/TypeScript/issues/21732)).',
-      'Consider using `Record<string, unknown>` instead, as it allows you to more easily inspect and use the keys.',
-    ].join('\n'),
-  },
 };
 
 export const TYPE_KEYWORDS = {
@@ -124,7 +118,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Bans specific types from being used',
-      category: 'Best Practices',
       recommended: 'error',
     },
     fixable: 'code',

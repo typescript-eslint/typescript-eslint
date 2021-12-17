@@ -2,7 +2,11 @@
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const foo: { bar: number } | null = null;
@@ -21,7 +25,7 @@ function foo(bar?: { n: number }) {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const foo: { bar: number } | null = null;
@@ -40,10 +44,16 @@ function foo(bar?: { n: number }) {
 }
 ```
 
-## How to use
+## How to Use
 
 ```json
 {
   "@typescript-eslint/no-extra-non-null-assertion": ["error"]
 }
 ```
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

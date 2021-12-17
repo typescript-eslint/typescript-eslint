@@ -8,7 +8,11 @@ either calling `.then()` with two arguments or `.catch()` with one argument.
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const promise = new Promise((resolve, reject) => resolve('value'));
@@ -24,7 +28,7 @@ Promise.reject('value').catch();
 Promise.reject('value').finally();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const promise = new Promise((resolve, reject) => resolve('value'));
@@ -99,6 +103,12 @@ await(async function () {
 
 If you do not use Promise-like values in your codebase, or want to allow them to remain unhandled.
 
-## Related to
+## Related To
 
 - TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

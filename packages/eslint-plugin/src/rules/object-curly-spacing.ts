@@ -3,7 +3,7 @@ import {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/object-curly-spacing';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   createRule,
   InferMessageIdsTypeFromRule,
@@ -12,6 +12,8 @@ import {
   isClosingBracketToken,
   isTokenOnSameLine,
 } from '../util';
+
+const baseRule = getESLintCoreRule('object-curly-spacing');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -22,14 +24,14 @@ export default createRule<Options, MessageIds>({
     ...baseRule.meta,
     docs: {
       description: 'Enforce consistent spacing inside braces',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
   },
   defaultOptions: ['never'],
   create(context) {
-    const spaced = context.options[0] === 'always';
+    const [firstOption, secondOption] = context.options;
+    const spaced = firstOption === 'always';
     const sourceCode = context.getSourceCode();
 
     /**
@@ -42,9 +44,7 @@ export default createRule<Options, MessageIds>({
     function isOptionSet(
       option: 'arraysInObjects' | 'objectsInObjects',
     ): boolean {
-      return context.options[1]
-        ? context.options[1][option] === !spaced
-        : false;
+      return secondOption ? secondOption[option] === !spaced : false;
     }
 
     const options = {

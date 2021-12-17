@@ -9,6 +9,7 @@ import {
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
+  getModuleResolver,
 } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
@@ -269,6 +270,12 @@ function createWatchProgram(
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
+  if (extra.moduleResolver) {
+    watchCompilerHost.resolveModuleNames = getModuleResolver(
+      extra.moduleResolver,
+    ).resolveModuleNames;
+  }
+
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
   watchCompilerHost.readFile = (filePathIn, encoding): string | undefined => {
@@ -363,7 +370,7 @@ function createWatchProgram(
     log('Running without timeout fix');
     // But because of https://github.com/microsoft/TypeScript/pull/37308 we cannot just set it to undefined
     // instead save it and call before getProgram is called
-    watchCompilerHost.setTimeout = (cb, _ms, ...args): unknown => {
+    watchCompilerHost.setTimeout = (cb, _ms, ...args: unknown[]): unknown => {
       callback = cb.bind(/*this*/ undefined, ...args);
       return callback;
     };

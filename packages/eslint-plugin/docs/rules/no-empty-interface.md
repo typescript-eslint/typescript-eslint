@@ -7,7 +7,9 @@ the interface is equivalent to an empty object (`{}`). In both cases it can be o
 
 This rule aims to ensure that only meaningful interfaces are declared in the code.
 
-The following patterns are considered warnings:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // an empty interface
@@ -20,7 +22,7 @@ interface Bar extends Foo {}
 interface Baz {}
 ```
 
-The following patterns are not warnings:
+### ✅ Correct
 
 ```ts
 // an interface with any number of members
@@ -37,6 +39,8 @@ interface Bar {
 // in this case the interface can be used as a replacement of a union type.
 interface Baz extends Foo, Bar {}
 ```
+
+<!--/tabs-->
 
 ### Options
 
@@ -59,6 +63,12 @@ This rule accepts a single object option with the following default configuratio
 
 If you don't care about having empty/meaningless interfaces, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-empty-interface](https://palantir.github.io/tslint/rules/no-empty-interface/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -4,7 +4,11 @@ In other words, the use of forms such as `var foo = require("foo")` are banned. 
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 var foo = require('foo');
@@ -12,7 +16,7 @@ const foo = require('foo');
 let foo = require('foo');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 import foo = require('foo');
@@ -24,6 +28,12 @@ import foo from 'foo';
 
 If you don't care about TypeScript module syntax, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-var-requires](https://palantir.github.io/tslint/rules/no-var-requires/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

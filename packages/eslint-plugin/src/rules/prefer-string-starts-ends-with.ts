@@ -27,7 +27,6 @@ export default createRule({
     docs: {
       description:
         'Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings',
-      category: 'Best Practices',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -287,7 +286,9 @@ export default createRule({
       return { isEndsWith, isStartsWith, text };
     }
 
-    function getLeftNode(node: TSESTree.Expression): TSESTree.MemberExpression {
+    function getLeftNode(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+    ): TSESTree.MemberExpression {
       if (node.type === AST_NODE_TYPES.ChainExpression) {
         return getLeftNode(node.expression);
       }

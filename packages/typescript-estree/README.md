@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+**[You can find our Getting Started docs here](../../docs/linting/README.md)**
 
 ## About
 
@@ -72,7 +72,7 @@ interface ParseOptions {
    * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
    * TypeScript compiler has its own internal handling for known file extensions.
    *
-   * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#parseroptionsecmafeaturesjsx
+   * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsecmafeaturesjsx
    */
   jsx?: boolean;
 
@@ -101,14 +101,6 @@ interface ParseOptions {
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
-
-  /*
-   * The JSX AST changed the node type for string literals
-   * inside a JSX Element from `Literal` to `JSXText`.
-   * When value is `true`, these nodes will be parsed as type `JSXText`.
-   * When value is `false`, these nodes will be parsed as type `Literal`.
-   */
-  useJSXTextNode?: boolean;
 }
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {
@@ -120,7 +112,6 @@ const PARSE_DEFAULT_OPTIONS: ParseOptions = {
   loggerFn: undefined,
   range: false,
   tokens: false,
-  useJSXTextNode: false,
 };
 
 declare function parse(
@@ -209,11 +200,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
-   * Instance of a TypeScript Program object to be used for type information.
+   * An array of one or more instances of TypeScript Program objects to be used for type information.
    * This overrides any program or programs that would have been computed from the `project` option.
-   * All linted files must be part of the provided program.
+   * All linted files must be part of the provided program(s).
    */
-  program?: import('typescript').Program;
+  programs?: Program[];
 
   /**
    ***************************************************************************************
@@ -239,6 +230,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * whether or not ESLint is being used as part of a single run.
    */
   allowAutomaticSingleRunInference?: boolean;
+
+  /**
+   * Path to a file exporting a custom ModuleResolver.
+   */
+  moduleResolver?: string;
 }
 
 interface ParserServices {
@@ -328,7 +324,7 @@ Types for the AST produced by the parse functions.
 
 #### `createProgram(configFile, projectDirectory)`
 
-This serves as a utility method for users of the `ParseOptions.program` feature to create a TypeScript program instance from a config file.
+This serves as a utility method for users of the `ParseOptions.programs` feature to create a TypeScript program instance from a config file.
 
 ```ts
 declare function createProgram(
@@ -371,7 +367,7 @@ Please check the current list of open and known issues and ensure the issue has 
 
 A couple of years after work on this parser began, the TypeScript Team at Microsoft began [officially supporting TypeScript parsing via Babel](https://blogs.msdn.microsoft.com/typescript/2018/08/27/typescript-and-babel-7/).
 
-I work closely with the TypeScript Team and we are gradually aligning the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see [the code](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree/tests/ast-alignment) for more details.
+I work closely with the TypeScript Team and we are gradually aligning the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see [the code](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree/tests/ast-alignment) for more details.
 
 ## Debugging
 

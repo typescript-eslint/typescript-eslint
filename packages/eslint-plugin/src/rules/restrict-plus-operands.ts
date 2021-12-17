@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'When adding two variables, operands must both be of type number or of type string',
-      category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -94,7 +93,9 @@ export default util.createRule<Options, MessageIds>({
      * Helper function to get base type of node
      * @param node the node to be evaluated.
      */
-    function getNodeType(node: TSESTree.Expression): BaseLiteral {
+    function getNodeType(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+    ): BaseLiteral {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
 
@@ -133,11 +134,11 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       "BinaryExpression[operator='+']": checkPlusOperands,
-      "AssignmentExpression[operator='+=']"(node): void {
-        if (checkCompoundAssignments) {
+      ...(checkCompoundAssignments && {
+        "AssignmentExpression[operator='+=']"(node): void {
           checkPlusOperands(node);
-        }
-      },
+        },
+      }),
     };
   },
 });

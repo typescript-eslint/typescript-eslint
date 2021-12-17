@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-extra-semi`](https://eslint.org/docs/rules/no-extra-semi) rule.
 It adds support for class properties.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -19,4 +19,14 @@ It adds support for class properties.
 
 See [`eslint/no-extra-semi` options](https://eslint.org/docs/rules/no-extra-semi#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-extra-semi.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-extra-semi.md)
+
+</sup>
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

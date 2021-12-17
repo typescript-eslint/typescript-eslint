@@ -30,12 +30,12 @@ const log = debug('typescript-eslint:typescript-estree:parser');
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.4.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.6.0';
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
  * List them all separately here, so we can automatically create the full string
  */
-const SUPPORTED_PRERELEASE_RANGES: string[] = ['4.3.0-beta', '4.3.1-rc'];
+const SUPPORTED_PRERELEASE_RANGES: string[] = [];
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -129,12 +129,12 @@ function resetExtra(): void {
     strict: false,
     tokens: null,
     tsconfigRootDir: process.cwd(),
-    useJSXTextNode: false,
     /**
      * Unless we can reliably infer otherwise, we default to assuming that this run could be part
      * of a long-running session (e.g. in an IDE) and watch programs will therefore be required
      */
     singleRun: false,
+    moduleResolver: '',
   };
 }
 
@@ -251,17 +251,6 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   }
 
   /**
-   * The JSX AST changed the node type for string literals
-   * inside a JSX Element from `Literal` to `JSXText`.
-   *
-   * When value is `true`, these nodes will be parsed as type `JSXText`.
-   * When value is `false`, these nodes will be parsed as type `Literal`.
-   */
-  if (typeof options.useJSXTextNode === 'boolean' && options.useJSXTextNode) {
-    extra.useJSXTextNode = true;
-  }
-
-  /**
    * Allow the user to cause the parser to error if it encounters an unknown AST Node Type
    * (used in testing)
    */
@@ -342,11 +331,16 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   extra.EXPERIMENTAL_useSourceOfProjectReferenceRedirect =
     typeof options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect ===
       'boolean' && options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
+
+  if (typeof options.moduleResolver === 'string') {
+    extra.moduleResolver = options.moduleResolver;
+  }
 }
 
 function warnAboutTSVersion(): void {
   if (!isRunningSupportedTypeScriptVersion && !warnedAboutTSVersion) {
-    const isTTY = typeof process === undefined ? false : process.stdout?.isTTY;
+    const isTTY =
+      typeof process === 'undefined' ? false : process.stdout?.isTTY;
     if (isTTY) {
       const border = '=============';
       const versionWarning = [
@@ -496,6 +490,12 @@ function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
   return parseWithNodeMapsInternal(code, options, true);
 }
 
+let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
+// Privately exported utility intended for use in typescript-eslint unit tests only
+function clearParseAndGenerateServicesCalls(): void {
+  parseAndGenerateServicesCalls = {};
+}
+
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options: T,
@@ -566,12 +566,41 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    */
   const shouldProvideParserServices =
     extra.programs != null || (extra.projects && extra.projects.length > 0);
-  const { ast, program } = getProgramAndAST(
-    code,
-    extra.programs,
-    shouldProvideParserServices,
-    extra.createDefaultProgram,
-  )!;
+
+  /**
+   * If we are in singleRun mode but the parseAndGenerateServices() function has been called more than once for the current file,
+   * it must mean that we are in the middle of an ESLint automated fix cycle (in which parsing can be performed up to an additional
+   * 10 times in order to apply all possible fixes for the file).
+   *
+   * In this scenario we cannot rely upon the singleRun AOT compiled programs because the SourceFiles will not contain the source
+   * with the latest fixes applied. Therefore we fallback to creating the quickest possible isolated program from the updated source.
+   */
+  let ast: ts.SourceFile;
+  let program: ts.Program;
+
+  if (extra.singleRun && options.filePath) {
+    parseAndGenerateServicesCalls[options.filePath] =
+      (parseAndGenerateServicesCalls[options.filePath] || 0) + 1;
+  }
+
+  if (
+    extra.singleRun &&
+    options.filePath &&
+    parseAndGenerateServicesCalls[options.filePath] > 1
+  ) {
+    const isolatedAstAndProgram = createIsolatedProgram(code, extra);
+    ast = isolatedAstAndProgram.ast;
+    program = isolatedAstAndProgram.program;
+  } else {
+    const astAndProgram = getProgramAndAST(
+      code,
+      extra.programs,
+      shouldProvideParserServices,
+      extra.createDefaultProgram,
+    )!;
+    ast = astAndProgram.ast;
+    program = astAndProgram.program;
+  }
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
@@ -614,4 +643,5 @@ export {
   ParseAndGenerateServicesResult,
   ParseWithNodeMapsResult,
   clearProgramCache,
+  clearParseAndGenerateServicesCalls,
 };

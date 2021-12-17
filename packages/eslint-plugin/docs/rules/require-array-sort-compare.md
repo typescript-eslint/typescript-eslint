@@ -11,15 +11,23 @@ When sorting numbers, this results in the classic "10 before 2" order:
 [1, 2, 3, 10, 20, 30].sort(); //→ [1, 10, 2, 20, 3, 30]
 ```
 
-This also means that `Array#sort` does not always sort consistently, as elements may have custom `#toString` implementations that are not deterministic; this trap is noted in the noted in the language specification thusly:
+This also means that `Array#sort` does not always sort consistently, as elements may have custom `#toString` implementations that are not deterministic; this trap is noted in the language specification thusly:
 
-> NOTE 2: Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
+:::note
+Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.
+
+https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
+:::
 
 ## Rule Details
 
 This rule aims to ensure all calls of the native `Array#sort` method provide a `compareFunction`, while ignoring calls to user-defined `sort` methods.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const array: any[];
@@ -31,7 +39,7 @@ array.sort();
 stringArray.sort();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const array: any[];
@@ -62,7 +70,11 @@ const defaults = {
 
 ### `ignoreStringArrays`
 
-Examples of **incorrect** code for this rule with `{ ignoreStringArrays: true }`:
+Examples of code for this rule with `{ ignoreStringArrays: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const one = 1;
@@ -71,7 +83,7 @@ const three = 3;
 [one, two, three].sort();
 ```
 
-Examples of **correct** code for this rule with `{ ignoreStringArrays: true }`:
+#### ✅ Correct
 
 ```ts
 const one = '1';
@@ -83,3 +95,9 @@ const three = '3';
 ## When Not To Use It
 
 If you understand the language specification enough, you can turn this rule off safely.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

@@ -15,7 +15,11 @@ The following nodes are considered boolean expressions and their type is checked
 
 ## Examples
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // nullable numbers are considered unsafe by default
@@ -47,7 +51,7 @@ while (obj) {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```tsx
 // Using logical operator short-circuiting is allowed
@@ -155,7 +159,7 @@ You should be using `strictNullChecks` to ensure complete type-safety in your co
 
 If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
 
-## Fixes and suggestions
+## Fixes and Suggestions
 
 This rule provides following fixes and suggestions for particular types in boolean context:
 
@@ -190,5 +194,10 @@ This rule provides following fixes and suggestions for particular types in boole
 ## Related To
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
-
 - [no-unnecessary-condition](./no-unnecessary-condition.md) - Similar rule which reports always-truthy and always-falsy values in conditions
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

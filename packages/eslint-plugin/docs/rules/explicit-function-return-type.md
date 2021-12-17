@@ -9,7 +9,9 @@ shouldn't.
 
 This rule aims to ensure that the values returned from functions are of the expected type.
 
-The following patterns are considered warnings:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -33,7 +35,7 @@ class Test {
 }
 ```
 
-The following patterns are not warnings:
+### ✅ Correct
 
 ```ts
 // No return value should be expected (void)
@@ -108,7 +110,11 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `allowExpressions`
 
-Examples of **incorrect** code for this rule with `{ allowExpressions: true }`:
+Examples of code for this rule with `{ allowExpressions: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 function test() {}
@@ -118,7 +124,7 @@ const fn = () => {};
 export default () => {};
 ```
 
-Examples of **correct** code for this rule with `{ allowExpressions: true }`:
+#### ✅ Correct
 
 ```ts
 node.addEventListener('click', () => {});
@@ -130,7 +136,11 @@ const foo = arr.map(i => i * i);
 
 ### `allowTypedFunctionExpressions`
 
-Examples of **incorrect** code for this rule with `{ allowTypedFunctionExpressions: true }`:
+Examples of code for this rule with `{ allowTypedFunctionExpressions: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 let arrowFn = () => 'test';
@@ -144,7 +154,7 @@ let objectProp = {
 };
 ```
 
-Examples of additional **correct** code for this rule with `{ allowTypedFunctionExpressions: true }`:
+#### ✅ Correct
 
 ```ts
 type FuncType = () => string;
@@ -184,7 +194,11 @@ functionWithObjectArg({
 
 ### `allowHigherOrderFunctions`
 
-Examples of **incorrect** code for this rule with `{ allowHigherOrderFunctions: true }`:
+Examples of code for this rule with `{ allowHigherOrderFunctions: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 var arrowFn = () => () => {};
@@ -194,7 +208,7 @@ function fn() {
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowHigherOrderFunctions: true }`:
+#### ✅ Correct
 
 ```ts
 var arrowFn = () => (): void => {};
@@ -206,14 +220,18 @@ function fn() {
 
 ### `allowDirectConstAssertionInArrowFunctions`
 
-Examples of **incorrect** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const func = (value: number) => ({ type: 'X', value } as any);
 const func = (value: number) => ({ type: 'X', value } as Action);
 ```
 
-Examples of **correct** code for this rule with `{ allowDirectConstAssertionInArrowFunctions: true }`:
+#### ✅ Correct
 
 ```ts
 const func = (value: number) => ({ foo: 'bar', value } as const);
@@ -222,7 +240,11 @@ const func = () => x as const;
 
 ### `allowConciseArrowFunctionExpressionsStartingWithVoid`
 
-Examples of **incorrect** code for this rule with `{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }`:
+Examples of code for this rule with `{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 var join = (a: string, b: string) => `${a}${b}`;
@@ -232,7 +254,7 @@ const log = (message: string) => {
 };
 ```
 
-Examples of **correct** code for this rule with `{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }`:
+#### ✅ Correct
 
 ```ts
 var log = (message: string) => void console.log(message);
@@ -246,3 +268,9 @@ you will not need this rule.
 ## Further Reading
 
 - TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-redeclare`](https://eslint.org/docs/rules/no-redeclare) rule.
 It adds support for TypeScript function overloads, and declaration merging.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -41,6 +41,7 @@ When set to `true`, the rule will ignore declaration merges between the followin
 - class + namespace
 - class + interface + namespace
 - function + namespace
+- enum + namespace
 
 Examples of **correct** code with `{ ignoreDeclarationMerge: true }`:
 
@@ -76,4 +77,14 @@ type something = string;
 const something = 2;
 ```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-redeclare.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-redeclare.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

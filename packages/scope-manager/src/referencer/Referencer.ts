@@ -22,7 +22,7 @@ import { lib as TSLibraries } from '../lib';
 import { Scope, GlobalScope } from '../scope';
 
 interface ReferencerOptions extends VisitorOptions {
-  jsxPragma: string;
+  jsxPragma: string | null;
   jsxFragmentName: string | null;
   lib: Lib[];
   emitDecoratorMetadata: boolean;
@@ -30,7 +30,7 @@ interface ReferencerOptions extends VisitorOptions {
 
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
-  #jsxPragma: string;
+  #jsxPragma: string | null;
   #jsxFragmentName: string | null;
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
@@ -120,7 +120,7 @@ class Referencer extends Visitor {
   }
 
   private referenceJsxPragma(): void {
-    if (this.#hasReferencedJsxFactory) {
+    if (this.#jsxPragma === null || this.#hasReferencedJsxFactory) {
       return;
     }
     this.#hasReferencedJsxFactory = this.referenceInSomeUpperScope(
@@ -551,6 +551,10 @@ class Referencer extends Visitor {
     this.visitType(node.typeParameters);
   }
 
+  protected PrivateIdentifier(): void {
+    // private identifiers are members on classes and thus have no variables to to reference
+  }
+
   protected Program(node: TSESTree.Program): void {
     const globalScope = this.scopeManager.nestGlobalScope(node);
     this.populateGlobalsFromLib(globalScope);
@@ -773,6 +777,10 @@ class Referencer extends Visitor {
     this.visit(node.body);
 
     this.close(node);
+  }
+
+  protected ImportAttribute(): void {
+    // import assertions are module metadata and thus have no variables to reference
   }
 }
 

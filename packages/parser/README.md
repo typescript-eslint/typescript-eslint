@@ -1,6 +1,6 @@
 <h1 align="center">TypeScript ESLint Parser</h1>
 
-<p align="center">An ESLint parser which leverages <a href="https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree">TypeScript ESTree</a> to allow for ESLint to lint TypeScript source code.</p>
+<p align="center">An ESLint parser which leverages <a href="https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree">TypeScript ESTree</a> to allow for ESLint to lint TypeScript source code.</p>
 
 <p align="center">
     <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+**[You can find our Getting Started docs here](../../docs/linting/README.md)**
 
 These docs walk you through setting up ESLint, this parser, and our plugin. If you know what you're doing and just want to quick start, read on...
 
@@ -41,7 +41,7 @@ The core rules built into ESLint, such as `indent` have no knowledge of such con
 
 Instead, you also need to make use of one more plugins which will add or extend rules with TypeScript-specific features.
 
-By far the most common case will be installing the [`@typescript-eslint/eslint-plugin`](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin) plugin, but there are also other relevant options available such a [`@typescript-eslint/eslint-plugin-tslint`](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin-tslint).
+By far the most common case will be installing the [`@typescript-eslint/eslint-plugin`](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin) plugin, but there are also other relevant options available such a [`@typescript-eslint/eslint-plugin-tslint`](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin-tslint).
 
 ## Configuration
 
@@ -53,9 +53,9 @@ interface ParserOptions {
     jsx?: boolean;
     globalReturn?: boolean;
   };
-  ecmaVersion?: number;
+  ecmaVersion?: number | 'latest';
 
-  jsxPragma?: string;
+  jsxPragma?: string | null;
   jsxFragmentName?: string | null;
   lib?: string[];
 
@@ -66,6 +66,7 @@ interface ParserOptions {
   warnOnUnsupportedTypeScriptVersion?: boolean;
 
   program?: import('typescript').Program;
+  moduleResolver?: string;
 }
 ```
 
@@ -96,12 +97,13 @@ This options allows you to tell the parser if you want to allow global `return` 
 
 Default `2018`.
 
-Accepts any valid ECMAScript version number:
+Accepts any valid ECMAScript version number or `'latest'`:
 
-- A version: es3, es5, es6, es7, es8, es9, es10, es11, ..., or
-- A year: es2015, es2016, es2017, es2018, es2019, es2020, ...
+- A version: es3, es5, es6, es7, es8, es9, es10, es11, es12, es13, ..., or
+- A year: es2015, es2016, es2017, es2018, es2019, es2020, es2021, es2022, ..., or
+- `'latest'`
 
-The value **must** be a number - so do not include the `es` prefix.
+When it's a version or a year, the value **must** be a number - so do not include the `es` prefix.
 
 Specifies the version of ECMAScript syntax you want to use. This is used by the parser to determine how to perform scope analysis, and it affects the default
 
@@ -110,7 +112,7 @@ Specifies the version of ECMAScript syntax you want to use. This is used by the 
 Default `'React'`
 
 The identifier that's used for JSX Elements creation (after transpilation).
-If you're using a library other than React (like `preact`), then you should change this value.
+If you're using a library other than React (like `preact`), then you should change this value. If you are using the [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html) you can set this to `null`.
 
 This should not be a member expression - just the root identifier (i.e. use `"React"` instead of `"React.createElement"`).
 
@@ -220,6 +222,29 @@ Default `undefined`.
 This option allows you to programmatically provide an array of one or more instances of a TypeScript Program object that will provide type information to rules.
 This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
 All linted files must be part of the provided program(s).
+
+### `parserOptions.moduleResolver`
+
+Default `undefined`.
+
+This option allows you to provide a custom module resolution. The value should point to a JS file that default exports (`export default`, or `module.exports =`, or `export =`) a file with the following interface:
+
+```ts
+interface ModuleResolver {
+  version: 1;
+  resolveModuleNames(
+    moduleNames: string[],
+    containingFile: string,
+    reusedNames: string[] | undefined,
+    redirectedReference: ts.ResolvedProjectReference | undefined,
+    options: ts.CompilerOptions,
+  ): (ts.ResolvedModule | undefined)[];
+}
+```
+
+[Refer to the TypeScript Wiki for an example on how to write the `resolveModuleNames` function](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#customizing-module-resolution).
+
+Note that if you pass custom programs via `options.programs` this option will not have any effect over them (you can simply add the custom resolution on them directly).
 
 ## Utilities
 

@@ -1,7 +1,8 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
-import type { BinaryExpressionBase } from '../../base/BinaryExpressionBase';
+import type { BaseNode } from '../../base/BaseNode';
+import type { Expression } from '../../unions/Expression';
 
-export interface AssignmentExpression extends BinaryExpressionBase {
+export interface AssignmentExpression extends BaseNode {
   type: AST_NODE_TYPES.AssignmentExpression;
   operator:
     | '-='
@@ -20,4 +21,6 @@ export interface AssignmentExpression extends BinaryExpressionBase {
     | '>>>='
     | '|='
     | '||=';
+  left: Expression;
+  right: Expression;
 }

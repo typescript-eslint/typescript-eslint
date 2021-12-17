@@ -44,7 +44,11 @@ Because the optional chain operator _only_ chains when the property value is `nu
 
 This rule aims enforce the usage of the safer operator.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 foo && foo.a && foo.a.b && foo.a.b.c;
@@ -60,7 +64,7 @@ foo &&
   foo.a.b.c.d.e;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 foo?.a?.b?.c;
@@ -80,3 +84,9 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Optional Chaining Proposal](https://github.com/tc39/proposal-optional-chaining/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

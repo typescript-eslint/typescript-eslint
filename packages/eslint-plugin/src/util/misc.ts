@@ -7,6 +7,7 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
+import { requiresQuoting } from './requiresQuoting';
 
 /**
  * Check if the context file name is *.d.ts or *.d.tsx
@@ -64,29 +65,59 @@ function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
   return propName ? propName.name : '(index signature)';
 }
 
+enum MemberNameType {
+  Private = 1,
+  Quoted = 2,
+  Normal = 3,
+  Expression = 4,
+}
+
 /**
  * Gets a string name representation of the name of the given MethodDefinition
- * or ClassProperty node, with handling for computed property names.
+ * or PropertyDefinition node, with handling for computed property names.
  */
 function getNameFromMember(
   member:
     | TSESTree.MethodDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSAbstractMethodDefinition
-    | TSESTree.ClassProperty
-    | TSESTree.TSAbstractClassProperty
+    | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.Property
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
-): string {
+): { type: MemberNameType; name: string } {
   if (member.key.type === AST_NODE_TYPES.Identifier) {
-    return member.key.name;
+    return {
+      type: MemberNameType.Normal,
+      name: member.key.name,
+    };
+  }
+  if (member.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return {
+      type: MemberNameType.Private,
+      name: `#${member.key.name}`,
+    };
   }
   if (member.key.type === AST_NODE_TYPES.Literal) {
-    return `${member.key.value}`;
+    const name = `${member.key.value}`;
+    if (requiresQuoting(name)) {
+      return {
+        type: MemberNameType.Quoted,
+        name: `"${name}"`,
+      };
+    } else {
+      return {
+        type: MemberNameType.Normal,
+        name,
+      };
+    }
   }
 
-  return sourceCode.text.slice(...member.key.range);
+  return {
+    type: MemberNameType.Expression,
+    name: sourceCode.text.slice(...member.key.range),
+  };
 }
 
 type ExcludeKeys<
@@ -102,15 +133,35 @@ function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
   return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
 }
 
+/**
+ * Given an array of words, returns an English-friendly concatenation, separated with commas, with
+ * the `and` clause inserted before the last item.
+ *
+ * Example: ['foo', 'bar', 'baz' ] returns the string "foo, bar, and baz".
+ */
+function formatWordList(words: string[]): string {
+  if (!words?.length) {
+    return '';
+  }
+
+  if (words.length === 1) {
+    return words[0];
+  }
+
+  return [words.slice(0, -1).join(', '), words.slice(-1)[0]].join(' and ');
+}
+
 export {
   arraysAreEqual,
   Equal,
   ExcludeKeys,
   findFirstResult,
+  formatWordList,
   getEnumNames,
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  MemberNameType,
   RequireKeys,
   upperCaseFirst,
 };

@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/keyword-spacing`](https://eslint.org/docs/rules/keyword-spacing) rule.
 This version adds support for generic type parameters on function calls.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -19,4 +19,14 @@ This version adds support for generic type parameters on function calls.
 
 See [`eslint/keyword-spacing` options](https://eslint.org/docs/rules/keyword-spacing#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/keyword-spacing.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/keyword-spacing.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

@@ -20,17 +20,26 @@ type Foo = Record<string, unknown>;
 
 For example:
 
-```CJSON
+```json
 {
-    "@typescript-eslint/consistent-indexed-object-style": ["error", "index-signature"]
+  "@typescript-eslint/consistent-indexed-object-style": [
+    "error",
+    "index-signature"
+  ]
 }
 ```
 
-## Rule details
+## Rule Details
 
 This rule enforces a consistent way to define records.
 
-Examples of **incorrect** code with `record` option.
+### `record`
+
+Examples of code with `record` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -42,19 +51,25 @@ type Foo = {
 };
 ```
 
-Examples of **correct** code with `record` option.
+#### ✅ Correct
 
 ```ts
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **incorrect** code with `index-signature` option.
+### `index-signature`
+
+Examples of code with `index-signature` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **correct** code with `index-signature` option.
+#### ✅ Correct
 
 ```ts
 interface Foo {
@@ -65,3 +80,9 @@ type Foo = {
   [key: string]: unknown;
 };
 ```
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

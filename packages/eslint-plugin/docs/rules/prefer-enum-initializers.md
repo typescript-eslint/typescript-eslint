@@ -25,7 +25,11 @@ enum Status {
 }
 ```
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 enum Status {
@@ -45,7 +49,7 @@ enum Color {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 enum Status {
@@ -68,3 +72,9 @@ enum Color {
 ## When Not To Use It
 
 If you don't care about `enum`s having implicit values you can safely disable this rule.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

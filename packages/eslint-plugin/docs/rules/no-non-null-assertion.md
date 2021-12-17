@@ -4,7 +4,11 @@
 
 Using non-null assertions cancels the benefits of the strict null-checking mode.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -15,7 +19,7 @@ const foo: Foo = getFoo();
 const includesBaz: boolean = foo.bar!.includes('baz');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 interface Foo {
@@ -33,3 +37,9 @@ If you don't care about strict null-checking, then you will not need this rule.
 ## Further Reading
 
 - [`no-non-null-assertion`](https://palantir.github.io/tslint/rules/no-non-null-assertion/) in [TSLint](https://palantir.github.io/tslint/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

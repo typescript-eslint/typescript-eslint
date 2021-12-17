@@ -4,7 +4,11 @@ Prefer the newer ES6-style imports over `require()`.
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 var lib = require('lib');
@@ -14,7 +18,7 @@ var lib5 = require('lib5'),
 import lib8 = require('lib8');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 import { l } from 'lib';
@@ -29,6 +33,12 @@ import lib10 from 'lib10';
 
 If you don't care about TypeScript module syntax, then you will not need this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-require-imports](https://palantir.github.io/tslint/rules/no-require-imports/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

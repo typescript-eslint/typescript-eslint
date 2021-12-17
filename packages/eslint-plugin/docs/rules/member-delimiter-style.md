@@ -78,17 +78,17 @@ type Config = BaseConfig & {
 
 Default config:
 
-```JSON
+```json
 {
-    "multiline": {
-        "delimiter": "semi",
-        "requireLast": true
-    },
-    "singleline": {
-        "delimiter": "semi",
-        "requireLast": false
-    },
-    "multilineDetection": "brackets"
+  "multiline": {
+    "delimiter": "semi",
+    "requireLast": true
+  },
+  "singleline": {
+    "delimiter": "semi",
+    "requireLast": false
+  },
+  "multilineDetection": "brackets"
 }
 ```
 
@@ -108,7 +108,10 @@ Accepts three values (or two for `singleline`):
 - `comma` - each member should be delimited with a comma (`,`).
 - `semi` - each member should be delimited with a semicolon (`;`).
 - `none` - each member should be delimited with nothing.
-  - NOTE - this is not an option for `singleline` because having no delimiter between members on a single line is a syntax error in TS.
+
+:::note
+`none` is not an option for `singleline` because having no delimiter between members on a single line is a syntax error in TS.
+:::
 
 ### `requireLast`
 
@@ -123,30 +126,34 @@ Allows you to specify options specifically for either `interface`s or `type` def
 
 For example, to require commas for `type`s, and semicolons for multiline `interface`s:
 
-```JSON
+```json
 {
-    "multiline": {
-        "delimiter": "comma",
+  "multiline": {
+    "delimiter": "comma",
+    "requireLast": true
+  },
+  "singleline": {
+    "delimiter": "comma",
+    "requireLast": true
+  },
+  "overrides": {
+    "interface": {
+      "multiline": {
+        "delimiter": "semi",
         "requireLast": true
-    },
-    "singleline": {
-        "delimiter": "comma",
-        "requireLast": true
-    },
-    "overrides": {
-        "interface": {
-            "multiline": {
-                "delimiter": "semi",
-                "requireLast": true
-            }
-        }
+      }
     }
+  }
 }
 ```
 
 ## Examples
 
-Examples of **incorrect** code for this rule with the default config:
+Examples of code for this rule with the default config:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -175,7 +182,7 @@ type FooBar = { name: string, greet(): string }
 type FooBar = { name: string; greet(): string; }
 ```
 
-Examples of **correct** code for this rule with the default config:
+### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -199,3 +206,9 @@ type FooBar = { name: string; greet(): string }
 ## When Not To Use It
 
 If you don't care about enforcing a consistent member delimiter in interfaces and type literals, then you will not need this rule.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

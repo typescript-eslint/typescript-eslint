@@ -1,11 +1,12 @@
 import {
   AST_NODE_TYPES,
   TSESLint,
+  ASTUtils,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
 import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
-import * as util from '.';
+import { nullThrows } from './nullThrows';
 
 class UnusedVarsVisitor<
   TMessageIds extends string,
@@ -24,7 +25,7 @@ class UnusedVarsVisitor<
       visitChildrenEvenIfSelectorExists: true,
     });
 
-    this.#scopeManager = util.nullThrows(
+    this.#scopeManager = nullThrows(
       context.getSourceCode().scopeManager,
       'Missing required scope manager',
     );
@@ -318,7 +319,7 @@ class UnusedVarsVisitor<
   protected TSMethodSignature = this.visitFunctionTypeSignature;
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
-    // global augmentation can be in any file, and they do not need exports
+    // -- global augmentation can be in any file, and they do not need exports
     if (node.global === true) {
       this.markVariableAsUsed('global', node.parent!);
     }
@@ -545,11 +546,11 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     function isInLoop(node: TSESTree.Node): boolean {
       let currentNode: TSESTree.Node | undefined = node;
       while (currentNode) {
-        if (util.isFunction(currentNode)) {
+        if (ASTUtils.isFunction(currentNode)) {
           break;
         }
 
-        if (util.isLoop(currentNode)) {
+        if (ASTUtils.isLoop(currentNode)) {
           return true;
         }
 
@@ -620,7 +621,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
       function getUpperFunction(node: TSESTree.Node): TSESTree.Node | null {
         let currentNode: TSESTree.Node | undefined = node;
         while (currentNode) {
-          if (util.isFunction(currentNode)) {
+          if (ASTUtils.isFunction(currentNode)) {
             return currentNode;
           }
           currentNode = currentNode.parent;

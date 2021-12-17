@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Forbids the use of classes as namespaces',
-      category: 'Best Practices',
       recommended: false,
     },
     schema: [

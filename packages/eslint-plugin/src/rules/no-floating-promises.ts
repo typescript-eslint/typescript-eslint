@@ -22,16 +22,17 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description: 'Requires Promise-like values to be handled appropriately',
-      category: 'Best Practices',
       recommended: 'error',
       suggestion: true,
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
-      floating: 'Promises must be handled appropriately.',
+      floating:
+        'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.',
       floatingVoid:
-        'Promises must be handled appropriately' +
-        ' or explicitly marked as ignored with the `void` operator.',
+        'Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler' +
+        ' or be explicitly marked as ignored with the `void` operator.',
       floatingFixVoid: 'Add void operator to ignore.',
     },
     schema: [
@@ -64,7 +65,13 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
-        if (isUnhandledPromise(checker, node.expression)) {
+        let expression = node.expression;
+
+        if (expression.type === AST_NODE_TYPES.ChainExpression) {
+          expression = expression.expression;
+        }
+
+        if (isUnhandledPromise(checker, expression)) {
           if (options.ignoreVoid) {
             context.report({
               node,

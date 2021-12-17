@@ -7,7 +7,11 @@ This rule enforces that private members are marked as `readonly` if they're neve
 Member variables with the privacy `private` are never permitted to be modified outside of their declaring class.
 If that class never modifies their value, they may safely be marked as `readonly`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 class Container {
@@ -25,7 +29,7 @@ class Container {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 class Container {
@@ -58,15 +62,9 @@ You may pass `"onlyInlineLambdas": true` as a rule option within an object to re
 }
 ```
 
-Example of **correct** code for the `{ "onlyInlineLambdas": true }` options:
+Example of code for the `{ "onlyInlineLambdas": true }` options:
 
-```ts
-class Container {
-  private neverModifiedPrivate = 'unchanged';
-}
-```
-
-Example of **incorrect** code for the `{ "onlyInlineLambdas": true }` options:
+#### ❌ Incorrect
 
 ```ts
 class Container {
@@ -76,6 +74,20 @@ class Container {
 }
 ```
 
-## Related to
+#### ✅ Correct
+
+```ts
+class Container {
+  private neverModifiedPrivate = 'unchanged';
+}
+```
+
+## Related To
 
 - TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

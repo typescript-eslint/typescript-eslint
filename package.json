@@ -1,9 +1,14 @@
 {
   "name": "@typescript-eslint/typescript-eslint",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/html-minifier-terser"
+    ]
+  },
   "contributors": [
     "James Henry <typescript-eslint@jameshenry.blog>",
     "Nicholas C. Zakas",
@@ -17,25 +22,28 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "build": "npx nx prebuild @typescript-eslint/types && nx run-many --target=build --all --parallel",
+    "build": "npx nx prebuild @typescript-eslint/types && nx run-many --target=build --all --parallel --exclude website",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-configs": "nx run-many --target=check-configs --all --parallel",
     "check-docs": "nx run-many --target=check-docs --all --parallel",
-    "check-format": "prettier --list-different \"./**/*.{ts,js,json,md}\"",
-    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,ts,js}\"",
+    "check-format": "prettier --list-different \"./**/*.{md,mdx,ts,js,tsx,jsx}\"",
+    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,js,tsx,jsx}\"",
     "clean": "lerna clean && lerna run clean",
     "cz": "git-cz",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\"",
+    "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,css}\"",
     "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts && yarn all-contributors generate",
-    "lint-fix": "eslint . --ext .js,.ts --fix",
+    "generate-sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
+    "generate-website-dts": "yarn ts-node --transpile-only ./tools/generate-website-dts.ts",
+    "lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "cross-env NODE_OPTIONS=\"--max-old-space-size=16384\" eslint . --ext .js,.jsx,.ts,.tsx",
     "postinstall": "yarn husky install && yarn build",
     "pre-commit": "yarn lint-staged",
     "pre-push": "yarn check-format",
+    "start": "nx run website:start",
     "test": "nx run-many --target=test --all --parallel",
-    "test-integration": "./tests/integration/run-all-tests.sh",
+    "test-integration": "yarn jest -c ./tests/integration/jest.config.js",
     "test-kill-integration-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
     "typecheck": "nx run-many --target=typecheck --all --parallel"
   },
@@ -44,89 +52,67 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional",
-      "@commitlint/config-lerna-scopes"
-    ],
-    "rules": {
-      "body-max-length": [
-        0
-      ],
-      "body-max-line-length": [
-        0
-      ],
-      "footer-max-length": [
-        0
-      ],
-      "footer-max-line-length": [
-        0
-      ],
-      "header-max-length": [
-        0
-      ]
-    }
-  },
   "engines": {
-    "node": "^10.12.0 || >=12.0.0"
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.12.13",
-    "@babel/parser": "^7.14.6",
-    "@babel/types": "^7.14.4",
-    "@commitlint/cli": "^12.1.4",
-    "@commitlint/config-conventional": "^12.1.4",
-    "@commitlint/config-lerna-scopes": "^12.1.4",
-    "@nrwl/cli": "^12.3.5",
-    "@nrwl/nx-cloud": "^12.1.3",
-    "@nrwl/tao": "^12.3.5",
-    "@nrwl/workspace": "^12.3.5",
-    "@types/babel__code-frame": "^7.0.2",
-    "@types/debug": "^4.1.5",
+    "@babel/code-frame": "^7.16.0",
+    "@babel/parser": "^7.16.4",
+    "@babel/types": "^7.16.0",
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@nrwl/cli": "13.0.2",
+    "@nrwl/nx-cloud": "12.5.1",
+    "@nrwl/tao": "13.0.2",
+    "@nrwl/workspace": "13.0.2",
+    "@types/babel__code-frame": "^7.0.3",
+    "@types/debug": "^4.1.7",
     "@types/eslint-visitor-keys": "^1.0.0",
-    "@types/glob": "^7.1.3",
-    "@types/is-glob": "^4.0.1",
-    "@types/jest": "^26.0.23",
+    "@types/glob": "^7.2.0",
+    "@types/is-glob": "^4.0.2",
+    "@types/jest": "^27.0.2",
     "@types/jest-specific-snapshot": "^0.5.5",
-    "@types/lodash": "^4.14.170",
-    "@types/marked": "^2.0.3",
-    "@types/node": "^15.6.1",
-    "@types/node-fetch": "^2.5.10",
-    "@types/prettier": "^2.2.3",
-    "@types/rimraf": "^3.0.0",
-    "@types/semver": "^7.3.6",
-    "@types/tmp": "^0.2.0",
+    "@types/lodash": "^4.14.176",
+    "@types/marked": "^3.0.2",
+    "@types/ncp": "^2.0.5",
+    "@types/node": "^16.11.4",
+    "@types/prettier": "^2.4.2",
+    "@types/rimraf": "^3.0.2",
+    "@types/semver": "^7.3.9",
+    "@types/tmp": "^0.2.2",
     "all-contributors-cli": "^6.20.0",
-    "cspell": "^5.5.2",
+    "cross-env": "^7.0.3",
+    "cspell": "^5.12.3",
     "cz-conventional-changelog": "^3.3.0",
     "downlevel-dts": "^0.7.0",
-    "eslint": "^7.27.0",
+    "enhanced-resolve": "^5.8.3",
+    "eslint": "^8.1.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-eslint-plugin": "^3.0.3",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-eslint-plugin": "^4.0.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jest": "^25.0.5",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "glob": "^7.1.7",
-    "husky": "^5.0.9",
-    "jest": "^27.0.3",
+    "husky": "^7.0.4",
+    "jest": "^27.3.1",
     "jest-specific-snapshot": "^5.0.0",
-    "lerna": "^3.22.1",
-    "lint-staged": "^11.0.0",
+    "lerna": "^4.0.0",
+    "lint-staged": "^12.0.2",
     "make-dir": "^3.1.0",
-    "markdownlint-cli": "^0.27.1",
-    "node-fetch": "^2.6.1",
-    "prettier": "^2.3.0",
-    "pretty-format": "^27.0.2",
+    "markdownlint-cli": "^0.29.0",
+    "ncp": "^2.0.0",
+    "node-fetch": "^3.0.0",
+    "prettier": "^2.5.0",
+    "pretty-format": "^27.3.1",
     "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.1",
-    "ts-node": "^10.0.0",
+    "tmp": "^0.2.1",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.4.0",
     "tslint": "^6.1.3",
-    "typescript": ">=3.3.1 <4.4.0"
+    "typescript": ">=3.3.1 <4.6.0"
   },
   "resolutions": {
-    "@types/node": "^15.6.1",
-    "jest-diff": "^27.0.0",
-    "pretty-format": "^27.0.0",
-    "typescript": "4.3.2"
+    "@types/node": "^16.11.4",
+    "typescript": "4.5.2"
   }
 }

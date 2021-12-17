@@ -1,12 +1,20 @@
 node_modules
 dist
 jest.config.js
+commitlint.config.js
 fixtures
 shared-fixtures
 coverage
 __snapshots__
+.docusaurus
+build
 
 packages/eslint-plugin-tslint/tests
+
+packages/website/**/*.js
+packages/website/**/*.d.ts
+packages/website-eslint/**/*.js
+packages/website-eslint/**/*.d.ts
 
 # Files copied as part of the build
 packages/types/src/ast-spec.ts

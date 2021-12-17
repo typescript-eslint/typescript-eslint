@@ -75,10 +75,12 @@ The default options provide a set of "best practices", intended to provide safet
 - Avoid the `Object` and `{}` types, as they mean "any non-nullish value".
   - This is a point of confusion for many developers, who think it means "any object type".
   - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
-- Avoid the `object` type, as it is currently hard to use due to not being able to assert that keys exist.
-  - See [microsoft/TypeScript#21732](https://github.com/microsoft/TypeScript/issues/21732).
 
-**_Important note:_** the default options suggest using `Record<string, unknown>`; this was a stylistic decision, as the built-in `Record` type is considered to look cleaner.
+:::important
+
+The default options suggest using `Record<string, unknown>`; this was a stylistic decision, as the built-in `Record` type is considered to look cleaner.
+
+:::
 
 <details>
 <summary>Default Options</summary>
@@ -126,12 +128,6 @@ const defaultTypes = {
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
     ].join('\n'),
   },
-  object: {
-    message: [
-      'The `object` type is currently hard to use ([see this issue](https://github.com/microsoft/TypeScript/issues/21732)).',
-      'Consider using `Record<string, unknown>` instead, as it allows you to more easily inspect and use the keys.',
-    ].join('\n'),
-  },
 };
 ```
 
@@ -139,7 +135,11 @@ const defaultTypes = {
 
 ### Examples
 
-Examples of **incorrect** code with the default options:
+Examples of code with the default options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 // use lower-case primitives for consistency
@@ -152,8 +152,6 @@ const symb: Symbol = Symbol('foo');
 const func: Function = () => 1;
 
 // use safer object types
-const lowerObj: object = {};
-
 const capitalObj1: Object = 1;
 const capitalObj2: Object = { a: 'string' };
 
@@ -161,7 +159,7 @@ const curly1: {} = 1;
 const curly2: {} = { a: 'string' };
 ```
 
-Examples of **correct** code with the default options:
+#### ✅ Correct
 
 ```ts
 // use lower-case primitives for consistency
@@ -174,7 +172,7 @@ const symb: symbol = Symbol('foo');
 const func: () => number = () => 1;
 
 // use safer object types
-const lowerObj: Record<string, unknown> = {};
+const lowerObj: object = {};
 
 const capitalObj1: number = 1;
 const capitalObj2: { a: string } = { a: 'string' };
@@ -183,6 +181,12 @@ const curly1: number = 1;
 const curly2: Record<'a', string> = { a: 'string' };
 ```
 
-## Compatibility
+## Related To
 
-- TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types/)
+- TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

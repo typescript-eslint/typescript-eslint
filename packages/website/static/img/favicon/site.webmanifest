@@ -1,0 +1,14 @@
+{
+  "name": "TypeScript ESLint",
+  "short_name": "TypeScript ESLint",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#443fd4",
+  "background_color": "#443fd4",
+  "display": "standalone"
+}

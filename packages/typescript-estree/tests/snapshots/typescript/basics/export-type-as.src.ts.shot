@@ -4,6 +4,7 @@ exports[`typescript basics export-type-as.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": null,
       "exportKind": "type",
       "loc": Object {
@@ -23,6 +24,7 @@ Object {
       "source": null,
       "specifiers": Array [
         Object {
+          "exportKind": "value",
           "exported": Object {
             "loc": Object {
               "end": Object {

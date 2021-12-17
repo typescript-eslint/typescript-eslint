@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-shadow`](https://eslint.org/docs/rules/no-shadow) rule.
 It adds support for TypeScript's `this` parameters and global augmentation, and adds options for TypeScript features.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -84,4 +84,14 @@ const test = 1;
 type Func = (test: string) => typeof test;
 ```
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-shadow.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-shadow.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

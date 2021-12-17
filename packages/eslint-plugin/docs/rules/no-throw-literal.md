@@ -9,7 +9,11 @@ This rule restricts what can be thrown as an exception. When it was first create
 
 This rule is aimed at maintaining consistency when throwing exception by disallowing to throw literals and other expressions which cannot possibly be an `Error` object.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /*eslint @typescript-eslint/no-throw-literal: "error"*/
@@ -42,7 +46,7 @@ const foo = {
 throw foo.bar;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /*eslint @typescript-eslint/no-throw-literal: "error"*/
@@ -79,7 +83,7 @@ class CustomError extends Error {
 throw new CustomError();
 ```
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -91,4 +95,14 @@ throw new CustomError();
 
 ---
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-throw-literal.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-throw-literal.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

@@ -4,6 +4,7 @@ exports[`tsx react-typed-props.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {
@@ -231,7 +232,7 @@ Object {
                     ],
                     "raw": "
       ",
-                    "type": "Literal",
+                    "type": "JSXText",
                     "value": "
       ",
                   },
@@ -324,7 +325,7 @@ Object {
                     ],
                     "raw": "
     ",
-                    "type": "Literal",
+                    "type": "JSXText",
                     "value": "
     ",
                   },

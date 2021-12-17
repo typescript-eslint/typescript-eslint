@@ -16,8 +16,8 @@ type AdditionalKeys = {
 };
 
 const additionalKeys: AdditionalKeys = {
-  // ES2020
-  ImportExpression: ['source'],
+  // Stage 3 Import Assertions
+  ImportAttribute: ['key', 'value'],
 
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
@@ -42,14 +42,20 @@ const additionalKeys: AdditionalKeys = {
     'implements',
     'body',
   ],
+  ExportAllDeclaration: ['exported', 'source', 'assertions'],
+  ExportNamedDeclaration: ['declaration', 'specifiers', 'source', 'assertions'],
   FunctionDeclaration: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   FunctionExpression: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   Identifier: ['decorators', 'typeAnnotation'],
+  ImportDeclaration: ['specifiers', 'source', 'assertions'],
+  ImportExpression: ['source', 'attributes'],
   MethodDefinition: ['decorators', 'key', 'value'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
+  PropertyDefinition: ['decorators', 'key', 'typeAnnotation', 'value'],
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
   TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
+  StaticBlock: ['body'],
 
   // JSX
   JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
@@ -58,13 +64,12 @@ const additionalKeys: AdditionalKeys = {
   JSXSpreadChild: ['expression'],
 
   // Additional Nodes.
-  ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
 
   // TS-prefixed nodes
-  TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
+  TSAbstractPropertyDefinition: ['decorators', 'key', 'typeAnnotation'],
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
   TSAsExpression: ['expression', 'typeAnnotation'],
@@ -114,7 +119,6 @@ const additionalKeys: AdditionalKeys = {
   TSObjectKeyword: [],
   TSOptionalType: ['typeAnnotation'],
   TSParameterProperty: ['decorators', 'parameter'],
-  TSParenthesizedType: ['typeAnnotation'],
   TSPrivateKeyword: [],
   TSPropertySignature: ['typeAnnotation', 'key', 'initializer'],
   TSProtectedKeyword: [],

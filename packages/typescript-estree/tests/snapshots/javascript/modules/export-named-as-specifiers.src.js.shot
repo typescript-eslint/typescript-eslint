@@ -4,6 +4,7 @@ exports[`javascript modules export-named-as-specifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": null,
       "exportKind": "value",
       "loc": Object {
@@ -23,6 +24,7 @@ Object {
       "source": null,
       "specifiers": Array [
         Object {
+          "exportKind": "value",
           "exported": Object {
             "loc": Object {
               "end": Object {
@@ -76,6 +78,7 @@ Object {
           "type": "ExportSpecifier",
         },
         Object {
+          "exportKind": "value",
           "exported": Object {
             "loc": Object {
               "end": Object {

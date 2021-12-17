@@ -8,7 +8,11 @@ Assigning an `any` typed value to a variable can be hard to pick up on, particul
 This rule disallows assigning `any` to a variable, and assigning `any[]` to an array destructuring.
 This rule also compares the assigned type to the variable's type to ensure you don't assign an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you assign `Set<any>` to a variable declared as `Set<string>`.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const x = 1 as any,
@@ -33,7 +37,7 @@ const x: Set<string[]> = new Set<any[]>();
 const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const x = 1,
@@ -56,6 +60,8 @@ const x: Set<string[]> = new Set<string[]>();
 const x: Set<Set<Set<string>>> = new Set<Set<Set<string>>>();
 ```
 
+<!--/tabs-->
+
 There are cases where the rule allows assignment of `any` to `unknown`.
 
 Example of `any` to `unknown` assignment that are allowed.
@@ -66,7 +72,13 @@ const x: unknown[] = y as any[];
 const x: Set<unknown> = y as Set<any>;
 ```
 
-## Related to
+## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

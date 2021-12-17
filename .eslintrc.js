@@ -22,8 +22,8 @@ module.exports = {
     sourceType: 'module',
     project: [
       './tsconfig.eslint.json',
-      './tests/integration/utils/jsconfig.json',
       './packages/*/tsconfig.json',
+      './tests/integration/tsconfig.json',
     ],
     allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
@@ -59,15 +59,21 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowNumber: true,
+        allowBoolean: true,
+        allowAny: true,
+        allowNullish: true,
+        allowRegExp: true,
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
 
-    // TODO - enable these new recommended rules
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
-    '@typescript-eslint/restrict-template-expressions': 'off',
     // TODO - enable this
     '@typescript-eslint/naming-convention': 'off',
 
@@ -80,7 +86,7 @@ module.exports = {
     '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
-    // eslint base
+    // eslint-base
     //
 
     curly: ['error', 'all'],
@@ -164,15 +170,23 @@ module.exports = {
     // all test files
     {
       files: [
-        'packages/*/tests/**/*.test.ts',
         'packages/*/tests/**/*.spec.ts',
+        'packages/*/tests/**/*.test.ts',
+        'packages/*/tests/**/spec.ts',
+        'packages/*/tests/**/test.ts',
         'packages/parser/tests/**/*.ts',
+        'tests/integration/**/*.test.ts',
+        'tests/integration/integration-test-base.ts',
+        'tests/integration/pack-packages.ts',
       ],
       env: {
         'jest/globals': true,
       },
       rules: {
         '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
         'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
@@ -183,8 +197,7 @@ module.exports = {
         'jest/no-test-prefixes': 'error',
         'jest/no-done-callback': 'error',
         'jest/no-test-return-statement': 'error',
-        'jest/prefer-to-be-null': 'warn',
-        'jest/prefer-to-be-undefined': 'warn',
+        'jest/prefer-to-be': 'warn',
         'jest/prefer-to-contain': 'warn',
         'jest/prefer-to-have-length': 'warn',
         'jest/prefer-spy-on': 'error',
@@ -192,12 +205,14 @@ module.exports = {
         'jest/no-deprecated-functions': 'error',
       },
     },
-    // test utility scripts
+    // test utility scripts and website js files
     {
       files: ['tests/**/*.js'],
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
         '@typescript-eslint/restrict-plus-operands': 'off',
       },
     },
@@ -287,6 +302,13 @@ module.exports = {
       files: ['rollup.config.ts'],
       rules: {
         'import/no-default-export': 'off',
+      },
+    },
+    {
+      files: ['packages/website/src/**/*.{ts,tsx}'],
+      rules: {
+        'import/no-default-export': 'off',
+        'no-console': 'off',
       },
     },
   ],

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
-  "version": "4.28.3",
+  "version": "5.7.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "description": "TSLint wrapper plugin for ESLint",
@@ -11,7 +11,7 @@
     "tslint"
   ],
   "engines": {
-    "node": "^10.12.0 || >=12.0.0"
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "files": [
     "dist",
@@ -38,16 +38,16 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "4.28.3",
+    "@typescript-eslint/experimental-utils": "5.7.0",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0",
+    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0",
     "tslint": "^5.0.0 || ^6.0.0",
     "typescript": "*"
   },
   "devDependencies": {
     "@types/lodash": "*",
-    "@typescript-eslint/parser": "4.28.3"
+    "@typescript-eslint/parser": "5.7.0"
   }
 }

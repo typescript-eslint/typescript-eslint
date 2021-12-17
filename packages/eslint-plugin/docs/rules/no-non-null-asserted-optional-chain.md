@@ -5,7 +5,11 @@
 Optional chain expressions are designed to return `undefined` if the optional property is nullish.
 Using non-null assertions after an optional chain expression is wrong, and introduces a serious type safety hole into your code.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/no-non-null-asserted-optional-chain: "error" */
@@ -21,7 +25,7 @@ foo?.bar!();
 foo?.bar!().baz;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/no-non-null-asserted-optional-chain: "error" */
@@ -46,3 +50,9 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Optional Chaining Proposal](https://github.com/tc39/proposal-optional-chaining/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

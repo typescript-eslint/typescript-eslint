@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/quotes`](https://eslint.org/docs/rules/quotes) rule.
 It adds support for TypeScript features which allow quoted names, but not backtick quoted names.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -19,4 +19,14 @@ It adds support for TypeScript features which allow quoted names, but not backti
 
 See [`eslint/quotes` options](https://eslint.org/docs/rules/quotes#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/quotes.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/quotes.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

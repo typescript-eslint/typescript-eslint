@@ -13,7 +13,9 @@ This rule has some overlap with [`restrict-plus-operands`](./restrict-plus-opera
 
 This rule prevents accidentally defaulting to the base Object `.toString()` method.
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 // Passing an object or class instance to string concatenation:
@@ -28,7 +30,7 @@ value + '';
 ({}.toString());
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 // These types all have useful .toString()s
@@ -85,3 +87,9 @@ let text = `${value}`;
 If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
 
 - [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [x] 💭 Requires type information

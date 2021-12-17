@@ -12,7 +12,6 @@ export default util.createRule({
     docs: {
       description:
         'Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
@@ -34,7 +33,10 @@ export default util.createRule({
       );
     }
 
-    function isLiteral(node: TSESTree.Expression, value: number): boolean {
+    function isLiteral(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+      value: number,
+    ): boolean {
       return node.type === AST_NODE_TYPES.Literal && node.value === value;
     }
 
@@ -43,7 +45,7 @@ export default util.createRule({
     }
 
     function isMatchingIdentifier(
-      node: TSESTree.Expression,
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
       name: string,
     ): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;
@@ -172,6 +174,7 @@ export default util.createRule({
           !contains(body, id) ||
           (node !== undefined &&
             node.type === AST_NODE_TYPES.MemberExpression &&
+            node.object.type !== AST_NODE_TYPES.ThisExpression &&
             node.property === id &&
             sourceCode.getText(node.object) === arrayText &&
             !isAssignee(node))

@@ -13,7 +13,11 @@ function f<T = number>() {}
 
 It is redundant to provide an explicit type parameter equal to that default.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 function f<T = number>() {}
@@ -31,7 +35,7 @@ interface I<T = number> {}
 class Impl implements I<number> {}
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 function f<T = number>() {}
@@ -48,6 +52,12 @@ interface I<T = number> {}
 class Impl implements I<string> {}
 ```
 
-## Related to
+## Related To
 
 - TSLint: [use-default-type-parameter](https://palantir.github.io/tslint/rules/use-default-type-parameter)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

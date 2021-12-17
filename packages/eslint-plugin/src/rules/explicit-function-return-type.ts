@@ -26,7 +26,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit return types on functions and class methods',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {

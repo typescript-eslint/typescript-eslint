@@ -18,7 +18,11 @@ distinguish between strict and loose equality. Any example below that uses
 `===` would be treated the same way if `==` was used, and any example below
 that uses `!==` would be treated the same way if `!=` was used.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare const someCondition: boolean;
@@ -26,7 +30,7 @@ if (someCondition === true) {
 }
 ```
 
-Examples of **correct** code for this rule
+### ✅ Correct
 
 ```ts
 declare const someCondition: boolean;
@@ -70,7 +74,11 @@ const defaults = {
 
 ### `allowComparingNullableBooleansToTrue`
 
-Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
+Examples of code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -82,7 +90,7 @@ if (someNullCondition !== true) {
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
+#### ✅ Correct
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -96,7 +104,11 @@ if (!someNullCondition) {
 
 ### `allowComparingNullableBooleansToFalse`
 
-Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+Examples of code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -108,7 +120,7 @@ if (someNullCondition !== false) {
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+#### ✅ Correct
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -133,6 +145,12 @@ if (!(someNullCondition ?? true)) {
 | `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
-## Related to
+## Related To
 
 - TSLint: [no-boolean-literal-compare](https://palantir.github.io/tslint/rules/no-boolean-literal-compare)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [x] 💭 Requires type information

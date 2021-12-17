@@ -50,7 +50,13 @@ If you want to ban use of one or all of the triple slash reference directives, o
 
 If you want to use all flavors of triple slash reference directives.
 
-## Compatibility
+## Related To
 
 - TSLint: [no-reference](http://palantir.github.io/tslint/rules/no-reference/)
 - TSLint: [no-reference-import](https://palantir.github.io/tslint/rules/no-reference-import/)
+
+## Attributes
+
+- [x] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

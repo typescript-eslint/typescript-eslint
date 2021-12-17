@@ -32,15 +32,19 @@ For example:
 }
 ```
 
-## Rule Details
+### `interface`
 
-Examples of **incorrect** code with `interface` option.
+Examples of code with `interface` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 type T = { x: number };
 ```
 
-Examples of **correct** code with `interface` option.
+#### ✅ Correct
 
 ```ts
 type T = string;
@@ -51,7 +55,13 @@ interface T {
 }
 ```
 
-Examples of **incorrect** code with `type` option.
+### `type`
+
+Examples of code with `type` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface T {
@@ -59,7 +69,7 @@ interface T {
 }
 ```
 
-Examples of **correct** code with `type` option.
+#### ✅ Correct
 
 ```ts
 type T = { x: number };
@@ -69,6 +79,12 @@ type T = { x: number };
 
 If you specifically want to use an interface or type literal for stylistic reasons, you can disable this rule.
 
-## Compatibility
+## Related To
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

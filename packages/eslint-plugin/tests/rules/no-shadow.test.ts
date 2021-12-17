@@ -1,6 +1,6 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 import rule from '../../src/rules/no-shadow';
 import { RuleTester } from '../RuleTester';
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -51,6 +51,15 @@ class Foo {
 }
 interface Foo {
   prop2: string;
+}
+    `,
+    `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
 }
     `,
     // type value shadowing
@@ -172,6 +181,27 @@ export class Wrapper<Wrapped> {
   }
 }
     `,
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3862
+      code: `
+import type { foo } from './foo';
+type bar = number;
+
+// 'foo' is already declared in the upper scope
+// 'bar' is fine
+function doThing(foo: number, bar: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+    },
+    {
+      code: `
+import { type foo } from './foo';
+
+// 'foo' is already declared in the upper scope
+function doThing(foo: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+    },
   ],
   invalid: [
     {
@@ -1395,6 +1425,190 @@ function foo(cb) {
           type: AST_NODE_TYPES.Identifier,
           line: 3,
           column: 14,
+        },
+      ],
+    },
+    {
+      code: `
+import type { foo } from './foo';
+function doThing(foo: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: false }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+import { type foo } from './foo';
+function doThing(foo: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: false }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+import { foo } from './foo';
+function doThing(foo: number, bar: number) {}
+      `,
+      options: [{ ignoreTypeValueShadow: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {}
+
+declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'baz' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'baz' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 13,
         },
       ],
     },

@@ -17,17 +17,18 @@ export type MessageIds =
 export default util.createRule<Options, MessageIds>({
   name: 'no-implicit-any-catch',
   meta: {
+    deprecated: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow usage of the implicit `any` type in catch clauses',
-      category: 'Best Practices',
       recommended: false,
       suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
-      implicitAnyInCatch: 'Implicit any in catch clause',
-      explicitAnyInCatch: 'Explicit any in catch clause',
+      implicitAnyInCatch: 'Implicit any in catch clause.',
+      explicitAnyInCatch: 'Explicit any in catch clause.',
       suggestExplicitUnknown:
         'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
     },

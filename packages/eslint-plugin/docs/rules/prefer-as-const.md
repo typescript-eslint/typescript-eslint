@@ -4,7 +4,11 @@ This rule recommends usage of `const` assertion when type primitive value is equ
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 let bar: 2 = 2;
@@ -12,7 +16,7 @@ let foo = <'bar'>'bar';
 let foo = { bar: 'baz' as 'baz' };
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 let foo = 'bar';
@@ -23,6 +27,14 @@ let foo = <string>'bar';
 let foo = { bar: 'baz' };
 ```
 
+<!--/tabs-->
+
 ## When Not To Use It
 
 If you are using TypeScript < 3.4
+
+## Attributes
+
+- [x] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

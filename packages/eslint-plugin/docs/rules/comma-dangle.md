@@ -9,7 +9,7 @@ See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for m
 
 ## Rule Changes
 
-```cjson
+```jsonc
 {
   // note you must disable the base rule as it can report incorrect errors
   "comma-dangle": "off",
@@ -29,6 +29,16 @@ This rule has a string option and an object option.
   - `"generics"` is for trailing comma in generic. (e.g. `function foo<T,>() {}`)
   - `"tuples"` is for trailing comma in tuple. (e.g. `type Foo = [string,]`)
 
-- [See the other options allowed](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md#options)
+- [See the other options allowed](https://github.com/eslint/eslint/blob/main/docs/rules/comma-dangle.md#options)
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/comma-dangle.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/comma-dangle.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

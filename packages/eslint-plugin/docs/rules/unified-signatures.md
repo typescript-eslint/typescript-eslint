@@ -6,28 +6,38 @@ Warns for any two overloads that could be unified into one by using a union or a
 
 This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
 
-Examples of **incorrect** code for this rule:
+Examples of code for this rule:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
-function f(x: number): void;
-function f(x: string): void;
+function x(x: number): void;
+function x(x: string): void;
 ```
 
 ```ts
-f(): void;
-f(...x: number[]): void;
+function y(): void;
+function y(...x: number[]): void;
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
-function f(x: number | string): void;
+function x(x: number | string): void;
 ```
 
 ```ts
-function f(x?: ...number[]): void;
+function y(...x: number[]): void;
 ```
 
-## Related to
+## Related To
 
 - TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information

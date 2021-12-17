@@ -19,6 +19,8 @@ import {
   TypeScope,
   WithScope,
 } from './scope';
+import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
+import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
 
 import { Variable } from './variable';
 
@@ -166,6 +168,24 @@ class ScopeManager {
   public nestClassScope(node: ClassScope['block']): ClassScope {
     assert(this.currentScope);
     return this.nestScope(new ClassScope(this, this.currentScope, node));
+  }
+
+  public nestClassFieldInitializerScope(
+    node: ClassFieldInitializerScope['block'],
+  ): ClassFieldInitializerScope {
+    assert(this.currentScope);
+    return this.nestScope(
+      new ClassFieldInitializerScope(this, this.currentScope, node),
+    );
+  }
+
+  public nestClassStaticBlockScope(
+    node: ClassStaticBlockScope['block'],
+  ): ClassStaticBlockScope {
+    assert(this.currentScope);
+    return this.nestScope(
+      new ClassStaticBlockScope(this, this.currentScope, node),
+    );
   }
 
   public nestConditionalTypeScope(

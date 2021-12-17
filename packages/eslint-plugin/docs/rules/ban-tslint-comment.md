@@ -4,9 +4,11 @@ Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this 
 
 ## Rule Details
 
-Examples of **incorrect** code for this rule:
-
 All TSLint [rule flags](https://palantir.github.io/tslint/usage/rule-flags/)
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```js
 /* tslint:disable */
@@ -18,12 +20,20 @@ someCode(); // tslint:disable-line
 // tslint:disable-next-line:rule1 rule2 rule3...
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```js
 // This is a comment that just happens to mention tslint
+/* This is a multiline comment that just happens to mention tslint */
+someCode(); // This is a comment that just happens to mention tslint
 ```
 
 ## When Not To Use It
 
 If you are still using TSLint.
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [x] 🔧 Fixable
+- [ ] 💭 Requires type information

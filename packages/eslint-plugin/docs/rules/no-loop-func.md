@@ -5,7 +5,7 @@
 This rule extends the base [`eslint/no-loop-func`](https://eslint.org/docs/rules/no-loop-func) rule.
 It adds support for TypeScript types.
 
-## How to use
+## How to Use
 
 ```jsonc
 {
@@ -19,4 +19,14 @@ It adds support for TypeScript types.
 
 See [`eslint/no-loop-func` options](https://eslint.org/docs/rules/no-loop-func#options).
 
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-loop-func.md)</sup>
+<sup>
+
+Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-loop-func.md)
+
+</sup>
+
+## Attributes
+
+- [ ] ✅ Recommended
+- [ ] 🔧 Fixable
+- [ ] 💭 Requires type information
