@@ -1,115 +1,79 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import * as parser from '../../src/parser';
+import { parseForESLint } from '../../src/parser';
+import { serializer } from '../tools/ts-error-serializer';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
+expect.addSnapshotSerializer(serializer);
+
 describe('TSX', () => {
   describe("if the filename ends with '.tsx', enable jsx option automatically.", () => {
-    const linter = new TSESLint.Linter();
-    linter.defineParser('@typescript-eslint/parser', parser);
-
     it('filePath was not provided', () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-      };
-      const messages = linter.verify(code, config);
-
-      expect(messages).toStrictEqual([
-        {
-          column: 18,
-          fatal: true,
-          line: 1,
-          message: "Parsing error: '>' expected.",
-          ruleId: null,
-          severity: 2,
-        },
-      ]);
+      try {
+        parseForESLint(code);
+      } catch (e) {
+        expect(e).toMatchSnapshot();
+      }
     });
 
     it("filePath was not provided and 'jsx:true' option", () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-        parserOptions: {
+      expect(() =>
+        parseForESLint(code, {
           ecmaFeatures: {
             jsx: true,
           },
-        },
-      };
-      const messages = linter.verify(code, config);
-
-      expect(messages).toStrictEqual([]);
+        }),
+      ).not.toThrow();
     });
 
     it('test.ts', () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-      };
-      const messages = linter.verify(code, config, { filename: 'test.ts' });
-
-      expect(messages).toStrictEqual([
-        {
-          column: 18,
-          fatal: true,
-          line: 1,
-          message: "Parsing error: '>' expected.",
-          ruleId: null,
-          severity: 2,
-        },
-      ]);
+      try {
+        parseForESLint(code, {
+          filePath: 'test.ts',
+        });
+      } catch (e) {
+        expect(e).toMatchSnapshot();
+      }
     });
 
     it("test.ts with 'jsx:true' option", () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-        parserOptions: {
+
+      try {
+        parseForESLint(code, {
+          filePath: 'test.ts',
           ecmaFeatures: {
             jsx: true,
           },
-        },
-      };
-      const messages = linter.verify(code, config, { filename: 'test.ts' });
-
-      expect(messages).toStrictEqual([
-        {
-          column: 18,
-          fatal: true,
-          line: 1,
-          message: "Parsing error: '>' expected.",
-          ruleId: null,
-          severity: 2,
-        },
-      ]);
+        });
+      } catch (e) {
+        expect(e).toMatchSnapshot();
+      }
     });
 
     it('test.tsx', () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-      };
-      const messages = linter.verify(code, config, { filename: 'test.tsx' });
-
-      expect(messages).toStrictEqual([]);
+      expect(() =>
+        parseForESLint(code, {
+          filePath: 'test.tsx',
+        }),
+      ).not.toThrow();
     });
 
     it("test.tsx with 'jsx:false' option", () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-        parserOptions: {
+      expect(() =>
+        parseForESLint(code, {
           ecmaFeatures: {
             jsx: false,
           },
-        },
-      };
-      const messages = linter.verify(code, config, { filename: 'test.tsx' });
-
-      expect(messages).toStrictEqual([]);
+          filePath: 'test.tsx',
+        }),
+      ).not.toThrow();
     });
   });
 });
