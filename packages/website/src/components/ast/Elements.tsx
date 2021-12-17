@@ -15,76 +15,77 @@ import ItemGroup from './ItemGroup';
 import HiddenItem from './HiddenItem';
 import { SimpleItem } from './SimpleItem';
 
-export function ComplexItem(
-  props: GenericParams<ASTViewerModelComplex>,
-): JSX.Element {
-  const [isExpanded, setIsExpanded] = useState<boolean>(
-    () => props.level === 'ast',
-  );
+export function ComplexItem({
+  value,
+  onSelectNode,
+  level,
+  selection,
+  propName,
+  getTooltip,
+}: GenericParams<ASTViewerModelComplex>): JSX.Element {
+  const [isExpanded, setIsExpanded] = useState<boolean>(() => level === 'ast');
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const onHover = useCallback(
     (state: boolean) => {
-      if (props.onSelectNode) {
-        const range = props.value.range;
+      if (onSelectNode) {
+        const range = value.range;
         if (range) {
-          props.onSelectNode(state ? range : null);
+          onSelectNode(state ? range : null);
         }
       }
     },
-    [props.value],
+    [value],
   );
 
   useEffect(() => {
-    const selected = props.selection
-      ? props.value.type === 'array'
-        ? isArrayInRange(props.selection, props.value)
-        : isInRange(props.selection, props.value)
+    const selected = selection
+      ? value.type === 'array'
+        ? isArrayInRange(selection, value)
+        : isInRange(selection, value)
       : false;
 
     setIsSelected(
-      props.level !== 'ast' &&
-        selected &&
-        !hasChildInRange(props.selection, props.value),
+      level !== 'ast' && selected && !hasChildInRange(selection, value),
     );
 
     if (selected && !isExpanded) {
       setIsExpanded(selected);
     }
-  }, [props.selection, props.value]);
+  }, [selection, value]);
 
   return (
     <ItemGroup
-      propName={props.propName}
-      value={props.value}
+      propName={propName}
+      value={value}
       isExpanded={isExpanded}
       isSelected={isSelected}
       canExpand={true}
       onHover={onHover}
       onClick={(): void => setIsExpanded(!isExpanded)}
     >
-      <span>{props.value.type === 'array' ? '[' : '{'}</span>
+      <span>{value.type === 'array' ? '[' : '{'}</span>
       {isExpanded ? (
         <div className={styles.subList}>
-          {props.value.value.map((item, index) => (
+          {value.value.map((item, index) => (
             <ElementItem
-              level={`${props.level}_${item.key}[${index}]`}
-              key={`${props.level}_${item.key}[${index}]`}
-              getTooltip={props.getTooltip}
-              selection={props.selection}
+              level={`${level}_${item.key}[${index}]`}
+              key={`${level}_${item.key}[${index}]`}
+              getTooltip={getTooltip}
+              selection={selection}
               value={item}
-              onSelectNode={props.onSelectNode}
+              onSelectNode={onSelectNode}
             />
           ))}
         </div>
       ) : (
         <HiddenItem
-          level={props.level}
-          isArray={props.value.type === 'array'}
-          value={props.value.value}
+          level={level}
+          isArray={value.type === 'array'}
+          value={value.value}
         />
       )}
-      <span>{props.value.type === 'array' ? ']' : '}'}</span>
+      <span>{value.type === 'array' ? ']' : '}'}</span>
     </ItemGroup>
   );
 }

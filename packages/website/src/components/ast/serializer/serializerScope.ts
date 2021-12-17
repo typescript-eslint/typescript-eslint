@@ -41,6 +41,11 @@ export function getRange(
       start: { ...value.identifier.loc.start },
       end: { ...value.identifier.loc.end },
     };
+  } else if (isESTreeNode(value.node)) {
+    return {
+      start: { ...value.node.loc.start },
+      end: { ...value.node.loc.end },
+    };
   } else if (
     Array.isArray(value.identifiers) &&
     value.identifiers.length > 0 &&
@@ -66,9 +71,11 @@ export function getProps(nodeName: string | undefined): string[] | undefined {
         'type',
         'upper',
         'variables',
+        'variableScope',
+        'functionExpressionScope',
       ];
     } else if (nodeName.endsWith('Definition')) {
-      return ['name', 'node'];
+      return ['name', 'type', 'node'];
     } else if (nodeName === 'Reference') {
       return [
         'identifier',
@@ -87,9 +94,11 @@ export function getProps(nodeName: string | undefined): string[] | undefined {
         'references',
         'isValueVariable',
         'isTypeVariable',
+        'eslintUsed',
+        'identifiers',
       ];
     } else if (nodeName === 'ScopeManager') {
-      return ['variables', 'scopes'];
+      return ['variables', 'scopes', 'references'];
     }
   }
   return undefined;
@@ -104,18 +113,22 @@ export function createScopeSerializer(): Serializer {
     processValue,
   ): ASTViewerModel | undefined {
     const className = getClassName(data);
+
     if (className !== 'Object') {
       const nodeName = getNodeName(data);
+      const value = data.name != null ? `<"${String(data.name)}">` : '';
 
-      if (SEEN_THINGS.has(nodeName)) {
+      const uniqName = `${nodeName}${value}`;
+
+      if (SEEN_THINGS.has(uniqName)) {
         return {
           range: getRange(data),
           type: 'ref',
           name: nodeName,
-          value: data.name != null ? `<"${String(data.name)}">` : '',
+          value: value,
         };
       }
-      SEEN_THINGS.add(nodeName);
+      SEEN_THINGS.add(uniqName);
 
       let values: [string, unknown][];
 
@@ -135,22 +148,14 @@ export function createScopeSerializer(): Serializer {
     }
 
     if (isESTreeNode(data)) {
-      if (data.type === 'Identifier') {
-        return {
-          type: 'ref',
-          name: data.type,
-          range: {
-            start: { ...data.loc.start },
-            end: { ...data.loc.end },
-          },
-          value: `<"${data.name}">`,
-        };
-      }
-
       return {
         type: 'ref',
         name: data.type,
-        value: '',
+        range: {
+          start: { ...data.loc.start },
+          end: { ...data.loc.end },
+        },
+        value: data.type === 'Identifier' ? `<"${data.name}">` : '',
       };
     }
 

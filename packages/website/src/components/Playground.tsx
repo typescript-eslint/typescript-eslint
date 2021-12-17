@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import clsx from 'clsx';
 import useThemeContext from '@theme/hooks/useThemeContext';
@@ -20,6 +20,23 @@ import type { RuleDetails, SelectedRange } from './types';
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 
+function rangeReducer<T extends SelectedRange | null>(
+  prevState: T,
+  action: T,
+): T {
+  if (prevState !== action) {
+    if (
+      !prevState ||
+      !action ||
+      !shallowEqual(prevState.start, action.start) ||
+      !shallowEqual(prevState.end, action.end)
+    ) {
+      return action;
+    }
+  }
+  return prevState;
+}
+
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
     jsx: false,
@@ -37,24 +54,8 @@ function Playground(): JSX.Element {
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
-  const [selectedRange, setSelectedRange] = useState<SelectedRange | null>(
-    null,
-  );
+  const [selectedRange, setSelectedRange] = useReducer(rangeReducer, null);
   const [position, setPosition] = useState<Monaco.Position | null>(null);
-
-  const updateSelectedNode = useCallback(
-    (value: SelectedRange | null) => {
-      if (
-        !value ||
-        !selectedRange ||
-        !shallowEqual(selectedRange.start, value.start) ||
-        !shallowEqual(selectedRange.end, value.end)
-      ) {
-        setSelectedRange(value);
-      }
-    },
-    [selectedRange],
-  );
 
   return (
     <div className={styles.codeContainer}>
@@ -104,22 +105,21 @@ function Playground(): JSX.Element {
               <ASTViewerTS
                 value={tsAst}
                 position={position}
-                onSelectNode={updateSelectedNode}
-                version={state.ts}
+                onSelectNode={setSelectedRange}
               />
             )) ||
               (state.showAST === 'scope' && scope && (
                 <ASTViewerScope
                   value={scope}
                   position={position}
-                  onSelectNode={updateSelectedNode}
+                  onSelectNode={setSelectedRange}
                 />
               )) ||
               (esAst && (
                 <ASTViewerESTree
                   value={esAst}
                   position={position}
-                  onSelectNode={updateSelectedNode}
+                  onSelectNode={setSelectedRange}
                 />
               ))}
           </div>

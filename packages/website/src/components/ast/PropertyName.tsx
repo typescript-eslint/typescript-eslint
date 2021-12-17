@@ -1,26 +1,38 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useCallback } from 'react';
 import styles from './ASTViewer.module.css';
 
 export interface PropertyNameProps {
   readonly typeName?: string;
   readonly propName?: string;
   readonly onClick?: (e: MouseEvent<HTMLElement>) => void;
-  readonly onMouseEnter?: (e: boolean) => void;
-  readonly onMouseLeave?: (e: boolean) => void;
+  readonly onHover?: (e: boolean) => void;
 }
 
 export default function PropertyName(props: PropertyNameProps): JSX.Element {
-  return props.onClick || props.onMouseEnter || props.onMouseLeave ? (
+  const onClick = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      e.preventDefault();
+      props.onClick?.(e);
+    },
+    [props.onClick],
+  );
+
+  const onMouseEnter = useCallback(() => {
+    props.onHover?.(true);
+  }, [props.onHover]);
+
+  const onMouseLeave = useCallback(() => {
+    props.onHover?.(false);
+  }, [props.onHover]);
+
+  return props.onClick || props.onHover ? (
     <>
       {props.propName && (
         <a
           href={`#${props.propName}`}
-          onMouseEnter={(): void => props.onMouseEnter?.(true)}
-          onMouseLeave={(): void => props.onMouseLeave?.(false)}
-          onClick={(e): void => {
-            e.preventDefault();
-            props.onClick?.(e);
-          }}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onClick={onClick}
           className={styles.propName}
         >
           {props.propName}
@@ -30,12 +42,9 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
       {props.typeName && (
         <a
           href={`#${props.typeName}`}
-          onMouseEnter={(): void => props.onMouseEnter?.(true)}
-          onMouseLeave={(): void => props.onMouseLeave?.(false)}
-          onClick={(e): void => {
-            e.preventDefault();
-            props.onClick?.(e);
-          }}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onClick={onClick}
           className={styles.tokenName}
         >
           {props.typeName}

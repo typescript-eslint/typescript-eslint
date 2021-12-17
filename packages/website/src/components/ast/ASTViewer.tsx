@@ -5,30 +5,35 @@ import type { SelectedPosition, ASTViewerProps } from './types';
 
 import { ElementItem } from './Elements';
 
-function ASTViewer(props: ASTViewerProps): JSX.Element {
+function ASTViewer({
+  position,
+  value,
+  getTooltip,
+  onSelectNode,
+}: ASTViewerProps): JSX.Element {
   const [selection, setSelection] = useState<SelectedPosition | null>(null);
 
   useEffect(() => {
     setSelection(
-      props.position
+      position
         ? {
-            line: props.position.lineNumber,
-            column: props.position.column - 1,
+            line: position.lineNumber,
+            column: position.column - 1,
           }
         : null,
     );
-  }, [props.position]);
+  }, [position]);
 
-  return typeof props.value === 'string' ? (
-    <div>{props.value}</div>
+  return typeof value === 'string' ? (
+    <div>{value}</div>
   ) : (
     <div className={styles.list}>
       <ElementItem
-        getTooltip={props.getTooltip}
-        value={props.value}
+        getTooltip={getTooltip}
+        value={value}
         level="ast"
         selection={selection}
-        onSelectNode={props.onSelectNode}
+        onSelectNode={onSelectNode}
       />
     </div>
   );

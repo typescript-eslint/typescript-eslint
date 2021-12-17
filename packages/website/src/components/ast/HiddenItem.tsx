@@ -9,34 +9,38 @@ export interface HiddenItemProps {
   readonly isArray?: boolean;
 }
 
-export default function HiddenItem(props: HiddenItemProps): JSX.Element {
+export default function HiddenItem({
+  value,
+  level,
+  isArray,
+}: HiddenItemProps): JSX.Element {
   const [isComplex, setIsComplex] = useState<boolean>(true);
   const [length, setLength] = useState<number>(0);
 
   useEffect(() => {
-    if (props.isArray) {
-      const filtered = props.value.filter(item => !isNaN(Number(item.key)));
+    if (isArray) {
+      const filtered = value.filter(item => !isNaN(Number(item.key)));
       setIsComplex(filtered.some(item => item.type !== 'number'));
       setLength(filtered.length);
     }
-  }, [props.value, props.isArray]);
+  }, [value, isArray]);
 
   return (
     <span className={styles.hidden}>
-      {props.isArray && !isComplex ? (
-        props.value.map((item, index) => (
-          <span key={`${props.level}_[${index}]`}>
+      {isArray && !isComplex ? (
+        value.map((item, index) => (
+          <span key={`${level}_[${index}]`}>
             {index > 0 && ', '}
             <PropertyValue value={item} />
           </span>
         ))
-      ) : props.isArray ? (
+      ) : isArray ? (
         <>
           {length} {length === 1 ? 'element' : 'elements'}
         </>
       ) : (
-        props.value.map((item, index) => (
-          <span key={`${props.level}_[${index}]`}>
+        value.map((item, index) => (
+          <span key={`${level}_[${index}]`}>
             {index > 0 && ', '}
             {String(item.key)}
           </span>

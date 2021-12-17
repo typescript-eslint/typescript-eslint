@@ -10,25 +10,23 @@ export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
   readonly value: TSESTree.BaseNode | string;
 }
 
-export default function ASTViewerESTree(
-  props: ASTESTreeViewerProps,
-): JSX.Element {
+export default function ASTViewerESTree({
+  value,
+  position,
+  onSelectNode,
+}: ASTESTreeViewerProps): JSX.Element {
   const [model, setModel] = useState<string | ASTViewerModel>('');
 
   useEffect(() => {
-    if (typeof props.value === 'string') {
-      setModel(props.value);
+    if (typeof value === 'string') {
+      setModel(value);
     } else {
       const scopeSerializer = createESTreeSerializer();
-      setModel(serialize(props.value, scopeSerializer));
+      setModel(serialize(value, scopeSerializer));
     }
-  }, [props.value]);
+  }, [value]);
 
   return (
-    <ASTViewer
-      value={model}
-      position={props.position}
-      onSelectNode={props.onSelectNode}
-    />
+    <ASTViewer value={model} position={position} onSelectNode={onSelectNode} />
   );
 }

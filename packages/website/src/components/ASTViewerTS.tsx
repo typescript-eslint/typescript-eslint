@@ -4,17 +4,14 @@ import ASTViewer from './ast/ASTViewer';
 import type {
   ASTViewerBaseProps,
   ASTViewerModel,
-  SelectedRange,
-  SelectedPosition,
+  ASTViewerModelSimple,
 } from './ast/types';
 import type { SourceFile } from 'typescript';
 import { serialize } from './ast/serializer/serializer';
 import { createTsSerializer } from './ast/serializer/serializerTS';
-import { ASTViewerModelSimple } from './ast/types';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
-  readonly version: string;
-  readonly value: Record<string, unknown> | string;
+  readonly value: SourceFile | string;
 }
 
 function extractEnum(
@@ -42,57 +39,27 @@ function getFlagNamesFromEnum(
     .map(([_, name]) => `${prefix}.${name}`);
 }
 
-export function getLineAndCharacterFor(
-  pos: number,
-  ast: SourceFile,
-): SelectedPosition {
-  const loc = ast.getLineAndCharacterOfPosition(pos);
-  return {
-    line: loc.line + 1,
-    column: loc.character,
-  };
-}
-
-export function getLocFor(
-  start: number,
-  end: number,
-  ast: SourceFile,
-): SelectedRange {
-  return {
-    start: getLineAndCharacterFor(start, ast),
-    end: getLineAndCharacterFor(end, ast),
-  };
-}
-
-export default function ASTViewerTS(props: ASTTsViewerProps): JSX.Element {
+export default function ASTViewerTS({
+  value,
+  position,
+  onSelectNode,
+}: ASTTsViewerProps): JSX.Element {
   const [model, setModel] = useState<string | ASTViewerModel>('');
-  const [syntaxKind, setSyntaxKind] = useState<Record<number, string>>({});
-  const [nodeFlags, setNodeFlags] = useState<Record<number, string>>({});
-  const [tokenFlags, setTokenFlags] = useState<Record<number, string>>({});
-  const [modifierFlags, setModifierFlags] = useState<Record<number, string>>(
-    {},
-  );
+  const [syntaxKind] = useState(() => extractEnum(window.ts.SyntaxKind));
+  const [nodeFlags] = useState(() => extractEnum(window.ts.NodeFlags));
+  const [tokenFlags] = useState(() => extractEnum(window.ts.TokenFlags));
+  const [modifierFlags] = useState(() => extractEnum(window.ts.ModifierFlags));
 
   useEffect(() => {
-    setSyntaxKind(extractEnum(window.ts.SyntaxKind));
-    setNodeFlags(extractEnum(window.ts.NodeFlags));
-    setTokenFlags(extractEnum(window.ts.TokenFlags));
-    setModifierFlags(extractEnum(window.ts.ModifierFlags));
-  }, [props.version]);
-
-  useEffect(() => {
-    if (typeof props.value === 'string') {
-      setModel(props.value);
+    if (typeof value === 'string') {
+      setModel(value);
     } else {
-      const scopeSerializer = createTsSerializer(
-        // @ts-expect-error: unsafe cast
-        props.value as SourceFile,
-        syntaxKind,
-      );
-      setModel(serialize(props.value, scopeSerializer));
+      const scopeSerializer = createTsSerializer(value, syntaxKind);
+      setModel(serialize(value, scopeSerializer));
     }
-  }, [props.value, syntaxKind]);
+  }, [value, syntaxKind]);
 
+  // TODO: move this to serializer
   const getTooltip = useCallback(
     (data: ASTViewerModelSimple): string | undefined => {
       if (data.type === 'number') {
@@ -127,8 +94,8 @@ export default function ASTViewerTS(props: ASTTsViewerProps): JSX.Element {
   return (
     <ASTViewer
       getTooltip={getTooltip}
-      position={props.position}
-      onSelectNode={props.onSelectNode}
+      position={position}
+      onSelectNode={onSelectNode}
       value={model}
     />
   );

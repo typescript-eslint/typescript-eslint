@@ -10,19 +10,20 @@ export interface ASTScopeViewerProps extends ASTViewerBaseProps {
   readonly value: Record<string, unknown> | string;
 }
 
-export default function ASTViewerScope(
-  props: ASTScopeViewerProps,
-): JSX.Element {
+export default function ASTViewerScope({
+  value,
+  onSelectNode,
+}: ASTScopeViewerProps): JSX.Element {
   const [model, setModel] = useState<string | ASTViewerModel>('');
 
   useEffect(() => {
-    if (typeof props.value === 'string') {
-      setModel(props.value);
+    if (typeof value === 'string') {
+      setModel(value);
     } else {
       const scopeSerializer = createScopeSerializer();
-      setModel(serialize(props.value, scopeSerializer));
+      setModel(serialize(value, scopeSerializer));
     }
-  }, [props.value]);
+  }, [value]);
 
-  return <ASTViewer value={model} onSelectNode={props.onSelectNode} />;
+  return <ASTViewer value={model} onSelectNode={onSelectNode} />;
 }
