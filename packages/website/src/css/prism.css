@@ -11,8 +11,6 @@
   --token-color-number: #098658;
   --token-color-keyword: #0000ff;
   --token-color-function: #000000;
-  --token-color-inserted: #36acaa;
-  --token-color-deleted: #d73a49;
   --token-color-important: #e90;
   --token-color-class-name: #2b91af;
   --token-color-selector: #800000;
@@ -20,6 +18,10 @@
   --token-color-property: #ff0000;
   --token-color-builtin: #0000ff;
   --token-color-boolean: #0000ff;
+
+  --token-color-inserted: #36acaa;
+  --token-color-deleted: #d73a49;
+  --token-color-unchanged: #82827d;
 
   --token-color-highlight: rgba(193, 222, 241, 0.2);
 }
@@ -36,9 +38,7 @@ html[data-theme='dark'] {
   --token-color-symbol: #b5cea8;
   --token-color-number: #b5cea8;
   --token-color-keyword: #569cd6;
-  --token-color-function: #569cd6;
-  --token-color-inserted: #50fa7b;
-  --token-color-deleted: #ff5555;
+  --token-color-function: #f8f8f2;
   --token-color-important: #569cd6;
   --token-color-class-name: #4ec9b0;
   --token-color-selector: #d7ba7d;
@@ -46,6 +46,10 @@ html[data-theme='dark'] {
   --token-color-property: #ce9178;
   --token-color-builtin: #569cd6;
   --token-color-boolean: #569cd6;
+
+  --token-color-inserted: #50fa7b;
+  --token-color-deleted: #ff5555;
+  --token-color-unchanged: #a6a6a6;
 
   --token-color-highlight: rgba(247, 235, 198, 0.2);
 }
@@ -114,6 +118,10 @@ div[class*='codeBlockContainer'] pre {
 
 .token.deleted {
   color: var(--token-color-deleted);
+}
+
+.token.unchanged {
+  color: var(--token-color-unchanged);
 }
 
 .token.important {
