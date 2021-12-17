@@ -43,39 +43,39 @@
 }
 
 .tokenName {
-  color: #2aa198;
+  color: var(--token-color-class-name);
 }
 
 .propName {
-  color: #b58900;
+  color: var(--token-color-property);
 }
 
 .propNumber {
-  color: #268bd2;
+  color: var(--token-color-number);
 }
 
 .propEmpty {
-  color: var(--ifm-color-emphasis-400);
+  color: var(--token-color-comment);
 }
 
 .propRegExp {
-  color: #b58900;
+  color: var(--token-color-regexp);
 }
 
 .propClass {
-  color: #b58900;
+  color: var(--token-color-class-name);
 }
 
 .propBoolean {
-  color: #b58900;
+  color: var(--token-color-boolean);
 }
 
 .propString {
-  color: #15aa15;
+  color: var(--token-color-string);
 }
 
 .hidden {
-  color: var(--ifm-color-emphasis-400);
+  color: var(--token-color-comment);
   max-width: 40%;
   overflow: hidden;
   display: inline-block;
