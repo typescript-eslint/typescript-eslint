@@ -10,7 +10,8 @@
   --token-color-symbol: #36acaa;
   --token-color-number: #098658;
   --token-color-keyword: #0000ff;
-  --token-color-function: #000000;
+  --token-color-function: #569cd6;
+  --token-color-function-variable: #000000;
   --token-color-important: #e90;
   --token-color-class-name: #2b91af;
   --token-color-selector: #800000;
@@ -38,7 +39,8 @@ html[data-theme='dark'] {
   --token-color-symbol: #b5cea8;
   --token-color-number: #b5cea8;
   --token-color-keyword: #569cd6;
-  --token-color-function: #f8f8f2;
+  --token-color-function: #98b6ce;
+  --token-color-function-variable: #f8f8f2;
   --token-color-important: #569cd6;
   --token-color-class-name: #4ec9b0;
   --token-color-selector: #d7ba7d;
@@ -114,6 +116,10 @@ div[class*='codeBlockContainer'] pre {
 
 .token.function {
   color: var(--token-color-function);
+}
+
+.token.function-variable {
+  color: var(--token-color-function-variable);
 }
 
 .token.deleted {
