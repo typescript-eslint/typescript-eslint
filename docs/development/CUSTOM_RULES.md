@@ -306,7 +306,7 @@ const ruleTester = new ESLintUtils.RuleTester({
   }
 });
 
-ruleTester.run('my-typed-rule', rule {
+ruleTester.run('my-typed-rule', rule, {
   valid: [/* ... */],
   invalid: [/* ... */],
 });
