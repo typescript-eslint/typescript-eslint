@@ -4,7 +4,7 @@ title: ASTs
 sidebar_label: ASTs
 ---
 
-## Abstract Syntax Trees (AST)s
+# Abstract Syntax Trees (AST)s
 
 Parsers such as those in ESLint and TypeScript read in the text of source code and parse it into a standard format they can reason about known as an **Abstract Syntax Tree** (AST).
 ASTs are called such because although they might contain information on the location of constructs within source code, they are an abstract representation that cares more about the semantic structure.
