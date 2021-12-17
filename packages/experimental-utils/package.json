@@ -49,11 +49,11 @@
     "tsutils": "^3.21.0"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^5.7.0",
     "eslint": "*"
   },
   "devDependencies": {
-    "typescript": "*"
+    "typescript": "*",
+    "@typescript-eslint/parser": "^5.7.0"
   },
   "funding": {
     "type": "opencollective",
