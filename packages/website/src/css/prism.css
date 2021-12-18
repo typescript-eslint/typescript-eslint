@@ -22,7 +22,7 @@
 
   --token-color-inserted: #36acaa;
   --token-color-deleted: #d73a49;
-  --token-color-unchanged: #82827d;
+  --token-color-unchanged: #a7a9a8;
 
   --token-color-highlight: rgba(193, 222, 241, 0.2);
 }
@@ -50,7 +50,7 @@ html[data-theme='dark'] {
   --token-color-boolean: #569cd6;
 
   --token-color-inserted: #50fa7b;
-  --token-color-deleted: #ff5555;
+  --token-color-deleted: #f55;
   --token-color-unchanged: #a6a6a6;
 
   --token-color-highlight: rgba(247, 235, 198, 0.2);
