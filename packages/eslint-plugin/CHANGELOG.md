@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.7.0...v5.8.0) (2021-12-20)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-implied-eval] improve performance ([#4313](https://github.com/typescript-eslint/typescript-eslint/issues/4313)) ([e344596](https://github.com/typescript-eslint/typescript-eslint/commit/e3445967de6ed73e6b2334380236aed8a0ee6e4f))
+* **eslint-plugin:** [padding-line-between-statements] `type` StatementTypes can't differenciate from variable ([#4270](https://github.com/typescript-eslint/typescript-eslint/issues/4270)) ([bfc4324](https://github.com/typescript-eslint/typescript-eslint/commit/bfc4324f4cda24e30b2d39d5b70f7554f2b6bf81))
+* **eslint-plugin:** [strict-boolean-expression] false positive for truthy boolean ([#4275](https://github.com/typescript-eslint/typescript-eslint/issues/4275)) ([72c2e41](https://github.com/typescript-eslint/typescript-eslint/commit/72c2e418a4180f6db5795ebb42cbc095f5c53c37))
+* **eslint-plugin:** `array-type` mark `AST_NODE_TYPES.TSBigIntKeyword` as simple ([#4274](https://github.com/typescript-eslint/typescript-eslint/issues/4274)) ([74e544e](https://github.com/typescript-eslint/typescript-eslint/commit/74e544e487328e56fcb7aef048a78beaad593ea0))
+* **eslint-plugin:** handle method overloading in `semi` ([#4318](https://github.com/typescript-eslint/typescript-eslint/issues/4318)) ([3b87b49](https://github.com/typescript-eslint/typescript-eslint/commit/3b87b49ea8d62c2f4f3bee7494500b5ad44fcbc1))
+* **experimental-utils:** support immutable members ([#3844](https://github.com/typescript-eslint/typescript-eslint/issues/3844)) ([3d33a77](https://github.com/typescript-eslint/typescript-eslint/commit/3d33a77c57e5b752edf6f35ed152038bdb230b79))
+
+
+### Features
+
+* **eslint-plugin:** [no-throw-literal] add options to to disallow `any`/`unknown` ([#4207](https://github.com/typescript-eslint/typescript-eslint/issues/4207)) ([ff0adf9](https://github.com/typescript-eslint/typescript-eslint/commit/ff0adf9e0bfbf71667c51de0a84038586e4cbfd1))
+* **eslint-plugin:** [restrict-plus-operand] add allowAny option ([#4260](https://github.com/typescript-eslint/typescript-eslint/issues/4260)) ([2788545](https://github.com/typescript-eslint/typescript-eslint/commit/27885456c577dfada52d298857f406f0f332c405))
+
+
+
+
+
 # [5.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.6.0...v5.7.0) (2021-12-13)
 
 
