@@ -64,6 +64,8 @@ You may pass `"onlyInlineLambdas": true` as a rule option within an object to re
 
 Example of code for the `{ "onlyInlineLambdas": true }` options:
 
+<!--tabs-->
+
 #### ❌ Incorrect
 
 ```ts
