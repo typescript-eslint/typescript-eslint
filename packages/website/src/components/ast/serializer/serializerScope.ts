@@ -8,7 +8,7 @@ function isESTreeNode(
   return Boolean(value) && isRecord(value) && 'type' in value && 'loc' in value;
 }
 
-export function getClassName(value: Record<string, unknown>): string {
+function getClassName(value: Record<string, unknown>): string {
   // eslint-disable-next-line @typescript-eslint/ban-types
   return (Object.getPrototypeOf(value) as Object).constructor.name.replace(
     /\$[0-9]+$/,
@@ -16,21 +16,20 @@ export function getClassName(value: Record<string, unknown>): string {
   );
 }
 
-export function getNodeName(data: Record<string, unknown>): string | undefined {
+function getNodeName(
+  className: string,
+  data: Record<string, unknown>,
+): string | undefined {
   const id = data.$id != null ? `$${String(data.$id)}` : '';
 
-  let constructorName = getClassName(data);
-
-  if (constructorName === 'ImplicitLibVariable' && data.name === 'const') {
-    constructorName = 'ImplicitGlobalConstTypeVariable';
+  if (className === 'ImplicitLibVariable' && data.name === 'const') {
+    className = 'ImplicitGlobalConstTypeVariable';
   }
 
-  return `${constructorName}${id}`;
+  return `${className}${id}`;
 }
 
-export function getRange(
-  value: Record<string, unknown>,
-): SelectedRange | undefined {
+function getRange(value: Record<string, unknown>): SelectedRange | undefined {
   if (isESTreeNode(value.block)) {
     return {
       start: value.block.loc.start,
@@ -60,9 +59,35 @@ export function getRange(
   return undefined;
 }
 
-export function getProps(nodeName: string | undefined): string[] | undefined {
+type NodeType =
+  | 'Scope'
+  | 'Definition'
+  | 'Variable'
+  | 'ScopeManager'
+  | 'Reference';
+
+function getNodeType(nodeName: string | undefined): NodeType | undefined {
   if (nodeName) {
-    if (nodeName.endsWith('Scope')) {
+    if (nodeName === 'ScopeManager') {
+      return 'ScopeManager';
+    } else if (nodeName.endsWith('Scope')) {
+      return 'Scope';
+    } else if (nodeName.endsWith('Definition')) {
+      return 'Definition';
+    } else if (nodeName === 'Variable' || nodeName === 'ImplicitLibVariable') {
+      return 'Variable';
+    } else if (nodeName === 'Reference') {
+      return 'Reference';
+    }
+  }
+  return undefined;
+}
+
+function getProps(nodeType: NodeType | undefined): string[] | undefined {
+  switch (nodeType) {
+    case 'ScopeManager':
+      return ['variables', 'scopes', 'references'];
+    case 'Scope':
       return [
         'block',
         'isStrict',
@@ -74,9 +99,9 @@ export function getProps(nodeName: string | undefined): string[] | undefined {
         'variableScope',
         'functionExpressionScope',
       ];
-    } else if (nodeName.endsWith('Definition')) {
+    case 'Definition':
       return ['name', 'type', 'node'];
-    } else if (nodeName === 'Reference') {
+    case 'Reference':
       return [
         'identifier',
         'init',
@@ -87,7 +112,7 @@ export function getProps(nodeName: string | undefined): string[] | undefined {
         'resolved',
         'writeExpr',
       ];
-    } else if (nodeName === 'Variable' || nodeName === 'ImplicitLibVariable') {
+    case 'Variable':
       return [
         'defs',
         'name',
@@ -97,9 +122,6 @@ export function getProps(nodeName: string | undefined): string[] | undefined {
         'eslintUsed',
         'identifiers',
       ];
-    } else if (nodeName === 'ScopeManager') {
-      return ['variables', 'scopes', 'references'];
-    }
   }
   return undefined;
 }
@@ -115,7 +137,8 @@ export function createScopeSerializer(): Serializer {
     const className = getClassName(data);
 
     if (className !== 'Object') {
-      const nodeName = getNodeName(data);
+      const nodeName = getNodeName(className, data);
+      const nodeType = getNodeType(className);
       const value = data.name != null ? `<"${String(data.name)}">` : '';
 
       const uniqName = `${nodeName}${value}`;
@@ -132,7 +155,7 @@ export function createScopeSerializer(): Serializer {
 
       let values: [string, unknown][];
 
-      const props = getProps(className);
+      const props = getProps(nodeType);
       if (props) {
         values = props.map(key => [key, data[key]]);
       } else {

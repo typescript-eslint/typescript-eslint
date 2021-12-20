@@ -18,6 +18,7 @@ import ASTViewerTS from './ASTViewerTS';
 import type { RuleDetails, SelectedRange } from './types';
 
 import type { TSESTree } from '@typescript-eslint/website-eslint';
+import type { SourceFile } from 'typescript';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 
 function rangeReducer<T extends SelectedRange | null>(
@@ -49,7 +50,7 @@ function Playground(): JSX.Element {
   });
   const { isDarkTheme } = useThemeContext();
   const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
-  const [tsAst, setTsAST] = useState<Record<string, unknown> | string | null>();
+  const [tsAst, setTsAST] = useState<SourceFile | string | null>();
   const [scope, setScope] = useState<Record<string, unknown> | string | null>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
