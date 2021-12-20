@@ -314,7 +314,6 @@ function ancestorHasReturnType(node: FunctionNode): boolean {
         if (ancestor.returnType) {
           return true;
         }
-        // assume
         break;
 
       // const x: Foo = () => {};
