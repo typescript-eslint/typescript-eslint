@@ -302,7 +302,46 @@ class PanCamera extends FreeCamera {
       options: ['always', { omitLastInOneLineBlock: true }],
       errors: [extraSemicolon],
     },
+    {
+      code: `
+        class A {
+          method(): void
+          method(arg?: any): void {
 
+          }
+        }
+      `,
+      output: `
+        class A {
+          method(): void;
+          method(arg?: any): void {
+
+          }
+        }
+      `,
+      options: ['always'],
+      errors: [missingSemicolon],
+    },
+    {
+      code: `
+        class A {
+          method(): void;
+          method(arg?: any): void {
+
+          }
+        }
+      `,
+      output: `
+        class A {
+          method(): void
+          method(arg?: any): void {
+
+          }
+        }
+      `,
+      options: ['never'],
+      errors: [extraSemicolon],
+    },
     {
       code: `
         import a from "a"

@@ -53,11 +53,11 @@ export default util.createRule<Options, MessageIds>({
     const nodesToCheck = [
       AST_NODE_TYPES.PropertyDefinition,
       AST_NODE_TYPES.TSAbstractPropertyDefinition,
-      AST_NODE_TYPES.TSAbstractMethodDefinition,
       AST_NODE_TYPES.TSDeclareFunction,
       AST_NODE_TYPES.TSExportAssignment,
       AST_NODE_TYPES.TSImportEqualsDeclaration,
       AST_NODE_TYPES.TSTypeAliasDeclaration,
+      AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
     ].reduce<TSESLint.RuleListener>((acc, node) => {
       acc[node as string] = checkForSemicolon;
       return acc;
