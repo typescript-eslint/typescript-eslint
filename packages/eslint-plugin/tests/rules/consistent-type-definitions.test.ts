@@ -305,5 +305,51 @@ export default Test
         },
       ],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/4333
+      code: `
+export declare type Test = {
+  foo: string;
+  bar: string;
+};
+      `,
+      output: `
+export declare interface Test {
+  foo: string;
+  bar: string;
+}
+      `,
+      options: ['interface'],
+      errors: [
+        {
+          messageId: 'interfaceOverType',
+          line: 2,
+          column: 21,
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/4333
+      code: `
+export declare interface Test {
+  foo: string;
+  bar: string;
+}
+      `,
+      output: noFormat`
+export declare type Test = {
+  foo: string;
+  bar: string;
+}
+      `,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 2,
+          column: 26,
+        },
+      ],
+    },
   ],
 });
