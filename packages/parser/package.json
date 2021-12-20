@@ -51,7 +51,6 @@
   },
   "devDependencies": {
     "@types/glob": "*",
-    "@typescript-eslint/experimental-utils": "5.7.0",
     "glob": "*",
     "typescript": "*"
   },
