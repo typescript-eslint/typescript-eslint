@@ -303,12 +303,16 @@ const ruleTester = new ESLintUtils.RuleTester({
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
-  }
+  },
 });
 
-ruleTester.run('my-typed-rule', rule {
-  valid: [/* ... */],
-  invalid: [/* ... */],
+ruleTester.run('my-typed-rule', rule, {
+  valid: [
+    /* ... */
+  ],
+  invalid: [
+    /* ... */
+  ],
 });
 ```
 
