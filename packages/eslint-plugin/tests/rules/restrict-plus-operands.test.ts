@@ -139,6 +139,46 @@ foo += 'string';
         },
       ],
     },
+    {
+      code: `
+export const f = (a: any, b: any) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+export const f = (a: any, b: string) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+export const f = (a: any, b: bigint) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+export const f = (a: any, b: number) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -515,7 +555,7 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
-          messageId: 'notStrings',
+          messageId: 'notNumbers',
           line: 4,
           column: 19,
         },
@@ -568,6 +608,126 @@ foo += 0;
           messageId: 'notStrings',
           line: 3,
           column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+const f = (a: any, b: boolean) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 2,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: `
+const f = (a: any, b: []) => a + b;
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 2,
+          column: 30,
+        },
+      ],
+    },
+
+    {
+      code: `
+const f = (a: any, b: any) => a + b;
+      `,
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 2,
+          column: 31,
+        },
+      ],
+    },
+    {
+      code: `
+const f = (a: any, b: string) => a + b;
+      `,
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 2,
+          column: 34,
+        },
+      ],
+    },
+    {
+      code: `
+const f = (a: any, b: bigint) => a + b;
+      `,
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 2,
+          column: 34,
+        },
+      ],
+    },
+    {
+      code: `
+const f = (a: any, b: number) => a + b;
+      `,
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 2,
+          column: 34,
+        },
+      ],
+    },
+    {
+      code: `
+const f = (a: any, b: boolean) => a + b;
+      `,
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 2,
+          column: 35,
         },
       ],
     },

@@ -169,6 +169,20 @@ function f(arg: 1 | 2 | null) {
   if (arg) console.log(arg);
 }
     `,
+    `
+interface Options {
+  readonly enableSomething?: true;
+}
+
+function f(opts: Options): void {
+  if (opts.enableSomething) console.log('Do something');
+}
+    `,
+    `
+declare const x: true | null;
+if (x) {
+}
+    `,
     {
       code: `
 declare const x: 'a' | null;

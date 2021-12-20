@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Expander.module.css';
 
-import ArrowIcon from '../icons/ArrowIcon';
+import ArrowIcon from '@site/src/icons/arrow.svg';
 
 export interface ExpanderProps {
   readonly children?: React.ReactNode;
@@ -23,7 +23,6 @@ function Expander(props: ExpanderProps): JSX.Element {
           className={`${styles.arrow} ${
             isExpanded ? styles.expandedArrow : ''
           }`}
-          pathClass={styles.path}
         />
         <span className={styles.headerLabel}>{props.label}</span>
       </button>

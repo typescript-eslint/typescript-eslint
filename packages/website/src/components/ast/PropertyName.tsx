@@ -1,27 +1,54 @@
-import React, { SyntheticEvent } from 'react';
-import clsx from 'clsx';
+import React, { MouseEvent } from 'react';
 import styles from './ASTViewer.module.css';
 
-export default function PropertyName(props: {
-  name?: string;
-  propName?: string;
-  onClick?: (e: SyntheticEvent) => void;
-  onMouseEnter?: (e: SyntheticEvent) => void;
-}): JSX.Element {
-  return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    <span onClick={props.onClick} onMouseEnter={props.onMouseEnter}>
+export interface PropertyNameProps {
+  readonly typeName?: string;
+  readonly propName?: string;
+  readonly onClick?: (e: MouseEvent<HTMLElement>) => void;
+  readonly onMouseEnter?: (e: MouseEvent<HTMLElement>) => void;
+  readonly onMouseLeave?: (e: MouseEvent<HTMLElement>) => void;
+}
+
+export default function PropertyName(props: PropertyNameProps): JSX.Element {
+  return props.onClick ? (
+    <>
       {props.propName && (
-        <span className={clsx(styles.propName, styles.clickable)}>
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <a
+          href="javascript:void(0)"
+          onMouseEnter={props.onMouseEnter}
+          onMouseLeave={props.onMouseLeave}
+          onClick={props.onClick}
+          className={styles.propName}
+        >
           {props.propName}
-        </span>
+        </a>
       )}
       {props.propName && <span>: </span>}
-      {props.name && (
-        <span className={clsx(styles.tokenName, styles.clickable)}>
-          {props.name}
-        </span>
+      {props.typeName && (
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <a
+          href="javascript:void(0)"
+          onMouseEnter={props.onMouseEnter}
+          onMouseLeave={props.onMouseLeave}
+          onClick={props.onClick}
+          className={styles.tokenName}
+        >
+          {props.typeName}
+        </a>
       )}
-    </span>
+      {props.typeName && <span> </span>}
+    </>
+  ) : (
+    <>
+      {props.propName && (
+        <span className={styles.propName}>{props.propName}</span>
+      )}
+      {props.propName && <span>: </span>}
+      {props.typeName && (
+        <span className={styles.tokenName}>{props.typeName}</span>
+      )}
+      {props.typeName && <span> </span>}
+    </>
   );
 }

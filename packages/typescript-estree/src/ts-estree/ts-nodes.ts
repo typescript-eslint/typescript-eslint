@@ -8,6 +8,8 @@ declare module 'typescript' {
   export interface TemplateLiteralTypeNode extends ts.Node {}
   export interface PrivateIdentifier extends ts.Node {}
   export interface ClassStaticBlockDeclaration extends ts.Node {}
+  export interface AssertClause extends ts.Node {}
+  export interface AssertEntry extends ts.Node {}
   /* eslint-enable @typescript-eslint/no-empty-interface */
 }
 

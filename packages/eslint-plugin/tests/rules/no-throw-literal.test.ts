@@ -123,6 +123,16 @@ throw nullishError || new Error();
 declare const nullishError: Error | undefined;
 throw nullishError ? nullishError : new Error();
     `,
+    `
+function fun(value: any) {
+  throw value;
+}
+    `,
+    `
+function fun(value: unknown) {
+  throw value;
+}
+    `,
   ],
   invalid: [
     {
@@ -422,6 +432,40 @@ declare const foo: Error | string;
 throw foo as string;
       `,
       errors: [{ messageId: 'object' }],
+    },
+    {
+      code: `
+function fun(value: any) {
+  throw value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowThrowingAny: false,
+        },
+      ],
+    },
+    {
+      code: `
+function fun(value: unknown) {
+  throw value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowThrowingUnknown: false,
+        },
+      ],
     },
   ],
 });

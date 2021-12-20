@@ -8,11 +8,13 @@ const PARSER_NAME = '@typescript-eslint/parser';
 export function loadLinter() {
   const linter = new Linter();
   let storedAST;
+  let storedTsAST;
 
   linter.defineParser(PARSER_NAME, {
     parseForESLint(code, options) {
       const toParse = parseForESLint(code, options);
       storedAST = toParse.ast;
+      storedTsAST = toParse.tsAst;
       return toParse;
     }, // parse(code: string, options: ParserOptions): ParseForESLintResult['ast'] {
     //   const toParse = parseForESLint(code, options);
@@ -37,6 +39,10 @@ export function loadLinter() {
 
     getAst() {
       return storedAST;
+    },
+
+    getTsAst() {
+      return storedTsAST;
     },
 
     lint(code, parserOptions, rules) {

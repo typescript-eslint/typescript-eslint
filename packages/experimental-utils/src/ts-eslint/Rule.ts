@@ -69,15 +69,15 @@ interface RuleMetaData<TMessageIds extends string> {
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
-  replacedBy?: string[];
+  replacedBy?: readonly string[];
   /**
    * The options schema. Supply an empty array if there are no options.
    */
-  schema: JSONSchema4 | JSONSchema4[];
+  schema: JSONSchema4 | readonly JSONSchema4[];
 }
 
 interface RuleFix {
-  range: AST.Range;
+  range: Readonly<AST.Range>;
   text: string;
 }
 
@@ -87,25 +87,25 @@ interface RuleFixer {
     text: string,
   ): RuleFix;
 
-  insertTextAfterRange(range: AST.Range, text: string): RuleFix;
+  insertTextAfterRange(range: Readonly<AST.Range>, text: string): RuleFix;
 
   insertTextBefore(
     nodeOrToken: TSESTree.Node | TSESTree.Token,
     text: string,
   ): RuleFix;
 
-  insertTextBeforeRange(range: AST.Range, text: string): RuleFix;
+  insertTextBeforeRange(range: Readonly<AST.Range>, text: string): RuleFix;
 
   remove(nodeOrToken: TSESTree.Node | TSESTree.Token): RuleFix;
 
-  removeRange(range: AST.Range): RuleFix;
+  removeRange(range: Readonly<AST.Range>): RuleFix;
 
   replaceText(
     nodeOrToken: TSESTree.Node | TSESTree.Token,
     text: string,
   ): RuleFix;
 
-  replaceTextRange(range: AST.Range, text: string): RuleFix;
+  replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
 }
 
 interface SuggestionReportDescriptor<TMessageIds extends string>
@@ -216,7 +216,7 @@ interface RuleContext<
    * Returns a list of variables declared by the given node.
    * This information can be used to track references to variables.
    */
-  getDeclaredVariables(node: TSESTree.Node): Scope.Variable[];
+  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
 
   /**
    * Returns the current working directory passed to Linter.

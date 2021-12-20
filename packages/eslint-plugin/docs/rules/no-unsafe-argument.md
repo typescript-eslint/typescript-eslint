@@ -16,7 +16,7 @@ Examples of code for this rule:
 ### ❌ Incorrect
 
 ```ts
-declare function foo(arg1: string, arg2: number, arg2: string): void;
+declare function foo(arg1: string, arg2: number, arg3: string): void;
 
 const anyTyped = 1 as any;
 
@@ -43,7 +43,7 @@ foo(new Set<any>(), new Map<any, string>());
 ### ✅ Correct
 
 ```ts
-declare function foo(arg1: string, arg2: number, arg2: string): void;
+declare function foo(arg1: string, arg2: number, arg3: string): void;
 
 foo('a', 1, 'b');
 

@@ -12,6 +12,7 @@ export interface WebLinter {
   ruleNames: { name: string; description?: string }[];
 
   getAst(): ESLintAST;
+  getTsAst(): Record<string, unknown>;
 
   lint(
     code: string,

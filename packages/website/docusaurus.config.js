@@ -1,9 +1,6 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-
 const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
 ];
@@ -29,6 +26,7 @@ const config = {
     '@docusaurus/plugin-debug',
     [
       '@docusaurus/theme-classic',
+      /** @type {import('@docusaurus/theme-classic').Options} */
       {
         customCss: require.resolve('./src/css/custom.css'),
       },
@@ -36,6 +34,7 @@ const config = {
     '@docusaurus/theme-search-algolia',
     [
       '@docusaurus/plugin-content-pages',
+      /** @type {import('@docusaurus/theme-search-algolia').Options} */
       {
         beforeDefaultRemarkPlugins,
         remarkPlugins,
@@ -43,6 +42,7 @@ const config = {
     ],
     [
       '@docusaurus/plugin-content-docs',
+      /** @type {import('@docusaurus/plugin-content-docs').Options} */
       {
         id: 'rules-docs',
         path: '../eslint-plugin/docs/rules',
@@ -55,6 +55,7 @@ const config = {
     ],
     [
       '@docusaurus/plugin-content-docs',
+      /** @type {import('@docusaurus/plugin-content-docs').Options} */
       {
         id: 'base-docs',
         path: '../../docs',
@@ -74,7 +75,7 @@ const config = {
         apiKey: '1ad6b47d4e742c4c0653877b5511c602',
         indexName: 'typescript-eslint',
       },
-      metadatas: [
+      metadata: [
         { name: 'msapplication-TileColor', content: '#443fd4' },
         { name: 'theme-color', content: '#443fd4' },
       ],
@@ -121,12 +122,42 @@ const config = {
           src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
           href: 'https://www.netlify.com',
         },
+        links: [
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
+              },
+              {
+                label: 'Twitter',
+                href: 'https://twitter.com/tseslint',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/typescript-eslint/typescript-eslint',
+              },
+              {
+                label: 'Report issue',
+                href: 'https://github.com/typescript-eslint/typescript-eslint/issues/new/choose',
+              },
+            ],
+          },
+        ],
         // style: 'primary',
         copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: {
+          plain: {},
+          styles: [],
+        },
         additionalLanguages: ['ignore'],
       },
       tableOfContents: {

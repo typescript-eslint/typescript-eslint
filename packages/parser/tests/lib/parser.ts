@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { ParserOptions } from '@typescript-eslint/types';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
 import * as scopeManager from '@typescript-eslint/scope-manager/dist/analyze';
 import { parse, parseForESLint } from '../../src/parser';
@@ -26,7 +26,7 @@ describe('parser', () => {
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    const config: TSESLint.ParserOptions = {
+    const config: ParserOptions = {
       loc: false,
       comment: false,
       range: false,
@@ -80,7 +80,7 @@ describe('parser', () => {
   it('analyze() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(scopeManager, 'analyze');
-    const config: TSESLint.ParserOptions = {
+    const config: ParserOptions = {
       loc: false,
       comment: false,
       range: false,

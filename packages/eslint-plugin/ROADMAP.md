@@ -235,7 +235,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `function-name`                       | 🛑  | N/A                                                                    |
 | `import-name`                         | 🛑  | N/A ([relevant plugin][plugin:import])                                 |
 | `informative-docs`                    | 🛑  | N/A                                                                    |
-| `insecure-random`                     | 🔌  | [custom implementation][insecure-random]                               |
 | `max-func-body-length`                | 🌟  | [`max-statements`][max-statements]                                     |
 | `no-banned-terms`                     | 🌟  | [`no-caller`][no-caller] & [`no-eval`][no-eval]                        |
 | `no-constant-condition`               | 🌟  | [`no-constant-condition`][no-constant-condition]                       |
@@ -270,39 +269,39 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 <sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`<br>
 <sup>[5]</sup> Does not check class fields.
 
-[insecure-random]: https://github.com/desktop/desktop/blob/development/eslint-rules/insecure-random.js
-
 ### Security
 
-| `tslint-microsoft-contrib` rule |     | ESLint rule                                        |
-| ------------------------------- | :-: | -------------------------------------------------- |
-| `no-disable-auto-sanitization`  | 🛑  | N/A                                                |
-| `no-document-domain`            | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-http-string`                | 🛑  | N/A                                                |
-| `no-inner-html`                 | 🛑  | N/A                                                |
-| `no-string-based-set-immediate` | 🛑  | N/A                                                |
-| `no-string-based-set-interval`  | 🛑  | N/A                                                |
-| `no-string-based-set-timeout`   | 🛑  | N/A                                                |
-| `react-iframe-missing-sandbox`  | 🛑  | N/A                                                |
-| `react-no-dangerous-html`       | 🔌  | [`react/no-danger`]                                |
-| `non-literal-fs-path`           | 🔌  | [`security/detect-non-literal-fs-filename`]        |
-| `non-literal-require`           | 🔌  | [`security/detect-non-literal-require`]            |
-| `possible-timing-attack`        | 🔌  | [`security/detect-possible-timing-attacks`]        |
+| `tslint-microsoft-contrib` rule |     | ESLint rule                                                                                 |
+| ------------------------------- | :-: | ------------------------------------------------------------------------------------------- |
+| `insecure-random`               | 🔌  | [`desktop/insecure-random`] or [`@microsoft/sdl/no-insecure-random`]                        |
+| `no-disable-auto-sanitization`  | 🔌  | [`@microsoft/sdl/no-msapp-exec-unsafe`] and [`@microsoft/sdl/no-winjs-html-unsafe`]         |
+| `no-document-domain`            | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@microsoft/sdl/no-document-domain`] |
+| `no-http-string`                | 🔌  | [`@microsoft/sdl/no-insecure-url`]                                                          |
+| `no-inner-html`                 | 🔌  | [`@microsoft/sdl/no-inner-html`] and [`@microsoft/sdl/no-html-method`]                      |
+| `no-string-based-set-immediate` | 🌓  | [`@typescript-eslint/no-implied-eval`]                                                      |
+| `no-string-based-set-interval`  | 🌓  | [`@typescript-eslint/no-implied-eval`]                                                      |
+| `no-string-based-set-timeout`   | 🌓  | [`@typescript-eslint/no-implied-eval`]                                                      |
+| `react-anchor-blank-noopener`   | 🔌  | [`react/jsx-no-target-blank`]                                                               |
+| `react-iframe-missing-sandbox`  | 🔌  | [`@microsoft/sdl/react-iframe-missing-sandbox`]                                             |
+| `react-no-dangerous-html`       | 🔌  | [`react/no-danger`]                                                                         |
+| `non-literal-fs-path`           | 🔌  | [`security/detect-non-literal-fs-filename`]                                                 |
+| `non-literal-require`           | 🔌  | [`security/detect-non-literal-require`]                                                     |
+| `possible-timing-attack`        | 🔌  | [`security/detect-possible-timing-attacks`]                                                 |
 
 ### Browser
 
-| `tslint-microsoft-contrib` rule     |     | ESLint rule                                        |
-| ----------------------------------- | :-: | -------------------------------------------------- |
-| `jquery-deferred-must-complete`     | 🛑  | N/A                                                |
-| `no-backbone-get-set-outside-model` | 🛑  | N/A                                                |
-| `no-cookies`                        | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-document-write`                 | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] |
-| `no-jquery-raw-elements`            | 🛑  | N/A                                                |
-| `no-unsupported-browser-code`       | 🛑  | N/A                                                |
-| `react-this-binding-issue`          | 🛑  | N/A                                                |
-| `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                        |
-| `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                          |
+| `tslint-microsoft-contrib` rule     |     | ESLint rule                                                                                  |
+| ----------------------------------- | :-: | -------------------------------------------------------------------------------------------- |
+| `jquery-deferred-must-complete`     | 🛑  | N/A                                                                                          |
+| `no-backbone-get-set-outside-model` | 🛑  | N/A                                                                                          |
+| `no-cookies`                        | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@microsoft/sdl/no-cookies`]          |
+| `no-document-write`                 | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@microsoft/sdl/no-document-write`]   |
+| `no-exec-script`                    | 🌓  | Use [`no-restricted-syntax`][no-restricted-syntax] or [`@typescript-eslint/no-implied-eval`] |
+| `no-jquery-raw-elements`            | 🛑  | N/A                                                                                          |
+| `no-unsupported-browser-code`       | 🛑  | N/A                                                                                          |
+| `react-this-binding-issue`          | 🛑  | N/A                                                                                          |
+| `react-tsx-curly-spacing`           | 🔌  | [`react/jsx-curly-spacing`]                                                                  |
+| `react-unused-props-and-state`      | 🌓  | [`react/no-unused-state`]                                                                    |
 
 ### React A11y
 
@@ -326,7 +325,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `react-a11y-role`                         | 🔌  | [`jsx-a11y/aria-role`]                                     |
 | `react-a11y-tabindex-no-positive`         | 🔌  | [`jsx-a11y/tabindex-no-positive`]                          |
 | `react-a11y-titles`                       | 🛑  | N/A                                                        |
-| `react-anchor-blank-noopener`             | 🛑  | N/A                                                        |
 
 <sup>[1]</sup> TSLint rule is more strict<br>
 <sup>[2]</sup> ESLint rule only reports for click handlers
@@ -594,63 +592,64 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 <!-- @typescript-eslint/eslint-plugin -->
 
-[`@typescript-eslint/adjacent-overload-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md
-[`@typescript-eslint/await-thenable`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/await-thenable.md
-[`@typescript-eslint/ban-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-types.md
-[`@typescript-eslint/ban-ts-comment`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-ts-comment.md
-[`@typescript-eslint/consistent-type-assertions`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-type-assertions.md
-[`@typescript-eslint/consistent-type-definitions`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
-[`@typescript-eslint/explicit-member-accessibility`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
-[`@typescript-eslint/member-ordering`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/member-ordering.md
-[`@typescript-eslint/method-signature-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/method-signature-style.md
-[`@typescript-eslint/no-explicit-any`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-explicit-any.md
-[`@typescript-eslint/no-empty-interface`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-empty-interface.md
-[`@typescript-eslint/no-inferrable-types`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-inferrable-types.md
-[`@typescript-eslint/prefer-namespace-keyword`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-namespace-keyword.md
-[`@typescript-eslint/promise-function-async`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/promise-function-async.md
-[`@typescript-eslint/no-misused-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-promises.md
-[`@typescript-eslint/no-namespace`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-namespace.md
-[`@typescript-eslint/no-non-null-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-non-null-assertion.md
-[`@typescript-eslint/triple-slash-reference`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/triple-slash-reference.md
-[`@typescript-eslint/unbound-method`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/unbound-method.md
-[`@typescript-eslint/no-unnecessary-type-assertion`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-type-assertion.md
-[`@typescript-eslint/no-var-requires`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-var-requires.md
-[`@typescript-eslint/type-annotation-spacing`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/type-annotation-spacing.md
-[`@typescript-eslint/typedef`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/typedef.md
-[`@typescript-eslint/unified-signatures`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/unified-signatures.md
-[`@typescript-eslint/no-unnecessary-boolean-literal-compare`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-boolean-literal-compare.md
-[`@typescript-eslint/no-misused-new`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-misused-new.md
-[`@typescript-eslint/no-this-alias`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-this-alias.md
-[`@typescript-eslint/no-throw-literal`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-throw-literal.md
-[`@typescript-eslint/no-extraneous-class`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-extraneous-class.md
-[`@typescript-eslint/no-unused-vars`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unused-vars.md
-[`@typescript-eslint/no-use-before-define`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-use-before-define.md
-[`@typescript-eslint/restrict-plus-operands`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/restrict-plus-operands.md
-[`@typescript-eslint/strict-boolean-expressions`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/strict-boolean-expressions.md
-[`@typescript-eslint/indent`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/indent.md
-[`@typescript-eslint/no-invalid-void-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-invalid-void-type.md
-[`@typescript-eslint/no-require-imports`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-require-imports.md
-[`@typescript-eslint/array-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/array-type.md
-[`@typescript-eslint/naming-convention`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/naming-convention.md
-[`@typescript-eslint/interface-name-prefix`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/interface-name-prefix.md
-[`@typescript-eslint/naming-convention`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/naming-convention.md
-[`@typescript-eslint/no-parameter-properties`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-parameter-properties.md
-[`@typescript-eslint/member-delimiter-style`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/member-delimiter-style.md
-[`@typescript-eslint/prefer-for-of`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-for-of.md
-[`@typescript-eslint/no-array-constructor`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-array-constructor.md
-[`@typescript-eslint/no-dynamic-delete`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-dynamic-delete.md
-[`@typescript-eslint/prefer-function-type`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-function-type.md
-[`@typescript-eslint/prefer-readonly`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/prefer-readonly.md
-[`@typescript-eslint/require-await`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/require-await.md
-[`@typescript-eslint/no-for-in-array`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-for-in-array.md
-[`@typescript-eslint/no-unnecessary-qualifier`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
-[`@typescript-eslint/no-unnecessary-type-arguments`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unnecessary-type-arguments.md
-[`@typescript-eslint/semi`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/semi.md
-[`@typescript-eslint/no-floating-promises`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-floating-promises.md
-[`@typescript-eslint/no-magic-numbers`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-magic-numbers.md
-[`@typescript-eslint/no-unsafe-member-access`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unsafe-member-access.md
-[`@typescript-eslint/restrict-template-expressions`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/restrict-template-expressions.md
-[`@typescript-eslint/no-confusing-void-expression`]: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-confusing-void-expression.md
+[`@typescript-eslint/adjacent-overload-signatures`]: https://typescript-eslint.io/rules/adjacent-overload-signatures
+[`@typescript-eslint/await-thenable`]: https://typescript-eslint.io/rules/await-thenable
+[`@typescript-eslint/ban-types`]: https://typescript-eslint.io/rules/ban-types
+[`@typescript-eslint/ban-ts-comment`]: https://typescript-eslint.io/rules/ban-ts-comment
+[`@typescript-eslint/consistent-type-assertions`]: https://typescript-eslint.io/rules/consistent-type-assertions
+[`@typescript-eslint/consistent-type-definitions`]: https://typescript-eslint.io/rules/consistent-type-definitions
+[`@typescript-eslint/explicit-member-accessibility`]: https://typescript-eslint.io/rules/explicit-member-accessibility
+[`@typescript-eslint/member-ordering`]: https://typescript-eslint.io/rules/member-ordering
+[`@typescript-eslint/method-signature-style`]: https://typescript-eslint.io/rules/method-signature-style
+[`@typescript-eslint/no-explicit-any`]: https://typescript-eslint.io/rules/no-explicit-any
+[`@typescript-eslint/no-empty-interface`]: https://typescript-eslint.io/rules/no-empty-interface
+[`@typescript-eslint/no-implied-eval`]: https://typescript-eslint.io/rules/no-implied-eval
+[`@typescript-eslint/no-inferrable-types`]: https://typescript-eslint.io/rules/no-inferrable-types
+[`@typescript-eslint/prefer-namespace-keyword`]: https://typescript-eslint.io/rules/prefer-namespace-keyword
+[`@typescript-eslint/promise-function-async`]: https://typescript-eslint.io/rules/promise-function-async
+[`@typescript-eslint/no-misused-promises`]: https://typescript-eslint.io/rules/no-misused-promises
+[`@typescript-eslint/no-namespace`]: https://typescript-eslint.io/rules/no-namespace
+[`@typescript-eslint/no-non-null-assertion`]: https://typescript-eslint.io/rules/no-non-null-assertion
+[`@typescript-eslint/triple-slash-reference`]: https://typescript-eslint.io/rules/triple-slash-reference
+[`@typescript-eslint/unbound-method`]: https://typescript-eslint.io/rules/unbound-method
+[`@typescript-eslint/no-unnecessary-type-assertion`]: https://typescript-eslint.io/rules/no-unnecessary-type-assertion
+[`@typescript-eslint/no-var-requires`]: https://typescript-eslint.io/rules/no-var-requires
+[`@typescript-eslint/type-annotation-spacing`]: https://typescript-eslint.io/rules/type-annotation-spacing
+[`@typescript-eslint/typedef`]: https://typescript-eslint.io/rules/typedef
+[`@typescript-eslint/unified-signatures`]: https://typescript-eslint.io/rules/unified-signatures
+[`@typescript-eslint/no-unnecessary-boolean-literal-compare`]: https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare
+[`@typescript-eslint/no-misused-new`]: https://typescript-eslint.io/rules/no-misused-new
+[`@typescript-eslint/no-this-alias`]: https://typescript-eslint.io/rules/no-this-alias
+[`@typescript-eslint/no-throw-literal`]: https://typescript-eslint.io/rules/no-throw-literal
+[`@typescript-eslint/no-extraneous-class`]: https://typescript-eslint.io/rules/no-extraneous-class
+[`@typescript-eslint/no-unused-vars`]: https://typescript-eslint.io/rules/no-unused-vars
+[`@typescript-eslint/no-use-before-define`]: https://typescript-eslint.io/rules/no-use-before-define
+[`@typescript-eslint/restrict-plus-operands`]: https://typescript-eslint.io/rules/restrict-plus-operands
+[`@typescript-eslint/strict-boolean-expressions`]: https://typescript-eslint.io/rules/strict-boolean-expressions
+[`@typescript-eslint/indent`]: https://typescript-eslint.io/rules/indent
+[`@typescript-eslint/no-invalid-void-type`]: https://typescript-eslint.io/rules/no-invalid-void-type
+[`@typescript-eslint/no-require-imports`]: https://typescript-eslint.io/rules/no-require-imports
+[`@typescript-eslint/array-type`]: https://typescript-eslint.io/rules/array-type
+[`@typescript-eslint/naming-convention`]: https://typescript-eslint.io/rules/naming-convention
+[`@typescript-eslint/interface-name-prefix`]: https://typescript-eslint.io/rules/interface-name-prefix
+[`@typescript-eslint/naming-convention`]: https://typescript-eslint.io/rules/naming-convention
+[`@typescript-eslint/no-parameter-properties`]: https://typescript-eslint.io/rules/no-parameter-properties
+[`@typescript-eslint/member-delimiter-style`]: https://typescript-eslint.io/rules/member-delimiter-style
+[`@typescript-eslint/prefer-for-of`]: https://typescript-eslint.io/rules/prefer-for-of
+[`@typescript-eslint/no-array-constructor`]: https://typescript-eslint.io/rules/no-array-constructor
+[`@typescript-eslint/no-dynamic-delete`]: https://typescript-eslint.io/rules/no-dynamic-delete
+[`@typescript-eslint/prefer-function-type`]: https://typescript-eslint.io/rules/prefer-function-type
+[`@typescript-eslint/prefer-readonly`]: https://typescript-eslint.io/rules/prefer-readonly
+[`@typescript-eslint/require-await`]: https://typescript-eslint.io/rules/require-await
+[`@typescript-eslint/no-for-in-array`]: https://typescript-eslint.io/rules/no-for-in-array
+[`@typescript-eslint/no-unnecessary-qualifier`]: https://typescript-eslint.io/rules/no-unnecessary-qualifier
+[`@typescript-eslint/no-unnecessary-type-arguments`]: https://typescript-eslint.io/rules/no-unnecessary-type-arguments
+[`@typescript-eslint/semi`]: https://typescript-eslint.io/rules/semi
+[`@typescript-eslint/no-floating-promises`]: https://typescript-eslint.io/rules/no-floating-promises
+[`@typescript-eslint/no-magic-numbers`]: https://typescript-eslint.io/rules/no-magic-numbers
+[`@typescript-eslint/no-unsafe-member-access`]: https://typescript-eslint.io/rules/no-unsafe-member-access
+[`@typescript-eslint/restrict-template-expressions`]: https://typescript-eslint.io/rules/restrict-template-expressions
+[`@typescript-eslint/no-confusing-void-expression`]: https://typescript-eslint.io/rules/no-confusing-void-expression
 
 <!-- eslint-plugin-import -->
 
@@ -667,6 +666,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 [`react/no-danger`]: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-danger.md
 [`react/jsx-curly-spacing`]: https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-curly-spacing.md
+[`react/jsx-no-target-blank`]: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-target-blank.md
 [`react/no-unused-state`]: https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-unused-state.md
 
 <!-- eslint-plugin-react-a11y -->
@@ -697,6 +697,19 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`jsdoc/require-jsdoc`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-jsdoc
 [`jsdoc/no-types`]: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-no-types
 
+<!-- @microsoft/eslint-plugin-sdl -->
+
+[`@microsoft/sdl/no-cookies`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-cookies.md
+[`@microsoft/sdl/no-document-domain`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-document-domain.md
+[`@microsoft/sdl/no-document-write`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-document-write.md
+[`@microsoft/sdl/no-html-method`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-html-method.md
+[`@microsoft/sdl/no-inner-html`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-inner-html.md
+[`@microsoft/sdl/no-insecure-random`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-insecure-random.md
+[`@microsoft/sdl/no-insecure-url`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-insecure-url.md
+[`@microsoft/sdl/no-msapp-exec-unsafe`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-msapp-exec-unsafe.md
+[`@microsoft/sdl/no-winjs-html-unsafe`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/no-winjs-html-unsafe.md
+[`@microsoft/sdl/react-iframe-missing-sandbox`]: https://github.com/microsoft/eslint-plugin-sdl/blob/main/docs/rules/react-iframe-missing-sandbox.md
+
 <!-- Miscellaneous plugins -->
 
 [`prefer-arrow/prefer-arrow-functions`]: https://github.com/TristonJ/eslint-plugin-prefer-arrow
@@ -710,3 +723,4 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`jsx-a11y/heading-has-content`]: https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/heading-has-content.md
 [`lodash/chaining`]: https://github.com/wix/eslint-plugin-lodash/blob/master/docs/rules/chaining.md
 [`deprecation/deprecation`]: https://github.com/gund/eslint-plugin-deprecation
+[`desktop/insecure-random`]: https://github.com/desktop/desktop/blob/development/eslint-rules/insecure-random.js

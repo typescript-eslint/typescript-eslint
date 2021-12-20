@@ -642,6 +642,13 @@ ruleTester.run('padding-line-between-statements', rule, {
         { blankLine: 'always', prev: 'type', next: '*' },
       ],
     },
+    {
+      code: 'let var1, var2, type;\nvar1 = "bar";\ntype="baz";\ntype="qux";\nvar2="quux";',
+      options: [
+        { blankLine: 'never', prev: '*', next: 'type' },
+        { blankLine: 'always', prev: 'type', next: '*' },
+      ],
+    },
 
     //----------------------------------------------------------------------
     // interface

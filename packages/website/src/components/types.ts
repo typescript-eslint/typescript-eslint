@@ -42,5 +42,15 @@ export interface ConfigModel {
   tsConfig?: CompilerFlags;
   code: string;
   ts: string;
-  showAST?: boolean;
+  showAST?: boolean | 'ts' | 'es';
+}
+
+export interface SelectedPosition {
+  line: number;
+  column: number;
+}
+
+export interface SelectedRange {
+  start: SelectedPosition;
+  end: SelectedPosition;
 }
