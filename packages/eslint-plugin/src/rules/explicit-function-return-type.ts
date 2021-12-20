@@ -83,8 +83,9 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (
-          isValidFunctionExpressionReturnType(node, options) ||
-          ancestorHasReturnType(node)
+          options.allowTypedFunctionExpressions &&
+          (isValidFunctionExpressionReturnType(node, options) ||
+            ancestorHasReturnType(node))
         ) {
           return;
         }

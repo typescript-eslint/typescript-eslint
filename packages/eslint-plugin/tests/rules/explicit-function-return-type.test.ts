@@ -416,6 +416,19 @@ const x: HigherOrderType = () => arg1 => arg2 => 'foo';
     {
       filename: 'test.ts',
       code: `
+type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
+const x: HigherOrderType = () => arg1 => arg2 => 'foo';
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+          allowHigherOrderFunctions: false,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 interface Foo {
   foo: string;
   arrowFn: () => string;
@@ -1070,6 +1083,64 @@ foo({
           endLine: 14,
           column: 9,
           endColumn: 14,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
+const x: HigherOrderType = () => arg1 => arg2 => 'foo';
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+          allowHigherOrderFunctions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 42,
+          endColumn: 49,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
+const x: HigherOrderType = () => arg1 => arg2 => 'foo';
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+          allowHigherOrderFunctions: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 28,
+          endColumn: 33,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 41,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 42,
+          endColumn: 49,
         },
       ],
     },
