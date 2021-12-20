@@ -46,15 +46,24 @@ const PADDING_LINE_SEQUENCE = new RegExp(
 );
 
 /**
- * Creates tester which check if a node starts with specific keyword.
+ * Creates tester which check if a node starts with specific keyword with the
+ * appropriate AST_NODE_TYPES.
  * @param keyword The keyword to test.
  * @returns the created tester.
  * @private
  */
-function newKeywordTester(keyword: string): NodeTestObject {
+function newKeywordTester(
+  type: AST_NODE_TYPES | AST_NODE_TYPES[],
+  keyword: string,
+): NodeTestObject {
   return {
     test(node, sourceCode): boolean {
-      return sourceCode.getFirstToken(node)?.value === keyword;
+      const isSameKeyword = sourceCode.getFirstToken(node)?.value === keyword;
+      const isSameType = Array.isArray(type)
+        ? type.some(val => val === node.type)
+        : type === node.type;
+
+      return isSameKeyword && isSameType;
     },
   };
 }
@@ -525,30 +534,52 @@ const StatementTypes: Record<string, NodeTestObject> = {
   empty: newNodeTypeTester(AST_NODE_TYPES.EmptyStatement),
   function: newNodeTypeTester(AST_NODE_TYPES.FunctionDeclaration),
 
-  break: newKeywordTester('break'),
-  case: newKeywordTester('case'),
-  class: newKeywordTester('class'),
-  const: newKeywordTester('const'),
-  continue: newKeywordTester('continue'),
-  debugger: newKeywordTester('debugger'),
-  default: newKeywordTester('default'),
-  do: newKeywordTester('do'),
-  export: newKeywordTester('export'),
-  for: newKeywordTester('for'),
-  if: newKeywordTester('if'),
-  import: newKeywordTester('import'),
-  let: newKeywordTester('let'),
-  return: newKeywordTester('return'),
-  switch: newKeywordTester('switch'),
-  throw: newKeywordTester('throw'),
-  try: newKeywordTester('try'),
-  var: newKeywordTester('var'),
-  while: newKeywordTester('while'),
-  with: newKeywordTester('with'),
+  break: newKeywordTester(AST_NODE_TYPES.BreakStatement, 'break'),
+  case: newKeywordTester(AST_NODE_TYPES.SwitchCase, 'case'),
+  class: newKeywordTester(AST_NODE_TYPES.ClassDeclaration, 'class'),
+  const: newKeywordTester(AST_NODE_TYPES.VariableDeclaration, 'const'),
+  continue: newKeywordTester(AST_NODE_TYPES.ContinueStatement, 'continue'),
+  debugger: newKeywordTester(AST_NODE_TYPES.DebuggerStatement, 'debugger'),
+  default: newKeywordTester(
+    [AST_NODE_TYPES.SwitchCase, AST_NODE_TYPES.ExportDefaultDeclaration],
+    'default',
+  ),
+  do: newKeywordTester(AST_NODE_TYPES.DoWhileStatement, 'do'),
+  export: newKeywordTester(
+    [
+      AST_NODE_TYPES.ExportDefaultDeclaration,
+      AST_NODE_TYPES.ExportNamedDeclaration,
+    ],
+    'export',
+  ),
+  for: newKeywordTester(
+    [
+      AST_NODE_TYPES.ForStatement,
+      AST_NODE_TYPES.ForInStatement,
+      AST_NODE_TYPES.ForOfStatement,
+    ],
+    'for',
+  ),
+  if: newKeywordTester(AST_NODE_TYPES.IfStatement, 'if'),
+  import: newKeywordTester(AST_NODE_TYPES.ImportDeclaration, 'import'),
+  let: newKeywordTester(AST_NODE_TYPES.VariableDeclaration, 'let'),
+  return: newKeywordTester(AST_NODE_TYPES.ReturnStatement, 'return'),
+  switch: newKeywordTester(AST_NODE_TYPES.SwitchStatement, 'switch'),
+  throw: newKeywordTester(AST_NODE_TYPES.ThrowStatement, 'throw'),
+  try: newKeywordTester(AST_NODE_TYPES.TryStatement, 'try'),
+  var: newKeywordTester(AST_NODE_TYPES.VariableDeclaration, 'var'),
+  while: newKeywordTester(
+    [AST_NODE_TYPES.WhileStatement, AST_NODE_TYPES.DoWhileStatement],
+    'while',
+  ),
+  with: newKeywordTester(AST_NODE_TYPES.WithStatement, 'with'),
 
   // Additional Typescript constructs
-  interface: newKeywordTester('interface'),
-  type: newKeywordTester('type'),
+  interface: newKeywordTester(
+    AST_NODE_TYPES.TSInterfaceDeclaration,
+    'interface',
+  ),
+  type: newKeywordTester(AST_NODE_TYPES.TSTypeAliasDeclaration, 'type'),
 };
 
 //------------------------------------------------------------------------------

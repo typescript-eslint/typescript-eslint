@@ -94,7 +94,7 @@ const { log } = OtherClass;
 log();
 ```
 
-### Example
+## Example
 
 ```json
 {

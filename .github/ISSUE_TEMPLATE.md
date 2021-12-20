@@ -15,7 +15,7 @@ The more relevant information you can include, the faster we can find the issue 
 
 - [ ] I have tried restarting my IDE and the issue persists.
 - [ ] I have updated to the latest version of the packages.
-- [ ] I have [read the FAQ](https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TROUBLESHOOTING.md) and my problem is not listed.
+- [ ] I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
 
 **Repro**
 
