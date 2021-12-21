@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '../index';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import debug from 'debug';
 import {
   isCallExpression,

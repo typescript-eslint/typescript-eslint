@@ -12,6 +12,7 @@ export * from './nullThrows';
 export * from './objectIterators';
 export * from './propertyTypes';
 export * from './requiresQuoting';
+// TODO: remove in next major release
 export * from '@typescript-eslint/experimental-utils/dist/eslint-utils/types';
 
 // this is done for convenience - saves migrating all of the old rules
