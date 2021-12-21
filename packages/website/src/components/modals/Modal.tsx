@@ -2,7 +2,7 @@
 import React, { MouseEvent, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './Modal.module.css';
-import CloseIcon from '../icons/CloseIcon';
+import CloseIcon from '@site/src/icons/close.svg';
 
 interface ModalProps {
   readonly header: string;
@@ -52,7 +52,7 @@ function Modal(props: ModalProps): JSX.Element {
             className={clsx(styles.modalClose, 'clean-btn')}
             type="button"
           >
-            <CloseIcon size={22} />
+            <CloseIcon />
           </button>
         </div>
         <div className={styles.modalBody}>

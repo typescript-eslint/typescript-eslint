@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.7.0...v5.8.0) (2021-12-20)
+
+
+### Bug Fixes
+
+* **experimental-utils:** support immutable members ([#3844](https://github.com/typescript-eslint/typescript-eslint/issues/3844)) ([3d33a77](https://github.com/typescript-eslint/typescript-eslint/commit/3d33a77c57e5b752edf6f35ed152038bdb230b79))
+
+
+
+
+
 # [5.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.6.0...v5.7.0) (2021-12-13)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils

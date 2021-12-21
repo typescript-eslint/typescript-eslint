@@ -135,15 +135,14 @@ export default util.createRule({
     function checkImpliedEval(
       node: TSESTree.NewExpression | TSESTree.CallExpression,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.callee);
-      const type = checker.getTypeAtLocation(tsNode);
-
       const calleeName = getCalleeName(node.callee);
       if (calleeName === null) {
         return;
       }
 
       if (calleeName === FUNCTION_CONSTRUCTOR) {
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.callee);
+        const type = checker.getTypeAtLocation(tsNode);
         const symbol = type.getSymbol();
         if (symbol) {
           const declarations = symbol.getDeclarations() ?? [];

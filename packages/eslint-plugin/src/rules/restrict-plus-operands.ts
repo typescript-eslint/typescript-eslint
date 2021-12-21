@@ -5,6 +5,7 @@ import * as util from '../util';
 type Options = [
   {
     checkCompoundAssignments?: boolean;
+    allowAny?: boolean;
   },
 ];
 type MessageIds = 'notNumbers' | 'notStrings' | 'notBigInts';
@@ -34,6 +35,9 @@ export default util.createRule<Options, MessageIds>({
           checkCompoundAssignments: {
             type: 'boolean',
           },
+          allowAny: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -41,13 +45,14 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       checkCompoundAssignments: false,
+      allowAny: false,
     },
   ],
-  create(context, [{ checkCompoundAssignments }]) {
+  create(context, [{ checkCompoundAssignments, allowAny }]) {
     const service = util.getParserServices(context);
     const typeChecker = service.program.getTypeChecker();
 
-    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid';
+    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid' | 'any';
 
     /**
      * Helper function to get base type of node
@@ -82,7 +87,8 @@ export default util.createRule<Options, MessageIds>({
       if (
         stringType === 'number' ||
         stringType === 'string' ||
-        stringType === 'bigint'
+        stringType === 'bigint' ||
+        stringType === 'any'
       ) {
         return stringType;
       }
@@ -108,28 +114,53 @@ export default util.createRule<Options, MessageIds>({
       const leftType = getNodeType(node.left);
       const rightType = getNodeType(node.right);
 
-      if (
-        leftType === 'invalid' ||
-        rightType === 'invalid' ||
-        leftType !== rightType
-      ) {
-        if (leftType === 'string' || rightType === 'string') {
-          context.report({
-            node,
-            messageId: 'notStrings',
-          });
-        } else if (leftType === 'bigint' || rightType === 'bigint') {
-          context.report({
-            node,
-            messageId: 'notBigInts',
-          });
-        } else {
+      if (leftType === rightType) {
+        if (leftType === 'invalid') {
           context.report({
             node,
             messageId: 'notNumbers',
           });
         }
+
+        if (!allowAny && leftType === 'any') {
+          context.report({
+            node,
+            messageId: 'notNumbers',
+          });
+        }
+
+        return;
       }
+
+      if (leftType === 'any' || rightType === 'any') {
+        if (!allowAny || leftType === 'invalid' || rightType === 'invalid') {
+          context.report({
+            node,
+            messageId: 'notNumbers',
+          });
+        }
+
+        return;
+      }
+
+      if (leftType === 'string' || rightType === 'string') {
+        return context.report({
+          node,
+          messageId: 'notStrings',
+        });
+      }
+
+      if (leftType === 'bigint' || rightType === 'bigint') {
+        return context.report({
+          node,
+          messageId: 'notBigInts',
+        });
+      }
+
+      context.report({
+        node,
+        messageId: 'notNumbers',
+      });
     }
 
     return {

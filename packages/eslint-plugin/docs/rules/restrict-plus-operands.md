@@ -22,14 +22,25 @@ var foo = 1n + 1n;
 
 ## Options
 
-This rule has an object option:
+The rule accepts an options object with the following properties:
 
-- `"checkCompoundAssignments": false`: (default) does not check compound assignments (`+=`)
-- `"checkCompoundAssignments": true`
+```ts
+type Options = {
+  // if true, check compound assignments (`+=`)
+  checkCompoundAssignments?: boolean;
+  // if true, 'any' itself and `string`,`bigint`, `number` is allowed.
+  allowAny?: boolean;
+};
+
+const defaults = {
+  checkCompoundAssignments: false,
+  allowAny: false,
+};
+```
 
 ### `checkCompoundAssignments`
 
-Examples of code for the `{ "checkCompoundAssignments": true }` option:
+Examples of code for this rule with `{ checkCompoundAssignments: true }`:
 
 <!--tabs-->
 
@@ -55,6 +66,29 @@ foo += 1;
 
 let bar = '';
 bar += 'test';
+```
+
+### `allowAny`
+
+Examples of code for this rule with `{ allowAny: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+var fn = (a: any, b: boolean) => a + b;
+var fn = (a: any, b: []) => a + b;
+var fn = (a: any, b: {}) => a + b;
+```
+
+#### ✅ Correct
+
+```ts
+var fn = (a: any, b: any) => a + b;
+var fn = (a: any, b: string) => a + b;
+var fn = (a: any, b: bigint) => a + b;
+var fn = (a: any, b: number) => a + b;
 ```
 
 ## How to Use
