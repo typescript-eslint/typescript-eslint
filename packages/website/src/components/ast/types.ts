@@ -31,19 +31,15 @@ export interface ASTViewerModelComplex extends ASTViewerModelBase {
   value: ASTViewerModelMap[];
 }
 
-export interface ASTViewerModelMapSimple {
-  key: string | undefined;
-  model: ASTViewerModelSimple;
-}
-export interface ASTViewerModelMapComplex {
-  key: string | undefined;
-  model: ASTViewerModelComplex;
+export type ASTViewerModel = ASTViewerModelSimple | ASTViewerModelComplex;
+
+export interface ASTViewerModelMap<T = ASTViewerModel> {
+  key?: string;
+  model: T;
 }
 
-export type ASTViewerModel = ASTViewerModelSimple | ASTViewerModelComplex;
-export type ASTViewerModelMap =
-  | ASTViewerModelMapSimple
-  | ASTViewerModelMapComplex;
+export type ASTViewerModelMapSimple = ASTViewerModelMap<ASTViewerModelSimple>;
+export type ASTViewerModelMapComplex = ASTViewerModelMap<ASTViewerModelComplex>;
 
 export interface GenericParams<V> {
   readonly data: V;
