@@ -58,7 +58,7 @@ export default util.createRule({
               const typeNode = node.typeParameters ?? node.id;
               const fixes: TSESLint.RuleFix[] = [];
 
-              const firstToken = sourceCode.getFirstToken(node);
+              const firstToken = sourceCode.getTokenBefore(node.id);
               if (firstToken) {
                 fixes.push(fixer.replaceText(firstToken, 'interface'));
                 fixes.push(
@@ -98,7 +98,7 @@ export default util.createRule({
                   const typeNode = node.typeParameters ?? node.id;
                   const fixes: TSESLint.RuleFix[] = [];
 
-                  const firstToken = sourceCode.getFirstToken(node);
+                  const firstToken = sourceCode.getTokenBefore(node.id);
                   if (firstToken) {
                     fixes.push(fixer.replaceText(firstToken, 'type'));
                     fixes.push(
