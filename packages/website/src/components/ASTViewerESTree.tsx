@@ -21,8 +21,8 @@ export default function ASTViewerESTree({
     if (typeof value === 'string') {
       setModel(value);
     } else {
-      const scopeSerializer = createESTreeSerializer();
-      setModel(serialize(value, scopeSerializer));
+      const astSerializer = createESTreeSerializer();
+      setModel(serialize(value, astSerializer));
     }
   }, [value]);
 
