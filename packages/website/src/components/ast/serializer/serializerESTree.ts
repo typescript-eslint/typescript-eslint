@@ -1,4 +1,4 @@
-import type { ASTViewerModel, Serializer } from './types';
+import type { ASTViewerModel, Serializer } from '../types';
 import { isRecord } from '../utils';
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 

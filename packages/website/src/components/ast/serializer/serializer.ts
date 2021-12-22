@@ -1,4 +1,4 @@
-import type { ASTViewerModel, Serializer } from './types';
+import type { ASTViewerModel, Serializer } from '../types';
 import { isRecord, objType } from '../utils';
 
 function getSimpleModel(data: unknown): ASTViewerModel {
@@ -39,7 +39,10 @@ function getSimpleModel(data: unknown): ASTViewerModel {
   };
 }
 
-export function serialize(data: unknown, mapper?: Serializer): ASTViewerModel {
+export function serialize(
+  data: unknown,
+  serializer?: Serializer,
+): ASTViewerModel {
   function processValue(data: [string, unknown][]): ASTViewerModel[] {
     return data
       .filter(item => !item[0].startsWith('_') && item[1] !== undefined)
@@ -48,11 +51,13 @@ export function serialize(data: unknown, mapper?: Serializer): ASTViewerModel {
 
   function _serialize(data: unknown, key?: string): ASTViewerModel {
     if (isRecord(data)) {
-      const mapped = mapper ? mapper(data, key, processValue) : undefined;
-      if (mapped) {
+      const serialized = serializer
+        ? serializer(data, key, processValue)
+        : undefined;
+      if (serialized) {
         return {
           key,
-          ...mapped,
+          ...serialized,
         };
       }
       return {

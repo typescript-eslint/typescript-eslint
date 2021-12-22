@@ -53,4 +53,10 @@ export interface ASTViewerProps extends ASTViewerBaseProps {
   readonly value: ASTViewerModel | string;
 }
 
+export type Serializer = (
+  data: Record<string, unknown>,
+  key: string | undefined,
+  processValue: (data: [string, unknown][]) => ASTViewerModel[],
+) => ASTViewerModel | undefined;
+
 export type { SelectedPosition, SelectedRange };

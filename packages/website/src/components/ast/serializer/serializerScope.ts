@@ -1,4 +1,4 @@
-import type { ASTViewerModel, Serializer, SelectedRange } from './types';
+import type { ASTViewerModel, Serializer, SelectedRange } from '../types';
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 import { isRecord } from '../utils';
 
@@ -86,7 +86,7 @@ function getNodeType(nodeName: string | undefined): NodeType | undefined {
 function getProps(nodeType: NodeType | undefined): string[] | undefined {
   switch (nodeType) {
     case 'ScopeManager':
-      return ['variables', 'scopes', 'references'];
+      return ['scopes', 'variables', 'references'];
     case 'Scope':
       return [
         'block',
@@ -127,7 +127,7 @@ function getProps(nodeType: NodeType | undefined): string[] | undefined {
 }
 
 export function createScopeSerializer(): Serializer {
-  const SEEN_THINGS = new Set<unknown>();
+  const SEEN_THINGS = new Map<string, ASTViewerModel>();
 
   return function serializer(
     data,
@@ -144,14 +144,25 @@ export function createScopeSerializer(): Serializer {
       const uniqName = `${nodeName}${value}`;
 
       if (SEEN_THINGS.has(uniqName)) {
-        return {
-          range: getRange(data),
-          type: 'ref',
-          name: nodeName,
-          value: value,
-        };
+        const found = SEEN_THINGS.get(uniqName);
+        if (found && Array.isArray(found.value) && found.value.length === 0) {
+          return {
+            range: found.range,
+            type: 'ref',
+            name: found.name,
+            value: '',
+          };
+        }
+        return found;
       }
-      SEEN_THINGS.add(uniqName);
+
+      const result: ASTViewerModel = {
+        range: getRange(data),
+        type: 'object',
+        name: nodeName,
+        value: [],
+      };
+      SEEN_THINGS.set(uniqName, result);
 
       let values: [string, unknown][];
 
@@ -162,12 +173,8 @@ export function createScopeSerializer(): Serializer {
         values = Object.entries(data);
       }
 
-      return {
-        range: getRange(data),
-        type: 'object',
-        name: nodeName,
-        value: processValue(values),
-      };
+      result.value = processValue(values);
+      return result;
     }
 
     if (isESTreeNode(data)) {

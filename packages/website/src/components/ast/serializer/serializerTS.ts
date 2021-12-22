@@ -1,4 +1,4 @@
-import type { ASTViewerModel, Serializer, SelectedPosition } from './types';
+import type { ASTViewerModel, Serializer, SelectedPosition } from '../types';
 import type { SourceFile, Node } from 'typescript';
 import { isRecord } from '../utils';
 
