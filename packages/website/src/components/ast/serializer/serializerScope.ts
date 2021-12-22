@@ -145,8 +145,7 @@ export function createScopeSerializer(): Serializer {
       const uniqName = `${nodeName}${value}`;
 
       if (SEEN_THINGS.has(uniqName)) {
-        const found = SEEN_THINGS.get(uniqName);
-        return found;
+        return SEEN_THINGS.get(uniqName);
       }
 
       const result: ASTViewerModel = {
@@ -161,7 +160,10 @@ export function createScopeSerializer(): Serializer {
 
       const props = getProps(nodeType);
       if (props) {
-        values = props.map(key => [key, data[key]]);
+        values = props.map(key => {
+          const res = data[key];
+          return [key, typeof res === 'function' ? res.bind(data) : res];
+        });
       } else {
         values = Object.entries(data);
       }

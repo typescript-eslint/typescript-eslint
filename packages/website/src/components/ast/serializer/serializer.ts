@@ -59,7 +59,6 @@ export function serialize(
         ? serializer(data, key, processValue)
         : undefined;
       if (serialized) {
-        // @ts-expect-error: typescript is funky
         return { key, model: serialized };
       }
       return {
@@ -77,6 +76,10 @@ export function serialize(
           type: 'array',
         },
       };
+    }
+
+    if (typeof data === 'function' && key) {
+      return { key: `${key}()`, model: getSimpleModel(data()) };
     }
 
     return { key, model: getSimpleModel(data) };
