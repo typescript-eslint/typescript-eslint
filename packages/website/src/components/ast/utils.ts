@@ -43,7 +43,7 @@ export function isArrayInRange(
   value: ASTViewerModelComplex,
 ): boolean {
   return Boolean(
-    position && value.value.some(item => isInRange(position, item)),
+    position && value.value.some(item => isInRange(position, item.model)),
   );
 }
 
@@ -54,10 +54,10 @@ export function hasChildInRange(
   return Boolean(
     position &&
       value.value.some(item =>
-        item.type === 'object'
-          ? isInRange(position, item)
-          : item.type === 'array'
-          ? isArrayInRange(position, item)
+        item.model.type === 'object'
+          ? isInRange(position, item.model)
+          : item.model.type === 'array'
+          ? isArrayInRange(position, item.model)
           : false,
       ),
   );

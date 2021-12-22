@@ -30,7 +30,7 @@ function ASTViewer({
     <div className={styles.list}>
       <ElementItem
         getTooltip={getTooltip}
-        value={value}
+        data={value}
         level="ast"
         selection={selection}
         onSelectNode={onSelectNode}

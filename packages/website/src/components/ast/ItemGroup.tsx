@@ -5,11 +5,10 @@ import clsx from 'clsx';
 import styles from './ASTViewer.module.css';
 
 import PropertyName from './PropertyName';
-import type { ASTViewerModel } from './types';
+import type { ASTViewerModelMap } from './types';
 
 export interface ItemGroupProps {
-  readonly propName?: string;
-  readonly value: ASTViewerModel;
+  readonly data: ASTViewerModelMap;
   readonly isSelected?: boolean;
   readonly isExpanded?: boolean;
   readonly canExpand?: boolean;
@@ -19,8 +18,7 @@ export interface ItemGroupProps {
 }
 
 export default function ItemGroup({
-  propName,
-  value,
+  data,
   isSelected,
   isExpanded,
   canExpand,
@@ -46,8 +44,8 @@ export default function ItemGroup({
       )}
     >
       <PropertyName
-        propName={propName}
-        typeName={value.name}
+        propName={data.key}
+        typeName={data.model.name}
         onHover={onHover}
         onClick={(canExpand && onClick) || undefined}
       />

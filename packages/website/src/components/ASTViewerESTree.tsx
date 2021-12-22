@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
-import type { ASTViewerBaseProps, ASTViewerModel } from './ast/types';
+import type { ASTViewerBaseProps, ASTViewerModelMap } from './ast/types';
 import type { TSESTree } from '@typescript-eslint/website-eslint';
 import { serialize } from './ast/serializer/serializer';
 import { createESTreeSerializer } from './ast/serializer/serializerESTree';
@@ -15,7 +15,7 @@ export default function ASTViewerESTree({
   position,
   onSelectNode,
 }: ASTESTreeViewerProps): JSX.Element {
-  const [model, setModel] = useState<string | ASTViewerModel>('');
+  const [model, setModel] = useState<string | ASTViewerModelMap>('');
 
   useEffect(() => {
     if (typeof value === 'string') {

@@ -3,47 +3,46 @@ import ItemGroup from './ItemGroup';
 import Tooltip from '@site/src/components/inputs/Tooltip';
 import PropertyValue from './PropertyValue';
 
-import type { ASTViewerModelSimple, GetTooltipFn } from './types';
-import { OnSelectNodeFn } from './types';
+import type {
+  ASTViewerModelMapSimple,
+  GetTooltipFn,
+  OnSelectNodeFn,
+} from './types';
 
 export interface SimpleItemProps {
   readonly getTooltip?: GetTooltipFn;
-  readonly value: ASTViewerModelSimple;
+  readonly data: ASTViewerModelMapSimple;
   readonly onSelectNode?: OnSelectNodeFn;
 }
 
 export function SimpleItem({
   getTooltip,
-  value,
+  data,
   onSelectNode,
 }: SimpleItemProps): JSX.Element {
   const [tooltip, setTooltip] = useState<string | undefined>();
 
   useEffect(() => {
-    setTooltip(getTooltip?.(value));
-  }, [getTooltip, value]);
+    setTooltip(getTooltip?.(data));
+  }, [getTooltip, data]);
 
   const onHover = useCallback(
     (state: boolean) => {
-      if (onSelectNode && value.range) {
-        onSelectNode(state ? value.range : null);
+      if (onSelectNode && data.model.range) {
+        onSelectNode(state ? data.model.range : null);
       }
     },
-    [value],
+    [data],
   );
 
   return (
-    <ItemGroup
-      propName={value.key}
-      value={value}
-      onHover={value.range && onHover}
-    >
+    <ItemGroup data={data} onHover={data.model.range && onHover}>
       {tooltip ? (
         <Tooltip hover={true} position="right" text={tooltip}>
-          <PropertyValue value={value} />
+          <PropertyValue value={data} />
         </Tooltip>
       ) : (
-        <PropertyValue value={value} />
+        <PropertyValue value={data} />
       )}
     </ItemGroup>
   );

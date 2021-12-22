@@ -1,7 +1,11 @@
-import type { ASTViewerModel, Serializer } from '../types';
+import type {
+  ASTViewerModelSimple,
+  ASTViewerModelMap,
+  Serializer,
+} from '../types';
 import { isRecord, objType } from '../utils';
 
-function getSimpleModel(data: unknown): ASTViewerModel {
+function getSimpleModel(data: unknown): ASTViewerModelSimple {
   if (typeof data === 'string') {
     return {
       value: JSON.stringify(data),
@@ -42,41 +46,40 @@ function getSimpleModel(data: unknown): ASTViewerModel {
 export function serialize(
   data: unknown,
   serializer?: Serializer,
-): ASTViewerModel {
-  function processValue(data: [string, unknown][]): ASTViewerModel[] {
+): ASTViewerModelMap {
+  function processValue(data: [string, unknown][]): ASTViewerModelMap[] {
     return data
       .filter(item => !item[0].startsWith('_') && item[1] !== undefined)
       .map(item => _serialize(item[1], item[0]));
   }
 
-  function _serialize(data: unknown, key?: string): ASTViewerModel {
+  function _serialize(data: unknown, key?: string): ASTViewerModelMap {
     if (isRecord(data)) {
       const serialized = serializer
         ? serializer(data, key, processValue)
         : undefined;
       if (serialized) {
-        return {
-          key,
-          ...serialized,
-        };
+        // @ts-expect-error: typescript is funky
+        return { key, model: serialized };
       }
       return {
         key,
-        value: processValue(Object.entries(data)),
-        type: 'object',
+        model: {
+          value: processValue(Object.entries(data)),
+          type: 'object',
+        },
       };
     } else if (Array.isArray(data)) {
       return {
         key,
-        value: processValue(Object.entries(data)),
-        type: 'array',
+        model: {
+          value: processValue(Object.entries(data)),
+          type: 'array',
+        },
       };
     }
 
-    return {
-      key,
-      ...getSimpleModel(data),
-    };
+    return { key, model: getSimpleModel(data) };
   }
 
   return _serialize(data);

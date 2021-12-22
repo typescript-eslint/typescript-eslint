@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ASTViewer.module.css';
 import PropertyValue from './PropertyValue';
-import type { ASTViewerModel } from './types';
+import type { ASTViewerModelMap } from './types';
 
 export interface HiddenItemProps {
-  readonly value: ASTViewerModel[];
+  readonly value: ASTViewerModelMap[];
   readonly level: string;
   readonly isArray?: boolean;
 }
@@ -20,7 +20,7 @@ export default function HiddenItem({
   useEffect(() => {
     if (isArray) {
       const filtered = value.filter(item => !isNaN(Number(item.key)));
-      setIsComplex(filtered.some(item => item.type !== 'number'));
+      setIsComplex(filtered.some(item => item.model.type !== 'number'));
       setLength(filtered.length);
     }
   }, [value, isArray]);

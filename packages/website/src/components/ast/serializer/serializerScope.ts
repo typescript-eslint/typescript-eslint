@@ -94,10 +94,11 @@ function getProps(nodeType: NodeType | undefined): string[] | undefined {
         'references',
         'set',
         'type',
-        'upper',
         'variables',
         'variableScope',
         'functionExpressionScope',
+        'childScopes',
+        'upper',
       ];
     case 'Definition':
       return ['name', 'type', 'node'];
@@ -145,14 +146,6 @@ export function createScopeSerializer(): Serializer {
 
       if (SEEN_THINGS.has(uniqName)) {
         const found = SEEN_THINGS.get(uniqName);
-        if (found && Array.isArray(found.value) && found.value.length === 0) {
-          return {
-            range: found.range,
-            type: 'ref',
-            name: found.name,
-            value: '',
-          };
-        }
         return found;
       }
 

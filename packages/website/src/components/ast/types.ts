@@ -1,7 +1,7 @@
 import type { SelectedPosition, SelectedRange } from '../types';
 import Monaco from 'monaco-editor';
 
-export type GetTooltipFn = (data: ASTViewerModelSimple) => string | undefined;
+export type GetTooltipFn = (data: ASTViewerModelMap) => string | undefined;
 export type OnSelectNodeFn = (node: SelectedRange | null) => void;
 
 export type ASTViewerModelTypeSimple =
@@ -17,7 +17,6 @@ export type ASTViewerModelTypeSimple =
 export type ASTViewerModelTypeComplex = 'object' | 'array';
 
 export interface ASTViewerModelBase {
-  key?: string;
   name?: string;
   range?: SelectedRange;
 }
@@ -29,14 +28,25 @@ export interface ASTViewerModelSimple extends ASTViewerModelBase {
 
 export interface ASTViewerModelComplex extends ASTViewerModelBase {
   type: ASTViewerModelTypeComplex;
-  value: ASTViewerModel[];
+  value: ASTViewerModelMap[];
+}
+
+export interface ASTViewerModelMapSimple {
+  key: string | undefined;
+  model: ASTViewerModelSimple;
+}
+export interface ASTViewerModelMapComplex {
+  key: string | undefined;
+  model: ASTViewerModelComplex;
 }
 
 export type ASTViewerModel = ASTViewerModelSimple | ASTViewerModelComplex;
+export type ASTViewerModelMap =
+  | ASTViewerModelMapSimple
+  | ASTViewerModelMapComplex;
 
 export interface GenericParams<V> {
-  readonly propName?: string;
-  readonly value: V;
+  readonly data: V;
   readonly level: string;
   readonly selection?: SelectedPosition | null;
   readonly onSelectNode?: OnSelectNodeFn;
@@ -50,13 +60,13 @@ export interface ASTViewerBaseProps {
 
 export interface ASTViewerProps extends ASTViewerBaseProps {
   readonly getTooltip?: GetTooltipFn;
-  readonly value: ASTViewerModel | string;
+  readonly value: ASTViewerModelMap | string;
 }
 
 export type Serializer = (
   data: Record<string, unknown>,
   key: string | undefined,
-  processValue: (data: [string, unknown][]) => ASTViewerModel[],
+  processValue: (data: [string, unknown][]) => ASTViewerModelMap[],
 ) => ASTViewerModel | undefined;
 
 export type { SelectedPosition, SelectedRange };

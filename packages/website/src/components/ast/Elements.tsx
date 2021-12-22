@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import type {
   GenericParams,
-  ASTViewerModelComplex,
-  ASTViewerModel,
-  ASTViewerModelSimple,
+  ASTViewerModelMap,
+  ASTViewerModelMapComplex,
+  ASTViewerModelMapSimple,
 } from './types';
 
 import { hasChildInRange, isArrayInRange, isInRange } from './utils';
@@ -16,64 +16,62 @@ import HiddenItem from './HiddenItem';
 import { SimpleItem } from './SimpleItem';
 
 export function ComplexItem({
-  value,
+  data,
   onSelectNode,
   level,
   selection,
-  propName,
   getTooltip,
-}: GenericParams<ASTViewerModelComplex>): JSX.Element {
+}: GenericParams<ASTViewerModelMapComplex>): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(() => level === 'ast');
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const onHover = useCallback(
     (state: boolean) => {
       if (onSelectNode) {
-        const range = value.range;
+        const range = data.model.range;
         if (range) {
           onSelectNode(state ? range : null);
         }
       }
     },
-    [value],
+    [data],
   );
 
   useEffect(() => {
     const selected = selection
-      ? value.type === 'array'
-        ? isArrayInRange(selection, value)
-        : isInRange(selection, value)
+      ? data.model.type === 'array'
+        ? isArrayInRange(selection, data.model)
+        : isInRange(selection, data.model)
       : false;
 
     setIsSelected(
-      level !== 'ast' && selected && !hasChildInRange(selection, value),
+      level !== 'ast' && selected && !hasChildInRange(selection, data.model),
     );
 
     if (selected && !isExpanded) {
       setIsExpanded(selected);
     }
-  }, [selection, value]);
+  }, [selection, data]);
 
   return (
     <ItemGroup
-      propName={propName}
-      value={value}
+      data={data}
       isExpanded={isExpanded}
       isSelected={isSelected}
       canExpand={true}
       onHover={onHover}
       onClick={(): void => setIsExpanded(!isExpanded)}
     >
-      <span>{value.type === 'array' ? '[' : '{'}</span>
+      <span>{data.model.type === 'array' ? '[' : '{'}</span>
       {isExpanded ? (
         <div className={styles.subList}>
-          {value.value.map((item, index) => (
+          {data.model.value.map((item, index) => (
             <ElementItem
               level={`${level}_${item.key}[${index}]`}
               key={`${level}_${item.key}[${index}]`}
               getTooltip={getTooltip}
               selection={selection}
-              value={item}
+              data={item}
               onSelectNode={onSelectNode}
             />
           ))}
@@ -81,11 +79,11 @@ export function ComplexItem({
       ) : (
         <HiddenItem
           level={level}
-          isArray={value.type === 'array'}
-          value={value.value}
+          isArray={data.model.type === 'array'}
+          value={data.model.value}
         />
       )}
-      <span>{value.type === 'array' ? ']' : '}'}</span>
+      <span>{data.model.type === 'array' ? ']' : '}'}</span>
     </ItemGroup>
   );
 }
@@ -94,25 +92,24 @@ export function ElementItem({
   level,
   getTooltip,
   selection,
-  value,
+  data,
   onSelectNode,
-}: GenericParams<ASTViewerModel>): JSX.Element {
-  if (value.type === 'array' || value.type === 'object') {
+}: GenericParams<ASTViewerModelMap>): JSX.Element {
+  if (data.model.type === 'array' || data.model.type === 'object') {
     return (
       <ComplexItem
         level={level}
-        propName={value.key}
         getTooltip={getTooltip}
         selection={selection}
         onSelectNode={onSelectNode}
-        value={value}
+        data={data as ASTViewerModelMapComplex}
       />
     );
   } else {
     return (
       <SimpleItem
         getTooltip={getTooltip}
-        value={value as ASTViewerModelSimple}
+        data={data as ASTViewerModelMapSimple}
         onSelectNode={onSelectNode}
       />
     );
