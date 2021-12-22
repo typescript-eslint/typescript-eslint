@@ -86,12 +86,13 @@ function getNodeType(nodeName: string | undefined): NodeType | undefined {
 function getProps(nodeType: NodeType | undefined): string[] | undefined {
   switch (nodeType) {
     case 'ScopeManager':
-      return ['scopes', 'variables', 'references'];
+      return ['scopes', 'globalScope', 'variables'];
     case 'Scope':
       return [
         'block',
         'isStrict',
         'references',
+        'through',
         'set',
         'type',
         'variables',
@@ -101,27 +102,40 @@ function getProps(nodeType: NodeType | undefined): string[] | undefined {
         'upper',
       ];
     case 'Definition':
-      return ['name', 'type', 'node'];
+      return [
+        'name',
+        'type',
+        'node',
+        'isTypeDefinition',
+        'isVariableDefinition',
+        'rest',
+        'parent',
+      ];
     case 'Reference':
       return [
-        'identifier',
         'init',
-        'isRead',
+        'identifier',
+        'from',
         'isTypeReference',
         'isValueReference',
+        'maybeImplicitGlobal',
+        'isRead',
         'isWrite',
         'resolved',
         'writeExpr',
       ];
     case 'Variable':
       return [
-        'defs',
         'name',
+        'identifiers',
         'references',
+        'defs',
+        'eslintUsed',
+        'tainted',
+        'scope',
         'isValueVariable',
         'isTypeVariable',
-        'eslintUsed',
-        'identifiers',
+        'writeable',
       ];
   }
   return undefined;
