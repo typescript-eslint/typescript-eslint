@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import clsx from 'clsx';
+import { parse } from 'json5';
 
 import styles from './ConfigEditor.module.css';
 
@@ -79,7 +80,7 @@ function reducerObject(
     }
     case 'json': {
       try {
-        const parsed: unknown = JSON.parse(action.code);
+        const parsed: unknown = parse(action.code);
         if (isRecord(parsed)) {
           const item = parsed[action.field];
           if (item && isRecord(item)) {
@@ -93,8 +94,6 @@ function reducerObject(
       return state;
     }
   }
-  // @ts-expect-error: Safeguard
-  throw new Error();
 }
 
 function filterConfig(
