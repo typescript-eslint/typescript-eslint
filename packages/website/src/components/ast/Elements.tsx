@@ -1,140 +1,117 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import type { GenericParams } from './types';
+import type {
+  GenericParams,
+  ASTViewerModelMap,
+  ASTViewerModelMapComplex,
+  ASTViewerModelMapSimple,
+} from './types';
 
-import { hasChildInRange, isArrayInRange, isInRange, isRecord } from './utils';
+import { hasChildInRange, isArrayInRange, isInRange } from './utils';
 
-import styles from '@site/src/components/ast/ASTViewer.module.css';
+import styles from './ASTViewer.module.css';
 
-import PropertyValue from '@site/src/components/ast/PropertyValue';
-import ItemGroup from '@site/src/components/ast/ItemGroup';
-import HiddenItem from '@site/src/components/ast/HiddenItem';
-import Tooltip from '@site/src/components/inputs/Tooltip';
+import ItemGroup from './ItemGroup';
+import HiddenItem from './HiddenItem';
+import { SimpleItem } from './SimpleItem';
 
-export function ComplexItem(
-  props: GenericParams<Record<string, unknown> | unknown[]>,
-): JSX.Element {
-  const [isExpanded, setIsExpanded] = useState<boolean>(
-    () => props.level === 'ast',
-  );
+export function ComplexItem({
+  data,
+  onSelectNode,
+  level,
+  selection,
+  getTooltip,
+}: GenericParams<ASTViewerModelMapComplex>): JSX.Element {
+  const [isExpanded, setIsExpanded] = useState<boolean>(() => level === 'ast');
   const [isSelected, setIsSelected] = useState<boolean>(false);
-  const [model, setModel] = useState<[string, unknown][]>([]);
-
-  useEffect(() => {
-    setModel(
-      Object.entries(props.value).filter(item => props.filterProps(item)),
-    );
-  }, [props.value, props.filterProps]);
 
   const onHover = useCallback(
     (state: boolean) => {
-      if (props.onSelectNode) {
-        const range = props.getRange(props.value);
+      if (onSelectNode) {
+        const range = data.model.range;
         if (range) {
-          props.onSelectNode(state ? range : null);
+          onSelectNode(state ? range : null);
         }
       }
     },
-    [props.value],
+    [data],
   );
 
   useEffect(() => {
-    const selected = props.selection
-      ? props.isArray
-        ? isArrayInRange(props.selection, props.value, props.getRange)
-        : isInRange(props.selection, props.value, props.getRange)
+    const selected = selection
+      ? data.model.type === 'array'
+        ? isArrayInRange(selection, data.model)
+        : isInRange(selection, data.model)
       : false;
 
     setIsSelected(
-      props.level !== 'ast' &&
-        selected &&
-        !hasChildInRange(props.selection, model, props.getRange),
+      level !== 'ast' && selected && !hasChildInRange(selection, data.model),
     );
 
     if (selected && !isExpanded) {
       setIsExpanded(selected);
     }
-  }, [model, props.selection, props.value, props.isArray, props.getRange]);
+  }, [selection, data]);
 
   return (
     <ItemGroup
-      propName={props.propName}
-      value={props.value}
+      data={data}
       isExpanded={isExpanded}
       isSelected={isSelected}
-      getNodeName={props.getNodeName}
       canExpand={true}
       onHover={onHover}
       onClick={(): void => setIsExpanded(!isExpanded)}
     >
-      <span>{props.isArray ? '[' : '{'}</span>
+      <span>{data.model.type === 'array' ? '[' : '{'}</span>
       {isExpanded ? (
         <div className={styles.subList}>
-          {model.map((item, index) => (
+          {data.model.value.map((item, index) => (
             <ElementItem
-              level={`${props.level}_${item[0]}[${index}]`}
-              key={`${props.level}_${item[0]}[${index}]`}
-              getNodeName={props.getNodeName}
-              getTooltip={props.getTooltip}
-              getRange={props.getRange}
-              filterProps={props.filterProps}
-              selection={props.selection}
-              propName={item[0]}
-              value={item[1]}
-              onSelectNode={props.onSelectNode}
+              level={`${level}_${item.key}[${index}]`}
+              key={`${level}_${item.key}[${index}]`}
+              getTooltip={getTooltip}
+              selection={selection}
+              data={item}
+              onSelectNode={onSelectNode}
             />
           ))}
         </div>
       ) : (
-        <HiddenItem level={props.level} isArray={props.isArray} value={model} />
+        <HiddenItem
+          level={level}
+          isArray={data.model.type === 'array'}
+          value={data.model.value}
+        />
       )}
-      <span>{props.isArray ? ']' : '}'}</span>
+      <span>{data.model.type === 'array' ? ']' : '}'}</span>
     </ItemGroup>
   );
 }
 
-export function SimpleItem(props: GenericParams<unknown>): JSX.Element {
-  const [tooltip, setTooltip] = useState<string | undefined>();
-
-  useEffect(() => {
-    setTooltip(props.getTooltip?.(props.propName ?? '', props.value));
-  }, [props.getTooltip, props.propName, props.value]);
-
-  return (
-    <ItemGroup
-      propName={props.propName}
-      value={props.value}
-      getNodeName={props.getNodeName}
-    >
-      {tooltip ? (
-        <Tooltip hover={true} position="right" text={tooltip}>
-          <PropertyValue value={props.value} />
-        </Tooltip>
-      ) : (
-        <PropertyValue value={props.value} />
-      )}
-    </ItemGroup>
-  );
-}
-
-export function ElementItem(props: GenericParams<unknown>): JSX.Element {
-  const isArray = Array.isArray(props.value);
-  if (isArray || isRecord(props.value)) {
+export function ElementItem({
+  level,
+  getTooltip,
+  selection,
+  data,
+  onSelectNode,
+}: GenericParams<ASTViewerModelMap>): JSX.Element {
+  if (data.model.type === 'array' || data.model.type === 'object') {
     return (
       <ComplexItem
-        isArray={isArray}
-        level={`${props.level}_${props.propName}`}
-        propName={props.propName}
-        getNodeName={props.getNodeName}
-        getTooltip={props.getTooltip}
-        getRange={props.getRange}
-        filterProps={props.filterProps}
-        value={props.value}
-        selection={props.selection}
-        onSelectNode={props.onSelectNode}
+        level={level}
+        getTooltip={getTooltip}
+        selection={selection}
+        onSelectNode={onSelectNode}
+        data={data as ASTViewerModelMapComplex}
       />
     );
   } else {
-    return <SimpleItem {...props} />;
+    return (
+      <SimpleItem
+        getTooltip={getTooltip}
+        data={data as ASTViewerModelMapSimple}
+        onSelectNode={onSelectNode}
+      />
+    );
   }
 }

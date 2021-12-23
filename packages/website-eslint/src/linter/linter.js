@@ -9,14 +9,17 @@ export function loadLinter() {
   const linter = new Linter();
   let storedAST;
   let storedTsAST;
+  let storedScope;
 
   linter.defineParser(PARSER_NAME, {
     parseForESLint(code, options) {
       const toParse = parseForESLint(code, options);
       storedAST = toParse.ast;
       storedTsAST = toParse.tsAst;
+      storedScope = toParse.scopeManager;
       return toParse;
-    }, // parse(code: string, options: ParserOptions): ParseForESLintResult['ast'] {
+    },
+    // parse(code: string, options: ParserOptions): ParseForESLintResult['ast'] {
     //   const toParse = parseForESLint(code, options);
     //   storedAST = toParse.ast;
     //   return toParse.ast;
@@ -36,6 +39,10 @@ export function loadLinter() {
 
   return {
     ruleNames: ruleNames,
+
+    getScope() {
+      return storedScope;
+    },
 
     getAst() {
       return storedAST;

@@ -6,7 +6,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "lib": ["DOM"],
+    "lib": ["DOM", "ESNext"],
     "noEmit": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,

@@ -1,37 +1,68 @@
 import type { SelectedPosition, SelectedRange } from '../types';
-import { TSESTree } from '@typescript-eslint/website-eslint';
 import Monaco from 'monaco-editor';
 
-export type GetNodeNameFn = (data: unknown) => string | undefined;
-export type GetTooltipFn = (key: string, data: unknown) => string | undefined;
-export type GetRangeFn = (data: unknown) => SelectedRange | undefined;
+export type GetTooltipFn = (data: ASTViewerModelMap) => string | undefined;
 export type OnSelectNodeFn = (node: SelectedRange | null) => void;
-export type FilterPropsFn = (item: [string, unknown]) => boolean;
+
+export type ASTViewerModelTypeSimple =
+  | 'ref'
+  | 'string'
+  | 'number'
+  | 'class'
+  | 'boolean'
+  | 'bigint'
+  | 'regexp'
+  | 'undefined';
+
+export type ASTViewerModelTypeComplex = 'object' | 'array';
+
+export interface ASTViewerModelBase {
+  name?: string;
+  range?: SelectedRange;
+}
+
+export interface ASTViewerModelSimple extends ASTViewerModelBase {
+  type: ASTViewerModelTypeSimple;
+  value: string;
+}
+
+export interface ASTViewerModelComplex extends ASTViewerModelBase {
+  type: ASTViewerModelTypeComplex;
+  value: ASTViewerModelMap[];
+}
+
+export type ASTViewerModel = ASTViewerModelSimple | ASTViewerModelComplex;
+
+export interface ASTViewerModelMap<T = ASTViewerModel> {
+  key?: string;
+  model: T;
+}
+
+export type ASTViewerModelMapSimple = ASTViewerModelMap<ASTViewerModelSimple>;
+export type ASTViewerModelMapComplex = ASTViewerModelMap<ASTViewerModelComplex>;
 
 export interface GenericParams<V> {
-  readonly propName?: string;
-  readonly value: V;
+  readonly data: V;
   readonly level: string;
   readonly selection?: SelectedPosition | null;
   readonly onSelectNode?: OnSelectNodeFn;
-  readonly getNodeName: GetNodeNameFn;
   readonly getTooltip?: GetTooltipFn;
-  readonly filterProps: FilterPropsFn;
-  readonly getRange: GetRangeFn;
-  readonly isArray?: boolean;
 }
 
 export interface ASTViewerBaseProps {
-  readonly value: Record<string, unknown> | TSESTree.Node | string;
   readonly position?: Monaco.Position | null;
   readonly onSelectNode?: OnSelectNodeFn;
 }
 
 export interface ASTViewerProps extends ASTViewerBaseProps {
-  readonly getNodeName: GetNodeNameFn;
   readonly getTooltip?: GetTooltipFn;
-  readonly getRange: GetRangeFn;
-  readonly filterProps: FilterPropsFn;
+  readonly value: ASTViewerModelMap | string;
 }
+
+export type Serializer = (
+  data: Record<string, unknown>,
+  key: string | undefined,
+  processValue: (data: [string, unknown][]) => ASTViewerModelMap[],
+) => ASTViewerModel | undefined;
 
 export type { SelectedPosition, SelectedRange };

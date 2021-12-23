@@ -3,38 +3,39 @@ import styles from './ASTViewer.module.css';
 
 import type { SelectedPosition, ASTViewerProps } from './types';
 
-import { ComplexItem } from './Elements';
-import { isRecord } from './utils';
+import { ElementItem } from './Elements';
 
-function ASTViewer(props: ASTViewerProps): JSX.Element {
+function ASTViewer({
+  position,
+  value,
+  getTooltip,
+  onSelectNode,
+}: ASTViewerProps): JSX.Element {
   const [selection, setSelection] = useState<SelectedPosition | null>(null);
 
   useEffect(() => {
     setSelection(
-      props.position
+      position
         ? {
-            line: props.position.lineNumber,
-            column: props.position.column - 1,
+            line: position.lineNumber,
+            column: position.column - 1,
           }
         : null,
     );
-  }, [props.position]);
+  }, [position]);
 
-  return isRecord(props.value) ? (
+  return typeof value === 'string' ? (
+    <div>{value}</div>
+  ) : (
     <div className={styles.list}>
-      <ComplexItem
-        getNodeName={props.getNodeName}
-        getTooltip={props.getTooltip}
-        getRange={props.getRange}
-        filterProps={props.filterProps}
-        value={props.value}
+      <ElementItem
+        getTooltip={getTooltip}
+        data={value}
         level="ast"
         selection={selection}
-        onSelectNode={props.onSelectNode}
+        onSelectNode={onSelectNode}
       />
     </div>
-  ) : (
-    <div>{props.value}</div>
   );
 }
 

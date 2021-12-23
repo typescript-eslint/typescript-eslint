@@ -15,12 +15,14 @@ function readQueryParam(value: string | null, fallback: string): string {
     : fallback;
 }
 
-function readShowAST(value: string | null): 'ts' | 'es' | boolean {
+function readShowAST(value: string | null): 'ts' | 'scope' | 'es' | boolean {
   switch (value) {
     case 'es':
       return 'es';
     case 'ts':
       return 'ts';
+    case 'scope':
+      return 'scope';
   }
   return Boolean(value);
 }
