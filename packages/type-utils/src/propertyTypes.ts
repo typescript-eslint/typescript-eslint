@@ -7,7 +7,7 @@ export function getTypeOfPropertyOfName(
   escapedName?: ts.__String,
 ): ts.Type | undefined {
   // Most names are directly usable in the checker and aren't different from escaped names
-  if (!escapedName || !name.startsWith('__')) {
+  if (!escapedName || !isSymbol(escapedName)) {
     return checker.getTypeOfPropertyOfType(type, name);
   }
 
@@ -33,4 +33,19 @@ export function getTypeOfPropertyOfType(
     property.getName(),
     property.getEscapedName(),
   );
+}
+
+// Symbolic names need to be specially handled because TS api is not sufficient for these cases.
+function isSymbol(escapedName: string): boolean {
+  return isKnownSymbol(escapedName) || isPrivateIdentifierSymbol(escapedName);
+}
+
+// case for escapedName: "__@foo@10", name: "__@foo@10"
+function isKnownSymbol(escapedName: string): boolean {
+  return escapedName.startsWith('__@');
+}
+
+// case for escapedName: "__#1@#foo", name: "#foo"
+function isPrivateIdentifierSymbol(escapedName: string): boolean {
+  return escapedName.startsWith('__#');
 }
