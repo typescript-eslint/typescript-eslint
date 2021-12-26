@@ -130,11 +130,7 @@ export default createRule<Options, MessageIds>({
       ...(mode === 'record' && {
         TSTypeLiteral(node): void {
           const parent = findParentDeclaration(node);
-          if (parent) {
-            checkMembers(node.members, node, parent.id, '', '');
-          } else {
-            checkMembers(node.members, node, undefined, '', '');
-          }
+          checkMembers(node.members, node, parent?.id, '', '');
         },
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
