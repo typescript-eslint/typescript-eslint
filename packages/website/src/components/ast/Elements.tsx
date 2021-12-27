@@ -20,7 +20,6 @@ export function ComplexItem({
   onSelectNode,
   level,
   selection,
-  getTooltip,
 }: GenericParams<ASTViewerModelMapComplex>): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(() => level === 'ast');
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -69,7 +68,6 @@ export function ComplexItem({
             <ElementItem
               level={`${level}_${item.key}[${index}]`}
               key={`${level}_${item.key}[${index}]`}
-              getTooltip={getTooltip}
               selection={selection}
               data={item}
               onSelectNode={onSelectNode}
@@ -90,7 +88,6 @@ export function ComplexItem({
 
 export function ElementItem({
   level,
-  getTooltip,
   selection,
   data,
   onSelectNode,
@@ -99,7 +96,6 @@ export function ElementItem({
     return (
       <ComplexItem
         level={level}
-        getTooltip={getTooltip}
         selection={selection}
         onSelectNode={onSelectNode}
         data={data as ASTViewerModelMapComplex}
@@ -108,7 +104,6 @@ export function ElementItem({
   } else {
     return (
       <SimpleItem
-        getTooltip={getTooltip}
         data={data as ASTViewerModelMapSimple}
         onSelectNode={onSelectNode}
       />

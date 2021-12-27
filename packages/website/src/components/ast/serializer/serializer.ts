@@ -47,10 +47,20 @@ export function serialize(
   data: unknown,
   serializer?: Serializer,
 ): ASTViewerModelMap {
-  function processValue(data: [string, unknown][]): ASTViewerModelMap[] {
-    return data
+  function processValue(
+    data: [string, unknown][],
+    tooltip?: (data: ASTViewerModelMap) => string | undefined,
+  ): ASTViewerModelMap[] {
+    let result = data
       .filter(item => !item[0].startsWith('_') && item[1] !== undefined)
       .map(item => _serialize(item[1], item[0]));
+    if (tooltip) {
+      result = result.map(item => {
+        item.model.tooltip = tooltip(item);
+        return item;
+      });
+    }
+    return result;
   }
 
   function _serialize(data: unknown, key?: string): ASTViewerModelMap {

@@ -38,9 +38,30 @@ function isTsSymbol(value: unknown): value is TSSymbol {
   return isRecord(value) && value.getDeclarations != null;
 }
 
+function expandFlags(
+  allFlags: [string, Record<number, string>],
+  flags: number,
+): string {
+  return Object.entries(allFlags[1])
+    .filter(([f, _]) => (Number(f) & flags) !== 0)
+    .map(([_, name]) => `${allFlags[0]}.${name}`)
+    .join('\n');
+}
+
+function prepareValue(data: Record<string, unknown>): [string, unknown][] {
+  return Object.entries(data).filter(item => !propsToFilter.includes(item[0]));
+}
+
 export function createTsSerializer(
   root: SourceFile,
   syntaxKind: Record<number, string>,
+  nodeFlags: [string, Record<number, string>],
+  tokenFlags: [string, Record<number, string>],
+  modifierFlags: [string, Record<number, string>],
+  objectFlags: [string, Record<number, string>],
+  symbolFlags: [string, Record<number, string>],
+  flowFlags: [string, Record<number, string>],
+  typeFlags: [string, Record<number, string>],
 ): Serializer {
   const SEEN_THINGS = new WeakMap<Record<string, unknown>, ASTViewerModel>();
 
@@ -69,22 +90,58 @@ export function createTsSerializer(
 
         SEEN_THINGS.set(data, result);
 
-        result.value = processValue(
-          Object.entries(data).filter(item => !propsToFilter.includes(item[0])),
-        );
+        result.value = processValue(prepareValue(data), item => {
+          if (item.model.type === 'number') {
+            switch (item.key) {
+              case 'flags':
+                return expandFlags(nodeFlags, Number(item.model.value));
+              case 'numericLiteralFlags':
+                return expandFlags(tokenFlags, Number(item.model.value));
+              case 'modifierFlagsCache':
+                return expandFlags(modifierFlags, Number(item.model.value));
+              case 'kind':
+                return `SyntaxKind.${syntaxKind[Number(item.model.value)]}`;
+            }
+          }
+          return undefined;
+        });
         return result;
-      }
-      const tsType = isTsType(data);
-      const tsSymbol = isTsSymbol(data);
-      if (tsType || tsSymbol || key === 'flowNode') {
+      } else if (isTsType(data)) {
         return {
           type: 'object',
-          name: tsSymbol ? '[Symbol]' : tsType ? '[Type]' : '[FlowNode]',
-          value: processValue(
-            Object.entries(data).filter(
-              item => !propsToFilter.includes(item[0]),
-            ),
-          ),
+          name: '[Type]',
+          value: processValue(prepareValue(data), item => {
+            if (item.model.type === 'number') {
+              if (item.key === 'objectFlags') {
+                return expandFlags(objectFlags, Number(item.model.value));
+              } else if (item.key === 'flags') {
+                return expandFlags(typeFlags, Number(item.model.value));
+              }
+            }
+            return undefined;
+          }),
+        };
+      } else if (isTsSymbol(data)) {
+        return {
+          type: 'object',
+          name: '[Symbol]',
+          value: processValue(prepareValue(data), item => {
+            if (item.model.type === 'number' && item.key === 'flags') {
+              return expandFlags(symbolFlags, Number(item.model.value));
+            }
+            return undefined;
+          }),
+        };
+      } else if (key === 'flowNode' || key === 'endFlowNode') {
+        return {
+          type: 'object',
+          name: '[FlowNode]',
+          value: processValue(prepareValue(data), item => {
+            if (item.model.type === 'number' && item.key === 'flags') {
+              return expandFlags(flowFlags, Number(item.model.value));
+            }
+            return undefined;
+          }),
         };
       }
     }
