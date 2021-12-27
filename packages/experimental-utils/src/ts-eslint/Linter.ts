@@ -176,7 +176,7 @@ namespace Linter {
 
   export interface ConfigOverride extends BaseConfig {
     excludedFiles?: string | string[];
-    files: string | string[];
+    files?: string | string[];
   }
 
   export interface Config extends BaseConfig {

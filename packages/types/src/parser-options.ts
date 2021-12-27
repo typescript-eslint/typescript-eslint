@@ -38,6 +38,7 @@ interface ParserOptions {
   lib?: Lib[];
 
   // typescript-estree specific
+  allowAutomaticSingleRunInference?: boolean;
   comment?: boolean;
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;

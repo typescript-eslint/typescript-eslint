@@ -1,0 +1,5 @@
+{
+  "root": "packages/cli",
+  "type": "library",
+  "implicitDependencies": []
+}

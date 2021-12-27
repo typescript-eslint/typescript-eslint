@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "@typescript-eslint/ast-spec": "packages/ast-spec",
+    "@typescript-eslint/cli": "packages/cli",
     "@typescript-eslint/eslint-plugin": "packages/eslint-plugin",
     "@typescript-eslint/eslint-plugin-internal": "packages/eslint-plugin-internal",
     "@typescript-eslint/eslint-plugin-tslint": "packages/eslint-plugin-tslint",

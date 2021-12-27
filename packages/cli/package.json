@@ -1,0 +1,77 @@
+{
+  "name": "@typescript-eslint/cli",
+  "version": "5.9.0",
+  "description": "TypeScript-ESLint CLI",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree",
+    "cli"
+  ],
+  "engines": {
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "bin": {
+    "ts-eslint": "./bin/ts-eslint.js"
+  },
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "postbuild": "downlevel-dts dist _ts3.4/dist",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "ts-eslint": "USE_TS_ESLINT_SRC=1 ts-node --transpile-only ./bin/ts-eslint.js"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/typescript-eslint"
+  },
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "_ts3.4/*"
+      ]
+    }
+  },
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "5.9.0",
+    "debug": "^4.3.2",
+    "globby": "^11.0.4",
+    "ink": "^3.2.0",
+    "ink-use-stdout-dimensions": "^1.0.5",
+    "is-glob": "^4.0.3",
+    "jest-worker": "^27.4.5",
+    "react": "^17.0.2",
+    "semver": "^7.3.5",
+    "v8-compile-cache": "^2.3.0",
+    "yargs": "^17.3.1"
+  },
+  "peerDependencies": {
+    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "typescript": "*"
+  },
+  "devDependencies": {
+    "@types/is-glob": "*",
+    "@types/semver": "*",
+    "@types/yargs": "*"
+  }
+}

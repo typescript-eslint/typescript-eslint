@@ -1,0 +1,13 @@
+diff --git a/node_modules/@types/yargs/index.d.ts b/node_modules/@types/yargs/index.d.ts
+index 842b4a4..9c9eef4 100755
+--- a/node_modules/@types/yargs/index.d.ts
++++ b/node_modules/@types/yargs/index.d.ts
+@@ -846,7 +846,7 @@ declare namespace yargs {
+ 
+     // prettier-ignore
+     type InferredOptionTypeInner<O extends Options | PositionalOptions> =
+-        O extends { default: any, coerce: (arg: any) => infer T } ? T :
++        O extends { coerce: (arg: any) => infer T } ? T :
+         O extends { default: infer D } ? D :
+         O extends { type: "count" } ? number :
+         O extends { count: true } ? number :

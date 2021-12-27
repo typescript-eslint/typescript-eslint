@@ -301,6 +301,7 @@ module.exports = {
     {
       files: ['rollup.config.ts'],
       rules: {
+        // rollup config must be default exported
         'import/no-default-export': 'off',
       },
     },
@@ -309,6 +310,43 @@ module.exports = {
       rules: {
         'import/no-default-export': 'off',
         'no-console': 'off',
+      },
+    },
+    {
+      files: ['*.{js,jsx}'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off',
+      },
+    },
+    // CLI lint configs
+    {
+      files: [
+        'packages/cli/bin/**/*.{ts,js}',
+        'packages/cli/src/reporters/Reporter.ts',
+      ],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+    {
+      files: ['packages/cli/bin/**/*.js'],
+      rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
+      },
+    },
+    {
+      files: ['packages/cli/**/*.{ts,tsx,js}'],
+      rules: {
+        '@typescript-eslint/consistent-type-imports': [
+          'error',
+          { prefer: 'type-imports', disallowTypeAnnotations: true },
+        ],
+        '@typescript-eslint/consistent-type-exports': 'error',
+        'import/first': 'error',
+        'import/newline-after-import': 'error',
+        'import/no-duplicates': 'error',
+        'simple-import-sort/imports': 'error',
       },
     },
   ],

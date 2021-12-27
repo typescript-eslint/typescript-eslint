@@ -58,6 +58,7 @@
     "@types/debug": "*",
     "@types/marked": "*",
     "@types/prettier": "*",
+    "@types/semver": "*",
     "chalk": "^4.1.2",
     "marked": "^3.0.7",
     "prettier": "*",

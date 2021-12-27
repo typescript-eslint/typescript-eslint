@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "composite": false,
+    "checkJs": true,
+    "jsx": "react",
+    "rootDir": "."
+  },
+  "include": ["src", "bin", "typings", "tests", "tools"],
+  "references": [{ "path": "../experimental-utils/tsconfig.build.json" }]
+}
