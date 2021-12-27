@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.8.0...v5.8.1) (2021-12-27)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
 # [5.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.7.0...v5.8.0) (2021-12-20)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager
