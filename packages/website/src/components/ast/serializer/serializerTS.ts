@@ -15,7 +15,9 @@ export function getLineAndCharacterFor(
 
 export const propsToFilter = [
   'parent',
+  'nextContainer',
   'jsDoc',
+  'jsDocComment',
   'lineMap',
   'externalModuleIndicator',
   'bindDiagnostics',
