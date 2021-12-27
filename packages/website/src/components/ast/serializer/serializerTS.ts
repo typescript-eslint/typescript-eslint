@@ -42,8 +42,7 @@ export function createTsSerializer(
   root: SourceFile,
   syntaxKind: Record<number, string>,
 ): Serializer {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  const SEEN_THINGS = new WeakMap<{}, ASTViewerModel>();
+  const SEEN_THINGS = new WeakMap<Record<string, unknown>, ASTViewerModel>();
 
   return function serializer(
     data,
