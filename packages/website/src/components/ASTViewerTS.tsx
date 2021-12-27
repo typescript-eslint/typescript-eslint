@@ -45,6 +45,7 @@ export default function ASTViewerTS({
   const [nodeFlags] = useState(() => extractEnum(window.ts.NodeFlags));
   const [tokenFlags] = useState(() => extractEnum(window.ts.TokenFlags));
   const [modifierFlags] = useState(() => extractEnum(window.ts.ModifierFlags));
+  const [objectFlags] = useState(() => extractEnum(window.ts.ObjectFlags));
 
   useEffect(() => {
     if (typeof value === 'string') {
@@ -61,6 +62,7 @@ export default function ASTViewerTS({
       if (data.model.type === 'number') {
         switch (data.key) {
           case 'flags':
+            // TODO: use TypeFlags for Type, SymbolFlags for Symbol and FlowFlags for Flow
             return getFlagNamesFromEnum(
               nodeFlags,
               Number(data.model.value),
@@ -77,6 +79,13 @@ export default function ASTViewerTS({
               modifierFlags,
               Number(data.model.value),
               'ModifierFlags',
+            ).join('\n');
+          // used for Type
+          case 'objectFlags':
+            return getFlagNamesFromEnum(
+              objectFlags,
+              Number(data.model.value),
+              'ObjectFlags',
             ).join('\n');
           case 'kind':
             return `SyntaxKind.${syntaxKind[Number(data.model.value)]}`;
