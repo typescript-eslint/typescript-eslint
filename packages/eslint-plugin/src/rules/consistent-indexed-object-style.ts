@@ -34,7 +34,8 @@ export default createRule<Options, MessageIds>({
 
     function checkMembers(
       members: TSESTree.TypeElement[],
-      node: TSESTree.Node,
+      node: TSESTree.TSTypeLiteral | TSESTree.TSInterfaceDeclaration,
+      parentId: TSESTree.Identifier | undefined,
       prefix: string,
       postfix: string,
       safeFix = true,
@@ -65,6 +66,22 @@ export default createRule<Options, MessageIds>({
       const valueType = member.typeAnnotation;
       if (!valueType) {
         return;
+      }
+
+      if (parentId) {
+        const scope = context.getScope();
+        const superVar = scope.set.get(parentId.name);
+        if (superVar) {
+          const isCircular = superVar.references.some(
+            item =>
+              item.isTypeReference &&
+              node.range[0] <= item.identifier.range[0] &&
+              node.range[1] >= item.identifier.range[1],
+          );
+          if (isCircular) {
+            return;
+          }
+        }
       }
 
       context.report({
@@ -112,7 +129,8 @@ export default createRule<Options, MessageIds>({
       }),
       ...(mode === 'record' && {
         TSTypeLiteral(node): void {
-          checkMembers(node.members, node, '', '');
+          const parent = findParentDeclaration(node);
+          checkMembers(node.members, node, parent?.id, '', '');
         },
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
@@ -126,6 +144,7 @@ export default createRule<Options, MessageIds>({
           checkMembers(
             node.body.body,
             node,
+            node.id,
             `type ${node.id.name}${genericTypes} = `,
             ';',
             !node.extends?.length,
@@ -135,3 +154,15 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function findParentDeclaration(
+  node: TSESTree.Node,
+): TSESTree.TSTypeAliasDeclaration | undefined {
+  if (node.parent && node.parent.type !== AST_NODE_TYPES.TSTypeAnnotation) {
+    if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
+      return node.parent;
+    }
+    return findParentDeclaration(node.parent);
+  }
+  return undefined;
+}
