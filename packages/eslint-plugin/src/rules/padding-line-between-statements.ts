@@ -803,7 +803,9 @@ export default util.createRule<Options, MessageIds>({
       ':statement': verify,
 
       SwitchCase: verifyThenEnterScope,
+      TSDeclareFunction: verifyThenEnterScope,
       'SwitchCase:exit': exitScope,
+      'TSDeclareFunction:exit': exitScope,
     };
   },
 });
