@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
 import type { ASTViewerBaseProps, ASTViewerModelMap } from './ast/types';
@@ -25,16 +25,6 @@ function extractEnum(
   return result;
 }
 
-function getFlagNamesFromEnum(
-  allFlags: Record<number, string>,
-  flags: number,
-  prefix: string,
-): string[] {
-  return Object.entries(allFlags)
-    .filter(([f, _]) => (Number(f) & flags) !== 0)
-    .map(([_, name]) => `${prefix}.${name}`);
-}
-
 export default function ASTViewerTS({
   value,
   position,
@@ -45,54 +35,31 @@ export default function ASTViewerTS({
   const [nodeFlags] = useState(() => extractEnum(window.ts.NodeFlags));
   const [tokenFlags] = useState(() => extractEnum(window.ts.TokenFlags));
   const [modifierFlags] = useState(() => extractEnum(window.ts.ModifierFlags));
+  const [objectFlags] = useState(() => extractEnum(window.ts.ObjectFlags));
+  const [symbolFlags] = useState(() => extractEnum(window.ts.SymbolFlags));
+  const [flowFlags] = useState(() => extractEnum(window.ts.FlowFlags));
+  const [typeFlags] = useState(() => extractEnum(window.ts.TypeFlags));
 
   useEffect(() => {
     if (typeof value === 'string') {
       setModel(value);
     } else {
-      const scopeSerializer = createTsSerializer(value, syntaxKind);
+      const scopeSerializer = createTsSerializer(
+        value,
+        syntaxKind,
+        ['NodeFlags', nodeFlags],
+        ['TokenFlags', tokenFlags],
+        ['ModifierFlags', modifierFlags],
+        ['ObjectFlags', objectFlags],
+        ['SymbolFlags', symbolFlags],
+        ['FlowFlags', flowFlags],
+        ['TypeFlags', typeFlags],
+      );
       setModel(serialize(value, scopeSerializer));
     }
   }, [value, syntaxKind]);
 
-  // TODO: move this to serializer
-  const getTooltip = useCallback(
-    (data: ASTViewerModelMap): string | undefined => {
-      if (data.model.type === 'number') {
-        switch (data.key) {
-          case 'flags':
-            return getFlagNamesFromEnum(
-              nodeFlags,
-              Number(data.model.value),
-              'NodeFlags',
-            ).join('\n');
-          case 'numericLiteralFlags':
-            return getFlagNamesFromEnum(
-              tokenFlags,
-              Number(data.model.value),
-              'TokenFlags',
-            ).join('\n');
-          case 'modifierFlagsCache':
-            return getFlagNamesFromEnum(
-              modifierFlags,
-              Number(data.model.value),
-              'ModifierFlags',
-            ).join('\n');
-          case 'kind':
-            return `SyntaxKind.${syntaxKind[Number(data.model.value)]}`;
-        }
-      }
-      return undefined;
-    },
-    [nodeFlags, tokenFlags, syntaxKind],
-  );
-
   return (
-    <ASTViewer
-      getTooltip={getTooltip}
-      position={position}
-      onSelectNode={onSelectNode}
-      value={model}
-    />
+    <ASTViewer position={position} onSelectNode={onSelectNode} value={model} />
   );
 }
