@@ -99,7 +99,7 @@ export function isTypeUnknownArrayType(
   );
 }
 
-export const enum AnyType {
+export enum AnyType {
   Any,
   AnyArray,
   Safe,
