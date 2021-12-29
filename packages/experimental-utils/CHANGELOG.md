@@ -1,5 +1,7 @@
 # Change Log
 
+> ⚠ Changes for version 6.0 onwards are documented in the `@typescript-eslint/utils` changelog.
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

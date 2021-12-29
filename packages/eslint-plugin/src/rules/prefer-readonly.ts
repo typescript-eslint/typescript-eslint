@@ -2,11 +2,7 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
-import {
-  ASTUtils,
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { ASTUtils, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 
 type MessageIds = 'preferReadonly';
 type Options = [
