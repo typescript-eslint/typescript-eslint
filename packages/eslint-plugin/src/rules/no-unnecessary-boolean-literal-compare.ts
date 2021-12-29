@@ -158,7 +158,7 @@ export default util.createRule<Options, MessageIds>({
     function deconstructComparison(
       node: TSESTree.BinaryExpression,
     ): BooleanComparison | undefined {
-      const comparisonType = util.getEqualsKind(node.operator);
+      const comparisonType = getEqualsKind(node.operator);
       if (!comparisonType) {
         return undefined;
       }
@@ -275,3 +275,39 @@ export default util.createRule<Options, MessageIds>({
     };
   },
 });
+
+interface EqualsKind {
+  isPositive: boolean;
+  isStrict: boolean;
+}
+
+function getEqualsKind(operator: string): EqualsKind | undefined {
+  switch (operator) {
+    case '==':
+      return {
+        isPositive: true,
+        isStrict: false,
+      };
+
+    case '===':
+      return {
+        isPositive: true,
+        isStrict: true,
+      };
+
+    case '!=':
+      return {
+        isPositive: false,
+        isStrict: false,
+      };
+
+    case '!==':
+      return {
+        isPositive: false,
+        isStrict: true,
+      };
+
+    default:
+      return undefined;
+  }
+}

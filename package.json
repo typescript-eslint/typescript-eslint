@@ -44,7 +44,6 @@
     "start": "nx run website:start",
     "test": "nx run-many --target=test --all --parallel",
     "test-integration": "yarn jest -c ./tests/integration/jest.config.js",
-    "test-kill-integration-containers": "docker-compose -f tests/integration/docker-compose.yml down -v --rmi local",
     "typecheck": "nx run-many --target=typecheck --all --parallel"
   },
   "config": {

@@ -1,9 +1,9 @@
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { parseForESLint } from '@typescript-eslint/parser';
+import { isUnsafeAssignment } from '@typescript-eslint/type-utils';
 import path from 'path';
 import { getFixturesRootDir } from '../RuleTester';
-import { isUnsafeAssignment } from '../../src/util/types';
 
 describe('isUnsafeAssignment', () => {
   const rootDir = getFixturesRootDir();

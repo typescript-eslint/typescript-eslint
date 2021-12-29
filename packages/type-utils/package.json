@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "5.6.0",
+  "version": "5.8.1",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -39,17 +39,20 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@types/json-schema": "^7.0.9",
-    "@typescript-eslint/experimental-utils": "5.6.0",
-    "eslint-scope": "^5.1.1",
-    "eslint-utils": "^3.0.0",
+    "@typescript-eslint/experimental-utils": "5.8.1",
+    "debug": "^4.3.2",
     "tsutils": "^3.21.0"
+  },
+  "devDependencies": {
+    "typescript": "*"
   },
   "peerDependencies": {
     "eslint": "*"
   },
-  "devDependencies": {
-    "typescript": "*"
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "funding": {
     "type": "opencollective",

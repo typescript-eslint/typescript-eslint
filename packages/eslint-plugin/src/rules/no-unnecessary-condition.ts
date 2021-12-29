@@ -17,6 +17,7 @@ import {
   createRule,
   getParserServices,
   getConstrainedTypeAtLocation,
+  getTypeOfPropertyOfName,
   isNullableType,
   nullThrows,
   NullThrowsReasons,
@@ -24,7 +25,6 @@ import {
   isTypeAnyType,
   isTypeUnknownType,
   getTypeName,
-  getTypeOfPropertyOfName,
 } from '../util';
 
 // Truthiness utilities

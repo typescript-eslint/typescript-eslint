@@ -62,6 +62,11 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
               ? rootPackageJson.devDependencies.tslint
               : undefined,
           },
+          // ensure everything uses the locally packed versions instead of the NPM versions
+          resolutions: {
+            // @ts-expect-error -- this is in `./pack-packages.ts`
+            ...global.tseslintPackages,
+          },
         }),
       );
       // console.log('package.json written.');
