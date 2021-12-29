@@ -46,6 +46,7 @@
   "dependencies": {
     "@typescript-eslint/experimental-utils": "5.8.1",
     "@typescript-eslint/scope-manager": "5.8.1",
+    "@typescript-eslint/type-utils": "5.8.1",
     "debug": "^4.3.2",
     "functional-red-black-tree": "^1.0.1",
     "ignore": "^5.1.8",

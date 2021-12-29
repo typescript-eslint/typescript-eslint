@@ -7,7 +7,7 @@ import {
   TSESLint,
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
-import { requiresQuoting } from './requiresQuoting';
+import { requiresQuoting } from '@typescript-eslint/type-utils';
 
 /**
  * Check if the context file name is *.d.ts or *.d.tsx

@@ -1,11 +1,11 @@
 import {
   TSESTree,
   AST_NODE_TYPES,
+  ESLintUtils,
   TSESLint,
 } from '@typescript-eslint/experimental-utils';
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
-import { nullThrows, NullThrowsReasons } from './nullThrows';
 
 type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
@@ -187,7 +187,10 @@ function isTypedFunctionExpression(
   node: FunctionExpression,
   options: Options,
 ): boolean {
-  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+  const parent = ESLintUtils.nullThrows(
+    node.parent,
+    ESLintUtils.NullThrowsReasons.MissingParent,
+  );
 
   if (!options.allowTypedFunctionExpressions) {
     return false;
@@ -215,7 +218,10 @@ function isValidFunctionExpressionReturnType(
     return true;
   }
 
-  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+  const parent = ESLintUtils.nullThrows(
+    node.parent,
+    ESLintUtils.NullThrowsReasons.MissingParent,
+  );
   if (
     options.allowExpressions &&
     parent.type !== AST_NODE_TYPES.VariableDeclarator &&
