@@ -334,9 +334,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: |
-          yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check-clean-workspace-after-install
+        run: yarn --ignore-engines --frozen-lockfile
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
