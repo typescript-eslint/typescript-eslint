@@ -213,3 +213,16 @@ However this involves a _lot_ of computations across every single token in a fil
 Across a large codebase, these can add up, and severely impact performance.
 
 We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
+
+## How can I specify a TypeScript version / `parserOptions.typescriptLocation`?
+
+You can't, and you don't want to.
+
+You should use the same version of TypeScript for linting as the rest of your project.
+TypeScript versions often have slight differences in edge cases that can cause contradictory information between typescript-eslint rules and editor information.
+For example:
+
+- `@typescript-eslint/strict-boolean-expressions` might be operating with TypeScript version _X_ and think a variable is `string[] | undefined`
+- TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
+
+See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.
