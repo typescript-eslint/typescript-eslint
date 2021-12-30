@@ -311,7 +311,7 @@ jobs:
       # eslint-plugin-internal is internal only - so don't care about compat on other versions
 
   website_tests:
-    name: Websiste tests
+    name: Website tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -340,6 +340,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           build: yarn build
+          project: ./packages/website
           start: yarn start
 
   publish_canary_version:
