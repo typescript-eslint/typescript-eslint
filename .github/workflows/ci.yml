@@ -312,6 +312,7 @@ jobs:
 
   website_tests:
     name: Websiste tests
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
