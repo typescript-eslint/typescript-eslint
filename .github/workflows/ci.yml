@@ -312,7 +312,6 @@ jobs:
 
   website_tests:
     name: Websiste tests
-    runs-on: cypress/included:3.2.0
     steps:
       - uses: actions/checkout@v2
         with:
