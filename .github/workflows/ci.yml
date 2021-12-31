@@ -339,9 +339,17 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          build: yarn build
           project: ./packages/website
           start: yarn start
+
+      - uses: actions/upload-artifact@v2
+        with:
+          if: always()
+          name: screenshots
+          path: |
+            packages/website/cypress/screenshots/
+            packages/website/cypress/videos/
+
 
   publish_canary_version:
     name: Publish the latest code as a canary version
