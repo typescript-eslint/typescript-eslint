@@ -153,6 +153,19 @@ If you see more than one version installed, then you will have to either use [ya
 
 **The best course of action in this case is to wait until your dependency releases a new version with support for our latest versions.**
 
+## How can I specify a TypeScript version / `parserOptions.typescriptLocation`?
+
+You can't, and you don't want to.
+
+You should use the same version of TypeScript for linting as the rest of your project.
+TypeScript versions often have slight differences in edge cases that can cause contradictory information between typescript-eslint rules and editor information.
+For example:
+
+- `@typescript-eslint/strict-boolean-expressions` might be operating with TypeScript version _X_ and think a variable is `string[] | undefined`
+- TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
+
+See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.
+
 ## My linting feels really slow
 
 As mentioned in the [type-aware linting doc](./TYPED_LINTING.md), if you're using type-aware linting, your lint times should be roughly the same as your build times.
