@@ -343,8 +343,8 @@ jobs:
           start: yarn start
 
       - uses: actions/upload-artifact@v2
+        if: always()
         with:
-          if: ${{ always() }}
           name: screenshots
           path: |
             packages/website/cypress/screenshots/
