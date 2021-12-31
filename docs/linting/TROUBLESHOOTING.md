@@ -183,6 +183,18 @@ Additionally, if you provide no `include` in your tsconfig, then it is the same 
 Wide globs can cause TypeScript to parse things like build artifacts, which can heavily impact performance.
 Always ensure you provide globs targeted at the folders you are specifically wanting to lint.
 
+### Wide includes in your ESLint options
+
+Specifying `tsconfig.json` paths in your ESLint commands is also likely to cause much more disk IO than expected.
+Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
+
+```diff
+- eslint --parser-options project:./**/tsconfig.json
++ eslint --parser-options project:./packages/*/tsconfig.json
+```
+
+See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
+
 ### `eslint-plugin-prettier`
 
 This plugin surfaces prettier formatting problems at lint time, helping to ensure your code is always formatted.
