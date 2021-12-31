@@ -344,7 +344,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          if: always()
+          if: ${{ always() }}
           name: screenshots
           path: |
             packages/website/cypress/screenshots/
