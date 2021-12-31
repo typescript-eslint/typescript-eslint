@@ -41,9 +41,14 @@ ESLint uses an AST format known as **[`estree`]**.
 ESTree is more broadly used than just for ESLint -- it is the de facto community standard.
 ESLint's built-in parser that outputs an `estree`-shaped AST is also a separate package, called **[`espree`]**.
 
+## AST Playground
+
+The [TypeScript ESLint playground](https://typescript-eslint.io/play#showAST=es) contains an AST explorer that generates an interactive AST for any code entered into the playground.
+You can activate it under _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_.
+
 :::note
 
-You can play more with various ASTs such as ESTree on [astexplorer.net] and read more details on their [Wikipedia article](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+You can play more with various other ASTs on [astexplorer.net] and read more details on their [Wikipedia article](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
 :::
 
