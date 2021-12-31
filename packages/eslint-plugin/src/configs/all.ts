@@ -88,6 +88,7 @@ export = {
     '@typescript-eslint/no-parameter-properties': 'error',
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
+    '@typescript-eslint/no-redundant-type-constituents': 'error',
     '@typescript-eslint/no-require-imports': 'error',
     'no-restricted-imports': 'off',
     '@typescript-eslint/no-restricted-imports': 'error',
