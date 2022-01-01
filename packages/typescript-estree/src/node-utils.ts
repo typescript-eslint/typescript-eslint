@@ -663,3 +663,27 @@ export function firstDefined<T, U>(
   }
   return undefined;
 }
+
+export function identifierIsThisKeyword(id: ts.Identifier): boolean {
+  return id.originalKeywordKind === SyntaxKind.ThisKeyword;
+}
+
+export function isThisIdentifier(node: ts.Node | undefined): boolean {
+  return (
+    !!node &&
+    node.kind === SyntaxKind.Identifier &&
+    identifierIsThisKeyword(node as ts.Identifier)
+  );
+}
+
+export function isThisInTypeQuery(node: ts.Node): boolean {
+  if (!isThisIdentifier(node)) {
+    return false;
+  }
+
+  while (ts.isQualifiedName(node.parent) && node.parent.left === node) {
+    node = node.parent;
+  }
+
+  return node.parent.kind === SyntaxKind.TypeQuery;
+}

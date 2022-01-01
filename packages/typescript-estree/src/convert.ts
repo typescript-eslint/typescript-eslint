@@ -20,6 +20,7 @@ import {
   isComputedProperty,
   isESTreeClassMember,
   isOptional,
+  isThisInTypeQuery,
   TSError,
   unescapeStringLiteralText,
 } from './node-utils';
@@ -787,6 +788,14 @@ export class Converter {
       }
 
       case SyntaxKind.Identifier: {
+        if (isThisInTypeQuery(node)) {
+          return this.createNode<TSESTree.ThisExpression>(
+            node as unknown as ts.ThisExpression,
+            {
+              type: AST_NODE_TYPES.ThisExpression,
+            },
+          );
+        }
         return this.createNode<TSESTree.Identifier>(node, {
           type: AST_NODE_TYPES.Identifier,
           name: node.text,

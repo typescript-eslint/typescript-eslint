@@ -248,6 +248,15 @@ class Foo {}
     `
 export type AppState = typeof import('./src/store/reducers').default;
     `,
+    `
+const obj = {
+  foo: '',
+  bar() {
+    let self: typeof this;
+    let foo: typeof this.foo;
+  },
+};
+    `,
   ],
   invalid: [
     {

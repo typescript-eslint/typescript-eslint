@@ -258,10 +258,19 @@ class TypeVisitor extends Visitor {
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     if (node.exprName.type === AST_NODE_TYPES.Identifier) {
       this.#referencer.currentScope().referenceValue(node.exprName);
+    } else if (
+      (node.exprName.type as unknown) === AST_NODE_TYPES.ThisExpression
+    ) {
+      // technically exprName is either Identifier or QualifiedName, but eslint does not recognize `typeof this`,
+      // so we have translated it to ThisExpression.
+      return;
     } else {
       let expr = node.exprName.left;
-      while (expr.type !== AST_NODE_TYPES.Identifier) {
+      while (expr.type === TSESTree.AST_NODE_TYPES.TSQualifiedName) {
         expr = expr.left;
+      }
+      if ((expr.type as unknown) === AST_NODE_TYPES.ThisExpression) {
+        return;
       }
       this.#referencer.currentScope().referenceValue(expr);
     }
