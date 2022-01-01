@@ -43,31 +43,40 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    return {
-      Program(node): void {
-        let emptyExport: TSESTree.ExportNamedDeclaration | undefined;
-        let foundOtherExport = false;
+    function checkNode(
+      node: TSESTree.Program | TSESTree.TSModuleDeclaration,
+    ): void {
+      if (!Array.isArray(node.body)) {
+        return;
+      }
 
-        for (const statement of node.body) {
-          if (isEmptyExport(statement)) {
-            emptyExport = statement;
+      let emptyExport: TSESTree.ExportNamedDeclaration | undefined;
+      let foundOtherExport = false;
 
-            if (foundOtherExport) {
-              break;
-            }
-          } else if (exportOrImportNodeTypes.has(statement.type)) {
-            foundOtherExport = true;
+      for (const statement of node.body) {
+        if (isEmptyExport(statement)) {
+          emptyExport = statement;
+
+          if (foundOtherExport) {
+            break;
           }
+        } else if (exportOrImportNodeTypes.has(statement.type)) {
+          foundOtherExport = true;
         }
+      }
 
-        if (emptyExport && foundOtherExport) {
-          context.report({
-            fix: fixer => fixer.remove(emptyExport!),
-            messageId: 'uselessExport',
-            node: emptyExport,
-          });
-        }
-      },
+      if (emptyExport && foundOtherExport) {
+        context.report({
+          fix: fixer => fixer.remove(emptyExport!),
+          messageId: 'uselessExport',
+          node: emptyExport,
+        });
+      }
+    }
+
+    return {
+      Program: checkNode,
+      TSModuleDeclaration: checkNode,
     };
   },
 });
