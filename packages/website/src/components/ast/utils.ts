@@ -1,5 +1,5 @@
 import type { SelectedPosition, SelectedRange } from './types';
-import { GetRangeFn } from './types';
+import { ASTViewerModel, ASTViewerModelComplex } from './types';
 
 export function isWithinRange(
   loc: SelectedPosition,
@@ -30,42 +30,35 @@ export function isRecord(value: unknown): value is Record<string, unknown> {
 
 export function isInRange(
   position: SelectedPosition | null | undefined,
-  value: unknown,
-  getRange: GetRangeFn,
+  value: ASTViewerModel,
 ): boolean {
-  if (!position) {
+  if (!position || !value.range) {
     return false;
   }
-  const range = getRange(value);
-  if (!range) {
-    return false;
-  }
-  return isWithinRange(position, range);
+  return isWithinRange(position, value.range);
 }
 
 export function isArrayInRange(
   position: SelectedPosition | null | undefined,
-  value: unknown,
-  getRange: GetRangeFn,
+  value: ASTViewerModelComplex,
 ): boolean {
   return Boolean(
-    position &&
-      Array.isArray(value) &&
-      value.some(item => isInRange(position, item, getRange)),
+    position && value.value.some(item => isInRange(position, item.model)),
   );
 }
 
 export function hasChildInRange(
   position: SelectedPosition | null | undefined,
-  value: [string, unknown][],
-  getRange: GetRangeFn,
+  value: ASTViewerModelComplex,
 ): boolean {
   return Boolean(
     position &&
-      value.some(
-        ([, item]) =>
-          isInRange(position, item, getRange) ||
-          isArrayInRange(position, item, getRange),
+      value.value.some(item =>
+        item.model.type === 'object'
+          ? isInRange(position, item.model)
+          : item.model.type === 'array'
+          ? isArrayInRange(position, item.model)
+          : false,
       ),
   );
 }

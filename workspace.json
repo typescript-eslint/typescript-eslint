@@ -10,6 +10,7 @@
     "@typescript-eslint/scope-manager": "packages/scope-manager",
     "@typescript-eslint/shared-fixtures": "packages/shared-fixtures",
     "@typescript-eslint/types": "packages/types",
+    "@typescript-eslint/type-utils": "packages/type-utils",
     "@typescript-eslint/typescript-estree": "packages/typescript-estree",
     "@typescript-eslint/visitor-keys": "packages/visitor-keys",
     "@typescript-eslint/website-eslint": "packages/website-eslint",

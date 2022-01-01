@@ -18,16 +18,5 @@ declare module 'typescript' {
      * - `readonly [foo]`
      */
     isTupleType(type: Type): type is TupleTypeReference;
-    /**
-     * Return the type of the given property in the given type, or undefined if no such property exists
-     */
-    getTypeOfPropertyOfType(type: Type, propertyName: string): Type | undefined;
-  }
-
-  interface Type {
-    /**
-     * If the type is `any`, and this is set to "error", then TS was unable to resolve the type
-     */
-    intrinsicName?: string;
   }
 }

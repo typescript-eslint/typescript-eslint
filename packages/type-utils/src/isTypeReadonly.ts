@@ -1,3 +1,4 @@
+import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 import {
   isObjectType,
   isUnionType,
@@ -7,7 +8,6 @@ import {
   isSymbolFlagSet,
 } from 'tsutils';
 import * as ts from 'typescript';
-import { nullThrows, NullThrowsReasons } from './nullThrows';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 
 const enum Readonlyness {
@@ -75,9 +75,9 @@ function isTypeReadonlyArrayOrTuple(
   }
 
   if (checker.isArrayType(type)) {
-    const symbol = nullThrows(
+    const symbol = ESLintUtils.nullThrows(
       type.getSymbol(),
-      NullThrowsReasons.MissingToken('symbol', 'array type'),
+      ESLintUtils.NullThrowsReasons.MissingToken('symbol', 'array type'),
     );
     const escapedName = symbol.getEscapedName();
     if (escapedName === 'Array') {
@@ -142,9 +142,12 @@ function isTypeReadonlyObject(
     // as we might be able to bail out early due to a mutable property before
     // doing this deep, potentially expensive check.
     for (const property of properties) {
-      const propertyType = nullThrows(
+      const propertyType = ESLintUtils.nullThrows(
         getTypeOfPropertyOfType(checker, type, property),
-        NullThrowsReasons.MissingToken(`property "${property.name}"`, 'type'),
+        ESLintUtils.NullThrowsReasons.MissingToken(
+          `property "${property.name}"`,
+          'type',
+        ),
       );
 
       // handle recursive types.

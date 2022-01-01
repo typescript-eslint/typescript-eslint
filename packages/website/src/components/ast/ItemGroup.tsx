@@ -4,15 +4,11 @@ import clsx from 'clsx';
 
 import styles from './ASTViewer.module.css';
 
-import PropertyNameComp from './PropertyName';
-import type { GetNodeNameFn } from './types';
-
-const PropertyName = React.memo(PropertyNameComp);
+import PropertyName from './PropertyName';
+import type { ASTViewerModelMap } from './types';
 
 export interface ItemGroupProps {
-  readonly propName?: string;
-  readonly value: unknown;
-  readonly getNodeName: GetNodeNameFn;
+  readonly data: ASTViewerModelMap;
   readonly isSelected?: boolean;
   readonly isExpanded?: boolean;
   readonly canExpand?: boolean;
@@ -21,32 +17,39 @@ export interface ItemGroupProps {
   readonly children: JSX.Element | false | (JSX.Element | false)[];
 }
 
-export default function ItemGroup(props: ItemGroupProps): JSX.Element {
+export default function ItemGroup({
+  data,
+  isSelected,
+  isExpanded,
+  canExpand,
+  onClick,
+  onHover,
+  children,
+}: ItemGroupProps): JSX.Element {
   const listItem = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (listItem.current && props.isSelected) {
+    if (listItem.current && isSelected) {
       scrollIntoViewIfNeeded(listItem.current);
     }
-  }, [props.isSelected, listItem]);
+  }, [isSelected, listItem]);
 
   return (
     <div
       ref={listItem}
       className={clsx(
-        props.canExpand ? styles.expand : styles.nonExpand,
-        props.isExpanded ? '' : styles.open,
-        props.isSelected ? styles.selected : '',
+        canExpand ? styles.expand : styles.nonExpand,
+        isExpanded ? '' : styles.open,
+        isSelected ? styles.selected : '',
       )}
     >
       <PropertyName
-        propName={props.propName}
-        typeName={props.getNodeName(props.value)}
-        onMouseEnter={(): void => props.onHover?.(true)}
-        onMouseLeave={(): void => props.onHover?.(false)}
-        onClick={(props.canExpand && props.onClick) || undefined}
+        propName={data.key}
+        typeName={data.model.name}
+        onHover={onHover}
+        onClick={(canExpand && onClick) || undefined}
       />
-      {React.Children.map(props.children, child => child)}
+      {React.Children.map(children, child => child)}
     </div>
   );
 }

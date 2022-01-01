@@ -42,7 +42,7 @@ export interface ConfigModel {
   tsConfig?: CompilerFlags;
   code: string;
   ts: string;
-  showAST?: boolean | 'ts' | 'es';
+  showAST?: boolean | 'ts' | 'es' | 'scope';
 }
 
 export interface SelectedPosition {

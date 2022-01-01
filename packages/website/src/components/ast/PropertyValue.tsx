@@ -1,32 +1,33 @@
 import React from 'react';
 import styles from './ASTViewer.module.css';
-import { objType } from './utils';
+import type { ASTViewerModelMap } from './types';
 
 export interface PropertyValueProps {
-  readonly value: unknown;
+  readonly value: ASTViewerModelMap;
 }
 
-function PropertyValue(props: PropertyValueProps): JSX.Element {
-  if (typeof props.value === 'string') {
-    return (
-      <span className={styles.propString}>{JSON.stringify(props.value)}</span>
-    );
-  } else if (typeof props.value === 'number') {
-    return <span className={styles.propNumber}>{props.value}</span>;
-  } else if (typeof props.value === 'bigint') {
-    return <span className={styles.propNumber}>{String(props.value)}n</span>;
-  } else if (props.value instanceof RegExp) {
-    return <span className={styles.propRegExp}>{String(props.value)}</span>;
-  } else if (typeof props.value === 'undefined' || props.value === null) {
-    return <span className={styles.propEmpty}>{String(props.value)}</span>;
-  } else if (typeof props.value === 'boolean') {
-    return (
-      <span className={styles.propBoolean}>
-        {props.value ? 'true' : 'false'}
-      </span>
-    );
+function PropertyValue({ value }: PropertyValueProps): JSX.Element {
+  switch (value.model.type) {
+    case 'string':
+      return <span className={styles.propString}>{value.model.value}</span>;
+    case 'bigint':
+      return <span className={styles.propNumber}>{value.model.value}</span>;
+    case 'number':
+      return <span className={styles.propNumber}>{value.model.value}</span>;
+    case 'regexp':
+      return <span className={styles.propRegExp}>{value.model.value}</span>;
+    case 'undefined':
+      return <span className={styles.propEmpty}>{value.model.value}</span>;
+    case 'boolean':
+      return <span className={styles.propBoolean}>{value.model.value}</span>;
+    case 'array':
+    case 'object':
+      return <span className={styles.propClass}>{value.key}</span>;
+    case 'class':
+    case 'ref':
+    default:
+      return <span className={styles.propClass}>{value.model.value}</span>;
   }
-  return <span className={styles.propClass}>{objType(props.value)}</span>;
 }
 
 export default PropertyValue;

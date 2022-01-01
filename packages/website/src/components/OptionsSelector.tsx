@@ -32,6 +32,7 @@ const ASTOptions = [
   { value: false, label: 'Disabled' },
   { value: 'es', label: 'ESTree' },
   { value: 'ts', label: 'TypeScript' },
+  { value: 'scope', label: 'Scope' },
 ] as const;
 
 function OptionsSelector({

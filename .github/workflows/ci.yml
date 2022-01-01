@@ -116,6 +116,11 @@ jobs:
         env:
           CI: true
 
+      - name: Run unit tests for type-utils
+        run: npx nx test @typescript-eslint/type-utils
+        env:
+          CI: true
+
       - name: Run unit tests for parser
         run: npx nx test @typescript-eslint/parser
         env:
@@ -280,6 +285,11 @@ jobs:
 
       - name: Run unit tests for experimental-utils
         run: npx nx test @typescript-eslint/experimental-utils
+        env:
+          CI: true
+
+      - name: Run unit tests for type-utils
+        run: npx nx test @typescript-eslint/type-utils
         env:
           CI: true
 

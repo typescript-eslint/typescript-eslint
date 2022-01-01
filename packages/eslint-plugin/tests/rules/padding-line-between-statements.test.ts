@@ -2799,6 +2799,20 @@ var a = 1
         { blankLine: 'always', prev: 'block-like', next: 'block-like' },
       ],
     },
+    {
+      code: 'export function foo(arg1: string): number;\nexport function foo(arg2: number) {\n return arg2;\n}',
+      options: [
+        { blankLine: 'always', prev: '*', next: 'block-like' },
+        { blankLine: 'never', prev: '*', next: 'export' },
+      ],
+    },
+    {
+      code: 'function foo(arg1: string): number;\nfunction foo(arg2: number) {\n return arg2;\n}',
+      options: [
+        { blankLine: 'always', prev: '*', next: 'block-like' },
+        { blankLine: 'never', prev: '*', next: 'function' },
+      ],
+    },
   ],
   invalid: [
     //----------------------------------------------------------------------
@@ -5100,6 +5114,20 @@ declare namespace Types {
         { messageId: 'expectedBlankLine' },
         { messageId: 'expectedBlankLine' },
       ],
+    },
+    {
+      code: 'export function foo(arg1: string): number;\nexport function foo(arg2: number) {\n return arg2;\n}',
+      output:
+        'export function foo(arg1: string): number;\n\nexport function foo(arg2: number) {\n return arg2;\n}',
+      options: [{ blankLine: 'always', prev: '*', next: 'block-like' }],
+      errors: [{ messageId: 'expectedBlankLine' }],
+    },
+    {
+      code: 'function foo(arg1: string): number;\nfunction foo(arg2: number) {\n return arg2;\n}',
+      output:
+        'function foo(arg1: string): number;\n\nfunction foo(arg2: number) {\n return arg2;\n}',
+      options: [{ blankLine: 'always', prev: '*', next: 'block-like' }],
+      errors: [{ messageId: 'expectedBlankLine' }],
     },
   ],
 });
