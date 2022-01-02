@@ -24,6 +24,13 @@ export function itIsAccessible(route) {
   it('is accessible', () => {
     cy.visit(route);
     cy.injectAxe();
-    cy.checkA11y(null, null, terminalLog);
+    cy.checkA11y(
+      {
+        // https://github.com/facebook/docusaurus/issues/6252
+        exclude: '[class*="skipToContent"]',
+      },
+      null,
+      terminalLog,
+    );
   });
 }
