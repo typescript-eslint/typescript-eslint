@@ -19,6 +19,7 @@ const error = {
 
 ruleTester.run('no-useless-empty-export', rule, {
   valid: [
+    "declare module '_'",
     "import {} from '_';",
     "import * as _ from '_';",
     'export = {};',
