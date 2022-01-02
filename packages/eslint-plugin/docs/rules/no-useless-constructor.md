@@ -29,6 +29,11 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 </sup>
 
+## Caveat
+
+This lint rule will report on constructors whose sole purpose is to change visibility of a parent constructor.
+See [discussion on this rule's lack of type information](https://github.com/typescript-eslint/typescript-eslint/issues/3820#issuecomment-917821240) for context.
+
 ## Attributes
 
 - [ ] ✅ Recommended

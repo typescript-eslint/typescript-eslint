@@ -67,7 +67,7 @@ See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) 
 ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
 This generic rule allows you to specify a [selector](https://eslint.org/docs/developer-guide/selectors) for the code you want to ban, along with a custom error message.
 
-You can use a tool like [AST Explorer](https://astexplorer.net/) to help in figuring out the structure of the AST that you want to ban.
+You can use an AST visualization tool such as [TypeScript ESLint playground](https://typescript-eslint.io/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
 
 For example, you can ban enums (or some variation of) using one of the following configs:
 
@@ -153,6 +153,19 @@ If you see more than one version installed, then you will have to either use [ya
 
 **The best course of action in this case is to wait until your dependency releases a new version with support for our latest versions.**
 
+## How can I specify a TypeScript version / `parserOptions.typescriptLocation`?
+
+You can't, and you don't want to.
+
+You should use the same version of TypeScript for linting as the rest of your project.
+TypeScript versions often have slight differences in edge cases that can cause contradictory information between typescript-eslint rules and editor information.
+For example:
+
+- `@typescript-eslint/strict-boolean-expressions` might be operating with TypeScript version _X_ and think a variable is `string[] | undefined`
+- TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
+
+See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.
+
 ## My linting feels really slow
 
 As mentioned in the [type-aware linting doc](./TYPED_LINTING.md), if you're using type-aware linting, your lint times should be roughly the same as your build times.
@@ -169,6 +182,18 @@ Additionally, if you provide no `include` in your tsconfig, then it is the same 
 
 Wide globs can cause TypeScript to parse things like build artifacts, which can heavily impact performance.
 Always ensure you provide globs targeted at the folders you are specifically wanting to lint.
+
+### Wide includes in your ESLint options
+
+Specifying `tsconfig.json` paths in your ESLint commands is also likely to cause much more disk IO than expected.
+Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
+
+```diff
+- eslint --parser-options project:./**/tsconfig.json
++ eslint --parser-options project:./packages/*/tsconfig.json
+```
+
+See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
 
 ### `eslint-plugin-prettier`
 
