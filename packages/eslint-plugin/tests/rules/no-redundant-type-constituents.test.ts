@@ -61,6 +61,10 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type B = false;
       type T = B | true;
     `,
+    `
+      type B = true;
+      type T = B | false;
+    `,
     'type T = number;',
     `
       type B = number;
@@ -380,10 +384,42 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
+      code: `
+        type B = 'b';
+        type T = B | string;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            literal: '"b"',
+            primitive: 'string',
+          },
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
       code: 'type T = `a${number}c` | string;',
       errors: [
         {
           column: 10,
+          data: {
+            literal: 'template literal type',
+            primitive: 'string',
+          },
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = \`a\${number}c\`;
+        type T = B | string;
+      `,
+      errors: [
+        {
+          column: 18,
           data: {
             literal: 'template literal type',
             primitive: 'string',
@@ -487,6 +523,64 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
+      code: 'type T = false & boolean;',
+      errors: [
+        {
+          column: 18,
+          data: {
+            literal: 'false',
+            primitive: 'boolean',
+          },
+          messageId: 'primitiveOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = false;
+        type T = B & boolean;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            literal: 'false',
+            primitive: 'boolean',
+          },
+          messageId: 'primitiveOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = true;
+        type T = B & boolean;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            literal: 'true',
+            primitive: 'boolean',
+          },
+          messageId: 'primitiveOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = true & boolean;',
+      errors: [
+        {
+          column: 17,
+          data: {
+            literal: 'true',
+            primitive: 'boolean',
+          },
+          messageId: 'primitiveOverridden',
+        },
+      ],
+    },
+    {
       code: 'type T = number & any;',
       errors: [
         {
@@ -517,6 +611,22 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       errors: [
         {
           column: 19,
+          data: {
+            container: 'intersection',
+            typeName: 'never',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = never;
+        type T = B & number;
+      `,
+      errors: [
+        {
+          column: 18,
           data: {
             container: 'intersection',
             typeName: 'never',
@@ -585,6 +695,22 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           data: {
             literal: '""',
             primitive: 'string',
+          },
+          messageId: 'primitiveOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = 0n;
+        type T = B & bigint;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            literal: '0n',
+            primitive: 'bigint',
           },
           messageId: 'primitiveOverridden',
         },

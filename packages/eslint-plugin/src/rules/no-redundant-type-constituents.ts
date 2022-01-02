@@ -78,6 +78,10 @@ function addToMapGroup<Key, Value>(
 }
 
 function describeLiteralType(type: ts.Type): string {
+  if (type.isStringLiteral()) {
+    return JSON.stringify(type.value);
+  }
+
   if (type.isLiteral()) {
     return type.value.toString();
   }
@@ -92,10 +96,6 @@ function describeLiteralType(type: ts.Type): string {
 
   if (util.isTypeUnknownType(type)) {
     return 'unknown';
-  }
-
-  if (type.isStringLiteral()) {
-    return JSON.stringify(type.value);
   }
 
   if (util.isTypeTemplateLiteralType(type)) {
