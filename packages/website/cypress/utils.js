@@ -5,6 +5,9 @@ function terminalLog(violations) {
       violations.length === 1 ? '' : 's'
     } detected`,
   );
+  for (const violation of violations) {
+    cy.task('log', JSON.stringify(violation, null, 4));
+  }
 
   cy.task(
     'table',
