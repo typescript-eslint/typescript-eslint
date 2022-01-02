@@ -60,6 +60,8 @@ Depending on what you want to achieve:
 - If you **do** want to lint the file:
   - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
     - Use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
+      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
+      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
   - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
     - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
