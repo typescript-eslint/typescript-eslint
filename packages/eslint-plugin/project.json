@@ -1,5 +1,5 @@
 {
   "root": "packages/eslint-plugin",
   "type": "library",
-  "implicitDependencies": ["@typescript-eslint/types"]
+  "implicitDependencies": []
 }
