@@ -13,36 +13,128 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-redundant-type-constituents', rule, {
   valid: [
-    'type _ = any;',
-    'type _ = never;',
-    'type _ = () => never;',
-    'type _ = () => never | string;',
-    'type _ = () => string | never;',
-    'type _ = { (): string | never };',
-    'type _ = { new (): string | never };',
-    'type _ = unknown;',
-    'type _ = bigint;',
-    'type _ = 1n | 2n;',
-    'type _ = boolean;',
-    'type _ = false | true;',
-    'type _ = number;',
-    'type _ = 1 | 2;',
-    'type _ = 1 | false;',
-    'type _ = string;',
-    "type _ = 'a' | 'b';",
-    'type _ = bigint | null;',
-    'type _ = boolean | null;',
-    'type _ = number | null;',
-    'type _ = string | null;',
-    'type _ = bigint & null;',
-    'type _ = boolean & null;',
-    'type _ = number & null;',
-    'type _ = string & null;',
+    'type T = any;',
+    'type T = never;',
+    'type T = () => never;',
+    'type T = () => never | string;',
+    `
+      type B = never;
+      type T = () => B | string;
+    `,
+    `
+      type B = string;
+      type T = () => B | never;
+    `,
+    'type T = () => string | never;',
+    'type T = { (): string | never };',
+    `
+      type B = string;
+      type T = { (): B | never };
+    `,
+    'type T = { new (): string | never };',
+    `
+      type B = never;
+      type T = { new (): string | B };
+    `,
+    'type T = unknown;',
+    `
+      type B = unknown;
+      type T = B;
+    `,
+    'type T = bigint;',
+    `
+      type B = bigint;
+      type T = B;
+    `,
+    'type T = 1n | 2n;',
+    `
+      type B = 1n;
+      type T = B | 2n;
+    `,
+    'type T = boolean;',
+    `
+      type B = boolean;
+      type T = B;
+    `,
+    'type T = false | true;',
+    `
+      type B = false;
+      type T = B | true;
+    `,
+    'type T = number;',
+    `
+      type B = number;
+      type T = B;
+    `,
+    'type T = 1 | 2;',
+    `
+      type B = 1;
+      type T = B | 2;
+    `,
+    'type T = 1 | false;',
+    `
+      type B = 1;
+      type T = B | false;
+    `,
+    'type T = string;',
+    `
+      type B = string;
+      type T = B;
+    `,
+    "type T = 'a' | 'b';",
+    `
+      type B = 'b';
+      type T = 'a' | B;
+    `,
+    `
+      type B = 'a';
+      type T = B | 'b';
+    `,
+    'type T = bigint | null;',
+    `
+      type B = bigint;
+      type T = B | null;
+    `,
+    'type T = boolean | null;',
+    `
+      type B = boolean;
+      type T = B | null;
+    `,
+    'type T = number | null;',
+    `
+      type B = number;
+      type T = B | null;
+    `,
+    'type T = string | null;',
+    `
+      type B = string;
+      type T = B | null;
+    `,
+    'type T = bigint & null;',
+    `
+      type B = bigint;
+      type T = B & null;
+    `,
+    'type T = boolean & null;',
+    `
+      type B = boolean;
+      type T = B & null;
+    `,
+    'type T = number & null;',
+    `
+      type B = number;
+      type T = B & null;
+    `,
+    'type T = string & null;',
+    `
+      type B = string;
+      type T = B & null;
+    `,
   ],
 
   invalid: [
     {
-      code: 'type _ = number | any;',
+      code: 'type T = number | any;',
       errors: [
         {
           column: 19,
@@ -55,7 +147,23 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = any | number;',
+      code: `
+        type B = number;
+        type T = B | any;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = any | number;',
       errors: [
         {
           column: 10,
@@ -68,7 +176,23 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number | never;',
+      code: `
+        type B = any;
+        type T = B | number;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = number | never;',
       errors: [
         {
           column: 19,
@@ -81,7 +205,23 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = never | number;',
+      code: `
+        type B = number;
+        type T = B | never;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = never | number;',
       errors: [
         {
           column: 10,
@@ -94,7 +234,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number | unknown;',
+      code: 'type T = number | unknown;',
       errors: [
         {
           column: 19,
@@ -107,7 +247,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = unknown | number;',
+      code: 'type T = unknown | number;',
       errors: [
         {
           column: 10,
@@ -120,7 +260,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number | 0;',
+      code: 'type T = number | 0;',
       errors: [
         {
           column: 19,
@@ -133,7 +273,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number | (0 | 1);',
+      code: 'type T = number | (0 | 1);',
       errors: [
         {
           column: 20,
@@ -146,12 +286,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = (0 | 0) | number;',
+      code: 'type T = (0 | 0) | number;',
       errors: [
         {
           column: 11,
           data: {
-            literal: '0',
+            literal: '0 | 0',
             primitive: 'number',
           },
           messageId: 'literalOverridden',
@@ -159,12 +299,15 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = (0 | (0 | 0)) | number;',
+      code: `
+        type B = 0 | 1;
+        type T = (2 | B) | number;
+      `,
       errors: [
         {
-          column: 11,
+          column: 19,
           data: {
-            literal: '0',
+            literal: '2 | 0 | 1',
             primitive: 'number',
           },
           messageId: 'literalOverridden',
@@ -172,33 +315,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = (0 | 1) | number;',
-      errors: [
-        {
-          column: 11,
-          data: {
-            literal: '0 | 1',
-            primitive: 'number',
-          },
-          messageId: 'literalOverridden',
-        },
-      ],
-    },
-    {
-      code: 'type _ = (0 | (0 | 1)) | number;',
-      errors: [
-        {
-          column: 11,
-          data: {
-            literal: '0 | 1',
-            primitive: 'number',
-          },
-          messageId: 'literalOverridden',
-        },
-      ],
-    },
-    {
-      code: 'type _ = (0 | (1 | 2)) | number;',
+      code: 'type T = (0 | (1 | 2)) | number;',
       errors: [
         {
           column: 11,
@@ -211,7 +328,33 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: "type _ = (2 | 'other' | 3) | number;",
+      code: 'type T = (0 | 1) | number;',
+      errors: [
+        {
+          column: 11,
+          data: {
+            literal: '0 | 1',
+            primitive: 'number',
+          },
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = (0 | (0 | 1)) | number;',
+      errors: [
+        {
+          column: 11,
+          data: {
+            literal: '0 | 0 | 1',
+            primitive: 'number',
+          },
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: "type T = (2 | 'other' | 3) | number;",
       errors: [
         {
           column: 11,
@@ -224,7 +367,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: "type _ = '' | string;",
+      code: "type T = '' | string;",
       errors: [
         {
           column: 10,
@@ -237,7 +380,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = `a${number}c` | string;',
+      code: 'type T = `a${number}c` | string;',
       errors: [
         {
           column: 10,
@@ -250,7 +393,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = `${number}` | string;',
+      code: 'type T = `${number}` | string;',
       errors: [
         {
           column: 10,
@@ -263,7 +406,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = 0n | bigint;',
+      code: 'type T = 0n | bigint;',
       errors: [
         {
           column: 10,
@@ -276,7 +419,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = -1n | bigint;',
+      code: 'type T = -1n | bigint;',
       errors: [
         {
           column: 10,
@@ -289,12 +432,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = (-1n | 1n) | bigint;',
+      code: 'type T = (-1n | 1n) | bigint;',
       errors: [
         {
           column: 11,
           data: {
-            literal: '1n | -1n',
+            literal: '-1n | 1n',
             primitive: 'bigint',
           },
           messageId: 'literalOverridden',
@@ -302,7 +445,23 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = false | boolean;',
+      code: `
+        type B = boolean;
+        type T = B | false;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            literal: 'false',
+            primitive: 'boolean',
+          },
+          messageId: 'literalOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = false | boolean;',
       errors: [
         {
           column: 10,
@@ -315,7 +474,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = true | boolean;',
+      code: 'type T = true | boolean;',
       errors: [
         {
           column: 10,
@@ -328,7 +487,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number & any;',
+      code: 'type T = number & any;',
       errors: [
         {
           column: 19,
@@ -341,7 +500,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = any & number;',
+      code: 'type T = any & number;',
       errors: [
         {
           column: 10,
@@ -354,7 +513,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number & never;',
+      code: 'type T = number & never;',
       errors: [
         {
           column: 19,
@@ -367,7 +526,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = never & number;',
+      code: 'type T = never & number;',
       errors: [
         {
           column: 10,
@@ -380,7 +539,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number & unknown;',
+      code: 'type T = number & unknown;',
       errors: [
         {
           column: 19,
@@ -393,7 +552,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = unknown & number;',
+      code: 'type T = unknown & number;',
       errors: [
         {
           column: 10,
@@ -406,7 +565,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = number & 0;',
+      code: 'type T = number & 0;',
       errors: [
         {
           column: 10,
@@ -419,7 +578,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: "type _ = '' & string;",
+      code: "type T = '' & string;",
       errors: [
         {
           column: 15,
@@ -432,7 +591,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = 0n & bigint;',
+      code: 'type T = 0n & bigint;',
       errors: [
         {
           column: 15,
@@ -445,7 +604,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
-      code: 'type _ = -1n & bigint;',
+      code: 'type T = -1n & bigint;',
       errors: [
         {
           column: 16,

@@ -36,7 +36,27 @@ const primitiveTypeFlagNames = {
   [ts.TypeFlags.String]: 'string',
 } as const;
 
+const primitiveTypeFlagTypes = {
+  bigint: ts.TypeFlags.BigIntLiteral,
+  boolean: ts.TypeFlags.BooleanLiteral,
+  number: ts.TypeFlags.NumberLiteral,
+  string: ts.TypeFlags.StringLiteral,
+} as const;
+
+const keywordNodeTypesToTsTypes = new Map([
+  [TSESTree.AST_NODE_TYPES.TSAnyKeyword, ts.TypeFlags.Any],
+  [TSESTree.AST_NODE_TYPES.TSBigIntKeyword, ts.TypeFlags.BigInt],
+  [TSESTree.AST_NODE_TYPES.TSBooleanKeyword, ts.TypeFlags.Boolean],
+  [TSESTree.AST_NODE_TYPES.TSNumberKeyword, ts.TypeFlags.Number],
+  [TSESTree.AST_NODE_TYPES.TSStringKeyword, ts.TypeFlags.String],
+]);
+
 type PrimitiveTypeFlag = typeof primitiveTypeFlags[number];
+
+interface TypeFlagsWithName {
+  typeFlags: ts.TypeFlags;
+  typeName: string;
+}
 
 interface TypeNodeWithValue {
   literalValue: unknown;
@@ -57,20 +77,79 @@ function addToMapGroup<Key, Value>(
   }
 }
 
-function describeLiteralType(type: ts.Type): unknown {
-  return type.isStringLiteral()
-    ? JSON.stringify(type.value)
-    : type.isLiteral()
-    ? type.value
-    : util.isTypeTemplateLiteralType(type)
-    ? 'template literal type'
-    : util.isTypeBigIntLiteralType(type)
-    ? `${type.value.negative ? '-' : ''}${type.value.base10Value}n`
-    : tsutils.isBooleanLiteralType(type, true)
-    ? 'true'
-    : tsutils.isBooleanLiteralType(type, false)
-    ? 'false'
-    : 'literal type';
+function describeLiteralType(type: ts.Type): string {
+  if (type.isLiteral()) {
+    return type.value.toString();
+  }
+
+  if (util.isTypeAnyType(type)) {
+    return 'any';
+  }
+
+  if (util.isTypeNeverType(type)) {
+    return 'never';
+  }
+
+  if (util.isTypeUnknownType(type)) {
+    return 'unknown';
+  }
+
+  if (type.isStringLiteral()) {
+    return JSON.stringify(type.value);
+  }
+
+  if (util.isTypeTemplateLiteralType(type)) {
+    return 'template literal type';
+  }
+
+  if (util.isTypeBigIntLiteralType(type)) {
+    return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
+  }
+
+  if (tsutils.isBooleanLiteralType(type, true)) {
+    return 'true';
+  }
+
+  if (tsutils.isBooleanLiteralType(type, false)) {
+    return 'false';
+  }
+
+  return 'literal type';
+}
+
+function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
+  switch (typeNode.type) {
+    case AST_NODE_TYPES.TSAnyKeyword:
+      return 'any';
+    case AST_NODE_TYPES.TSBooleanKeyword:
+      return 'boolean';
+    case AST_NODE_TYPES.TSNeverKeyword:
+      return 'never';
+    case AST_NODE_TYPES.TSNumberKeyword:
+      return 'number';
+    case AST_NODE_TYPES.TSStringKeyword:
+      return 'string';
+    case AST_NODE_TYPES.TSUnknownKeyword:
+      return 'unknown';
+    case AST_NODE_TYPES.TSLiteralType:
+      switch (typeNode.literal.type) {
+        case TSESTree.AST_NODE_TYPES.Literal:
+          switch (typeof typeNode.literal.value) {
+            case 'bigint':
+              return `${typeNode.literal.value < 0 ? '-' : ''}${
+                typeNode.literal.value
+              }n`;
+            case 'string':
+              return JSON.stringify(typeNode.literal.value);
+            default:
+              return `${typeNode.literal.value}`;
+          }
+        case TSESTree.AST_NODE_TYPES.TemplateLiteral:
+          return 'template literal type';
+      }
+  }
+
+  return 'literal type';
 }
 
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
@@ -104,8 +183,8 @@ export default util.createRule({
     },
     messages: {
       literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
-      primitiveOverridden: `{{primitive}} is overridden by the literal {{literal}} in this intersection type.`,
-      overridden: `'never' is overridden by other types in this {{container}} type.`,
+      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
+      overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
     },
     schema: [],
@@ -113,10 +192,54 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    const parserServices = util.getParserServices(context);
+
+    function getTypeNodeTypePartFlags(
+      typeNode: TSESTree.TypeNode,
+    ): TypeFlagsWithName[] {
+      const keywordTypeFlags = keywordNodeTypesToTsTypes.get(typeNode.type);
+      if (keywordTypeFlags) {
+        return [
+          {
+            typeFlags: keywordTypeFlags,
+            typeName: describeLiteralTypeNode(typeNode),
+          },
+        ];
+      }
+
+      if (
+        typeNode.type === AST_NODE_TYPES.TSLiteralType &&
+        typeNode.literal.type === AST_NODE_TYPES.Literal
+      ) {
+        return [
+          {
+            typeFlags:
+              primitiveTypeFlagTypes[
+                typeof typeNode.literal
+                  .value as keyof typeof primitiveTypeFlagTypes
+              ],
+            typeName: describeLiteralTypeNode(typeNode),
+          },
+        ];
+      }
+
+      if (typeNode.type === AST_NODE_TYPES.TSUnionType) {
+        return typeNode.types.flatMap(getTypeNodeTypePartFlags);
+      }
+
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(typeNode);
+      const checker = parserServices.program.getTypeChecker();
+      const nodeType = checker.getTypeAtLocation(tsNode);
+      const typeParts = unionTypePartsUnlessBoolean(nodeType);
+
+      return typeParts.map(typePart => ({
+        typeFlags: typePart.flags,
+        typeName: describeLiteralType(typePart),
+      }));
+    }
+
     return {
       TSIntersectionType(node): void {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
         const seenLiteralTypes = new Map<PrimitiveTypeFlag, string[]>();
         const seenPrimitiveTypes = new Map<
           PrimitiveTypeFlag,
@@ -124,15 +247,15 @@ export default util.createRule({
         >();
 
         function checkIntersectionBottomAndTopTypes(
-          nodeType: ts.Type,
+          { typeFlags, typeName }: TypeFlagsWithName,
           typeNode: TSESTree.TypeNode,
         ): boolean {
-          for (const [typeName, messageId, check] of [
-            ['any', 'overrides', util.isTypeAnyType],
-            ['never', 'overrides', util.isTypeNeverType],
-            ['unknown', 'overridden', util.isTypeUnknownType],
+          for (const [messageId, checkFlag] of [
+            ['overrides', ts.TypeFlags.Any],
+            ['overrides', ts.TypeFlags.Never],
+            ['overridden', ts.TypeFlags.Unknown],
           ] as const) {
-            if (check(nodeType)) {
+            if (typeFlags === checkFlag) {
               context.report({
                 data: {
                   container: 'intersection',
@@ -149,28 +272,26 @@ export default util.createRule({
         }
 
         for (const typeNode of node.types) {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(typeNode);
-          const nodeType = checker.getTypeAtLocation(tsNode);
-          const typeParts = tsutils.unionTypeParts(nodeType);
+          const typePartFlags = getTypeNodeTypePartFlags(typeNode);
 
-          for (const typePart of typeParts) {
+          for (const typePart of typePartFlags) {
             if (checkIntersectionBottomAndTopTypes(typePart, typeNode)) {
               continue;
             }
 
             for (const literalTypeFlag of literalTypeFlags) {
-              if (typePart.flags === literalTypeFlag) {
+              if (typePart.typeFlags === literalTypeFlag) {
                 addToMapGroup(
                   seenLiteralTypes,
                   literalToPrimitiveTypeFlags[literalTypeFlag],
-                  describeLiteralType(typePart),
+                  typePart.typeName,
                 );
                 break;
               }
             }
 
             for (const primitiveTypeFlag of primitiveTypeFlags) {
-              if (typePart.flags === primitiveTypeFlag) {
+              if (typePart.typeFlags === primitiveTypeFlag) {
                 addToMapGroup(seenPrimitiveTypes, primitiveTypeFlag, typeNode);
               }
             }
@@ -197,8 +318,6 @@ export default util.createRule({
         }
       },
       TSUnionType(node): void {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
         const seenLiteralTypes = new Map<
           PrimitiveTypeFlag,
           TypeNodeWithValue[]
@@ -206,14 +325,14 @@ export default util.createRule({
         const seenPrimitiveTypes = new Set<PrimitiveTypeFlag>();
 
         function checkUnionBottomAndTopTypes(
-          nodeType: ts.Type,
+          { typeFlags, typeName }: TypeFlagsWithName,
           typeNode: TSESTree.TypeNode,
         ): boolean {
-          for (const [typeName, check] of [
-            ['any', util.isTypeAnyType],
-            ['unknown', util.isTypeUnknownType],
+          for (const checkFlag of [
+            ts.TypeFlags.Any,
+            ts.TypeFlags.Unknown,
           ] as const) {
-            if (check(nodeType)) {
+            if (typeFlags === checkFlag) {
               context.report({
                 data: {
                   container: 'union',
@@ -226,7 +345,10 @@ export default util.createRule({
             }
           }
 
-          if (util.isTypeNeverType(nodeType) && !isNodeInsideReturnType(node)) {
+          if (
+            typeFlags === ts.TypeFlags.Never &&
+            !isNodeInsideReturnType(node)
+          ) {
             context.report({
               data: {
                 container: 'union',
@@ -242,22 +364,20 @@ export default util.createRule({
         }
 
         for (const typeNode of node.types) {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(typeNode);
-          const nodeType = checker.getTypeAtLocation(tsNode);
-          const typeParts = unionTypePartsUnlessBoolean(nodeType);
+          const typePartFlags = getTypeNodeTypePartFlags(typeNode);
 
-          for (const typePart of typeParts) {
+          for (const typePart of typePartFlags) {
             if (checkUnionBottomAndTopTypes(typePart, typeNode)) {
               continue;
             }
 
             for (const literalTypeFlag of literalTypeFlags) {
-              if (typePart.flags === literalTypeFlag) {
+              if (typePart.typeFlags === literalTypeFlag) {
                 addToMapGroup(
                   seenLiteralTypes,
                   literalToPrimitiveTypeFlags[literalTypeFlag],
                   {
-                    literalValue: describeLiteralType(typePart),
+                    literalValue: typePart.typeName,
                     typeNode,
                   },
                 );
@@ -266,7 +386,7 @@ export default util.createRule({
             }
 
             for (const primitiveTypeFlag of primitiveTypeFlags) {
-              if (tsutils.isTypeFlagSet(nodeType, primitiveTypeFlag)) {
+              if ((typePart.typeFlags & primitiveTypeFlag) !== 0) {
                 seenPrimitiveTypes.add(primitiveTypeFlag);
               }
             }
