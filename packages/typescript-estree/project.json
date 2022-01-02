@@ -1,5 +1,5 @@
 {
   "root": "packages/typescript-estree",
   "type": "library",
-  "implicitDependencies": []
+  "implicitDependencies": ["@typescript-eslint/types"]
 }
