@@ -293,7 +293,7 @@ class ClassVisitor extends Visitor {
       node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
       this.#emitDecoratorMetadata
     ) {
-      let identifier: TSESTree.Identifier;
+      let identifier: TSESTree.Identifier | TSESTree.ThisExpression;
       if (
         node.typeAnnotation.typeName.type === AST_NODE_TYPES.TSQualifiedName
       ) {
@@ -304,6 +304,10 @@ class ClassVisitor extends Visitor {
         identifier = iter.left;
       } else {
         identifier = node.typeAnnotation.typeName;
+      }
+
+      if (identifier.type === AST_NODE_TYPES.ThisExpression) {
+        return;
       }
 
       if (withDecorators) {

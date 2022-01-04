@@ -256,24 +256,22 @@ class TypeVisitor extends Visitor {
 
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
-    if (node.exprName.type === AST_NODE_TYPES.Identifier) {
-      this.#referencer.currentScope().referenceValue(node.exprName);
-    } else if (
-      (node.exprName.type as unknown) === AST_NODE_TYPES.ThisExpression
-    ) {
-      // technically exprName is either Identifier or QualifiedName, but eslint does not recognize `typeof this`,
-      // so we have translated it to ThisExpression.
-      return;
+    let identifier: TSESTree.Identifier | TSESTree.ThisExpression;
+    if (node.exprName.type === AST_NODE_TYPES.TSQualifiedName) {
+      let iter = node.exprName;
+      while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
+        iter = iter.left;
+      }
+      identifier = iter.left;
     } else {
-      let expr = node.exprName.left;
-      while (expr.type === TSESTree.AST_NODE_TYPES.TSQualifiedName) {
-        expr = expr.left;
-      }
-      if ((expr.type as unknown) === AST_NODE_TYPES.ThisExpression) {
-        return;
-      }
-      this.#referencer.currentScope().referenceValue(expr);
+      identifier = node.exprName;
     }
+
+    if (identifier.type === AST_NODE_TYPES.ThisExpression) {
+      return;
+    }
+
+    this.#referencer.currentScope().referenceValue(identifier);
   }
 
   protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {

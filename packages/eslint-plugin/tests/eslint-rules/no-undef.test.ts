@@ -249,11 +249,12 @@ class Foo {}
 export type AppState = typeof import('./src/store/reducers').default;
     `,
     `
+let self: typeof this;
+let foo: typeof this.foo;
 const obj = {
   foo: '',
   bar() {
     let self: typeof this;
-    let foo: typeof this.foo;
   },
 };
     `,
