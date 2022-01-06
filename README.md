@@ -77,7 +77,7 @@ Support for specific Current status releases are considered periodically.
 
 ## License
 
-TypeScript ESLint inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+TypeScript ESLint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
 
 ## How can I help?
 
