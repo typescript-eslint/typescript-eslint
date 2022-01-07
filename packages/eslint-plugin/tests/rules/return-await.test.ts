@@ -909,5 +909,81 @@ async function test<T>(): Promise<T> {
         },
       ],
     },
+    {
+      code: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return undefined || bar();
+          } catch {}
+        }
+      `,
+      output: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return undefined || (await bar());
+          } catch {}
+        }
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return bar() || undefined || bar();
+          } catch {}
+        }
+      `,
+      output: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return (await bar()) || undefined || (await bar());
+          } catch {}
+        }
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return window.foo ?? bar();
+          } catch {}
+        }
+      `,
+      output: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return window.foo ?? (await bar());
+          } catch {}
+        }
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
   ],
 });

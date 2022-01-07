@@ -4,6 +4,7 @@ import {
   TSESTree,
 } from '@typescript-eslint/experimental-utils';
 import * as tsutils from 'tsutils';
+import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -154,6 +155,12 @@ export default util.createRule({
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
     ): TSESLint.RuleFix | TSESLint.RuleFix[] {
+      if (node.parent?.type === AST_NODE_TYPES.LogicalExpression) {
+        return [
+          fixer.insertTextBefore(node, '(await '),
+          fixer.insertTextAfter(node, ')'),
+        ];
+      }
       if (node.type !== AST_NODE_TYPES.TSAsExpression) {
         return fixer.insertTextBefore(node, 'await ');
       }
@@ -259,6 +266,22 @@ export default util.createRule({
       }
     }
 
+    function testLogicalExpression(
+      node: TSESTree.LogicalExpression,
+      tsNode: ts.BinaryExpression,
+    ): void {
+      const left = node.left;
+      const tsLeft = tsNode.left;
+      const right = node.right;
+      const tsRight = tsNode.right;
+      test(right, tsRight);
+      if (isLogicalExpression(left) && isBinaryExpression(tsLeft)) {
+        testLogicalExpression(left, tsLeft);
+      } else {
+        test(left, tsLeft);
+      }
+    }
+
     function findPossiblyReturnedNodes(
       node: TSESTree.Expression,
     ): TSESTree.Expression[] {
@@ -298,9 +321,19 @@ export default util.createRule({
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-          test(node, tsNode);
+          if (isLogicalExpression(node) && isBinaryExpression(tsNode)) {
+            testLogicalExpression(node, tsNode);
+          } else {
+            test(node, tsNode);
+          }
         });
       },
     };
   },
 });
+
+function isLogicalExpression(
+  node: TSESTree.Node,
+): node is TSESTree.LogicalExpression {
+  return node.type === AST_NODE_TYPES.LogicalExpression;
+}
