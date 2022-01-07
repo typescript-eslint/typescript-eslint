@@ -58,7 +58,7 @@
     "@babel/code-frame": "^7.16.0",
     "@babel/parser": "^7.16.4",
     "@babel/types": "^7.16.0",
-    "@commitlint/cli": "^15.0.0",
+    "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
     "@nrwl/cli": "13.0.2",
     "@nrwl/nx-cloud": "12.5.1",
