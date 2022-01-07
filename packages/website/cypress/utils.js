@@ -27,7 +27,7 @@ export function itIsAccessible(route) {
     cy.checkA11y(
       {
         // https://github.com/facebook/docusaurus/issues/6252
-        exclude: '[class*="skipToContent"]',
+        exclude: ['[class*="skipToContent"]'],
       },
       null,
       terminalLog,
