@@ -1,5 +1,6 @@
 import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 import {
+  isConditionalType,
   isObjectType,
   isUnionType,
   isUnionOrIntersectionType,
@@ -194,6 +195,20 @@ function isTypeReadonlyRecurser(
         seenTypes.has(t) ||
         isTypeReadonlyRecurser(checker, t, options, seenTypes),
     );
+    const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
+    return readonlyness;
+  }
+
+  if (isConditionalType(type)) {
+    const result = [type.root.node.trueType, type.root.node.falseType]
+      .map(checker.getTypeFromTypeNode)
+      .every(
+        t =>
+          seenTypes.has(t) ||
+          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+            Readonlyness.Readonly,
+      );
+
     const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
     return readonlyness;
   }
