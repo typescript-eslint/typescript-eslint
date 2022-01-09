@@ -109,6 +109,34 @@ describe('isTypeReadonly', () => {
           ])('handles non fully readonly sets and maps', runTests);
         });
       });
+
+      describe('Conditional Types', () => {
+        describe('is readonly', () => {
+          const runTests = runTestIsReadonly;
+
+          it.each([
+            [
+              'type Test<T> = T extends readonly number[] ? readonly string[] : readonly number[];',
+            ],
+          ])('handles conditional type that are fully readonly', runTests);
+
+          it.each([
+            [
+              'type Test<T> = T extends number[] ? readonly string[] : readonly number[];',
+            ],
+          ])('should ignore mutable conditions', runTests);
+        });
+      });
+
+      describe('is not readonly', () => {
+        const runTests = runTestIsNotReadonly;
+
+        it.each([
+          ['type Test<T> = T extends number[] ? string[] : number[];'],
+          ['type Test<T> = T extends number[] ? string[] : readonly number[];'],
+          ['type Test<T> = T extends number[] ? readonly string[] : number[];'],
+        ])('handles non fully readonly conditional types', runTests);
+      });
     });
 
     describe('treatMethodsAsReadonly', () => {
