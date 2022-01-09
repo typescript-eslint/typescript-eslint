@@ -109,6 +109,33 @@ describe('isTypeReadonly', () => {
           ])('handles non fully readonly sets and maps', runTests);
         });
       });
+
+      describe('Union', () => {
+        describe('is readonly', () => {
+          const runTests = runTestIsReadonly;
+
+          it.each([
+            [
+              'type Test = Readonly<{ foo: string; bar: number; }> & Readonly<{ bar: number; }>;',
+            ],
+            ['type Test = readonly string[] | readonly number[];'],
+          ])('handles a union of 2 fully readonly types', runTests);
+        });
+
+        describe('is not readonly', () => {
+          const runTests = runTestIsNotReadonly;
+
+          it.each([
+            ['type Test = { foo: string; bar: number; } | { bar: number; };'],
+            [
+              'type Test = { foo: string; bar: number; } | Readonly<{ bar: number; }>;',
+            ],
+            [
+              'type Test = Readonly<{ foo: string; bar: number; }> | { bar: number; };',
+            ],
+          ])('handles a union of non fully readonly types', runTests);
+        });
+      });
     });
 
     describe('treatMethodsAsReadonly', () => {
