@@ -146,6 +146,10 @@ const baseCases = [
 
 ruleTester.run('prefer-optional-chain', rule, {
   valid: [
+    'foo || {};',
+    'foo || ({} as any);',
+    '(foo || {})?.bar;', // This might seem stupid, but I'm not sure if we want to show suggestion for it
+    '(foo || { bar: 1 }).bar;',
     'foo && bar;',
     'foo && foo;',
     'foo || bar;',
@@ -500,6 +504,67 @@ foo?.bar(/* comment */a,
           jsx: true,
         },
       },
+    },
+    {
+      code: 'const foo = (bar || {}).baz;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 13,
+          endColumn: 28,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'const foo = bar?.baz;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(foo.bar || {})[baz];',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 21,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo.bar?.[baz];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // Currently it does not suggest a fix for nested optional with empty object
+      // It shows 2 suggestions, one for the outer object and one for the inner object
+      code: '((foo1 || {}).foo2 || {}).foo3;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 31,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(foo1 || {}).foo2?.foo3;',
+            },
+          ],
+        },
+        {
+          messageId: 'optionalChainSuggest',
+          column: 2,
+          endColumn: 19,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(foo1?.foo2 || {}).foo3;',
+            },
+          ],
+        },
+      ],
     },
   ],
 });

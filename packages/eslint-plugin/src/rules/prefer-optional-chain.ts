@@ -52,6 +52,43 @@ export default util.createRule({
   create(context) {
     const sourceCode = context.getSourceCode();
     return {
+      'LogicalExpression[operator=||]'(node: TSESTree.LogicalExpression): void {
+        const rightNode = node.right;
+        const parentNode = node.parent;
+        const isRightNodeAnEmptyObjectLiteral =
+          rightNode.type === AST_NODE_TYPES.ObjectExpression &&
+          rightNode.properties.length === 0;
+        if (
+          !isRightNodeAnEmptyObjectLiteral ||
+          !parentNode ||
+          parentNode.type !== AST_NODE_TYPES.MemberExpression ||
+          parentNode.optional
+        ) {
+          return;
+        }
+        context.report({
+          node: parentNode,
+          messageId: 'optionalChainSuggest',
+          suggest: [
+            {
+              messageId: 'optionalChainSuggest',
+              fix: (fixer): TSESLint.RuleFix => {
+                const leftNodeText = context.getSourceCode().getText(node.left);
+                const propertyToBeOptionalText = context
+                  .getSourceCode()
+                  .getText(parentNode.property);
+                const maybeWrapped = parentNode.computed
+                  ? `[${propertyToBeOptionalText}]`
+                  : propertyToBeOptionalText;
+                return fixer.replaceTextRange(
+                  parentNode.range,
+                  `${leftNodeText}?.${maybeWrapped}`,
+                );
+              },
+            },
+          ],
+        });
+      },
       [[
         'LogicalExpression[operator="&&"] > Identifier',
         'LogicalExpression[operator="&&"] > MemberExpression',
