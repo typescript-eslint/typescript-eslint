@@ -4,9 +4,8 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { FinancialContributors } from '../components/FinancialContributors';
 import styles from './styles.module.css';
-
-import sponsors from '@site/data/sponsors.json';
 
 interface FeatureItem {
   title: string;
@@ -121,32 +120,6 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
   );
 }
 
-function Sponsors(props: {
-  tier: string;
-  title: string;
-  className?: string;
-}): JSX.Element {
-  const tierSponsors = sponsors.filter(sponsor => sponsor.tier === props.tier);
-  return (
-    <div className={props.className}>
-      <ul className={clsx(styles[`tier-${props.tier}`], styles.sponsorsTier)}>
-        {tierSponsors.map((sponsor, i) => (
-          <li key={i}>
-            <a
-              href={sponsor.website ?? undefined}
-              title={sponsor.name}
-              target="_blank"
-              rel="noopener sponsored"
-            >
-              <img src={sponsor.image} alt={`Sponsored by ${sponsor.name}`} />
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -187,15 +160,7 @@ function Home(): JSX.Element {
         <section className={styles.sponsors}>
           <div className="container text--center padding-vert--lg">
             <h2>Financial Contributors</h2>
-            <Sponsors title="Sponsors" tier="sponsor" />
-            <Sponsors title="Supporter" tier="supporter" />
-            <Link
-              className="button button--info button--outline"
-              to="https://opencollective.com/typescript-eslint/contribute"
-              target="_blank"
-            >
-              Become a sponsor
-            </Link>
+            <FinancialContributors />
           </div>
         </section>
       </main>
