@@ -150,6 +150,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     'foo || ({} as any);',
     '(foo || {})?.bar;', // This might seem stupid, but I'm not sure if we want to show suggestion for it
     '(foo || { bar: 1 }).bar;',
+    '(undefined && (foo || {})).bar;',
     'foo && bar;',
     'foo && foo;',
     'foo || bar;',
@@ -561,6 +562,34 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: '(foo1?.foo2 || {}).foo3;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(foo || undefined || {}).bar;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(foo || undefined)?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`(undefined && foo || {}).bar;`,
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(undefined && foo)?.bar;',
             },
           ],
         },

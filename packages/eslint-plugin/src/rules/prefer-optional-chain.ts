@@ -53,6 +53,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
     return {
       'LogicalExpression[operator=||]'(node: TSESTree.LogicalExpression): void {
+        const leftNode = node.left;
         const rightNode = node.right;
         const parentNode = node.parent;
         const isRightNodeAnEmptyObjectLiteral =
@@ -73,16 +74,20 @@ export default util.createRule({
             {
               messageId: 'optionalChainSuggest',
               fix: (fixer): TSESLint.RuleFix => {
-                const leftNodeText = context.getSourceCode().getText(node.left);
+                const leftNodeText = context.getSourceCode().getText(leftNode);
+                const maybeWrappedLeftNode =
+                  leftNode.type === AST_NODE_TYPES.LogicalExpression
+                    ? `(${leftNodeText})`
+                    : leftNodeText;
                 const propertyToBeOptionalText = context
                   .getSourceCode()
                   .getText(parentNode.property);
-                const maybeWrapped = parentNode.computed
+                const maybeWrappedProperty = parentNode.computed
                   ? `[${propertyToBeOptionalText}]`
                   : propertyToBeOptionalText;
                 return fixer.replaceTextRange(
                   parentNode.range,
-                  `${leftNodeText}?.${maybeWrapped}`,
+                  `${maybeWrappedLeftNode}?.${maybeWrappedProperty}`,
                 );
               },
             },
