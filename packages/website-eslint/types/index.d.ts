@@ -1,4 +1,4 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { ParserOptions } from '@typescript-eslint/types';
 import type { SourceFile } from 'typescript';
 

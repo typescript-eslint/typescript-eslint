@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import {

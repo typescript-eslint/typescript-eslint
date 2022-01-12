@@ -3,7 +3,7 @@ import {
   AST_TOKEN_TYPES,
   TSESLint,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type AccessibilityLevel =

@@ -10,9 +10,9 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-typescript-estree-import', rule, {
   valid: [
-    "import { foo } from '@typescript-eslint/experimental-utils';",
-    "import foo from '@typescript-eslint/experimental-utils';",
-    "import * as foo from '@typescript-eslint/experimental-utils';",
+    "import { foo } from '@typescript-eslint/utils';",
+    "import foo from '@typescript-eslint/utils';",
+    "import * as foo from '@typescript-eslint/utils';",
   ],
   invalid: batchedSingleLineTests({
     code: `
@@ -24,12 +24,12 @@ import foo from '@typescript-eslint/types';
 import * as foo from '@typescript-eslint/types';
     `,
     output: `
-import { foo } from '@typescript-eslint/experimental-utils';
-import foo from '@typescript-eslint/experimental-utils';
-import * as foo from '@typescript-eslint/experimental-utils';
-import { foo } from '@typescript-eslint/experimental-utils';
-import foo from '@typescript-eslint/experimental-utils';
-import * as foo from '@typescript-eslint/experimental-utils';
+import { foo } from '@typescript-eslint/utils';
+import foo from '@typescript-eslint/utils';
+import * as foo from '@typescript-eslint/utils';
+import { foo } from '@typescript-eslint/utils';
+import foo from '@typescript-eslint/utils';
+import * as foo from '@typescript-eslint/utils';
     `,
     errors: [
       {
