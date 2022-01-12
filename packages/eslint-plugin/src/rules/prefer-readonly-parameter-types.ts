@@ -8,6 +8,7 @@ type Options = [
   {
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
+    whitelist?: Array<string>;
   } & util.ReadonlynessOptions,
 ];
 type MessageIds = 'shouldBeReadonly';
@@ -33,6 +34,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreInferredTypes: {
             type: 'boolean',
           },
+          whitelist: {
+            type: 'array',
+          },
           ...util.readonlynessOptionsSchema.properties,
         },
       },
@@ -45,12 +49,20 @@ export default util.createRule<Options, MessageIds>({
     {
       checkParameterProperties: true,
       ignoreInferredTypes: false,
+      whitelist: ['HTMLElement'],
       ...util.readonlynessOptionsDefaults,
     },
   ],
   create(
     context,
-    [{ checkParameterProperties, ignoreInferredTypes, treatMethodsAsReadonly }],
+    [
+      {
+        checkParameterProperties,
+        ignoreInferredTypes,
+        whitelist,
+        treatMethodsAsReadonly,
+      },
+    ],
   ) {
     const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
     const checker = program.getTypeChecker();
@@ -100,6 +112,9 @@ export default util.createRule<Options, MessageIds>({
           const isReadOnly = util.isTypeReadonly(checker, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
           });
+          if (whitelist?.includes(type.getSymbol()?.escapedName!)) {
+            return;
+          }
 
           if (!isReadOnly) {
             context.report({
