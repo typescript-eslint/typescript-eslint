@@ -243,7 +243,7 @@ function isTypeReadonlyRecurser(
 function isTypeReadonly(
   checker: ts.TypeChecker,
   type: ts.Type,
-  options: ReadonlynessOptions,
+  options: ReadonlynessOptions = readonlynessOptionsDefaults,
 ): boolean {
   return (
     isTypeReadonlyRecurser(checker, type, options, new Set()) ===

@@ -32,7 +32,7 @@ ESTree is unoptimized and intended for "general purpose" use-cases of traversing
 See more on configuring custom parsers with ESLint on [ESLint's User Guide > Configuring > Plugins](https://eslint.org/docs/user-guide/configuring/plugins#specifying-parser).
 
 :::tip
-You can select `@typescript-eslint/parser` on [astexplorer.net](https://astexplorer.net)'s top-middle ⚙ dropdown that defaults to Acorn.
+You can select `@typescript-eslint/parser` on the [TypeScript ESLint playground](https://typescript-eslint.io/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
 :::
 
 ## `@typescript-eslint/typescript-estree`
