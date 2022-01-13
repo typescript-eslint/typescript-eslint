@@ -8,7 +8,7 @@ type Options = [
   {
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
-    whitelist?: Array<string>;
+    allowlist?: Array<string>;
   } & util.ReadonlynessOptions,
 ];
 type MessageIds = 'shouldBeReadonly';
@@ -34,7 +34,7 @@ export default util.createRule<Options, MessageIds>({
           ignoreInferredTypes: {
             type: 'boolean',
           },
-          whitelist: {
+          allowlist: {
             type: 'array',
           },
           ...util.readonlynessOptionsSchema.properties,
@@ -49,7 +49,7 @@ export default util.createRule<Options, MessageIds>({
     {
       checkParameterProperties: true,
       ignoreInferredTypes: false,
-      whitelist: ['HTMLElement'],
+      allowlist: ['HTMLElement'],
       ...util.readonlynessOptionsDefaults,
     },
   ],
@@ -59,7 +59,7 @@ export default util.createRule<Options, MessageIds>({
       {
         checkParameterProperties,
         ignoreInferredTypes,
-        whitelist,
+        allowlist,
         treatMethodsAsReadonly,
       },
     ],
@@ -112,7 +112,7 @@ export default util.createRule<Options, MessageIds>({
           const isReadOnly = util.isTypeReadonly(checker, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
           });
-          if (whitelist?.includes(type.getSymbol()?.escapedName!)) {
+          if (allowlist?.includes(type.getSymbol()?.escapedName!)) {
             return;
           }
 
