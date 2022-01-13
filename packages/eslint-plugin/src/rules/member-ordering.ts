@@ -3,7 +3,7 @@ import {
   TSESLint,
   TSESTree,
   JSONSchema,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import * as util from '../util';
 
 export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';

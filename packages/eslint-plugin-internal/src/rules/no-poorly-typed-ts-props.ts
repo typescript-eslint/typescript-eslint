@@ -1,8 +1,4 @@
-import {
-  ESLintUtils,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { ESLintUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 /*
