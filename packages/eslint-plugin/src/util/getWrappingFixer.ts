@@ -3,8 +3,7 @@ import {
   TSESLint,
   ASTUtils,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import { SourceCode } from '@typescript-eslint/experimental-utils/src/ts-eslint';
+} from '@typescript-eslint/utils';
 
 interface WrappingFixerParams {
   /** Source code. */
@@ -135,7 +134,7 @@ function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
  */
 function isMissingSemicolonBefore(
   node: TSESTree.Node,
-  sourceCode: SourceCode,
+  sourceCode: TSESLint.SourceCode,
 ): boolean {
   for (;;) {
     const parent = node.parent!;

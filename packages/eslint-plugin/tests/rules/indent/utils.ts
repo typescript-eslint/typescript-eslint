@@ -5,7 +5,7 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESLint,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import rule from '../../../src/rules/indent';
 import { InferMessageIdsTypeFromRule } from '../../../src/util';
 

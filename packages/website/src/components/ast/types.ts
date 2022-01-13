@@ -1,7 +1,6 @@
 import type { SelectedPosition, SelectedRange } from '../types';
 import Monaco from 'monaco-editor';
 
-export type GetTooltipFn = (data: ASTViewerModelMap) => string | undefined;
 export type OnSelectNodeFn = (node: SelectedRange | null) => void;
 
 export type ASTViewerModelTypeSimple =
@@ -19,6 +18,7 @@ export type ASTViewerModelTypeComplex = 'object' | 'array';
 export interface ASTViewerModelBase {
   name?: string;
   range?: SelectedRange;
+  tooltip?: string;
 }
 
 export interface ASTViewerModelSimple extends ASTViewerModelBase {
@@ -46,7 +46,6 @@ export interface GenericParams<V> {
   readonly level: string;
   readonly selection?: SelectedPosition | null;
   readonly onSelectNode?: OnSelectNodeFn;
-  readonly getTooltip?: GetTooltipFn;
 }
 
 export interface ASTViewerBaseProps {
@@ -55,14 +54,16 @@ export interface ASTViewerBaseProps {
 }
 
 export interface ASTViewerProps extends ASTViewerBaseProps {
-  readonly getTooltip?: GetTooltipFn;
   readonly value: ASTViewerModelMap | string;
 }
 
 export type Serializer = (
   data: Record<string, unknown>,
   key: string | undefined,
-  processValue: (data: [string, unknown][]) => ASTViewerModelMap[],
+  processValue: (
+    data: [string, unknown][],
+    tooltip?: (data: ASTViewerModelMap) => string | undefined,
+  ) => ASTViewerModelMap[],
 ) => ASTViewerModel | undefined;
 
 export type { SelectedPosition, SelectedRange };

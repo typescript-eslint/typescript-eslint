@@ -5,3 +5,4 @@ export * from './InferTypesFromRule';
 export * from './RuleCreator';
 export * from './RuleTester';
 export * from './deepMerge';
+export * from './nullThrows';

@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.9.0...v5.9.1) (2022-01-10)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-eslint
+
+
+
+
+
+# [5.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.8.1...v5.9.0) (2022-01-03)
+
+
+### Features
+
+* **experimental-utils:** move isTypeReadonly from eslint-plugin to experimental-utils ([#3658](https://github.com/typescript-eslint/typescript-eslint/issues/3658)) ([a9eb0b9](https://github.com/typescript-eslint/typescript-eslint/commit/a9eb0b9eb2db291ea36065ec34f84bf5c5504b43))
+
+
+
+
+
+## [5.8.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.8.0...v5.8.1) (2021-12-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-indexed-object-style] do not report for circular references ([#4347](https://github.com/typescript-eslint/typescript-eslint/issues/4347)) ([6edebcd](https://github.com/typescript-eslint/typescript-eslint/commit/6edebcda00053eecf7b3e55eeb3fe5d7fb9e7db7))
+* **eslint-plugin:** [consistent-type-definitions] correct fixer with declare keyword ([#4334](https://github.com/typescript-eslint/typescript-eslint/issues/4334)) ([0cd911a](https://github.com/typescript-eslint/typescript-eslint/commit/0cd911a916805d3b1f8043584e4685f3edd5c427))
+* **eslint-plugin:** [padding-line-between-statements] make function overloading is also processed ([#4345](https://github.com/typescript-eslint/typescript-eslint/issues/4345)) ([d31ec26](https://github.com/typescript-eslint/typescript-eslint/commit/d31ec264fe5f5cd27e8f522a485e106889f2d380))
+
+
+
+
+
 # [5.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.7.0...v5.8.0) (2021-12-20)
 
 

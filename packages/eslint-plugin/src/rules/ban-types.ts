@@ -1,8 +1,4 @@
-import {
-  TSESLint,
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type Types = Record<

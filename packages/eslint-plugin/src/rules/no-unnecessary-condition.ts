@@ -2,7 +2,7 @@ import {
   TSESTree,
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 import {
   unionTypeParts,
@@ -17,6 +17,7 @@ import {
   createRule,
   getParserServices,
   getConstrainedTypeAtLocation,
+  getTypeOfPropertyOfName,
   isNullableType,
   nullThrows,
   NullThrowsReasons,
@@ -24,7 +25,6 @@ import {
   isTypeAnyType,
   isTypeUnknownType,
   getTypeName,
-  getTypeOfPropertyOfName,
 } from '../util';
 
 // Truthiness utilities

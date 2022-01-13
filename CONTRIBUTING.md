@@ -53,6 +53,7 @@ We have a sophisticated CI process setup which gets run on every PR. You must pa
   - You can run `yarn typecheck` in any package or in the root.
 - Ensure your changes are adequately tested.
   - You can run `yarn test` in any package.
+    - [VS Code launch tasks](https://code.visualstudio.com/docs/editor/tasks) tasks are provided that allow [visual debugging](https://code.visualstudio.com/docs/editor/debugging) tests
   - We aim for around `90%` branch coverage for every PR.
   - Coverage reports should automatically be generated locally, and the `codecov` bot should also comment on your PR with the percentage, as well as links to the line-by-line coverage of each file touched by your PR.
 - Ensure you have no lint errors.

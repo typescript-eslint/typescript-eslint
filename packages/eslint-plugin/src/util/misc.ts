@@ -2,12 +2,8 @@
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
 
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import { requiresQuoting } from './requiresQuoting';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { requiresQuoting } from '@typescript-eslint/type-utils';
 
 /**
  * Check if the context file name is *.d.ts or *.d.tsx

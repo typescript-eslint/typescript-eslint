@@ -8,7 +8,6 @@ import { ElementItem } from './Elements';
 function ASTViewer({
   position,
   value,
-  getTooltip,
   onSelectNode,
 }: ASTViewerProps): JSX.Element {
   const [selection, setSelection] = useState<SelectedPosition | null>(null);
@@ -29,7 +28,6 @@ function ASTViewer({
   ) : (
     <div className={styles.list}>
       <ElementItem
-        getTooltip={getTooltip}
         data={value}
         level="ast"
         selection={selection}

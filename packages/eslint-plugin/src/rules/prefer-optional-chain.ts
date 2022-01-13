@@ -1,8 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type ValidChainTarget =
