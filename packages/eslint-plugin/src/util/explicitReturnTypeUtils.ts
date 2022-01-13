@@ -3,7 +3,7 @@ import {
   AST_NODE_TYPES,
   ESLintUtils,
   TSESLint,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 

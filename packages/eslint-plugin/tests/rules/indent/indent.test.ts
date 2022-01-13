@@ -3,10 +3,7 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import { RuleTester } from '../../RuleTester';
 import rule from '../../../src/rules/indent';
 import {

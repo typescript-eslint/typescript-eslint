@@ -67,6 +67,5 @@ i.e. eslint --ext ".ts,.js" src --debug
 | package                         | version |
 | ------------------------------- | ------- |
 | `@typescript-eslint/type-utils` | `X.Y.Z` |
-| `@typescript-eslint/type-utils` | `X.Y.Z` |
 | `TypeScript`                    | `X.Y.Z` |
 | `node`                          | `X.Y.Z` |

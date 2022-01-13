@@ -1,6 +1,6 @@
 import rule, { MessageIds, Options } from '../../src/rules/member-ordering';
 import { RuleTester } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import rule, {
   MessageIds,
   Options,

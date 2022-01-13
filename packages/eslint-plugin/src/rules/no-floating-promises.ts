@@ -1,10 +1,6 @@
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
-import {
-  TSESLint,
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
