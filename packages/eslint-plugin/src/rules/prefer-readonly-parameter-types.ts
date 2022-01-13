@@ -109,17 +109,22 @@ export default util.createRule<Options, MessageIds>({
           const isReadOnly = util.isTypeReadonly(checker, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
           });
-          if (allowlist?.includes(type.getSymbol()?.escapedName!)) {
-            return;
-          }
-          const internalAllowlist = ['HTMLElement'];
-          if (internalAllowlist?.includes(type.getSymbol()?.escapedName!)) {
-            const declarations = type.getSymbol()?.getDeclarations() ?? [];
-            for (const declaration of declarations) {
-              if (
-                program.isSourceFileDefaultLibrary(declaration.getSourceFile())
-              ) {
-                return;
+          const typeName = type.getSymbol()?.escapedName;
+          if (typeName !== undefined) {
+            if (allowlist?.includes(typeName)) {
+              return;
+            }
+            const internalAllowlist = ['HTMLElement'];
+            if (internalAllowlist?.includes(typeName)) {
+              const declarations = type.getSymbol()?.getDeclarations() ?? [];
+              for (const declaration of declarations) {
+                if (
+                  program.isSourceFileDefaultLibrary(
+                    declaration.getSourceFile(),
+                  )
+                ) {
+                  return;
+                }
               }
             }
           }
