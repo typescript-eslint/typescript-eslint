@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
     {
       checkParameterProperties: true,
       ignoreInferredTypes: false,
-      allowlist: ['HTMLElement'],
+      allowlist: [],
       ...util.readonlynessOptionsDefaults,
     },
   ],
@@ -111,6 +111,17 @@ export default util.createRule<Options, MessageIds>({
           });
           if (allowlist?.includes(type.getSymbol()?.escapedName!)) {
             return;
+          }
+          const internalAllowlist = ['HTMLElement'];
+          if (internalAllowlist?.includes(type.getSymbol()?.escapedName!)) {
+            const declarations = type.getSymbol()?.getDeclarations() ?? [];
+            for (const declaration of declarations) {
+              if (
+                program.isSourceFileDefaultLibrary(declaration.getSourceFile())
+              ) {
+                return;
+              }
+            }
           }
 
           if (!isReadOnly) {
