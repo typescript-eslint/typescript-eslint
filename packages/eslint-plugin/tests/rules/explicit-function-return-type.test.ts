@@ -400,6 +400,45 @@ new Foo(1, () => {});
       code: 'const log = (message: string) => void console.log(message);',
       options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
     },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test'],
+        },
+      ],
+      code: `
+function test() {
+  return;
+}
+      `,
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test'],
+        },
+      ],
+      code: `
+const test = function () {
+  return;
+};
+      `,
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test'],
+        },
+      ],
+      code: `
+const test = () => {
+  return;
+};
+      `,
+    },
   ],
   invalid: [
     {
@@ -1103,6 +1142,28 @@ const func = (value: number) => ({ type: 'X', value } as const);
           endLine: 2,
           column: 21,
           endColumn: 41,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test'],
+        },
+      ],
+      code: `
+function hoge() {
+  return;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 16,
         },
       ],
     },

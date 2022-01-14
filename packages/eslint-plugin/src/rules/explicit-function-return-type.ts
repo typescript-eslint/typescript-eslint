@@ -12,6 +12,7 @@ type Options = [
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+    allowedNames?: string[];
   },
 ];
 type MessageIds = 'missingReturnType';
@@ -47,6 +48,12 @@ export default util.createRule<Options, MessageIds>({
           allowConciseArrowFunctionExpressionsStartingWithVoid: {
             type: 'boolean',
           },
+          allowedNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
         },
         additionalProperties: false,
       },
@@ -59,11 +66,36 @@ export default util.createRule<Options, MessageIds>({
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+      allowedNames: [],
     },
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
-
+    function isAllowedName(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
+    ): boolean {
+      if (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        node.type === AST_NODE_TYPES.FunctionExpression
+      ) {
+        const parent = node.parent;
+        return (
+          parent?.type === AST_NODE_TYPES.VariableDeclarator &&
+          parent?.id.type === AST_NODE_TYPES.Identifier &&
+          options.allowedNames.includes(parent.id.name)
+        );
+      }
+      if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
+        return (
+          node.id?.type === AST_NODE_TYPES.Identifier &&
+          options.allowedNames.includes(node.id.name)
+        );
+      }
+      return false;
+    }
     return {
       'ArrowFunctionExpression, FunctionExpression'(
         node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
@@ -78,6 +110,10 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
+        if (isAllowedName(node)) {
+          return;
+        }
+
         checkFunctionExpressionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,
@@ -87,6 +123,9 @@ export default util.createRule<Options, MessageIds>({
         );
       },
       FunctionDeclaration(node): void {
+        if (isAllowedName(node)) {
+          return;
+        }
         checkFunctionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,
