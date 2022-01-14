@@ -85,13 +85,13 @@ export default util.createRule<Options, MessageIds>({
         return (
           parent?.type === AST_NODE_TYPES.VariableDeclarator &&
           parent?.id.type === AST_NODE_TYPES.Identifier &&
-          options.allowedNames.includes(parent.id.name)
+          !!options.allowedNames?.includes(parent.id.name)
         );
       }
       if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
         return (
           node.id?.type === AST_NODE_TYPES.Identifier &&
-          options.allowedNames.includes(node.id.name)
+          !!options.allowedNames?.includes(node.id.name)
         );
       }
       return false;
