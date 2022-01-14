@@ -1,4 +1,5 @@
 import { TSESLint, TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 import * as util from '../util';
 
 type Types = Record<
@@ -9,6 +10,7 @@ type Types = Record<
   | {
       message: string;
       fixWith?: string;
+      banGlobalOnly?: boolean;
     }
 >;
 
@@ -94,6 +96,22 @@ const defaultTypes: Types = {
   },
 };
 
+const isMemberImported = (
+  symbol: ts.Symbol,
+  currentSourceFile: ts.SourceFile | undefined,
+): boolean => {
+  const { valueDeclaration } = symbol;
+  if (!valueDeclaration) {
+    // working around https://github.com/microsoft/TypeScript/issues/31294
+    return false;
+  }
+
+  return (
+    !!currentSourceFile &&
+    currentSourceFile === valueDeclaration.getSourceFile()
+  );
+};
+
 export const TYPE_KEYWORDS = {
   bigint: AST_NODE_TYPES.TSBigIntKeyword,
   boolean: AST_NODE_TYPES.TSBooleanKeyword,
@@ -136,6 +154,7 @@ export default util.createRule<Options, MessageIds>({
                   properties: {
                     message: { type: 'string' },
                     fixWith: { type: 'string' },
+                    banGlobalOnly: { type: 'boolean' },
                   },
                   additionalProperties: false,
                 },
@@ -152,6 +171,12 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
+    const parserServices = util.getParserServices(context);
+    const checker = parserServices.program.getTypeChecker();
+    const currentSourceFile = parserServices.program.getSourceFile(
+      context.getFilename(),
+    );
+
     const extendDefaults = options.extendDefaults ?? true;
     const customTypes = options.types ?? {};
     const types = Object.assign(
@@ -168,6 +193,24 @@ export default util.createRule<Options, MessageIds>({
       name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
       const bannedType = bannedTypes.get(name);
+
+      const banGlobalOnly =
+        (bannedType !== null &&
+          typeof bannedType === 'object' &&
+          bannedType.banGlobalOnly) ??
+        false;
+
+      const symbol = checker.getSymbolAtLocation(
+        parserServices.esTreeNodeToTSNodeMap.get(typeNode),
+      );
+
+      if (
+        banGlobalOnly &&
+        symbol !== undefined &&
+        isMemberImported(symbol, currentSourceFile)
+      ) {
+        return;
+      }
 
       if (bannedType === undefined || bannedType === false) {
         return;

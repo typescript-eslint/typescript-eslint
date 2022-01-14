@@ -6,9 +6,14 @@ import rule, {
   TYPE_KEYWORDS,
 } from '../../src/rules/ban-types';
 import { objectReduceKey } from '../../src/util';
-import { noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
+const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
+  parserOptions: {
+    tsconfigRootDir: rootDir,
+    project: './tsconfig.json',
+  },
   parser: '@typescript-eslint/parser',
 });
 
@@ -33,6 +38,22 @@ const options: Options = [
 
 ruleTester.run('ban-types', rule, {
   valid: [
+    {
+      code: `
+import { Omit } from 'somewhere';
+type T = Omit<{ foo: string }, never>;
+      `,
+      options: [
+        {
+          types: {
+            Omit: {
+              message: 'Omit is banned.',
+              banGlobalOnly: true,
+            },
+          },
+        },
+      ],
+    },
     'let f = Object();', // Should not fail if there is no options set
     'let f: { x: number; y: number } = { x: 1, y: 1 };',
     {
@@ -596,6 +617,30 @@ let baz: object = {};
             '[]': {
               message: '`[]` does only allow empty arrays.',
               fixWith: 'any[]',
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'type T = Omit<{ foo: string }, never>;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Omit',
+            customMessage: ' Omit is banned.',
+          },
+          line: 1,
+          column: 10,
+        },
+      ],
+      options: [
+        {
+          types: {
+            Omit: {
+              message: 'Omit is banned.',
+              banGlobalOnly: true,
             },
           },
         },
