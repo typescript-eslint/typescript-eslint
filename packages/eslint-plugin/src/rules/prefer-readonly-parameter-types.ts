@@ -106,28 +106,10 @@ export default util.createRule<Options, MessageIds>({
 
           const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
           const type = checker.getTypeAtLocation(tsNode);
-          const isReadOnly = util.isTypeReadonly(checker, type, {
+          const isReadOnly = util.isTypeReadonly(program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
+            exceptions: allowlist,
           });
-          const typeName = type.getSymbol()?.escapedName;
-          if (typeName !== undefined) {
-            if (allowlist?.includes(typeName)) {
-              return;
-            }
-            const internalAllowlist = ['HTMLElement'];
-            if (internalAllowlist?.includes(typeName)) {
-              const declarations = type.getSymbol()?.getDeclarations() ?? [];
-              for (const declaration of declarations) {
-                if (
-                  program.isSourceFileDefaultLibrary(
-                    declaration.getSourceFile(),
-                  )
-                ) {
-                  return;
-                }
-              }
-            }
-          }
 
           if (!isReadOnly) {
             context.report({
