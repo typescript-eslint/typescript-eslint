@@ -3,10 +3,11 @@ import * as util from '../util';
 
 type Options = [
   {
+    allowlist?: Array<string>;
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
-    allowlist?: Array<string>;
-  } & util.ReadonlynessOptions,
+    treatMethodsAsReadonly?: boolean;
+  },
 ];
 type MessageIds = 'shouldBeReadonly';
 
@@ -25,16 +26,18 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          allowlist: {
+            type: 'array',
+          },
           checkParameterProperties: {
             type: 'boolean',
           },
           ignoreInferredTypes: {
             type: 'boolean',
           },
-          allowlist: {
-            type: 'array',
+          treatMethodsAsReadonly: {
+            type: 'boolean',
           },
-          ...util.readonlynessOptionsSchema.properties,
         },
       },
     ],
@@ -44,19 +47,19 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      allowlist: [],
       checkParameterProperties: true,
       ignoreInferredTypes: false,
-      allowlist: [],
-      ...util.readonlynessOptionsDefaults,
+      treatMethodsAsReadonly: false,
     },
   ],
   create(
     context,
     [
       {
+        allowlist,
         checkParameterProperties,
         ignoreInferredTypes,
-        allowlist,
         treatMethodsAsReadonly,
       },
     ],

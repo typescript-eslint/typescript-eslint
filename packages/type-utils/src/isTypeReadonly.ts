@@ -19,25 +19,16 @@ const enum Readonlyness {
   Readonly = 3,
 }
 
-export interface ReadonlynessOptions {
+interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
   readonly exceptions?: Array<string>;
   readonly internalExceptions?: Array<string>;
 }
 
-export const readonlynessOptionsSchema = {
-  type: 'object',
-  additionalProperties: false,
-  properties: {
-    treatMethodsAsReadonly: {
-      type: 'boolean',
-    },
-  },
-};
-
-export const readonlynessOptionsDefaults: ReadonlynessOptions = {
+const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
   exceptions: [],
+  internalExceptions: [],
 };
 
 function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
