@@ -109,6 +109,7 @@ export default util.createRule<Options, MessageIds>({
           const isReadOnly = util.isTypeReadonly(program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
             exceptions: allowlist,
+            internalExceptions: ['HTMLElement'],
           });
 
           if (!isReadOnly) {

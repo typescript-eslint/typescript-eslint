@@ -22,6 +22,7 @@ const enum Readonlyness {
 export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
   readonly exceptions?: Array<string>;
+  readonly internalExceptions?: Array<string>;
 }
 
 export const readonlynessOptionsSchema = {
@@ -46,17 +47,16 @@ function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
 function isTypeExcepted(
   type: ts.Type,
   program: ts.Program,
-  exceptions: Array<string>,
+  options: ReadonlynessOptions,
 ): boolean {
   const typeName = type.getSymbol()?.escapedName;
   if (typeName === undefined) {
     return false;
   }
-  if (exceptions.includes(typeName)) {
+  if (options.exceptions?.includes(typeName)) {
     return true;
   }
-  const internalAllowlist = ['HTMLElement']; // TODO
-  if (internalAllowlist?.includes(typeName)) {
+  if (options.internalExceptions?.includes(typeName)) {
     const declarations = type.getSymbol()?.getDeclarations() ?? [];
     for (const declaration of declarations) {
       if (program.isSourceFileDefaultLibrary(declaration.getSourceFile())) {
@@ -215,7 +215,7 @@ function isTypeReadonlyRecurser(
 ): Readonlyness.Readonly | Readonlyness.Mutable {
   seenTypes.add(type);
 
-  if (isTypeExcepted(type, program, options.exceptions!)) {
+  if (isTypeExcepted(type, program, options)) {
     return Readonlyness.Readonly;
   }
 
