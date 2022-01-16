@@ -39,11 +39,19 @@ interface RuleMap {
 
 type RuleId = keyof RuleMap;
 
-const getESLintCoreRuleLegacy: <R extends RuleId>(ruleId: R) => RuleMap[R] = <R extends RuleId>(ruleId: R): RuleMap[R] => {
+const getESLintCoreRuleLegacy: <R extends RuleId>(ruleId: R) => RuleMap[R] = <
+  R extends RuleId,
+>(
+  ruleId: R,
+): RuleMap[R] => {
   return require(`eslint/lib/rules/${ruleId}`) as RuleMap[R];
 };
 
-const getESLintCoreRuleV8: <R extends RuleId>(ruleId: R) => RuleMap[R] = <R extends RuleId>(ruleId: R): RuleMap[R] => {
+const getESLintCoreRuleV8: <R extends RuleId>(ruleId: R) => RuleMap[R] = <
+  R extends RuleId,
+>(
+  ruleId: R,
+): RuleMap[R] => {
   try {
     return ESLintUtils.nullThrows(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
@@ -57,7 +65,9 @@ const getESLintCoreRuleV8: <R extends RuleId>(ruleId: R) => RuleMap[R] = <R exte
   }
 };
 
-export const getESLintCoreRule = isESLintV8 ? getESLintCoreRuleV8 : getESLintCoreRuleLegacy;
+export const getESLintCoreRule = isESLintV8
+  ? getESLintCoreRuleV8
+  : getESLintCoreRuleLegacy;
 
 export function maybeGetESLintCoreRule<R extends RuleId>(
   ruleId: R,
