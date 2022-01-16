@@ -127,16 +127,62 @@ interface Foo {
 
 ```ts
 interface Options {
+  allowlist: Array<string>;
   checkParameterProperties?: boolean;
   ignoreInferredTypes?: boolean;
   treatMethodsAsReadonly?: boolean;
 }
 
 const defaultOptions: Options = {
+  allowlist: [];
   checkParameterProperties: true,
   ignoreInferredTypes: false,
   treatMethodsAsReadonly: false,
 };
+```
+
+### `allowlist`
+
+Some complex types cannot easily be made readonly, for example the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
+
+Examples of code for this rule with `{allowlist: ["Foo"]}`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+interface Foo {
+  prop: string;
+}
+
+interface Bar {
+  sub: Foo;
+}
+
+interface Baz {
+  readonly sub: Foo;
+  otherProp: string;
+}
+
+function fn1(arg: Bar) {} // Incorrect because Bar.sub is not readonly
+function fn2(arg: Baz) {} // Incorrect because Baz.otherProp is not readonly and not in the allowlist
+```
+
+#### ✅ Correct
+
+```ts
+interface Foo {
+  prop: string;
+}
+
+interface Bar {
+  readonly sub: Foo;
+  readonly otherProp: string;
+}
+
+function fn1(arg: Foo) {} // Works because Foo is allowlisted
+function fn2(arg: Bar) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
 ```
 
 ### `checkParameterProperties`
