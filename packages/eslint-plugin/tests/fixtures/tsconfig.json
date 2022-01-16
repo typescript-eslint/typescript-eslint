@@ -5,7 +5,7 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["es2015", "es2017", "esnext"],
+    "lib": ["es2015", "es2017", "esnext", "dom"],
     "experimentalDecorators": true
   },
   "include": [

@@ -343,6 +343,74 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    `
+      function foo(arg: HTMLElement) {}
+    `,
+    `
+      interface Foo {
+        readonly prop: HTMLElement;
+      }
+
+      function foo(arg: Foo) {}
+    `,
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allowlist: ['RegExp'],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: string;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: ['Foo'],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: ['Foo'],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: ['Bar'],
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -808,6 +876,46 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           line: 6,
           column: 22,
           endColumn: 33,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allowlist: ['Foo'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: ['Bar'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
         },
       ],
     },
