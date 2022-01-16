@@ -129,6 +129,7 @@ interface Foo {
 interface Options {
   checkParameterProperties?: boolean;
   ignoreInferredTypes?: boolean;
+  treatMethodsAsReadonly?: boolean;
 }
 
 const defaultOptions: Options = {
