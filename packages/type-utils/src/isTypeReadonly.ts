@@ -107,9 +107,16 @@ function isTypeReadonlyObject(
   function checkIndexSignature(kind: ts.IndexKind): Readonlyness {
     const indexInfo = checker.getIndexInfoOfType(type, kind);
     if (indexInfo) {
-      return indexInfo.isReadonly
-        ? Readonlyness.Readonly
-        : Readonlyness.Mutable;
+      if (!indexInfo.isReadonly) {
+        return Readonlyness.Mutable;
+      }
+
+      return isTypeReadonlyRecurser(
+        checker,
+        indexInfo.type,
+        options,
+        seenTypes,
+      );
     }
 
     return Readonlyness.UnknownType;
@@ -119,20 +126,37 @@ function isTypeReadonlyObject(
   if (properties.length) {
     // ensure the properties are marked as readonly
     for (const property of properties) {
-      if (
-        !(
-          isPropertyReadonlyInType(type, property.getEscapedName(), checker) ||
-          (options.treatMethodsAsReadonly &&
-            property.valueDeclaration !== undefined &&
-            hasSymbol(property.valueDeclaration) &&
-            isSymbolFlagSet(
-              property.valueDeclaration.symbol,
-              ts.SymbolFlags.Method,
-            ))
-        )
-      ) {
-        return Readonlyness.Mutable;
+      if (options.treatMethodsAsReadonly) {
+        if (
+          property.valueDeclaration !== undefined &&
+          hasSymbol(property.valueDeclaration) &&
+          isSymbolFlagSet(
+            property.valueDeclaration.symbol,
+            ts.SymbolFlags.Method,
+          )
+        ) {
+          continue;
+        }
+
+        const declarations = property.getDeclarations();
+        const lastDeclaration =
+          declarations !== undefined && declarations.length > 0
+            ? declarations[declarations.length - 1]
+            : undefined;
+        if (
+          lastDeclaration !== undefined &&
+          hasSymbol(lastDeclaration) &&
+          isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
+        ) {
+          continue;
+        }
       }
+
+      if (isPropertyReadonlyInType(type, property.getEscapedName(), checker)) {
+        continue;
+      }
+
+      return Readonlyness.Mutable;
     }
 
     // all properties were readonly
