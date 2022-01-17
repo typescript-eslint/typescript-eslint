@@ -195,7 +195,7 @@ export const f = (a: any, b: number) => a + b;
       code: 'var foo = [] + {};',
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidTypes',
           line: 1,
           column: 11,
         },
@@ -225,7 +225,7 @@ export const f = (a: any, b: number) => a + b;
       code: 'var foo = [] + [];',
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidTypes',
           line: 1,
           column: 11,
         },
@@ -368,7 +368,7 @@ var foo = pair + pair;
       `,
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidTypes',
           line: 3,
           column: 11,
         },
@@ -555,7 +555,7 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 4,
           column: 19,
         },
@@ -622,7 +622,7 @@ const f = (a: any, b: boolean) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 35,
         },
@@ -639,7 +639,7 @@ const f = (a: any, b: []) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 30,
         },
@@ -657,7 +657,7 @@ const f = (a: any, b: any) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 31,
         },
@@ -674,7 +674,7 @@ const f = (a: any, b: string) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 34,
         },
@@ -691,7 +691,7 @@ const f = (a: any, b: bigint) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 34,
         },
@@ -708,7 +708,7 @@ const f = (a: any, b: number) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 34,
         },
@@ -725,7 +725,7 @@ const f = (a: any, b: boolean) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 35,
         },
