@@ -110,6 +110,34 @@ describe('isTypeReadonly', () => {
         });
       });
 
+      describe('IndexSignature', () => {
+        describe('is readonly', () => {
+          const runTests = runTestIsReadonly;
+
+          it.each([
+            ['type Test = { readonly [key: string]: string };'],
+            [
+              'type Test = { readonly [key: string]: { readonly foo: readonly string[]; }; };',
+            ],
+          ])(
+            'handles readonly PropertySignature inside a readonly IndexSignature',
+            runTests,
+          );
+        });
+
+        describe('is not readonly', () => {
+          const runTests = runTestIsNotReadonly;
+
+          it.each([
+            ['type Test = { [key: string]: string };'],
+            ['type Test = { readonly [key: string]: { foo: string[]; }; };'],
+          ])(
+            'handles mutable PropertySignature inside a readonly IndexSignature',
+            runTests,
+          );
+        });
+      });
+
       describe('Union', () => {
         describe('is readonly', () => {
           const runTests = runTestIsReadonly;
