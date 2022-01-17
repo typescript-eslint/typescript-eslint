@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   createRule,
