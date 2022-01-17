@@ -34,7 +34,7 @@ export default util.createRule<Options, MessageIds>({
       notValidAnys:
         "Operands of '+' operation with any is possible only with string, number, bigint or any",
       notValidTypes:
-        "Operands of '+' operation must either be one of string, number, bigint or any(if allowed by option)",
+        "Operands of '+' operation must either be one of string, number, bigint or any (if allowed by option)",
     },
     schema: [
       {
