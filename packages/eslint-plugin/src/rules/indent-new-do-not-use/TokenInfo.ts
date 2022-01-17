@@ -1,7 +1,7 @@
 // The following code is adapted from the the code in eslint.
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 /**
  * A helper class to get token-based info related to indentation
