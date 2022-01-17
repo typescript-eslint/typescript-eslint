@@ -187,8 +187,12 @@ describe('isTypeReadonly', () => {
 
           it.each([
             ['type Test<T> = T extends number[] ? string[] : number[];'],
-            ['type Test<T> = T extends number[] ? string[] : readonly number[];'],
-            ['type Test<T> = T extends number[] ? readonly string[] : number[];'],
+            [
+              'type Test<T> = T extends number[] ? string[] : readonly number[];',
+            ],
+            [
+              'type Test<T> = T extends number[] ? readonly string[] : number[];',
+            ],
           ])('handles non fully readonly conditional types', runTests);
         });
       });
