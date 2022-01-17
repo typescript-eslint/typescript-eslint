@@ -13,14 +13,18 @@ It adds support for:
 
 ```jsonc
 {
-  // note you must disable the base rule as it can report incorrect errors
-  "no-magic-numbers": "off",
-  "@typescript-eslint/no-magic-numbers": [
-    "error",
-    {
-      /* options */
-    }
-  ]
+  ...,
+  "rules: {
+    ...,
+    // note you must disable the base rule as it can report incorrect errors
+    "no-magic-numbers": "off",
+    "@typescript-eslint/no-magic-numbers": [
+      "error",
+      {
+        /* options */
+      }
+    ]
+  }
 }
 ```
 
