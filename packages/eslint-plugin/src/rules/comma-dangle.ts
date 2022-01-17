@@ -1,9 +1,6 @@
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 const baseRule = getESLintCoreRule('comma-dangle');
 

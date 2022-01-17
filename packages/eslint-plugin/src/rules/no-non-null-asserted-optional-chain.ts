@@ -1,8 +1,4 @@
-import {
-  TSESTree,
-  TSESLint,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, TSESLint, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 import * as semver from 'semver';
 import * as util from '../util';

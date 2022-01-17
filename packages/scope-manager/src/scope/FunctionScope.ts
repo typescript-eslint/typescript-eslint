@@ -44,7 +44,7 @@ class FunctionScope extends ScopeBase<
   //         console.log(a)
   //     }
   protected isValidResolution(ref: Reference, variable: Variable): boolean {
-    // If `options.gloablReturn` is true, `this.block` becomes a Program node.
+    // If `options.globalReturn` is true, `this.block` becomes a Program node.
     if (this.block.type === AST_NODE_TYPES.Program) {
       return true;
     }

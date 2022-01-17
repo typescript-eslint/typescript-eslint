@@ -1,8 +1,5 @@
 import { createRule } from '../util';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 export default createRule({
   name: 'default-param-last',

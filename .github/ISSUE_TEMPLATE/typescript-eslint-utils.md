@@ -1,9 +1,8 @@
 ---
-name: '@typescript-eslint/experimental-utils'
-about: Report an issue with the '@typescript-eslint/experimental-utils' package
-title: ''
-labels: 'package: utils, triage'
-assignees: ''
+name: '@typescript-eslint/utils'
+about: Report an issue with the 'typescript-eslint/utils' package
+title: '': 'package: utils, triage'
+: ''
 ---
 
 <!--
@@ -16,10 +15,10 @@ The more relevant information you can include, the faster we can find the issue 
 <!--
 🚨 STOP 🚨 𝗦𝗧𝗢𝗣 🚨 𝑺𝑻𝑶𝑷 🚨
 
-This issue template is only for problems specifically with the `@typescript-eslint/experimental-utils` package.
+This issue template is only for problems specifically with the `@typescript-eslint/utils` package.
 
-If you have a problem with a specific lint rule, please back out and select the `@typescript-eslint/eslint-plugin` template.
-If you have a problem with the parser, please back out and select the `@typescript-eslint/parser` template.
+ you have a problem with a specific lint rule, please back out and select the `@typescript-eslint/eslint-plugin` template.
+ you have a problem with the parser, please back out and select the `@typescript-eslint/parser` template.
 -->
 
 - [ ] I have tried restarting my IDE and the issue persists.
@@ -64,8 +63,8 @@ i.e. eslint --ext ".ts,.js" src --debug
 
 **Versions**
 
-| package                                 | version |
-| --------------------------------------- | ------- |
-| `@typescript-eslint/experimental-utils` | `X.Y.Z` |
-| `TypeScript`                            | `X.Y.Z` |
-| `node`                                  | `X.Y.Z` |
+| package                    | version |
+| ---------------------------| ------- |
+| `@typescript-eslint/utils` | `X.Y.Z` |
+| `TypeScript`               | `X.Y.Z` |
+| `node`                     | `X.Y.Z` |
