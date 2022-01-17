@@ -165,6 +165,50 @@ describe('isTypeReadonly', () => {
         });
       });
 
+      describe('Intersection', () => {
+        describe('is readonly', () => {
+          const runTests = runTestIsReadonly;
+
+          it.each([
+            [
+              'type Test = Readonly<{ foo: string; bar: number; }> & Readonly<{ bar: number; }>;',
+            ],
+          ])('handles an intersection of 2 fully readonly types', runTests);
+
+          it.each([
+            [
+              'type Test = Readonly<{ foo: string; bar: number; }> & { foo: string; };',
+            ],
+          ])(
+            'handles an intersection of a fully readonly type with a mutable subtype',
+            runTests,
+          );
+
+          // Array - special case.
+          // Note: Methods are mutable but arrays are treated special; hence no failure.
+          it.each([
+            ['type Test = ReadonlyArray<string> & Readonly<{ foo: string; }>;'],
+            [
+              'type Test = readonly [string, number] & Readonly<{ foo: string; }>;',
+            ],
+          ])('handles an intersections involving a readonly array', runTests);
+        });
+
+        describe('is not readonly', () => {
+          const runTests = runTestIsNotReadonly;
+
+          it.each([
+            ['type Test = { foo: string; bar: number; } & { bar: number; };'],
+            [
+              'type Test = { foo: string; bar: number; } & Readonly<{ bar: number; }>;',
+            ],
+            [
+              'type Test = Readonly<{ bar: number; }> & { foo: string; bar: number; };',
+            ],
+          ])('handles an intersection of non fully readonly types', runTests);
+        });
+      });
+
       describe('Conditional Types', () => {
         describe('is readonly', () => {
           const runTests = runTestIsReadonly;

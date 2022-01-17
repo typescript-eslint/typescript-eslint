@@ -3,10 +3,10 @@ import {
   isConditionalType,
   isObjectType,
   isUnionType,
-  isUnionOrIntersectionType,
   unionTypeParts,
   isPropertyReadonlyInType,
   isSymbolFlagSet,
+  isIntersectionType,
 } from 'tsutils';
 import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
@@ -224,6 +224,32 @@ function isTypeReadonlyRecurser(
     return readonlyness;
   }
 
+  if (isIntersectionType(type)) {
+    // Special case for handling arrays/tuples (as readonly arrays/tuples always have mutable methods).
+    if (
+      type.types.some(t => checker.isArrayType(t) || checker.isTupleType(t))
+    ) {
+      const allReadonlyParts = type.types.every(
+        t =>
+          seenTypes.has(t) ||
+          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+            Readonlyness.Readonly,
+      );
+      return allReadonlyParts ? Readonlyness.Readonly : Readonlyness.Mutable;
+    }
+
+    // Normal case.
+    const isReadonlyObject = isTypeReadonlyObject(
+      checker,
+      type,
+      options,
+      seenTypes,
+    );
+    if (isReadonlyObject !== Readonlyness.UnknownType) {
+      return isReadonlyObject;
+    }
+  }
+
   if (isConditionalType(type)) {
     const result = [type.root.node.trueType, type.root.node.falseType]
       .map(checker.getTypeFromTypeNode)
@@ -240,7 +266,7 @@ function isTypeReadonlyRecurser(
 
   // all non-object, non-intersection types are readonly.
   // this should only be primitive types
-  if (!isObjectType(type) && !isUnionOrIntersectionType(type)) {
+  if (!isObjectType(type)) {
     return Readonlyness.Readonly;
   }
 
