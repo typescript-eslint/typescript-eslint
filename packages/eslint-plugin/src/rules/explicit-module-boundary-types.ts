@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 import {
