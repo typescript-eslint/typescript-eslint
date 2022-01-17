@@ -644,9 +644,16 @@ declare module 'eslint/lib/rules/no-extra-semi' {
       ClassBody(node: TSESTree.ClassBody): void;
       // for ESLint <= v7
       MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
-      // for ESLint v8
+      // for ESLint >= v8 < v8.3.0
       'MethodDefinition, PropertyDefinition'?: (
         node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+      ) => void;
+      // for ESLint >= v8.3.0
+      'MethodDefinition, PropertyDefinition, StaticBlock'?: (
+        node:
+          | TSESTree.MethodDefinition
+          | TSESTree.PropertyDefinition
+          | TSESTree.StaticBlock,
       ) => void;
     }
   >;
