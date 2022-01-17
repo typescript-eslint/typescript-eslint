@@ -225,16 +225,20 @@ describe('isTypeReadonly', () => {
             ],
           ])('should ignore mutable conditions', runTests);
         });
-      });
 
-      describe('is not readonly', () => {
-        const runTests = runTestIsNotReadonly;
+        describe('is not readonly', () => {
+          const runTests = runTestIsNotReadonly;
 
-        it.each([
-          ['type Test<T> = T extends number[] ? string[] : number[];'],
-          ['type Test<T> = T extends number[] ? string[] : readonly number[];'],
-          ['type Test<T> = T extends number[] ? readonly string[] : number[];'],
-        ])('handles non fully readonly conditional types', runTests);
+          it.each([
+            ['type Test<T> = T extends number[] ? string[] : number[];'],
+            [
+              'type Test<T> = T extends number[] ? string[] : readonly number[];',
+            ],
+            [
+              'type Test<T> = T extends number[] ? readonly string[] : number[];',
+            ],
+          ])('handles non fully readonly conditional types', runTests);
+        });
       });
     });
 
