@@ -69,7 +69,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Check if the node is a readonly class property
         if (
-          typeof node.value === 'number' &&
+          (typeof node.value === 'number' || typeof node.value === 'bigint') &&
           isParentTSReadonlyPropertyDefinition(node)
         ) {
           if (options.ignoreReadonlyClassProperties) {
