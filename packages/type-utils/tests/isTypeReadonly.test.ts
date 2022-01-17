@@ -13,22 +13,22 @@ describe('isTypeReadonly', () => {
   describe('TSTypeAliasDeclaration ', () => {
     function getType(code: string): {
       type: ts.Type;
-      checker: ts.TypeChecker;
+      program: ts.Program;
     } {
       const { ast, services } = parseForESLint(code, {
         project: './tsconfig.json',
         filePath: path.join(rootDir, 'file.ts'),
         tsconfigRootDir: rootDir,
       });
-      const checker = services.program.getTypeChecker();
+      const program = services.program;
       const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
 
       const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
       return {
-        type: checker.getTypeAtLocation(
-          esTreeNodeToTSNodeMap.get(declaration.id),
-        ),
-        checker,
+        type: program
+          .getTypeChecker()
+          .getTypeAtLocation(esTreeNodeToTSNodeMap.get(declaration.id)),
+        program,
       };
     }
 
@@ -37,9 +37,9 @@ describe('isTypeReadonly', () => {
       options: ReadonlynessOptions | undefined,
       expected: boolean,
     ): void {
-      const { type, checker } = getType(code);
+      const { type, program } = getType(code);
 
-      const result = isTypeReadonly(checker, type, options);
+      const result = isTypeReadonly(program, type, options);
       expect(result).toBe(expected);
     }
 

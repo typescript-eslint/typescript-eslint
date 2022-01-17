@@ -20,7 +20,7 @@ const enum Readonlyness {
   Readonly = 3,
 }
 
-interface ReadonlynessOptions {
+export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
   readonly exceptions?: Array<string>;
   readonly internalExceptions?: Array<string>;
@@ -132,7 +132,7 @@ function isTypeReadonlyObject(
       }
 
       return isTypeReadonlyRecurser(
-        checker,
+        program,
         indexInfo.type,
         options,
         seenTypes,
@@ -229,6 +229,7 @@ function isTypeReadonlyRecurser(
   options: ReadonlynessOptions,
   seenTypes: Set<ts.Type>,
 ): Readonlyness.Readonly | Readonlyness.Mutable {
+  const checker = program.getTypeChecker();
   seenTypes.add(type);
 
   if (isTypeExcepted(type, program, options)) {
@@ -255,7 +256,7 @@ function isTypeReadonlyRecurser(
       const allReadonlyParts = type.types.every(
         t =>
           seenTypes.has(t) ||
-          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+          isTypeReadonlyRecurser(program, t, options, seenTypes) ===
             Readonlyness.Readonly,
       );
       return allReadonlyParts ? Readonlyness.Readonly : Readonlyness.Mutable;
@@ -263,7 +264,7 @@ function isTypeReadonlyRecurser(
 
     // Normal case.
     const isReadonlyObject = isTypeReadonlyObject(
-      checker,
+      program,
       type,
       options,
       seenTypes,
@@ -279,7 +280,7 @@ function isTypeReadonlyRecurser(
       .every(
         t =>
           seenTypes.has(t) ||
-          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+          isTypeReadonlyRecurser(program, t, options, seenTypes) ===
             Readonlyness.Readonly,
       );
 
