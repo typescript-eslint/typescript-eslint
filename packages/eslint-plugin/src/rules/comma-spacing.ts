@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
   isClosingParenToken,
   isCommaToken,

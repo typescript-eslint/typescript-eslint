@@ -1,8 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
 import * as ts from 'typescript';
 import {

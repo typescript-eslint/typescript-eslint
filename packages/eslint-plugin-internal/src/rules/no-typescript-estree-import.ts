@@ -2,7 +2,7 @@ import { createRule } from '../util';
 
 const TSESTREE_NAME = '@typescript-eslint/typescript-estree';
 const TYPES_NAME = '@typescript-eslint/types';
-const UTILS_NAME = '@typescript-eslint/experimental-utils';
+const UTILS_NAME = '@typescript-eslint/utils';
 
 /*
 Typescript will not error if people use typescript-estree within eslint-plugin.

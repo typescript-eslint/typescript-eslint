@@ -1,8 +1,5 @@
 import * as util from '../util';
-import {
-  TSESLint,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 export type Options = [
   {

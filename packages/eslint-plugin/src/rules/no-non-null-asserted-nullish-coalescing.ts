@@ -1,8 +1,4 @@
-import {
-  ASTUtils,
-  TSESTree,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import { ASTUtils, TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { Definition, DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 

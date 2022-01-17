@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/utils';
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 import { createRule, getWrappingFixer } from '../../src/util';
 
