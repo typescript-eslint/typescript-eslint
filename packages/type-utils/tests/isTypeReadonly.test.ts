@@ -115,6 +115,7 @@ describe('isTypeReadonly', () => {
           const runTests = runTestIsReadonly;
 
           it.each([
+            ['type Test = { readonly [key: string]: string };'],
             [
               'type Test = { readonly [key: string]: { readonly foo: readonly string[]; }; };',
             ],
@@ -128,6 +129,7 @@ describe('isTypeReadonly', () => {
           const runTests = runTestIsNotReadonly;
 
           it.each([
+            ['type Test = { [key: string]: string };'],
             ['type Test = { readonly [key: string]: { foo: string[]; }; };'],
           ])(
             'handles mutable PropertySignature inside a readonly IndexSignature',
