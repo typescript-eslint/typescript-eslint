@@ -922,7 +922,7 @@ async function test<T>(): Promise<T> {
         async function bar() {}
         async function foo() {
           try {
-            return undefined || (await bar());
+            return await (undefined || bar());
           } catch {}
         }
       `,
@@ -946,15 +946,11 @@ async function test<T>(): Promise<T> {
         async function bar() {}
         async function foo() {
           try {
-            return (await bar()) || undefined || (await bar());
+            return await (bar() || undefined || bar());
           } catch {}
         }
       `,
       errors: [
-        {
-          line: 5,
-          messageId: 'requiredPromiseAwait',
-        },
         {
           line: 5,
           messageId: 'requiredPromiseAwait',
@@ -966,7 +962,7 @@ async function test<T>(): Promise<T> {
         async function bar() {}
         async function foo() {
           try {
-            return window.foo ?? bar();
+            return null ?? bar();
           } catch {}
         }
       `,
@@ -974,7 +970,7 @@ async function test<T>(): Promise<T> {
         async function bar() {}
         async function foo() {
           try {
-            return window.foo ?? (await bar());
+            return await (null ?? bar());
           } catch {}
         }
       `,

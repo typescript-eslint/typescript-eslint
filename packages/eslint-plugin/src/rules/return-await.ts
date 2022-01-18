@@ -7,6 +7,7 @@ import * as tsutils from 'tsutils';
 import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
+import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
   | TSESTree.FunctionDeclaration
@@ -154,21 +155,28 @@ export default util.createRule({
     function insertAwait(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
+      isHighPrecendence: boolean,
     ): TSESLint.RuleFix | TSESLint.RuleFix[] {
-      if (node.parent?.type === AST_NODE_TYPES.LogicalExpression) {
+      if (isHighPrecendence) {
+        return fixer.insertTextBefore(node, 'await ');
+      } else {
         return [
-          fixer.insertTextBefore(node, '(await '),
+          fixer.insertTextBefore(node, 'await ('),
           fixer.insertTextAfter(node, ')'),
         ];
       }
-      if (node.type !== AST_NODE_TYPES.TSAsExpression) {
-        return fixer.insertTextBefore(node, 'await ');
-      }
+    }
 
-      return [
-        fixer.insertTextBefore(node, 'await ('),
-        fixer.insertTextAfter(node, ')'),
-      ];
+    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
+      const operator = isBinaryExpression(node)
+        ? node.operatorToken.kind
+        : ts.SyntaxKind.Unknown;
+      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
+      const awaitPrecedence = getOperatorPrecedence(
+        ts.SyntaxKind.AwaitExpression,
+        ts.SyntaxKind.Unknown,
+      );
+      return nodePrecedence > awaitPrecedence;
     }
 
     function test(node: TSESTree.Expression, expression: ts.Node): void {
@@ -219,7 +227,8 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            fix: fixer =>
+              insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression)),
           });
         }
 
@@ -258,27 +267,12 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            fix: fixer =>
+              insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression)),
           });
         }
 
         return;
-      }
-    }
-
-    function testLogicalExpression(
-      node: TSESTree.LogicalExpression,
-      tsNode: ts.BinaryExpression,
-    ): void {
-      const left = node.left;
-      const tsLeft = tsNode.left;
-      const right = node.right;
-      const tsRight = tsNode.right;
-      test(right, tsRight);
-      if (isLogicalExpression(left) && isBinaryExpression(tsLeft)) {
-        testLogicalExpression(left, tsLeft);
-      } else {
-        test(left, tsLeft);
       }
     }
 
@@ -321,19 +315,9 @@ export default util.createRule({
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-          if (isLogicalExpression(node) && isBinaryExpression(tsNode)) {
-            testLogicalExpression(node, tsNode);
-          } else {
-            test(node, tsNode);
-          }
+          test(node, tsNode);
         });
       },
     };
   },
 });
-
-function isLogicalExpression(
-  node: TSESTree.Node,
-): node is TSESTree.LogicalExpression {
-  return node.type === AST_NODE_TYPES.LogicalExpression;
-}
