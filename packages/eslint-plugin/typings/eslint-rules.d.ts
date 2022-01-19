@@ -644,9 +644,16 @@ declare module 'eslint/lib/rules/no-extra-semi' {
       ClassBody(node: TSESTree.ClassBody): void;
       // for ESLint <= v7
       MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
-      // for ESLint v8
+      // for ESLint >= v8 < v8.3.0
       'MethodDefinition, PropertyDefinition'?: (
         node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+      ) => void;
+      // for ESLint >= v8.3.0
+      'MethodDefinition, PropertyDefinition, StaticBlock'?: (
+        node:
+          | TSESTree.MethodDefinition
+          | TSESTree.PropertyDefinition
+          | TSESTree.StaticBlock,
       ) => void;
     }
   >;
@@ -701,12 +708,20 @@ declare module 'eslint/lib/rules/no-invalid-this' {
       }?,
     ],
     {
-      Program(node: TSESTree.Program): void;
-      'Program:exit'(node: TSESTree.Program): void;
-      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
-      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
-      FunctionExpression(node: TSESTree.FunctionExpression): void;
-      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      // for ESLint < v8.7.0
+      Program?: (node: TSESTree.Program) => void;
+      'Program:exit'?: (node: TSESTree.Program) => void;
+      FunctionDeclaration?: (node: TSESTree.FunctionDeclaration) => void;
+      'FunctionDeclaration:exit'?: (node: TSESTree.FunctionDeclaration) => void;
+      FunctionExpression?: (node: TSESTree.FunctionExpression) => void;
+      'FunctionExpression:exit'?: (node: TSESTree.FunctionExpression) => void;
+
+      // for ESLint >= v8.7.0
+      // We don't use it and we don't have the CodePath types, so comment out it.
+      // onCodePathStart?: (codePath: unknown, node: TSESTree.Node) => void
+      // onCodePathEnd?: (codePath: unknown, node: TSESTree.Node) => void
+
+      // Common
       ThisExpression(node: TSESTree.ThisExpression): void;
     }
   >;
