@@ -70,14 +70,14 @@ export default util.createRule({
             {
               messageId: 'optionalChainSuggest',
               fix: (fixer): TSESLint.RuleFix => {
-                const leftNodeText = context.getSourceCode().getText(leftNode);
+                const leftNodeText = sourceCode.getText(leftNode);
                 const maybeWrappedLeftNode =
                   leftNode.type === AST_NODE_TYPES.LogicalExpression
                     ? `(${leftNodeText})`
                     : leftNodeText;
-                const propertyToBeOptionalText = context
-                  .getSourceCode()
-                  .getText(parentNode.property);
+                const propertyToBeOptionalText = sourceCode.getText(
+                  parentNode.property,
+                );
                 const maybeWrappedProperty = parentNode.computed
                   ? `[${propertyToBeOptionalText}]`
                   : propertyToBeOptionalText;
