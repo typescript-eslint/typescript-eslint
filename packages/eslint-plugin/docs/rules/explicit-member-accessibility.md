@@ -350,5 +350,5 @@ If you think defaulting to public is a good default, then you should consider us
 ## Attributes
 
 - [ ] ✅ Recommended
-- [x] 🔧 Fixable
+- [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
