@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.9.1...v5.10.0) (2022-01-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-function-return-type] support AllowTypedFunctionExpression within AllowHigherOrderFunction ([#4250](https://github.com/typescript-eslint/typescript-eslint/issues/4250)) ([d053cde](https://github.com/typescript-eslint/typescript-eslint/commit/d053cde3e8b5bf9ba1c22fd64a7456d672ef77ca))
+* **eslint-plugin:** [no-extra-semi] false negatives when used with eslint 8.3.0 ([#4458](https://github.com/typescript-eslint/typescript-eslint/issues/4458)) ([f4016c2](https://github.com/typescript-eslint/typescript-eslint/commit/f4016c24f9023e8a42def9501b68c4a908cbfede))
+* **eslint-plugin:** [no-invalid-this] crash when used with eslint 8.7.0 ([#4448](https://github.com/typescript-eslint/typescript-eslint/issues/4448)) ([e56f1e5](https://github.com/typescript-eslint/typescript-eslint/commit/e56f1e5d52fcbf3caae43034872e0b3181871689))
+* **eslint-plugin:** [no-magic-numbers] handle bigint in class props ([#4411](https://github.com/typescript-eslint/typescript-eslint/issues/4411)) ([c8e650f](https://github.com/typescript-eslint/typescript-eslint/commit/c8e650f0c124d24b24beaeb376eaf61ee8d9e6fb))
+
+
+### Features
+
+* rename `experimental-utils` to `utils` and make `experimental-utils` an alias to the new package ([#4172](https://github.com/typescript-eslint/typescript-eslint/issues/4172)) ([1d55a75](https://github.com/typescript-eslint/typescript-eslint/commit/1d55a7511b38d8e2b2eabe59f639e0a865e6c93f))
+
+
+
+
+
 ## [5.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.9.0...v5.9.1) (2022-01-10)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin
