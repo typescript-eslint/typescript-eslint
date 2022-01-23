@@ -75,11 +75,16 @@ function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
 }
 
 describe('Validating rule docs', () => {
+  const ignoredFiles = new Set([
+    // this rule doc was left behind on purpose for legacy reasons
+    'camelcase.md',
+    'README.md',
+    'TEMPLATE.md',
+  ]);
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
       .readdirSync(docsRoot)
-      // this rule doc was left behind on purpose for legacy reasons
-      .filter(rule => rule !== 'camelcase.md' && rule !== 'README.md');
+      .filter(rule => !ignoredFiles.has(rule));
     const ruleFiles = Object.keys(rules)
       .map(rule => `${rule}.md`)
       .sort();
