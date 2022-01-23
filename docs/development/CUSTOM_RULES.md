@@ -278,8 +278,12 @@ const ruleTester = new ESLintUtils.RuleTester({
 });
 
 ruleTester.run('my-rule', rule, {
-  valid: [/* ... */],
-  invalid: [/* ... */],
+  valid: [
+    /* ... */
+  ],
+  invalid: [
+    /* ... */
+  ],
 });
 ```
 
