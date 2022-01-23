@@ -2,11 +2,7 @@
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
 
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 
 /**

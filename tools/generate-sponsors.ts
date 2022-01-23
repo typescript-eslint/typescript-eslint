@@ -1,5 +1,5 @@
+import fetch from 'cross-fetch';
 import * as fs from 'fs';
-import fetch from 'node-fetch';
 import * as path from 'path';
 
 const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';
@@ -13,6 +13,7 @@ const graphqlQuery = `{
           slug
         }
         fromAccount {
+          id
           name
           slug
           website
@@ -23,6 +24,10 @@ const graphqlQuery = `{
     }
   }
 }`;
+
+const excludedIds = new Set([
+  '53kzxy4v-07wlr6mr-o9epmj9n-o8agdbe5', // Josh Goldberg
+]);
 
 interface SponsorsData {
   data: {
@@ -37,6 +42,7 @@ interface SponsorsData {
 interface SponsorNode {
   fromAccount: {
     description: string;
+    id: string;
     imageUrl: string;
     name: string;
     slug: string;
@@ -55,17 +61,27 @@ async function main(): Promise<void> {
     body: JSON.stringify({ query: graphqlQuery }),
   });
   const data = (await response.json()) as SponsorsData;
+  const uniqueIds = new Set<string>(excludedIds);
   const allSponsorsConfig = data.data.account.orders.nodes
     .filter(node => !!node.tier)
     .map(node => ({
       description: node.fromAccount.description,
+      id: node.fromAccount.id,
       image: node.fromAccount.imageUrl,
       name: node.fromAccount.name,
       slug: node.fromAccount.slug,
       tier: node.tier.slug,
       twitterHandle: node.fromAccount.twitterHandle,
       website: node.fromAccount.website,
-    }));
+    }))
+    .filter(({ id }) => {
+      if (uniqueIds.has(id)) {
+        return false;
+      }
+
+      uniqueIds.add(id);
+      return true;
+    });
 
   const rcPath = path.resolve(
     __dirname,
