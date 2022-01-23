@@ -8,7 +8,7 @@
     <a href="https://www.npmjs.com/package/@typescript-eslint/type-utils"><img src="https://img.shields.io/npm/dm/@typescript-eslint/type-utils.svg?style=flat-square" alt="NPM Downloads" /></a>
 </p>
 
-This utilities in this package are separated from `@typescript-eslint/experimental-utils` so that that package does not require a dependency on `typescript`.
+This utilities in this package are separated from `@typescript-eslint/utils` so that that package does not require a dependency on `typescript`.
 
 ## Contributing
 

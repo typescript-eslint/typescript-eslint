@@ -16,7 +16,7 @@ It includes:
 
 **You probably don't want to use it directly.**
 
-If you're building an ESLint plugin, consider using [`@typescript-eslint/experimental-utils`](../experimental-utils) and [`@typescript-eslint/type-utils`](../type-utils).
+If you're building an ESLint plugin, consider using [`@typescript-eslint/utils`](../utils) and [`@typescript-eslint/type-utils`](../type-utils).
 If you're parsing TypeScript code, consider using [`@typescript-eslint/typescript-estree`](../typescript-estree).
 
 ## Contributing
