@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -193,6 +190,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const parserServices = util.getParserServices(context);
+    const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
     function getTypeNodeTypePartFlags(
       typeNode: TSESTree.TypeNode,
@@ -238,8 +236,21 @@ export default util.createRule({
       }));
     }
 
+    function getTypeNodeTypePartFlagsCached(
+      typeNode: TSESTree.TypeNode,
+    ): TypeFlagsWithName[] {
+      const existing = typesCache.get(typeNode);
+      if (existing) {
+        return existing;
+      }
+
+      const created = getTypeNodeTypePartFlags(typeNode);
+      typesCache.set(typeNode, created);
+      return created;
+    }
+
     return {
-      TSIntersectionType(node): void {
+      'TSIntersectionType:exit'(node: TSESTree.TSIntersectionType): void {
         const seenLiteralTypes = new Map<PrimitiveTypeFlag, string[]>();
         const seenPrimitiveTypes = new Map<
           PrimitiveTypeFlag,
@@ -272,7 +283,7 @@ export default util.createRule({
         }
 
         for (const typeNode of node.types) {
-          const typePartFlags = getTypeNodeTypePartFlags(typeNode);
+          const typePartFlags = getTypeNodeTypePartFlagsCached(typeNode);
 
           for (const typePart of typePartFlags) {
             if (checkIntersectionBottomAndTopTypes(typePart, typeNode)) {
@@ -317,7 +328,7 @@ export default util.createRule({
           }
         }
       },
-      TSUnionType(node): void {
+      'TSUnionType:exit'(node: TSESTree.TSUnionType): void {
         const seenLiteralTypes = new Map<
           PrimitiveTypeFlag,
           TypeNodeWithValue[]
@@ -364,7 +375,7 @@ export default util.createRule({
         }
 
         for (const typeNode of node.types) {
-          const typePartFlags = getTypeNodeTypePartFlags(typeNode);
+          const typePartFlags = getTypeNodeTypePartFlagsCached(typeNode);
 
           for (const typePart of typePartFlags) {
             if (checkUnionBottomAndTopTypes(typePart, typeNode)) {
