@@ -10,10 +10,7 @@ import {
 } from 'tsutils';
 import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
-
-export type TypeAllowlistItem = {
-  typeName: string;
-} & ({ local: true } | { defaultLib: true } | { package: string });
+import { TypeAllowlistItem } from './TypeAllowListItem';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */

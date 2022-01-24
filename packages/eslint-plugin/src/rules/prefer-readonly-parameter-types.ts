@@ -28,47 +28,7 @@ export default util.createRule<Options, MessageIds>({
         properties: {
           allowlist: {
             type: 'array',
-            items: {
-              type: 'object',
-              oneOf: [
-                {
-                  additionalProperties: false,
-                  properties: {
-                    typeName: {
-                      type: 'string',
-                    },
-                    local: {
-                      type: 'boolean',
-                    },
-                  },
-                  required: ['typeName', 'local'],
-                },
-                {
-                  additionalProperties: false,
-                  properties: {
-                    typeName: {
-                      type: 'string',
-                    },
-                    defaultLib: {
-                      type: 'boolean',
-                    },
-                  },
-                  required: ['typeName', 'defaultLib'],
-                },
-                {
-                  additionalProperties: false,
-                  properties: {
-                    typeName: {
-                      type: 'string',
-                    },
-                    package: {
-                      type: 'string',
-                    },
-                  },
-                  required: ['typeName', 'package'],
-                },
-              ],
-            },
+            items: util.typeAllowListItemSchema,
           },
           checkParameterProperties: {
             type: 'boolean',
