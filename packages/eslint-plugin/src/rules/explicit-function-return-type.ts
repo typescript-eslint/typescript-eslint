@@ -2,7 +2,8 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 import {
   checkFunctionReturnType,
-  checkFunctionExpressionReturnType,
+  isValidFunctionExpressionReturnType,
+  ancestorHasReturnType,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -114,7 +115,15 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionExpressionReturnType(node, options, sourceCode, loc =>
+        if (
+          options.allowTypedFunctionExpressions &&
+          (isValidFunctionExpressionReturnType(node, options) ||
+            ancestorHasReturnType(node))
+        ) {
+          return;
+        }
+
+        checkFunctionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,
             loc,
@@ -126,6 +135,10 @@ export default util.createRule<Options, MessageIds>({
         if (isAllowedName(node)) {
           return;
         }
+        if (options.allowTypedFunctionExpressions && node.returnType) {
+          return;
+        }
+
         checkFunctionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,
