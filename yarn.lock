@@ -13223,9 +13223,9 @@ rimraf@^2.6.3:
     glob "^7.1.3"
 
 rollup@^2.59.0:
-  version "2.64.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.64.0.tgz#f0f59774e21fbb56de438a37d06a2189632b207a"
-  integrity sha512-+c+lbw1lexBKSMb1yxGDVfJ+vchJH3qLbmavR+awDinTDA2C5Ug9u7lkOzj62SCu0PKUExsW36tpgW7Fmpn3yQ==
+  version "2.66.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.66.0.tgz#ee529ea15a20485d579039637fec3050bad03bbb"
+  integrity sha512-L6mKOkdyP8HK5kKJXaiWG7KZDumPJjuo1P+cfyHOJPNNTK3Moe7zCH5+fy7v8pVmHXtlxorzaBjvkBMB23s98g==
   optionalDependencies:
     fsevents "~2.3.2"
 
