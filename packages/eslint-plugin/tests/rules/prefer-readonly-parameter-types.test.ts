@@ -353,6 +353,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
       function foo(arg: Foo) {}
     `,
+    // Allowlist
     {
       code: `
         function foo(arg: RegExp) {}
@@ -879,6 +880,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    // Allowlist
     {
       code: `
         function foo(arg: RegExp) {}
@@ -916,6 +918,86 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           line: 6,
           column: 22,
           endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: [{ typeName: 'Foo', defaultLib: true }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: [{ typeName: 'Foo', package: 'foo-lib' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allowlist: [{ typeName: 'RegExp', local: true }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allowlist: [{ typeName: 'RegExp', package: 'regexp-lib' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
         },
       ],
     },
