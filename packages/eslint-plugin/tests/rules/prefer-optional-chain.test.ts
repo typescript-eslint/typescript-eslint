@@ -631,8 +631,6 @@ foo?.bar(/* comment */a,
       ],
     },
     {
-      // Currently it does not suggest a fix for nested optional with empty object
-      // It shows 2 suggestions, one for the outer object and one for the inner object
       code: '((foo1 || {}).foo2 || {}).foo3;',
       errors: [
         {
