@@ -148,9 +148,21 @@ ruleTester.run('prefer-optional-chain', rule, {
   valid: [
     'foo || {};',
     'foo || ({} as any);',
-    '(foo || {})?.bar;', // This might seem stupid, but I'm not sure if we want to show suggestion for it
+    '(foo || {})?.bar;',
     '(foo || { bar: 1 }).bar;',
     '(undefined && (foo || {})).bar;',
+    'foo ||= bar;',
+    'foo ||= bar || {};',
+    'foo ||= bar?.baz;',
+    'foo ||= bar?.baz || {};',
+    'foo ||= bar?.baz?.buzz;',
+    '(foo1 ? foo2 : foo3 || {}).foo4;',
+    '(1 > 2 || {}).bar;',
+    '(foo = 2 || {}).bar;',
+    '(foo == 2 || {}).bar;',
+    '(foo instanceof Number || {}).bar;',
+    '(typeof a || {}).bar;',
+    'func(foo || {}).bar;',
     'foo && bar;',
     'foo && foo;',
     'foo || bar;',
@@ -507,6 +519,86 @@ foo?.bar(/* comment */a,
       },
     },
     {
+      code: '(foo || {}).bar;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 16,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`(foo || ({})).bar;`,
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 18,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`(await foo || {}).bar;`,
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(await foo)?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(foo1?.foo2 || {}).foo3;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 24,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'foo1?.foo2?.foo3;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '((() => foo())() || {}).bar;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 28,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(() => foo())()?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: 'const foo = (bar || {}).baz;',
       errors: [
         {
@@ -582,10 +674,76 @@ foo?.bar(/* comment */a,
       ],
     },
     {
+      code: '(foo() || bar || {}).baz;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 25,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(foo() || bar)?.baz;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '((foo1 ? foo2 : foo3) || {}).foo4;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 34,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(foo1 ? foo2 : foo3)?.foo4;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`if (foo) { (foo || {}).bar; }`,
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 12,
+          endColumn: 27,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`if (foo) { foo?.bar; }`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`if ((foo || {}).bar) { foo.bar; }`,
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 5,
+          endColumn: 20,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`if (foo?.bar) { foo.bar; }`,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: noFormat`(undefined && foo || {}).bar;`,
       errors: [
         {
           messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 29,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
