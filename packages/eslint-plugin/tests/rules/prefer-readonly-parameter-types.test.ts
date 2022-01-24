@@ -359,7 +359,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: ['RegExp'],
+          allowlist: [{ typeName: 'RegExp', defaultLib: true }],
         },
       ],
     },
@@ -373,24 +373,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: ['Foo'],
-        },
-      ],
-    },
-    {
-      code: `
-        interface Bar {
-          prop: string;
-        }
-        interface Foo {
-          readonly prop: Bar;
-        }
-
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          allowlist: ['Foo'],
+          allowlist: [{ typeName: 'Foo', local: true }],
         },
       ],
     },
@@ -407,7 +390,24 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: ['Bar'],
+          allowlist: [{ typeName: 'Foo', local: true }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: [{ typeName: 'Bar', local: true }],
         },
       ],
     },
@@ -885,7 +885,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: ['Foo'],
+          allowlist: [{ typeName: 'Foo', local: true }],
         },
       ],
       errors: [
@@ -907,7 +907,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: ['Bar'],
+          allowlist: [{ typeName: 'Bar', local: true }],
         },
       ],
       errors: [

@@ -11,6 +11,10 @@ import {
 import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 
+export type TypeAllowlistItem = {
+  typeName: string;
+} & ({ local: true } | { defaultLib: true } | { package: string });
+
 const enum Readonlyness {
   /** the type cannot be handled by the function */
   UnknownType = 1,
@@ -22,14 +26,12 @@ const enum Readonlyness {
 
 export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
-  readonly exceptions?: Array<string>;
-  readonly internalExceptions?: Array<string>;
+  readonly allowlist?: Array<TypeAllowlistItem>;
 }
 
 const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
-  exceptions: [],
-  internalExceptions: [],
+  allowlist: [{ typeName: 'HTMLElement', defaultLib: true }],
 };
 
 function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
@@ -42,16 +44,31 @@ function isTypeExcepted(
   options: ReadonlynessOptions,
 ): boolean {
   const typeName = type.getSymbol()?.escapedName;
-  if (typeName === undefined) {
-    return false;
-  }
-  if (options.exceptions?.includes(typeName)) {
-    return true;
-  }
-  if (options.internalExceptions?.includes(typeName)) {
-    const declarations = type.getSymbol()?.getDeclarations() ?? [];
-    for (const declaration of declarations) {
-      if (program.isSourceFileDefaultLibrary(declaration.getSourceFile())) {
+  const matchingItems =
+    options.allowlist?.filter(item => item.typeName === typeName) ?? [];
+  for (const item of matchingItems) {
+    const declarationFiles =
+      type
+        .getSymbol()
+        ?.getDeclarations()
+        ?.map(declaration => declaration.getSourceFile()) ?? [];
+    for (const declaration of declarationFiles) {
+      if (
+        // A local type defined in the current package
+        ('local' in item &&
+          item.local === true &&
+          declaration.fileName.startsWith(program.getCurrentDirectory())) ||
+        // A type from the default library
+        ('defaultLib' in item &&
+          item.defaultLib === true &&
+          program.isSourceFileDefaultLibrary(declaration)) ||
+        // A type from a specified third-party package
+        ('package' in item &&
+          (declaration.fileName.includes('node_modules/' + item.package) ||
+            declaration.fileName.includes(
+              'node_modules/@types/' + item.package,
+            )))
+      ) {
         return true;
       }
     }

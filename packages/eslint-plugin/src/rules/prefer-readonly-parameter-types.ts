@@ -3,7 +3,7 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowlist?: Array<string>;
+    allowlist?: Array<util.TypeAllowlistItem>;
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
     treatMethodsAsReadonly?: boolean;
@@ -47,7 +47,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowlist: [],
+      allowlist: [{ typeName: 'HTMLElement', defaultLib: true }],
       checkParameterProperties: true,
       ignoreInferredTypes: false,
       treatMethodsAsReadonly: false,
@@ -111,8 +111,7 @@ export default util.createRule<Options, MessageIds>({
           const type = checker.getTypeAtLocation(tsNode);
           const isReadOnly = util.isTypeReadonly(program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
-            exceptions: allowlist,
-            internalExceptions: ['HTMLElement'],
+            allowlist: allowlist,
           });
 
           if (!isReadOnly) {
