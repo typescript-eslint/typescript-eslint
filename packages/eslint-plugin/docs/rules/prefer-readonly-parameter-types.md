@@ -143,30 +143,46 @@ const defaultOptions: Options = {
 
 ### `allowlist`
 
-Some complex types cannot easily be made readonly, for example the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
+Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
-Examples of code for this rule with `{allowlist: ["Foo"]}`:
+Each item has to be either a local type (`{typeName: "Foo", local: true}`), a type from the default library (`{typeName: "Foo", defaultLib: true}`), or a file from a specific package (`{typeName: "Foo", package: "foo-lib"}`, this also works for types defined in a typings package).
+
+Examples of code for this rule with `{allowlist: [{typeName: "Foo", local: true}, {typeName: "HTMLElement", defaultLib: true}, {typeName: "Bar", package: "bar-lib"}]}`:
 
 <!--tabs-->
 
 #### ❌ Incorrect
 
 ```ts
-interface Foo {
+interface ThisIsMutable {
   prop: string;
 }
 
-interface Bar {
-  sub: Foo;
+interface Wrapper {
+  sub: ThisIsMutable;
 }
 
-interface Baz {
+interface WrapperWithOther {
   readonly sub: Foo;
   otherProp: string;
 }
 
-function fn1(arg: Bar) {} // Incorrect because Bar.sub is not readonly
-function fn2(arg: Baz) {} // Incorrect because Baz.otherProp is not readonly and not in the allowlist
+function fn1(arg: ThisIsMutable) {} // Incorrect because ThisIsMutable is not readonly
+function fn2(arg: Wrapper) {} // Incorrect because Wrapper.sub is not readonly
+function fn3(arg: WrapperWithOther) {} // Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
+```
+
+```ts
+import { Foo } from 'some-lib';
+import { Bar } from 'incorrect-lib';
+
+interface HTMLElement {
+  prop: string;
+}
+
+function fn1(arg: Foo) {} // Incorrect because Foo is not a local type
+function fn2(arg: HTMLElement) {} // Incorrect because HTMLElement is not from the default library
+function fn3(arg: Bar) {} // Incorrect because Bar is not from "bar-lib"
 ```
 
 #### ✅ Correct
@@ -176,13 +192,31 @@ interface Foo {
   prop: string;
 }
 
-interface Bar {
+interface Wrapper {
   readonly sub: Foo;
   readonly otherProp: string;
 }
 
 function fn1(arg: Foo) {} // Works because Foo is allowlisted
-function fn2(arg: Bar) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
+function fn2(arg: Wrapper) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
+```
+
+```ts
+import { Bar } from 'bar-lib';
+
+interface Foo {
+  prop: string;
+}
+
+function fn1(arg: Foo) {} // Works because Foo is a local type
+function fn2(arg: HTMLElement) {} // Works because HTMLElement is from the default library
+function fn3(arg: Bar) {} // Works because Bar is from "bar-lib"
+```
+
+```ts
+import { Foo } from './foo';
+
+function fn(arg: Foo) {} // Works because Foo is still a local type - it has to be in the same package
 ```
 
 ### `checkParameterProperties`
