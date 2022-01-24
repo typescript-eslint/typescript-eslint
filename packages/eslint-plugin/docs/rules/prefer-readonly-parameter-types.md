@@ -126,15 +126,19 @@ interface Foo {
 ## Options
 
 ```ts
+type TypeAllowlistItem = {
+  typeName: string;
+} & ({ local: true } | { defaultLib: true } | { package: string });
+
 interface Options {
-  allowlist: Array<string>;
+  allowlist: Array<TypeAllowlistItem>;
   checkParameterProperties?: boolean;
   ignoreInferredTypes?: boolean;
   treatMethodsAsReadonly?: boolean;
 }
 
 const defaultOptions: Options = {
-  allowlist: [];
+  allowlist: [{typeName: "HTMLElement", defaultLib: true}];
   checkParameterProperties: true,
   ignoreInferredTypes: false,
   treatMethodsAsReadonly: false,
