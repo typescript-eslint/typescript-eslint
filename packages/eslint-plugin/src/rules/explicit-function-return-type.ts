@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
         const parent = node.parent;
         return (
           parent?.type === AST_NODE_TYPES.VariableDeclarator &&
-          parent?.id.type === AST_NODE_TYPES.Identifier &&
+          parent.id.type === AST_NODE_TYPES.Identifier &&
           !!options.allowedNames?.includes(parent.id.name)
         );
       }
