@@ -26,19 +26,15 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          allowlist: {
-            type: 'array',
-            items: util.typeAllowListItemSchema,
-          },
+          allowlist: util.readonlynessOptionsSchema.properties.allowlist,
           checkParameterProperties: {
             type: 'boolean',
           },
           ignoreInferredTypes: {
             type: 'boolean',
           },
-          treatMethodsAsReadonly: {
-            type: 'boolean',
-          },
+          treatMethodsAsReadonly:
+            util.readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
         },
       },
     ],

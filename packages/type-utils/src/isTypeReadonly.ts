@@ -10,7 +10,10 @@ import {
 } from 'tsutils';
 import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
-import { TypeAllowlistItem } from './TypeAllowListItem';
+import {
+  TypeAllowlistItem,
+  typeAllowListItemSchema,
+} from './TypeAllowListItem';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -25,6 +28,20 @@ export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
   readonly allowlist?: Array<TypeAllowlistItem>;
 }
+
+export const readonlynessOptionsSchema = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    treatMethodsAsReadonly: {
+      type: 'boolean',
+    },
+    allowlist: {
+      type: 'array',
+      items: typeAllowListItemSchema,
+    },
+  },
+};
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
