@@ -48,10 +48,11 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowlist: [{ typeName: 'HTMLElement', defaultLib: true }],
+      allowlist: util.readonlynessOptionsDefaults.allowlist,
       checkParameterProperties: true,
       ignoreInferredTypes: false,
-      treatMethodsAsReadonly: false,
+      treatMethodsAsReadonly:
+        util.readonlynessOptionsDefaults.treatMethodsAsReadonly,
     },
   ],
   create(

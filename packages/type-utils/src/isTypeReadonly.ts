@@ -26,7 +26,7 @@ export interface ReadonlynessOptions {
   readonly allowlist?: Array<TypeAllowlistItem>;
 }
 
-const readonlynessOptionsDefaults: ReadonlynessOptions = {
+export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
   allowlist: [{ typeName: 'HTMLElement', defaultLib: true }],
 };
