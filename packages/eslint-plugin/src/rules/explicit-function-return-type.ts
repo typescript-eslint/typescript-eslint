@@ -104,13 +104,16 @@ export default util.createRule<Options, MessageIds>({
             }
           }
         }
-        return !!funcName && !!options.allowedNames?.includes(funcName);
+        if (!!funcName && !!options.allowedNames?.includes(funcName)) {
+          return true;
+        }
       }
-      if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
-        return (
-          node.id?.type === AST_NODE_TYPES.Identifier &&
-          !!options.allowedNames?.includes(node.id.name)
-        );
+      if (
+        node.type === AST_NODE_TYPES.FunctionDeclaration &&
+        node.id?.type === AST_NODE_TYPES.Identifier &&
+        !!options.allowedNames?.includes(node.id.name)
+      ) {
+        return true;
       }
       return false;
     }
