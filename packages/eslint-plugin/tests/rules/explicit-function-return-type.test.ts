@@ -1330,6 +1330,12 @@ const func = (value: number) => ({ type: 'X', value } as const);
 function hoge() {
   return;
 }
+const foo = () => {
+  return;
+};
+const baz = function () {
+  return;
+};
       `,
       errors: [
         {
@@ -1338,6 +1344,20 @@ function hoge() {
           endLine: 2,
           column: 1,
           endColumn: 16,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+          endLine: 5,
+          column: 13,
+          endColumn: 18,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 8,
+          endLine: 8,
+          column: 13,
+          endColumn: 24,
         },
       ],
     },
