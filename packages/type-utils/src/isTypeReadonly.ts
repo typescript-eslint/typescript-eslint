@@ -45,7 +45,7 @@ export const readonlynessOptionsSchema = {
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
-  allowlist: [{ typeName: 'HTMLElement', defaultLib: true }],
+  allowlist: [],
 };
 
 function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
