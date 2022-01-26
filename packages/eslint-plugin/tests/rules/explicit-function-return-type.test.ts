@@ -5,25 +5,6 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-// ruleTester.run('explicit-function-return-type', rule, {
-//   valid: [
-//     {
-//       filename: 'test.ts',
-//       options: [
-//         {
-//           allowedNames: ['test1', 'test2'],
-//         },
-//       ],
-//       code: `
-// () => {
-//   return function test2() {};
-// };
-//       `,
-//     },
-//   ],
-//   invalid: []
-// });
-
 ruleTester.run('explicit-function-return-type', rule, {
   valid: [
     {
