@@ -1323,7 +1323,7 @@ const func = (value: number) => ({ type: 'X', value } as const);
       filename: 'test.ts',
       options: [
         {
-          allowedNames: ['test'],
+          allowedNames: ['test', '1'],
         },
       ],
       code: `
@@ -1335,6 +1335,19 @@ const foo = () => {
 };
 const baz = function () {
   return;
+};
+let [test, test] = function () {
+  return;
+};
+class X {
+  [test] = function () {
+    return;
+  };
+}
+const x = {
+  1: function () {
+    reutrn;
+  },
 };
       `,
       errors: [
@@ -1358,6 +1371,20 @@ const baz = function () {
           endLine: 8,
           column: 13,
           endColumn: 24,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 11,
+          endLine: 11,
+          column: 20,
+          endColumn: 31,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 20,
+          endLine: 20,
+          column: 6,
+          endColumn: 17,
         },
       ],
     },
