@@ -5,6 +5,25 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
+// ruleTester.run('explicit-function-return-type', rule, {
+//   valid: [
+//     {
+//       filename: 'test.ts',
+//       options: [
+//         {
+//           allowedNames: ['test1', 'test2'],
+//         },
+//       ],
+//       code: `
+// () => {
+//   return function test2() {};
+// };
+//       `,
+//     },
+//   ],
+//   invalid: []
+// });
+
 ruleTester.run('explicit-function-return-type', rule, {
   valid: [
     {
@@ -404,24 +423,15 @@ new Foo(1, () => {});
       filename: 'test.ts',
       options: [
         {
-          allowedNames: ['test'],
+          allowedNames: ['test1', 'test2'],
         },
       ],
       code: `
-function test() {
+function test1() {
   return;
 }
-      `,
-    },
-    {
-      filename: 'test.ts',
-      options: [
-        {
-          allowedNames: ['test'],
-        },
-      ],
-      code: `
-const test = function () {
+
+const foo = function test2() {
   return;
 };
       `,
@@ -430,14 +440,77 @@ const test = function () {
       filename: 'test.ts',
       options: [
         {
-          allowedNames: ['test'],
+          allowedNames: ['test1', 'test2'],
         },
       ],
       code: `
-const test = () => {
+const test1 = function () {
   return;
 };
+const foo = function () {
+  return function test2() {};
+};
       `,
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test1', 'test2'],
+        },
+      ],
+      code: `
+const test1 = () => {
+  return;
+};
+export const foo = {
+  test2() {
+    return 0;
+  },
+};
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor() {}
+  get prop() {
+    return 1;
+  }
+  set prop() {}
+  method() {
+    return;
+  }
+  arrow = () => 'arrow';
+  private method() {
+    return;
+  }
+}
+      `,
+      options: [
+        {
+          allowedNames: ['prop', 'method', 'arrow'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x = {
+  arrowFn: () => {
+    return;
+  },
+  fn: function () {
+    return;
+  },
+};
+      `,
+      options: [
+        {
+          allowedNames: ['arrowFn', 'fn'],
+        },
+      ],
     },
     {
       filename: 'test.ts',

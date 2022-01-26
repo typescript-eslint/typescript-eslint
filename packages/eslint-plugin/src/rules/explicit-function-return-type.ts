@@ -83,11 +83,28 @@ export default util.createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.FunctionExpression
       ) {
         const parent = node.parent;
-        return (
-          parent?.type === AST_NODE_TYPES.VariableDeclarator &&
-          parent.id.type === AST_NODE_TYPES.Identifier &&
-          !!options.allowedNames?.includes(parent.id.name)
-        );
+        let funcName;
+        if (node.id?.name) {
+          funcName = node.id.name;
+        } else {
+          switch (parent?.type) {
+            case AST_NODE_TYPES.VariableDeclarator: {
+              if (parent.id.type === AST_NODE_TYPES.Identifier) {
+                funcName = parent.id.name;
+              }
+              break;
+            }
+            case AST_NODE_TYPES.MethodDefinition:
+            case AST_NODE_TYPES.PropertyDefinition:
+            case AST_NODE_TYPES.Property: {
+              if (parent.key.type === AST_NODE_TYPES.Identifier) {
+                funcName = parent.key.name;
+              }
+              break;
+            }
+          }
+        }
+        return !!funcName && !!options.allowedNames?.includes(funcName);
       }
       if (node.type === AST_NODE_TYPES.FunctionDeclaration) {
         return (
