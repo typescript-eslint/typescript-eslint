@@ -343,20 +343,28 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
-    `
-      function foo(arg: HTMLElement) {}
-    `,
-    `
-      interface Foo {
-        readonly prop: HTMLElement;
-      }
-
-      function foo(arg: Foo) {}
-    `,
     // Allowlist
     {
       code: `
-        function foo(arg: RegExp) {}
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allowlist: [{ typeName: 'RegExp', defaultLib: true }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: RegExp;
+        }
+
+        function foo(arg: Readonly<Foo>) {}
       `,
       options: [
         {
