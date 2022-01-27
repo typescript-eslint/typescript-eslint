@@ -138,7 +138,7 @@ interface Options {
 }
 
 const defaultOptions: Options = {
-  allowlist: [{typeName: "HTMLElement", defaultLib: true}];
+  allowlist: [];
   checkParameterProperties: true,
   ignoreInferredTypes: false,
   treatMethodsAsReadonly: false,
