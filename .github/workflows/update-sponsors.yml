@@ -1,0 +1,19 @@
+name: Update Sponsors Data
+
+on:
+  branch: main
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  build:
+    name: Commit if needed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Codecademy/run-on-yarn@v1
+        with:
+          command: generate-sponsors
+      - uses: EndBug/add-and-commit@v7
+        with:
+          message: 'chore: update sponsors data'
