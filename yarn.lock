@@ -1958,7 +1958,7 @@
     react-router-dom "^5.2.0"
     rtlcss "^3.3.0"
 
-"@docusaurus/theme-common@2.0.0-beta.15":
+"@docusaurus/theme-common@2.0.0-beta.15", "@docusaurus/theme-common@^2.0.0-beta.15":
   version "2.0.0-beta.15"
   resolved "https://registry.yarnpkg.com/@docusaurus/theme-common/-/theme-common-2.0.0-beta.15.tgz#5bd338d483e2c19d6d74d133572988241518398a"
   integrity sha512-+pvarmzcyECE4nWxw+dCMKRIoes0NegrRuM9+nRsUrS/E5ywsF539kpupKIEqaMjq6AuM0CJtDoHxHHPNe0KaQ==
