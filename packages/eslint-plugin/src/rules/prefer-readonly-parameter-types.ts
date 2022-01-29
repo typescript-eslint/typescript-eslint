@@ -109,7 +109,7 @@ export default util.createRule<Options, MessageIds>({
           const type = checker.getTypeAtLocation(tsNode);
           const isReadOnly = util.isTypeReadonly(program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
-            allowlist: allowlist,
+            allowlist,
           });
 
           if (!isReadOnly) {
