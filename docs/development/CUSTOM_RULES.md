@@ -277,9 +277,13 @@ const ruleTester = new ESLintUtils.RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('my-rule', rule {
-  valid: [/* ... */],
-  invalid: [/* ... */],
+ruleTester.run('my-rule', rule, {
+  valid: [
+    /* ... */
+  ],
+  invalid: [
+    /* ... */
+  ],
 });
 ```
 
