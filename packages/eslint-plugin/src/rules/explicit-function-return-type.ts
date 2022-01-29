@@ -78,6 +78,10 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
+      if (!options.allowedNames || !options.allowedNames.length) {
+        return false;
+      }
+
       if (
         node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         node.type === AST_NODE_TYPES.FunctionExpression
@@ -86,8 +90,8 @@ export default util.createRule<Options, MessageIds>({
         let funcName;
         if (node.id?.name) {
           funcName = node.id.name;
-        } else {
-          switch (parent?.type) {
+        } else if (parent) {
+          switch (parent.type) {
             case AST_NODE_TYPES.VariableDeclarator: {
               if (parent.id.type === AST_NODE_TYPES.Identifier) {
                 funcName = parent.id.name;
@@ -104,14 +108,15 @@ export default util.createRule<Options, MessageIds>({
             }
           }
         }
-        if (!!funcName && !!options.allowedNames?.includes(funcName)) {
+        if (!!funcName && !!options.allowedNames.includes(funcName)) {
           return true;
         }
       }
       if (
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
-        node.id?.type === AST_NODE_TYPES.Identifier &&
-        !!options.allowedNames?.includes(node.id.name)
+        node.id &&
+        node.id.type === AST_NODE_TYPES.Identifier &&
+        !!options.allowedNames.includes(node.id.name)
       ) {
         return true;
       }
