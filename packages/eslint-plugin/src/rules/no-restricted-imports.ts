@@ -146,7 +146,10 @@ export default createRule<Options, MessageIds>({
         typeof restrictedPattern === 'object' &&
         restrictedPattern.allowTypeImports
       ) {
-        allowedImportTypeMatchers.push(ignore().add(restrictedPattern.group));
+        // allowRelativePaths is true in the base rule
+        allowedImportTypeMatchers.push(
+          ignore({ allowRelativePaths: true }).add(restrictedPattern.group),
+        );
       }
     }
     function isAllowedTypeImportPattern(importSource: string): boolean {
