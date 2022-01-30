@@ -146,9 +146,12 @@ export default createRule<Options, MessageIds>({
         typeof restrictedPattern === 'object' &&
         restrictedPattern.allowTypeImports
       ) {
-        // allowRelativePaths is true in the base rule
+        // Following how ignore is configured in the base rule
         allowedImportTypeMatchers.push(
-          ignore({ allowRelativePaths: true }).add(restrictedPattern.group),
+          ignore({
+            allowRelativePaths: true,
+            ignoreCase: !restrictedPattern.caseSensitive,
+          }).add(restrictedPattern.group),
         );
       }
     }
