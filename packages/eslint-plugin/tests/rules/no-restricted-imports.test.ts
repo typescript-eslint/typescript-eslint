@@ -217,6 +217,20 @@ ruleTester.run('no-restricted-imports', rule, {
       code: "export * from 'foo';",
       options: ['import1'],
     },
+    {
+      code: "import type { MyType } from './types';",
+      options: [
+        {
+          patterns: [
+            {
+              group: ['fail'],
+              message: "Please do not load from 'fail'.",
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
