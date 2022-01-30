@@ -1,4 +1,6 @@
-# Disallow magic numbers (`no-magic-numbers`)
+# `no-magic-numbers`
+
+Disallow magic numbers.
 
 ## Rule Details
 

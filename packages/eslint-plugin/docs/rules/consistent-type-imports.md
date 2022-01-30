@@ -1,4 +1,6 @@
-# Enforces consistent usage of type imports (`consistent-type-imports`)
+# `consistent-type-imports`
+
+Enforces consistent usage of type imports.
 
 TypeScript 3.8 added support for type-only imports.
 Type-only imports allow you to specify that an import can only be used in a type location, allowing certain optimizations within compilers.

@@ -1,4 +1,6 @@
-# Disallows calling a function with an any type value (`no-unsafe-argument`)
+# `no-unsafe-argument`
+
+Disallows calling a function with an any type value.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Call a function with `any` typed argument are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -68,6 +70,19 @@ Example of `any` to `unknown` assignment that are allowed.
 declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unsafe-argument": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## Related To
 
