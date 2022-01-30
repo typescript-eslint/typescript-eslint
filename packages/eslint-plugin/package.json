@@ -56,9 +56,11 @@
   },
   "devDependencies": {
     "@types/debug": "*",
+    "@types/json-schema": "*",
     "@types/marked": "*",
     "@types/prettier": "*",
     "chalk": "^4.1.2",
+    "json-schema": "*",
     "marked": "^3.0.7",
     "prettier": "*",
     "title-case": "^3.0.3",

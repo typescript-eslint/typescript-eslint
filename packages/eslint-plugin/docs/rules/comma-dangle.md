@@ -1,4 +1,6 @@
-# Require or disallow trailing comma (`comma-dangle`)
+# `comma-dangle`
+
+Require or disallow trailing comma.
 
 ## Rule Details
 

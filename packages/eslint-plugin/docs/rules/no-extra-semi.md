@@ -1,4 +1,6 @@
-# Disallow unnecessary semicolons (`no-extra-semi`)
+# `no-extra-semi`
+
+Disallow unnecessary semicolons.
 
 ## Rule Details
 
