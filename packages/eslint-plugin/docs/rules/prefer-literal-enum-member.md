@@ -1,4 +1,6 @@
-# Require that all enum members be literal values to prevent unintended enum member name shadow issues (`prefer-literal-enum-member`)
+# `prefer-literal-enum-member`
+
+Require that all enum members be literal values to prevent unintended enum member name shadow issues.
 
 TypeScript allows the value of an enum member to be many different kinds of valid JavaScript expressions. However, because enums create their own scope whereby each enum member becomes a variable in that scope, unexpected values could be used at runtime. Example:
 

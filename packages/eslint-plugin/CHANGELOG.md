@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.10.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.1...v5.10.2) (2022-01-31)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-restricted-imports] allow relative type imports with patterns configured ([#4494](https://github.com/typescript-eslint/typescript-eslint/issues/4494)) ([4a6d217](https://github.com/typescript-eslint/typescript-eslint/commit/4a6d217ae8a8f5fa1dd4bd3e3e66ba7519b4a287))
+
+
+
+
+
 ## [5.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.0...v5.10.1) (2022-01-24)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin
