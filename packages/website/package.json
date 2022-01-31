@@ -41,7 +41,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "globby": "^11.0.4",
+    "globby": "^13.1.0",
     "monaco-editor": "^0.31.1",
     "webpack": "^5.64.0"
   },

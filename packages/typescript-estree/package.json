@@ -44,7 +44,7 @@
     "@typescript-eslint/types": "5.10.2",
     "@typescript-eslint/visitor-keys": "5.10.2",
     "debug": "^4.3.2",
-    "globby": "^11.0.4",
+    "globby": "^13.1.0",
     "is-glob": "^4.0.3",
     "semver": "^7.3.5",
     "tsutils": "^3.21.0"
