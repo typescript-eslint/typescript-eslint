@@ -1380,11 +1380,37 @@ const x = {
           endColumn: 31,
         },
         {
+          line: 15,
+          column: 12,
+          messageId: 'missingReturnType',
+          endLine: 15,
+          endColumn: 23,
+        },
+        {
           messageId: 'missingReturnType',
           line: 20,
           endLine: 20,
           column: 6,
           endColumn: 17,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const ignoredName = 'notIgnoredName';
+class Foo {
+  [ignoredName]() {}
+}
+      `,
+      options: [{ allowedNames: ['ignoredName'] }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 3,
+          endColumn: 18,
         },
       ],
     },

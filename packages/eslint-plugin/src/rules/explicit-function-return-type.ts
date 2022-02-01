@@ -101,7 +101,10 @@ export default util.createRule<Options, MessageIds>({
             case AST_NODE_TYPES.MethodDefinition:
             case AST_NODE_TYPES.PropertyDefinition:
             case AST_NODE_TYPES.Property: {
-              if (parent.key.type === AST_NODE_TYPES.Identifier) {
+              if (
+                parent.key.type === AST_NODE_TYPES.Identifier &&
+                parent.computed === false
+              ) {
                 funcName = parent.key.name;
               }
               break;
