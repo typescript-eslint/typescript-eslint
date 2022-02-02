@@ -39,6 +39,16 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type T = () => string | never;',
     'type T = { (): string | never };',
     `
+      function _(): string | never {
+        return '';
+      }
+    `,
+    `
+      const _ = (): string | never => {
+        return '';
+      };
+    `,
+    `
       type B = string;
       type T = { (): B | never };
     `,

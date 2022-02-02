@@ -155,7 +155,8 @@ function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
   return !!(
     node.parent?.type === AST_NODE_TYPES.TSTypeAnnotation &&
     node.parent.parent &&
-    util.isFunctionType(node.parent.parent)
+    (util.isFunctionType(node.parent.parent) ||
+      util.isFunction(node.parent.parent))
   );
 }
 
