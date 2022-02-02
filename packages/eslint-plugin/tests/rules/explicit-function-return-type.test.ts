@@ -402,6 +402,99 @@ new Foo(1, () => {});
     },
     {
       filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test1', 'test2'],
+        },
+      ],
+      code: `
+function test1() {
+  return;
+}
+
+const foo = function test2() {
+  return;
+};
+      `,
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test1', 'test2'],
+        },
+      ],
+      code: `
+const test1 = function () {
+  return;
+};
+const foo = function () {
+  return function test2() {};
+};
+      `,
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test1', 'test2'],
+        },
+      ],
+      code: `
+const test1 = () => {
+  return;
+};
+export const foo = {
+  test2() {
+    return 0;
+  },
+};
+      `,
+    },
+    {
+      filename: 'test.ts',
+      code: `
+class Test {
+  constructor() {}
+  get prop() {
+    return 1;
+  }
+  set prop() {}
+  method() {
+    return;
+  }
+  arrow = () => 'arrow';
+  private method() {
+    return;
+  }
+}
+      `,
+      options: [
+        {
+          allowedNames: ['prop', 'method', 'arrow'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const x = {
+  arrowFn: () => {
+    return;
+  },
+  fn: function () {
+    return;
+  },
+};
+      `,
+      options: [
+        {
+          allowedNames: ['arrowFn', 'fn'],
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
       code: `
 type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
 const x: HigherOrderType = () => arg1 => arg2 => 'foo';
@@ -1223,6 +1316,101 @@ const func = (value: number) => ({ type: 'X', value } as const);
           endLine: 2,
           column: 21,
           endColumn: 41,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test', '1'],
+        },
+      ],
+      code: `
+function hoge() {
+  return;
+}
+const foo = () => {
+  return;
+};
+const baz = function () {
+  return;
+};
+let [test, test] = function () {
+  return;
+};
+class X {
+  [test] = function () {
+    return;
+  };
+}
+const x = {
+  1: function () {
+    reutrn;
+  },
+};
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 16,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+          endLine: 5,
+          column: 13,
+          endColumn: 18,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 8,
+          endLine: 8,
+          column: 13,
+          endColumn: 24,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 11,
+          endLine: 11,
+          column: 20,
+          endColumn: 31,
+        },
+        {
+          line: 15,
+          column: 12,
+          messageId: 'missingReturnType',
+          endLine: 15,
+          endColumn: 23,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 20,
+          endLine: 20,
+          column: 6,
+          endColumn: 17,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const ignoredName = 'notIgnoredName';
+class Foo {
+  [ignoredName]() {}
+}
+      `,
+      options: [{ allowedNames: ['ignoredName'] }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 3,
+          endColumn: 18,
         },
       ],
     },
