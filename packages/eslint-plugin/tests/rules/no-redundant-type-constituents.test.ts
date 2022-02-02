@@ -13,8 +13,19 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-redundant-type-constituents', rule, {
   valid: [
-    'type T = any;',
-    'type T = never;',
+    `
+      type T = any;
+      type U = T;
+    `,
+    `
+      type T = never;
+      type U = T;
+    `,
+    `
+      type T = 1 | 2;
+      type U = T | 3;
+      type V = U;
+    `,
     'type T = () => never;',
     'type T = () => never | string;',
     `
@@ -36,7 +47,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type B = never;
       type T = { new (): string | B };
     `,
-    'type T = unknown;',
     `
       type B = unknown;
       type T = B;
@@ -134,6 +144,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type B = string;
       type T = B & null;
     `,
+    'type T = `${string}` & null;',
+    `
+      type B = \`\${string}\`;
+      type T = B & null;
+    `,
   ],
 
   invalid: [
@@ -216,6 +231,22 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       errors: [
         {
           column: 22,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = never;
+        type T = B | number;
+      `,
+      errors: [
+        {
+          column: 18,
           data: {
             container: 'union',
             typeName: 'never',

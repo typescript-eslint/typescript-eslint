@@ -44,6 +44,8 @@ const keywordNodeTypesToTsTypes = new Map([
   [TSESTree.AST_NODE_TYPES.TSAnyKeyword, ts.TypeFlags.Any],
   [TSESTree.AST_NODE_TYPES.TSBigIntKeyword, ts.TypeFlags.BigInt],
   [TSESTree.AST_NODE_TYPES.TSBooleanKeyword, ts.TypeFlags.Boolean],
+  [TSESTree.AST_NODE_TYPES.TSNeverKeyword, ts.TypeFlags.Never],
+  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
   [TSESTree.AST_NODE_TYPES.TSNumberKeyword, ts.TypeFlags.Number],
   [TSESTree.AST_NODE_TYPES.TSStringKeyword, ts.TypeFlags.String],
 ]);
