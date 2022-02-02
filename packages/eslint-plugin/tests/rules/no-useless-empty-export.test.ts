@@ -33,6 +33,9 @@ ruleTester.run('no-useless-empty-export', rule, {
       export * from '_';
       export = {};
     `,
+    `
+      export {};
+    `,
   ],
   invalid: [
     {
