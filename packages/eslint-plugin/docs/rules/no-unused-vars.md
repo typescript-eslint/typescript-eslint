@@ -1,4 +1,6 @@
-# Disallow unused variables (`no-unused-vars`)
+# `no-unused-vars`
+
+Disallow unused variables.
 
 ## Rule Details
 

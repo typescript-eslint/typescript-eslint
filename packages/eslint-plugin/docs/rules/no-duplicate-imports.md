@@ -1,4 +1,6 @@
-# Disallow duplicate imports (`no-duplicate-imports`)
+# `no-duplicate-imports`
+
+Disallow duplicate imports.
 
 ## Rule Details
 

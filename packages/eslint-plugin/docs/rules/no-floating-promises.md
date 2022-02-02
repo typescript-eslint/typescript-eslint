@@ -1,4 +1,6 @@
-# Requires Promise-like values to be handled appropriately (`no-floating-promises`)
+# `no-floating-promises`
+
+Requires Promise-like values to be handled appropriately.
 
 This rule forbids usage of Promise-like values in statements without handling
 their errors appropriately. Unhandled promises can cause several issues, such
