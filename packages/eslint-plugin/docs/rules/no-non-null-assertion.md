@@ -1,4 +1,6 @@
-# Disallows non-null assertions using the `!` postfix operator (`no-non-null-assertion`)
+# `no-non-null-assertion`
+
+Disallows non-null assertions using the `!` postfix operator.
 
 ## Rule Details
 
@@ -29,6 +31,19 @@ interface Foo {
 const foo: Foo = getFoo();
 const includesBaz: boolean = foo.bar?.includes('baz') ?? false;
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": "warn"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## When Not To Use It
 

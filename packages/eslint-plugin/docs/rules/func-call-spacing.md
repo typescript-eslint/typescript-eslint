@@ -1,4 +1,6 @@
-# Require or disallow spacing between function identifiers and their invocations (`func-call-spacing`)
+# `func-call-spacing`
+
+Require or disallow spacing between function identifiers and their invocations.
 
 ## Rule Details
 
