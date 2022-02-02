@@ -77,6 +77,10 @@ type Options = {
   allowDirectConstAssertionInArrowFunctions?: boolean;
   // if true, concise arrow functions that start with the void keyword will not be checked
   allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+  /**
+   * An array of function/method names that will not have their arguments or their return values checked.
+   */
+  allowedNames?: string[];
 };
 
 const defaults = {
@@ -85,6 +89,7 @@ const defaults = {
   allowHigherOrderFunctions: true,
   allowDirectConstAssertionInArrowFunctions: true,
   allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+  allowedNames: [],
 };
 ```
 
@@ -260,6 +265,21 @@ const log = (message: string) => {
 
 ```ts
 var log = (message: string) => void console.log(message);
+```
+
+### `allowedNames`
+
+You may pass function/method names you would like this rule to ignore, like so:
+
+```json
+{
+  "@typescript-eslint/explicit-function-return-type": [
+    "error",
+    {
+      "allowedNames": ["ignoredFunctionName", "ignoredMethodName"]
+    }
+  ]
+}
 ```
 
 ## When Not To Use It
