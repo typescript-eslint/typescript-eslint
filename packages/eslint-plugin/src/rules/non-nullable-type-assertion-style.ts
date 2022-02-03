@@ -17,7 +17,7 @@ export default util.createRule({
     fixable: 'code',
     messages: {
       preferNonNullAssertion:
-        'Use a ! assertion to more succintly remove null and undefined from the type.',
+        'Use a ! assertion to more succinctly remove null and undefined from the type.',
     },
     schema: [],
     type: 'suggestion',
