@@ -1,4 +1,4 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
 import { version } from 'eslint/package.json';
 import * as semver from 'semver';
 

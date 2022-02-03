@@ -9,10 +9,7 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import {
-  AST_TOKEN_TYPES,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { AST_TOKEN_TYPES, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import fs from 'fs';
 import path from 'path';
 import rule from '../../../src/rules/indent-new-do-not-use';

@@ -1,4 +1,6 @@
-# Disallow iterating over an array with a for-in loop (`no-for-in-array`)
+# `no-for-in-array`
+
+Disallow iterating over an array with a for-in loop.
 
 This rule prohibits iterating over an array with a for-in loop.
 
@@ -38,6 +40,19 @@ for (const x in { a: 3, b: 4, c: 5 }) {
   console.log(x);
 }
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-for-in-array": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## When Not To Use It
 

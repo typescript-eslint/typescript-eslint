@@ -1,4 +1,6 @@
-# Disallow empty functions (`no-empty-function`)
+# `no-empty-function`
+
+Disallow empty functions.
 
 ## Rule Details
 

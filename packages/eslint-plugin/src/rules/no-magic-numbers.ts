@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -72,7 +69,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Check if the node is a readonly class property
         if (
-          typeof node.value === 'number' &&
+          (typeof node.value === 'number' || typeof node.value === 'bigint') &&
           isParentTSReadonlyPropertyDefinition(node)
         ) {
           if (options.ignoreReadonlyClassProperties) {

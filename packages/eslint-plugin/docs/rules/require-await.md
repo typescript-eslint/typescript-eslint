@@ -1,4 +1,6 @@
-# Disallow async functions which have no `await` expression (`require-await`)
+# `require-await`
+
+Disallow async functions which have no `await` expression.
 
 ## Rule Details
 
