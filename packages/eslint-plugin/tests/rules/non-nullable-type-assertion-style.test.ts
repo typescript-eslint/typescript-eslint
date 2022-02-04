@@ -83,6 +83,13 @@ function first<T extends string | null | undefined>(
   return array.length > 0 ? (array[0] as T) : null;
 }
     `,
+    `
+type A = 'a' | 'A';
+type B = 'b' | 'B';
+function first<T extends A | B | null>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
   ],
 
   invalid: [
