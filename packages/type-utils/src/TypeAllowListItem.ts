@@ -1,6 +1,9 @@
 export type TypeAllowlistItem = {
   typeName: string;
-} & ({ local: true } | { defaultLib: true } | { package: string });
+} & (
+  | { source: 'local' | 'default-lib' }
+  | { source: 'package'; package: string }
+);
 
 export const typeAllowListItemSchema = {
   type: 'object',
@@ -11,11 +14,12 @@ export const typeAllowListItemSchema = {
         typeName: {
           type: 'string',
         },
-        local: {
-          type: 'boolean',
+        source: {
+          type: 'string',
+          pattern: '^local|default-lib$',
         },
       },
-      required: ['typeName', 'local'],
+      required: ['typeName', 'source'],
     },
     {
       additionalProperties: false,
@@ -23,23 +27,15 @@ export const typeAllowListItemSchema = {
         typeName: {
           type: 'string',
         },
-        defaultLib: {
-          type: 'boolean',
-        },
-      },
-      required: ['typeName', 'defaultLib'],
-    },
-    {
-      additionalProperties: false,
-      properties: {
-        typeName: {
+        source: {
           type: 'string',
+          pattern: '^package$',
         },
         package: {
           type: 'string',
         },
       },
-      required: ['typeName', 'package'],
+      required: ['typeName', 'source', 'package'],
     },
   ],
 };

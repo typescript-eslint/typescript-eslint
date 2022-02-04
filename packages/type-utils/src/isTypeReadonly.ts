@@ -69,15 +69,13 @@ function isTypeExcepted(
     for (const declaration of declarationFiles) {
       if (
         // A local type defined in the current package
-        ('local' in item &&
-          item.local === true &&
+        (item.source === 'local' &&
           declaration.fileName.startsWith(program.getCurrentDirectory())) ||
         // A type from the default library
-        ('defaultLib' in item &&
-          item.defaultLib === true &&
+        (item.source === 'default-lib' &&
           program.isSourceFileDefaultLibrary(declaration)) ||
         // A type from a specified third-party package
-        ('package' in item &&
+        (item.source === 'package' &&
           (declaration.fileName.includes('node_modules/' + item.package) ||
             declaration.fileName.includes(
               'node_modules/@types/' + item.package,
