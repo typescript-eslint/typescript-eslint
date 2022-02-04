@@ -128,7 +128,10 @@ interface Foo {
 ```ts
 type TypeAllowlistItem = {
   typeName: string;
-} & ({ local: true } | { defaultLib: true } | { package: string });
+} & (
+  | { source: 'local' | 'default-lib' }
+  | { source: 'package'; package: string }
+);
 
 interface Options {
   allowlist: Array<TypeAllowlistItem>;
@@ -149,9 +152,9 @@ const defaultOptions: Options = {
 
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
-Each item has to be either a local type (`{typeName: "Foo", local: true}`), a type from the default library (`{typeName: "Foo", defaultLib: true}`), or a file from a specific package (`{typeName: "Foo", package: "foo-lib"}`, this also works for types defined in a typings package).
+Each item has to be either a local type (`{typeName: "Foo", source: "local"}`), a type from the default library (`{typeName: "Foo", source: "default-lib"}`), or a file from a specific package (`{typeName: "Foo", source: "package", package: "foo-lib"}`, this also works for types defined in a typings package).
 
-Examples of code for this rule with `{allowlist: [{typeName: "Foo", local: true}, {typeName: "HTMLElement", defaultLib: true}, {typeName: "Bar", package: "bar-lib"}]}`:
+Examples of code for this rule with `{allowlist: [{typeName: "Foo", source: "local"}, {typeName: "HTMLElement", source: "default-lib"}, {typeName: "Bar", source: "package", package: "bar-lib"}]}`:
 
 <!--tabs-->
 
