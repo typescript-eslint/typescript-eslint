@@ -71,6 +71,18 @@ function first<T extends string | null>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
     `,
+    `
+function first<T extends string | undefined>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | null | undefined>(
+  array: ArrayLike<T>,
+): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
   ],
 
   invalid: [
