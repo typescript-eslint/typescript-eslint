@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.2...v5.11.0) (2022-02-07)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-magic-numbers] fix invalid schema merging ([#4517](https://github.com/typescript-eslint/typescript-eslint/issues/4517)) ([b95f796](https://github.com/typescript-eslint/typescript-eslint/commit/b95f79697acdd16347dc102bcb8311fe83746779))
+* **eslint-plugin:** [non-nullable-type-assertion-style] fix false positive when asserting to a generic type that might be nullish ([#4509](https://github.com/typescript-eslint/typescript-eslint/issues/4509)) ([4209362](https://github.com/typescript-eslint/typescript-eslint/commit/420936274603d8fee0631cdb3b58874cb3cc59d7))
+
+
+### Features
+
+* **eslint-plugin:** [explicit-function-return-type] add allowedNames ([#4440](https://github.com/typescript-eslint/typescript-eslint/issues/4440)) ([936e252](https://github.com/typescript-eslint/typescript-eslint/commit/936e252e30cfcebdaf971cf0f66a3031e236a41c))
+
+
+
+
+
 ## [5.10.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.1...v5.10.2) (2022-01-31)
 
 
