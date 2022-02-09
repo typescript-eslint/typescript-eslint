@@ -48,7 +48,7 @@ export default util.createRule({
   create(context) {
     const sourceCode = context.getSourceCode();
     return {
-      'LogicalExpression[operator=||],LogicalExpression[operator=??]'(
+      'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
         const leftNode = node.left;
