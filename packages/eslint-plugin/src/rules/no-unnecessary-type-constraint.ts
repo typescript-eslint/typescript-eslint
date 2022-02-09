@@ -64,8 +64,10 @@ export default util.createRule({
       inArrowFunction: boolean,
     ): void => {
       const constraint = unnecessaryConstraints.get(node.constraint.type);
+      const hasDefaultInJsxArrowFn =
+        inArrowFunction && inJsx && node.default !== undefined;
 
-      if (constraint) {
+      if (constraint && !hasDefaultInJsxArrowFn) {
         context.report({
           data: {
             constraint,

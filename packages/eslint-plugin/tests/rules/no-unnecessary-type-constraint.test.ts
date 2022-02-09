@@ -25,6 +25,15 @@ function data<T extends TODO>() {}
     'const data = <T, U>() => {};',
     'const data = <T extends number>() => {};',
     'const data = <T extends number | string>() => {};',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/4062
+    {
+      code: 'const data = <T extends unknown = string>() => {};',
+      filename: 'react.tsx',
+    },
+    {
+      code: noFormat`const data = <T,>() => {};`,
+      filename: 'react.tsx',
+    },
   ],
   invalid: [
     {
@@ -225,6 +234,20 @@ const Data = class {
         },
       ],
       output: 'type Data<T> = {};',
+    },
+    // Regression test for fix for https://github.com/typescript-eslint/typescript-eslint/issues/4062
+    {
+      code: 'const data = <T extends unknown = string>() => {};',
+      errors: [
+        {
+          data: { constraint: 'unknown', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 41,
+          column: 15,
+          line: 1,
+        },
+      ],
+      output: 'const data = <T = string>() => {};',
     },
   ],
 });

@@ -54,6 +54,9 @@ class Baz<T> {
 const Quux = <T>() => {};
 
 function Quuz<T>() {}
+
+const JSXWorkaround = <T,>() => {};
+const JSXWorkaround2 = <T extends unknown = unknown>() => {};
 ```
 
 ## Options
