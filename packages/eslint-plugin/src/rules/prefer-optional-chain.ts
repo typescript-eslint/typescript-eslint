@@ -57,12 +57,7 @@ export default util.createRule({
         const isRightNodeAnEmptyObjectLiteral =
           rightNode.type === AST_NODE_TYPES.ObjectExpression &&
           rightNode.properties.length === 0;
-        // Ignore nodes that evaluate to numbers or booleans
-        const canLeftNodeBeANullishObject =
-          leftNode.type !== AST_NODE_TYPES.BinaryExpression &&
-          leftNode.type !== AST_NODE_TYPES.UnaryExpression;
         if (
-          !canLeftNodeBeANullishObject ||
           !isRightNodeAnEmptyObjectLiteral ||
           !parentNode ||
           parentNode.type !== AST_NODE_TYPES.MemberExpression ||
@@ -79,8 +74,10 @@ export default util.createRule({
               fix: (fixer): TSESLint.RuleFix => {
                 const leftNodeText = sourceCode.getText(leftNode);
                 // Any node that is made of an operator with higher or equal precedence,
-                // is reasonable to sometimes evaluate as falsy or an object (maybe not bitwise/binary operators)
                 const maybeWrappedLeftNode =
+                  leftNode.type === AST_NODE_TYPES.BinaryExpression ||
+                  leftNode.type === AST_NODE_TYPES.TSAsExpression ||
+                  leftNode.type === AST_NODE_TYPES.UnaryExpression ||
                   leftNode.type === AST_NODE_TYPES.LogicalExpression ||
                   leftNode.type === AST_NODE_TYPES.ConditionalExpression ||
                   leftNode.type === AST_NODE_TYPES.AwaitExpression
