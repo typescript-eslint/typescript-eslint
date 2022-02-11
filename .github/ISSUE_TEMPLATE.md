@@ -67,13 +67,13 @@ i.e. eslint --ext ".ts,.js" src --debug
 
 **Versions**
 
-| package                                 | version |
-| --------------------------------------- | ------- |
-| `@typescript-eslint/eslint-plugin`      | `X.Y.Z` |
-| `@typescript-eslint/parser`             | `X.Y.Z` |
-| `@typescript-eslint/typescript-estree`  | `X.Y.Z` |
-| `@typescript-eslint/experimental-utils` | `X.Y.Z` |
-| `@typescript-eslint/type-utils`         | `X.Y.Z` |
-| `TypeScript`                            | `X.Y.Z` |
-| `node`                                  | `X.Y.Z` |
-| `npm`                                   | `X.Y.Z` |
+| package                                | version |
+| -------------------------------------- | ------- |
+| `@typescript-eslint/eslint-plugin`     | `X.Y.Z` |
+| `@typescript-eslint/parser`            | `X.Y.Z` |
+| `@typescript-eslint/typescript-estree` | `X.Y.Z` |
+| `@typescript-eslint/type-utils`        | `X.Y.Z` |
+| `@typescript-eslint/utils`             | `X.Y.Z` |
+| `TypeScript`                           | `X.Y.Z` |
+| `node`                                 | `X.Y.Z` |
+| `npm`                                  | `X.Y.Z` |

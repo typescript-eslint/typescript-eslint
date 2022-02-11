@@ -4,7 +4,7 @@ import {
   ASTUtils,
   TSESTree,
   ESLintUtils,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
 import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
 

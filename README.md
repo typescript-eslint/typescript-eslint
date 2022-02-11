@@ -27,7 +27,7 @@ See https://typescript-eslint.io/docs/development/architecture/packages for more
 - [`@typescript-eslint/eslint-plugin`](./packages/eslint-plugin)
 - [`@typescript-eslint/parser`](./packages/parser)
 - [`@typescript-eslint/eslint-plugin-tslint`](./packages/eslint-plugin-tslint)
-- [`@typescript-eslint/experimental-utils`](./packages/experimental-utils)
+- [`@typescript-eslint/utils`](./packages/utils)
 - [`@typescript-eslint/typescript-estree`](./packages/typescript-estree)
 - [`@typescript-eslint/scope-manager`](./packages/scope-manager)
 
@@ -77,7 +77,7 @@ Support for specific Current status releases are considered periodically.
 
 ## License
 
-TypeScript ESLint inherits from the the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+TypeScript ESLint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
 
 ## How can I help?
 

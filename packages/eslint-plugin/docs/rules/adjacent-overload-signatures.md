@@ -1,4 +1,6 @@
-# Require that member overloads be consecutive (`adjacent-overload-signatures`)
+# `adjacent-overload-signatures`
+
+Require that member overloads be consecutive.
 
 Grouping overloaded members together can improve readability of the code.
 
@@ -81,6 +83,19 @@ export function foo(s: string): void;
 export function foo(n: number): void;
 export function foo(sn: string | number): void;
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/adjacent-overload-signatures": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## When Not To Use It
 

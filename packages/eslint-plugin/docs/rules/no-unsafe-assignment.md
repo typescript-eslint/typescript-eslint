@@ -1,4 +1,6 @@
-# Disallows assigning any to variables and properties (`no-unsafe-assignment`)
+# `no-unsafe-assignment`
+
+Disallows assigning any to variables and properties.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Assigning an `any` typed value to a variable can be hard to pick up on, particularly if it leaks in from an external library. Operations on the variable will not be checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -71,6 +73,19 @@ const x: unknown = y as any;
 const x: unknown[] = y as any[];
 const x: Set<unknown> = y as Set<any>;
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unsafe-assignment": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## Related To
 

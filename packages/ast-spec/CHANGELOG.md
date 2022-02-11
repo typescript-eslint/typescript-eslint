@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.2...v5.11.0) (2022-02-07)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+## [5.10.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.1...v5.10.2) (2022-01-31)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+## [5.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.0...v5.10.1) (2022-01-24)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.9.1...v5.10.0) (2022-01-17)
+
+
+### Features
+
+* rename `experimental-utils` to `utils` and make `experimental-utils` an alias to the new package ([#4172](https://github.com/typescript-eslint/typescript-eslint/issues/4172)) ([1d55a75](https://github.com/typescript-eslint/typescript-eslint/commit/1d55a7511b38d8e2b2eabe59f639e0a865e6c93f))
+
+
+
+
+
+## [5.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.9.0...v5.9.1) (2022-01-10)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.8.1...v5.9.0) (2022-01-03)
+
+
+### Features
+
+* **experimental-utils:** move isTypeReadonly from eslint-plugin to experimental-utils ([#3658](https://github.com/typescript-eslint/typescript-eslint/issues/3658)) ([a9eb0b9](https://github.com/typescript-eslint/typescript-eslint/commit/a9eb0b9eb2db291ea36065ec34f84bf5c5504b43))
+
+
+
+
+
 ## [5.8.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.8.0...v5.8.1) (2021-12-27)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec

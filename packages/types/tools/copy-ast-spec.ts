@@ -56,4 +56,7 @@ async function main(): Promise<void> {
   ]);
 }
 
-void main();
+main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});
