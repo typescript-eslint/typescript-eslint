@@ -3,14 +3,10 @@ import memoize from 'lodash/memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { CustomLinter } from '../custom-linter';
 
-// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const version: string = require('../../package.json');
-
 const createRule = ESLintUtils.RuleCreator(
-  () =>
-    `https://github.com/typescript-eslint/typescript-eslint/blob/v${version}/packages/eslint-plugin-tslint/README.md`,
+  () => 'https://typescript-eslint.io/docs/linting/',
 );
+
 export type RawRulesConfig = Record<
   string,
   | null
