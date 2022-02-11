@@ -1417,6 +1417,23 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    get B() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get', 'set'], 'method'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -3819,6 +3836,34 @@ class Foo {
             rank: 'private method',
           },
           line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    get B() {}
+    constructor() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get', 'set'], 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'constructor',
+            rank: 'get, set',
+          },
+          line: 5,
           column: 5,
         },
       ],
