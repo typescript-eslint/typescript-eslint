@@ -9,6 +9,7 @@ export * from './TSImportType/spec';
 export * from './TSIndexedAccessType/spec';
 export * from './TSInferType/spec';
 export * from './TSIntersectionType/spec';
+export * from './TSIntrinsicKeyword/spec';
 export * from './TSLiteralType/spec';
 export * from './TSMappedType/spec';
 export * from './TSNamedTupleMember/spec';

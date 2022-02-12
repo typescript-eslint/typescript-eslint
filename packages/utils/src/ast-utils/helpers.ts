@@ -7,7 +7,7 @@ export const isNodeOfType =
   <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
   (
     node: TSESTree.Node | null | undefined,
-  ): node is TSESTree.Node & { type: NodeType } =>
+  ): node is Extract<TSESTree.Node, { type: NodeType }> =>
     node?.type === nodeType;
 
 export const isNodeOfTypes =

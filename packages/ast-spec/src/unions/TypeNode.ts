@@ -9,7 +9,7 @@ import type { TSImportType } from '../type/TSImportType/spec';
 import type { TSIndexedAccessType } from '../type/TSIndexedAccessType/spec';
 import type { TSInferType } from '../type/TSInferType/spec';
 import type { TSIntersectionType } from '../type/TSIntersectionType/spec';
-import type { TSIntrinsicKeyword } from '../type/TSIntrinsicType/spec';
+import type { TSIntrinsicKeyword } from '../type/TSIntrinsicKeyword/spec';
 import type { TSLiteralType } from '../type/TSLiteralType/spec';
 import type { TSMappedType } from '../type/TSMappedType/spec';
 import type { TSNamedTupleMember } from '../type/TSNamedTupleMember/spec';
