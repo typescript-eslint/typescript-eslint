@@ -232,7 +232,8 @@ export default util.createRule<Options, MessageIds>({
       } else if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-        (node.type === AST_NODE_TYPES.Property && node.method)
+        (node.type === AST_NODE_TYPES.Property && node.method) ||
+        node.type === AST_NODE_TYPES.PropertyDefinition
       ) {
         if (
           node.key.type === AST_NODE_TYPES.Literal &&
