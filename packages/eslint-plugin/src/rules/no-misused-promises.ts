@@ -15,7 +15,8 @@ type MessageId =
   | 'conditional'
   | 'voidReturn'
   | 'voidReturnVariable'
-  | 'voidReturnProperty';
+  | 'voidReturnProperty'
+  | 'voidReturnReturnValue';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
@@ -32,6 +33,8 @@ export default util.createRule<Options, MessageId>({
         'Promise returned in variable where a void return was expected.',
       voidReturnProperty:
         'Promise returned in property where a void return was expected.',
+      voidReturnReturnValue:
+        'Promise returned in return value where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
     },
     schema: [
@@ -80,6 +83,7 @@ export default util.createRule<Options, MessageId>({
       AssignmentExpression: checkAssignments,
       VariableDeclarator: checkVariableDeclaration,
       Property: checkProperties,
+      ReturnStatement: checkReturnStatements,
     };
 
     function checkTestConditional(node: {
@@ -259,6 +263,28 @@ export default util.createRule<Options, MessageId>({
           });
         }
         return;
+      }
+    }
+
+    function checkReturnStatements(node: TSESTree.ReturnStatement): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      if (tsNode.expression === undefined || node.argument === null) {
+        return;
+      }
+      const contextualType = checker.getContextualType(tsNode.expression);
+      if (contextualType === undefined) {
+        return;
+      }
+      if (
+        !isVoidReturningFunctionType(checker, tsNode.expression, contextualType)
+      ) {
+        return;
+      }
+      if (returnsThenable(checker, tsNode.expression)) {
+        context.report({
+          messageId: 'voidReturnReturnValue',
+          node: node.argument,
+        });
       }
     }
 

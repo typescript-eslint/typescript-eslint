@@ -194,6 +194,14 @@ const obj = {
   },
 };
     `,
+    `
+function f() {
+  return async () => 0;
+}
+function g() {
+  return;
+}
+    `,
   ],
 
   invalid: [
@@ -580,6 +588,19 @@ function f(): O {
         {
           line: 10,
           messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnReturnValue',
         },
       ],
     },
