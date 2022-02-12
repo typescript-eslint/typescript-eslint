@@ -158,8 +158,7 @@ function isTypeReadonlyObject(
       }
 
       const name = ts.getNameOfDeclaration(property.valueDeclaration);
-      const isPrivateIdentifier = name && ts.isPrivateIdentifier(name);
-      if (isPrivateIdentifier) {
+      if (name && ts.isPrivateIdentifier(name)) {
         continue;
       }
 
