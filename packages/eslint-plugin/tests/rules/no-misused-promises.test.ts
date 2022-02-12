@@ -432,5 +432,54 @@ function test(p: Promise<void> | undefined) {
         },
       ],
     },
+    {
+      code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+const f: () => void = async () => {
+  return 0;
+};
+const g = async () => 1,
+  h: () => void = async () => {};
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'voidReturnVariable',
+        },
+        {
+          line: 6,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+const obj: {
+  f?: () => void;
+} = {};
+obj.f = async () => {
+  return 0;
+};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
   ],
 });

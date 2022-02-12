@@ -11,7 +11,9 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, 'conditional' | 'voidReturn'>({
+type MessageId = 'conditional' | 'voidReturn' | 'voidReturnVariable';
+
+export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
   meta: {
     docs: {
@@ -22,6 +24,8 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
     messages: {
       voidReturn:
         'Promise returned in function argument where a void return was expected.',
+      voidReturnVariable:
+        'Promise returned in variable where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
     },
     schema: [
@@ -67,6 +71,8 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
     const voidReturnChecks: TSESLint.RuleListener = {
       CallExpression: checkArguments,
       NewExpression: checkArguments,
+      AssignmentExpression: checkAssignments,
+      VariableDeclarator: checkVariableDeclaration,
     };
 
     function checkTestConditional(node: {
@@ -134,6 +140,39 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
             node: argument,
           });
         }
+      }
+    }
+
+    function checkAssignments(node: TSESTree.AssignmentExpression): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const varType = checker.getTypeAtLocation(tsNode.left);
+      if (!isVoidReturningFunctionType(checker, tsNode.left, varType)) {
+        return;
+      }
+
+      if (returnsThenable(checker, tsNode.right)) {
+        context.report({
+          messageId: 'voidReturnVariable',
+          node: node.right,
+        });
+      }
+    }
+
+    function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      if (tsNode.initializer === undefined || node.init === null) {
+        return;
+      }
+      const varType = checker.getTypeAtLocation(tsNode.name);
+      if (!isVoidReturningFunctionType(checker, tsNode.initializer, varType)) {
+        return;
+      }
+
+      if (returnsThenable(checker, tsNode.initializer)) {
+        context.report({
+          messageId: 'voidReturnVariable',
+          node: node.init,
+        });
       }
     }
 
