@@ -6,7 +6,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
   max-width: 800px;
   margin: 10px auto;
   padding: 0;
