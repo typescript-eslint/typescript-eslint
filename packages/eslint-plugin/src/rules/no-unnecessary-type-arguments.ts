@@ -37,7 +37,6 @@ export default util.createRule<[], MessageIds>({
   create(context) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
 
     function checkTSArgsAndParameters(
       esParameters: TSESTree.TSTypeParameterInstantiation,
@@ -47,11 +46,20 @@ export default util.createRule<[], MessageIds>({
       const i = esParameters.params.length - 1;
       const arg = esParameters.params[i];
       const param = typeParameters[i];
-
+      if (!param?.default) {
+        return;
+      }
       // TODO: would like checker.areTypesEquivalent. https://github.com/Microsoft/TypeScript/issues/13502
-      if (
-        !param?.default ||
-        param.default.getText() !== sourceCode.getText(arg)
+      const defaultType = checker.getTypeAtLocation(param.default);
+      const argTsNode = parserServices.esTreeNodeToTSNodeMap.get(arg);
+      const argType = checker.getTypeAtLocation(argTsNode);
+      if (!argType.aliasSymbol && !defaultType.aliasSymbol) {
+        if (argType.flags !== defaultType.flags) {
+          return;
+        }
+      } else if (
+        argType.aliasSymbol !== defaultType.aliasSymbol ||
+        argType.aliasTypeArguments !== defaultType.aliasTypeArguments
       ) {
         return;
       }
