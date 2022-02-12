@@ -604,5 +604,38 @@ function f(): () => void {
         },
       ],
     },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const g = async () => 'foo';
+const Component = (obj: O) => null;
+<Component func={g} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+    },
   ],
 });

@@ -16,7 +16,8 @@ type MessageId =
   | 'voidReturn'
   | 'voidReturnVariable'
   | 'voidReturnProperty'
-  | 'voidReturnReturnValue';
+  | 'voidReturnReturnValue'
+  | 'voidReturnAttribute';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
@@ -35,6 +36,8 @@ export default util.createRule<Options, MessageId>({
         'Promise returned in property where a void return was expected.',
       voidReturnReturnValue:
         'Promise returned in return value where a void return was expected.',
+      voidReturnAttribute:
+        'Promise returned in attribute where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
     },
     schema: [
@@ -84,6 +87,7 @@ export default util.createRule<Options, MessageId>({
       VariableDeclarator: checkVariableDeclaration,
       Property: checkProperties,
       ReturnStatement: checkReturnStatements,
+      JSXAttribute: checkJSXAttributes,
     };
 
     function checkTestConditional(node: {
@@ -284,6 +288,33 @@ export default util.createRule<Options, MessageId>({
         context.report({
           messageId: 'voidReturnReturnValue',
           node: node.argument,
+        });
+      }
+    }
+
+    function checkJSXAttributes(node: TSESTree.JSXAttribute): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const value = tsNode.initializer;
+      if (
+        node.value === null ||
+        value === undefined ||
+        !ts.isJsxExpression(value) ||
+        value.expression === undefined
+      ) {
+        return;
+      }
+      const contextualType = checker.getContextualType(value);
+      if (contextualType === undefined) {
+        return;
+      }
+      if (!isVoidReturningFunctionType(checker, value, contextualType)) {
+        return;
+      }
+
+      if (returnsThenable(checker, value.expression)) {
+        context.report({
+          messageId: 'voidReturnAttribute',
+          node: node.value,
         });
       }
     }
