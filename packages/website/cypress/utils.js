@@ -20,17 +20,6 @@ function terminalLog(violations) {
   );
 }
 
-export function itIsAccessible(route) {
-  it('is accessible', () => {
-    cy.visit(route);
-    cy.injectAxe();
-    cy.checkA11y(
-      {
-        // https://github.com/facebook/docusaurus/issues/6252
-        exclude: ['[class*="skipToContent"]'],
-      },
-      null,
-      terminalLog,
-    );
-  });
+export function checkAccessibility() {
+  cy.checkA11y(undefined, undefined, terminalLog);
 }

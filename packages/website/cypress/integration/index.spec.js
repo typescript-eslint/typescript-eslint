@@ -1,5 +1,15 @@
-import { itIsAccessible } from '../utils';
+import { checkAccessibility } from '../utils';
 
 describe('Index', () => {
-  itIsAccessible('/');
+  it('has no accessibility issues detected by aXe', () => {
+    cy.visit(route);
+    cy.injectAxe();
+
+    // 1. Check accessibility in default, light mode
+    checkAccessibility();
+
+    // 2. Check accessibility in dark mode
+    cy.contains('🌞').click();
+    checkAccessibility();
+  });
 });
