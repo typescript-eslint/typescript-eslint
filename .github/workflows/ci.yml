@@ -111,8 +111,8 @@ jobs:
         env:
           CI: true
 
-      - name: Run unit tests for experimental-utils
-        run: npx nx test @typescript-eslint/experimental-utils
+      - name: Run unit tests for utils
+        run: npx nx test @typescript-eslint/utils
         env:
           CI: true
 
@@ -283,8 +283,8 @@ jobs:
         env:
           CI: true
 
-      - name: Run unit tests for experimental-utils
-        run: npx nx test @typescript-eslint/experimental-utils
+      - name: Run unit tests for utils
+        run: npx nx test @typescript-eslint/utils
         env:
           CI: true
 

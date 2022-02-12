@@ -53,6 +53,7 @@ class Foo {
   static readonly D = 1;
   readonly E = -1;
   readonly F = +1;
+  private readonly G = 100n;
 }
       `,
       options: [{ ignoreReadonlyClassProperties: true }],
@@ -204,6 +205,7 @@ class Foo {
   static readonly D = 4;
   readonly E = -5;
   readonly F = +6;
+  private readonly G = 100n;
 }
       `,
       options: [{ ignoreReadonlyClassProperties: false }],
@@ -255,6 +257,14 @@ class Foo {
           },
           line: 8,
           column: 17,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '100n',
+          },
+          line: 9,
+          column: 24,
         },
       ],
     },

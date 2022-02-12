@@ -51,6 +51,7 @@ const config = {
         editUrl: `${githubUrl}/edit/main/packages/website/`,
         beforeDefaultRemarkPlugins,
         remarkPlugins,
+        exclude: ['TEMPLATE.md'],
       },
     ],
     [

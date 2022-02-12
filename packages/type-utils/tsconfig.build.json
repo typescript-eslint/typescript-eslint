@@ -7,5 +7,5 @@
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],
-  "references": [{ "path": "../experimental-utils/tsconfig.build.json" }]
+  "references": [{ "path": "../utils/tsconfig.build.json" }]
 }

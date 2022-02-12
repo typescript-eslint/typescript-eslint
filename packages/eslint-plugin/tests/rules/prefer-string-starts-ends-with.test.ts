@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import rule from '../../src/rules/prefer-string-starts-ends-with';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 

@@ -1,4 +1,6 @@
-# Avoid using promises in places not designed to handle them (`no-misused-promises`)
+# `no-misused-promises`
+
+Avoid using promises in places not designed to handle them.
 
 This rule forbids using promises in places where the TypeScript compiler
 allows them but they are not handled properly. These situations can often arise

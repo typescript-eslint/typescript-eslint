@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 import {
@@ -11,6 +8,7 @@ import {
   FunctionExpression,
   FunctionNode,
   isTypedFunctionExpression,
+  ancestorHasReturnType,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -234,7 +232,8 @@ export default util.createRule<Options, MessageIds>({
       } else if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-        (node.type === AST_NODE_TYPES.Property && node.method)
+        (node.type === AST_NODE_TYPES.Property && node.method) ||
+        node.type === AST_NODE_TYPES.PropertyDefinition
       ) {
         if (
           node.key.type === AST_NODE_TYPES.Literal &&
@@ -388,55 +387,6 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.VariableDeclarator:
           return checkNode(node.init);
       }
-    }
-
-    /**
-     * Check whether any ancestor of the provided function has a valid return type.
-     * This function assumes that the function either:
-     * - belongs to an exported function chain validated by isExportedHigherOrderFunction
-     * - is directly exported itself
-     */
-    function ancestorHasReturnType(node: FunctionNode): boolean {
-      let ancestor = node.parent;
-
-      if (ancestor?.type === AST_NODE_TYPES.Property) {
-        ancestor = ancestor.value;
-      }
-
-      // if the ancestor is not a return, then this function was not returned at all, so we can exit early
-      const isReturnStatement =
-        ancestor?.type === AST_NODE_TYPES.ReturnStatement;
-      const isBodylessArrow =
-        ancestor?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        ancestor.body.type !== AST_NODE_TYPES.BlockStatement;
-      if (!isReturnStatement && !isBodylessArrow) {
-        return false;
-      }
-
-      while (ancestor) {
-        switch (ancestor.type) {
-          case AST_NODE_TYPES.ArrowFunctionExpression:
-          case AST_NODE_TYPES.FunctionExpression:
-          case AST_NODE_TYPES.FunctionDeclaration:
-            if (ancestor.returnType) {
-              return true;
-            }
-            // assume
-            break;
-
-          // const x: Foo = () => {};
-          // Assume that a typed variable types the function expression
-          case AST_NODE_TYPES.VariableDeclarator:
-            if (ancestor.id.typeAnnotation) {
-              return true;
-            }
-            break;
-        }
-
-        ancestor = ancestor.parent;
-      }
-
-      return false;
     }
 
     function checkEmptyBodyFunctionExpression(
