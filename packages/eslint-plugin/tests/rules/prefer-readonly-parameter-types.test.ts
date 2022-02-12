@@ -169,6 +169,16 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       };
       function bar(arg: MyType) {}
     `,
+    // PrivateIdentifier is exempt from this rule
+    {
+      code: `
+        class Foo {
+          #privateField = 'foo';
+          #privateMember() {}
+        }
+        function foo(arg: Foo) {}
+      `,
+    },
     // methods treated as readonly
     {
       code: `
@@ -222,22 +232,6 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
-    // PrivateIdentifier is handled without throwing error.
-    {
-      code: `
-        class Foo {
-          readonly #privateField = 'foo';
-          #privateMember() {}
-        }
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          treatMethodsAsReadonly: true,
-        },
-      ],
-    },
-
     // parameter properties should work fine
     {
       code: `
