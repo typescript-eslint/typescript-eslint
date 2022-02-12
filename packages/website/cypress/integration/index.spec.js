@@ -2,7 +2,7 @@ import { checkAccessibility } from '../utils';
 
 describe('Index', () => {
   it('has no accessibility issues detected by aXe', () => {
-    cy.visit(route);
+    cy.visit('/');
     cy.injectAxe();
 
     // 1. Check accessibility in default, light mode
