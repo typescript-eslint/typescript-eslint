@@ -252,9 +252,6 @@ export default util.createRule<Options, MessageId>({
           tsNode.name,
         );
 
-        if (contextualType === undefined) {
-          return;
-        }
         if (
           !isVoidReturningFunctionType(checker, tsNode.name, contextualType)
         ) {

@@ -195,6 +195,31 @@ const obj = {
 };
     `,
     `
+type O = { f: () => Promise<void>; g: () => Promise<void> };
+const g = async () => 0;
+const obj: O = {
+  f: async () => 10,
+  g,
+};
+    `,
+    `
+type O = { f: () => Promise<void> };
+const name = 'f';
+const obj: O = {
+  async [name]() {
+    return 10;
+  },
+};
+    `,
+    `
+const obj = {
+  f: async () => 'foo',
+  async g() {
+    return 0;
+  },
+};
+    `,
+    `
 function f() {
   return async () => 0;
 }
@@ -202,6 +227,24 @@ function g() {
   return;
 }
     `,
+    {
+      code: `
+type O = {
+  bool: boolean;
+  func: () => Promise<void>;
+};
+const Component = (obj: O) => null;
+<Component bool func={async () => 10} />;
+      `,
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+const Component: any = () => null;
+<Component func={async () => 10} />;
+      `,
+      filename: 'react.tsx',
+    },
   ],
 
   invalid: [
