@@ -166,6 +166,16 @@ async function test(p: Promise<boolean> | undefined) {
   }
 }
     `,
+    `
+let f;
+f = async () => 10;
+    `,
+    `
+let f: () => Promise<void>;
+f = async () => 10;
+const g = async () => 0;
+const h: () => Promise<void> = async () => 10;
+    `,
   ],
 
   invalid: [
