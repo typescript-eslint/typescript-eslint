@@ -290,5 +290,32 @@ function bar<T = F<string>>() {}
 bar();
       `,
     },
+    {
+      code: `
+type DefaultE = { foo: string };
+type T<E = DefaultE> = { box: E };
+type G = T<DefaultE>;
+declare module 'bar' {
+  type DefaultE = { somethingElse: true };
+  type G = T<DefaultE>;
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 12,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+type DefaultE = { foo: string };
+type T<E = DefaultE> = { box: E };
+type G = T;
+declare module 'bar' {
+  type DefaultE = { somethingElse: true };
+  type G = T<DefaultE>;
+}
+      `,
+    },
   ],
 });
