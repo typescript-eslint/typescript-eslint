@@ -219,7 +219,6 @@ function voidFunctionParams(
   node: ts.CallExpression | ts.NewExpression,
 ): Set<number> {
   const voidReturnIndices = new Set<number>();
-  const thenableReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
 
   for (const subType of tsutils.unionTypeParts(type)) {
@@ -233,29 +232,37 @@ function voidFunctionParams(
           parameter,
           node.expression,
         );
-        for (const subType of tsutils.unionTypeParts(type)) {
-          for (const signature of subType.getCallSignatures()) {
-            const returnType = signature.getReturnType();
-            if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
-              voidReturnIndices.add(index);
-            } else if (
-              tsutils.isThenableType(checker, node.expression, returnType)
-            ) {
-              thenableReturnIndices.add(index);
-            }
-          }
+        if (isVoidReturningFunctionType(checker, node.expression, type)) {
+          voidReturnIndices.add(index);
         }
       }
     }
   }
 
+  return voidReturnIndices;
+}
+
+// Returns true if given type is a void-returning function.
+function isVoidReturningFunctionType(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
+  let hasVoidReturningFunction = false;
+  let hasThenableReturningFunction = false;
+  for (const subType of tsutils.unionTypeParts(type)) {
+    for (const signature of subType.getCallSignatures()) {
+      const returnType = signature.getReturnType();
+      if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
+        hasVoidReturningFunction = true;
+      } else if (tsutils.isThenableType(checker, node, returnType)) {
+        hasThenableReturningFunction = true;
+      }
+    }
+  }
   // If a certain positional argument accepts both thenable and void returns,
   // a promise-returning function is valid
-  for (const thenable of thenableReturnIndices) {
-    voidReturnIndices.delete(thenable);
-  }
-
-  return voidReturnIndices;
+  return hasVoidReturningFunction && !hasThenableReturningFunction;
 }
 
 // Returns true if the expression is a function that returns a thenable
