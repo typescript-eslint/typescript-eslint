@@ -176,6 +176,24 @@ f = async () => 10;
 const g = async () => 0;
 const h: () => Promise<void> = async () => 10;
     `,
+    `
+const obj = {
+  f: async () => 10,
+};
+    `,
+    `
+const f = async () => 123;
+const obj = {
+  f,
+};
+    `,
+    `
+const obj = {
+  async f() {
+    return 0;
+  },
+};
+    `,
   ],
 
   invalid: [
@@ -488,6 +506,80 @@ obj.f = async () => {
         {
           line: 5,
           messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const f = async () => 0;
+const obj: O = {
+  f,
+};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  async f() {
+    return 0;
+  },
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void; g: () => void; h: () => void };
+function f(): O {
+  const h = async () => 0;
+  return {
+    async f() {
+      return 123;
+    },
+    g: async () => 0,
+    h,
+  };
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 9,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 10,
+          messageId: 'voidReturnProperty',
         },
       ],
     },
