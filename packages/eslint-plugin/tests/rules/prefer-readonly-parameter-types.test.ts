@@ -179,6 +179,15 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         function foo(arg: Foo) {}
       `,
     },
+    {
+      code: `
+        class HasText {
+          readonly #text: string;
+        }
+
+        export function onDone(task: HasText): void {}
+      `,
+    },
     // methods treated as readonly
     {
       code: `
