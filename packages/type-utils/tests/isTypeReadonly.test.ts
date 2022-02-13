@@ -82,6 +82,12 @@ describe('isTypeReadonly', () => {
             ['type Test = Readonly<ReadonlySet<string>>;'],
             ['type Test = Readonly<ReadonlyMap<string, string>>;'],
           ])('handles fully readonly sets and maps', runTests);
+
+          // Private Identifier.
+          // Note: It can't be accessed from outside of class thus exempt from the checks.
+          it.each([
+            ['class Foo { #privateField = "foo"; #privateMember() {}; }'],
+          ])('treat private identifier as readonly', runTests);
         });
 
         describe('is not readonly', () => {
