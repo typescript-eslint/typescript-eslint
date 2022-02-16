@@ -247,6 +247,15 @@ export default util.createRule<Options, MessageIds>({
         ) {
           return options.allowedNames.includes(node.key.quasis[0].value.raw);
         }
+        // for well-known symbols, i.e. for `[Symbol.toStringTag] = 'MyObject'` use @@toStringTag
+        if (
+          node.key.type === AST_NODE_TYPES.MemberExpression &&
+          node.key.object.type === AST_NODE_TYPES.Identifier &&
+          node.key.object.name === 'Symbol' &&
+          node.key.property.type === AST_NODE_TYPES.Identifier
+        ) {
+          return options.allowedNames.includes('@@' + node.key.property.name);
+        }
         if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
           return options.allowedNames.includes(node.key.name);
         }
