@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.11.0...v5.12.0) (2022-02-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [init-declarations] fix nested namespace ([#4544](https://github.com/typescript-eslint/typescript-eslint/issues/4544)) ([fe910e6](https://github.com/typescript-eslint/typescript-eslint/commit/fe910e61ca4bb42be3be9acb8ddcec73206754c2))
+* **eslint-plugin:** [no-unnecessary-type-arguments] Use Symbol to check if it's the same type ([#4543](https://github.com/typescript-eslint/typescript-eslint/issues/4543)) ([5b7d8df](https://github.com/typescript-eslint/typescript-eslint/commit/5b7d8df149be6554c863cdd5b73c0b0b0a7960db))
+* support nested object deconstructuring with type annotation ([#4548](https://github.com/typescript-eslint/typescript-eslint/issues/4548)) ([4da9278](https://github.com/typescript-eslint/typescript-eslint/commit/4da9278c80706f420d4c15a71c11c7b11d935643))
+
+
+### Features
+
+* add checking property definition for allowNames option ([#4542](https://github.com/typescript-eslint/typescript-eslint/issues/4542)) ([e32bef6](https://github.com/typescript-eslint/typescript-eslint/commit/e32bef6f6b74228c95e54a5cba1cde53d5e40623))
+
+
+
+
+
 # [5.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.2...v5.11.0) (2022-02-07)
 
 
