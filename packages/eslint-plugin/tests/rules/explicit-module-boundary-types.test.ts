@@ -390,15 +390,21 @@ export class Test {
   ['prop']() {}
   [\`prop\`]() {}
   [\`\${v}\`](): void {}
-
+  
   foo = () => {
     bar: 5;
   };
+    
+  [Symbol.toStringTag] = "abc" as const;
+  get [Symbol.toStringTag]() {
+     return "abc" as const;
+  }
+  set [Symbol.toStringTag]() {}
 }
       `,
       options: [
         {
-          allowedNames: ['prop', 'method', 'foo'],
+          allowedNames: ['prop', 'method', 'foo', '@@toStringTag'],
         },
       ],
     },
