@@ -49,22 +49,22 @@ function getLib(compilerOptions: CompilerOptions): Lib[] {
     }, [] as Lib[]);
   }
 
-  const target = compilerOptions.target ?? ScriptTarget.ES5;
+  const target = compilerOptions.target ?? 1 /* ScriptTarget.ES5 */;
   // https://github.com/Microsoft/TypeScript/blob/59ad375234dc2efe38d8ee0ba58414474c1d5169/src/compiler/utilitiesPublic.ts#L13-L32
   switch (target) {
-    case ScriptTarget.ESNext:
+    case 99 /* ScriptTarget.ESNext */:
       return ['esnext.full'];
-    case ScriptTarget.ES2020:
+    case 7 /* ScriptTarget.ES2020 */:
       return ['es2020.full'];
-    case ScriptTarget.ES2019:
+    case 6 /* ScriptTarget.ES2019 */:
       return ['es2019.full'];
-    case ScriptTarget.ES2018:
+    case 5 /* ScriptTarget.ES2018 */:
       return ['es2018.full'];
-    case ScriptTarget.ES2017:
+    case 4 /* ScriptTarget.ES2017 */:
       return ['es2017.full'];
-    case ScriptTarget.ES2016:
+    case 3 /* ScriptTarget.ES2016 */:
       return ['es2016.full'];
-    case ScriptTarget.ES2015:
+    case 2 /* ScriptTarget.ES2015 */:
       return ['es6'];
     default:
       return ['lib'];
