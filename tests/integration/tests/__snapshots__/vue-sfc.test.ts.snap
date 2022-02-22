@@ -56,6 +56,7 @@ export default Vue.extend({
 });
 </script>
 ",
+    "suppressedMessages": Array [],
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },
@@ -89,6 +90,7 @@ export default class Utility {
 }
 </script>
 ",
+    "suppressedMessages": Array [],
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },
@@ -139,6 +141,7 @@ export default Vue.extend({
 });
 </script>
 ",
+    "suppressedMessages": Array [],
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },

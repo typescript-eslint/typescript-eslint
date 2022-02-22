@@ -8,6 +8,10 @@ require('ts-node').register({
 const { tseslintPackages } = require('./pack-packages');
 
 module.exports = {
+  ...require('../../jest.config.base.js'),
+  globals: {
+    tseslintPackages,
+  },
   testRegex: ['/tests/[^/]+.test.ts$'],
   rootDir: __dirname,
 

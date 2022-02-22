@@ -84,6 +84,7 @@ export default class Jsx extends Vue {
 }
 </script>
 ",
+    "suppressedMessages": Array [],
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },

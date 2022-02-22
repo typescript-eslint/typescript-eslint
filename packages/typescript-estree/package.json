@@ -50,6 +50,8 @@
     "tsutils": "^3.21.0"
   },
   "devDependencies": {
+    "@babel/code-frame": "^7.16.0",
+    "@types/babel__code-frame": "^7.0.3",
     "@types/debug": "*",
     "@types/glob": "*",
     "@types/is-glob": "*",
