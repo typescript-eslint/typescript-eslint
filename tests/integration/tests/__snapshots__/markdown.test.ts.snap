@@ -292,7 +292,6 @@ function foo(): any {
 }
 \`\`\`
 ",
-    "suppressedMessages": Array [],
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },

@@ -58,7 +58,6 @@ Array [
     ],
     "output": "const foo: any = true;
 ",
-    "suppressedMessages": Array [],
     "usedDeprecatedRules": Array [],
     "warningCount": 2,
   },
