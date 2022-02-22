@@ -2224,5 +2224,17 @@ ruleTester.run('naming-convention', rule, {
       ],
       errors: Array(13).fill({ messageId: 'doesNotMatchFormat' }),
     },
+    {
+      code: `
+        type Foo = {
+          'foo     Bar': string;
+        };
+
+        interface Bar {
+          'boo-----foo': string;
+        }
+      `,
+      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
+    },
   ],
 });
