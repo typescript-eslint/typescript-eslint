@@ -521,10 +521,15 @@ class Referencer extends Visitor {
   protected JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
     this.referenceJsxPragma();
     if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
-      if (node.name.name[0].toUpperCase() === node.name.name[0]) {
+      if (
+        node.name.name[0].toUpperCase() === node.name.name[0] ||
+        node.name.name === 'this'
+      ) {
         // lower cased component names are always treated as "intrinsic" names, and are converted to a string,
         // not a variable by JSX transforms:
         // <div /> => React.createElement("div", null)
+
+        // the only case we want to visit a lower-cased component has its name as "this",
         this.visit(node.name);
       }
     } else {
