@@ -1,4 +1,6 @@
-# Disallow empty exports that don't change anything in a module file (`no-useless-empty-export`)
+# `no-useless-empty-export`
+
+Disallow empty exports that don't change anything in a module file.
 
 ## Rule Details
 
