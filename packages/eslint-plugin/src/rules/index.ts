@@ -82,6 +82,7 @@ import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
+import noUselessEmptyExport from './no-useless-empty-export';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
@@ -206,6 +207,7 @@ export default {
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
+  'no-useless-empty-export': noUselessEmptyExport,
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
