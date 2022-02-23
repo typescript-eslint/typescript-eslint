@@ -1,9 +1,10 @@
-# Disallow members of unions and intersections that do nothing or override type information (`no-redundant-type-constituents`)
+# `no-redundant-type-constituents`
 
-Some types can override some other types ("constituents") in a union or intersection and/or be overridden by some other types.
+Disallow members of unions and intersections that do nothing or override type information.
 
 ## Rule Details
 
+Some types can override some other types ("constituents") in a union or intersection and/or be overridden by some other types.
 TypeScript's set theory of types includes cases where a constituent type might be useless in the parent union or intersection.
 
 Within `|` unions:
