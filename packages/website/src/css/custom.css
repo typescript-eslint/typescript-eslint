@@ -60,6 +60,8 @@ html[data-theme='dark'] {
   --ifm-color-secondary-darkest: rgb(164, 166, 168);
 
   scrollbar-color: #454a4d #202324;
+
+  --docsearch-muted-color: #aaa;
 }
 
 .docusaurus-highlight-code-line {
