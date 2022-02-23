@@ -201,7 +201,7 @@ For example, by default it will ensure that a glob like `./**/tsconfig.json` wil
 Default `undefined`.
 
 This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation.
-The default extensions are `.ts`, `.tsx`, `.js`, and `.jsx`. Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions: [".vue"]`.
+The default extensions are `.ts`, `.tsx`, `.js`, and `.jsx`. Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
 
 ### `parserOptions.warnOnUnsupportedTypeScriptVersion`
 
