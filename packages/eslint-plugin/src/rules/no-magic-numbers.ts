@@ -9,7 +9,10 @@ type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // Extend base schema with additional property to ignore TS numeric literal types
 const schema = util.deepMerge(
-  { ...baseRule.meta.schema },
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
+  Array.isArray(baseRule.meta.schema)
+    ? baseRule.meta.schema[0]
+    : baseRule.meta.schema,
   {
     properties: {
       ignoreNumericLiteralTypes: {

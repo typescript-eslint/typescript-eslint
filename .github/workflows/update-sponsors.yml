@@ -1,7 +1,6 @@
 name: Update Sponsors Data
 
 on:
-  branch: main
   schedule:
     - cron: "0 0 * * *"
 

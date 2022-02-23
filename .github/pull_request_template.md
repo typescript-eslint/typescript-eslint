@@ -1,6 +1,7 @@
 <!--
 👋 Hi, thanks for sending a PR to typescript-eslint! 💖
-Please fill out all fields below -- otherwise we may not be able to review your PR.
+Please fill out all fields below and make sure each item is true and [x] checked.
+Otherwise we may not be able to review your PR.
 -->
 
 ## PR Checklist

@@ -54,6 +54,24 @@ export function isTypeUnknownType(type: ts.Type): boolean {
   return isTypeFlagSet(type, ts.TypeFlags.Unknown);
 }
 
+// https://github.com/microsoft/TypeScript/blob/42aa18bf442c4df147e30deaf27261a41cbdc617/src/compiler/types.ts#L5157
+const Nullable = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+// https://github.com/microsoft/TypeScript/blob/42aa18bf442c4df147e30deaf27261a41cbdc617/src/compiler/types.ts#L5187
+const ObjectFlagsType =
+  ts.TypeFlags.Any |
+  Nullable |
+  ts.TypeFlags.Never |
+  ts.TypeFlags.Object |
+  ts.TypeFlags.Union |
+  ts.TypeFlags.Intersection;
+export function isTypeReferenceType(type: ts.Type): type is ts.TypeReference {
+  if ((type.flags & ObjectFlagsType) === 0) {
+    return false;
+  }
+  const objectTypeFlags = (type as ts.ObjectType).objectFlags;
+  return (objectTypeFlags & ts.ObjectFlags.Reference) !== 0;
+}
+
 /**
  * @returns true if the type is `any`
  */
