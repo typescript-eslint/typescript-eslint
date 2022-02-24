@@ -229,8 +229,10 @@ export default util.createRule<Options, MessageId>({
         if (!ts.isObjectLiteralExpression(obj)) {
           return;
         }
-        const objType =
-          checker.getContextualType(obj) ?? checker.getTypeAtLocation(obj);
+        const objType = checker.getContextualType(obj);
+        if (objType === undefined) {
+          return;
+        }
         const propertySymbol = checker.getPropertyOfType(
           objType,
           tsNode.name.text,
