@@ -56,3 +56,24 @@ export const isTokenOfTypeWithConditions = <
     token?.type === tokenType &&
     entries.every(([key, value]) => token[key] === value);
 };
+
+export const isNotTokenOfTypeWithConditions =
+  <
+    TokenType extends AST_TOKEN_TYPES,
+    Conditions extends Partial<TSESTree.Token & { type: TokenType }>,
+  >(
+    tokenType: TokenType,
+    conditions: Conditions,
+  ): ((
+    token: TSESTree.Token | null | undefined,
+  ) => token is Exclude<
+    TSESTree.Token,
+    TSESTree.Token & { type: TokenType } & Conditions
+  >) =>
+  (
+    token,
+  ): token is Exclude<
+    TSESTree.Token,
+    TSESTree.Token & { type: TokenType } & Conditions
+  > =>
+    !isTokenOfTypeWithConditions(tokenType, conditions)(token);
