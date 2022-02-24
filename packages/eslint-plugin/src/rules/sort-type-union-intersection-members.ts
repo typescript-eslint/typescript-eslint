@@ -85,7 +85,10 @@ function getGroup(node: TSESTree.TypeNode): Group {
 }
 
 function requiresParentheses(node: TSESTree.TypeNode): boolean {
-  return node.type === AST_NODE_TYPES.TSFunctionType;
+  return (
+    node.type === AST_NODE_TYPES.TSFunctionType ||
+    node.type === AST_NODE_TYPES.TSConstructorType
+  );
 }
 
 export type Options = [
