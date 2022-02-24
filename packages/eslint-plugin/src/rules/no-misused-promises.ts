@@ -31,7 +31,7 @@ export default util.createRule<Options, MessageId>({
       voidReturn:
         'Promise returned in function argument where a void return was expected.',
       voidReturnVariable:
-        'Promise returned in variable where a void return was expected.',
+        'Promise-returning function provided to variable where a void return was expected.',
       voidReturnProperty:
         'Promise returned in property where a void return was expected.',
       voidReturnReturnValue:
@@ -158,7 +158,7 @@ export default util.createRule<Options, MessageId>({
       }
     }
 
-    function checkAssignments(node: TSESTree.AssignmentExpression): void {
+    function checkAssignment(node: TSESTree.AssignmentExpression): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const varType = checker.getTypeAtLocation(tsNode.left);
       if (!isVoidReturningFunctionType(checker, tsNode.left, varType)) {
