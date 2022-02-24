@@ -226,7 +226,10 @@ export default util.createRule<Options, MessageId>({
           return;
         }
         const obj = tsNode.parent;
-        if (!ts.isObjectLiteralExpression(obj)) {
+
+        // This condition isn't satisfied but needed for type checking.
+        // The fundamental reason is that mapping between ESLint and TypeScript ASTs is not 1:1.
+        /* istanbul ignore if */ if (!ts.isObjectLiteralExpression(obj)) {
           return;
         }
         const objType = checker.getContextualType(obj);

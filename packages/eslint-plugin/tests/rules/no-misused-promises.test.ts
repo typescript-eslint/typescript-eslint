@@ -212,6 +212,13 @@ const obj: O = {
 };
     `,
     `
+const obj: number = {
+  g() {
+    return 10;
+  },
+};
+    `,
+    `
 const obj = {
   f: async () => 'foo',
   async g() {
