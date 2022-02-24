@@ -33,11 +33,11 @@ export default util.createRule<Options, MessageId>({
       voidReturnVariable:
         'Promise-returning function provided to variable where a void return was expected.',
       voidReturnProperty:
-        'Promise returned in property where a void return was expected.',
+        'Promise-returning function provided to property where a void return was expected.',
       voidReturnReturnValue:
-        'Promise returned in return value where a void return was expected.',
+        'Promise-returning function provided to return value where a void return was expected.',
       voidReturnAttribute:
-        'Promise returned in attribute where a void return was expected.',
+        'Promise-returning function provided to attribute where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
     },
     schema: [
