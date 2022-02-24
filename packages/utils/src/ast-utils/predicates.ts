@@ -4,6 +4,7 @@ import {
   isNodeOfType,
   isNodeOfTypes,
   isNodeOfTypeWithConditions,
+  isNotTokenOfTypeWithConditions,
   isTokenOfTypeWithConditions,
 } from './helpers';
 
@@ -12,25 +13,20 @@ const isOptionalChainPunctuator = isTokenOfTypeWithConditions(
   { value: '?.' },
 );
 
-function isNotOptionalChainPunctuator(
-  token: TSESTree.Token,
-): token is Exclude<
-  TSESTree.Token,
-  TSESTree.PunctuatorToken & { value: '?.' }
-> {
-  return !isOptionalChainPunctuator(token);
-}
+const isNotOptionalChainPunctuator = isNotTokenOfTypeWithConditions(
+  AST_TOKEN_TYPES.Punctuator,
+  { value: '?.' },
+);
 
 const isNonNullAssertionPunctuator = isTokenOfTypeWithConditions(
   AST_TOKEN_TYPES.Punctuator,
   { value: '!' },
 );
 
-function isNotNonNullAssertionPunctuator(
-  token: TSESTree.Token,
-): token is Exclude<TSESTree.Token, TSESTree.PunctuatorToken & { value: '!' }> {
-  return !isNonNullAssertionPunctuator(token);
-}
+const isNotNonNullAssertionPunctuator = isNotTokenOfTypeWithConditions(
+  AST_TOKEN_TYPES.Punctuator,
+  { value: '!' },
+);
 
 /**
  * Returns true if and only if the node represents: foo?.() or foo.bar?.()
