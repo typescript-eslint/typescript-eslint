@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.0...v5.12.1) (2022-02-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-type-arguments] fix comparison of types ([#4555](https://github.com/typescript-eslint/typescript-eslint/issues/4555)) ([fc3936e](https://github.com/typescript-eslint/typescript-eslint/commit/fc3936e99712374a707ce9e0101bc641807b9ea6))
+
+
+
+
+
 # [5.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.11.0...v5.12.0) (2022-02-14)
 
 

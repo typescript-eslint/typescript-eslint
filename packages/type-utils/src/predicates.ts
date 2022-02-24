@@ -48,6 +48,13 @@ export function isTypeArrayTypeOrUnionOfArrayTypes(
 }
 
 /**
+ * @returns true if the type is `never`
+ */
+export function isTypeNeverType(type: ts.Type): boolean {
+  return isTypeFlagSet(type, ts.TypeFlags.Never);
+}
+
+/**
  * @returns true if the type is `unknown`
  */
 export function isTypeUnknownType(type: ts.Type): boolean {
@@ -167,4 +174,16 @@ export function typeIsOrHasBaseType(
   }
 
   return false;
+}
+
+export function isTypeBigIntLiteralType(
+  type: ts.Type,
+): type is ts.BigIntLiteralType {
+  return isTypeFlagSet(type, ts.TypeFlags.BigIntLiteral);
+}
+
+export function isTypeTemplateLiteralType(
+  type: ts.Type,
+): type is ts.TemplateLiteralType {
+  return isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral);
 }
