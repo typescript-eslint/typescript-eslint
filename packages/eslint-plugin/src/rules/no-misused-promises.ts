@@ -227,11 +227,16 @@ export default util.createRule<Options, MessageId>({
         }
         const obj = tsNode.parent;
 
-        // This condition isn't satisfied but needed for type checking.
-        // The fundamental reason is that mapping between ESLint and TypeScript ASTs is not 1:1.
-        /* istanbul ignore if */ if (!ts.isObjectLiteralExpression(obj)) {
+        // Below condition isn't satisfied unless something goes wrong,
+        // but is needed for type checking.
+        // 'node' does not include class method declaration so 'obj' is
+        // always an object literal expression, but after converting 'node'
+        // to TypeScript AST, its type includes MethodDeclaration which
+        // does include the case of class method declaration.
+        if (!ts.isObjectLiteralExpression(obj)) {
           return;
         }
+
         const objType = checker.getContextualType(obj);
         if (objType === undefined) {
           return;
