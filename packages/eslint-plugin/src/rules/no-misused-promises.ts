@@ -83,11 +83,11 @@ export default util.createRule<Options, MessageId>({
     const voidReturnChecks: TSESLint.RuleListener = {
       CallExpression: checkArguments,
       NewExpression: checkArguments,
-      AssignmentExpression: checkAssignments,
+      AssignmentExpression: checkAssignment,
       VariableDeclarator: checkVariableDeclaration,
-      Property: checkProperties,
-      ReturnStatement: checkReturnStatements,
-      JSXAttribute: checkJSXAttributes,
+      Property: checkProperty,
+      ReturnStatement: checkReturnStatement,
+      JSXAttribute: checkJSXAttribute,
     };
 
     function checkTestConditional(node: {
@@ -191,7 +191,7 @@ export default util.createRule<Options, MessageId>({
       }
     }
 
-    function checkProperties(node: TSESTree.Property): void {
+    function checkProperty(node: TSESTree.Property): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       if (ts.isPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.initializer);
@@ -267,7 +267,7 @@ export default util.createRule<Options, MessageId>({
       }
     }
 
-    function checkReturnStatements(node: TSESTree.ReturnStatement): void {
+    function checkReturnStatement(node: TSESTree.ReturnStatement): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       if (tsNode.expression === undefined || node.argument === null) {
         return;
@@ -289,7 +289,7 @@ export default util.createRule<Options, MessageId>({
       }
     }
 
-    function checkJSXAttributes(node: TSESTree.JSXAttribute): void {
+    function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const value = tsNode.initializer;
       if (
