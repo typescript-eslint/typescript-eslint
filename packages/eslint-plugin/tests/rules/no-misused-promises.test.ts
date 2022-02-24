@@ -344,7 +344,7 @@ if (!Promise.resolve()) {
       errors: [
         {
           line: 2,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -358,7 +358,7 @@ new Promise(async (resolve, reject) => {
       errors: [
         {
           line: 2,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -375,7 +375,7 @@ fnWithCallback('val', async (err, res) => {
       errors: [
         {
           line: 6,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -390,7 +390,7 @@ fnWithCallback('val', (err, res) => Promise.resolve(res));
       errors: [
         {
           line: 6,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -411,7 +411,7 @@ fnWithCallback('val', (err, res) => {
       errors: [
         {
           line: 6,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -428,7 +428,7 @@ fnWithCallback?.('val', (err, res) => Promise.resolve(res));
       errors: [
         {
           line: 8,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -451,7 +451,7 @@ fnWithCallback('val', (err, res) => {
       errors: [
         {
           line: 8,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },

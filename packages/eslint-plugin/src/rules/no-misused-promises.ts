@@ -13,7 +13,7 @@ type Options = [
 
 type MessageId =
   | 'conditional'
-  | 'voidReturn'
+  | 'voidReturnArgument'
   | 'voidReturnVariable'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
@@ -28,7 +28,7 @@ export default util.createRule<Options, MessageId>({
       requiresTypeChecking: true,
     },
     messages: {
-      voidReturn:
+      voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
       voidReturnVariable:
         'Promise-returning function provided to variable where a void return was expected.',
@@ -151,7 +151,7 @@ export default util.createRule<Options, MessageId>({
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(argument);
         if (returnsThenable(checker, tsNode as ts.Expression)) {
           context.report({
-            messageId: 'voidReturn',
+            messageId: 'voidReturnArgument',
             node: argument,
           });
         }
