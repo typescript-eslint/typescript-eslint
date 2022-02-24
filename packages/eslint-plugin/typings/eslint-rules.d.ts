@@ -842,6 +842,29 @@ declare module 'eslint/lib/rules/space-infix-ops' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/space-before-blocks' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'missingSpace' | 'unexpectedSpace',
+    [
+      | 'always'
+      | 'never'
+      | {
+          classes?: 'always' | 'never' | 'off';
+          functions?: 'always' | 'never' | 'off';
+          keywords?: 'always' | 'never' | 'off';
+        },
+    ],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      ClassBody(node: TSESTree.ClassBody): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/prefer-const' {
   import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 

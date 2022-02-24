@@ -19,6 +19,26 @@ function upperCaseFirst(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
 }
 
+function arrayGroupByToMap<T, Key extends string | number>(
+  array: T[],
+  getKey: (item: T) => Key,
+): Map<Key, T[]> {
+  const groups = new Map<Key, T[]>();
+
+  for (const item of array) {
+    const key = getKey(item);
+    const existing = groups.get(key);
+
+    if (existing) {
+      existing.push(item);
+    } else {
+      groups.set(key, [item]);
+    }
+  }
+
+  return groups;
+}
+
 /** Return true if both parameters are equal. */
 type Equal<T> = (a: T, b: T) => boolean;
 
@@ -148,6 +168,7 @@ function formatWordList(words: string[]): string {
 }
 
 export {
+  arrayGroupByToMap,
   arraysAreEqual,
   Equal,
   ExcludeKeys,
