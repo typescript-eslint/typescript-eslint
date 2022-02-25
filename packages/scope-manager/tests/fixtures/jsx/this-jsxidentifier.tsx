@@ -1,7 +1,12 @@
-import React from 'react';
+declare const React;
 
-class Hello extends React.Component<{ tag: () => JSX.Element }> {
-  inline() {
-    return [<this.props.tag />, <this />];
+class Foo {
+  foo: any;
+  Div = {
+    Element: () => <div />,
+  };
+  method() {
+    <this.foo />;
+    (<Div.Element />)(<this />);
   }
 }

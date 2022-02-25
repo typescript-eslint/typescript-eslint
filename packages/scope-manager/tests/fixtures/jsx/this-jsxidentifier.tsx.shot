@@ -6,21 +6,13 @@ ScopeManager {
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
       defs: Array [
-        ImportBindingDefinition$1 {
+        VariableDefinition$1 {
           name: Identifier<"React">,
-          node: ImportDefaultSpecifier$1,
+          node: VariableDeclarator$1,
         },
       ],
       name: "React",
       references: Array [
-        Reference$3 {
-          identifier: Identifier<"React">,
-          isRead: true,
-          isTypeReference: false,
-          isValueReference: true,
-          isWrite: false,
-          resolved: Variable$2,
-        },
         Reference$1 {
           identifier: Identifier<"React">,
           isRead: true,
@@ -31,16 +23,16 @@ ScopeManager {
         },
       ],
       isValueVariable: true,
-      isTypeVariable: true,
+      isTypeVariable: false,
     },
     Variable$3 {
       defs: Array [
         ClassNameDefinition$2 {
-          name: Identifier<"Hello">,
+          name: Identifier<"Foo">,
           node: ClassDeclaration$2,
         },
       ],
-      name: "Hello",
+      name: "Foo",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
@@ -48,11 +40,11 @@ ScopeManager {
     Variable$4 {
       defs: Array [
         ClassNameDefinition$3 {
-          name: Identifier<"Hello">,
+          name: Identifier<"Foo">,
           node: ClassDeclaration$2,
         },
       ],
-      name: "Hello",
+      name: "Foo",
       references: Array [],
       isValueVariable: true,
       isTypeVariable: true,
@@ -70,12 +62,12 @@ ScopeManager {
       block: Program$3,
       isStrict: false,
       references: Array [
-        Reference$3,
+        Reference$1,
       ],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "React" => Variable$2,
-        "Hello" => Variable$3,
+        "Foo" => Variable$3,
       },
       type: "global",
       upper: null,
@@ -88,11 +80,9 @@ ScopeManager {
     ClassScope$2 {
       block: ClassDeclaration$2,
       isStrict: true,
-      references: Array [
-        Reference$1,
-      ],
+      references: Array [],
       set: Map {
-        "Hello" => Variable$4,
+        "Foo" => Variable$4,
       },
       type: "class",
       upper: GlobalScope$1,
@@ -100,30 +90,38 @@ ScopeManager {
         Variable$4,
       ],
     },
-    FunctionTypeScope$3 {
-      block: TSFunctionType$4,
+    ClassFieldInitializerScope$3 {
+      block: ObjectExpression$4,
       isStrict: true,
-      references: Array [
-        Reference$2 {
-          identifier: Identifier<"JSX">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: null,
-        },
-      ],
+      references: Array [],
       set: Map {},
-      type: "functionType",
+      type: "class-field-initializer",
       upper: ClassScope$2,
       variables: Array [],
     },
     FunctionScope$4 {
-      block: FunctionExpression$5,
+      block: ArrowFunctionExpression$5,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "function",
+      upper: ClassFieldInitializerScope$3,
+      variables: Array [],
+    },
+    FunctionScope$5 {
+      block: FunctionExpression$6,
       isStrict: true,
       references: Array [
-        Reference$4 {
-          identifier: JSXIdentifier$6,
+        Reference$2 {
+          identifier: JSXIdentifier$7,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: null,
+        },
+        Reference$3 {
+          identifier: JSXIdentifier$8,
           isRead: true,
           isTypeReference: false,
           isValueReference: true,
