@@ -37,7 +37,7 @@ All of the packages are published with the same version number to make it easier
 
 We publish a canary release on every successful merge to `main`, so **you never need to wait for a new stable version to make use of any updates**.
 
-Additionally, we promote the to the `latest` tag on NPM once per week, **on Mondays at 1 pm Eastern**.
+Additionally, we promote to the `latest` tag on NPM once per week, **on Mondays at 1 pm Eastern**.
 
 The latest version under the `latest` tag is:
 
