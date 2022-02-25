@@ -11,7 +11,15 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, 'conditional' | 'voidReturn'>({
+type MessageId =
+  | 'conditional'
+  | 'voidReturnArgument'
+  | 'voidReturnVariable'
+  | 'voidReturnProperty'
+  | 'voidReturnReturnValue'
+  | 'voidReturnAttribute';
+
+export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
   meta: {
     docs: {
@@ -20,8 +28,16 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
       requiresTypeChecking: true,
     },
     messages: {
-      voidReturn:
+      voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
+      voidReturnVariable:
+        'Promise-returning function provided to variable where a void return was expected.',
+      voidReturnProperty:
+        'Promise-returning function provided to property where a void return was expected.',
+      voidReturnReturnValue:
+        'Promise-returning function provided to return value where a void return was expected.',
+      voidReturnAttribute:
+        'Promise-returning function provided to attribute where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
     },
     schema: [
@@ -67,6 +83,11 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
     const voidReturnChecks: TSESLint.RuleListener = {
       CallExpression: checkArguments,
       NewExpression: checkArguments,
+      AssignmentExpression: checkAssignment,
+      VariableDeclarator: checkVariableDeclaration,
+      Property: checkProperty,
+      ReturnStatement: checkReturnStatement,
+      JSXAttribute: checkJSXAttribute,
     };
 
     function checkTestConditional(node: {
@@ -130,10 +151,165 @@ export default util.createRule<Options, 'conditional' | 'voidReturn'>({
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(argument);
         if (returnsThenable(checker, tsNode as ts.Expression)) {
           context.report({
-            messageId: 'voidReturn',
+            messageId: 'voidReturnArgument',
             node: argument,
           });
         }
+      }
+    }
+
+    function checkAssignment(node: TSESTree.AssignmentExpression): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const varType = checker.getTypeAtLocation(tsNode.left);
+      if (!isVoidReturningFunctionType(checker, tsNode.left, varType)) {
+        return;
+      }
+
+      if (returnsThenable(checker, tsNode.right)) {
+        context.report({
+          messageId: 'voidReturnVariable',
+          node: node.right,
+        });
+      }
+    }
+
+    function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      if (tsNode.initializer === undefined || node.init === null) {
+        return;
+      }
+      const varType = checker.getTypeAtLocation(tsNode.name);
+      if (!isVoidReturningFunctionType(checker, tsNode.initializer, varType)) {
+        return;
+      }
+
+      if (returnsThenable(checker, tsNode.initializer)) {
+        context.report({
+          messageId: 'voidReturnVariable',
+          node: node.init,
+        });
+      }
+    }
+
+    function checkProperty(node: TSESTree.Property): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      if (ts.isPropertyAssignment(tsNode)) {
+        const contextualType = checker.getContextualType(tsNode.initializer);
+        if (
+          contextualType !== undefined &&
+          isVoidReturningFunctionType(
+            checker,
+            tsNode.initializer,
+            contextualType,
+          ) &&
+          returnsThenable(checker, tsNode.initializer)
+        ) {
+          context.report({
+            messageId: 'voidReturnProperty',
+            node: node.value,
+          });
+        }
+      } else if (ts.isShorthandPropertyAssignment(tsNode)) {
+        const contextualType = checker.getContextualType(tsNode.name);
+        if (
+          contextualType !== undefined &&
+          isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
+          returnsThenable(checker, tsNode.name)
+        ) {
+          context.report({
+            messageId: 'voidReturnProperty',
+            node: node.value,
+          });
+        }
+      } else if (ts.isMethodDeclaration(tsNode)) {
+        if (ts.isComputedPropertyName(tsNode.name)) {
+          return;
+        }
+        const obj = tsNode.parent;
+
+        // Below condition isn't satisfied unless something goes wrong,
+        // but is needed for type checking.
+        // 'node' does not include class method declaration so 'obj' is
+        // always an object literal expression, but after converting 'node'
+        // to TypeScript AST, its type includes MethodDeclaration which
+        // does include the case of class method declaration.
+        if (!ts.isObjectLiteralExpression(obj)) {
+          return;
+        }
+
+        const objType = checker.getContextualType(obj);
+        if (objType === undefined) {
+          return;
+        }
+        const propertySymbol = checker.getPropertyOfType(
+          objType,
+          tsNode.name.text,
+        );
+        if (propertySymbol === undefined) {
+          return;
+        }
+
+        const contextualType = checker.getTypeOfSymbolAtLocation(
+          propertySymbol,
+          tsNode.name,
+        );
+
+        if (
+          isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
+          returnsThenable(checker, tsNode)
+        ) {
+          context.report({
+            messageId: 'voidReturnProperty',
+            node: node.value,
+          });
+        }
+        return;
+      }
+    }
+
+    function checkReturnStatement(node: TSESTree.ReturnStatement): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      if (tsNode.expression === undefined || node.argument === null) {
+        return;
+      }
+      const contextualType = checker.getContextualType(tsNode.expression);
+      if (
+        contextualType !== undefined &&
+        isVoidReturningFunctionType(
+          checker,
+          tsNode.expression,
+          contextualType,
+        ) &&
+        returnsThenable(checker, tsNode.expression)
+      ) {
+        context.report({
+          messageId: 'voidReturnReturnValue',
+          node: node.argument,
+        });
+      }
+    }
+
+    function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const value = tsNode.initializer;
+      if (
+        node.value === null ||
+        value === undefined ||
+        !ts.isJsxExpression(value) ||
+        value.expression === undefined
+      ) {
+        return;
+      }
+      const contextualType = checker.getContextualType(value);
+      if (
+        contextualType !== undefined &&
+        isVoidReturningFunctionType(checker, value, contextualType) &&
+        returnsThenable(checker, value.expression)
+      ) {
+        context.report({
+          messageId: 'voidReturnAttribute',
+          node: node.value,
+        });
       }
     }
 
@@ -219,7 +395,6 @@ function voidFunctionParams(
   node: ts.CallExpression | ts.NewExpression,
 ): Set<number> {
   const voidReturnIndices = new Set<number>();
-  const thenableReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
 
   for (const subType of tsutils.unionTypeParts(type)) {
@@ -233,36 +408,41 @@ function voidFunctionParams(
           parameter,
           node.expression,
         );
-        for (const subType of tsutils.unionTypeParts(type)) {
-          for (const signature of subType.getCallSignatures()) {
-            const returnType = signature.getReturnType();
-            if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
-              voidReturnIndices.add(index);
-            } else if (
-              tsutils.isThenableType(checker, node.expression, returnType)
-            ) {
-              thenableReturnIndices.add(index);
-            }
-          }
+        if (isVoidReturningFunctionType(checker, node.expression, type)) {
+          voidReturnIndices.add(index);
         }
       }
     }
   }
 
-  // If a certain positional argument accepts both thenable and void returns,
-  // a promise-returning function is valid
-  for (const thenable of thenableReturnIndices) {
-    voidReturnIndices.delete(thenable);
-  }
-
   return voidReturnIndices;
 }
 
-// Returns true if the expression is a function that returns a thenable
-function returnsThenable(
+// Returns true if given type is a void-returning function.
+function isVoidReturningFunctionType(
   checker: ts.TypeChecker,
-  node: ts.Expression,
+  node: ts.Node,
+  type: ts.Type,
 ): boolean {
+  let hasVoidReturningFunction = false;
+  let hasThenableReturningFunction = false;
+  for (const subType of tsutils.unionTypeParts(type)) {
+    for (const signature of subType.getCallSignatures()) {
+      const returnType = signature.getReturnType();
+      if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
+        hasVoidReturningFunction = true;
+      } else if (tsutils.isThenableType(checker, node, returnType)) {
+        hasThenableReturningFunction = true;
+      }
+    }
+  }
+  // If a certain positional argument accepts both thenable and void returns,
+  // a promise-returning function is valid
+  return hasVoidReturningFunction && !hasThenableReturningFunction;
+}
+
+// Returns true if the expression is a function that returns a thenable
+function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getApparentType(checker.getTypeAtLocation(node));
 
   for (const subType of tsutils.unionTypeParts(type)) {

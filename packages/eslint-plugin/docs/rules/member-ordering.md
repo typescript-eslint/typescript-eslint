@@ -292,6 +292,29 @@ The third grouping option is to ignore both scope and accessibility.
 ]
 ```
 
+### Grouping different member types at the same rank
+
+It is also possible to group different member types at the same rank.
+
+```jsonc
+[
+  // Index signature
+  "signature",
+
+  // Fields
+  "field",
+
+  // Constructors
+  "constructor",
+
+  // Getters and Setters at the same rank
+  ["get", "set"],
+
+  // Methods
+  "method"
+]
+```
+
 ### Default configuration
 
 The default configuration looks as follows:
