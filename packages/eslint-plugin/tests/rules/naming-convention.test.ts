@@ -2228,13 +2228,20 @@ ruleTester.run('naming-convention', rule, {
       code: `
         type Foo = {
           'foo     Bar': string;
+          '': string;
+          '0': string;
+          'foo': string;
+          'foo-bar': string;
+          '#foo-bar': string;
         };
 
         interface Bar {
           'boo-----foo': string;
         }
+
+
       `,
-      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
     },
   ],
 });
