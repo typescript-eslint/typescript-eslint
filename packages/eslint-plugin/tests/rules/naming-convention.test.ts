@@ -2230,16 +2230,14 @@ ruleTester.run('naming-convention', rule, {
           'foo     Bar': string;
           '': string;
           '0': string;
-          'foo': string;
+          foo: string;
           'foo-bar': string;
           '#foo-bar': string;
         };
-
+        
         interface Bar {
           'boo-----foo': string;
         }
-
-
       `,
       errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
     },
