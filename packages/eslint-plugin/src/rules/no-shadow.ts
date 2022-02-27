@@ -18,6 +18,7 @@ type Options = [
     allow?: string[];
     builtinGlobals?: boolean;
     hoist?: 'all' | 'functions' | 'never';
+    ignoreOnInitialization?: boolean;
     ignoreTypeValueShadow?: boolean;
     ignoreFunctionTypeParameterNameValueShadow?: boolean;
   },
@@ -49,6 +50,9 @@ export default util.createRule<Options, MessageIds>({
               type: 'string',
             },
           },
+          ignoreOnInitialization: {
+            type: 'boolean',
+          },
           ignoreTypeValueShadow: {
             type: 'boolean',
           },
@@ -68,6 +72,7 @@ export default util.createRule<Options, MessageIds>({
       allow: [],
       builtinGlobals: false,
       hoist: 'functions',
+      ignoreOnInitialization: false,
       ignoreTypeValueShadow: true,
       ignoreFunctionTypeParameterNameValueShadow: true,
     },
