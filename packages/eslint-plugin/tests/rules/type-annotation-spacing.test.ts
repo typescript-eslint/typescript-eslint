@@ -1181,6 +1181,30 @@ interface Foo {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/1663
     'type ConstructorFn = new (...args: any[]) => any;',
+    {
+      code: `
+class Foo {
+    bar      :Bar;
+    }
+      `,
+      options: [{ before: true, after: false, allowExtraSpaces: true }],
+    },
+    {
+      code: `
+class Foo {
+    bar:        Bar;
+    }
+      `,
+      options: [{ before: false, after: true, allowExtraSpaces: true }],
+    },
+    {
+      code: `
+class Foo {
+    bar      :       Bar;
+    }
+      `,
+      options: [{ before: true, after: true, allowExtraSpaces: true }],
+    },
   ],
   invalid: [
     {
@@ -3793,6 +3817,75 @@ type Foo = {
           },
           line: 5,
           column: 59,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    bar      :Bar;
+}
+      `,
+      options: [{ before: true, after: false }],
+      output: `
+class Foo {
+    bar :Bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'extraSpaceBefore',
+          data: { type: ':' },
+          line: 3,
+          column: 14,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    bar:        Bar;
+}
+      `,
+      options: [{ before: false, after: true }],
+      output: `
+class Foo {
+    bar: Bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'extraSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    bar      :        Bar;
+}
+      `,
+      options: [{ before: true, after: true }],
+      output: `
+class Foo {
+    bar : Bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'extraSpaceAfter',
+          data: { type: ':' },
+          line: 3,
+          column: 14,
+        },
+        {
+          messageId: 'extraSpaceBefore',
+          data: { type: ':' },
+          line: 3,
+          column: 14,
         },
       ],
     },
