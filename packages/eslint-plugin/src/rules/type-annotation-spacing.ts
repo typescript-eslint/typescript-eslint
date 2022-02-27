@@ -13,6 +13,7 @@ import {
 interface WhitespaceRule {
   readonly before?: boolean;
   readonly after?: boolean;
+  readonly allowExtraSpaces?: boolean;
 }
 
 interface WhitespaceOverride {
@@ -36,7 +37,9 @@ type MessageIds =
   | 'expectedSpaceBefore'
   | 'unexpectedSpaceAfter'
   | 'unexpectedSpaceBefore'
-  | 'unexpectedSpaceBetween';
+  | 'unexpectedSpaceBetween'
+  | 'extraSpaceBefore'
+  | 'extraSpaceAfter';
 
 const definition = {
   type: 'object',
@@ -124,6 +127,8 @@ export default util.createRule<Options, MessageIds>({
       unexpectedSpaceBefore: "Unexpected space before the '{{type}}'.",
       unexpectedSpaceBetween:
         "Unexpected space between the '{{previousToken}}' and the '{{type}}'.",
+      extraSpaceBefore: "Unexpected extra spaces before the '{{type}}'.",
+      extraSpaceAfter: "Unexpected extra spaces after the '{{type}}'.",
     },
     schema: [
       {
@@ -143,6 +148,7 @@ export default util.createRule<Options, MessageIds>({
             },
             additionalProperties: false,
           },
+          allowExtraSpaces: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -151,7 +157,9 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     // technically there is a default, but the overrides mean
     // that if we apply them here, it will break the no override case.
-    {},
+    {
+      allowExtraSpaces: false,
+    },
   ],
   create(context, [options]) {
     const punctuators = [':', '=>'];
@@ -226,6 +234,20 @@ export default util.createRule<Options, MessageIds>({
             return fixer.insertTextAfter(punctuatorTokenEnd, ' ');
           },
         });
+      } else if (after && nextDelta > 1 && !options?.allowExtraSpaces) {
+        context.report({
+          node: punctuatorTokenEnd,
+          messageId: 'extraSpaceAfter',
+          data: {
+            type,
+          },
+          fix(fixer) {
+            return fixer.replaceTextRange(
+              [punctuatorTokenEnd.range[1], nextToken.range[0]],
+              ' ',
+            );
+          },
+        });
       } else if (!after && nextDelta > 0) {
         context.report({
           node: punctuatorTokenEnd,
@@ -251,6 +273,20 @@ export default util.createRule<Options, MessageIds>({
           },
           fix(fixer) {
             return fixer.insertTextAfter(previousToken, ' ');
+          },
+        });
+      } else if (before && previousDelta > 1 && !options?.allowExtraSpaces) {
+        context.report({
+          node: punctuatorTokenStart,
+          messageId: 'extraSpaceBefore',
+          data: {
+            type,
+          },
+          fix(fixer) {
+            return fixer.replaceTextRange(
+              [previousToken.range[1], punctuatorTokenStart.range[0]],
+              ' ',
+            );
           },
         });
       } else if (!before && previousDelta > 0) {
