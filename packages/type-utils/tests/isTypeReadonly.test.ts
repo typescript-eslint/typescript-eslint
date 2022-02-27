@@ -86,7 +86,9 @@ describe('isTypeReadonly', () => {
           // Private Identifier.
           // Note: It can't be accessed from outside of class thus exempt from the checks.
           it.each([
-            ['class Foo { #privateField = "foo"; #privateMember() {}; }'],
+            ['class Foo { readonly #readonlyPrivateField = "foo"; }'],
+            ['class Foo { #privateField = "foo"; }'],
+            ['class Foo { #privateMember() {}; }'],
           ])('treat private identifier as readonly', runTests);
         });
 
