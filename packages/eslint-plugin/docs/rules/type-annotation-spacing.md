@@ -44,6 +44,8 @@ This rule has an object option:
 - `"after": true`, (default) requires a space after the colon/arrow.
 - `"after": false`, disallows spaces after the colon/arrow.
 - `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`). Additionally allows granular overrides for `variable` (`const foo: string`),`parameter` (`function foo(bar: string) {...}`),`property` (`interface Foo { bar: string }`) and `returnType` (`function foo(): string {...}`) annotations.
+- `"allowExtraSpaces": false`, (default) disallows more than one whitespace
+- `"allowExtraSpaces": true`, allows more than one whitespace
 
 ### defaults
 
@@ -297,6 +299,39 @@ class Foo {
 }
 
 type Foo = () => {};
+```
+
+### allowExtraSpaces
+
+Examples of code for this rule with `{ "before": true, "after": true, allowExtraSpaces: false }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+<!-- prettier-ignore -->
+```ts
+let foo    :    string = "bar";
+
+function foo()    :    string {}
+
+class Foo {
+    name    :     string;
+}
+```
+
+#### ✅ Correct
+
+<!-- prettier-ignore -->
+```ts
+let foo : string = "bar";
+
+function foo() : string {}
+
+class Foo {
+    name : string;
+}
+
 ```
 
 ## When Not To Use It
