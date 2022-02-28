@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.1...v5.13.0) (2022-02-28)
+
+
+### Features
+
+* **eslint-plugin:** add `no-redundant-type-constituents` rule ([#4378](https://github.com/typescript-eslint/typescript-eslint/issues/4378)) ([63d051e](https://github.com/typescript-eslint/typescript-eslint/commit/63d051eed29dcf71015a23992feac0a8f92717a0))
+
+
+
+
+
 ## [5.12.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.0...v5.12.1) (2022-02-21)
 
 
