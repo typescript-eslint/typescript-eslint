@@ -36,6 +36,8 @@ export function getTypeOfPropertyOfType(
 }
 
 // Symbolic names need to be specially handled because TS api is not sufficient for these cases.
+// Source based on:
+// https://github.com/microsoft/TypeScript/blob/0043abe982aae0d35f8df59f9715be6ada758ff7/src/compiler/utilities.ts#L3388-L3402
 function isSymbol(escapedName: string): boolean {
   return isKnownSymbol(escapedName) || isPrivateIdentifierSymbol(escapedName);
 }
