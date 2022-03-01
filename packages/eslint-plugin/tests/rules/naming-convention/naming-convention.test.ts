@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import rule from '../../../src/rules/naming-convention';
-import { getFixturesRootDir, RuleTester } from '../../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -1507,6 +1507,24 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
       errors: Array(13).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+    {
+      code: noFormat`
+        type Foo = {
+          'foo     Bar': string;
+          '': string;
+          '0': string;
+          'foo': string;
+          'foo-bar': string;
+          '#foo-bar': string;
+        };
+
+        interface Bar {
+          'boo-----foo': string;
+        }
+      `,
+      // 6, not 7 because 'foo' is valid
+      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
     },
   ],
 });
