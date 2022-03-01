@@ -398,8 +398,8 @@ function voidFunctionParams(
   const voidReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
 
-  // TODO(file bug on TypeScript): checker.getResolvedSignature prefers a () => void over a () => Promise<void>
-  // See https://github.com/typescript-eslint/typescript-eslint/issues/4609 (todo: comment in PR)
+  // We can't use checker.getResolvedSignature because it prefers an early '() => void' over a later '() => Promise<void>'
+  // See https://github.com/microsoft/TypeScript/issues/48077
 
   for (const subType of tsutils.unionTypeParts(type)) {
     // Standard function calls and `new` have two different types of signatures
