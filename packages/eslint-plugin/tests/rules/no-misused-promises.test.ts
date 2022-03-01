@@ -252,6 +252,30 @@ const Component: any = () => null;
       `,
       filename: 'react.tsx',
     },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => Promise<void>): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+  (name: string, callback: () => Promise<void>): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
   ],
 
   invalid: [
@@ -684,6 +708,24 @@ const Component = (obj: O) => null;
         {
           line: 7,
           messageId: 'voidReturnAttribute',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnArgument',
         },
       ],
     },

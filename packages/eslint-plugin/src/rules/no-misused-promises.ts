@@ -394,8 +394,12 @@ function voidFunctionParams(
   checker: ts.TypeChecker,
   node: ts.CallExpression | ts.NewExpression,
 ): Set<number> {
+  const thenableReturnIndices = new Set<number>();
   const voidReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
+
+  // TODO(file bug on TypeScript): checker.getResolvedSignature prefers a () => void over a () => Promise<void>
+  // See https://github.com/typescript-eslint/typescript-eslint/issues/4609 (todo: comment in PR)
 
   for (const subType of tsutils.unionTypeParts(type)) {
     // Standard function calls and `new` have two different types of signatures
@@ -408,11 +412,20 @@ function voidFunctionParams(
           parameter,
           node.expression,
         );
-        if (isVoidReturningFunctionType(checker, node.expression, type)) {
+        if (isThenableReturningFunctionType(checker, node.expression, type)) {
+          thenableReturnIndices.add(index);
+        } else if (
+          !thenableReturnIndices.has(index) &&
+          isVoidReturningFunctionType(checker, node.expression, type)
+        ) {
           voidReturnIndices.add(index);
         }
       }
     }
+  }
+
+  for (const index of thenableReturnIndices) {
+    voidReturnIndices.delete(index);
   }
 
   return voidReturnIndices;
@@ -424,21 +437,42 @@ function isVoidReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  let hasVoidReturningFunction = false;
-  let hasThenableReturningFunction = false;
   for (const subType of tsutils.unionTypeParts(type)) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
+
+      // If a certain positional argument accepts both thenable and void returns,
+      // a promise-returning function is valid
+      if (tsutils.isThenableType(checker, node, returnType)) {
+        return false;
+      }
+
       if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
-        hasVoidReturningFunction = true;
-      } else if (tsutils.isThenableType(checker, node, returnType)) {
-        hasThenableReturningFunction = true;
+        return true;
       }
     }
   }
-  // If a certain positional argument accepts both thenable and void returns,
-  // a promise-returning function is valid
-  return hasVoidReturningFunction && !hasThenableReturningFunction;
+  return false;
+}
+
+/**
+ * @returns Whether type is a void-returning function.
+ */
+function isThenableReturningFunctionType(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
+  for (const subType of tsutils.unionTypeParts(type)) {
+    for (const signature of subType.getCallSignatures()) {
+      const returnType = signature.getReturnType();
+      if (tsutils.isThenableType(checker, node, returnType)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 // Returns true if the expression is a function that returns a thenable
