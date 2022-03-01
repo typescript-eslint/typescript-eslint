@@ -2239,6 +2239,7 @@ ruleTester.run('naming-convention', rule, {
           'boo-----foo': string;
         }
       `,
+      // 6, not 7 because 'foo' is valid
       errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
     },
   ],
