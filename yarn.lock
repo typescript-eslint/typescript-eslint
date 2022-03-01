@@ -6789,14 +6789,14 @@ dotenv@~10.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
   integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
 
-downlevel-dts@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/downlevel-dts/-/downlevel-dts-0.8.0.tgz#bed86768357824b1a04f60df79d8b0867b83a382"
-  integrity sha512-wBy+Q0Ya/1XRz9MMaj3BXH95E8aSckY3lppmUnf8Qv7dUg0wbWm3szDiVL4PdAvwcS7JbBBDPhCXeAGNT3ttFQ==
+downlevel-dts@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/downlevel-dts/-/downlevel-dts-0.9.0.tgz#23c71e5bdf825a073f80a7ed077553c81aabdf01"
+  integrity sha512-XDYaZ7yY4yPLlNx3txbYRzUF6WiElAgMJQ/ACIaZnKISwuWw2eAHD7Ecp3u60ntej6i1yaMtjsN02hhA4FakFw==
   dependencies:
     semver "^7.3.2"
     shelljs "^0.8.3"
-    typescript "^4.1.0-dev.20201026"
+    typescript "^4.5.5"
 
 duplexer3@^0.1.4:
   version "0.1.4"
@@ -14787,7 +14787,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@*, typescript@4.5.2, "typescript@>=3.3.1 <4.6.0", typescript@^4.1.0-dev.20201026, typescript@^4.4.3, typescript@~4.5.2:
+typescript@*, typescript@4.5.2, "typescript@>=3.3.1 <4.6.0", typescript@^4.4.3, typescript@^4.5.5, typescript@~4.5.2:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.2.tgz#8ac1fba9f52256fdb06fb89e4122fa6a346c2998"
   integrity sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==
