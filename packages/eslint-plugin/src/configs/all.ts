@@ -157,6 +157,8 @@ export = {
     '@typescript-eslint/space-before-function-paren': 'error',
     'space-infix-ops': 'off',
     '@typescript-eslint/space-infix-ops': 'error',
+    'space-before-blocks': 'off',
+    '@typescript-eslint/space-before-blocks': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',

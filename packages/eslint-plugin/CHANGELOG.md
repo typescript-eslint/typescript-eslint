@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.1...v5.13.0) (2022-02-28)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [sort-type-union-intersection-members] Wrap the constructorType in parentheses ([#4590](https://github.com/typescript-eslint/typescript-eslint/issues/4590)) ([851bb90](https://github.com/typescript-eslint/typescript-eslint/commit/851bb90216e20b7679efc891dc445e6152d4837f))
+
+
+### Features
+
+* **eslint-plugin:** [no-misused-promises] check more places for checksVoidReturn ([#4541](https://github.com/typescript-eslint/typescript-eslint/issues/4541)) ([052cf51](https://github.com/typescript-eslint/typescript-eslint/commit/052cf51fe663283afe89dc7bf97c947e750df095))
+* **eslint-plugin:** add `no-redundant-type-constituents` rule ([#4378](https://github.com/typescript-eslint/typescript-eslint/issues/4378)) ([63d051e](https://github.com/typescript-eslint/typescript-eslint/commit/63d051eed29dcf71015a23992feac0a8f92717a0))
+* **eslint-plugin:** add `no-useless-empty-export` rule ([#4380](https://github.com/typescript-eslint/typescript-eslint/issues/4380)) ([823b945](https://github.com/typescript-eslint/typescript-eslint/commit/823b945c8f9e83d0246a2a5d07519f01e1a64518))
+* **eslint-plugin:** add extension rule `space-before-blocks` ([#1606](https://github.com/typescript-eslint/typescript-eslint/issues/1606)) ([#4184](https://github.com/typescript-eslint/typescript-eslint/issues/4184)) ([208b6d0](https://github.com/typescript-eslint/typescript-eslint/commit/208b6d02252dff2bf272329d3e4a4a82e56c52c0))
+* **eslint-plugin:** added member group support to member-ordering rule ([#4538](https://github.com/typescript-eslint/typescript-eslint/issues/4538)) ([6afcaea](https://github.com/typescript-eslint/typescript-eslint/commit/6afcaea0160a1ccd1c6483ca677c544ca1b8cb4f))
+
+
+
+
+
 ## [5.12.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.0...v5.12.1) (2022-02-21)
 
 
