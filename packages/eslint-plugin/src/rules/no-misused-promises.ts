@@ -431,7 +431,44 @@ function voidFunctionParams(
   return voidReturnIndices;
 }
 
-// Returns true if given type is a void-returning function.
+/**
+ * @returns Whether any call signature of the type has a thenable return type.
+ */
+function anySignatureIsThenableType(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
+  for (const signature of type.getCallSignatures()) {
+    const returnType = signature.getReturnType();
+    if (tsutils.isThenableType(checker, node, returnType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * @returns Whether type is a thenable-returning function.
+ */
+function isThenableReturningFunctionType(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
+  for (const subType of tsutils.unionTypeParts(type)) {
+    if (anySignatureIsThenableType(checker, node, subType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * @returns Whether type is a void-returning function.
+ */
 function isVoidReturningFunctionType(
   checker: ts.TypeChecker,
   node: ts.Node,
@@ -456,36 +493,13 @@ function isVoidReturningFunctionType(
 }
 
 /**
- * @returns Whether type is a void-returning function.
+ * @returns Whether expression is a function that returns a thenable.
  */
-function isThenableReturningFunctionType(
-  checker: ts.TypeChecker,
-  node: ts.Node,
-  type: ts.Type,
-): boolean {
-  for (const subType of tsutils.unionTypeParts(type)) {
-    for (const signature of subType.getCallSignatures()) {
-      const returnType = signature.getReturnType();
-      if (tsutils.isThenableType(checker, node, returnType)) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
-// Returns true if the expression is a function that returns a thenable
 function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getApparentType(checker.getTypeAtLocation(node));
 
-  for (const subType of tsutils.unionTypeParts(type)) {
-    for (const signature of subType.getCallSignatures()) {
-      const returnType = signature.getReturnType();
-      if (tsutils.isThenableType(checker, node, returnType)) {
-        return true;
-      }
-    }
+  if (anySignatureIsThenableType(checker, node, type)) {
+    return true;
   }
 
   return false;
