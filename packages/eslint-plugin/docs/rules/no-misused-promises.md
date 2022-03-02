@@ -19,9 +19,17 @@ Both are enabled by default
 type Options = [
   {
     checksConditionals?: boolean;
-    checksVoidReturn?: boolean;
+    checksVoidReturn?: boolean | ChecksVoidReturnOptions;
   },
 ];
+
+interface ChecksVoidReturnOptions {
+  arguments?: boolean;
+  attributes?: boolean;
+  properties?: boolean;
+  returns?: boolean;
+  variables?: boolean;
+}
 
 const defaultOptions: Options = [
   {
@@ -31,7 +39,21 @@ const defaultOptions: Options = [
 ];
 ```
 
-If you don't want functions that return promises where a void return is
+If you don't want to check conditionals, you can configure the rule
+like this:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksConditionals": false
+    }
+  ]
+}
+```
+
+Likewise, if you don't want functions that return promises where a void return is
 expected to be checked, your configuration will look like this:
 
 ```json
@@ -45,15 +67,17 @@ expected to be checked, your configuration will look like this:
 }
 ```
 
-Likewise, if you don't want to check conditionals, you can configure the rule
-like this:
+You can disable selective parts of the `checksVoidReturn` option by providing an
+object that disables specific checks:
 
 ```json
 {
   "@typescript-eslint/no-misused-promises": [
     "error",
     {
-      "checksConditionals": false
+      "checksVoidReturn": {
+        "arguments": false
+      }
     }
   ]
 }

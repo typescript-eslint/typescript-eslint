@@ -252,6 +252,51 @@ const Component: any = () => null;
       `,
       filename: 'react.tsx',
     },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      filename: 'react.tsx',
+      options: [{ checksVoidReturn: { attributes: false } }],
+    },
+    {
+      code: `
+[Promise.resolve(), Promise.reject()].forEach(async val => {
+  await val;
+});
+      `,
+      options: [{ checksVoidReturn: { arguments: false } }],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      options: [{ checksVoidReturn: { properties: false } }],
+    },
+    {
+      code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      options: [{ checksVoidReturn: { returns: false } }],
+    },
+    {
+      code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      options: [{ checksVoidReturn: { variables: false } }],
+    },
   ],
 
   invalid: [
@@ -354,6 +399,20 @@ if (!Promise.resolve()) {
           messageId: 'voidReturnArgument',
         },
       ],
+    },
+    {
+      code: `
+[Promise.resolve(), Promise.reject()].forEach(async val => {
+  await val;
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+      options: [{ checksVoidReturn: { arguments: true } }],
     },
     {
       code: `
@@ -534,6 +593,21 @@ f = async () => {
     },
     {
       code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+      options: [{ checksVoidReturn: { variables: true } }],
+    },
+    {
+      code: `
 const f: () => void = async () => {
   return 0;
 };
@@ -580,6 +654,21 @@ const obj: O = {
           messageId: 'voidReturnProperty',
         },
       ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+      options: [{ checksVoidReturn: { properties: true } }],
     },
     {
       code: `
@@ -656,6 +745,20 @@ function f(): () => void {
     },
     {
       code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnReturnValue',
+        },
+      ],
+      options: [{ checksVoidReturn: { returns: true } }],
+    },
+    {
+      code: `
 type O = {
   func: () => void;
 };
@@ -669,6 +772,23 @@ const Component = (obj: O) => null;
           messageId: 'voidReturnAttribute',
         },
       ],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+      options: [{ checksVoidReturn: { attributes: true } }],
     },
     {
       code: `
