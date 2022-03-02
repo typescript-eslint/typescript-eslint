@@ -822,25 +822,6 @@ it('', async () => {});
       code: `
 interface ItLike {
   (name: string, callback: () => number): void;
-  (name: string, callback: () => void): void;
-}
-
-declare const it: ItLike;
-
-it('', async () => {});
-      `,
-      errors: [
-        {
-          line: 9,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-      options: [{ checksVoidReturn: { arguments: true } }],
-    },
-    {
-      code: `
-interface ItLike {
-  (name: string, callback: () => number): void;
 }
 interface ItLike {
   (name: string, callback: () => void): void;
