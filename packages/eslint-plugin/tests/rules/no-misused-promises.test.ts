@@ -304,51 +304,6 @@ declare const it: ItLike;
 it('', async () => {});
       `,
     },
-    {
-      code: `
-type O = {
-  func: () => void;
-};
-const Component = (obj: O) => null;
-<Component func={async () => 0} />;
-      `,
-      filename: 'react.tsx',
-      options: [{ checksVoidReturn: { attributes: false } }],
-    },
-    {
-      code: `
-[Promise.resolve(), Promise.reject()].forEach(async val => {
-  await val;
-});
-      `,
-      options: [{ checksVoidReturn: { arguments: false } }],
-    },
-    {
-      code: `
-type O = { f: () => void };
-const obj: O = {
-  f: async () => 'foo',
-};
-      `,
-      options: [{ checksVoidReturn: { properties: false } }],
-    },
-    {
-      code: `
-function f(): () => void {
-  return async () => 0;
-}
-      `,
-      options: [{ checksVoidReturn: { returns: false } }],
-    },
-    {
-      code: `
-let f: () => void;
-f = async () => {
-  return 3;
-};
-      `,
-      options: [{ checksVoidReturn: { variables: false } }],
-    },
   ],
 
   invalid: [
@@ -451,20 +406,6 @@ if (!Promise.resolve()) {
           messageId: 'voidReturnArgument',
         },
       ],
-    },
-    {
-      code: `
-[Promise.resolve(), Promise.reject()].forEach(async val => {
-  await val;
-});
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-      options: [{ checksVoidReturn: { arguments: true } }],
     },
     {
       code: `
@@ -626,64 +567,6 @@ function test(p: Promise<void> | undefined) {
         {
           line: 3,
           messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-interface ItLike {
-  (name: string, callback: () => number): void;
-  (name: string, callback: () => void): void;
-}
-
-declare const it: ItLike;
-
-it('', async () => {});
-      `,
-      errors: [
-        {
-          line: 9,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-interface ItLike {
-  (name: string, callback: () => number): void;
-}
-interface ItLike {
-  (name: string, callback: () => void): void;
-}
-
-declare const it: ItLike;
-
-it('', async () => {});
-      `,
-      errors: [
-        {
-          line: 11,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-interface ItLike {
-  (name: string, callback: () => void): void;
-}
-interface ItLike {
-  (name: string, callback: () => number): void;
-}
-
-declare const it: ItLike;
-
-it('', async () => {});
-      `,
-      errors: [
-        {
-          line: 11,
-          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -914,6 +797,83 @@ const Component = (obj: O) => null;
         {
           line: 7,
           messageId: 'voidReturnAttribute',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+      options: [{ checksVoidReturn: { arguments: true } }],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
         },
       ],
     },
