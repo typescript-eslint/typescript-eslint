@@ -258,7 +258,9 @@ interface ItLike {
   (name: string, callback: () => Promise<void>): void;
   (name: string, callback: () => void): void;
 }
+
 declare const it: ItLike;
+
 it('', async () => {});
       `,
     },
@@ -268,7 +270,9 @@ interface ItLike {
   (name: string, callback: () => void): void;
   (name: string, callback: () => Promise<void>): void;
 }
+
 declare const it: ItLike;
+
 it('', async () => {});
       `,
     },
@@ -280,7 +284,9 @@ interface ItLike {
 interface ItLike {
   (name: string, callback: () => Promise<void>): void;
 }
+
 declare const it: ItLike;
+
 it('', async () => {});
       `,
     },
@@ -292,7 +298,9 @@ interface ItLike {
 interface ItLike {
   (name: string, callback: () => void): void;
 }
+
 declare const it: ItLike;
+
 it('', async () => {});
       `,
     },
@@ -627,7 +635,9 @@ interface ItLike {
   (name: string, callback: () => number): void;
   (name: string, callback: () => void): void;
 }
+
 declare const it: ItLike;
+
 it('', async () => {});
       `,
       errors: [
@@ -645,7 +655,9 @@ interface ItLike {
 interface ItLike {
   (name: string, callback: () => void): void;
 }
+
 declare const it: ItLike;
+
 it('', async () => {});
       `,
       errors: [
@@ -663,7 +675,9 @@ interface ItLike {
 interface ItLike {
   (name: string, callback: () => number): void;
 }
+
 declare const it: ItLike;
+
 it('', async () => {});
       `,
       errors: [
