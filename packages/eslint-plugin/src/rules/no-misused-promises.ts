@@ -394,8 +394,12 @@ function voidFunctionParams(
   checker: ts.TypeChecker,
   node: ts.CallExpression | ts.NewExpression,
 ): Set<number> {
+  const thenableReturnIndices = new Set<number>();
   const voidReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
+
+  // We can't use checker.getResolvedSignature because it prefers an early '() => void' over a later '() => Promise<void>'
+  // See https://github.com/microsoft/TypeScript/issues/48077
 
   for (const subType of tsutils.unionTypeParts(type)) {
     // Standard function calls and `new` have two different types of signatures
@@ -408,50 +412,94 @@ function voidFunctionParams(
           parameter,
           node.expression,
         );
-        if (isVoidReturningFunctionType(checker, node.expression, type)) {
+        if (isThenableReturningFunctionType(checker, node.expression, type)) {
+          thenableReturnIndices.add(index);
+        } else if (
+          !thenableReturnIndices.has(index) &&
+          isVoidReturningFunctionType(checker, node.expression, type)
+        ) {
           voidReturnIndices.add(index);
         }
       }
     }
   }
 
+  for (const index of thenableReturnIndices) {
+    voidReturnIndices.delete(index);
+  }
+
   return voidReturnIndices;
 }
 
-// Returns true if given type is a void-returning function.
+/**
+ * @returns Whether any call signature of the type has a thenable return type.
+ */
+function anySignatureIsThenableType(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
+  for (const signature of type.getCallSignatures()) {
+    const returnType = signature.getReturnType();
+    if (tsutils.isThenableType(checker, node, returnType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * @returns Whether type is a thenable-returning function.
+ */
+function isThenableReturningFunctionType(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
+  for (const subType of tsutils.unionTypeParts(type)) {
+    if (anySignatureIsThenableType(checker, node, subType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * @returns Whether type is a void-returning function.
+ */
 function isVoidReturningFunctionType(
   checker: ts.TypeChecker,
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  let hasVoidReturningFunction = false;
-  let hasThenableReturningFunction = false;
   for (const subType of tsutils.unionTypeParts(type)) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
-      if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
-        hasVoidReturningFunction = true;
-      } else if (tsutils.isThenableType(checker, node, returnType)) {
-        hasThenableReturningFunction = true;
-      }
-    }
-  }
-  // If a certain positional argument accepts both thenable and void returns,
-  // a promise-returning function is valid
-  return hasVoidReturningFunction && !hasThenableReturningFunction;
-}
 
-// Returns true if the expression is a function that returns a thenable
-function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
-  const type = checker.getApparentType(checker.getTypeAtLocation(node));
-
-  for (const subType of tsutils.unionTypeParts(type)) {
-    for (const signature of subType.getCallSignatures()) {
-      const returnType = signature.getReturnType();
+      // If a certain positional argument accepts both thenable and void returns,
+      // a promise-returning function is valid
       if (tsutils.isThenableType(checker, node, returnType)) {
+        return false;
+      }
+
+      if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
         return true;
       }
     }
+  }
+  return false;
+}
+
+/**
+ * @returns Whether expression is a function that returns a thenable.
+ */
+function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
+  const type = checker.getApparentType(checker.getTypeAtLocation(node));
+
+  if (anySignatureIsThenableType(checker, node, type)) {
+    return true;
   }
 
   return false;
