@@ -7,9 +7,17 @@ import * as util from '../util';
 type Options = [
   {
     checksConditionals?: boolean;
-    checksVoidReturn?: boolean;
+    checksVoidReturn?: boolean | ChecksVoidReturnOptions;
   },
 ];
+
+interface ChecksVoidReturnOptions {
+  arguments?: boolean;
+  attributes?: boolean;
+  properties?: boolean;
+  returns?: boolean;
+  variables?: boolean;
+}
 
 type MessageId =
   | 'conditional'
@@ -18,6 +26,34 @@ type MessageId =
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
   | 'voidReturnAttribute';
+
+function parseChecksVoidReturn(
+  checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
+): ChecksVoidReturnOptions | false {
+  switch (checksVoidReturn) {
+    case false:
+      return false;
+
+    case true:
+    case undefined:
+      return {
+        arguments: true,
+        attributes: true,
+        properties: true,
+        returns: true,
+        variables: true,
+      };
+
+    default:
+      return {
+        arguments: checksVoidReturn.arguments ?? true,
+        attributes: checksVoidReturn.attributes ?? true,
+        properties: checksVoidReturn.properties ?? true,
+        returns: checksVoidReturn.returns ?? true,
+        variables: checksVoidReturn.variables ?? true,
+      };
+  }
+}
 
 export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
@@ -48,7 +84,20 @@ export default util.createRule<Options, MessageId>({
             type: 'boolean',
           },
           checksVoidReturn: {
-            type: 'boolean',
+            oneOf: [
+              { type: 'boolean' },
+              {
+                additionalProperties: false,
+                properties: {
+                  arguments: { type: 'boolean' },
+                  attributes: { type: 'boolean' },
+                  properties: { type: 'boolean' },
+                  returns: { type: 'boolean' },
+                  variables: { type: 'boolean' },
+                },
+                type: 'object',
+              },
+            ],
           },
         },
       },
@@ -80,15 +129,29 @@ export default util.createRule<Options, MessageId>({
       WhileStatement: checkTestConditional,
     };
 
-    const voidReturnChecks: TSESLint.RuleListener = {
-      CallExpression: checkArguments,
-      NewExpression: checkArguments,
-      AssignmentExpression: checkAssignment,
-      VariableDeclarator: checkVariableDeclaration,
-      Property: checkProperty,
-      ReturnStatement: checkReturnStatement,
-      JSXAttribute: checkJSXAttribute,
-    };
+    checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
+
+    const voidReturnChecks: TSESLint.RuleListener = checksVoidReturn
+      ? {
+          ...(checksVoidReturn.arguments && {
+            CallExpression: checkArguments,
+            NewExpression: checkArguments,
+          }),
+          ...(checksVoidReturn.attributes && {
+            JSXAttribute: checkJSXAttribute,
+          }),
+          ...(checksVoidReturn.properties && {
+            Property: checkProperty,
+          }),
+          ...(checksVoidReturn.returns && {
+            ReturnStatement: checkReturnStatement,
+          }),
+          ...(checksVoidReturn.variables && {
+            AssignmentExpression: checkAssignment,
+            VariableDeclarator: checkVariableDeclaration,
+          }),
+        }
+      : {};
 
     function checkTestConditional(node: {
       test: TSESTree.Expression | null;
