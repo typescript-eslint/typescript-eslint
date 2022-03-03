@@ -74,7 +74,9 @@ export default util.createRule<Options, MessageIds>({
      * Gets the modifiers of `node`.
      * @param node the node to be inspected.
      */
-    function getModifiers(node: TSESTree.TSParameterProperty): Modifier {
+    function getModifiers(
+      node: TSESTree.PropertyDefinition | TSESTree.TSParameterProperty,
+    ): Modifier {
       const modifiers: Modifier[] = [];
 
       if (node.accessibility) {
@@ -128,7 +130,8 @@ export default util.createRule<Options, MessageIds>({
     const propertyNodesByNameStack: Map<string, PropertyNodes>[] = [];
 
     function getNodesByName(name: string): PropertyNodes {
-      const propertyNodesByName = propertyNodesByNameStack.at(-1)!;
+      const propertyNodesByName =
+        propertyNodesByNameStack[propertyNodesByNameStack.length - 1];
       const existing = propertyNodesByName.get(name);
       if (existing) {
         return existing;
@@ -137,6 +140,27 @@ export default util.createRule<Options, MessageIds>({
       const created: PropertyNodes = {};
       propertyNodesByName.set(name, created);
       return created;
+    }
+
+    const sourceCode = context.getSourceCode();
+
+    function typeAnnotationsMatch(
+      classProperty: TSESTree.PropertyDefinition,
+      constructorParameter: TSESTree.Identifier,
+    ): boolean {
+      if (
+        !classProperty.typeAnnotation ||
+        !constructorParameter.typeAnnotation
+      ) {
+        return (
+          classProperty.typeAnnotation === constructorParameter.typeAnnotation
+        );
+      }
+
+      return (
+        sourceCode.getText(classProperty.typeAnnotation) ===
+        sourceCode.getText(constructorParameter.typeAnnotation)
+      );
     }
 
     return {
@@ -151,7 +175,11 @@ export default util.createRule<Options, MessageIds>({
           if (
             nodes.classProperty &&
             nodes.constructorAssignment &&
-            nodes.constructorParameter
+            nodes.constructorParameter &&
+            typeAnnotationsMatch(
+              nodes.classProperty,
+              nodes.constructorParameter,
+            )
           ) {
             context.report({
               data: {
@@ -168,7 +196,9 @@ export default util.createRule<Options, MessageIds>({
         for (const element of node.body) {
           if (
             element.type === AST_NODE_TYPES.PropertyDefinition &&
-            element.key.type === AST_NODE_TYPES.Identifier
+            element.key.type === AST_NODE_TYPES.Identifier &&
+            !element.value &&
+            !allow.includes(getModifiers(element))
           ) {
             getNodesByName(element.key.name).classProperty = element;
           }
@@ -179,10 +209,7 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.MethodDefinition,
       ): void {
         for (const parameter of node.value.params) {
-          if (
-            parameter.type === AST_NODE_TYPES.Identifier &&
-            parameter.typeAnnotation
-          ) {
+          if (parameter.type === AST_NODE_TYPES.Identifier) {
             getNodesByName(parameter.name).constructorParameter = parameter;
           }
         }

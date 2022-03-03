@@ -12,6 +12,14 @@ class Foo {
   constructor(name: string) {}
 }
     `,
+    {
+      code: `
+class Foo {
+  constructor(name: string) {}
+}
+      `,
+      options: [{ prefer: 'class-property' }],
+    },
     `
 class Foo {
   constructor(...name: string[]) {}
@@ -112,6 +120,162 @@ class Foo {
   constructor(private [test]: [string]) {}
 }
     `,
+    {
+      code: `
+class Foo {
+  constructor(private name: string[]) {}
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(...name: string[]) {}
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(age: string, ...name: string[]) {}
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private age: string, ...name: string[]) {}
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public age: number;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public age = '';
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public age;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public age: string;
+  constructor(age) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public age: string;
+  constructor(age: string) {
+    console.log('unrelated');
+    this.age = age;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public age: string;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ allow: ['public'], prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public readonly age: string;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ allow: ['public readonly'], prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  protected age: string;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ allow: ['protected'], prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  protected readonly age: string;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [
+        { allow: ['protected readonly'], prefer: 'parameter-property' },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private age: string;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ allow: ['private'], prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  private readonly age: string;
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ allow: ['private readonly'], prefer: 'parameter-property' }],
+    },
   ],
   invalid: [
     {
@@ -730,8 +894,76 @@ class Foo {
           column: 3,
         },
       ],
-      only: true,
       options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(member: string) {
+    this.member = member;
+  }
+
+  member: string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferParameterProperty',
+          data: {
+            parameter: 'member',
+          },
+          line: 7,
+          column: 3,
+        },
+      ],
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  member;
+  constructor(member) {
+    this.member = member;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferParameterProperty',
+          data: {
+            parameter: 'member',
+          },
+          line: 3,
+          column: 3,
+        },
+      ],
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  public member: string;
+  constructor(member: string) {
+    this.member = member;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferParameterProperty',
+          data: {
+            parameter: 'member',
+          },
+          line: 3,
+          column: 3,
+        },
+      ],
+      options: [
+        {
+          allow: ['protected', 'private', 'readonly'],
+          prefer: 'parameter-property',
+        },
+      ],
     },
   ],
 });
