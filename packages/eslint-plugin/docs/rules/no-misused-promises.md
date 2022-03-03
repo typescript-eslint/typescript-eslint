@@ -39,8 +39,9 @@ const defaultOptions: Options = [
 ];
 ```
 
-If you don't want to check conditionals, you can configure the rule
-like this:
+### `"checksConditionals"`
+
+If you don't want to check conditionals, you can configure the rule with `"checksConditionals": false`:
 
 ```json
 {
@@ -52,6 +53,10 @@ like this:
   ]
 }
 ```
+
+Doing so prevents the rule from looking at code like `if (somePromise)`.
+
+### `"checksVoidReturn"`
 
 Likewise, if you don't want functions that return promises where a void return is
 expected to be checked, your configuration will look like this:
@@ -67,8 +72,16 @@ expected to be checked, your configuration will look like this:
 }
 ```
 
-You can disable selective parts of the `checksVoidReturn` option by providing an
-object that disables specific checks:
+You can disable selective parts of the `checksVoidReturn` option by providing an object that disables specific checks.
+The following options are supported:
+
+- `arguments`: Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`
+- `attributes`: Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`
+- `properties`: Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`
+- `returns`: Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`
+- `variables`: Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`
+
+For example, if you don't mind that passing a `() => Promise<void>` to a `() => void` parameter or JSX attribute can lead to a floating unhandled Promise:
 
 ```json
 {
@@ -76,7 +89,8 @@ object that disables specific checks:
     "error",
     {
       "checksVoidReturn": {
-        "arguments": false
+        "arguments": false,
+        "attributes": false
       }
     }
   ]
