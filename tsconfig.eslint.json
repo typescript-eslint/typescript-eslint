@@ -5,5 +5,10 @@
     "allowJs": true
   },
   "extends": "./tsconfig.base.json",
-  "include": ["tools/**/*.ts", ".eslintrc.js", "tests/jest-resolver.js"]
+  "include": [
+    "tools/**/*.ts",
+    ".eslintrc.js",
+    "jest.config.base.js",
+    "tests/jest-resolver.js"
+  ]
 }
