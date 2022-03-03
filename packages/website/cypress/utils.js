@@ -22,7 +22,7 @@ function terminalLog(violations) {
 
 export function checkAccessibility() {
   // Wait for any pending paints and ticks to clear
-  cy.wait(100);
+  cy.wait(500);
 
   cy.checkA11y(undefined, undefined, terminalLog);
 }
