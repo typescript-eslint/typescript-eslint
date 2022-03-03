@@ -84,7 +84,7 @@ const config = {
         title: 'TypeScript ESLint',
         // hideOnScroll: true,
         logo: {
-          alt: 'TypeScript ESLint',
+          alt: 'TypeScript ESLint logo',
           height: '32px',
           src: 'img/logo.svg',
           width: '32px',
