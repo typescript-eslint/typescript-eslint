@@ -5,7 +5,7 @@
 import { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
-export const esnext_array = {
+export const es2022_array = {
   Array: TYPE,
   ReadonlyArray: TYPE,
   Int8Array: TYPE,

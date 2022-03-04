@@ -275,6 +275,7 @@ tester.addFixturePatternConfig('javascript/objectLiteralDuplicateProperties', {
      * Babel does not throw for some reason...
      */
     'strict-duplicate-properties', // ts-estree parse errors
+    'strict-duplicate-string-properties',
   ],
 });
 
