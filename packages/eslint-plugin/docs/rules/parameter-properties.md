@@ -47,7 +47,9 @@ For example, to ignore `public` properties:
 ### `"prefer"`
 
 By default, the rule prefers class properties (`"class-properties"`).
-You can switch it to instead preferring parameter properties when:
+You can switch it to instead preferring parameter properties with (`"parameter-properties"`).
+
+In `"parameter-properties"` mode, the rule will issue a report when:
 
 - A class property and constructor parameter have the same name and type
 - The constructor parameter is assigned to the class property at the beginning of the constructor
