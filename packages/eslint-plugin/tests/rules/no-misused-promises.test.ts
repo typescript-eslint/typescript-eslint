@@ -252,6 +252,58 @@ const Component: any = () => null;
       `,
       filename: 'react.tsx',
     },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => Promise<void>): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+  (name: string, callback: () => Promise<void>): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+interface ItLike {
+  (name: string, callback: () => Promise<void>): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => Promise<void>): void;
+}
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
   ],
 
   invalid: [
@@ -534,6 +586,21 @@ f = async () => {
     },
     {
       code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+      options: [{ checksVoidReturn: { variables: true } }],
+    },
+    {
+      code: `
 const f: () => void = async () => {
   return 0;
 };
@@ -580,6 +647,21 @@ const obj: O = {
           messageId: 'voidReturnProperty',
         },
       ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+      options: [{ checksVoidReturn: { properties: true } }],
     },
     {
       code: `
@@ -656,6 +738,20 @@ function f(): () => void {
     },
     {
       code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnReturnValue',
+        },
+      ],
+      options: [{ checksVoidReturn: { returns: true } }],
+    },
+    {
+      code: `
 type O = {
   func: () => void;
 };
@@ -675,6 +771,23 @@ const Component = (obj: O) => null;
 type O = {
   func: () => void;
 };
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+      options: [{ checksVoidReturn: { attributes: true } }],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
 const g = async () => 'foo';
 const Component = (obj: O) => null;
 <Component func={g} />;
@@ -684,6 +797,64 @@ const Component = (obj: O) => null;
         {
           line: 7,
           messageId: 'voidReturnAttribute',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
         },
       ],
     },

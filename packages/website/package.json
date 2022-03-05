@@ -9,7 +9,9 @@
     "lint": "eslint . --ext .js,.ts --ignore-path ../../.eslintignore",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
-    "swizzle": "docusaurus swizzle"
+    "swizzle": "docusaurus swizzle",
+    "test": "cypress run",
+    "test:open": "cypress open"
   },
   "dependencies": {
     "@babel/runtime": "7.17.2",
@@ -39,6 +41,8 @@
     "@types/react-helmet": "^6.1.4",
     "@types/react-router-dom": "^5.3.2",
     "copy-webpack-plugin": "^9.1.0",
+    "cypress": "8.3.0",
+    "cypress-axe": "^0.13.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",

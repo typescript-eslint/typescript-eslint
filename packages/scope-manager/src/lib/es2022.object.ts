@@ -3,10 +3,8 @@
 // YOU CAN REGENERATE IT USING yarn generate:lib
 
 import { ImplicitLibVariableOptions } from '../variable';
-import { es2022 } from './es2022';
-import { esnext_intl } from './esnext.intl';
+import { TYPE } from './base-config';
 
-export const esnext = {
-  ...es2022,
-  ...esnext_intl,
+export const es2022_object = {
+  Object: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
