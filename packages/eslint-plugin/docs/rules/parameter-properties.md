@@ -13,7 +13,14 @@ declare all properties in the class.
 ## Options
 
 This rule, in its default state, does not require any argument and would completely disallow the use of parameter properties.
-If you would like to allow certain types of parameter properties then you may pass an object with the following options:
+It may take an options object containing either or both of:
+
+- `"allows"`: allowing certain kinds of properties to be ignored
+- `"prefer"`: either `"class-properties"` _(default)_ or `"parameter-properties"`
+
+### `"allows"`
+
+If you would like to ignore certain kinds of properties then you may pass an object containing `"allows"` as an array of any of the following options:
 
 - `allows`, an array containing one or more of the allowed modifiers. Valid values are:
   - `readonly`, allows **readonly** parameter properties.
@@ -23,6 +30,27 @@ If you would like to allow certain types of parameter properties then you may pa
   - `private readonly`, allows **private readonly** parameter properties.
   - `protected readonly`, allows **protected readonly** parameter properties.
   - `public readonly`, allows **public readonly** parameter properties.
+
+For example, to ignore `public` properties:
+
+```json
+{
+  "@typescript-eslint/parameter-properties": [
+    true,
+    {
+      "allow": ["public"]
+    }
+  ]
+}
+```
+
+### `"prefer"`
+
+By default, the rule prefers class properties (`"class-properties"`).
+You can switch it to instead preferring parameter properties when:
+
+- A class property and constructor parameter have the same name and type
+- The constructor parameter is assigned to the class property at the beginning of the constructor
 
 ### default
 
@@ -389,6 +417,63 @@ class Foo {
 
 class Foo {
   constructor(public readonly name: string) {}
+}
+```
+
+### `"parameter-properties"`
+
+Examples of code for the `{ "prefer": ["parameter-properties"] }` option:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+class Foo {
+  private name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  public readonly name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  constructor(name: string) {
+    this.name = name;
+  }
+  name: string;
+}
+```
+
+#### ✅ Correct
+
+```ts
+class Foo {
+  private differentName: string;
+  constructor(name: string) {
+    this.differentName = name;
+  }
+}
+
+class Foo {
+  private differentType: number | undefined;
+  constructor(differentType: number) {
+    this.differentType = differentType;
+  }
+}
+
+class Foo {
+  protected logicInConstructor: string;
+  constructor(logicInConstructor: string) {
+    console.log('Hello, world!');
+    this.logicInConstructor = logicInConstructor;
+  }
 }
 ```
 

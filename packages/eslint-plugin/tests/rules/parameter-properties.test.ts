@@ -211,6 +211,42 @@ class Foo {
     {
       code: `
 class Foo {
+  other: string;
+  constructor(age: string) {
+    this.other = age;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  age: string;
+  constructor(age: string) {
+    this.age = '';
+    console.log(age);
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
+  age() {
+    return '';
+  }
+  constructor(age: string) {
+    this.age = age;
+  }
+}
+      `,
+      options: [{ prefer: 'parameter-property' }],
+    },
+    {
+      code: `
+class Foo {
   public age: string;
   constructor(age: string) {
     this.age = age;
