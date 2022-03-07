@@ -64,12 +64,12 @@ export const isNotTokenOfTypeWithConditions =
     token: TSESTree.Token | null | undefined,
   ) => token is Exclude<
     TSESTree.Token,
-    TSESTree.Token & { type: TokenType } & Conditions
+    Extract<TSESTree.Token, { type: TokenType }> & Conditions
   >) =>
   (
     token,
   ): token is Exclude<
     TSESTree.Token,
-    TSESTree.Token & { type: TokenType } & Conditions
+    Extract<TSESTree.Token, { type: TokenType }> & Conditions
   > =>
     !isTokenOfTypeWithConditions(tokenType, conditions)(token);
