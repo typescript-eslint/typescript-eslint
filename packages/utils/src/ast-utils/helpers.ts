@@ -43,12 +43,12 @@ export const isTokenOfTypeWithConditions = <
   conditions: Conditions,
 ): ((
   token: TSESTree.Token | null | undefined,
-) => token is TSESTree.Token & { type: TokenType } & Conditions) => {
+) => token is Extract<TSESTree.Token, { type: TokenType }> & Conditions) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Token>;
 
   return (
     token: TSESTree.Token | null | undefined,
-  ): token is TSESTree.Token & { type: TokenType } & Conditions =>
+  ): token is Extract<TSESTree.Token, { type: TokenType }> & Conditions =>
     token?.type === tokenType &&
     entries.every(([key, value]) => token[key] === value);
 };
