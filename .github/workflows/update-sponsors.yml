@@ -13,6 +13,6 @@ jobs:
       - uses: Codecademy/run-on-yarn@v1
         with:
           command: generate-sponsors
-      - uses: EndBug/add-and-commit@v7
+      - uses: EndBug/add-and-commit@v8
         with:
           message: 'chore: update sponsors data'
