@@ -21,13 +21,13 @@ jobs:
     name: Typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: echo github.ref
         run: echo ${{ github.ref }}
 
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
@@ -62,7 +62,7 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
@@ -70,7 +70,7 @@ jobs:
         run: echo ${{ github.ref }}
 
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
@@ -153,9 +153,9 @@ jobs:
     name: Code style and lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
@@ -197,9 +197,9 @@ jobs:
     name: Run integration tests on primary Node.js version
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
@@ -240,9 +240,9 @@ jobs:
       # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
       NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -314,7 +314,7 @@ jobs:
     name: Website tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
@@ -364,13 +364,13 @@ jobs:
       ]
     if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # Fetch all history for all tags and branches in this job because lerna needs it
       - run: |
           git fetch --prune --unshallow
 
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
           registry-url: https://registry.npmjs.org/
