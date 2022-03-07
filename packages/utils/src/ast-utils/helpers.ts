@@ -25,12 +25,12 @@ export const isNodeOfTypeWithConditions = <
   conditions: Conditions,
 ): ((
   node: TSESTree.Node | null | undefined,
-) => node is TSESTree.Node & { type: NodeType } & Conditions) => {
+) => node is Extract<TSESTree.Node, { type: NodeType }> & Conditions) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Node>;
 
   return (
     node: TSESTree.Node | null | undefined,
-  ): node is TSESTree.Node & { type: NodeType } & Conditions =>
+  ): node is Extract<TSESTree.Node, { type: NodeType }> & Conditions =>
     node?.type === nodeType &&
     entries.every(([key, value]) => node[key] === value);
 };
