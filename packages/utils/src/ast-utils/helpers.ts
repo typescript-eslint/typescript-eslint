@@ -14,7 +14,7 @@ export const isNodeOfTypes =
   <NodeTypes extends readonly AST_NODE_TYPES[]>(nodeTypes: NodeTypes) =>
   (
     node: TSESTree.Node | null | undefined,
-  ): node is TSESTree.Node & { type: NodeTypes[number] } =>
+  ): node is Extract<TSESTree.Node, { type: NodeTypes[number] }> =>
     !!node && nodeTypes.includes(node.type);
 
 export const isNodeOfTypeWithConditions = <
