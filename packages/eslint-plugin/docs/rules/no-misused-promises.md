@@ -6,8 +6,10 @@ This rule forbids providing Promises to logical locations such as if statements 
 These situations can often arise due to a missing `await` keyword or just a misunderstanding of the way async
 functions are handled/awaited.
 
-> `no-misused-promises` only detects code that provides Promises to incorrect _logical_ locations.
-> See [`no-floating-promises](./no-floating-promises.md) for detecting unhandled Promise _statements_.
+:::tip
+`no-misused-promises` only detects code that provides Promises to incorrect _logical_ locations.
+See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled Promise _statements_.
+:::
 
 ## Rule Details
 

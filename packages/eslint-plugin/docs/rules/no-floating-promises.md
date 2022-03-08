@@ -13,8 +13,10 @@ Valid ways of handling a Promise-valued statement include:
 - Calling its `.then()` with two arguments
 - Calling its `.catch()` with one argument
 
-> `no-floating-promises` only detects unhandled Promise _statements_.
-> See [`no-misused-promises](./no-misused-promises.md) for detecting code that provides Promises to _logical_ locations such as if statements.
+:::tip
+`no-floating-promises` only detects unhandled Promise _statements_.
+See [`no-misused-promises`](./no-misused-promises.md) for detecting code that provides Promises to _logical_ locations such as if statements.
+:::
 
 ## Rule Details
 
