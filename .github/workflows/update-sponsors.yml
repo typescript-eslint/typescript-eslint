@@ -13,6 +13,14 @@ jobs:
       - uses: Codecademy/run-on-yarn@v1
         with:
           command: generate-sponsors
-      - uses: EndBug/add-and-commit@v8
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
-          message: 'chore: update sponsors data'
+          # The standard GITHUB_TOKEN cannot be used as it will not trigger status checks on
+          # the PR that gets created (this behavior is not specific to this action).
+          # https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs
+          token: ${{ secrets.JAMES_HENRY_GH_TOKEN }}
+          commit-message: "chore: update sponsors"
+          title: "chore: update sponsors"
+          body: "💸"
+          branch: auto-update-sponsors
