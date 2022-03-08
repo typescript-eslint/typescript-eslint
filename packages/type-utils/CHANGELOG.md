@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-readonly-parameter-types] handle class sharp private field and member without throwing error ([#4343](https://github.com/typescript-eslint/typescript-eslint/issues/4343)) ([a65713a](https://github.com/typescript-eslint/typescript-eslint/commit/a65713ae138e56555d01a9e8e5179221a2f39e75))
+
+
+
+
+
 # [5.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.1...v5.13.0) (2022-02-28)
 
 

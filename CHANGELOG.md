@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] cover case that requires quotes ([#4582](https://github.com/typescript-eslint/typescript-eslint/issues/4582)) ([3ea0947](https://github.com/typescript-eslint/typescript-eslint/commit/3ea09477debec9f1593e4d3857e153570b488f4d))
+* **eslint-plugin:** [no-misused-promises] factor thenable returning function overload signatures ([#4620](https://github.com/typescript-eslint/typescript-eslint/issues/4620)) ([56a09e9](https://github.com/typescript-eslint/typescript-eslint/commit/56a09e98f171662d25ae2692be703a8bbbd3a3a5))
+* **eslint-plugin:** [prefer-readonly-parameter-types] handle class sharp private field and member without throwing error ([#4343](https://github.com/typescript-eslint/typescript-eslint/issues/4343)) ([a65713a](https://github.com/typescript-eslint/typescript-eslint/commit/a65713ae138e56555d01a9e8e5179221a2f39e75))
+* **eslint-plugin:** [return-await] correct autofixer in binary expression ([#4401](https://github.com/typescript-eslint/typescript-eslint/issues/4401)) ([5fa2fad](https://github.com/typescript-eslint/typescript-eslint/commit/5fa2fade385cc526a962212b94410c58e4c31078))
+
+
+### Features
+
+* **eslint-plugin:** [no-misused-promises] add granular options within `checksVoidReturns` ([#4623](https://github.com/typescript-eslint/typescript-eslint/issues/4623)) ([1085177](https://github.com/typescript-eslint/typescript-eslint/commit/10851772696f982b585e0dade728f7980fdc6cc0))
+* TypeScript 4.6 ([#4615](https://github.com/typescript-eslint/typescript-eslint/issues/4615)) ([a02c63a](https://github.com/typescript-eslint/typescript-eslint/commit/a02c63a264e5a6c3557468a8eff48d34ca2b718a))
+
+
+
+
+
 # [5.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.1...v5.13.0) (2022-02-28)
 
 
