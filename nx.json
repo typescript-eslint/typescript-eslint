@@ -21,7 +21,8 @@
         "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true,
-        "runtimeCacheInputs": ["node -v"]
+        "runtimeCacheInputs": ["node -v", "echo $NETLIFY"],
+        "parallel": 1
       }
     }
   },
