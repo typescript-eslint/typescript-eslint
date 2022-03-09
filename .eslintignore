@@ -17,4 +17,4 @@ packages/website-eslint/**/*.js
 packages/website-eslint/**/*.d.ts
 
 # Files copied as part of the build
-packages/types/src/ast-spec.ts
+packages/types/src/generated/**/*.ts

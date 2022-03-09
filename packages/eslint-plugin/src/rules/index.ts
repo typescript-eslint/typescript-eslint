@@ -60,6 +60,7 @@ import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chai
 import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRedeclare from './no-redeclare';
+import noRedundantGenericModifiers from './no-redundant-generic-modifiers';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
@@ -186,6 +187,7 @@ export default {
   'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
   'no-redeclare': noRedeclare,
+  'no-redundant-generic-modifiers': noRedundantGenericModifiers,
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,

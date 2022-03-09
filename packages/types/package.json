@@ -38,6 +38,33 @@
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "nx": {
+    "targets": {
+      "prebuild": {
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "dependencies"
+          }
+        ],
+        "outputs": [
+          "packages/types/src/generated"
+        ]
+      },
+      "build": {
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "dependencies"
+          },
+          {
+            "target": "prebuild",
+            "projects": "self"
+          }
+        ]
+      }
+    }
+  },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"

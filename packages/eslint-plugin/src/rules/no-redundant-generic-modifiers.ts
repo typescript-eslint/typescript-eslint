@@ -12,8 +12,7 @@ export default util.createRule({
   name: 'no-redundant-generic-modifiers',
   meta: {
     docs: {
-      description:
-        'Disallows generic type parameter modifiers that do nothing.',
+      description: 'Disallows generic type parameter modifiers that do nothing',
       recommended: false,
     },
     fixable: 'code',
