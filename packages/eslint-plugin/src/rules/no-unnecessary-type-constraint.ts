@@ -57,7 +57,7 @@ export default util.createRule({
         ])
       : new Map([[AST_NODE_TYPES.TSUnknownKeyword, 'unknown']]);
 
-    const inJsx = context.getFilename().toLowerCase().endsWith('tsx');
+    const inJsx = util.isJsxFile(context.getFilename());
 
     const checkNode = (
       node: TypeParameterWithConstraint,

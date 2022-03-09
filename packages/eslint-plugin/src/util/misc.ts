@@ -13,6 +13,13 @@ function isDefinitionFile(fileName: string): boolean {
 }
 
 /**
+ * @returns Whether the context file name ends with *.jsx or *tsx
+ */
+function isJsxFile(fileName: string): boolean {
+  return /\.(j|t)sx$/i.test(fileName || '');
+}
+
+/**
  * Upper cases the first character or the string
  */
 function upperCaseFirst(str: string): string {
@@ -178,6 +185,7 @@ export {
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  isJsxFile,
   MemberNameType,
   RequireKeys,
   upperCaseFirst,
