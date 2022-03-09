@@ -4,6 +4,7 @@ import { RuleTester } from '../RuleTester';
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
+// comment for CI change :)
 
 const ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
 

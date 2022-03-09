@@ -240,7 +240,14 @@ jobs:
       # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
       NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
     steps:
+      - name: Populate base SHA in local history
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.base.sha }}
+
       - uses: actions/checkout@v3
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -269,42 +276,42 @@ jobs:
           yarn build --exclude website
 
       - name: Run unit tests for typescript-estree
-        run: npx nx test @typescript-eslint/typescript-estree
+        run: npx nx test @typescript-eslint/typescript-estree --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: npx nx test @typescript-eslint/visitor-keys
+        run: npx nx test @typescript-eslint/visitor-keys --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: npx nx test @typescript-eslint/scope-manager
+        run: npx nx test @typescript-eslint/scope-manager --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
       - name: Run unit tests for utils
-        run: npx nx test @typescript-eslint/utils
+        run: npx nx test @typescript-eslint/utils --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
       - name: Run unit tests for type-utils
-        run: npx nx test @typescript-eslint/type-utils
+        run: npx nx test @typescript-eslint/type-utils --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: npx nx test @typescript-eslint/parser
+        run: npx nx test @typescript-eslint/parser --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin
-        run: npx nx test @typescript-eslint/eslint-plugin
+        run: npx nx test @typescript-eslint/eslint-plugin --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: npx nx test @typescript-eslint/eslint-plugin-tslint
+        run: npx nx test @typescript-eslint/eslint-plugin-tslint --changedSince=${{ github.event.pull_request.base.sha }}
         env:
           CI: true
 
