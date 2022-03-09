@@ -1,11 +1,6 @@
 import rule from '../../src/rules/unified-signatures';
 import { RuleTester } from '../RuleTester';
 
-//------------------------------------------------------------------------------
-// Tests
-//------------------------------------------------------------------------------
-// comment for CI change :)
-
 const ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
 
 ruleTester.run('unified-signatures', rule, {
