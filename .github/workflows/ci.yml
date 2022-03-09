@@ -247,6 +247,8 @@ jobs:
           ref: ${{ github.event.pull_request.base.sha }}
 
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
