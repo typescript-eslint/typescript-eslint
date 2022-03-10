@@ -85,10 +85,10 @@ jobs:
           cmd6: yarn check-spelling
 
       - name: tmp
-        run: npx nx test @typescript-eslint/eslint-plugin
+        run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx test @typescript-eslint/eslint-plugin
 
       - name: tmp 2
-        run: npm run test --workspace=@typescript-eslint/eslint-plugin
+        run: cd packages/eslint-plugin && NX_CLOUD_DISTRIBUTED_EXECUTION=false npm run test
 
       # Because we don't have lint targets set at a project level, lint is not a part of the Nx target graph and we therefore
       # manually ensure that this runs after the build step for now
