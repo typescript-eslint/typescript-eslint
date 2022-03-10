@@ -79,10 +79,16 @@ jobs:
           # Website will be built by the Netlify GitHub App
           cmd2: npx nx affected --target=build --parallel=3 --exclude website
           # Website will be tested in later step
-          cmd3: npx nx affected --target=test --parallel=3 --exclude website
+          cmd3: npx nx affected --target=test --parallel=3 --exclude website,@typescript-eslint/eslint-plugin
           cmd4: yarn check-format
           cmd5: yarn lint-markdown
           cmd6: yarn check-spelling
+
+      - name: tmp
+        run: npx nx test @typescript-eslint/eslint-plugin
+
+      - name: tmp 2
+        run: npm run test --workspace=@typescript-eslint/eslint-plugin
 
       # Because we don't have lint targets set at a project level, lint is not a part of the Nx target graph and we therefore
       # manually ensure that this runs after the build step for now
