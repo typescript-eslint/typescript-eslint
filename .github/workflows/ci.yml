@@ -250,8 +250,13 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Print debug Git info
+        run: |
+          git remote -v
+          git log
+
       - name: Fetch commits after base SHA
-        run: git log main.. --pretty="%H" | xargs -n1 git fetch origin ${{ github.event.pull_request.base.sha }}
+        run: git log ${{ github.event.pull_request.base.sha }}.. --pretty="%H" | xargs -n1 git fetch origin
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
