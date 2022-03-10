@@ -278,32 +278,32 @@ jobs:
           yarn build --exclude website
 
       - name: Run unit tests for typescript-estree
-        run: npx nx test @typescript-eslint/typescript-estree --changedSince=${{ github.event.pull_request.base.sha }}
+        run: npx nx test @typescript-eslint/typescript-estree
         env:
           CI: true
 
       - name: Run unit tests for visitor-keys
-        run: npx nx test @typescript-eslint/visitor-keys --changedSince=${{ github.event.pull_request.base.sha }}
+        run: npx nx test @typescript-eslint/visitor-keys
         env:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: npx nx test @typescript-eslint/scope-manager --changedSince=${{ github.event.pull_request.base.sha }}
+        run: npx nx test @typescript-eslint/scope-manager
         env:
           CI: true
 
       - name: Run unit tests for utils
-        run: npx nx test @typescript-eslint/utils --changedSince=${{ github.event.pull_request.base.sha }}
+        run: npx nx test @typescript-eslint/utils
         env:
           CI: true
 
       - name: Run unit tests for type-utils
-        run: npx nx test @typescript-eslint/type-utils --changedSince=${{ github.event.pull_request.base.sha }}
+        run: npx nx test @typescript-eslint/type-utils
         env:
           CI: true
 
       - name: Run unit tests for parser
-        run: npx nx test @typescript-eslint/parser --changedSince=${{ github.event.pull_request.base.sha }}
+        run: npx nx test @typescript-eslint/parser
         env:
           CI: true
 
@@ -313,7 +313,7 @@ jobs:
           CI: true
 
       - name: Run unit tests for eslint-plugin-tslint
-        run: npx nx test @typescript-eslint/eslint-plugin-tslint --changedSince=${{ github.event.pull_request.base.sha }}
+        run: npx nx test @typescript-eslint/eslint-plugin-tslint
         env:
           CI: true
 
