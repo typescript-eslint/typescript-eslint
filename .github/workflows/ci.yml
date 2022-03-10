@@ -88,7 +88,7 @@ jobs:
         run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx test @typescript-eslint/eslint-plugin
 
       - name: tmp 2
-        run: cd packages/eslint-plugin && NX_CLOUD_DISTRIBUTED_EXECUTION=false npm run test
+        run: cd packages/eslint-plugin && NX_CLOUD_DISTRIBUTED_EXECUTION=false npx jest --coverage
 
       # Because we don't have lint targets set at a project level, lint is not a part of the Nx target graph and we therefore
       # manually ensure that this runs after the build step for now
