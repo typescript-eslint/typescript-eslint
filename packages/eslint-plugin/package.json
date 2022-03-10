@@ -43,6 +43,15 @@
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "nx": {
+    "targets": {
+      "test": {
+        "outputs": [
+          "packages/eslint-plugin/coverage"
+        ]
+      }
+    }
+  },
   "dependencies": {
     "@typescript-eslint/scope-manager": "5.14.0",
     "@typescript-eslint/type-utils": "5.14.0",

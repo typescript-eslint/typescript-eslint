@@ -40,6 +40,15 @@
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "nx": {
+    "targets": {
+      "test": {
+        "outputs": [
+          "packages/parser/coverage"
+        ]
+      }
+    }
+  },
   "peerDependencies": {
     "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"
   },

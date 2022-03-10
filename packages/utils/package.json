@@ -38,6 +38,15 @@
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "nx": {
+    "targets": {
+      "test": {
+        "outputs": [
+          "packages/utils/coverage"
+        ]
+      }
+    }
+  },
   "dependencies": {
     "@types/json-schema": "^7.0.9",
     "@typescript-eslint/scope-manager": "5.14.0",

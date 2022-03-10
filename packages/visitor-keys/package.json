@@ -37,6 +37,15 @@
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "nx": {
+    "targets": {
+      "test": {
+        "outputs": [
+          "packages/visitor-keys/coverage"
+        ]
+      }
+    }
+  },
   "dependencies": {
     "@typescript-eslint/types": "5.14.0",
     "eslint-visitor-keys": "^3.0.0"

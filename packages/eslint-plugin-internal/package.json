@@ -12,6 +12,15 @@
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "nx": {
+    "targets": {
+      "test": {
+        "outputs": [
+          "packages/eslint-plugin-internal/coverage"
+        ]
+      }
+    }
+  },
   "dependencies": {
     "@types/prettier": "*",
     "@typescript-eslint/scope-manager": "5.14.0",
