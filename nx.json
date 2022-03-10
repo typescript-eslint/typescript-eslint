@@ -17,7 +17,13 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "test", "package", "prebuild"],
+        "cacheableOperations": [
+          "build",
+          "test",
+          "package",
+          "prebuild",
+          "typecheck"
+        ],
         "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true,
@@ -28,6 +34,18 @@
   },
   "targetDependencies": {
     "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ],
+    "typecheck": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ],
+    "test": [
       {
         "target": "build",
         "projects": "dependencies"

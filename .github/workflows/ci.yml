@@ -9,22 +9,44 @@ on:
     branches:
       - '**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   PRIMARY_NODE_VERSION: 12
-  NX_BRANCH: ${{ github.event.number }}
-  NX_RUN_GROUP: ${{ github.run_id }}
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+  NX_VERBOSE_LOGGING: false
   # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
   NX_CLOUD_ENV_NAME: 'Node 12.x -'
 
 jobs:
-  typecheck:
-    name: Typecheck
+  create_nx_run_group:
+    name: Create NX_RUN_GROUP
+    runs-on: ubuntu-latest
+    outputs:
+      nx_run_group: ${{ steps.set_nx_run_group.outputs.nx_run_group }}
+    steps:
+      - name: Set NX_RUN_GROUP based on $GITHUB_RUN_ID and a uuid
+        id: set_nx_run_group
+        run: |
+          NX_RUN_GROUP="$GITHUB_RUN_ID--$(uuidgen)"
+          echo "::set-output name=nx_run_group::$NX_RUN_GROUP"
+
+  primary:
+    name: Primary
+    needs: [create_nx_run_group]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Set NX_RUN_GROUP based on the output of the create_nx_run_group job
+        run: echo "NX_RUN_GROUP=${{ needs.create_nx_run_group.outputs.nx_run_group }}" >> $GITHUB_ENV
 
-      - name: echo github.ref
-        run: echo ${{ github.ref }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
 
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v3
@@ -48,98 +70,24 @@ jobs:
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
           yarn check-clean-workspace-after-install
 
-      - name: Build
-        run: |
+      - name: Run parallel (distributed where possible) commands for all affected projects
+        uses: jameshenry/parallel-bash-commands@v1
+        with:
+          # Note that the typecheck target *also* typechecks tests and tools,
+          # whereas the build only checks src files
+          cmd1: npx nx affected --target=typecheck --parallel=3
           # Website will be built by the Netlify GitHub App
-          yarn build --exclude website
+          cmd2: npx nx affected --target=build --parallel=3 --exclude website
+          # Website will be tested in later step
+          cmd3: npx nx affected --target=test --parallel=3 --exclude website
+          cmd4: yarn check-format
+          cmd5: yarn lint-markdown
+          cmd6: yarn check-spelling
 
-      # Note that this command *also* type checks tests/tools,
-      # whereas the build only checks src files
-      - name: Typecheck all packages
-        run: yarn typecheck
-
-  unit_test_on_primary_node_version:
-    name: Unit tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-
-      - name: echo github.ref
-        run: echo ${{ github.ref }}
-
-      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: |
-          yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check-clean-workspace-after-install
-
-      - name: Build
-        run: |
-          # Website will be built by the Netlify GitHub App
-          yarn build --exclude website
-
-      - name: Run unit tests for typescript-estree
-        run: npx nx test @typescript-eslint/typescript-estree
-        env:
-          CI: true
-
-      - name: Run unit tests for visitor-keys
-        run: npx nx test @typescript-eslint/visitor-keys
-        env:
-          CI: true
-
-      - name: Run unit tests for scope-manager
-        run: npx nx test @typescript-eslint/scope-manager
-        env:
-          CI: true
-
-      - name: Run unit tests for utils
-        run: npx nx test @typescript-eslint/utils
-        env:
-          CI: true
-
-      - name: Run unit tests for type-utils
-        run: npx nx test @typescript-eslint/type-utils
-        env:
-          CI: true
-
-      - name: Run unit tests for parser
-        run: npx nx test @typescript-eslint/parser
-        env:
-          CI: true
-
-      - name: Run unit tests for eslint-plugin
-        run: npx nx test @typescript-eslint/eslint-plugin
-        env:
-          CI: true
-
-      - name: Run unit tests for eslint-plugin-tslint
-        run: npx nx test @typescript-eslint/eslint-plugin-tslint
-        env:
-          CI: true
-
-      - name: Run unit tests for eslint-plugin-internal
-        run: npx nx test @typescript-eslint/eslint-plugin-internal
-        env:
-          CI: true
+      # Because we don't have lint targets set at a project level, lint is not a part of the Nx target graph and we therefore
+      # manually ensure that this runs after the build step for now
+      - name: Run linting across whole workspace
+        run: yarn lint
 
       - name: Publish code coverage report
         uses: codecov/codecov-action@v2
@@ -149,231 +97,29 @@ jobs:
           flags: unittest
           name: codecov
 
-  linting_and_style:
-    name: Code style and lint
+      - name: Stop all running agents for this CI run
+        # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
+        if: ${{ always() }}
+        run: npx nx-cloud stop-all-agents
+
+  agents:
+    name: Nx Distributed CI Agents
+    needs: [create_nx_run_group]
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: |
-          yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check-clean-workspace-after-install
-
-      - name: Build
-        run: |
-          # Website will be built by the Netlify GitHub App
-          yarn build --exclude website
-
-      - name: Check code formatting
-        run: yarn check-format
-
-      - name: Lint code
-        run: yarn lint
-
-      - name: Lint markdown
-        run: yarn lint-markdown
-
-      - name: Check spelling
-        run: yarn check-spelling
-
-  integration_tests:
-    name: Run integration tests on primary Node.js version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: |
-          yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check-clean-workspace-after-install
-
-      - name: Build
-        run: |
-          # Website will be built by the Netlify GitHub App
-          yarn build --exclude website
-
-      - name: Run integrations tests
-        run: yarn test-integration
-        env:
-          CI: true
-
-  unit_tests_on_other_node_versions:
-    name: Run unit tests on other Node.js versions
-    runs-on: ubuntu-latest
+    timeout-minutes: 60
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
-    env:
-      # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
-      NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
+        agent: [1, 2, 3, 4, 5, 6]
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Set NX_RUN_GROUP based on the output of the create_nx_run_group job
+        run: echo "NX_RUN_GROUP=${{ needs.create_nx_run_group.outputs.nx_run_group }}" >> $GITHUB_ENV
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: |
-          yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check-clean-workspace-after-install
-
-      - name: Build
-        run: |
-          # Website will be built by the Netlify GitHub App
-          yarn build --exclude website
-
-      - name: Run unit tests for typescript-estree
-        run: npx nx test @typescript-eslint/typescript-estree
-        env:
-          CI: true
-
-      - name: Run unit tests for visitor-keys
-        run: npx nx test @typescript-eslint/visitor-keys
-        env:
-          CI: true
-
-      - name: Run unit tests for scope-manager
-        run: npx nx test @typescript-eslint/scope-manager
-        env:
-          CI: true
-
-      - name: Run unit tests for utils
-        run: npx nx test @typescript-eslint/utils
-        env:
-          CI: true
-
-      - name: Run unit tests for type-utils
-        run: npx nx test @typescript-eslint/type-utils
-        env:
-          CI: true
-
-      - name: Run unit tests for parser
-        run: npx nx test @typescript-eslint/parser
-        env:
-          CI: true
-
-      - name: Run unit tests for eslint-plugin
-        run: npx nx test @typescript-eslint/eslint-plugin
-        env:
-          CI: true
-
-      - name: Run unit tests for eslint-plugin-tslint
-        run: npx nx test @typescript-eslint/eslint-plugin-tslint
-        env:
-          CI: true
-
-      # eslint-plugin-internal is internal only - so don't care about compat on other versions
-
-  website_tests:
-    name: Website tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-
-      - name: echo github.ref
-        run: echo ${{ github.ref }}
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: yarn --ignore-engines --frozen-lockfile
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          project: ./packages/website
-          start: yarn start
-
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: screenshots
-          path: |
-            packages/website/cypress/screenshots/
-            packages/website/cypress/videos/
-
-
-  publish_canary_version:
-    name: Publish the latest code as a canary version
-    runs-on: ubuntu-latest
-    needs:
-      [
-        typecheck,
-        unit_test_on_primary_node_version,
-        unit_tests_on_other_node_versions,
-        linting_and_style,
-        integration_tests,
-      ]
-    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v3
-      # Fetch all history for all tags and branches in this job because lerna needs it
-      - run: |
-          git fetch --prune --unshallow
+      - uses: actions/checkout@v2
 
       - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-          registry-url: https://registry.npmjs.org/
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -390,14 +136,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn --ignore-engines --frozen-lockfile --ignore-scripts
-          yarn check-clean-workspace-after-install
 
-      - name: Build
-        run: |
-          # Website will be built by the Netlify GitHub App
-          yarn build --exclude website
-
-      - name: Publish all packages to npm
-        run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Start Nx Agent ${{ matrix.agent }}
+        run: npx nx-cloud start-agent

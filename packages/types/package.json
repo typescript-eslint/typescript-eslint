@@ -40,6 +40,21 @@
   },
   "nx": {
     "targets": {
+      "typecheck": {
+        "dependsOn": [
+          {
+            "target": "prebuild",
+            "projects": "self"
+          },
+          {
+            "target": "build",
+            "projects": "dependencies"
+          }
+        ],
+        "outputs": [
+          "packages/types/src/generated"
+        ]
+      },
       "prebuild": {
         "dependsOn": [
           {
@@ -54,12 +69,12 @@
       "build": {
         "dependsOn": [
           {
-            "target": "build",
-            "projects": "dependencies"
-          },
-          {
             "target": "prebuild",
             "projects": "self"
+          },
+          {
+            "target": "build",
+            "projects": "dependencies"
           }
         ]
       }
