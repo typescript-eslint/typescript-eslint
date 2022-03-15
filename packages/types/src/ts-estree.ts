@@ -1,7 +1,7 @@
-import * as TSESTree from './ast-spec';
+import * as TSESTree from './generated/ast-spec';
 
 // augment to add the parent property, which isn't part of the spec
-declare module './ast-spec' {
+declare module './generated/ast-spec' {
   interface BaseNode {
     parent?: TSESTree.Node;
   }
@@ -18,4 +18,4 @@ declare module './ast-spec' {
   */
 }
 
-export * as TSESTree from './ast-spec';
+export * as TSESTree from './generated/ast-spec';

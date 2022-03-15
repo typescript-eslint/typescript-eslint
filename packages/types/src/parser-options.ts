@@ -37,6 +37,9 @@ interface ParserOptions {
   jsxFragmentName?: string | null;
   lib?: Lib[];
 
+  // use emitDecoratorMetadata without specifying parserOptions.project
+  emitDecoratorMetadata?: boolean;
+
   // typescript-estree specific
   comment?: boolean;
   debugLevel?: DebugLevel;
