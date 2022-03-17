@@ -57,7 +57,7 @@ const correctPathCasing = useCaseSensitiveFileNames
 function getCanonicalFileName(filePath: string): CanonicalPath {
   let normalized = path.normalize(filePath);
   if (normalized.endsWith(path.sep)) {
-    normalized = normalized.substr(0, normalized.length - 1);
+    normalized = normalized.slice(0, -1);
   }
   return correctPathCasing(normalized) as CanonicalPath;
 }
