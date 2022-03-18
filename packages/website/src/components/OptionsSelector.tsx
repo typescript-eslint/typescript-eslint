@@ -74,17 +74,21 @@ function OptionsSelector({
     [setState],
   );
 
-  const copyLinkToClipboard = useCallback(async () => {
-    await navigator.clipboard.writeText(document.location.toString());
-    setCopyLink(true);
+  const copyLinkToClipboard = useCallback(() => {
+    void navigator.clipboard
+      .writeText(document.location.toString())
+      .then(() => {
+        setCopyLink(true);
+      });
   }, []);
 
-  const copyMarkdownToClipboard = useCallback(async () => {
+  const copyMarkdownToClipboard = useCallback(() => {
     if (isLoading) {
       return;
     }
-    await navigator.clipboard.writeText(createMarkdown(state));
-    setCopyMarkdown(true);
+    void navigator.clipboard.writeText(createMarkdown(state)).then(() => {
+      setCopyMarkdown(true);
+    });
   }, [state, isLoading]);
 
   const openIssue = useCallback(() => {

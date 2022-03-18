@@ -13,6 +13,7 @@ type Lib =
   | 'es2019'
   | 'es2020'
   | 'es2021'
+  | 'es2022'
   | 'esnext'
   | 'dom'
   | 'dom.iterable'
@@ -54,6 +55,10 @@ type Lib =
   | 'es2021.string'
   | 'es2021.weakref'
   | 'es2021.intl'
+  | 'es2022.array'
+  | 'es2022.error'
+  | 'es2022.object'
+  | 'es2022.string'
   | 'esnext.array'
   | 'esnext.symbol'
   | 'esnext.asynciterable'
@@ -68,6 +73,7 @@ type Lib =
   | 'es2019.full'
   | 'es2020.full'
   | 'es2021.full'
+  | 'es2022.full'
   | 'esnext.full'
   | 'lib';
 

@@ -5,18 +5,26 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const ANGLE_BRACKET_TESTS = `
+const ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE = `
 const x = <Foo>new Generic<int>();
 const x = <A>b;
 const x = <readonly number[]>[1];
-const x = <a | b>('string');
+const x = <a | b>('string');`;
+
+const ANGLE_BRACKET_TESTS = `${ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE}
+const x = <const>{ key: 'value' };
 `;
-const AS_TESTS = `
+
+const AS_TESTS_EXCEPT_CONST_CASE = `
 const x = new Generic<int>() as Foo;
 const x = b as A;
 const x = [1] as readonly number[];
-const x = ('string') as a | b;
+const x = ('string') as a | b;`;
+
+const AS_TESTS = `${AS_TESTS_EXCEPT_CONST_CASE}
+const x = { key: 'value' } as const;
 `;
+
 const OBJECT_LITERAL_AS_CASTS = `
 const x = {} as Foo<int>;
 `;
@@ -189,7 +197,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
     ...batchedSingleLineTests({
-      code: AS_TESTS,
+      code: AS_TESTS_EXCEPT_CONST_CASE,
       options: [
         {
           assertionStyle: 'never',
@@ -219,7 +227,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
     ...batchedSingleLineTests({
-      code: ANGLE_BRACKET_TESTS,
+      code: ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE,
       options: [
         {
           assertionStyle: 'never',

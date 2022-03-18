@@ -17,11 +17,12 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "test", "package", "prepare"],
+        "cacheableOperations": ["build", "test", "package", "prebuild"],
         "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true,
-        "runtimeCacheInputs": ["node -v"]
+        "runtimeCacheInputs": ["node -v", "echo $NETLIFY"],
+        "parallel": 1
       }
     }
   },

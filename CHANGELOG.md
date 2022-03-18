@@ -3,6 +3,70 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+
+### Features
+
+* **parser:** add `parserOptions.emitDecoratorMetadata` ([#4646](https://github.com/typescript-eslint/typescript-eslint/issues/4646)) ([e3dd343](https://github.com/typescript-eslint/typescript-eslint/commit/e3dd343e51e3b7772e825a609735a04c921c1ec5))
+
+
+
+
+
+# [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [naming-convention] cover case that requires quotes ([#4582](https://github.com/typescript-eslint/typescript-eslint/issues/4582)) ([3ea0947](https://github.com/typescript-eslint/typescript-eslint/commit/3ea09477debec9f1593e4d3857e153570b488f4d))
+* **eslint-plugin:** [no-misused-promises] factor thenable returning function overload signatures ([#4620](https://github.com/typescript-eslint/typescript-eslint/issues/4620)) ([56a09e9](https://github.com/typescript-eslint/typescript-eslint/commit/56a09e98f171662d25ae2692be703a8bbbd3a3a5))
+* **eslint-plugin:** [prefer-readonly-parameter-types] handle class sharp private field and member without throwing error ([#4343](https://github.com/typescript-eslint/typescript-eslint/issues/4343)) ([a65713a](https://github.com/typescript-eslint/typescript-eslint/commit/a65713ae138e56555d01a9e8e5179221a2f39e75))
+* **eslint-plugin:** [return-await] correct autofixer in binary expression ([#4401](https://github.com/typescript-eslint/typescript-eslint/issues/4401)) ([5fa2fad](https://github.com/typescript-eslint/typescript-eslint/commit/5fa2fade385cc526a962212b94410c58e4c31078))
+
+
+### Features
+
+* **eslint-plugin:** [no-misused-promises] add granular options within `checksVoidReturns` ([#4623](https://github.com/typescript-eslint/typescript-eslint/issues/4623)) ([1085177](https://github.com/typescript-eslint/typescript-eslint/commit/10851772696f982b585e0dade728f7980fdc6cc0))
+* TypeScript 4.6 ([#4615](https://github.com/typescript-eslint/typescript-eslint/issues/4615)) ([a02c63a](https://github.com/typescript-eslint/typescript-eslint/commit/a02c63a264e5a6c3557468a8eff48d34ca2b718a))
+
+
+
+
+
+# [5.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.1...v5.13.0) (2022-02-28)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [sort-type-union-intersection-members] Wrap the constructorType in parentheses ([#4590](https://github.com/typescript-eslint/typescript-eslint/issues/4590)) ([851bb90](https://github.com/typescript-eslint/typescript-eslint/commit/851bb90216e20b7679efc891dc445e6152d4837f))
+
+
+### Features
+
+* **eslint-plugin:** [no-misused-promises] check more places for checksVoidReturn ([#4541](https://github.com/typescript-eslint/typescript-eslint/issues/4541)) ([052cf51](https://github.com/typescript-eslint/typescript-eslint/commit/052cf51fe663283afe89dc7bf97c947e750df095))
+* **eslint-plugin:** add `no-redundant-type-constituents` rule ([#4378](https://github.com/typescript-eslint/typescript-eslint/issues/4378)) ([63d051e](https://github.com/typescript-eslint/typescript-eslint/commit/63d051eed29dcf71015a23992feac0a8f92717a0))
+* **eslint-plugin:** add `no-useless-empty-export` rule ([#4380](https://github.com/typescript-eslint/typescript-eslint/issues/4380)) ([823b945](https://github.com/typescript-eslint/typescript-eslint/commit/823b945c8f9e83d0246a2a5d07519f01e1a64518))
+* **eslint-plugin:** add extension rule `space-before-blocks` ([#1606](https://github.com/typescript-eslint/typescript-eslint/issues/1606)) ([#4184](https://github.com/typescript-eslint/typescript-eslint/issues/4184)) ([208b6d0](https://github.com/typescript-eslint/typescript-eslint/commit/208b6d02252dff2bf272329d3e4a4a82e56c52c0))
+* **eslint-plugin:** added member group support to member-ordering rule ([#4538](https://github.com/typescript-eslint/typescript-eslint/issues/4538)) ([6afcaea](https://github.com/typescript-eslint/typescript-eslint/commit/6afcaea0160a1ccd1c6483ca677c544ca1b8cb4f))
+* **utils:** expose `ast-utils`' helpers ([#4503](https://github.com/typescript-eslint/typescript-eslint/issues/4503)) ([f106e4b](https://github.com/typescript-eslint/typescript-eslint/commit/f106e4b95e824ebb68141bce3d3207448d50c860))
+* **utils:** extract `isNotTokenOfTypeWithConditions` out of `ast-utils`' `predicates` ([#4502](https://github.com/typescript-eslint/typescript-eslint/issues/4502)) ([66501d6](https://github.com/typescript-eslint/typescript-eslint/commit/66501d6dd7e97c22c671efaa6d1ba8237907e417))
+
+
+
+
+
+## [5.12.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.0...v5.12.1) (2022-02-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-type-arguments] fix comparison of types ([#4555](https://github.com/typescript-eslint/typescript-eslint/issues/4555)) ([fc3936e](https://github.com/typescript-eslint/typescript-eslint/commit/fc3936e99712374a707ce9e0101bc641807b9ea6))
+
+
+
+
+
 # [5.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.11.0...v5.12.0) (2022-02-14)
 
 

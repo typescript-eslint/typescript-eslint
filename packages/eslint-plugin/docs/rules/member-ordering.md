@@ -25,24 +25,20 @@ These options allow to specify how to group the members and sort their groups.
 - Sort members within groups: Use `memberTypes` and `order`
 
 ```ts
-type TypeOptions<T> =
-  | {
-    memberTypes: Array<T> | 'never',
-    order?: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written',
-  }
-  | {
-    order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written',
-  };
+type SortedOrderConfig = {
+  memberTypes?: MemberType[] | 'never';
+  order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written';
+};
 
-{
-  default?: TypeOptions<MemberTypes>,
+type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 
-  classes?: TypeOptions<MemberTypes>,
-  classExpressions?: TypeOptions<MemberTypes>,
-
-  interfaces?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
-  typeLiterals?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
-}
+type Options = {
+  default?: OrderConfig;
+  classes?: OrderConfig;
+  classExpressions?: OrderConfig;
+  interfaces?: OrderConfig;
+  typeLiterals?: OrderConfig;
+};
 ```
 
 See below for the possible definitions of `MemberType`.
@@ -293,6 +289,29 @@ The third grouping option is to ignore both scope and accessibility.
   // Methods
   "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
   //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"]
+]
+```
+
+### Grouping different member types at the same rank
+
+It is also possible to group different member types at the same rank.
+
+```jsonc
+[
+  // Index signature
+  "signature",
+
+  // Fields
+  "field",
+
+  // Constructors
+  "constructor",
+
+  // Getters and Setters at the same rank
+  ["get", "set"],
+
+  // Methods
+  "method"
 ]
 ```
 

@@ -17,7 +17,8 @@ export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
-      description: 'Requires Promise-like values to be handled appropriately',
+      description:
+        'Requires Promise-like statements to be handled appropriately',
       recommended: 'error',
       suggestion: true,
       requiresTypeChecking: true,
