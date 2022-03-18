@@ -1101,11 +1101,43 @@ foo?.bar(/* comment */a,
         {
           messageId: 'optionalChainSuggest',
           column: 1,
-          // endColumn: 23,
+          endColumn: 21,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
               output: '(foo ** 2)?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(foo++ || {}).bar;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 18,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(foo++)?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(+foo || {}).bar;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          column: 1,
+          endColumn: 17,
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '(+foo)?.bar;',
             },
           ],
         },

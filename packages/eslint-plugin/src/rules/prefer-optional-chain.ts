@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 import * as util from '../util';
+import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
+import { isBinaryExpression } from 'tsutils';
 
 type ValidChainTarget =
   | TSESTree.BinaryExpression
@@ -47,6 +49,8 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
+    const parserServices = util.getParserServices(context, true);
+
     return {
       'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
         node: TSESTree.LogicalExpression,
@@ -65,6 +69,21 @@ export default util.createRule({
         ) {
           return;
         }
+
+        function isLeftSideLowerPrecedence(): boolean {
+          const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+
+          const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
+          const operator = isBinaryExpression(logicalTsNode)
+            ? logicalTsNode.operatorToken.kind
+            : ts.SyntaxKind.Unknown;
+          const leftPrecedence = util.getOperatorPrecedence(
+            leftTsNode.kind,
+            operator,
+          );
+
+          return leftPrecedence < util.OperatorPrecedence.LeftHandSide;
+        }
         context.report({
           node: parentNode,
           messageId: 'optionalChainSuggest',
@@ -74,15 +93,9 @@ export default util.createRule({
               fix: (fixer): TSESLint.RuleFix => {
                 const leftNodeText = sourceCode.getText(leftNode);
                 // Any node that is made of an operator with higher or equal precedence,
-                const maybeWrappedLeftNode =
-                  leftNode.type === AST_NODE_TYPES.BinaryExpression ||
-                  leftNode.type === AST_NODE_TYPES.TSAsExpression ||
-                  leftNode.type === AST_NODE_TYPES.UnaryExpression ||
-                  leftNode.type === AST_NODE_TYPES.LogicalExpression ||
-                  leftNode.type === AST_NODE_TYPES.ConditionalExpression ||
-                  leftNode.type === AST_NODE_TYPES.AwaitExpression
-                    ? `(${leftNodeText})`
-                    : leftNodeText;
+                const maybeWrappedLeftNode = isLeftSideLowerPrecedence()
+                  ? `(${leftNodeText})`
+                  : leftNodeText;
                 const propertyToBeOptionalText = sourceCode.getText(
                   parentNode.property,
                 );
