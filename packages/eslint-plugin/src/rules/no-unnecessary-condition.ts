@@ -90,7 +90,10 @@ export default createRule<Options, MessageId>({
     docs: {
       description:
         'Prevents conditionals where the type is always truthy or always falsy',
-      recommended: false,
+      recommended: {
+        level: 'error',
+        strict: true,
+      },
       requiresTypeChecking: true,
     },
     schema: [

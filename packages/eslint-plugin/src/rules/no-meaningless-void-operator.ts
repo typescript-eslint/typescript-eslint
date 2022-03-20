@@ -19,7 +19,10 @@ export default util.createRule<
     docs: {
       description:
         'Disallow the `void` operator except when used to discard a value',
-      recommended: false,
+      recommended: {
+        level: 'warn',
+        strict: true,
+      },
       suggestion: true,
       requiresTypeChecking: true,
     },

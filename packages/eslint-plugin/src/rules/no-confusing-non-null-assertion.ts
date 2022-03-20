@@ -13,7 +13,10 @@ export default util.createRule({
     docs: {
       description:
         'Disallow non-null assertion in locations that may be confusing',
-      recommended: false,
+      recommended: {
+        level: 'error',
+        strict: true,
+      },
     },
     fixable: 'code',
     hasSuggestions: true,

@@ -10,7 +10,10 @@ export default util.createRule({
     docs: {
       description:
         'Prefers a non-null assertion over explicit type cast when possible',
-      recommended: false,
+      recommended: {
+        level: 'error',
+        strict: true,
+      },
       requiresTypeChecking: true,
       suggestion: true,
     },

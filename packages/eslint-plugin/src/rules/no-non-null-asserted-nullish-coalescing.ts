@@ -35,7 +35,10 @@ export default util.createRule({
     docs: {
       description:
         'Disallows using a non-null assertion in the left operand of the nullish coalescing operator',
-      recommended: false,
+      recommended: {
+        level: 'warn',
+        strict: true,
+      },
     },
     messages: {
       noNonNullAssertedNullishCoalescing:
