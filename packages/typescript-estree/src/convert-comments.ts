@@ -36,7 +36,7 @@ export function convertComments(
             range[1] - textStart - 2;
       comments.push({
         type,
-        value: code.substr(textStart, textEnd),
+        value: code.slice(textStart, textStart + textEnd),
         range,
         loc,
       });

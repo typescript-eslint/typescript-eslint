@@ -28,16 +28,18 @@ class RuleTester extends TSESLint.RuleTester {
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
-    afterAll(() => {
-      try {
-        // instead of creating a hard dependency, just use a soft require
-        // a bit weird, but if they're using this tooling, it'll be installed
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        require(parser).clearCaches();
-      } catch {
-        // ignored
-      }
-    });
+    if (typeof afterAll !== 'undefined') {
+      afterAll(() => {
+        try {
+          // instead of creating a hard dependency, just use a soft require
+          // a bit weird, but if they're using this tooling, it'll be installed
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          require(parser).clearCaches();
+        } catch {
+          // ignored
+        }
+      });
+    }
   }
   private getFilename(options?: TSESLint.ParserOptions): string {
     if (options) {

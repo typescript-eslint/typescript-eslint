@@ -84,12 +84,12 @@ export default util.createRule<Options, MessageIds>({
     function reportIncorrectAssertionType(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
     ): void {
+      const messageId = options.assertionStyle;
+
       // If this node is `as const`, then don't report an error.
-      if (isConst(node.typeAnnotation)) {
+      if (isConst(node.typeAnnotation) && messageId === 'never') {
         return;
       }
-
-      const messageId = options.assertionStyle;
 
       context.report({
         node,

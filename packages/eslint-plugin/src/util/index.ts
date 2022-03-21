@@ -4,6 +4,7 @@ export * from './astUtils';
 export * from './collectUnusedVariables';
 export * from './createRule';
 export * from './getFunctionHeadLoc';
+export * from './getOperatorPrecedence';
 export * from './getThisExpression';
 export * from './getWrappingFixer';
 export * from './misc';

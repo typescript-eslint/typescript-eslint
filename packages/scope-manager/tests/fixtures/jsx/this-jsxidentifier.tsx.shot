@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx this-jsxidentifier 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"React">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "React",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"React">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [
+        ClassNameDefinition$2 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ClassNameDefinition$3 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$5 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "React" => Variable$2,
+        "Foo" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "Foo" => Variable$4,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$4,
+      ],
+    },
+    ClassFieldInitializerScope$3 {
+      block: ObjectExpression$4,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "class-field-initializer",
+      upper: ClassScope$2,
+      variables: Array [],
+    },
+    FunctionScope$4 {
+      block: ArrowFunctionExpression$5,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "function",
+      upper: ClassFieldInitializerScope$3,
+      variables: Array [],
+    },
+    FunctionScope$5 {
+      block: FunctionExpression$6,
+      isStrict: true,
+      references: Array [
+        Reference$2 {
+          identifier: JSXIdentifier$7,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: null,
+        },
+        Reference$3 {
+          identifier: JSXIdentifier$8,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: null,
+        },
+      ],
+      set: Map {
+        "arguments" => Variable$5,
+      },
+      type: "function",
+      upper: ClassScope$2,
+      variables: Array [
+        Variable$5,
+      ],
+    },
+  ],
+}
+`;

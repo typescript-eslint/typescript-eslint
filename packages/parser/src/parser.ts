@@ -132,6 +132,7 @@ function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
+  let emitDecoratorMetadata = options.emitDecoratorMetadata === true;
   if (services.hasFullTypeInformation) {
     // automatically apply the options configured for the program
     const compilerOptions = services.program.getCompilerOptions();
@@ -165,9 +166,12 @@ function parseForESLint(
       }
     }
     if (compilerOptions.emitDecoratorMetadata === true) {
-      analyzeOptions.emitDecoratorMetadata =
-        compilerOptions.emitDecoratorMetadata;
+      emitDecoratorMetadata = true;
     }
+  }
+
+  if (emitDecoratorMetadata) {
+    analyzeOptions.emitDecoratorMetadata = true;
   }
 
   const scopeManager = analyze(ast, analyzeOptions);
