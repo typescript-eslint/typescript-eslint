@@ -13,10 +13,7 @@ export default util.createRule({
     docs: {
       description:
         'Consistent with type definition either `interface` or `type`',
-      recommended: {
-        level: 'warn',
-        strict: true,
-      },
+      recommended: 'strict',
     },
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`.',

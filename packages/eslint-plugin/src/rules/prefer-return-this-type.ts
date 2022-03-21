@@ -19,10 +19,7 @@ export default createRule({
     docs: {
       description:
         'Enforce that `this` is used when only `this` type is returned',
-      recommended: {
-        level: 'error',
-        strict: true,
-      },
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

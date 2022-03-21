@@ -22,10 +22,7 @@ export default util.createRule<[], MessageIds>({
     docs: {
       description:
         'Enforces that type arguments will not be used if not required',
-      recommended: {
-        level: 'error',
-        strict: true,
-      },
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',

@@ -5,15 +5,6 @@ import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
-type RecommendedLevel = 'error' | 'warn' | false;
-
-type Recommended = RecommendedLevel | StrictRecommended;
-
-interface StrictRecommended {
-  level: RecommendedLevel;
-  strict: true;
-}
-
 interface RuleMetaDataDocs {
   /**
    * Concise description of the rule
@@ -24,7 +15,7 @@ interface RuleMetaDataDocs {
    * Used by the build tools to generate the recommended and strict configs.
    * Set to false to not include it as a recommendation
    */
-  recommended: Recommended;
+  recommended: 'error' | 'strict' | 'warn';
   /**
    * The URL of the rule's docs
    */

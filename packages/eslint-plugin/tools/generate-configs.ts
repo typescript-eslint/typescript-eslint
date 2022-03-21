@@ -71,7 +71,6 @@ function reducer<TMessageIds extends string>(
     errorLevel?: 'error' | 'warn';
     filterDeprecated: boolean;
     filterRequiresTypeChecking?: 'include' | 'exclude';
-    filterStrict?: boolean;
   },
 ): LinterConfigRules {
   const key = entry[0];
@@ -98,15 +97,14 @@ function reducer<TMessageIds extends string>(
   }
 
   const ruleName = `${RULE_NAME_PREFIX}${key}`;
-  const recommendation =
-    typeof value.meta.docs?.recommended === 'object'
-      ? value.meta.docs.recommended.level
-      : value.meta.docs?.recommended;
+  const recommendation = value.meta.docs?.recommended;
 
   const usedSetting = settings.errorLevel
     ? settings.errorLevel
     : !recommendation
     ? DEFAULT_RULE_SETTING
+    : recommendation === 'strict'
+    ? 'warn'
     : recommendation;
 
   if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
@@ -145,12 +143,14 @@ function writeConfig(config: LinterConfig, filePath: string): void {
   fs.writeFileSync(filePath, configStr);
 }
 
+const recommendedValues = new Set<string | undefined>(['error', 'warn']);
+
 function entryIsRecommended(entry: RuleEntry): boolean {
-  return typeof entry[1].meta.docs?.recommended === 'string';
+  return recommendedValues.has(entry[1].meta.docs?.recommended);
 }
 
 function entryIsStrict(entry: RuleEntry): boolean {
-  return typeof entry[1].meta.docs?.recommended === 'object';
+  return entry[1].meta.docs?.recommended === 'strict';
 }
 
 const baseConfig: LinterConfig = {
@@ -233,7 +233,6 @@ const strictRules = ruleEntries.filter(entryIsStrict).reduce<LinterConfigRules>(
   (config, entry) =>
     reducer(config, entry, {
       filterDeprecated: false,
-      filterStrict: true,
     }),
   {},
 );
