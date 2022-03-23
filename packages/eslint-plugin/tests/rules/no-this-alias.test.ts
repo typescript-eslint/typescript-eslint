@@ -67,6 +67,13 @@ declare module 'foo' {
       errors: [idError],
     },
     {
+      code: `
+let that;
+that = this;
+      `,
+      errors: [idError],
+    },
+    {
       code: 'const { props, state } = this;',
       options: [
         {
