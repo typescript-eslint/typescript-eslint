@@ -86,20 +86,18 @@ const features: FeatureItem[] = [
           </p>
         </div>
         <div className="col col--offset-2 col--8">
-          <p>
-            <code>typescript-eslint</code>:
-            <ul>
-              <li>allows ESLint to parse TypeScript syntax</li>
-              <li>
-                creates a set of tools for ESLint rules to be able to use
-                TypeScript's type information
-              </li>
-              <li>
-                provides a large list of lint rules that are specific to
-                TypeScript and/or use that type information
-              </li>
-            </ul>
-          </p>
+          <code>typescript-eslint</code>:
+          <ul>
+            <li>allows ESLint to parse TypeScript syntax</li>
+            <li>
+              creates a set of tools for ESLint rules to be able to use
+              TypeScript's type information
+            </li>
+            <li>
+              provides a large list of lint rules that are specific to
+              TypeScript and/or use that type information
+            </li>
+          </ul>
         </div>
       </div>
     ),

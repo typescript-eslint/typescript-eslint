@@ -1,4 +1,6 @@
-# Disallows using a non-null assertion after an optional chain expression (`no-non-null-asserted-optional-chain`)
+# `no-non-null-asserted-optional-chain`
+
+Disallows using a non-null assertion after an optional chain expression.
 
 ## Rule Details
 
@@ -41,6 +43,19 @@ foo?.bar!.baz;
 foo?.bar!();
 foo?.bar!().baz;
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## When Not To Use It
 

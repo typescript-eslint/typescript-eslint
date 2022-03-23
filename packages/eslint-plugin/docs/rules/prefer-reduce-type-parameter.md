@@ -1,4 +1,6 @@
-# Prefer using type parameter when calling `Array#reduce` instead of casting (`prefer-reduce-type-parameter`)
+# `prefer-reduce-type-parameter`
+
+Prefer using type parameter when calling `Array#reduce` instead of casting.
 
 It's common to call `Array#reduce` with a generic type, such as an array or object, as the initial value.
 Since these values are empty, their types are not usable:

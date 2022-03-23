@@ -1,5 +1,50 @@
 [
   {
+    "description": null,
+    "id": "7mywxoz3-409rl6kk-v9b6venb-dj7gk85a",
+    "image": "https://images.opencollective.com/deal-empire/b3f7583/logo.png",
+    "name": "Deal Empire",
+    "slug": "deal-empire",
+    "tier": "supporter",
+    "website": "https://dealempire.com/"
+  },
+  {
+    "description": "LIVE PAIN FREE",
+    "id": "x8k03rey-d5agmq5m-z9b6lbwo-z7j4nxv9",
+    "image": "https://images.opencollective.com/my-sports-injury-ltd/518c583/logo.png",
+    "name": "MySportsInjury",
+    "slug": "my-sports-injury-ltd",
+    "tier": "supporter",
+    "website": "https://www.mysportsinjury.co.uk"
+  },
+  {
+    "description": "java learning",
+    "id": "jrkx5lmn-v904qjw5-xbbp8bwa-7zdygoe3",
+    "image": "https://images.opencollective.com/java-exp/14e869f/logo.png",
+    "name": "java",
+    "slug": "java-exp",
+    "tier": "supporter",
+    "website": "https://explainjava.com/"
+  },
+  {
+    "description": null,
+    "id": "03k0exgz-nm8yj64l-rn5p5wao-9r7b4dlv",
+    "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
+    "name": "Codecademy",
+    "slug": "codecademy",
+    "tier": "sponsor",
+    "website": "https://codecademy.com"
+  },
+  {
+    "description": null,
+    "id": "v349mrwg-z75lpy7g-angpa08d-jeybknox",
+    "image": "https://images.opencollective.com/gitbook/d35a8e7/logo.png",
+    "name": "GitBook",
+    "slug": "gitbook",
+    "tier": "sponsor",
+    "website": "https://www.gitbook.com"
+  },
+  {
     "description": "Accelerate your development work on iOS, Android and beyond with the power of ARM-based virtual devices.",
     "id": "gm9bnk80-437xqryv-89jpvzeo-ljdayw5r",
     "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
@@ -7,15 +52,6 @@
     "slug": "corellium",
     "tier": "supporter",
     "website": "https://www.corellium.com"
-  },
-  {
-    "description": "Penalty.com is your number one source of football live scores, results and stats.",
-    "id": "3z8arxve-ymko60ya-xgbqgl5n-bj9w704d",
-    "image": "https://images.opencollective.com/penalty/56b629e/avatar.png",
-    "name": "Penalty.com",
-    "slug": "penalty",
-    "tier": "supporter",
-    "website": "https://penalty.com"
   },
   {
     "description": null,
@@ -101,7 +137,7 @@
   {
     "description": null,
     "id": "ov349mrw-gz75lpyz-0l86a08d-jeybknox",
-    "image": "https://images.opencollective.com/florian-studio/ee9d649/logo.png",
+    "image": "https://images.opencollective.com/florian-studio/a713d94/logo.png",
     "name": "Florian Studio",
     "slug": "florian-studio",
     "tier": "supporter",

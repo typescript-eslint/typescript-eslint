@@ -1,7 +1,9 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
+import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
   | TSESTree.FunctionDeclaration
@@ -149,15 +151,28 @@ export default util.createRule({
     function insertAwait(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
+      isHighPrecendence: boolean,
     ): TSESLint.RuleFix | TSESLint.RuleFix[] {
-      if (node.type !== AST_NODE_TYPES.TSAsExpression) {
+      if (isHighPrecendence) {
         return fixer.insertTextBefore(node, 'await ');
+      } else {
+        return [
+          fixer.insertTextBefore(node, 'await ('),
+          fixer.insertTextAfter(node, ')'),
+        ];
       }
+    }
 
-      return [
-        fixer.insertTextBefore(node, 'await ('),
-        fixer.insertTextAfter(node, ')'),
-      ];
+    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
+      const operator = isBinaryExpression(node)
+        ? node.operatorToken.kind
+        : ts.SyntaxKind.Unknown;
+      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
+      const awaitPrecedence = getOperatorPrecedence(
+        ts.SyntaxKind.AwaitExpression,
+        ts.SyntaxKind.Unknown,
+      );
+      return nodePrecedence > awaitPrecedence;
     }
 
     function test(node: TSESTree.Expression, expression: ts.Node): void {
@@ -208,7 +223,8 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            fix: fixer =>
+              insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression)),
           });
         }
 
@@ -247,7 +263,8 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            fix: fixer =>
+              insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression)),
           });
         }
 

@@ -1,4 +1,6 @@
-# Prefer using concise optional chain expressions instead of chained logical ands (`prefer-optional-chain`)
+# `prefer-optional-chain`
+
+Prefer using concise optional chain expressions instead of chained logical ands.
 
 TypeScript 3.7 added support for the optional chain operator.
 This operator allows you to safely access properties and methods on objects when they are potentially `null` or `undefined`.
@@ -19,6 +21,10 @@ function myFunc(foo: T | null) {
 // is roughly equivalent to
 function myFunc(foo: T | null) {
   return foo && foo.a && foo.a.b && foo.a.b.c;
+}
+// or
+function myFunc(foo: T | null) {
+  return (((foo || {}).a || {}).b || {}).c;
 }
 
 function myFunc(foo: T | null) {
@@ -54,6 +60,9 @@ Examples of code for this rule:
 foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
+
+(((foo || {}).a || {}).b {}).c;
+(((foo || {})['a'] || {}).b {}).c;
 
 // this rule also supports converting chained strict nullish checks:
 foo &&

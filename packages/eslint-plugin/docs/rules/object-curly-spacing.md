@@ -1,4 +1,6 @@
-# Enforce consistent spacing inside braces (`object-curly-spacing`)
+# `object-curly-spacing`
+
+Enforce consistent spacing inside braces.
 
 ## Rule Details
 
