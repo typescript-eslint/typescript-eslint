@@ -75,9 +75,9 @@ export function testServices(code: string, config: ParserOptions = {}): void {
 
   const services = parser.parseForESLint(code, config).services;
   expect(services).toBeDefined();
-  expect(services.program).toBeDefined();
-  expect(services.esTreeNodeToTSNodeMap).toBeDefined();
-  expect(services.tsNodeToESTreeNodeMap).toBeDefined();
+  expect(services!.program).toBeDefined();
+  expect(services!.esTreeNodeToTSNodeMap).toBeDefined();
+  expect(services!.tsNodeToESTreeNodeMap).toBeDefined();
 }
 
 export function formatSnapshotName(
