@@ -21,9 +21,9 @@ interface ParseForESLintResult {
     tokens?: TSESTree.Token[];
     comments?: TSESTree.Comment[];
   };
-  services: ParserServices;
-  visitorKeys: typeof visitorKeys;
-  scopeManager: ScopeManager;
+  services?: ParserServices;
+  visitorKeys?: typeof visitorKeys;
+  scopeManager?: ScopeManager;
 }
 
 function validateBoolean(
