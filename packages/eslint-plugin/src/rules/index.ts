@@ -60,6 +60,7 @@ import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chai
 import noNonNullAssertion from './no-non-null-assertion';
 import noRedeclare from './no-redeclare';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
+import noParameterProperties from './no-parameter-properties';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
 import noShadow from './no-shadow';
@@ -184,6 +185,7 @@ export default {
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
+  'no-parameter-properties': noParameterProperties,
   'no-redeclare': noRedeclare,
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
