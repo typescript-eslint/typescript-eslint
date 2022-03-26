@@ -12,20 +12,20 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-generic-modifier', rule, {
   valid: [
+    'const identity = (value: any) => value;',
+    'const identity = <T>(value: T) => value;',
+    'const identity = <T = {}>(value: T) => value;',
+    'const identity = <T extends {}>(value: T) => value;',
+    'const identity = <T extends {} = {}>(value: T) => value;',
+    'function data() {}',
+    'function data<T>() {}',
+    'function data<T, U>() {}',
+    'function data<T extends number>() {}',
+    'function data<T extends number | string>() {}',
+    'function data<T extends any | number>() {}',
     `
-const identity = (value: any) => value;
-    `,
-    `
-const identity = <T>(value: T) => value;
-    `,
-    `
-const identity = <T = {}>(value: T) => value;
-    `,
-    `
-const identity = <T extends {}>(value: T) => value;
-    `,
-    `
-const identity = <T extends {} = {}>(value: T) => value;
+type TODO = any;
+function data<T extends TODO>() {}
     `,
     {
       code: `
@@ -128,7 +128,7 @@ function identity<T = unknown>(value: any) {
         {
           line: 2,
           column: 23,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       output: `
@@ -147,7 +147,7 @@ function identity<T = unknown>(value: any) {
         {
           line: 2,
           column: 23,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       filename: 'react.tsx',
@@ -167,7 +167,7 @@ function identity<T extends unknown>(value: any) {
         {
           line: 2,
           column: 29,
-          messageId: 'redundantConstraint',
+          messageId: 'unnecessaryConstraint',
         },
       ],
       output: `
@@ -186,12 +186,12 @@ function identity<T extends unknown = unknown>(value: any) {
         {
           line: 2,
           column: 29,
-          messageId: 'redundantConstraint',
+          messageId: 'unnecessaryConstraint',
         },
         {
           line: 2,
           column: 39,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       output: `
@@ -210,7 +210,7 @@ function identity<T extends {} = unknown>(value: any) {
         {
           line: 2,
           column: 34,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       output: `
@@ -229,7 +229,7 @@ function identity<T extends unknown = {}>(value: any) {
         {
           line: 2,
           column: 29,
-          messageId: 'redundantConstraint',
+          messageId: 'unnecessaryConstraint',
         },
       ],
       output: `
@@ -264,7 +264,7 @@ class IdentityValue<T extends unknown> {
         {
           line: 2,
           column: 31,
-          messageId: 'redundantConstraint',
+          messageId: 'unnecessaryConstraint',
         },
       ],
       output: `
@@ -283,7 +283,7 @@ class IdentityValue<T = unknown> {
         {
           line: 2,
           column: 25,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       output: `
@@ -302,7 +302,7 @@ class IdentityValue<T = unknown> {
         {
           line: 2,
           column: 25,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       filename: 'react.tsx',
@@ -322,7 +322,7 @@ interface IdentityValue<T extends unknown> {
         {
           line: 2,
           column: 35,
-          messageId: 'redundantConstraint',
+          messageId: 'unnecessaryConstraint',
         },
       ],
       output: `
@@ -341,7 +341,7 @@ interface IdentityValue<T = unknown> {
         {
           line: 2,
           column: 29,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       output: `
@@ -360,7 +360,7 @@ interface IdentityValue<T = unknown> {
         {
           line: 2,
           column: 29,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       filename: 'react.tsx',
@@ -378,7 +378,7 @@ type Identity<T extends unknown> = T;
         {
           line: 2,
           column: 25,
-          messageId: 'redundantConstraint',
+          messageId: 'unnecessaryConstraint',
         },
       ],
       output: `
@@ -393,7 +393,7 @@ type Identity<T = unknown> = T;
         {
           line: 2,
           column: 19,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       output: `
@@ -408,7 +408,7 @@ type Identity<T = unknown> = T;
         {
           line: 2,
           column: 19,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       filename: 'react.tsx',
@@ -424,12 +424,12 @@ type Identity<T extends unknown = unknown> = T;
         {
           line: 2,
           column: 25,
-          messageId: 'redundantConstraint',
+          messageId: 'unnecessaryConstraint',
         },
         {
           line: 2,
           column: 35,
-          messageId: 'redundantDefault',
+          messageId: 'unnecessaryDefault',
         },
       ],
       output: `

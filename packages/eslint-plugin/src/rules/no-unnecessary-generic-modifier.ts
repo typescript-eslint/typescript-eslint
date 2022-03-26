@@ -17,13 +17,6 @@ const is3dot9 =
     includePrerelease: true,
   });
 
-function isArrowFunctionTypeParameter(node: TSESTree.TSTypeParameter): boolean {
-  return (
-    node.parent?.type === AST_NODE_TYPES.TSTypeParameterDeclaration &&
-    node.parent.parent?.type === AST_NODE_TYPES.ArrowFunctionExpression
-  );
-}
-
 export default util.createRule({
   name: 'no-unnecessary-generic-modifier',
   meta: {
@@ -60,6 +53,10 @@ export default util.createRule({
     },
   ],
   create(context) {
+    if (!is3dot5) {
+      return {};
+    }
+
     // In theory, we could use the type checker for more advanced constraint types...
     // ...but in practice, these types are rare, and likely not worth requiring type info.
     // https://github.com/typescript-eslint/typescript-eslint/pull/2516#discussion_r495731858
@@ -72,14 +69,27 @@ export default util.createRule({
 
     const inJsx = util.isJsxFile(context.getFilename());
 
-    return {
-      TSTypeParameter(node): void {
-        const { constraint, default: typeDefault } = node;
+    const checkNodeModifiers = (
+      node: TSESTree.TSTypeParameter,
+      inArrowFunction: boolean,
+    ): void => {
+      const { constraint: typeConstraint, default: typeDefault } = node;
+
+      if (typeConstraint) {
+        const constraint = unnecessaryConstraints.get(typeConstraint.type);
 
         if (constraint) {
-          const replacement = unnecessaryConstraints.get(constraint.type);
-
-          if (replacement) {
+          if (inArrowFunction && inJsx) {
+            context.report({
+              fix: fixer =>
+                fixer.replaceTextRange(
+                  [node.name.range[1], typeConstraint.range[1]],
+                  ' = unknown',
+                ),
+              messageId: 'preferDefault',
+              node: typeConstraint,
+            });
+          } else {
             context.report({
               data: {
                 constraint,
@@ -87,30 +97,43 @@ export default util.createRule({
               },
               fix(fixer) {
                 return fixer.replaceTextRange(
-                  [node.name.range[1], constraint.range[1]],
-                  isArrowFunctionTypeParameter(node) && inJsx ? ',' : '',
+                  [node.name.range[1], typeConstraint.range[1]],
+                  inArrowFunction && inJsx ? ',' : '',
                 );
               },
               messageId: 'unnecessaryConstraint',
-              node,
+              node: typeConstraint,
             });
           }
         }
+      }
 
-        if (
-          typeDefault?.type === AST_NODE_TYPES.TSUnknownKeyword &&
-          !(inJsx && isArrowFunctionTypeParameter(node))
-        ) {
-          context.report({
-            fix: fixer =>
-              fixer.removeRange([
-                node.constraint?.range[1] ?? node.name.range[1],
-                typeDefault.range[1],
-              ]),
-            messageId: 'unnecessaryDefault',
-            node: typeDefault,
-          });
-        }
+      if (
+        typeDefault?.type === AST_NODE_TYPES.TSUnknownKeyword &&
+        !(inArrowFunction && inJsx)
+      ) {
+        context.report({
+          fix: fixer =>
+            fixer.removeRange([
+              node.constraint?.range[1] ?? node.name.range[1],
+              typeDefault.range[1],
+            ]),
+          messageId: 'unnecessaryDefault',
+          node: typeDefault,
+        });
+      }
+    };
+
+    return {
+      ':not(ArrowFunctionExpression) > TSTypeParameterDeclaration > TSTypeParameter'(
+        node: TSESTree.TSTypeParameter,
+      ): void {
+        checkNodeModifiers(node, false);
+      },
+      'ArrowFunctionExpression > TSTypeParameterDeclaration > TSTypeParameter'(
+        node: TSESTree.TSTypeParameter,
+      ): void {
+        checkNodeModifiers(node, true);
       },
     };
   },
