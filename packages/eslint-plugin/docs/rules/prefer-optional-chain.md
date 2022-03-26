@@ -22,6 +22,10 @@ function myFunc(foo: T | null) {
 function myFunc(foo: T | null) {
   return foo && foo.a && foo.a.b && foo.a.b.c;
 }
+// or
+function myFunc(foo: T | null) {
+  return (((foo || {}).a || {}).b || {}).c;
+}
 
 function myFunc(foo: T | null) {
   return foo?.['a']?.b?.c;
@@ -56,6 +60,9 @@ Examples of code for this rule:
 foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
+
+(((foo || {}).a || {}).b {}).c;
+(((foo || {})['a'] || {}).b {}).c;
 
 // this rule also supports converting chained strict nullish checks:
 foo &&

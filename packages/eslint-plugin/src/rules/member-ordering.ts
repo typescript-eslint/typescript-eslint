@@ -299,10 +299,10 @@ function getMemberRawName(
   const { name, type } = util.getNameFromMember(member, sourceCode);
 
   if (type === util.MemberNameType.Quoted) {
-    return name.substr(1, name.length - 2);
+    return name.slice(1, -1);
   }
   if (type === util.MemberNameType.Private) {
-    return name.substr(1);
+    return name.slice(1);
   }
   return name;
 }
