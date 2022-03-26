@@ -77,4 +77,4 @@ _ts3.4
 .rollup.cache
 
 # Files copied as part of the build
-packages/types/src/ast-spec.ts
+packages/types/src/generated/**/*.ts

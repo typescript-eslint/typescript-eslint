@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
+
+
+### Features
+
+* TypeScript 4.6 ([#4615](https://github.com/typescript-eslint/typescript-eslint/issues/4615)) ([a02c63a](https://github.com/typescript-eslint/typescript-eslint/commit/a02c63a264e5a6c3557468a8eff48d34ca2b718a))
+
+
+
+
+
 # [5.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.1...v5.13.0) (2022-02-28)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

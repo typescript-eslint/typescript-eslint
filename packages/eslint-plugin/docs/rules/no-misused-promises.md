@@ -1,17 +1,21 @@
 # `no-misused-promises`
 
-Avoid using promises in places not designed to handle them.
+Avoid using Promises in places not designed to handle them.
 
-This rule forbids using promises in places where the TypeScript compiler
-allows them but they are not handled properly. These situations can often arise
-due to a missing `await` keyword or just a misunderstanding of the way async
+This rule forbids providing Promises to logical locations such as if statements in places where the TypeScript compiler allows them but they are not handled properly.
+These situations can often arise due to a missing `await` keyword or just a misunderstanding of the way async
 functions are handled/awaited.
+
+:::tip
+`no-misused-promises` only detects code that provides Promises to incorrect _logical_ locations.
+See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled Promise _statements_.
+:::
 
 ## Rule Details
 
 This rule accepts a single option which is an object with `checksConditionals`
 and `checksVoidReturn` properties indicating which types of misuse to flag.
-Both are enabled by default
+Both are enabled by default.
 
 ## Options
 

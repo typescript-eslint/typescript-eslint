@@ -8,10 +8,10 @@ const writeFile = promisify(fs.writeFile);
 const execAsync = promisify(chlidProcess.exec);
 
 const AST_SPEC_PATH = path.resolve(__dirname, '../../ast-spec');
-const OUTPUT_PATH = path.join(path.resolve(__dirname, '../src/'));
-
-// ensure the package is built
-chlidProcess.execSync('yarn build', { cwd: AST_SPEC_PATH, stdio: 'inherit' });
+const OUTPUT_PATH = path.join(path.resolve(__dirname, '../src/generated'));
+if (!fs.existsSync(OUTPUT_PATH)) {
+  fs.mkdirSync(OUTPUT_PATH);
+}
 
 const HEADER = `\
 /**********************************************

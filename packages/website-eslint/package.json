@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/website-eslint",
-  "version": "5.13.0",
+  "version": "5.16.0",
   "private": true,
   "description": "ESLint which works in browsers.",
   "engines": {
@@ -16,19 +16,19 @@
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.13.0",
-    "@typescript-eslint/utils": "5.13.0"
+    "@typescript-eslint/types": "5.16.0",
+    "@typescript-eslint/utils": "5.16.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/pluginutils": "^4.1.1",
-    "@typescript-eslint/eslint-plugin": "5.13.0",
-    "@typescript-eslint/parser": "5.13.0",
-    "@typescript-eslint/scope-manager": "5.13.0",
-    "@typescript-eslint/typescript-estree": "5.13.0",
-    "@typescript-eslint/visitor-keys": "5.13.0",
+    "@typescript-eslint/eslint-plugin": "5.16.0",
+    "@typescript-eslint/parser": "5.16.0",
+    "@typescript-eslint/scope-manager": "5.16.0",
+    "@typescript-eslint/typescript-estree": "5.16.0",
+    "@typescript-eslint/visitor-keys": "5.16.0",
     "eslint": "*",
     "rollup": "^2.59.0",
     "semver": "^7.3.5"
