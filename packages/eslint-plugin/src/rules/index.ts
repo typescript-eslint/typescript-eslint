@@ -60,7 +60,6 @@ import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chai
 import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRedeclare from './no-redeclare';
-import noRedundantGenericModifiers from './no-redundant-generic-modifiers';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
@@ -70,6 +69,7 @@ import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
+import noUnnecessaryGenericModifier from './no-unnecessary-generic-modifier';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
@@ -187,7 +187,6 @@ export default {
   'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
   'no-redeclare': noRedeclare,
-  'no-redundant-generic-modifiers': noRedundantGenericModifiers,
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,
@@ -197,6 +196,7 @@ export default {
   'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
+  'no-unnecessary-generic-modifier': noUnnecessaryGenericModifier,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,

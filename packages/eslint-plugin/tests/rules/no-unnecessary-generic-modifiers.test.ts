@@ -1,4 +1,4 @@
-import rule from '../../src/rules/no-redundant-generic-modifiers';
+import rule from '../../src/rules/no-unnecessary-generic-modifier';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -10,7 +10,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('no-redundant-generic-modifiers', rule, {
+ruleTester.run('no-unnecessary-generic-modifier', rule, {
   valid: [
     `
 const identity = (value: any) => value;

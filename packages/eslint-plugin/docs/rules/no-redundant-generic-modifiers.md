@@ -1,4 +1,4 @@
-# `no-redundant-generic-modifiers`
+# `no-unnecessary-generic-modifier`
 
 Disallows generic type parameter modifiers that do nothing.
 

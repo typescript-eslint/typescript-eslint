@@ -28,6 +28,7 @@ const is3dot9 =
 export default util.createRule({
   name: 'no-unnecessary-type-constraint',
   meta: {
+    deprecated: true,
     docs: {
       description: 'Disallows unnecessary constraints on generic types',
       recommended: 'error',
@@ -38,6 +39,7 @@ export default util.createRule({
       unnecessaryConstraint:
         'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
     },
+    replacedBy: ['@typescript-eslint/no-unnecessary-generic-modifier'],
     schema: [],
     type: 'suggestion',
   },
