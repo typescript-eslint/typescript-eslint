@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+
+### Features
+
+* **parser:** add `parserOptions.emitDecoratorMetadata` ([#4646](https://github.com/typescript-eslint/typescript-eslint/issues/4646)) ([e3dd343](https://github.com/typescript-eslint/typescript-eslint/commit/e3dd343e51e3b7772e825a609735a04c921c1ec5))
+
+
+
+
+
 # [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
 
 

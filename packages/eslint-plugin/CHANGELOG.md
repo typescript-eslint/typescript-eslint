@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-type-assertions] enforce assertionStyle for `const` assertions ([#4685](https://github.com/typescript-eslint/typescript-eslint/issues/4685)) ([8ec05be](https://github.com/typescript-eslint/typescript-eslint/commit/8ec05bed0fed0dcd48b087acd5ab5a6132bf3b09))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-optional-chain] support logical with empty object ([#4430](https://github.com/typescript-eslint/typescript-eslint/issues/4430)) ([d21cfe0](https://github.com/typescript-eslint/typescript-eslint/commit/d21cfe0f4b7d3041948b1b6e0cd56c5ec34b2b3f))
+
+
+
+
+
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+
+### Features
+
+* **parser:** add `parserOptions.emitDecoratorMetadata` ([#4646](https://github.com/typescript-eslint/typescript-eslint/issues/4646)) ([e3dd343](https://github.com/typescript-eslint/typescript-eslint/commit/e3dd343e51e3b7772e825a609735a04c921c1ec5))
+
+
+
+
+
 # [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
 
 
