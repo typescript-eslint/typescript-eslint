@@ -31,7 +31,7 @@ export default util.createRule({
     deprecated: true,
     docs: {
       description: 'Disallows unnecessary constraints on generic types',
-      recommended: 'error',
+      recommended: false,
       suggestion: true,
     },
     fixable: 'code',
