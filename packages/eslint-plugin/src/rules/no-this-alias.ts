@@ -51,13 +51,8 @@ export default util.createRule<Options, MessageIds>({
       "VariableDeclarator[init.type='ThisExpression'], AssignmentExpression[right.type='ThisExpression']"(
         node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
       ): void {
-        let id;
-
-        if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-          id = node.id;
-        } else {
-          id = node.left;
-        }
+        const id =
+          node.type === AST_NODE_TYPES.VariableDeclarator ? node.id : node.left;
         if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {
           return;
         }
