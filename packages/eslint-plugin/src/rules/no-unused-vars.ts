@@ -403,8 +403,7 @@ export default util.createRule<Options, MessageIds>({
 
           if (
             options.destructuredArrayIgnorePattern &&
-            def &&
-            def.name.parent?.type === AST_NODE_TYPES.ArrayPattern
+            def?.name.parent?.type === AST_NODE_TYPES.ArrayPattern
           ) {
             additional = `. Allowed unused elements of array destructuring patterns must match ${options.destructuredArrayIgnorePattern.toString()}`;
           } else if (options.varsIgnorePattern) {
