@@ -246,6 +246,21 @@ const identity = <T extends unknown>(value: T) => value;
         {
           line: 2,
           column: 29,
+          messageId: 'unnecessaryConstraint',
+        },
+      ],
+      output: `
+const identity = <T>(value: T) => value;
+      `,
+    },
+    {
+      code: `
+const identity = <T extends unknown>(value: T) => value;
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 29,
           messageId: 'preferDefault',
         },
       ],

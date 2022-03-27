@@ -74,6 +74,6 @@ const identity = <T = unknown>(value: T) => value;
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- [x] ✅ Recommended
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

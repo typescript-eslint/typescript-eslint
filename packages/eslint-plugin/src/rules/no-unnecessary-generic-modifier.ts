@@ -22,7 +22,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallows generic type parameter modifiers that do nothing',
-      recommended: false,
+      recommended: 'error',
     },
     fixable: 'code',
     messages: {
@@ -96,10 +96,10 @@ export default util.createRule({
                 name: node.name.name,
               },
               fix(fixer) {
-                return fixer.replaceTextRange(
-                  [node.name.range[1], typeConstraint.range[1]],
-                  inArrowFunction && inJsx ? ',' : '',
-                );
+                return fixer.removeRange([
+                  node.name.range[1],
+                  typeConstraint.range[1],
+                ]);
               },
               messageId: 'unnecessaryConstraint',
               node: typeConstraint,
