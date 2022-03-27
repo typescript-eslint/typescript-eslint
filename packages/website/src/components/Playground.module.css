@@ -39,5 +39,5 @@
   width: 100%;
   height: calc(100% - var(--ifm-navbar-height));
   top: var(--ifm-navbar-height);
-  z-index: 100;
+  z-index: calc(var(--ifm-z-index-fixed) - 1);
 }
