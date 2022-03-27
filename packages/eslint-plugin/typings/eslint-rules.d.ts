@@ -416,6 +416,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
           caughtErrorsIgnorePattern?: string;
+          destructuredArrayIgnorePattern?: string;
         },
     ],
     {
