@@ -23,3 +23,20 @@ describe('formatWordList', () => {
     );
   });
 });
+
+describe('isJsxFile', () => {
+  it.each([
+    [false, ''],
+    [false, 'name'],
+    [false, '.d.ts'],
+    [false, 'name.d.ts'],
+    [false, '.js'],
+    [false, 'name.js'],
+    [true, '.jsx'],
+    [true, 'name.jsx'],
+    [true, '.tsx'],
+    [true, 'name.tsx'],
+  ])('returns %s for %s', (result, filename) => {
+    expect(misc.isJsxFile(filename)).toBe(result);
+  });
+});
