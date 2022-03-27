@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+
+### Bug Fixes
+
+* **utils:** RuleTester: Only call afterAll if defined ([#4656](https://github.com/typescript-eslint/typescript-eslint/issues/4656)) ([0fe0683](https://github.com/typescript-eslint/typescript-eslint/commit/0fe0683effe4c7390806a72c6aa7795445a67929))
+
+
+
+
+
 # [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
 
 **Note:** Version bump only for package @typescript-eslint/utils
