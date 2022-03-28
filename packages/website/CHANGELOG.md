@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.16.0...v5.17.0) (2022-03-28)
+
+
+### Bug Fixes
+
+* code container hiding navigation menu ([#4707](https://github.com/typescript-eslint/typescript-eslint/issues/4707)) ([96bc69a](https://github.com/typescript-eslint/typescript-eslint/commit/96bc69a652c7f6f474a39f1e9783e7fbd446696a))
+* revert "chore: Bump cypress from 8.3.0 to 9.5.2", and ignore cypress for now ([#4740](https://github.com/typescript-eslint/typescript-eslint/issues/4740)) ([cf5f5c4](https://github.com/typescript-eslint/typescript-eslint/commit/cf5f5c441ab0c4fb056bd688795ffc55e026627a)), closes [#4710](https://github.com/typescript-eslint/typescript-eslint/issues/4710)
+
+
+
+
+
 # [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
 
 **Note:** Version bump only for package website
