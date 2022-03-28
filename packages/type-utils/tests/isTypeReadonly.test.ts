@@ -273,5 +273,30 @@ describe('isTypeReadonly', () => {
         ])('handles non fully readonly sets and maps', runTests);
       });
     });
+
+    describe('allowlist', () => {
+      const options: ReadonlynessOptions = {
+        allowlist: [
+          {
+            typeName: 'RegExp',
+            source: 'default-lib',
+          },
+        ],
+      };
+
+      function runTestIsReadonly(code: string): void {
+        runTestForAliasDeclaration(code, options, true);
+      }
+
+      describe('is readonly', () => {
+        const runTests = runTestIsReadonly;
+
+        it.each([
+          [
+            'interface Bar {readonly prop: RegExp}; type test = (arg: Bar) => void;',
+          ],
+        ])('correctly marks allowlisted types as readonly', runTests);
+      });
+    });
   });
 });
