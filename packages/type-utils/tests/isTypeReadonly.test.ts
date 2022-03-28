@@ -281,6 +281,10 @@ describe('isTypeReadonly', () => {
             typeName: 'RegExp',
             source: 'default-lib',
           },
+          {
+            typeName: 'Foo',
+            source: 'local',
+          },
         ],
       };
 
@@ -293,8 +297,9 @@ describe('isTypeReadonly', () => {
 
         it.each([
           [
-            'interface Bar {readonly prop: RegExp}; type test = (arg: Bar) => void;',
+            'interface Bar {readonly prop: RegExp}; type Test = (arg: Bar) => void;',
           ],
+          ['interface Foo {prop: string}; type Test = (arg: Foo) => void;'],
         ])('correctly marks allowlisted types as readonly', runTests);
       });
     });
