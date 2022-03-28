@@ -1,4 +1,6 @@
-# Restricts the types allowed in boolean expressions (`strict-boolean-expressions`)
+# `strict-boolean-expressions`
+
+Restricts the types allowed in boolean expressions.
 
 Forbids usage of non-boolean types in expressions where a boolean is expected.
 `boolean` and `never` types are always allowed.

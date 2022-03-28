@@ -1,4 +1,6 @@
-# Disallows returning any from a function (`no-unsafe-return`)
+# `no-unsafe-return`
+
+Disallows returning any from a function.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Returned `any` typed values are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -88,6 +90,19 @@ function foo2(): unknown[] {
   return [] as any[];
 }
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unsafe-return": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## Related To
 

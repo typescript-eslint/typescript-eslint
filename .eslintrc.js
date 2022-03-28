@@ -74,9 +74,6 @@ module.exports = {
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
 
-    // TODO - enable this
-    '@typescript-eslint/naming-convention': 'off',
-
     //
     // Internal repo rules
     //

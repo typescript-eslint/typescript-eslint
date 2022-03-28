@@ -22,7 +22,7 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "build": "npx nx prebuild @typescript-eslint/types && nx run-many --target=build --all --parallel --exclude website",
+    "build": "nx run-many --target=build --all --parallel --exclude website",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-configs": "nx run-many --target=check-configs --all --parallel",
     "check-docs": "nx run-many --target=check-docs --all --parallel",
@@ -55,16 +55,14 @@
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.16.0",
-    "@babel/parser": "^7.16.4",
-    "@babel/types": "^7.16.0",
     "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
-    "@nrwl/cli": "13.0.2",
-    "@nrwl/nx-cloud": "12.5.1",
-    "@nrwl/tao": "13.0.2",
-    "@nrwl/workspace": "13.0.2",
-    "@types/babel__code-frame": "^7.0.3",
+    "@nrwl/cli": "13.8.5",
+    "@nrwl/nx-cloud": "13.1.6",
+    "@nrwl/tao": "13.8.5",
+    "@nrwl/workspace": "13.8.5",
+    "@swc/core": "^1.2.159",
+    "@swc/jest": "^0.2.20",
     "@types/debug": "^4.1.7",
     "@types/eslint-visitor-keys": "^1.0.0",
     "@types/glob": "^7.2.0",
@@ -81,15 +79,16 @@
     "@types/tmp": "^0.2.2",
     "all-contributors-cli": "^6.20.0",
     "cross-env": "^7.0.3",
+    "cross-fetch": "^3.1.4",
     "cspell": "^5.12.3",
     "cz-conventional-changelog": "^3.3.0",
-    "downlevel-dts": "^0.8.0",
+    "downlevel-dts": "^0.9.0",
     "enhanced-resolve": "^5.8.3",
     "eslint": "^8.7.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-eslint-plugin": "^4.0.1",
     "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jest": "^25.0.5",
+    "eslint-plugin-jest": "^26.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "glob": "^7.1.7",
     "husky": "^7.0.4",
@@ -100,18 +99,16 @@
     "make-dir": "^3.1.0",
     "markdownlint-cli": "^0.29.0",
     "ncp": "^2.0.0",
-    "cross-fetch": "^3.1.4",
-    "prettier": "^2.5.0",
+    "prettier": "2.5.1",
     "pretty-format": "^27.3.1",
     "rimraf": "^3.0.2",
     "tmp": "^0.2.1",
-    "ts-jest": "^27.0.5",
     "ts-node": "^10.4.0",
     "tslint": "^6.1.3",
-    "typescript": ">=3.3.1 <4.6.0"
+    "typescript": ">=3.3.1 <4.7.0"
   },
   "resolutions": {
     "@types/node": "^16.11.4",
-    "typescript": "4.5.2"
+    "typescript": "4.6.2"
   }
 }

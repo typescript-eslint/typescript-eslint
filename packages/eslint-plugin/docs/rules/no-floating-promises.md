@@ -1,10 +1,22 @@
-# Requires Promise-like values to be handled appropriately (`no-floating-promises`)
+# `no-floating-promises`
 
-This rule forbids usage of Promise-like values in statements without handling
-their errors appropriately. Unhandled promises can cause several issues, such
-as improperly sequenced operations, ignored Promise rejections and more. Valid
-ways of handling a Promise-valued statement include `await`ing, returning, and
-either calling `.then()` with two arguments or `.catch()` with one argument.
+Requires Promise-like statements to be handled appropriately.
+
+A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
+
+Floating Promises can cause several issues, such as improperly sequenced operations, ignored Promise rejections, and more.
+
+Valid ways of handling a Promise-valued statement include:
+
+- `await`ing it
+- `return`ing it
+- Calling its `.then()` with two arguments
+- Calling its `.catch()` with one argument
+
+:::tip
+`no-floating-promises` only detects unhandled Promise _statements_.
+See [`no-misused-promises`](./no-misused-promises.md) for detecting code that provides Promises to _logical_ locations such as if statements.
+:::
 
 ## Rule Details
 
@@ -85,7 +97,7 @@ With this option set to `true`, and if you are using `no-void`, you should turn 
 
 ### `ignoreIIFE`
 
-This allows you to skip checking of async iife
+This allows you to skip checking of async IIFEs (Immediately Invocated function Expressions).
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
@@ -105,6 +117,7 @@ If you do not use Promise-like values in your codebase, or want to allow them to
 
 ## Related To
 
+- [`no-misused-promises`](./no-misused-promises.md)
 - TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)
 
 ## Attributes

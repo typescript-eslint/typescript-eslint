@@ -1,0 +1,26 @@
+name: Update Sponsors Data
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"
+
+jobs:
+  build:
+    name: Commit if needed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: Codecademy/run-on-yarn@v1
+        with:
+          command: generate-sponsors
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # The standard GITHUB_TOKEN cannot be used as it will not trigger status checks on
+          # the PR that gets created (this behavior is not specific to this action).
+          # https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs
+          token: ${{ secrets.JAMES_HENRY_GH_TOKEN }}
+          commit-message: "chore: update sponsors"
+          title: "chore: update sponsors"
+          body: "💸"
+          branch: auto-update-sponsors

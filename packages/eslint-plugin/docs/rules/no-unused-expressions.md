@@ -1,4 +1,6 @@
-# Disallow unused expressions (`no-unused-expressions`)
+# `no-unused-expressions`
+
+Disallow unused expressions.
 
 ## Rule Details
 

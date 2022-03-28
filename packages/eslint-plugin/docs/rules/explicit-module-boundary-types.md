@@ -1,4 +1,6 @@
-# Require explicit return and argument types on exported functions' and classes' public class methods (`explicit-module-boundary-types`)
+# `explicit-module-boundary-types`
+
+Require explicit return and argument types on exported functions' and classes' public class methods.
 
 Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.
 

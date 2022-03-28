@@ -1417,6 +1417,74 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    get B() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get', 'set'], 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    B(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', [], 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    @Dec() private B: string;
+    private C(): void;
+    set D() {}
+    E(): void;
+}           `,
+      options: [
+        {
+          default: [
+            'public-field',
+            'constructor',
+            ['private-decorated-field', 'public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    get B() {}
+    get C() {}
+    set B() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get'], ['set'], 'method'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -3817,6 +3885,94 @@ class Foo {
           data: {
             name: 'D',
             rank: 'private method',
+          },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    get B() {}
+    constructor() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get', 'set'], 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'constructor',
+            rank: 'get, set',
+          },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    private C(): void;
+    constructor() {}
+    @Dec() private B: string;
+    set D() {}
+    E(): void;
+}           `,
+      options: [
+        {
+          default: [
+            'public-field',
+            'constructor',
+            ['private-decorated-field', 'public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'constructor',
+            rank: 'private decorated field, public set, private method',
+          },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    get B() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', 'get', ['set'], 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'C',
+            rank: 'set',
           },
           line: 7,
           column: 5,

@@ -3,6 +3,81 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.1...v5.13.0) (2022-02-28)
+
+
+### Features
+
+* **eslint-plugin:** [no-misused-promises] check more places for checksVoidReturn ([#4541](https://github.com/typescript-eslint/typescript-eslint/issues/4541)) ([052cf51](https://github.com/typescript-eslint/typescript-eslint/commit/052cf51fe663283afe89dc7bf97c947e750df095))
+
+
+
+
+
+## [5.12.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.12.0...v5.12.1) (2022-02-21)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.11.0...v5.12.0) (2022-02-14)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.2...v5.11.0) (2022-02-07)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.10.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.1...v5.10.2) (2022-01-31)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.10.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.10.0...v5.10.1) (2022-01-24)
+
+**Note:** Version bump only for package website
+
+
+
+
+
 # [5.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.9.1...v5.10.0) (2022-01-17)
 
 **Note:** Version bump only for package website

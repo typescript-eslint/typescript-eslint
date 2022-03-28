@@ -1,4 +1,6 @@
-# Disallow function declarations that contain unsafe references inside loop statements (`no-loop-func`)
+# `no-loop-func`
+
+Disallow function declarations that contain unsafe references inside loop statements.
 
 ## Rule Details
 

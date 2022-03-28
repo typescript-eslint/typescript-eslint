@@ -1,4 +1,6 @@
-# Prefer usage of `as const` over literal type (`prefer-as-const`)
+# `prefer-as-const`
+
+Prefer usage of `as const` over literal type.
 
 This rule recommends usage of `const` assertion when type primitive value is equal to type.
 
@@ -28,6 +30,19 @@ let foo = { bar: 'baz' };
 ```
 
 <!--/tabs-->
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-as-const": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## When Not To Use It
 

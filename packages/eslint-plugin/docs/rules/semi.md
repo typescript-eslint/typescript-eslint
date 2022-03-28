@@ -1,4 +1,6 @@
-# Require or disallow semicolons instead of ASI (`semi`)
+# `semi`
+
+Require or disallow semicolons instead of ASI.
 
 This rule enforces consistent use of semicolons after statements.
 

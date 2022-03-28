@@ -1,4 +1,6 @@
-# Enforce valid definition of `new` and `constructor` (`no-misused-new`)
+# `no-misused-new`
+
+Enforce valid definition of `new` and `constructor`.
 
 Warns on apparent attempts to define constructors for interfaces or `new` for classes.
 
@@ -34,11 +36,16 @@ interface I {
 
 ## Options
 
-```json
+```jsonc
+// .eslintrc.json
 {
-  "@typescript-eslint/no-misused-new": "error"
+  "rules": {
+    "@typescript-eslint/no-misused-new": "error"
+  }
 }
 ```
+
+This rule is not configurable.
 
 ## Related To
 

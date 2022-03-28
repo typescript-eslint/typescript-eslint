@@ -341,6 +341,35 @@ namespace myLib {
       `,
       options: ['always'],
     },
+    {
+      code: `
+declare namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['always'],
+    },
+
+    {
+      code: `
+declare namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['never'],
+    },
   ],
   invalid: [
     // checking compatibility with base rule
@@ -720,6 +749,37 @@ namespace myLib {
         {
           messageId: 'notInitialized',
           data: { idName: 'numberOfGreetings' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'initialized',
+          data: { idName: 'foo' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+        {
+          messageId: 'initialized',
+          data: { idName: 'bar' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+        {
+          messageId: 'initialized',
+          data: { idName: 'baz' },
           type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],

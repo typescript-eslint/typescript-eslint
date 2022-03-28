@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "5.10.0",
+  "version": "5.16.0",
   "private": true,
   "scripts": {
     "build": "docusaurus build",
@@ -9,19 +9,22 @@
     "lint": "eslint . --ext .js,.ts --ignore-path ../../.eslintignore",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
-    "swizzle": "docusaurus swizzle"
+    "swizzle": "docusaurus swizzle",
+    "test": "cypress run",
+    "test:open": "cypress open"
   },
   "dependencies": {
-    "@babel/runtime": "7.16.7",
-    "@docusaurus/core": "^2.0.0-beta.13",
-    "@docusaurus/plugin-content-docs": "^2.0.0-beta.13",
-    "@docusaurus/plugin-content-pages": "^2.0.0-beta.13",
-    "@docusaurus/plugin-debug": "^2.0.0-beta.13",
-    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-beta.13",
-    "@docusaurus/theme-classic": "^2.0.0-beta.13",
-    "@docusaurus/theme-search-algolia": "^2.0.0-beta.13",
+    "@babel/runtime": "7.17.8",
+    "@docusaurus/core": "^2.0.0-beta.15",
+    "@docusaurus/plugin-content-docs": "^2.0.0-beta.15",
+    "@docusaurus/plugin-content-pages": "^2.0.0-beta.15",
+    "@docusaurus/plugin-debug": "^2.0.0-beta.15",
+    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-beta.15",
+    "@docusaurus/theme-classic": "^2.0.0-beta.15",
+    "@docusaurus/theme-common": "^2.0.0-beta.15",
+    "@docusaurus/theme-search-algolia": "^2.0.0-beta.15",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/website-eslint": "5.10.0",
+    "@typescript-eslint/website-eslint": "5.16.0",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json5": "^2.2.0",
@@ -33,16 +36,18 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.0.0-beta.13",
+    "@docusaurus/module-type-aliases": "^2.0.0-beta.15",
     "@types/react": "^17.0.34",
     "@types/react-helmet": "^6.1.4",
     "@types/react-router-dom": "^5.3.2",
     "copy-webpack-plugin": "^9.1.0",
+    "cypress": "8.3.0",
+    "cypress-axe": "^0.14.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
     "globby": "^11.0.4",
-    "monaco-editor": "^0.31.1",
+    "monaco-editor": "^0.33.0",
     "webpack": "^5.64.0"
   },
   "browserslist": {

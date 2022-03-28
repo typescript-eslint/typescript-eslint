@@ -1,4 +1,6 @@
-# Disallows calling an any type value (`no-unsafe-call`)
+# `no-unsafe-call`
+
+Disallows calling an any type value.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 The arguments to, and return value of calling an `any` typed variable are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -45,6 +47,19 @@ new Map();
 
 String.raw`foo`;
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unsafe-call": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## Related To
 

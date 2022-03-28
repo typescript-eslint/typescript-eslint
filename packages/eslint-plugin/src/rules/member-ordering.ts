@@ -13,12 +13,14 @@ type Order =
   | 'alphabetically-case-insensitive'
   | 'as-written';
 
+type MemberType = string | string[];
+
 interface SortedOrderConfig {
-  memberTypes?: string[] | 'never';
+  memberTypes?: MemberType[] | 'never';
   order: Order;
 }
 
-type OrderConfig = string[] | SortedOrderConfig | 'never';
+type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 type Member = TSESTree.ClassElement | TSESTree.TypeElement;
 
 export type Options = [
@@ -36,14 +38,24 @@ const neverConfig: JSONSchema.JSONSchema4 = {
   enum: ['never'],
 };
 
-const arrayConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
+const arrayConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
   type: 'array',
   items: {
-    enum: memberTypes,
+    oneOf: [
+      {
+        enum: memberTypes,
+      },
+      {
+        type: 'array',
+        items: {
+          enum: memberTypes,
+        },
+      },
+    ],
   },
 });
 
-const objectConfig = (memberTypes: string[]): JSONSchema.JSONSchema4 => ({
+const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
   type: 'object',
   properties: {
     memberTypes: {
@@ -287,10 +299,10 @@ function getMemberRawName(
   const { name, type } = util.getNameFromMember(member, sourceCode);
 
   if (type === util.MemberNameType.Quoted) {
-    return name.substr(1, name.length - 2);
+    return name.slice(1, -1);
   }
   if (type === util.MemberNameType.Private) {
-    return name.substr(1);
+    return name.slice(1);
   }
   return name;
 }
@@ -339,12 +351,20 @@ function getMemberName(
  *
  * @return Index of the matching member type in the order configuration.
  */
-function getRankOrder(memberGroups: string[], orderConfig: string[]): number {
+function getRankOrder(
+  memberGroups: string[],
+  orderConfig: MemberType[],
+): number {
   let rank = -1;
   const stack = memberGroups.slice(); // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
-    rank = orderConfig.indexOf(stack.shift()!);
+    const memberGroup = stack.shift()!;
+    rank = orderConfig.findIndex(memberType =>
+      Array.isArray(memberType)
+        ? memberType.includes(memberGroup)
+        : memberType === memberGroup,
+    );
   }
 
   return rank;
@@ -358,7 +378,7 @@ function getRankOrder(memberGroups: string[], orderConfig: string[]): number {
  */
 function getRank(
   node: Member,
-  orderConfig: string[],
+  orderConfig: MemberType[],
   supportsModifiers: boolean,
 ): number {
   const type = getNodeType(node);
@@ -414,7 +434,7 @@ function getRank(
 }
 
 /**
- * Gets the lowest possible rank higher than target.
+ * Gets the lowest possible rank(s) higher than target.
  * e.g. given the following order:
  *   ...
  *   public-static-method
@@ -427,15 +447,16 @@ function getRank(
  * and considering that a public-instance-method has already been declared, so ranks contains
  * public-instance-method, then the lowest possible rank for public-static-method is
  * public-instance-method.
+ * If a lowest possible rank is a member group, a comma separated list of ranks is returned.
  * @param ranks the existing ranks in the object.
  * @param target the target rank.
  * @param order the current order to be validated.
- * @returns the name of the lowest possible rank without dashes (-).
+ * @returns the name(s) of the lowest possible rank without dashes (-).
  */
 function getLowestRank(
   ranks: number[],
   target: number,
-  order: string[],
+  order: MemberType[],
 ): string {
   let lowest = ranks[ranks.length - 1];
 
@@ -445,7 +466,9 @@ function getLowestRank(
     }
   });
 
-  return order[lowest].replace(/-/g, ' ');
+  const lowestRank = order[lowest];
+  const lowestRanks = Array.isArray(lowestRank) ? lowestRank : [lowestRank];
+  return lowestRanks.map(rank => rank.replace(/-/g, ' ')).join(', ');
 }
 
 export default util.createRule<Options, MessageIds>({
@@ -523,7 +546,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkGroupSort(
       members: Member[],
-      groupOrder: string[],
+      groupOrder: MemberType[],
       supportsModifiers: boolean,
     ): Array<Member[]> | null {
       const previousRanks: number[] = [];

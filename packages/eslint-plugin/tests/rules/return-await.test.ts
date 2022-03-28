@@ -909,5 +909,143 @@ async function test<T>(): Promise<T> {
         },
       ],
     },
+    {
+      code: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return undefined || bar();
+          } catch {}
+        }
+      `,
+      output: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return await (undefined || bar());
+          } catch {}
+        }
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return bar() || undefined || bar();
+          } catch {}
+        }
+      `,
+      output: `
+        async function bar() {}
+        async function foo() {
+          try {
+            return await (bar() || undefined || bar());
+          } catch {}
+        }
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        async function bar() {}
+        async function func1() {
+          try {
+            return null ?? bar();
+          } catch {}
+        }
+        async function func2() {
+          try {
+            return 1 && bar();
+          } catch {}
+        }
+        const foo = {
+          bar: async function () {},
+        };
+        async function func3() {
+          try {
+            return foo.bar();
+          } catch {}
+        }
+      `,
+      output: `
+        async function bar() {}
+        async function func1() {
+          try {
+            return await (null ?? bar());
+          } catch {}
+        }
+        async function func2() {
+          try {
+            return await (1 && bar());
+          } catch {}
+        }
+        const foo = {
+          bar: async function () {},
+        };
+        async function func3() {
+          try {
+            return await foo.bar();
+          } catch {}
+        }
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 10,
+          messageId: 'requiredPromiseAwait',
+        },
+        {
+          line: 18,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+        class X {
+          async bar() {
+            return;
+          }
+          async func2() {
+            try {
+              return this.bar();
+            } catch {}
+          }
+        }
+      `,
+      output: `
+        class X {
+          async bar() {
+            return;
+          }
+          async func2() {
+            try {
+              return await this.bar();
+            } catch {}
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
   ],
 });

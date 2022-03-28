@@ -18,6 +18,7 @@ export const webworker_iterable = {
   SubtleCrypto: TYPE,
   URLSearchParams: TYPE,
   WEBGL_draw_buffers: TYPE,
+  WEBGL_multi_draw: TYPE,
   WebGL2RenderingContextBase: TYPE,
   WebGL2RenderingContextOverloads: TYPE,
   WebGLRenderingContextBase: TYPE,

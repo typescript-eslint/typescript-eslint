@@ -24,7 +24,11 @@ const paths = globby
     };
   })
   .filter(item => {
-    return item.name !== 'README' && !rules.some(a => a.name === item.name);
+    return (
+      item.name !== 'README' &&
+      item.name !== 'TEMPLATE' &&
+      !rules.some(a => a.name === item.name)
+    );
   });
 
 module.exports = {

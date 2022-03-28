@@ -1,4 +1,6 @@
-# Enforces that members of a type union/intersection are sorted alphabetically (`sort-type-union-intersection-members`)
+# `sort-type-union-intersection-members`
+
+Enforces that members of a type union/intersection are sorted alphabetically.
 
 Sorting union (`|`) and intersection (`&`) types can help:
 

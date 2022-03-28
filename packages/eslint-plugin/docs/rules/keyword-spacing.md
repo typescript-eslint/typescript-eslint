@@ -1,4 +1,6 @@
-# Enforce consistent spacing before and after keywords (`keyword-spacing`)
+# `keyword-spacing`
+
+Enforce consistent spacing before and after keywords.
 
 ## Rule Details
 

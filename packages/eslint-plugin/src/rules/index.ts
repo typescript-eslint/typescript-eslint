@@ -60,6 +60,7 @@ import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chai
 import noNonNullAssertion from './no-non-null-assertion';
 import noParameterProperties from './no-parameter-properties';
 import noRedeclare from './no-redeclare';
+import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
 import noShadow from './no-shadow';
@@ -81,6 +82,7 @@ import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
+import noUselessEmptyExport from './no-useless-empty-export';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
@@ -110,6 +112,7 @@ import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
 import sortTypeUnionIntersectionMembers from './sort-type-union-intersection-members';
+import spaceBeforeBlocks from './space-before-blocks';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
@@ -183,6 +186,7 @@ export default {
   'no-non-null-assertion': noNonNullAssertion,
   'no-parameter-properties': noParameterProperties,
   'no-redeclare': noRedeclare,
+  'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,
   'no-shadow': noShadow,
@@ -204,6 +208,7 @@ export default {
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
+  'no-useless-empty-export': noUselessEmptyExport,
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
@@ -233,6 +238,7 @@ export default {
   'return-await': returnAwait,
   semi: semi,
   'sort-type-union-intersection-members': sortTypeUnionIntersectionMembers,
+  'space-before-blocks': spaceBeforeBlocks,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,

@@ -1,4 +1,6 @@
-# Enforces consistent usage of type exports (`consistent-type-exports`)
+# `consistent-type-exports`
+
+Enforces consistent usage of type exports.
 
 TypeScript 3.8 added support for type-only exports.
 

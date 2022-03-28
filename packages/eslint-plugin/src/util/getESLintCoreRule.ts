@@ -33,6 +33,7 @@ interface RuleMap {
   'prefer-const': typeof import('eslint/lib/rules/prefer-const');
   quotes: typeof import('eslint/lib/rules/quotes');
   semi: typeof import('eslint/lib/rules/semi');
+  'space-before-blocks': typeof import('eslint/lib/rules/space-before-blocks');
   'space-infix-ops': typeof import('eslint/lib/rules/space-infix-ops');
   strict: typeof import('eslint/lib/rules/strict');
 }

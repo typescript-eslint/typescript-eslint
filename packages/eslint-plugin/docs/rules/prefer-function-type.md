@@ -1,4 +1,6 @@
-# Use function types instead of interfaces with call signatures (`prefer-function-type`)
+# `prefer-function-type`
+
+Use function types instead of interfaces with call signatures.
 
 ## Rule Details
 

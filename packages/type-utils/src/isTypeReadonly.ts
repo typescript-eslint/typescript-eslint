@@ -205,6 +205,11 @@ function isTypeReadonlyObject(
         continue;
       }
 
+      const name = ts.getNameOfDeclaration(property.valueDeclaration);
+      if (name && ts.isPrivateIdentifier(name)) {
+        continue;
+      }
+
       return Readonlyness.Mutable;
     }
 

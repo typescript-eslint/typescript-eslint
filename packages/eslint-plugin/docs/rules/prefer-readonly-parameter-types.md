@@ -1,4 +1,6 @@
-# Requires that function parameters are typed as readonly to prevent accidental mutation of inputs (`prefer-readonly-parameter-types`)
+# `prefer-readonly-parameter-types`
+
+Requires that function parameters are typed as readonly to prevent accidental mutation of inputs.
 
 Mutating function arguments can lead to confusing, hard to debug behavior.
 Whilst it's easy to implicitly remember to not modify function arguments, explicitly typing arguments as readonly provides clear contract to consumers.

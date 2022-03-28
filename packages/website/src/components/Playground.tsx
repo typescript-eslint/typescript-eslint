@@ -1,7 +1,7 @@
 import React, { useReducer, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import clsx from 'clsx';
-import useThemeContext from '@theme/hooks/useThemeContext';
+import { useColorMode } from '@docusaurus/theme-common';
 
 import styles from './Playground.module.css';
 import Loader from './layout/Loader';
@@ -48,7 +48,7 @@ function Playground(): JSX.Element {
     rules: {},
     tsConfig: {},
   });
-  const { isDarkTheme } = useThemeContext();
+  const { isDarkTheme } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
   const [tsAst, setTsAST] = useState<SourceFile | string | null>();
   const [scope, setScope] = useState<Record<string, unknown> | string | null>();

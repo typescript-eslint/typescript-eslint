@@ -85,6 +85,46 @@ export default util.createRule({
       }),
       ...(option === 'type' && {
         TSInterfaceDeclaration(node): void {
+          const fix = isCurrentlyTraversedNodeWithinModuleDeclaration()
+            ? null
+            : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
+                const typeNode = node.typeParameters ?? node.id;
+                const fixes: TSESLint.RuleFix[] = [];
+
+                const firstToken = sourceCode.getTokenBefore(node.id);
+                if (firstToken) {
+                  fixes.push(fixer.replaceText(firstToken, 'type'));
+                  fixes.push(
+                    fixer.replaceTextRange(
+                      [typeNode.range[1], node.body.range[0]],
+                      ' = ',
+                    ),
+                  );
+                }
+
+                if (node.extends) {
+                  node.extends.forEach(heritage => {
+                    const typeIdentifier = sourceCode.getText(heritage);
+                    fixes.push(
+                      fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
+                    );
+                  });
+                }
+
+                if (
+                  node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+                ) {
+                  fixes.push(
+                    fixer.removeRange([node.parent.range[0], node.range[0]]),
+                    fixer.insertTextAfter(
+                      node.body,
+                      `\nexport default ${node.id.name}`,
+                    ),
+                  );
+                }
+
+                return fixes;
+              };
           context.report({
             node: node.id,
             messageId: 'typeOverInterface',
@@ -92,50 +132,7 @@ export default util.createRule({
              * remove automatically fix when the interface is within a declare global
              * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/2707}
              */
-            fix: isCurrentlyTraversedNodeWithinModuleDeclaration()
-              ? null
-              : (fixer): TSESLint.RuleFix[] => {
-                  const typeNode = node.typeParameters ?? node.id;
-                  const fixes: TSESLint.RuleFix[] = [];
-
-                  const firstToken = sourceCode.getTokenBefore(node.id);
-                  if (firstToken) {
-                    fixes.push(fixer.replaceText(firstToken, 'type'));
-                    fixes.push(
-                      fixer.replaceTextRange(
-                        [typeNode.range[1], node.body.range[0]],
-                        ' = ',
-                      ),
-                    );
-                  }
-
-                  if (node.extends) {
-                    node.extends.forEach(heritage => {
-                      const typeIdentifier = sourceCode.getText(heritage);
-                      fixes.push(
-                        fixer.insertTextAfter(
-                          node.body,
-                          ` & ${typeIdentifier}`,
-                        ),
-                      );
-                    });
-                  }
-
-                  if (
-                    node.parent?.type ===
-                    AST_NODE_TYPES.ExportDefaultDeclaration
-                  ) {
-                    fixes.push(
-                      fixer.removeRange([node.parent.range[0], node.range[0]]),
-                      fixer.insertTextAfter(
-                        node.body,
-                        `\nexport default ${node.id.name}`,
-                      ),
-                    );
-                  }
-
-                  return fixes;
-                },
+            fix,
           });
         },
       }),
