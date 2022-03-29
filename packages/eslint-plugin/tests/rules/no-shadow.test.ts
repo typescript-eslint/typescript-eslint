@@ -1772,11 +1772,7 @@ let y;
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 5,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
         },
         {
@@ -1807,14 +1803,10 @@ const a = fn(() => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 1,
-            shadowedColumn: 7,
-          },
+          data: { name: 'a' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 44,
+          line: 5,
+          column: 13,
         },
       ],
     },
@@ -1825,11 +1817,7 @@ const a = fn(() => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 1,
-            shadowedColumn: 10,
-          },
+          data: { name: 'a' },
           type: AST_NODE_TYPES.Identifier,
           line: 2,
           column: 5,
@@ -1853,14 +1841,10 @@ const a = fn(() => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 1,
-            shadowedColumn: 7,
-          },
+          data: { name: 'a' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 62,
+          line: 5,
+          column: 13,
         },
       ],
     },
@@ -1878,14 +1862,10 @@ const x = foo(() => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 7,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 50,
+          line: 4,
+          column: 12,
         },
       ],
     },
@@ -1900,14 +1880,10 @@ const x = foo(() => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 7,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 36,
+          line: 3,
+          column: 16,
         },
       ],
     },
@@ -1922,14 +1898,10 @@ const x = () => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 7,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 23,
+          line: 3,
+          column: 7,
         },
       ],
     },
@@ -1945,14 +1917,10 @@ const foo = () => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 25,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 32,
+          line: 4,
+          column: 7,
         },
       ],
     },
@@ -1967,14 +1935,10 @@ foo(() => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 19,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 23,
+          line: 3,
+          column: 13,
         },
       ],
     },
@@ -1989,14 +1953,10 @@ const foo = x => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 14,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 26,
+          line: 3,
+          column: 7,
         },
       ],
     },
@@ -2010,20 +1970,12 @@ let y;
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 5,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
         },
         {
           messageId: 'noShadow',
-          data: {
-            name: 'y',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
+          data: { name: 'y' },
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -2045,14 +1997,10 @@ const a = (() => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 1,
-            shadowedColumn: 7,
-          },
+          data: { name: 'a' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 42,
+          line: 5,
+          column: 13,
         },
       ],
     },
@@ -2067,14 +2015,10 @@ const x = () => {
       errors: [
         {
           messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 1,
-            shadowedColumn: 7,
-          },
+          data: { name: 'x' },
           type: AST_NODE_TYPES.Identifier,
-          line: 1,
-          column: 20,
+          line: 3,
+          column: 4,
         },
       ],
     },
