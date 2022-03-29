@@ -46,20 +46,22 @@ export const rule = createRule({
   create(context) {
     return {
       FunctionDeclaration(node) {
-        if (/^[a-z]/.test(node.id.name)) {
+   if(node.id!=null){
+          if (/^[a-z]/.test(node.id.name)) {
           context.report({
             messageId: 'uppercase',
             node: node.id,
           });
         }
+   }
       },
     };
   },
+  name: 'rule-creator',
   meta: {
     docs: {
+      description:'Function declaration names should start with an upper-case letter.',
       recommended: 'warn',
-      description:
-        'Function declaration names should start with an upper-case letter.',
     },
     messages: {
       uppercase: 'Start this name with an upper-case letter.',
@@ -67,6 +69,7 @@ export const rule = createRule({
     type: 'suggestion',
     schema: [],
   },
+  defaultOptions: [],
 });
 ```
 
