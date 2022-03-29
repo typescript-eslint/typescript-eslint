@@ -57,7 +57,7 @@ export const rule = createRule({
   },
   meta: {
     docs: {
-      category: 'Best Practices',
+      recommended: 'warn',
       description:
         'Function declaration names should start with an upper-case letter.',
     },
