@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { ParserOptions } from '@typescript-eslint/types';
-import type { SourceFile } from 'typescript';
+import type { SourceFile, CompilerOptions } from 'typescript';
 
 export type LintMessage = TSESLint.Linter.LintMessage;
 export type RuleFix = TSESLint.RuleFix;
@@ -22,7 +22,10 @@ export interface WebLinter {
 }
 
 export interface LinterLoader {
-  loadLinter(): WebLinter;
+  loadLinter(
+    libMap: Map<string, string>,
+    compilerOptions: CompilerOptions,
+  ): WebLinter;
 }
 
 export type {

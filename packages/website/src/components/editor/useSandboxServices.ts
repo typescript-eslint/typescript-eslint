@@ -47,7 +47,16 @@ export const useSandboxServices = (
     setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
-      .then(({ main, sandboxFactory, ts, linter }) => {
+      .then(async ({ main, sandboxFactory, ts, linter }) => {
+        const compilerOptions = {
+          noResolve: true,
+          strict: true,
+          target: main.languages.typescript.ScriptTarget.ESNext,
+          jsx: props.jsx ? main.languages.typescript.JsxEmit.React : undefined,
+          lib: ['ESNext'],
+          module: main.languages.typescript.ModuleKind.ESNext,
+        };
+
         const sandboxConfig: Partial<SandboxConfig> = {
           text: '',
           monacoSettings: {
@@ -57,15 +66,7 @@ export const useSandboxServices = (
             scrollBeyondLastLine: false,
             smoothScrolling: true,
           },
-          compilerOptions: {
-            noResolve: true,
-            strict: true,
-            target: main.languages.typescript.ScriptTarget.ESNext,
-            jsx: props.jsx
-              ? main.languages.typescript.JsxEmit.React
-              : undefined,
-            module: main.languages.typescript.ModuleKind.ESNext,
-          },
+          compilerOptions: compilerOptions,
           domID: editorEmbedId,
         };
 
@@ -75,7 +76,14 @@ export const useSandboxServices = (
           ts,
         );
 
-        const webLinter = linter.loadLinter();
+        const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
+          sandboxInstance.getCompilerOptions(),
+          props.ts,
+          true,
+          window.ts,
+        );
+
+        const webLinter = linter.loadLinter(libMap, compilerOptions);
 
         props.onLoaded(webLinter.ruleNames, sandboxInstance.supportedVersions);
 
