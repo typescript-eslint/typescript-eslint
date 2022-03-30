@@ -4,7 +4,7 @@ sidebar_label: Getting Started
 slug: /
 ---
 
-These docs will give you a quick overview of the project and all of its the pieces, as well as provide guides to help you get set up.
+These docs will give you a quick overview of the project and all of its pieces, as well as provide guides to help you get set up.
 
 The docs are broken down into the following categories:
 
