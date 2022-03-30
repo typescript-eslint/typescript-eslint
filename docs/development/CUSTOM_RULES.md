@@ -35,10 +35,10 @@ It takes in a function that transforms a rule name into its documentation URL, t
 This rule bans function declarations that start with a lower-case letter:
 
 ```ts
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { ESLintUtils } from "@typescript-eslint/utils";
 
 const createRule = ESLintUtils.RuleCreator(
-  name => `https://example.com/rule/${name}`,
+  (name) => `https://example.com/rule/${name}`
 );
 
 // Type: RuleModule<"uppercase", ...>
@@ -46,27 +46,28 @@ export const rule = createRule({
   create(context) {
     return {
       FunctionDeclaration(node) {
-   if(node.id!=null){
+        if (node.id != null) {
           if (/^[a-z]/.test(node.id.name)) {
-          context.report({
-            messageId: 'uppercase',
-            node: node.id,
-          });
+            context.report({
+              messageId: "uppercase",
+              node: node.id,
+            });
+          }
         }
-   }
       },
     };
   },
-  name: 'rule-creator',
+  name: "uppercase-first-declarations",
   meta: {
     docs: {
-      description:'Function declaration names should start with an upper-case letter.',
-      recommended: 'warn',
+      description:
+        "Function declaration names should start with an upper-case letter.",
+      recommended: "warn",
     },
     messages: {
-      uppercase: 'Start this name with an upper-case letter.',
+      uppercase: "Start this name with an upper-case letter.",
     },
-    type: 'suggestion',
+    type: "suggestion",
     schema: [],
   },
   defaultOptions: [],
