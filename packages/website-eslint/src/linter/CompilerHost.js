@@ -1,5 +1,9 @@
-import { getDefaultLibFileName } from 'typescript';
-import { ScriptKind } from 'typescript';
+import {
+  getDefaultLibFileName,
+  ScriptKind,
+  createSourceFile,
+  ScriptTarget,
+} from 'typescript';
 
 function getScriptKind(isJsx, filePath) {
   const extension = (/(\.[a-z]+)$/.exec(filePath)?.[0] || '').toLowerCase();
@@ -20,7 +24,7 @@ function getScriptKind(isJsx, filePath) {
 
     default:
       // unknown extension, force typescript to ignore the file extension, and respect the user's setting
-      return isJsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+      return isJsx ? ScriptKind.TSX : ScriptKind.TS;
   }
 }
 
@@ -77,10 +81,10 @@ export class CompilerHost {
   }
 
   getSourceFile(name) {
-    return ts.createSourceFile(
+    return createSourceFile(
       name,
       this.readFile(name),
-      ts.ScriptTarget.Latest,
+      ScriptTarget.Latest,
       /* setParentNodes */ true,
       getScriptKind(this.isJsx, name),
     );
