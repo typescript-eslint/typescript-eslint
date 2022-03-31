@@ -93,5 +93,50 @@
         "label": "Disable including any library files, including the default lib.d.ts."
       }
     ]
+  },
+  {
+    "heading": "Emit",
+    "fields": [
+      {
+        "key": "declaration",
+        "label": "Generate, .d.ts files from TypeScript and JavaScript files in your project."
+      },
+      {
+        "key": "removeComments",
+        "label": "Disable, emitting comments."
+      },
+      {
+        "key": "importHelpers",
+        "label": "Allow, importing helper functions from tslib once per project, instead of including them per-file."
+      },
+      {
+        "key": "downlevelIteration",
+        "label": "Emit, more compliant, but verbose and less performant JavaScript for iteration."
+      },
+      {
+        "key": "inlineSourceMap",
+        "label": "Include, sourcemap files inside the emitted JavaScript."
+      },
+      {
+        "key": "inlineSources",
+        "label": "Include, source code in the sourcemaps inside the emitted JavaScript."
+      },
+      {
+        "key": "stripInternal",
+        "label": "Disable, emitting declarations that have @internal in their JSDoc comments."
+      },
+      {
+        "key": "noEmitHelpers",
+        "label": "Disable, generating custom helper functions like __extends in compiled output."
+      },
+      {
+        "key": "preserveConstEnums",
+        "label": "Disable, erasing const enum declarations in generated code."
+      },
+      {
+        "key": "preserveValueImports",
+        "label": "Preserve, unused imported values in the JavaScript output that would otherwise be removed."
+      }
+    ]
   }
 ]

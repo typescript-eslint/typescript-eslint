@@ -139,8 +139,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     sandboxInstance.setCompilerSettings({
+      noResolve: true,
+      strict: true,
+      target: main.languages.typescript.ScriptTarget.ESNext,
+      module: main.languages.typescript.ModuleKind.ESNext,
+      lib: ['ESNext'],
       ...tsConfig,
-      jsx: jsx ? 2 : 0,
+      jsx: jsx ? main.languages.typescript.JsxEmit.React : undefined,
     });
   }, [jsx, sandboxInstance, JSON.stringify(tsConfig) /* todo: better way? */]);
 
