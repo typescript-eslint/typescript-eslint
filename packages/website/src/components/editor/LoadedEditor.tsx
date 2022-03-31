@@ -143,7 +143,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       strict: true,
       target: main.languages.typescript.ScriptTarget.ESNext,
       module: main.languages.typescript.ModuleKind.ESNext,
-      lib: ['ESNext'],
       ...tsConfig,
       jsx: jsx ? main.languages.typescript.JsxEmit.React : undefined,
     });
