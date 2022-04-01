@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.16.0...v5.17.0) (2022-03-28)
+
+
+### Features
+
+* **eslint-plugin:** [no-unused-vars] add destructuredArrayIgnorePattern options ([#4748](https://github.com/typescript-eslint/typescript-eslint/issues/4748)) ([6f8db8b](https://github.com/typescript-eslint/typescript-eslint/commit/6f8db8b64821d280fff408c1704a9adde682ed69))
+
+
+
+
+
 # [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
 
 
