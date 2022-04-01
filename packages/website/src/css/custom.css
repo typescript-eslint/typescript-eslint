@@ -26,7 +26,7 @@
   --docsearch-muted-color: #666;
 }
 
-html[data-theme='dark']:root {
+html[data-theme='dark'] {
   --ifm-color-feedback-background: #f0f8ff;
   --ifm-color-primary: #4e89e8;
   --ifm-color-primary-dark: #144697;
