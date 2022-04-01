@@ -37,14 +37,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   const fixes = useRef(new Map<string, LintCodeAction>()).current;
 
   useEffect(() => {
-    webLinter.updateOptions(tsConfig);
-    sandboxInstance.setCompilerSettings({
+    const config = {
       noResolve: true,
       target: main.languages.typescript.ScriptTarget.ESNext,
       module: main.languages.typescript.ModuleKind.ESNext,
       ...tsConfig,
       jsx: jsx ? main.languages.typescript.JsxEmit.React : undefined,
-    });
+    };
+
+    webLinter.updateOptions(config);
+    sandboxInstance.setCompilerSettings(config);
   }, [
     jsx,
     sandboxInstance,

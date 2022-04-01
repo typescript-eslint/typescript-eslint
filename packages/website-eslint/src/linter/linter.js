@@ -48,9 +48,7 @@ export function loadLinter(libs, options) {
     ruleNames: ruleNames,
 
     updateOptions(options) {
-      if (options) {
-        compilerOptions = Object.assign({}, compilerOptions, options);
-      }
+      compilerOptions = options || {};
     },
 
     getScope() {
