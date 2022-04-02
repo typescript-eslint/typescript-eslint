@@ -8,7 +8,7 @@
 @import './prism.css';
 
 /* You can override the default Infima variables here. */
-:root {
+html:root {
   --ifm-color-primary: #3578e5;
   --ifm-color-primary-dark: #1b62d4;
   --ifm-color-primary-darker: #1751af;
@@ -26,7 +26,7 @@
   --docsearch-muted-color: #666;
 }
 
-html[data-theme='dark'] {
+html[data-theme='dark']:root {
   --ifm-color-feedback-background: #f0f8ff;
   --ifm-color-primary: #4e89e8;
   --ifm-color-primary-dark: #144697;
