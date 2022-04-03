@@ -158,7 +158,8 @@ async function main(): Promise<void> {
         tier:
           slug === 'sponsor' || totalDonations >= 750_00
             ? 'sponsor'
-            : slug === 'supporter' || totalDonations >= 150_00
+            : // TODO: update for updated tiers on OpenCollective
+            slug === 'supporter' || totalDonations >= 150_00
             ? 'supporter'
             : slug,
         totalDonations,

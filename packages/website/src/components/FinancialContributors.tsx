@@ -4,46 +4,25 @@ import clsx from 'clsx';
 import React from 'react';
 
 import styles from './FinancialContributors.module.css';
-
-interface Sponsor {
-  description?: string;
-  id: string;
-  image: string;
-  name: string;
-  tier?: string;
-  totalDonations: number;
-  website?: string;
-}
+import { Sponsor } from './types';
+import { SponsorBasic } from './SponsorBasic';
+import { SponsorExpanded } from './SponsorExpanded';
 
 interface SponsorProps {
+  className?: string;
   sponsor: Sponsor;
-  showName?: boolean;
-}
-
-function Sponsor({ showName, sponsor }: SponsorProps): JSX.Element {
-  return (
-    <a
-      className={styles.sponsorLink}
-      href={sponsor.website ?? undefined}
-      title={sponsor.name}
-      target="_blank"
-      rel="noopener sponsored"
-    >
-      <img src={sponsor.image} alt={`${sponsor.name} logo`} />
-      {showName && sponsor.name.split(' - ')[0]}
-    </a>
-  );
 }
 
 interface SponsorsProps {
+  as: React.ComponentType<SponsorProps>;
   className: string;
   description: string;
-  showName?: boolean;
+  expanded?: boolean;
   tier?: string;
   title: string;
 }
 
-function Sponsors(props: SponsorsProps): JSX.Element {
+function Sponsors({ as: As, ...props }: SponsorsProps): JSX.Element {
   return (
     <div className={clsx(styles.tierArea, props.className)}>
       <h3>{props.title}</h3>
@@ -53,7 +32,7 @@ function Sponsors(props: SponsorsProps): JSX.Element {
           .filter(sponsor => sponsor.tier === props.tier)
           .map(sponsor => (
             <li key={sponsor.id}>
-              <Sponsor showName={props.showName} sponsor={sponsor} />
+              <As sponsor={sponsor} />
             </li>
           ))}
       </ul>
@@ -70,21 +49,23 @@ export function FinancialContributors(): JSX.Element {
       </p>
       <div className={styles.sponsorsContainer}>
         <Sponsors
+          as={SponsorExpanded}
           className={styles.tierSponsorArea}
           description="Donors of $750 and/or a monthly amount of $100 or more."
-          showName
           tier="sponsor"
           title="Sponsors"
         />
         <Sponsors
+          as={SponsorBasic}
           className={styles.tierSupporterArea}
-          description="Donors of $150 and/or a monthly amount of $3 or more."
+          description="Donors of $150 and/or a monthly amount of $10 or more."
           tier="supporter"
           title="Supporters"
         />
         <Sponsors
+          as={SponsorBasic}
           className={styles.tierOtherArea}
-          description="Donors of $50 or more."
+          description="Donors of $50 and/or a monthly amount of $3 or more."
           tier="contributor"
           title="Contributors"
         />

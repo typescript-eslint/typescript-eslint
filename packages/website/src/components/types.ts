@@ -54,3 +54,13 @@ export interface SelectedRange {
   start: SelectedPosition;
   end: SelectedPosition;
 }
+
+export interface Sponsor {
+  description?: string;
+  id: string;
+  image: string;
+  name: string;
+  tier?: string;
+  totalDonations: number;
+  website?: string;
+}

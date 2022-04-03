@@ -45,11 +45,6 @@
   width: 60px;
 }
 
-.tier-contributor img {
-  max-height: 30px;
-  width: 30px;
-}
-
 .sponsorLink {
   display: inline-flex;
   flex-direction: column;
