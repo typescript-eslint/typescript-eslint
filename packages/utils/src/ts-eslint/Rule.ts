@@ -5,6 +5,8 @@ import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
+export type RuleRecommendation = 'error' | 'strict' | 'warn' | false;
+
 interface RuleMetaDataDocs {
   /**
    * Concise description of the rule

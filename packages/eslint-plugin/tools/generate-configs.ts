@@ -143,7 +143,10 @@ function writeConfig(config: LinterConfig, filePath: string): void {
   fs.writeFileSync(filePath, configStr);
 }
 
-const recommendedValues = new Set<string | undefined>(['error', 'warn']);
+const recommendedValues = new Set<TSESLint.RuleRecommendation | undefined>([
+  'error',
+  'warn',
+]);
 
 function entryIsRecommended(entry: RuleEntry): boolean {
   return recommendedValues.has(entry[1].meta.docs?.recommended);

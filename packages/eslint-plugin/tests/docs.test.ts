@@ -1,3 +1,4 @@
+import { TSESLint } from '@typescript-eslint/utils';
 import fs from 'fs';
 import { JSONSchema4 } from 'json-schema';
 import path from 'path';
@@ -131,7 +132,7 @@ describe('Validating rule docs', () => {
       if (
         !isEmptySchema(rule.meta.schema) ||
         rule.meta.docs?.extendsBaseRule ||
-        !rule.meta.docs?.recommended
+        !shouldBeRecommended(rule.meta.docs)
       ) {
         return;
       }
@@ -176,7 +177,7 @@ describe('Validating rule docs', () => {
       // Verify attributes content
       const attributesList = tokenAs(tokens[attributesHeaderIndex + 1], 'list');
       const recommended = attributesList.items[0];
-      expect(rule.meta.docs?.recommended !== false).toBe(recommended.checked);
+      expect(shouldBeRecommended(rule.meta.docs)).toBe(recommended.checked);
       const fixable = attributesList.items[1];
       expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
       const requiresTypeChecking = attributesList.items[2];
@@ -274,7 +275,7 @@ describe('Validating README.md', () => {
 
       it('Recommended column should be correct', () => {
         expect(ruleRow[2]).toBe(
-          rule.meta.docs?.recommended ? ':white_check_mark:' : '',
+          shouldBeRecommended(rule.meta.docs) ? ':white_check_mark:' : '',
         );
       });
 
@@ -294,3 +295,9 @@ describe('Validating README.md', () => {
     });
   }
 });
+
+function shouldBeRecommended(
+  docs: TSESLint.RuleMetaDataDocs | undefined,
+): boolean {
+  return docs?.recommended !== false && docs?.recommended !== 'strict';
+}
