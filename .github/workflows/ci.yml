@@ -107,7 +107,7 @@ jobs:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: npx nx test @typescript-eslint/scope-manager
+        run: npx nx test @typescript-eslint/scope-manager --code-coverage
         env:
           CI: true
 
