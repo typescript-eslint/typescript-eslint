@@ -76,6 +76,19 @@ namespace X {
 }
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unnecessary-qualifier": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you don't care about having unneeded namespace or enum qualifiers, then you don't need to use this rule.
@@ -87,5 +100,6 @@ If you don't care about having unneeded namespace or enum qualifiers, then you d
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -91,5 +91,6 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

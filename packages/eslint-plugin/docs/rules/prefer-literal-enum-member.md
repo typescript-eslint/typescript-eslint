@@ -100,5 +100,6 @@ If you want use anything other than simple literals as an enum value.
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

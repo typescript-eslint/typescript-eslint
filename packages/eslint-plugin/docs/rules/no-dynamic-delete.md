@@ -40,6 +40,19 @@ delete container[7];
 delete container['-Infinity'];
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-dynamic-delete": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 When you know your keys are safe to delete, this rule can be unnecessary.
@@ -55,5 +68,6 @@ Even repeated minor performance slowdowns likely do not significantly affect you
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

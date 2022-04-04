@@ -81,5 +81,6 @@ If you don't care about having no-op type assertions in your code, then you can 
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

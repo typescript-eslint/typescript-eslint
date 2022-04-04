@@ -281,5 +281,6 @@ function foo(arg: MyType) {}
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

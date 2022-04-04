@@ -120,5 +120,6 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

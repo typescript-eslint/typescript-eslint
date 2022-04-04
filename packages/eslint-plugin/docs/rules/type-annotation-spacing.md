@@ -315,5 +315,6 @@ If you don't want to enforce spacing for your type annotations, you can safely t
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

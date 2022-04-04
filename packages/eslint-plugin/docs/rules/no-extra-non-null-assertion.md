@@ -62,5 +62,6 @@ This rule is not configurable.
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

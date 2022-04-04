@@ -134,5 +134,6 @@ or in invalid places, then you don't need this rule.
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

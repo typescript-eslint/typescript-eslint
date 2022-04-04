@@ -58,5 +58,6 @@ This rule accepts a single object option with the following default configuratio
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

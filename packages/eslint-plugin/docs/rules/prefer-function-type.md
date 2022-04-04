@@ -78,6 +78,19 @@ interface Overloaded {
 type Intersection = ((data: string) => number) & ((id: number) => string);
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-function-type": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you specifically want to use an interface or type literal with a single call signature for stylistic reasons, you can disable this rule.
@@ -89,5 +102,6 @@ If you specifically want to use an interface or type literal with a single call 
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

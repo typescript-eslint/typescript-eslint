@@ -1116,5 +1116,6 @@ If you don't care about the general structure of your classes and interfaces, th
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

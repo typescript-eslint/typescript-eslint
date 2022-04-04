@@ -93,5 +93,6 @@ class Container {
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

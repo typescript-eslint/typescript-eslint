@@ -224,5 +224,6 @@ async function validNever3() {
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

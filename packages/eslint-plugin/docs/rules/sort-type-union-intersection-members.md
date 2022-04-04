@@ -155,5 +155,6 @@ The ordering of groups is determined by this option.
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

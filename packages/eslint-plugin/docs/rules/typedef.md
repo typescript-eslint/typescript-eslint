@@ -344,5 +344,6 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

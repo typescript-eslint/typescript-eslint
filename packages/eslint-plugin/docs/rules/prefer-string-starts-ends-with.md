@@ -47,13 +47,16 @@ foo.endsWith('bar');
 
 ## Options
 
-There are no options.
-
-```json
+```jsonc
+// .eslintrc.json
 {
-  "@typescript-eslint/prefer-string-starts-ends-with": "error"
+  "rules": {
+    "@typescript-eslint/prefer-string-starts-ends-with": "warn"
+  }
 }
 ```
+
+This rule is not configurable.
 
 ## When Not To Use It
 
@@ -62,5 +65,6 @@ If you don't mind that style, you can turn this rule off safely.
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

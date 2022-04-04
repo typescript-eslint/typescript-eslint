@@ -154,5 +154,6 @@ if (!(someNullCondition ?? true)) {
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -68,5 +68,6 @@ const x: import('Bar') = 1;
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -83,5 +83,6 @@ export { Button, type ButtonProps } from 'some-library';
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -116,5 +116,6 @@ The main downside to using this rule is the need for type information.
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

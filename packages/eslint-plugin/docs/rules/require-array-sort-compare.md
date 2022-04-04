@@ -101,5 +101,6 @@ If you understand the language specification enough, you can turn this rule off 
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

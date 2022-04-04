@@ -32,6 +32,19 @@ function x(x: number | string): void;
 function y(...x: number[]): void;
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/unified-signatures": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## Related To
 
 - TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
@@ -39,5 +52,6 @@ function y(...x: number[]): void;
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

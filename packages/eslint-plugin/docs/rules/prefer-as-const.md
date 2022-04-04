@@ -51,5 +51,6 @@ If you are using TypeScript < 3.4
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

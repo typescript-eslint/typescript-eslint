@@ -53,5 +53,6 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -145,5 +145,6 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

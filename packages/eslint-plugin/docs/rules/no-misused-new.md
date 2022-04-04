@@ -54,5 +54,6 @@ This rule is not configurable.
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

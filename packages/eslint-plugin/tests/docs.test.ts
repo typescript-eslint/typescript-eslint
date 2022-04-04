@@ -94,96 +94,107 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
-    const filePath = path.join(docsRoot, `${ruleName}.md`);
+    describe(ruleName, () => {
+      const filePath = path.join(docsRoot, `${ruleName}.md`);
 
-    it(`First header in ${ruleName}.md must be the name of the rule`, () => {
-      const tokens = parseMarkdownFile(filePath);
+      it(`First header in ${ruleName}.md must be the name of the rule`, () => {
+        const tokens = parseMarkdownFile(filePath);
 
-      const header = tokens.find(tokenIsH1)!;
+        const header = tokens.find(tokenIsH1)!;
 
-      expect(header.text).toBe(`\`${ruleName}\``);
-    });
-
-    it(`Description of ${ruleName}.md must match`, () => {
-      // validate if description of rule is same as in docs
-      const tokens = parseMarkdownFile(filePath);
-
-      // Rule title not found.
-      // Rule title does not match the rule metadata.
-      expect(tokens[1]).toMatchObject({
-        type: 'paragraph',
-        text: `${rule.meta.docs?.description}.`,
+        expect(header.text).toBe(`\`${ruleName}\``);
       });
-    });
 
-    it(`Headers in ${ruleName}.md must be title-cased`, () => {
-      const tokens = parseMarkdownFile(filePath);
+      it(`Description of ${ruleName}.md must match`, () => {
+        // validate if description of rule is same as in docs
+        const tokens = parseMarkdownFile(filePath);
 
-      // Get all H2 headers objects as the other levels are variable by design.
-      const headers = tokens.filter(tokenIsH2);
+        // Rule title not found.
+        // Rule title does not match the rule metadata.
+        expect(tokens[1]).toMatchObject({
+          type: 'paragraph',
+          text: `${rule.meta.docs?.description}.`,
+        });
+      });
 
-      headers.forEach(header =>
-        expect(header.text).toBe(titleCase(header.text)),
-      );
-    });
+      it(`Headers in ${ruleName}.md must be title-cased`, () => {
+        const tokens = parseMarkdownFile(filePath);
 
-    it(`Options in ${ruleName}.md must match the rule meta`, () => {
-      // TODO(#4365): We don't yet enforce formatting for all rules.
-      if (
-        !isEmptySchema(rule.meta.schema) ||
-        rule.meta.docs?.extendsBaseRule ||
-        !shouldBeRecommended(rule.meta.docs)
-      ) {
-        return;
-      }
+        // Get all H2 headers objects as the other levels are variable by design.
+        const headers = tokens.filter(tokenIsH2);
 
-      const tokens = parseMarkdownFile(filePath);
+        headers.forEach(header =>
+          expect(header.text).toBe(titleCase(header.text)),
+        );
+      });
 
-      const optionsIndex = tokens.findIndex(
-        token => tokenIsH2(token) && token.text === 'Options',
-      );
-      expect(optionsIndex).toBeGreaterThan(0);
+      it(`Options in ${ruleName}.md must match the rule meta`, () => {
+        // TODO(#4365): We don't yet enforce formatting for all rules.
+        if (
+          !isEmptySchema(rule.meta.schema) ||
+          !rule.meta.docs?.recommended ||
+          rule.meta.docs.extendsBaseRule
+        ) {
+          return;
+        }
 
-      const codeBlock = tokenAs(tokens[optionsIndex + 1], 'code');
-      tokenAs(tokens[optionsIndex + 2], 'space');
-      const descriptionBlock = tokenAs(tokens[optionsIndex + 3], 'paragraph');
+        const tokens = parseMarkdownFile(filePath);
 
-      expect(codeBlock).toMatchObject({
-        lang: 'jsonc',
-        text: `
+        const optionsIndex = tokens.findIndex(
+          token => tokenIsH2(token) && token.text === 'Options',
+        );
+        expect(optionsIndex).toBeGreaterThan(0);
+
+        const codeBlock = tokenAs(tokens[optionsIndex + 1], 'code');
+        tokenAs(tokens[optionsIndex + 2], 'space');
+        const descriptionBlock = tokenAs(tokens[optionsIndex + 3], 'paragraph');
+
+        expect(codeBlock).toMatchObject({
+          lang: 'jsonc',
+          text: `
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/${ruleName}": "${rule.meta.docs?.recommended}"
+    "@typescript-eslint/${ruleName}": "${
+            rule.meta.docs.recommended === 'strict'
+              ? 'warn'
+              : rule.meta.docs.recommended
+          }"
   }
 }
           `.trim(),
-        type: 'code',
+          type: 'code',
+        });
+        expect(descriptionBlock).toMatchObject({
+          text: 'This rule is not configurable.',
+        });
       });
-      expect(descriptionBlock).toMatchObject({
-        text: 'This rule is not configurable.',
+
+      it(`Attributes in ${ruleName}.md must match the metadata`, () => {
+        const tokens = parseMarkdownFile(filePath);
+
+        // Verify attributes header exists
+        const attributesHeaderIndex = tokens.findIndex(
+          token => tokenIs(token, 'heading') && token.text === 'Attributes',
+        );
+        expect(attributesHeaderIndex).toBeGreaterThan(-1);
+
+        // Verify attributes content
+        const attributesList = tokenAs(
+          tokens[attributesHeaderIndex + 1],
+          'list',
+        );
+        const recommended = attributesList.items[0];
+        expect(shouldBeRecommended(rule.meta.docs)).toBe(recommended.checked);
+        const strict = attributesList.items[1];
+        expect(shouldBeStrict(rule.meta.docs)).toBe(strict.checked);
+        const fixable = attributesList.items[2];
+        expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
+        const requiresTypeChecking = attributesList.items[3];
+        expect(rule.meta.docs?.requiresTypeChecking === true).toBe(
+          requiresTypeChecking.checked,
+        );
       });
-    });
-
-    it(`Attributes in ${ruleName}.md must match the metadata`, () => {
-      const tokens = parseMarkdownFile(filePath);
-
-      // Verify attributes header exists
-      const attributesHeaderIndex = tokens.findIndex(
-        token => tokenIs(token, 'heading') && token.text === 'Attributes',
-      );
-      expect(attributesHeaderIndex).toBeGreaterThan(-1);
-
-      // Verify attributes content
-      const attributesList = tokenAs(tokens[attributesHeaderIndex + 1], 'list');
-      const recommended = attributesList.items[0];
-      expect(shouldBeRecommended(rule.meta.docs)).toBe(recommended.checked);
-      const fixable = attributesList.items[1];
-      expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
-      const requiresTypeChecking = attributesList.items[2];
-      expect(rule.meta.docs?.requiresTypeChecking === true).toBe(
-        requiresTypeChecking.checked,
-      );
     });
   }
 });
@@ -275,7 +286,11 @@ describe('Validating README.md', () => {
 
       it('Recommended column should be correct', () => {
         expect(ruleRow[2]).toBe(
-          shouldBeRecommended(rule.meta.docs) ? ':white_check_mark:' : '',
+          rule.meta.docs?.recommended === 'strict'
+            ? ':heavy_check_mark:'
+            : rule.meta.docs?.recommended
+            ? ':white_check_mark:'
+            : '',
         );
       });
 
@@ -300,4 +315,8 @@ function shouldBeRecommended(
   docs: TSESLint.RuleMetaDataDocs | undefined,
 ): boolean {
   return docs?.recommended !== false && docs?.recommended !== 'strict';
+}
+
+function shouldBeStrict(docs: TSESLint.RuleMetaDataDocs | undefined): boolean {
+  return docs?.recommended !== false;
 }

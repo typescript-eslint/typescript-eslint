@@ -28,6 +28,19 @@ const definitely = maybe!;
 const alsoDefinitely = maybe!;
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/non-nullable-type-assertion-style": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you don't mind having unnecessarily verbose type casts, you can avoid this rule.
@@ -35,5 +48,6 @@ If you don't mind having unnecessarily verbose type casts, you can avoid this ru
 ## Attributes
 
 - [ ] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

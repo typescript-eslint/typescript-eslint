@@ -112,5 +112,6 @@ This rule is not configurable.
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

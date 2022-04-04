@@ -71,6 +71,19 @@ enum Color {
 }
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-enum-initializers": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you don't care about `enum`s having implicit values you can safely disable this rule.
@@ -78,5 +91,6 @@ If you don't care about `enum`s having implicit values you can safely disable th
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -190,5 +190,6 @@ const curly2: Record<'a', string> = { a: 'string' };
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

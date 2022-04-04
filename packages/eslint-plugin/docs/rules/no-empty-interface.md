@@ -72,5 +72,6 @@ If you don't care about having empty/meaningless interfaces, then you will not n
 ## Attributes
 
 - [x] ✅ Recommended
+- [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

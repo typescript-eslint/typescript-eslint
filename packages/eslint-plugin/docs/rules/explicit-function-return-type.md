@@ -294,5 +294,6 @@ you will not need this rule.
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

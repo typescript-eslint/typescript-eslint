@@ -403,5 +403,6 @@ If you don't care about the using parameter properties in constructors, then you
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

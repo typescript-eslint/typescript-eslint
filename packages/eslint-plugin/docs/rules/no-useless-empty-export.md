@@ -38,8 +38,22 @@ export const value = 'Hello, world!';
 import 'some-other-module';
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-useless-empty-export": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## Attributes
 
 - [ ] ✅ Recommended
+- [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
