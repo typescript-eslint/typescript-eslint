@@ -3207,21 +3207,21 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@microsoft/api-extractor-model@7.15.4":
-  version "7.15.4"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.15.4.tgz#59fc1e00530b7a604c719221a59dc265c76e9bc5"
-  integrity sha512-9bIXQKKQr5jAH1c9atXrukr4ua30fhqxMwWIOOjEnexPBPu3nhy9lC4/GpE0kPUp1Al3wSXgFnOEGzEH+HFz+w==
+"@microsoft/api-extractor-model@7.16.0":
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.16.0.tgz#3db7360897115f26a857f1f684fb5af82b0ef9f6"
+  integrity sha512-0FOrbNIny8mzBrzQnSIkEjAXk0JMSnPmWYxt3ZDTPVg9S8xIPzB6lfgTg9+Mimu0RKCpGKBpd+v2WcR5vGzyUQ==
   dependencies:
     "@microsoft/tsdoc" "0.13.2"
     "@microsoft/tsdoc-config" "~0.15.2"
     "@rushstack/node-core-library" "3.45.1"
 
 "@microsoft/api-extractor@^7.18.16":
-  version "7.19.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.19.5.tgz#85b2404135a4158864d448fde8991ef7dc39b6a7"
-  integrity sha512-ra5r8P7PocOpemrZRccI3Tf1+wukI0gT6ncRB448QSxSYlmqKuvez95YUSYPwHIN/ztKL0cn5PfMOauU1lZfGQ==
+  version "7.20.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.20.0.tgz#5dfd8a2cc6a22a7b3baa5e30224672db1de43bbb"
+  integrity sha512-WKAu5JpkRXWKL3AyxmFXuwNNPpBlsAefwZIDl8M5mhEqRji4w+gexb0pku3Waa0flm3vm0Cwpm+kGYYJ4/gzAA==
   dependencies:
-    "@microsoft/api-extractor-model" "7.15.4"
+    "@microsoft/api-extractor-model" "7.16.0"
     "@microsoft/tsdoc" "0.13.2"
     "@microsoft/tsdoc-config" "~0.15.2"
     "@rushstack/node-core-library" "3.45.1"
