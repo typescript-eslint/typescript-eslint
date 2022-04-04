@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.17.0...v5.18.0) (2022-04-04)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** method-signature-style respect getter signature ([#4777](https://github.com/typescript-eslint/typescript-eslint/issues/4777)) ([12dd670](https://github.com/typescript-eslint/typescript-eslint/commit/12dd670bc8621867c5105d8892dba9f9550a2f35))
+* **visitor-keys:** add missing visitor keys ([#4731](https://github.com/typescript-eslint/typescript-eslint/issues/4731)) ([bb575a0](https://github.com/typescript-eslint/typescript-eslint/commit/bb575a0763f39b9b988a7c20afee7b5eeb64cba7))
+
+
+### Features
+
+* **eslint-plugin:** [no-shadow] ignoreOnInitialization option ([#4603](https://github.com/typescript-eslint/typescript-eslint/issues/4603)) ([068ea9b](https://github.com/typescript-eslint/typescript-eslint/commit/068ea9b8eb3072fb46a6035f29c68ce96a69008d))
+* **eslint-plugin:** [no-this-alias] report on assignment expressions ([#4718](https://github.com/typescript-eslint/typescript-eslint/issues/4718)) ([8329498](https://github.com/typescript-eslint/typescript-eslint/commit/83294989dad543351a26e95be8d11a91d348679a))
+
+
+
+
+
 # [5.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.16.0...v5.17.0) (2022-03-28)
 
 
