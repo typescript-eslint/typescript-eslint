@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "5.15.0",
+  "version": "5.17.0",
   "private": true,
   "scripts": {
     "build": "docusaurus build",
@@ -14,7 +14,7 @@
     "test:open": "cypress open"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.2",
+    "@babel/runtime": "7.17.8",
     "@docusaurus/core": "^2.0.0-beta.15",
     "@docusaurus/plugin-content-docs": "^2.0.0-beta.15",
     "@docusaurus/plugin-content-pages": "^2.0.0-beta.15",
@@ -24,7 +24,7 @@
     "@docusaurus/theme-common": "^2.0.0-beta.15",
     "@docusaurus/theme-search-algolia": "^2.0.0-beta.15",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/website-eslint": "5.15.0",
+    "@typescript-eslint/website-eslint": "5.17.0",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json5": "^2.2.0",

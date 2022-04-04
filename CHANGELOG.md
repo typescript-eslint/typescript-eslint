@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.16.0...v5.17.0) (2022-03-28)
+
+
+### Bug Fixes
+
+* code container hiding navigation menu ([#4707](https://github.com/typescript-eslint/typescript-eslint/issues/4707)) ([96bc69a](https://github.com/typescript-eslint/typescript-eslint/commit/96bc69a652c7f6f474a39f1e9783e7fbd446696a))
+* revert "chore: Bump cypress from 8.3.0 to 9.5.2", and ignore cypress for now ([#4740](https://github.com/typescript-eslint/typescript-eslint/issues/4740)) ([cf5f5c4](https://github.com/typescript-eslint/typescript-eslint/commit/cf5f5c441ab0c4fb056bd688795ffc55e026627a)), closes [#4710](https://github.com/typescript-eslint/typescript-eslint/issues/4710)
+
+
+### Features
+
+* **eslint-plugin:** [no-unused-vars] add destructuredArrayIgnorePattern options ([#4748](https://github.com/typescript-eslint/typescript-eslint/issues/4748)) ([6f8db8b](https://github.com/typescript-eslint/typescript-eslint/commit/6f8db8b64821d280fff408c1704a9adde682ed69))
+
+
+
+
+
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-type-assertions] enforce assertionStyle for `const` assertions ([#4685](https://github.com/typescript-eslint/typescript-eslint/issues/4685)) ([8ec05be](https://github.com/typescript-eslint/typescript-eslint/commit/8ec05bed0fed0dcd48b087acd5ab5a6132bf3b09))
+* **scope-manager:** incorrect reference for this within a jsx identifier ([#4535](https://github.com/typescript-eslint/typescript-eslint/issues/4535)) ([dd49280](https://github.com/typescript-eslint/typescript-eslint/commit/dd49280e50cb2f5bd26dc07210551bc1fda120af))
+* **utils:** RuleTester: Only call afterAll if defined ([#4656](https://github.com/typescript-eslint/typescript-eslint/issues/4656)) ([0fe0683](https://github.com/typescript-eslint/typescript-eslint/commit/0fe0683effe4c7390806a72c6aa7795445a67929))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-optional-chain] support logical with empty object ([#4430](https://github.com/typescript-eslint/typescript-eslint/issues/4430)) ([d21cfe0](https://github.com/typescript-eslint/typescript-eslint/commit/d21cfe0f4b7d3041948b1b6e0cd56c5ec34b2b3f))
+
+
+
+
+
 # [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
 
 
