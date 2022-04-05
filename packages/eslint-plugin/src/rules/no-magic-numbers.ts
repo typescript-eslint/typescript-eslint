@@ -24,6 +24,9 @@ const schema = util.deepMerge(
       ignoreReadonlyClassProperties: {
         type: 'boolean',
       },
+      ignoreTypeIndexes: {
+        type: 'boolean',
+      },
     },
   },
 );
@@ -66,6 +69,15 @@ export default util.createRule<Options, MessageIds>({
           options.ignoreNumericLiteralTypes &&
           typeof node.value === 'number' &&
           isTSNumericLiteralType(node)
+        ) {
+          return;
+        }
+
+        // Check if the node is a type index
+        if (
+          options.ignoreTypeIndexes &&
+          (typeof node.value === 'number' || typeof node.value === 'bigint') &&
+          isAncestorTSIndexedAccessType(node)
         ) {
           return;
         }
@@ -215,4 +227,22 @@ function isParentTSReadonlyPropertyDefinition(node: TSESTree.Literal): boolean {
   }
 
   return false;
+}
+
+/**
+ * Checks if the node is part of a type indexed access (eg. Foo[4])
+ * @param node the node to be validated.
+ * @returns true if the node is part of an indexed access
+ * @private
+ */
+function isAncestorTSIndexedAccessType(node: TSESTree.Literal): boolean {
+  // Handle unary expressions (eg. -4)
+  let ancestor = getLiteralParent(node);
+
+  // Go up another level if we’re part of a type union (eg. 1 | 2)
+  if (ancestor?.parent?.type === AST_NODE_TYPES.TSUnionType) {
+    ancestor = ancestor.parent;
+  }
+
+  return ancestor?.parent?.type === AST_NODE_TYPES.TSIndexedAccessType;
 }

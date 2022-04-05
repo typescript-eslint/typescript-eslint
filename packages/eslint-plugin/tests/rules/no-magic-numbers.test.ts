@@ -58,6 +58,42 @@ class Foo {
       `,
       options: [{ ignoreReadonlyClassProperties: true }],
     },
+    {
+      code: 'type Foo = Bar[0];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[-1];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[0xab];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[5.6e1];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[10n];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[1 | -2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Parameters<Bar>[2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: "type Foo = Bar['baz'];",
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: "type Foo = Bar['baz'];",
+      options: [{ ignoreTypeIndexes: false }],
+    },
   ],
 
   invalid: [
@@ -265,6 +301,112 @@ class Foo {
           },
           line: 9,
           column: 24,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[0];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[-1];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-1',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[0xab];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0xab',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[5.6e1];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '5.6e1',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[10n];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '10n',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[1 | -2];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 1,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-2',
+          },
+          line: 1,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Parameters<Bar>[2];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '2',
+          },
+          line: 1,
+          column: 28,
         },
       ],
     },
