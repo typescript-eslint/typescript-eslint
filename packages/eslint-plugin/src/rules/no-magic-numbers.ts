@@ -59,38 +59,40 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       Literal(node): void {
+        // If it’s not a numeric literal we’re not interested
+        if (typeof node.value !== 'number' && typeof node.value !== 'bigint') {
+          return;
+        }
+
+        // This will be `true` if we’re configured to ignore this case (eg. it’s
+        // an enum and `ignoreEnums` is `true`). It will be `false` if we’re not
+        // configured to ignore this case. It will remain `undefined` if this is
+        // not one of our exception cases, and we’ll fall back to the base rule.
+        let isAllowed: boolean | undefined;
+
         // Check if the node is a TypeScript enum declaration
-        if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
-          return;
+        if (isParentTSEnumDeclaration(node)) {
+          isAllowed = options.ignoreEnums === true;
         }
-
         // Check TypeScript specific nodes for Numeric Literal
-        if (
-          options.ignoreNumericLiteralTypes &&
-          typeof node.value === 'number' &&
-          isTSNumericLiteralType(node)
-        ) {
-          return;
+        else if (isTSNumericLiteralType(node)) {
+          isAllowed = options.ignoreNumericLiteralTypes === true;
         }
-
         // Check if the node is a type index
-        if (
-          options.ignoreTypeIndexes &&
-          (typeof node.value === 'number' || typeof node.value === 'bigint') &&
-          isAncestorTSIndexedAccessType(node)
-        ) {
-          return;
+        else if (isAncestorTSIndexedAccessType(node)) {
+          isAllowed = options.ignoreTypeIndexes === true;
+        }
+        // Check if the node is a readonly class property
+        else if (isParentTSReadonlyPropertyDefinition(node)) {
+          isAllowed = options.ignoreReadonlyClassProperties === true;
         }
 
-        // Check if the node is a readonly class property
-        if (
-          (typeof node.value === 'number' || typeof node.value === 'bigint') &&
-          isParentTSReadonlyPropertyDefinition(node)
-        ) {
-          if (options.ignoreReadonlyClassProperties) {
-            return;
-          }
-
+        // If we’ve hit a case where the ignore option is true we can return now
+        if (isAllowed === true) {
+          return;
+        }
+        // If the ignore option is *not* set we can report it now
+        else if (isAllowed === false) {
           let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
             node;
           let raw = node.raw;
