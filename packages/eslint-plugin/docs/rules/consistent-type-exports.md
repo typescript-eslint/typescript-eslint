@@ -70,8 +70,6 @@ export type { ButtonProps } from 'some-library';
 ### ✅ Correct
 
 ```ts
-export { Button } from 'some-library';
-export type { ButtonProps } from 'some-library';
 export { Button, type ButtonProps } from 'some-library';
 ```
 
