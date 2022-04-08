@@ -16,7 +16,7 @@ Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
 ```ts
   export interface ButtonProps{
-     onClick: () => void;
+     onClick()
   }
 
   class Button implements ButtonProps {
