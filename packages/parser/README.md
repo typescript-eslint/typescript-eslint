@@ -67,6 +67,8 @@ interface ParserOptions {
 
   program?: import('typescript').Program;
   moduleResolver?: string;
+
+  emitDecoratorMetadata?: boolean;
 }
 ```
 
@@ -245,6 +247,12 @@ interface ModuleResolver {
 [Refer to the TypeScript Wiki for an example on how to write the `resolveModuleNames` function](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#customizing-module-resolution).
 
 Note that if you pass custom programs via `options.programs` this option will not have any effect over them (you can simply add the custom resolution on them directly).
+
+### `parserOptions.emitDecoratorMetadata`
+
+Default `undefined`.
+
+This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](https://typescript-eslint.io/docs/linting/type-linting). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ## Utilities
 

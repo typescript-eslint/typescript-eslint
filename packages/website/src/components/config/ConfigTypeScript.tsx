@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react';
-import tsConfigOptions from '../tsConfigOptions.json';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import ConfigEditor from './ConfigEditor';
+import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
 import type { CompilerFlags } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
 
@@ -11,11 +10,59 @@ interface ModalTypeScriptProps {
   readonly config?: CompilerFlags;
 }
 
+interface OptionDeclarations {
+  name: string;
+  type?: unknown;
+  category?: { message: string };
+  description?: { message: string };
+}
+
 function checkOptions(item: [string, unknown]): item is [string, boolean] {
   return typeof item[1] === 'boolean';
 }
 
 function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
+  const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
+
+  useEffect(() => {
+    if (window.ts) {
+      updateOptions(
+        Object.values(
+          // @ts-expect-error: definition is not fully correct
+          (window.ts.optionDeclarations as OptionDeclarations[])
+            .filter(
+              item =>
+                item.type === 'boolean' &&
+                item.description &&
+                item.category &&
+                ![
+                  'Command-line Options',
+                  'Modules',
+                  'Projects',
+                  'Compiler Diagnostics',
+                  'Editor Support',
+                  'Output Formatting',
+                  'Watch and Build Modes',
+                  'Source Map Options',
+                ].includes(item.category.message),
+            )
+            .reduce<Record<string, ConfigOptionsType>>((group, item) => {
+              const category = item.category!.message;
+              group[category] = group[category] ?? {
+                heading: category,
+                fields: [],
+              };
+              group[category].fields.push({
+                key: item.name,
+                label: item.description!.message,
+              });
+              return group;
+            }, {}),
+        ),
+      );
+    }
+  }, [props.isOpen]);
+
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
       const cfg = Object.fromEntries(

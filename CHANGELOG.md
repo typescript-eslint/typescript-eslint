@@ -3,6 +3,70 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.17.0...v5.18.0) (2022-04-04)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** method-signature-style respect getter signature ([#4777](https://github.com/typescript-eslint/typescript-eslint/issues/4777)) ([12dd670](https://github.com/typescript-eslint/typescript-eslint/commit/12dd670bc8621867c5105d8892dba9f9550a2f35))
+* **visitor-keys:** add missing visitor keys ([#4731](https://github.com/typescript-eslint/typescript-eslint/issues/4731)) ([bb575a0](https://github.com/typescript-eslint/typescript-eslint/commit/bb575a0763f39b9b988a7c20afee7b5eeb64cba7))
+
+
+### Features
+
+* **eslint-plugin:** [no-shadow] ignoreOnInitialization option ([#4603](https://github.com/typescript-eslint/typescript-eslint/issues/4603)) ([068ea9b](https://github.com/typescript-eslint/typescript-eslint/commit/068ea9b8eb3072fb46a6035f29c68ce96a69008d))
+* **eslint-plugin:** [no-this-alias] report on assignment expressions ([#4718](https://github.com/typescript-eslint/typescript-eslint/issues/4718)) ([8329498](https://github.com/typescript-eslint/typescript-eslint/commit/83294989dad543351a26e95be8d11a91d348679a))
+
+
+
+
+
+# [5.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.16.0...v5.17.0) (2022-03-28)
+
+
+### Bug Fixes
+
+* code container hiding navigation menu ([#4707](https://github.com/typescript-eslint/typescript-eslint/issues/4707)) ([96bc69a](https://github.com/typescript-eslint/typescript-eslint/commit/96bc69a652c7f6f474a39f1e9783e7fbd446696a))
+* revert "chore: Bump cypress from 8.3.0 to 9.5.2", and ignore cypress for now ([#4740](https://github.com/typescript-eslint/typescript-eslint/issues/4740)) ([cf5f5c4](https://github.com/typescript-eslint/typescript-eslint/commit/cf5f5c441ab0c4fb056bd688795ffc55e026627a)), closes [#4710](https://github.com/typescript-eslint/typescript-eslint/issues/4710)
+
+
+### Features
+
+* **eslint-plugin:** [no-unused-vars] add destructuredArrayIgnorePattern options ([#4748](https://github.com/typescript-eslint/typescript-eslint/issues/4748)) ([6f8db8b](https://github.com/typescript-eslint/typescript-eslint/commit/6f8db8b64821d280fff408c1704a9adde682ed69))
+
+
+
+
+
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-type-assertions] enforce assertionStyle for `const` assertions ([#4685](https://github.com/typescript-eslint/typescript-eslint/issues/4685)) ([8ec05be](https://github.com/typescript-eslint/typescript-eslint/commit/8ec05bed0fed0dcd48b087acd5ab5a6132bf3b09))
+* **scope-manager:** incorrect reference for this within a jsx identifier ([#4535](https://github.com/typescript-eslint/typescript-eslint/issues/4535)) ([dd49280](https://github.com/typescript-eslint/typescript-eslint/commit/dd49280e50cb2f5bd26dc07210551bc1fda120af))
+* **utils:** RuleTester: Only call afterAll if defined ([#4656](https://github.com/typescript-eslint/typescript-eslint/issues/4656)) ([0fe0683](https://github.com/typescript-eslint/typescript-eslint/commit/0fe0683effe4c7390806a72c6aa7795445a67929))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-optional-chain] support logical with empty object ([#4430](https://github.com/typescript-eslint/typescript-eslint/issues/4430)) ([d21cfe0](https://github.com/typescript-eslint/typescript-eslint/commit/d21cfe0f4b7d3041948b1b6e0cd56c5ec34b2b3f))
+
+
+
+
+
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+
+### Features
+
+* **parser:** add `parserOptions.emitDecoratorMetadata` ([#4646](https://github.com/typescript-eslint/typescript-eslint/issues/4646)) ([e3dd343](https://github.com/typescript-eslint/typescript-eslint/commit/e3dd343e51e3b7772e825a609735a04c921c1ec5))
+
+
+
+
+
 # [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
 
 

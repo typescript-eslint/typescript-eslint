@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.17.0...v5.18.0) (2022-04-04)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.16.0...v5.17.0) (2022-03-28)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+
+### Bug Fixes
+
+* **scope-manager:** incorrect reference for this within a jsx identifier ([#4535](https://github.com/typescript-eslint/typescript-eslint/issues/4535)) ([dd49280](https://github.com/typescript-eslint/typescript-eslint/commit/dd49280e50cb2f5bd26dc07210551bc1fda120af))
+
+
+
+
+
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
 # [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
 
 

@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.17.0...v5.18.0) (2022-04-04)
+
+
+### Bug Fixes
+
+* **visitor-keys:** add missing visitor keys ([#4731](https://github.com/typescript-eslint/typescript-eslint/issues/4731)) ([bb575a0](https://github.com/typescript-eslint/typescript-eslint/commit/bb575a0763f39b9b988a7c20afee7b5eeb64cba7))
+
+
+
+
+
+# [5.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.16.0...v5.17.0) (2022-03-28)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [5.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.15.0...v5.16.0) (2022-03-21)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [5.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.14.0...v5.15.0) (2022-03-14)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
 # [5.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.13.0...v5.14.0) (2022-03-07)
 
 **Note:** Version bump only for package @typescript-eslint/visitor-keys

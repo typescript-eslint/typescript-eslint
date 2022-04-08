@@ -24,6 +24,8 @@ export const propsToFilter = [
   'transformFlags',
   'resolvedModules',
   'imports',
+  'antecedent',
+  'antecedents',
 ];
 
 function isTsNode(value: unknown): value is Node {
