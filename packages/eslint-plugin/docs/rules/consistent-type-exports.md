@@ -15,16 +15,16 @@ Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
 
 ```ts
-  export interface ButtonProps{
-     onClick()
+export interface ButtonProps{
+  onClick()
+}
+
+class Button implements ButtonProps {
+  onClick(){
+    concole.log('button!')
   }
 
-  class Button implements ButtonProps {
-    onClick(){
-      concole.log('button!')
-    }
-
-  }
+}
 ```
 
 ## Options
