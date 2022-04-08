@@ -16,12 +16,12 @@ Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
 ```ts
 export interface ButtonProps{
-  onClick()
+  onClick: () => void;
 }
 
 class Button implements ButtonProps {
   onClick(){
-    concole.log('button!')
+    console.log('button!')
   }
 }
 ```
