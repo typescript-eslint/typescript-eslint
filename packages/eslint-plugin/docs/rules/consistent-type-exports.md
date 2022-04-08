@@ -13,6 +13,8 @@ This rule aims to standardize the use of type exports style across a codebase.
 
 Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
+<!--tabs-->
+
 ### ❌ Incorrect
 
 ```ts
