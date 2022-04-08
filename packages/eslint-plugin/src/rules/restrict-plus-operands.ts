@@ -89,9 +89,17 @@ export default util.createRule<Options, MessageIds>({
       if (type.isIntersection()) {
         const types = type.types.map(getBaseTypeOfLiteralType);
 
-        if (types.some(value => value === 'string')) return 'string';
-        if (types.some(value => value === 'number')) return 'number';
-        if (types.some(value => value === 'bigint')) return 'bigint';
+        if (types.some(value => value === 'string')) {
+          return 'string';
+        }
+
+        if (types.some(value => value === 'number')) {
+          return 'number';
+        }
+
+        if (types.some(value => value === 'bigint')) {
+          return 'bigint';
+        }
 
         return 'invalid';
       }
