@@ -32,10 +32,22 @@ interface Test {
   'f!': </* a */>(/* b */ x: any /* c */) => void;
 }
     `,
+    `
+interface Test {
+  get f(): number;
+}
+    `,
+    `
+interface Test {
+  set f(value: number): void;
+}
+    `,
     'type Test = { readonly f: (a: string) => number };',
     "type Test = { ['f']?: (a: boolean) => void };",
     'type Test = { readonly f?: <T>(a?: T) => T };',
     "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
+    'type Test = { get f(): number };',
+    'type Test = { set f(value: number): void };',
     ...batchedSingleLineTests({
       options: ['method'],
       code: noFormat`
@@ -44,10 +56,14 @@ interface Test {
         interface Test { f<T>(a: T): T }
         interface Test { ['f']<T extends {}>(a: T, b: T): T }
         interface Test { 'f!'</* a */>(/* b */ x: any /* c */): void }
+        interface Test { get f(): number }
+        interface Test { set f(value: number): void }
         type Test = { readonly f(a: string): number }
         type Test = { ['f']?(a: boolean): void }
         type Test = { readonly f?<T>(a?: T): T }
         type Test = { readonly ['f']?<T>(a: T, b: T): T }
+        type Test = { get f(): number }
+        type Test = { set f(value: number): void }
       `,
     }),
   ],
