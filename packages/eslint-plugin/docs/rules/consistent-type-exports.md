@@ -13,6 +13,22 @@ This rule aims to standardize the use of type exports style across a codebase.
 
 Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
+### ❌ Incorrect
+
+```ts
+interface ButtonProps {
+  onClick: () => void;
+}
+class Button implements ButtonProps {
+  onClick() {
+    console.log('button!');
+  }
+}
+export { Button, ButtonProps };
+```
+
+### ✅ Correct
+
 ```ts
 interface ButtonProps {
   onClick: () => void;
@@ -24,9 +40,6 @@ class Button implements ButtonProps {
 }
 export { Button };
 export type { ButtonProps };
-
-//invalid example
-export { Button, ButtonProps };
 ```
 
 ## Options
