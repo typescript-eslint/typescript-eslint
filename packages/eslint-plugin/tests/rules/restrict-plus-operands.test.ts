@@ -604,12 +604,12 @@ function foo<T extends 1>(a: T) {
     {
       code: `
         declare const a: { a: 1 } & { b: 2 };
-        declare const b: number;
+        declare const b: string;
         const x = a + b;
       `,
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notStrings',
           line: 4,
           column: 19,
         },
@@ -680,6 +680,20 @@ function foo<T extends 1>(a: T) {
       errors: [
         {
           messageId: 'notValidAnys',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
           line: 4,
           column: 19,
         },
@@ -764,6 +778,20 @@ function foo<T extends 1>(a: T) {
       errors: [
         {
           messageId: 'notValidAnys',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
           line: 4,
           column: 19,
         },
