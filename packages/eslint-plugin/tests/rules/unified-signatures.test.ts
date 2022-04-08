@@ -169,14 +169,6 @@ function f(a: number | string): void {}
     },
     {
       code: `
-function f(...a: number[]): void;
-function f(...b: string[]): void;
-function f(...a: (number | string)[]): void {}
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
 function f(a: boolean, ...c: number[]): void;
 function f(a: boolean, ...d: string[]): void;
 function f(a: boolean, ...c: (number | string)[]): void {}
@@ -199,6 +191,26 @@ class C {
     },
   ],
   invalid: [
+    {
+      code: `
+function f(a: number): void;
+function f(b: string): void;
+function f(a: number | string): void {}
+      `,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
+          line: 3,
+          column: 12,
+        },
+      ],
+    },
     {
       code: `
 function f(x: number): void;
