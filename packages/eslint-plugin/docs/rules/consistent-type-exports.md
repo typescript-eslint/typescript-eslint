@@ -92,7 +92,7 @@ export { Button, type ButtonProps } from 'some-library';
 
 - If you are using a TypeScript version less than 3.8, then you will not be able to use this rule as type exports are not supported.
 - If you specifically want to use both export kinds for stylistic reasons, you can disable this rule.
-- If you use --isolatedModules, you don't need this rule since TS would enforce type-export specifiers
+- If you use --isolatedModules, you don't need this rule since TS would enforce type-export specifiers.
 
 ## Attributes
 
