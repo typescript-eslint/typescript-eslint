@@ -374,6 +374,7 @@ declare module 'eslint/lib/rules/no-shadow' {
         builtinGlobals?: boolean;
         hoist?: 'all' | 'functions' | 'never';
         allow?: string[];
+        ignoreOnInitialization?: boolean;
       },
     ],
     {
@@ -416,6 +417,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
           caughtErrorsIgnorePattern?: string;
+          destructuredArrayIgnorePattern?: string;
         },
     ],
     {

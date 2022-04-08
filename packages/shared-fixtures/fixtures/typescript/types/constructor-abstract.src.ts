@@ -1,1 +1,1 @@
-const x: abstract new () => void;
+var x: abstract new () => void;
