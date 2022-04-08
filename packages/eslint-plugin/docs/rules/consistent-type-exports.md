@@ -25,7 +25,6 @@ Given a class `Button`, and an interface `ButtonProps`, examples of code:
     }
 
   }
-
 ```
 
 ## Options
