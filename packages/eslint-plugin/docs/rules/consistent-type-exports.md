@@ -23,7 +23,6 @@ class Button implements ButtonProps {
   onClick(){
     concole.log('button!')
   }
-
 }
 ```
 
