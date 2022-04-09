@@ -27,6 +27,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "cd ../../ && nx build @typescript-eslint/scope-manager",
+    "clean": "cd ../../ && nx clean @typescript-eslint/scope-manager",
+    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "generate:lib": "cd ../../ && nx generate-lib @typescript-eslint/scope-manager",
+    "lint": "cd ../../ && nx lint @typescript-eslint/scope-manager",
+    "test": "cd ../../ && nx test @typescript-eslint/scope-manager --code-coverage",
+    "typecheck": "cd ../../ && nx typecheck @typescript-eslint/scope-manager"
+  },
   "dependencies": {
     "@typescript-eslint/types": "5.18.0",
     "@typescript-eslint/visitor-keys": "5.18.0"

@@ -29,7 +29,7 @@ module.exports = {
        * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
        * files here for now in addition to the tsconfig.json glob pattern.
        *
-       * TODO: Clean this up once all packages have been transitioned.
+       * TODO(#4665): Clean this up once all packages have been transitioned.
        */
       './packages/scope-manager/tsconfig.build.json',
       './packages/scope-manager/tsconfig.spec.json',
