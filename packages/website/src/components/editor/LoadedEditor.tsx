@@ -36,10 +36,29 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   const [decorations, setDecorations] = useState<string[]>([]);
   const fixes = useRef(new Map<string, LintCodeAction>()).current;
 
+  useEffect(() => {
+    const config = {
+      noResolve: true,
+      target: main.languages.typescript.ScriptTarget.ESNext,
+      module: main.languages.typescript.ModuleKind.ESNext,
+      ...tsConfig,
+      jsx: jsx ? main.languages.typescript.JsxEmit.React : undefined,
+    };
+
+    webLinter.updateOptions(config);
+    sandboxInstance.setCompilerSettings(config);
+  }, [
+    jsx,
+    sandboxInstance,
+    webLinter,
+    JSON.stringify(tsConfig) /* todo: better way? */,
+  ]);
+
   useEffect(
     debounce(() => {
       // eslint-disable-next-line no-console
       console.info('[Editor] linting triggered');
+
       const [markers, fatalMessage, codeActions] = lintCode(
         webLinter,
         code,
@@ -69,7 +88,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       onScopeChange(fatalMessage ?? webLinter.getScope());
       onSelect(sandboxInstance.editor.getPosition());
     }, 500),
-    [code, jsx, sandboxInstance, rules, sourceType, webLinter],
+    [code, jsx, sandboxInstance, rules, sourceType, tsConfig, webLinter],
   );
 
   useEffect(() => {
@@ -136,17 +155,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   useEffect(() => {
     sandboxInstance.monaco.editor.setTheme(darkTheme ? 'vs-dark' : 'vs-light');
   }, [darkTheme, sandboxInstance]);
-
-  useEffect(() => {
-    sandboxInstance.setCompilerSettings({
-      noResolve: true,
-      strict: true,
-      target: main.languages.typescript.ScriptTarget.ESNext,
-      module: main.languages.typescript.ModuleKind.ESNext,
-      ...tsConfig,
-      jsx: jsx ? main.languages.typescript.JsxEmit.React : undefined,
-    });
-  }, [jsx, sandboxInstance, JSON.stringify(tsConfig) /* todo: better way? */]);
 
   useEffect(() => {
     setDecorations(

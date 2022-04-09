@@ -9,83 +9,83 @@ Object {
           "id": Object {
             "loc": Object {
               "end": Object {
-                "column": 23,
+                "column": 21,
                 "line": 1,
               },
               "start": Object {
-                "column": 6,
+                "column": 4,
                 "line": 1,
               },
             },
             "name": "x",
             "range": Array [
-              6,
-              23,
+              4,
+              21,
             ],
             "type": "Identifier",
             "typeAnnotation": Object {
               "loc": Object {
                 "end": Object {
-                  "column": 23,
+                  "column": 21,
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 7,
+                  "column": 5,
                   "line": 1,
                 },
               },
               "range": Array [
-                7,
-                23,
+                5,
+                21,
               ],
               "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
                 "abstract": false,
                 "loc": Object {
                   "end": Object {
-                    "column": 23,
+                    "column": 21,
                     "line": 1,
                   },
                   "start": Object {
-                    "column": 9,
+                    "column": 7,
                     "line": 1,
                   },
                 },
                 "params": Array [],
                 "range": Array [
-                  9,
-                  23,
+                  7,
+                  21,
                 ],
                 "returnType": Object {
                   "loc": Object {
                     "end": Object {
-                      "column": 23,
+                      "column": 21,
                       "line": 1,
                     },
                     "start": Object {
-                      "column": 16,
+                      "column": 14,
                       "line": 1,
                     },
                   },
                   "range": Array [
-                    16,
-                    23,
+                    14,
+                    21,
                   ],
                   "type": "TSTypeAnnotation",
                   "typeAnnotation": Object {
                     "loc": Object {
                       "end": Object {
-                        "column": 23,
+                        "column": 21,
                         "line": 1,
                       },
                       "start": Object {
-                        "column": 19,
+                        "column": 17,
                         "line": 1,
                       },
                     },
                     "range": Array [
-                      19,
-                      23,
+                      17,
+                      21,
                     ],
                     "type": "TSVoidKeyword",
                   },
@@ -97,25 +97,25 @@ Object {
           "init": null,
           "loc": Object {
             "end": Object {
-              "column": 23,
+              "column": 21,
               "line": 1,
             },
             "start": Object {
-              "column": 6,
+              "column": 4,
               "line": 1,
             },
           },
           "range": Array [
-            6,
-            23,
+            4,
+            21,
           ],
           "type": "VariableDeclarator",
         },
       ],
-      "kind": "const",
+      "kind": "var",
       "loc": Object {
         "end": Object {
-          "column": 24,
+          "column": 22,
           "line": 1,
         },
         "start": Object {
@@ -125,7 +125,7 @@ Object {
       },
       "range": Array [
         0,
-        24,
+        22,
       ],
       "type": "VariableDeclaration",
     },
@@ -143,14 +143,14 @@ Object {
   },
   "range": Array [
     0,
-    25,
+    23,
   ],
   "sourceType": "script",
   "tokens": Array [
     Object {
       "loc": Object {
         "end": Object {
-          "column": 5,
+          "column": 3,
           "line": 1,
         },
         "start": Object {
@@ -160,25 +160,25 @@ Object {
       },
       "range": Array [
         0,
-        5,
+        3,
       ],
       "type": "Keyword",
-      "value": "const",
+      "value": "var",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 7,
+          "column": 5,
           "line": 1,
         },
         "start": Object {
-          "column": 6,
+          "column": 4,
           "line": 1,
         },
       },
       "range": Array [
-        6,
-        7,
+        4,
+        5,
       ],
       "type": "Identifier",
       "value": "x",
@@ -186,7 +186,25 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 8,
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        5,
+        6,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
           "line": 1,
         },
         "start": Object {
@@ -196,10 +214,10 @@ Object {
       },
       "range": Array [
         7,
-        8,
+        10,
       ],
-      "type": "Punctuator",
-      "value": ":",
+      "type": "Keyword",
+      "value": "new",
     },
     Object {
       "loc": Object {
@@ -208,31 +226,13 @@ Object {
           "line": 1,
         },
         "start": Object {
-          "column": 9,
+          "column": 11,
           "line": 1,
         },
       },
       "range": Array [
-        9,
+        11,
         12,
-      ],
-      "type": "Keyword",
-      "value": "new",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 14,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 13,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        13,
-        14,
       ],
       "type": "Punctuator",
       "value": "(",
@@ -240,7 +240,25 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 15,
+          "column": 13,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 12,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        12,
+        13,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
           "line": 1,
         },
         "start": Object {
@@ -250,25 +268,7 @@ Object {
       },
       "range": Array [
         14,
-        15,
-      ],
-      "type": "Punctuator",
-      "value": ")",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 18,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 16,
-          "line": 1,
-        },
-      },
-      "range": Array [
         16,
-        18,
       ],
       "type": "Punctuator",
       "value": "=>",
@@ -276,17 +276,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 23,
+          "column": 21,
           "line": 1,
         },
         "start": Object {
-          "column": 19,
+          "column": 17,
           "line": 1,
         },
       },
       "range": Array [
-        19,
-        23,
+        17,
+        21,
       ],
       "type": "Keyword",
       "value": "void",
@@ -294,17 +294,17 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 24,
+          "column": 22,
           "line": 1,
         },
         "start": Object {
-          "column": 23,
+          "column": 21,
           "line": 1,
         },
       },
       "range": Array [
-        23,
-        24,
+        21,
+        22,
       ],
       "type": "Punctuator",
       "value": ";",

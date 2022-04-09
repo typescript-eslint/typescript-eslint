@@ -171,8 +171,8 @@ export default util.createRule<Options, MessageIds>({
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               return fixer.removeRange([
-                originalNode.expression.end,
-                originalNode.end,
+                node.expression.range[1],
+                node.range[1],
               ]);
             },
           });
@@ -217,8 +217,8 @@ export default util.createRule<Options, MessageIds>({
                 messageId: 'contextuallyUnnecessary',
                 fix(fixer) {
                   return fixer.removeRange([
-                    originalNode.expression.end,
-                    originalNode.end,
+                    node.expression.range[1],
+                    node.range[1],
                   ]);
                 },
               });

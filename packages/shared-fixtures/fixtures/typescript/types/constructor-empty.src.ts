@@ -1,1 +1,1 @@
-const x: new () => void;
+var x: new () => void;
