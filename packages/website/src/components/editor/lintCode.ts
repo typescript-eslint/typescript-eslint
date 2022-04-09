@@ -5,7 +5,7 @@ import { createURI, ensurePositiveInt } from './utils';
 export interface LintCodeAction {
   message: string;
   fix: {
-    range: [number, number];
+    range: Readonly<[number, number]>;
     text: string;
   };
 }
