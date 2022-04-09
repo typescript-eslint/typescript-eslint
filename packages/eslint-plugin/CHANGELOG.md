@@ -5,7 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [5.18.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.17.0...v5.18.0) (2022-04-04)
 
- 
+
 ### Bug Fixes
 
 * **eslint-plugin:** method-signature-style respect getter signature ([#4777](https://github.com/typescript-eslint/typescript-eslint/issues/4777)) ([12dd670](https://github.com/typescript-eslint/typescript-eslint/commit/12dd670bc8621867c5105d8892dba9f9550a2f35))
