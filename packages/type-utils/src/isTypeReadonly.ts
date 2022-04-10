@@ -76,9 +76,9 @@ function isTypeExcepted(
           program.isSourceFileDefaultLibrary(declaration)) ||
         // A type from a specified third-party package
         (item.source === 'package' &&
-          (declaration.fileName.includes('node_modules/' + item.package) ||
+          (declaration.fileName.includes(`node_modules/${item.package}/`) ||
             declaration.fileName.includes(
-              'node_modules/@types/' + item.package,
+              `node_modules/@types/${item.package}/`,
             )))
       ) {
         return true;
