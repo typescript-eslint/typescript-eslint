@@ -103,6 +103,7 @@ export type { ButtonProps } from 'some-library';
 ```ts
 export { Button, type ButtonProps } from 'some-library';
 ```
+
 ## When Not To Use It
 
 - If you are using a TypeScript version less than 3.8, then you will not be able to use this rule as type exports are not supported.
