@@ -11,7 +11,9 @@ transpilers to drop exports without knowing the types of the dependencies.
 
 This rule aims to standardize the use of type exports style across a codebase.
 
+
 Given a class `Button`, and an interface `ButtonProps`, examples of code:
+
 
 <!--tabs-->
 
@@ -50,7 +52,6 @@ export type { ButtonProps };
 interface Options {
   fixMixedExportsWithInlineTypeSpecifier?: boolean;
 }
-
 const defaultOptions: Options = {
   fixMixedExportsWithInlineTypeSpecifier: false,
 };
