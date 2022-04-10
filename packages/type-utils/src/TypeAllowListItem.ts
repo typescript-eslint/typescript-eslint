@@ -16,7 +16,7 @@ export const typeAllowListItemSchema = {
         },
         source: {
           type: 'string',
-          pattern: '^local|default-lib$',
+          enum: ['local', 'default-lib'],
         },
       },
       required: ['typeName', 'source'],
@@ -29,7 +29,7 @@ export const typeAllowListItemSchema = {
         },
         source: {
           type: 'string',
-          pattern: '^package$',
+          enum: ['package'],
         },
         package: {
           type: 'string',
