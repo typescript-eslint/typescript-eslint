@@ -23,7 +23,7 @@
     "@docusaurus/theme-classic": "^2.0.0-beta.15",
     "@docusaurus/theme-common": "^2.0.0-beta.15",
     "@docusaurus/theme-search-algolia": "^2.0.0-beta.15",
-    "@mdx-js/react": "1.6.22",
+    "@mdx-js/react": "2.1.1",
     "@typescript-eslint/website-eslint": "5.19.0",
     "clsx": "^1.1.1",
     "eslint": "*",
