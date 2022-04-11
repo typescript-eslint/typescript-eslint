@@ -14,7 +14,7 @@
     "test:open": "cypress open"
   },
   "dependencies": {
-    "@babel/runtime": "7.17.8",
+    "@babel/runtime": "7.17.9",
     "@docusaurus/core": "^2.0.0-beta.15",
     "@docusaurus/plugin-content-docs": "^2.0.0-beta.15",
     "@docusaurus/plugin-content-pages": "^2.0.0-beta.15",
