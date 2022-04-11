@@ -1,6 +1,15 @@
 [
   {
     "description": null,
+    "id": "gm9bnk80-437xqryw-7w5pvzeo-ljdayw5r",
+    "image": "https://images.opencollective.com/420-hubs/c2528e9/logo.png",
+    "name": "420HUBS.COM",
+    "slug": "420-hubs",
+    "tier": "supporter",
+    "website": "https://420hubs.com"
+  },
+  {
+    "description": null,
     "id": "7mywxoz3-409rl6kk-v9b6venb-dj7gk85a",
     "image": "https://images.opencollective.com/deal-empire/b3f7583/logo.png",
     "name": "Deal Empire",
@@ -16,15 +25,6 @@
     "slug": "my-sports-injury-ltd",
     "tier": "supporter",
     "website": "https://www.mysportsinjury.co.uk"
-  },
-  {
-    "description": "java learning",
-    "id": "jrkx5lmn-v904qjw5-xbbp8bwa-7zdygoe3",
-    "image": "https://images.opencollective.com/java-exp/14e869f/logo.png",
-    "name": "java",
-    "slug": "java-exp",
-    "tier": "supporter",
-    "website": "https://explainjava.com/"
   },
   {
     "description": null,
@@ -52,15 +52,6 @@
     "slug": "corellium",
     "tier": "supporter",
     "website": "https://www.corellium.com"
-  },
-  {
-    "description": null,
-    "id": "ov349mrw-gz75lpyx-elzqa08d-jeybknox",
-    "image": "https://images.opencollective.com/gaetan-bloch/c5cfcb2/avatar.png",
-    "name": "Gaëtan Bloch",
-    "slug": "gaetan-bloch",
-    "tier": "supporter",
-    "website": null
   },
   {
     "description": "The pluggable linting utility for JavaScript and JSX",
@@ -133,15 +124,6 @@
     "slug": "n8n",
     "tier": "supporter",
     "website": "https://n8n.io"
-  },
-  {
-    "description": null,
-    "id": "ov349mrw-gz75lpyz-0l86a08d-jeybknox",
-    "image": "https://images.opencollective.com/florian-studio/a713d94/logo.png",
-    "name": "Florian Studio",
-    "slug": "florian-studio",
-    "tier": "supporter",
-    "website": "https://www.ceodata.com"
   },
   {
     "description": "Full Stack JavaScript Developer",
