@@ -142,7 +142,7 @@ jobs:
           CI: true
 
       - name: Publish code coverage report
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/**/coverage/lcov.info
