@@ -112,10 +112,10 @@
     "tmp": "^0.2.1",
     "ts-node": "^10.7.0",
     "tslint": "^6.1.3",
-    "typescript": ">=3.3.1 <4.7.0"
+    "typescript": ">=3.3.1 <4.6.0 || 4.7.0-beta"
   },
   "resolutions": {
-    "typescript": "4.6.4",
+    "typescript": "4.7.0-beta",
     "@types/node": "^17.0.31",
     "pretty-format": "^28.1.0",
     "//": "Pin jest to v28 across the repo",
