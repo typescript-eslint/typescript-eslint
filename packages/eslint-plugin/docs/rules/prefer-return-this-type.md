@@ -112,7 +112,8 @@ If you don't use method chaining or explicit return values, you can safely turn 
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

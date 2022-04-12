@@ -288,7 +288,8 @@ If you wish to make sure all functions have explicit return types, as opposed to
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

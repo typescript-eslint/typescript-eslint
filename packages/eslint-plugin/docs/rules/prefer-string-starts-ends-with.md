@@ -64,7 +64,8 @@ If you don't mind that style, you can turn this rule off safely.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -280,7 +280,8 @@ function foo(arg: MyType) {}
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

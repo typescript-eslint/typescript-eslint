@@ -53,7 +53,8 @@ This rule is not configurable.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

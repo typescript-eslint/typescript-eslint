@@ -93,7 +93,8 @@ It also does not provide an auto-fixer just yet.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -179,18 +179,24 @@ describe('Validating rule docs', () => {
         );
         expect(attributesHeaderIndex).toBeGreaterThan(-1);
 
-        // Verify attributes content
+        // Verify attributes content...
         const attributesList = tokenAs(
           tokens[attributesHeaderIndex + 1],
           'list',
         );
-        const recommended = attributesList.items[0];
+        // ...starting with configs
+        const configs = attributesList.items[0];
+        expect(configs.text).toMatch(/Configs:\n/);
+        const configsList = tokenAs(configs.tokens[1], 'list');
+        const recommended = configsList.items[0];
         expect(shouldBeRecommended(rule.meta.docs)).toBe(recommended.checked);
-        const strict = attributesList.items[1];
+        const strict = configsList.items[1];
         expect(shouldBeStrict(rule.meta.docs)).toBe(strict.checked);
-        const fixable = attributesList.items[2];
+
+        // Verify other attributes
+        const fixable = attributesList.items[1];
         expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
-        const requiresTypeChecking = attributesList.items[3];
+        const requiresTypeChecking = attributesList.items[2];
         expect(rule.meta.docs?.requiresTypeChecking === true).toBe(
           requiresTypeChecking.checked,
         );

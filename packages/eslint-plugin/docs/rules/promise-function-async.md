@@ -73,7 +73,8 @@ In addition, each of the following properties may be provided, and default to `t
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

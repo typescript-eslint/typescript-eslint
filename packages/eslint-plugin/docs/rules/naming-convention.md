@@ -703,7 +703,8 @@ If you do not want to enforce naming conventions for anything.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

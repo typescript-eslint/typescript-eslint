@@ -145,7 +145,8 @@ If you want to use all of the TypeScript directives.
 
 ## Attributes
 
-- [x] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [x] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

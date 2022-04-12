@@ -38,7 +38,8 @@ See [discussion on this rule's lack of type information](https://github.com/type
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -121,7 +121,8 @@ If you're wanting to use `toBeCalled` and similar matches in `jest` tests, you c
 
 ## Attributes
 
-- [x] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [x] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

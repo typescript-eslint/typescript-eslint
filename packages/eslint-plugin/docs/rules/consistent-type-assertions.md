@@ -119,7 +119,8 @@ If you do not want to enforce consistent type assertions.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

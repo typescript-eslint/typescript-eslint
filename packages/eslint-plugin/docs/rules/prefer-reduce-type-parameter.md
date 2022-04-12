@@ -70,7 +70,8 @@ If you don't want to use typechecking in your linting, you can't use this rule.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

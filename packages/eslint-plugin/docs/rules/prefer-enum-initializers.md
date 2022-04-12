@@ -90,7 +90,8 @@ If you don't care about `enum`s having implicit values you can safely disable th
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

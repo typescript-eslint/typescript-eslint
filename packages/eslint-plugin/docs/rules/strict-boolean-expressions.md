@@ -200,7 +200,8 @@ This rule provides following fixes and suggestions for particular types in boole
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

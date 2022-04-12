@@ -54,7 +54,8 @@ If you don't care about TypeScript module syntax, then you will not need this ru
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

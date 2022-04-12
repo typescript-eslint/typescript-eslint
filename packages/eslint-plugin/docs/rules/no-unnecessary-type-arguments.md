@@ -73,7 +73,8 @@ This rule is not configurable.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

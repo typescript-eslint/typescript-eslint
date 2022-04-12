@@ -89,7 +89,8 @@ If you don't want to suggest `includes`, you can safely turn this rule off.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

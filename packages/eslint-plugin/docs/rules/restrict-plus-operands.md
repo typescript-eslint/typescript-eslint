@@ -107,7 +107,8 @@ var fn = (a: any, b: number) => a + b;
 
 ## Attributes
 
-- [x] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [x] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

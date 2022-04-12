@@ -85,7 +85,8 @@ If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able 
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

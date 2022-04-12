@@ -227,7 +227,8 @@ misuses of them outside of what the TypeScript compiler will check.
 
 ## Attributes
 
-- [x] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [x] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

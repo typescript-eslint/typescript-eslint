@@ -64,7 +64,8 @@ If you don't care about this confusion, then you will not need this rule.
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

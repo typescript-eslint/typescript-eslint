@@ -64,7 +64,8 @@ If you want to iterate through a loop using the indices in an array as strings, 
 
 ## Attributes
 
-- [x] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [x] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -83,7 +83,8 @@ If you are not using TypeScript 4.0 (or greater), then you will not be able to u
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -351,7 +351,8 @@ If you think defaulting to public is a good default, then you should consider us
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

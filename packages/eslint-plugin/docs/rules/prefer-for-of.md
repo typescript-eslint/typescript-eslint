@@ -61,7 +61,8 @@ If you transpile for browsers that do not support for-of loops, you may wish to 
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

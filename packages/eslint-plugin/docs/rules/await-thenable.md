@@ -53,7 +53,8 @@ This is generally not preferred, but can sometimes be useful for visual consiste
 
 ## Attributes
 
-- [x] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [x] ✅ Recommended
+  - [x] ✔ Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

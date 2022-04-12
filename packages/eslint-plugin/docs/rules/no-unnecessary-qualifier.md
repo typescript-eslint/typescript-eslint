@@ -99,7 +99,8 @@ If you don't care about having unneeded namespace or enum qualifiers, then you d
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

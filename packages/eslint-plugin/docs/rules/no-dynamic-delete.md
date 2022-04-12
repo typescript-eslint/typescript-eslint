@@ -67,7 +67,8 @@ Even repeated minor performance slowdowns likely do not significantly affect you
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [x] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

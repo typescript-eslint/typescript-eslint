@@ -61,7 +61,8 @@ If you prefer consistent use of `String#match` for both, with `g` flag and witho
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -211,7 +211,8 @@ If you don't care about enforcing a consistent member delimiter in interfaces an
 
 ## Attributes
 
-- [ ] ✅ Recommended
-- [ ] ✔ Strict
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] ✔ Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
