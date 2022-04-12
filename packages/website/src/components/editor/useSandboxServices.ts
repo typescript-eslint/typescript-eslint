@@ -48,12 +48,11 @@ export const useSandboxServices = (
 
     sandboxSingleton(props.ts)
       .then(async ({ main, sandboxFactory, ts, linter }) => {
-        const compilerOptions = {
+        const compilerOptions: Monaco.languages.typescript.CompilerOptions = {
           noResolve: true,
-          strict: true,
           target: main.languages.typescript.ScriptTarget.ESNext,
           jsx: props.jsx ? main.languages.typescript.JsxEmit.React : undefined,
-          lib: ['ESNext'],
+          lib: ['esnext'],
           module: main.languages.typescript.ModuleKind.ESNext,
         };
 

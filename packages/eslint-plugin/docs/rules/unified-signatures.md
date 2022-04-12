@@ -6,7 +6,23 @@ Warns for any two overloads that could be unified into one by using a union or a
 
 This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
 
-Examples of code for this rule:
+## Options
+
+```ts
+type Options = {
+  ignoreDifferentlyNamedParameters?: boolean;
+};
+
+const defaultOptions: Options = {
+  ignoreDifferentlyNamedParameters: false,
+};
+```
+
+The rule accepts an options object with the following property:
+
+- `ignoreDifferentlyNamedParameters`: whether two parameters with different names at the same index should be considered different even if their types are the same.
+
+Examples of code for this rule with the default options:
 
 <!--tabs-->
 
@@ -32,18 +48,33 @@ function x(x: number | string): void;
 function y(...x: number[]): void;
 ```
 
-## Options
+Examples of code for this rule with `ignoreDifferentlyNamedParameters`:
 
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/unified-signatures": "warn"
-  }
-}
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+function f(a: number): void;
+function f(a: string): void;
 ```
 
-This rule is not configurable.
+```ts
+function f(...a: number[]): void;
+function f(...b: string[]): void;
+```
+
+### ✅ Correct
+
+```ts
+function f(a: number): void;
+function f(b: string): void;
+```
+
+```ts
+function f(...a: number[]): void;
+function f(...a: string[]): void;
+```
 
 ## Related To
 
