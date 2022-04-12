@@ -202,6 +202,156 @@ function doThing(foo: number) {}
       `,
       options: [{ ignoreTypeValueShadow: true }],
     },
+    {
+      code: 'const a = [].find(a => a);',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const a = [].find(function (a) {
+  return a;
+});
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'const [a = [].find(a => true)] = dummy;',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'const { a = [].find(a => true) } = dummy;',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'function func(a = [].find(a => true)) {}',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+for (const a in [].find(a => true)) {
+}
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+for (const a of [].find(a => true)) {
+}
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: "const a = [].map(a => true).filter(a => a === 'b');",
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const a = []
+  .map(a => true)
+  .filter(a => a === 'b')
+  .find(a => a === 'c');
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'const { a } = (({ a }) => ({ a }))();',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+const person = people.find(item => {
+  const person = item.name;
+  return person === 'foo';
+});
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'var y = bar || foo(y => y);',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'var y = bar && foo(y => y);',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'var z = bar(foo(z => z));',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'var z = boo(bar(foo(z => z)));',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+var match = function (person) {
+  return person.name === 'foo';
+};
+const person = [].find(match);
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'const a = foo(x || (a => {}));',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'const { a = 1 } = foo(a => {});',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: "const person = { ...people.find(person => person.firstName.startsWith('s')) };",
+      options: [{ ignoreOnInitialization: true }],
+      parserOptions: { ecmaVersion: 2021 },
+    },
+    {
+      code: `
+const person = {
+  firstName: people
+    .filter(person => person.firstName.startsWith('s'))
+    .map(person => person.firstName)[0],
+};
+      `,
+      options: [{ ignoreOnInitialization: true }],
+      parserOptions: { ecmaVersion: 2021 },
+    },
+    {
+      code: `
+() => {
+  const y = foo(y => y);
+};
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'const x = (x => x)();',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'var y = bar || (y => y)();',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'var y = bar && (y => y)();',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'var x = (x => x)((y => y)());',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: 'const { a = 1 } = (a => {})();',
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+() => {
+  const y = (y => y)();
+};
+      `,
+      options: [{ ignoreOnInitialization: true }],
+    },
+    { code: 'const [x = y => y] = [].map(y => y);' },
   ],
   invalid: [
     {
@@ -1609,6 +1759,266 @@ declare module 'bar' {
           type: AST_NODE_TYPES.Identifier,
           line: 5,
           column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+let x = foo((x, y) => {});
+let y;
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ hoist: 'all' }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'y',
+            shadowedLine: 2,
+            shadowedColumn: 5,
+          },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+const a = fn(() => {
+  class C {
+    fn() {
+      const a = 42;
+      return a;
+    }
+  }
+  return new C();
+});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'a' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: 'function a() {}\nfoo(a => {});',
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'a' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 2,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+const a = fn(() => {
+  function C() {
+    this.fn = function () {
+      const a = 42;
+      return a;
+    };
+  }
+  return new C();
+});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'a' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+const x = foo(() => {
+  const bar = () => {
+    return x => {};
+  };
+  return bar;
+});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 4,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
+const x = foo(() => {
+  return { bar(x) {} };
+});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: `
+const x = () => {
+  foo(x => x);
+};
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 7,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = () => {
+  let x;
+  bar(x => x);
+};
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 4,
+          column: 7,
+        },
+      ],
+    },
+    {
+      code: `
+foo(() => {
+  const x = x => x;
+});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = x => {
+  bar(x => {});
+};
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 7,
+        },
+      ],
+    },
+    {
+      code: `
+let x = ((x, y) => {})();
+let y;
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ hoist: 'all' }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          messageId: 'noShadow',
+          data: { name: 'y' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+const a = (() => {
+  class C {
+    fn() {
+      const a = 42;
+      return a;
+    }
+  }
+  return new C();
+})();
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'a' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 5,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+const x = () => {
+  (x => x)();
+};
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      options: [{ ignoreOnInitialization: true }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: { name: 'x' },
+          type: AST_NODE_TYPES.Identifier,
+          line: 3,
+          column: 4,
         },
       ],
     },

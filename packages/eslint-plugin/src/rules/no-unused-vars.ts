@@ -14,6 +14,7 @@ export type Options = [
       argsIgnorePattern?: string;
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
+      destructuredArrayIgnorePattern?: string;
     },
 ];
 
@@ -25,6 +26,7 @@ interface TranslatedOptions {
   argsIgnorePattern?: RegExp;
   caughtErrors: 'all' | 'none';
   caughtErrorsIgnorePattern?: RegExp;
+  destructuredArrayIgnorePattern?: RegExp;
 }
 
 export default util.createRule<Options, MessageIds>({
@@ -64,6 +66,9 @@ export default util.createRule<Options, MessageIds>({
                 enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {
+                type: 'string',
+              },
+              destructuredArrayIgnorePattern: {
                 type: 'string',
               },
             },
@@ -123,12 +128,33 @@ export default util.createRule<Options, MessageIds>({
               'u',
             );
           }
+
+          if (firstOption.destructuredArrayIgnorePattern) {
+            options.destructuredArrayIgnorePattern = new RegExp(
+              firstOption.destructuredArrayIgnorePattern,
+              'u',
+            );
+          }
         }
       }
       return options;
     })();
 
     function collectUnusedVariables(): TSESLint.Scope.Variable[] {
+      /**
+       * Checks whether a node is a sibling of the rest property or not.
+       * @param {ASTNode} node a node to check
+       * @returns {boolean} True if the node is a sibling of the rest property, otherwise false.
+       */
+      function hasRestSibling(node: TSESTree.Node): boolean {
+        return (
+          node.type === AST_NODE_TYPES.Property &&
+          node.parent?.type === AST_NODE_TYPES.ObjectPattern &&
+          node.parent.properties[node.parent.properties.length - 1].type ===
+            AST_NODE_TYPES.RestElement
+        );
+      }
+
       /**
        * Determines if a variable has a sibling rest property
        * @param variable eslint-scope variable object.
@@ -138,17 +164,14 @@ export default util.createRule<Options, MessageIds>({
         variable: TSESLint.Scope.Variable,
       ): boolean {
         if (options.ignoreRestSiblings) {
-          return variable.defs.some(def => {
-            const propertyNode = def.name.parent!;
-            const patternNode = propertyNode.parent!;
+          const hasRestSiblingDefinition = variable.defs.some(def =>
+            hasRestSibling(def.name.parent!),
+          );
+          const hasRestSiblingReference = variable.references.some(ref =>
+            hasRestSibling(ref.identifier.parent!),
+          );
 
-            return (
-              propertyNode.type === AST_NODE_TYPES.Property &&
-              patternNode.type === AST_NODE_TYPES.ObjectPattern &&
-              patternNode.properties[patternNode.properties.length - 1].type ===
-                AST_NODE_TYPES.RestElement
-            );
-          });
+          return hasRestSiblingDefinition || hasRestSiblingReference;
         }
 
         return false;
@@ -185,6 +208,20 @@ export default util.createRule<Options, MessageIds>({
           options.vars === 'local'
         ) {
           // skip variables in the global scope if configured to
+          continue;
+        }
+
+        const refUsedInArrayPatterns = variable.references.some(
+          ref => ref.identifier.parent?.type === AST_NODE_TYPES.ArrayPattern,
+        );
+
+        // skip elements of array destructuring patterns
+        if (
+          (def.name.parent?.type === AST_NODE_TYPES.ArrayPattern ||
+            refUsedInArrayPatterns) &&
+          'name' in def.name &&
+          options.destructuredArrayIgnorePattern?.test(def.name.name)
+        ) {
           continue;
         }
 
@@ -361,9 +398,17 @@ export default util.createRule<Options, MessageIds>({
         function getAssignedMessageData(
           unusedVar: TSESLint.Scope.Variable,
         ): Record<string, unknown> {
-          const additional = options.varsIgnorePattern
-            ? `. Allowed unused vars must match ${options.varsIgnorePattern.toString()}`
-            : '';
+          const def = unusedVar.defs[0];
+          let additional = '';
+
+          if (
+            options.destructuredArrayIgnorePattern &&
+            def?.name.parent?.type === AST_NODE_TYPES.ArrayPattern
+          ) {
+            additional = `. Allowed unused elements of array destructuring patterns must match ${options.destructuredArrayIgnorePattern.toString()}`;
+          } else if (options.varsIgnorePattern) {
+            additional = `. Allowed unused vars must match ${options.varsIgnorePattern.toString()}`;
+          }
 
           return {
             varName: unusedVar.name,

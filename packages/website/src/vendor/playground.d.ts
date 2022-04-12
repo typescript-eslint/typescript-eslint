@@ -1,15 +1,15 @@
-declare type Sandbox = import('./sandbox').Sandbox;
-declare type Monaco = typeof import('monaco-editor');
 import { PluginUtils } from './pluginUtils';
 import type React from 'react';
 
+declare type Sandbox = import('./sandbox').Sandbox;
+declare type Monaco = typeof import('monaco-editor');
 export { PluginUtils } from './pluginUtils';
-export declare type PluginFactory = {
+export declare interface PluginFactory {
   (
     i: (key: string, components?: any) => string,
     utils: PluginUtils,
   ): PlaygroundPlugin;
-};
+}
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -42,7 +42,6 @@ export interface PlaygroundPlugin {
   /** An object you can use to keep data around in the scope of your plugin object */
   data?: any;
 }
-
 interface PlaygroundConfig {
   /** Language like "en" / "ja" etc */
   lang: string;
@@ -53,7 +52,6 @@ interface PlaygroundConfig {
   /** Should this playground load up custom plugins from localStorage? */
   supportCustomPlugins: boolean;
 }
-
 export declare const setupPlayground: (
   sandbox: Sandbox,
   monaco: Monaco,
@@ -73,6 +71,7 @@ export declare const setupPlayground: (
     ) => boolean;
     openInTSAST: () => void;
     openInBugWorkbench: () => void;
+    openInVSCodeDev: () => void;
     exportAsTweet: () => void;
   };
   // ui: import("./createUI").UI;
