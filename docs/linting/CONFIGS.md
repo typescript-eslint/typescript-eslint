@@ -6,7 +6,7 @@ title: Configurations
 
 ## Built-In Configurations
 
-`@typescript-eslint/eslint-plugin` includes three rulesets you can extend from to pull in the recommended starting rules.
+`@typescript-eslint/eslint-plugin` includes built-in configurations you can extend from to pull in the recommended starting rules.
 
 With the exception of `strict`, all configurations are considered "stable".
 Rule additions and removals are treated as breaking changes and will only be done in major version bumps.
