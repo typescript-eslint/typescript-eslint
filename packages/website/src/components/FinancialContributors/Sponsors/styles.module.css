@@ -1,7 +1,6 @@
 .tierArea {
   margin: 32px auto;
-  min-width: 500px;
-  width: 50vw;
+  width: 100%;
 }
 
 .sponsorsTier {
@@ -48,6 +47,13 @@
 .tier-contributor img {
   max-height: 30px;
   width: 30px;
+}
+
+@media screen and (min-width: 700px) {
+  .tierArea {
+    min-width: 500px;
+    width: 50vw;
+  }
 }
 
 @media screen and (min-width: 1150px) {
