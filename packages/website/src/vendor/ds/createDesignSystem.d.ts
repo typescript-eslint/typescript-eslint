@@ -1,6 +1,7 @@
 import type { Sandbox } from '../sandbox';
 import type { DiagnosticRelatedInformation, Node } from 'typescript';
-export declare type LocalStorageOption = {
+
+export declare interface LocalStorageOption {
   blurb: string;
   flag: string;
   display: string;
@@ -8,11 +9,11 @@ export declare type LocalStorageOption = {
   oneline?: true;
   requireRestart?: true;
   onchange?: (newValue: boolean) => void;
-};
-export declare type OptionsListConfig = {
+}
+export declare interface OptionsListConfig {
   style: 'separated' | 'rows';
   requireRestart?: true;
-};
+}
 export declare type DesignSystem = ReturnType<
   ReturnType<typeof createDesignSystem>
 >;

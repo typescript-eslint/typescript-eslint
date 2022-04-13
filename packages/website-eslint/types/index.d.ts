@@ -13,6 +13,7 @@ export interface WebLinter {
   getAst(): TSESTree.Program;
   getTsAst(): SourceFile;
   getScope(): Record<string, unknown>;
+  updateOptions(options?: Record<string, unknown>): void;
 
   lint(
     code: string,

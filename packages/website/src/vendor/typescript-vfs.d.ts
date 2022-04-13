@@ -5,7 +5,6 @@ declare type LanguageServiceHost = import('typescript').LanguageServiceHost;
 declare type CompilerHost = import('typescript').CompilerHost;
 declare type SourceFile = import('typescript').SourceFile;
 declare type TS = typeof import('typescript');
-
 export interface VirtualTypeScriptEnvironment {
   sys: System;
   languageService: import('typescript').LanguageService;
@@ -19,7 +18,6 @@ export interface VirtualTypeScriptEnvironment {
     replaceTextSpan?: import('typescript').TextSpan,
   ) => void;
 }
-
 /**
  * Makes a virtual copy of the TypeScript environment. This is the main API you want to be using with
  * @typescript/vfs. A lot of the other exposed functions are used by this function to get set up.
@@ -37,7 +35,6 @@ export declare function createVirtualTypeScriptEnvironment(
   compilerOptions?: CompilerOptions,
   customTransformers?: CustomTransformers,
 ): VirtualTypeScriptEnvironment;
-
 /**
  * Grab the list of lib files for a particular target, will return a bit more than necessary (by including
  * the dom) but that's OK
@@ -89,13 +86,11 @@ export declare const createDefaultMapFromCDN: (
   fetcher?: typeof fetch | undefined,
   storer?: Storage | undefined,
 ) => Promise<Map<string, string>>;
-
 /**
  * Creates an in-memory System object which can be used in a TypeScript program, this
  * is what provides read/write aspects of the virtual fs
  */
 export declare function createSystem(files: Map<string, string>): System;
-
 /**
  * Creates a file-system backed System object which can be used in a TypeScript program, you provide
  * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
@@ -106,7 +101,6 @@ export declare function createFSBackedSystem(
   _projectRoot: string,
   ts: TS,
 ): System;
-
 /**
  * Creates an in-memory CompilerHost -which is essentially an extra wrapper to System
  * which works with TypeScript objects - returns both a compiler host, and a way to add new SourceFile
@@ -120,7 +114,6 @@ export declare function createVirtualCompilerHost(
   compilerHost: CompilerHost;
   updateFile: (sourceFile: SourceFile) => boolean;
 };
-
 /**
  * Creates an object which can host a language service against the virtual file-system
  */
@@ -134,5 +127,4 @@ export declare function createVirtualLanguageServiceHost(
   languageServiceHost: LanguageServiceHost;
   updateFile: (sourceFile: import('typescript').SourceFile) => void;
 };
-
 export {};

@@ -107,7 +107,7 @@ jobs:
           CI: true
 
       - name: Run unit tests for scope-manager
-        run: npx nx test @typescript-eslint/scope-manager
+        run: npx nx test @typescript-eslint/scope-manager --code-coverage
         env:
           CI: true
 
@@ -142,7 +142,7 @@ jobs:
           CI: true
 
       - name: Publish code coverage report
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/**/coverage/lcov.info
@@ -342,7 +342,7 @@ jobs:
           project: ./packages/website
           start: yarn start
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: screenshots
