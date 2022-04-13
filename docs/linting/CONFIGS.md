@@ -1,5 +1,5 @@
 ---
-id: configurations
+id: configs
 sidebar_label: Configurations
 title: Configurations
 ---
