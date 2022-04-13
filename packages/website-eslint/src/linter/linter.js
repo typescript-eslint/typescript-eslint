@@ -5,11 +5,13 @@ import rules from '@typescript-eslint/eslint-plugin/dist/rules';
 
 const PARSER_NAME = '@typescript-eslint/parser';
 
-export function loadLinter(libs, compilerOptions) {
+export function loadLinter(libs, options) {
   const linter = new Linter();
   let storedAST;
   let storedTsAST;
   let storedScope;
+
+  let compilerOptions = options;
 
   linter.defineParser(PARSER_NAME, {
     parseForESLint(code, eslintOptions) {
@@ -44,6 +46,10 @@ export function loadLinter(libs, compilerOptions) {
 
   return {
     ruleNames: ruleNames,
+
+    updateOptions(options) {
+      compilerOptions = options || {};
+    },
 
     getScope() {
       return storedScope;
