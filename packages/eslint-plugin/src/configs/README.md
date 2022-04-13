@@ -1,3 +1,3 @@
 # Premade Configs
 
-This page has moved to [docs/linting/PRESETS.md](../../../../docs/linting/PRESETS.md).
+This page has moved to [docs/linting/CONFIGS.md](../../../../docs/linting/CONFIGS.md).
