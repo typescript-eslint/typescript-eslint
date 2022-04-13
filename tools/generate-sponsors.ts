@@ -97,7 +97,15 @@ interface MemberAccountAndTier extends MemberAccount {
 
 const excludedNames = new Set([
   'Guest', // Apparent anonymous donor equivalent without an avatar
-  'Josh Goldberg', // Team member
+  'Josh Goldberg', // Team member 💖
+
+  // These names *seem* to be spam websites, but we're not sure.
+  // If your name is mistakenly on this list, we're sorry; please let us know!
+  'Deal Empire',
+  'Florian Studio',
+  'java',
+  'Loyalty Leo',
+  'Penalty.com',
 ]);
 
 async function requestGraphql<Data>(key: keyof typeof queries): Promise<Data> {

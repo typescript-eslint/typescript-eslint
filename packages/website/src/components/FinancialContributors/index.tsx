@@ -25,13 +25,13 @@ export function FinancialContributors(): JSX.Element {
           description="Donors of $150 and/or a monthly amount of $10 or more."
           include={{ link: true }}
           tier="supporter"
-          title="Supporters"
+          title="Gold Supporters"
         />
         <Sponsors
           className={styles.tierOtherArea}
           description="Donors of $50 and/or a monthly amount of $3 or more."
           tier="contributor"
-          title="Contributors"
+          title="Supporters"
         />
       </div>
       <Link

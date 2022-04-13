@@ -159,14 +159,6 @@
     "website": "https://www.theguardian.com/"
   },
   {
-    "id": "Florian Studio",
-    "image": "https://images.opencollective.com/florian-studio/a713d94/logo.png",
-    "name": "Florian Studio",
-    "tier": "contributor",
-    "totalDonations": 8000,
-    "website": "https://www.ceodata.com"
-  },
-  {
     "id": "Tripwire, Inc.",
     "image": "https://images.opencollective.com/tripwire/7599e30/logo.png",
     "name": "Tripwire, Inc.",
@@ -191,27 +183,11 @@
     "website": "https://balsa.com"
   },
   {
-    "id": "Penalty.com",
-    "image": "https://images.opencollective.com/penalty/56b629e/avatar.png",
-    "name": "Penalty.com",
-    "tier": "contributor",
-    "totalDonations": 6400,
-    "website": "https://penalty.com"
-  },
-  {
     "id": "Jeffrey Rennie",
     "image": "https://images.opencollective.com/jeffrey-rennie/avatar.png",
     "name": "Jeffrey Rennie",
     "tier": "supporter",
     "totalDonations": 6000
-  },
-  {
-    "id": "Loyalty Leo",
-    "image": "https://images.opencollective.com/loyalty-leo/22d6ea0/logo.png",
-    "name": "Loyalty Leo",
-    "tier": "contributor",
-    "totalDonations": 5500,
-    "website": "https://www.loyaltyleo.com"
   },
   {
     "id": "Pete Gonzalez",
@@ -340,27 +316,11 @@
     "totalDonations": 1000
   },
   {
-    "id": "java",
-    "image": "https://images.opencollective.com/java-exp/14e869f/logo.png",
-    "name": "java",
-    "tier": "contributor",
-    "totalDonations": 1000,
-    "website": "https://explainjava.com/"
-  },
-  {
     "id": "MySportsInjury",
     "image": "https://images.opencollective.com/my-sports-injury-ltd/518c583/logo.png",
     "name": "MySportsInjury",
     "tier": "supporter",
     "totalDonations": 1000,
     "website": "https://www.mysportsinjury.co.uk"
-  },
-  {
-    "id": "Deal Empire",
-    "image": "https://images.opencollective.com/deal-empire/b3f7583/logo.png",
-    "name": "Deal Empire",
-    "tier": "supporter",
-    "totalDonations": 1000,
-    "website": "https://dealempire.com/"
   }
 ]
