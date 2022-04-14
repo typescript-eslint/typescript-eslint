@@ -1,5 +1,6 @@
 .tierArea {
-  margin: 32px 0;
+  margin: 32px auto;
+  width: 100%;
 }
 
 .sponsorsTier {
@@ -15,6 +16,11 @@
 .sponsorsTier li {
   list-style: none;
   margin: 5px;
+  max-width: 120px;
+}
+
+.sponsorsTier img {
+  margin: auto;
 }
 
 .sponsorsTier a,
@@ -28,35 +34,32 @@
 }
 
 .tier-sponsor img {
-  max-height: 110px;
-  width: 110px;
+  display: inline-block;
+  max-height: 120px;
+  width: 120px;
 }
 
 .tier-supporter img {
-  max-height: 60px;
-  width: 60px;
+  max-height: 45px;
+  width: 45px;
 }
 
-.sponsorLink {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 8px;
+.tier-contributor img {
+  max-height: 30px;
+  width: 30px;
 }
 
-.become {
-  margin: 8px 0 24px;
-  font-size: 1rem;
+@media screen and (min-width: 700px) {
+  .tierArea {
+    min-width: 500px;
+    width: 50vw;
+  }
 }
 
 @media screen and (min-width: 1150px) {
-  .sponsorsContainer {
-    display: flex;
-    gap: 32px;
-    margin: auto;
-    max-width: 75%;
-  }
-
   .tierArea {
-    width: 50%;
+    margin: 16px 0;
+    width: auto;
+    padding: 0 60px;
   }
 }
