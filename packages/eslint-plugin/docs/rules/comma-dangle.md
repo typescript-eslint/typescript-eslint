@@ -31,7 +31,7 @@ This rule has a string option and an object option.
   - `"generics"` is for trailing comma in generic. (e.g. `function foo<T,>() {}`)
   - `"tuples"` is for trailing comma in tuple. (e.g. `type Foo = [string,]`)
 
-- [See the other options allowed](https://eslint.org/docs/rules/comma-dangle)
+- [See the other options allowed](https://eslint.org/docs/rules/comma-dangle#options)
 
 <sup>
 
