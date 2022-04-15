@@ -241,8 +241,12 @@ function isAncestorTSIndexedAccessType(node: TSESTree.Literal): boolean {
   // Handle unary expressions (eg. -4)
   let ancestor = getLiteralParent(node);
 
-  // Go up another level if we’re part of a type union (eg. 1 | 2)
-  if (ancestor?.parent?.type === AST_NODE_TYPES.TSUnionType) {
+  // Go up another level while we’re part of a type union (eg. 1 | 2) or
+  // intersection (eg. 1 & 2)
+  while (
+    ancestor?.parent?.type === AST_NODE_TYPES.TSUnionType ||
+    ancestor?.parent?.type === AST_NODE_TYPES.TSIntersectionType
+  ) {
     ancestor = ancestor.parent;
   }
 
