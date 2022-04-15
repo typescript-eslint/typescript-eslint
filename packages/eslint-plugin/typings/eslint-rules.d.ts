@@ -319,6 +319,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         ignoreNumericLiteralTypes?: boolean;
         ignoreEnums?: boolean;
         ignoreReadonlyClassProperties?: boolean;
+        ignoreTypeIndexes?: boolean;
       },
     ],
     {
