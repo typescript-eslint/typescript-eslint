@@ -12,7 +12,8 @@ type ParameterCapableTSNode =
   | ts.TypeReferenceNode
   | ts.ExpressionWithTypeArguments
   | ts.JsxOpeningElement
-  | ts.JsxSelfClosingElement;
+  | ts.JsxSelfClosingElement
+  | ts.TypeQueryNode;
 
 type MessageIds = 'unnecessaryTypeParameter';
 
