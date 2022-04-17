@@ -84,7 +84,7 @@ export default createRule<Options, MessageIds>({
         node,
         messageId: 'preferRecord',
         fix: safeFix
-          ? (fixer): TSESLint.RuleFix => {
+          ? (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
               const key = sourceCode.getText(keyType.typeAnnotation);
               const value = sourceCode.getText(valueType.typeAnnotation);
               const record = member.readonly
