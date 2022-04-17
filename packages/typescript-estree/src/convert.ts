@@ -671,6 +671,26 @@ export class Converter {
       : node.elements.map(element => this.convertChild(element));
   }
 
+  private convertTypeParamVariances(
+    modifiers?: ts.ModifiersArray,
+  ): Pick<TSESTree.TSTypeParameter, 'in' | 'out'> {
+    const result: Pick<TSESTree.TSTypeParameter, 'in' | 'out'> = {
+      in: undefined,
+      out: undefined,
+    };
+    if (!modifiers) {
+      return result;
+    }
+    for (const modifier of modifiers) {
+      if (modifier.kind === SyntaxKind.InKeyword) {
+        result.in = true;
+      } else if (modifier.kind === SyntaxKind.OutKeyword) {
+        result.out = true;
+      }
+    }
+    return result;
+  }
+
   /**
    * Applies the given TS modifiers to the given result object.
    * @param result
@@ -2342,6 +2362,7 @@ export class Converter {
             ? this.convertType(node.constraint)
             : undefined,
           default: node.default ? this.convertType(node.default) : undefined,
+          ...this.convertTypeParamVariances(node.modifiers),
         });
       }
 
