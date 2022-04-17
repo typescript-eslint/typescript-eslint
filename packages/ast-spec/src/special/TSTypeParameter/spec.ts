@@ -8,4 +8,6 @@ export interface TSTypeParameter extends BaseNode {
   name: Identifier;
   constraint?: TypeNode;
   default?: TypeNode;
+  in?: boolean;
+  out?: boolean;
 }
