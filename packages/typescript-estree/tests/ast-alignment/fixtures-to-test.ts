@@ -482,6 +482,11 @@ tester.addFixturePatternConfig('typescript/types', {
     'template-literal-type-2',
     'template-literal-type-3',
     'template-literal-type-4',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * Babel doesn't support TS 4.7 new features yet.
+     */
+    'typeof-private',
   ],
 });
 
