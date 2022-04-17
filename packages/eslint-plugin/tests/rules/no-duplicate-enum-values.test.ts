@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-duplicate-enum-values';
-import { RuleTester, noFormat } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
