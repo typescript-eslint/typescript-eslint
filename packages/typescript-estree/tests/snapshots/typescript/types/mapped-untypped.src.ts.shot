@@ -75,6 +75,7 @@ Object {
                     "type": "TSStringKeyword",
                   },
                   "default": undefined,
+                  "in": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 23,
@@ -103,6 +104,7 @@ Object {
                     ],
                     "type": "Identifier",
                   },
+                  "out": undefined,
                   "range": Array [
                     12,
                     23,

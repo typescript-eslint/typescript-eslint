@@ -214,6 +214,7 @@ Object {
               "type": "TSTypeLiteral",
             },
             "default": undefined,
+            "in": undefined,
             "loc": Object {
               "end": Object {
                 "column": 24,
@@ -242,6 +243,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": undefined,
             "range": Array [
               12,
               24,
