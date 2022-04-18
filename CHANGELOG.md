@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.19.0...v5.20.0) (2022-04-18)
+
+
+### Features
+
+* **eslint-plugin:** [no-magic-numbers] ignoreTypeIndexes option ([#4789](https://github.com/typescript-eslint/typescript-eslint/issues/4789)) ([5e79451](https://github.com/typescript-eslint/typescript-eslint/commit/5e794512bf124c39de76d4e2cf8a3d6cfb08f1a8))
+
+
+
+
+
 # [5.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.18.0...v5.19.0) (2022-04-11)
 
 
