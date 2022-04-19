@@ -15,14 +15,14 @@
   },
   "dependencies": {
     "@babel/runtime": "7.17.9",
-    "@docusaurus/core": "^2.0.0-beta.15",
-    "@docusaurus/plugin-content-docs": "^2.0.0-beta.15",
-    "@docusaurus/plugin-content-pages": "^2.0.0-beta.15",
-    "@docusaurus/plugin-debug": "^2.0.0-beta.15",
-    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-beta.15",
-    "@docusaurus/theme-classic": "^2.0.0-beta.15",
-    "@docusaurus/theme-common": "^2.0.0-beta.15",
-    "@docusaurus/theme-search-algolia": "^2.0.0-beta.15",
+    "@docusaurus/core": "^2.0.0-beta.18",
+    "@docusaurus/plugin-content-docs": "^2.0.0-beta.18",
+    "@docusaurus/plugin-content-pages": "^2.0.0-beta.18",
+    "@docusaurus/plugin-debug": "^2.0.0-beta.18",
+    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-beta.18",
+    "@docusaurus/theme-classic": "^2.0.0-beta.18",
+    "@docusaurus/theme-common": "^2.0.0-beta.18",
+    "@docusaurus/theme-search-algolia": "^2.0.0-beta.18",
     "@mdx-js/react": "1.6.22",
     "@typescript-eslint/website-eslint": "5.20.0",
     "clsx": "^1.1.1",
@@ -36,7 +36,7 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.0.0-beta.15",
+    "@docusaurus/module-type-aliases": "^2.0.0-beta.18",
     "@types/react": "^17.0.34",
     "@types/react-helmet": "^6.1.4",
     "@types/react-router-dom": "^5.3.2",
@@ -48,7 +48,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "globby": "^11.0.4",
     "monaco-editor": "^0.33.0",
-    "webpack": "^5.64.0"
+    "webpack": "^5.71.0"
   },
   "browserslist": {
     "production": [
