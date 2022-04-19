@@ -115,6 +115,10 @@ export default util.createRule<Options, MessageIds>({
     return {
       ...(mode === 'property' && {
         TSMethodSignature(methodNode): void {
+          if (methodNode.kind !== 'method') {
+            return;
+          }
+
           const parent = methodNode.parent;
           const members =
             parent?.type === AST_NODE_TYPES.TSInterfaceBody

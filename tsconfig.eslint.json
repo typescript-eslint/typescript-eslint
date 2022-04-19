@@ -9,6 +9,8 @@
     "tools/**/*.ts",
     ".eslintrc.js",
     "jest.config.base.js",
+    "jest.config.js",
+    "jest.preset.js",
     "tests/jest-resolver.js"
   ]
 }

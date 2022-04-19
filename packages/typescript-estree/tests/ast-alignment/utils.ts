@@ -263,6 +263,20 @@ export function preprocessBabylonAST(ast: File): any {
         Object.keys(node).forEach(key => delete node[key]);
         Object.assign(node, typeAnnotation);
       },
+      /**
+       * babel 7.17.x introduced index property to location data to 2 node types
+       * TODO: report this to babel
+       */
+      TSEnumDeclaration(node: any) {
+        if (node.loc?.start?.index) {
+          delete node.loc.start.index;
+        }
+      },
+      TSTypePredicate(node: any) {
+        if (node.loc?.start?.index) {
+          delete node.loc.start.index;
+        }
+      },
     },
   );
 }

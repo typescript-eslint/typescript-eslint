@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "5.16.0",
+  "version": "5.20.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -40,9 +40,9 @@
   },
   "dependencies": {
     "@types/json-schema": "^7.0.9",
-    "@typescript-eslint/scope-manager": "5.16.0",
-    "@typescript-eslint/types": "5.16.0",
-    "@typescript-eslint/typescript-estree": "5.16.0",
+    "@typescript-eslint/scope-manager": "5.20.0",
+    "@typescript-eslint/types": "5.20.0",
+    "@typescript-eslint/typescript-estree": "5.20.0",
     "eslint-scope": "^5.1.1",
     "eslint-utils": "^3.0.0"
   },
