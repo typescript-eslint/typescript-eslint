@@ -1,16 +1,17 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "declaration": true,
+    "types": ["node", "jest"]
   },
   "include": ["src", "typings"],
-  "exclude": ["tests/fixtures"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
   "references": [
     { "path": "../types/tsconfig.build.json" },
-    { "path": "../typescript-estree/tsconfig.build.json" },
     { "path": "../visitor-keys/tsconfig.build.json" }
   ]
 }

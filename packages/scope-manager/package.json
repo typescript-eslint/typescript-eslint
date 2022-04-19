@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "5.17.0",
+  "version": "5.20.0",
   "description": "TypeScript scope analyser for ESLint",
   "keywords": [
     "eslint",
@@ -28,23 +28,21 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts3.4/dist",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
+    "build": "cd ../../ && nx build @typescript-eslint/scope-manager",
+    "clean": "cd ../../ && nx clean @typescript-eslint/scope-manager",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-lib.ts",
-    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
-    "test": "jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "generate:lib": "cd ../../ && nx generate-lib @typescript-eslint/scope-manager",
+    "lint": "cd ../../ && nx lint @typescript-eslint/scope-manager",
+    "test": "cd ../../ && nx test @typescript-eslint/scope-manager --code-coverage",
+    "typecheck": "cd ../../ && nx typecheck @typescript-eslint/scope-manager"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.17.0",
-    "@typescript-eslint/visitor-keys": "5.17.0"
+    "@typescript-eslint/types": "5.20.0",
+    "@typescript-eslint/visitor-keys": "5.20.0"
   },
   "devDependencies": {
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "5.17.0",
+    "@typescript-eslint/typescript-estree": "5.20.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

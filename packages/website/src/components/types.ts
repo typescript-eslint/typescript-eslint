@@ -3,28 +3,7 @@ import type {
   RulesRecord,
 } from '@typescript-eslint/website-eslint';
 
-export interface CompilerFlags extends Record<string, unknown> {
-  isolatedModules?: boolean;
-  allowSyntheticDefaultImports?: boolean;
-  esModuleInterop?: boolean;
-  strict?: boolean;
-  noImplicitAny?: boolean;
-  strictNullChecks?: boolean;
-  strictFunctionTypes?: boolean;
-  strictBindCallApply?: boolean;
-  strictPropertyInitialization?: boolean;
-  noImplicitThis?: boolean;
-  alwaysStrict?: boolean;
-  noUnusedLocals?: boolean;
-  noUnusedParameters?: boolean;
-  noImplicitReturns?: boolean;
-  noFallthroughCasesInSwitch?: boolean;
-  allowUnusedLabels?: boolean;
-  allowUnreachableCode?: boolean;
-  experimentalDecorators?: boolean;
-  emitDecoratorMetadata?: boolean;
-  noLib?: boolean;
-}
+export type CompilerFlags = Record<string, unknown>;
 
 export type SourceType = ParserOptions['sourceType'];
 
