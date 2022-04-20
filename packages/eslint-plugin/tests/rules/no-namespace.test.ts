@@ -54,6 +54,16 @@ declare namespace foo {
       options: [{ allowDeclarations: true }],
     },
     {
+      code: `
+export declare namespace foo {
+  export namespace bar {
+    namespace baz {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
       filename: 'test.d.ts',
       code: 'namespace foo {}',
       options: [{ allowDefinitionFiles: true }],
