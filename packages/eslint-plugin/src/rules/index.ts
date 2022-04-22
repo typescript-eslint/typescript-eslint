@@ -87,6 +87,7 @@ import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
 import paddingLineBetweenStatements from './padding-line-between-statements';
+import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
@@ -213,6 +214,7 @@ export default {
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
   'padding-line-between-statements': paddingLineBetweenStatements,
+  'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,

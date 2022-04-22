@@ -19,6 +19,8 @@ type MessageIds = 'noParamProp';
 export default util.createRule<Options, MessageIds>({
   name: 'no-parameter-properties',
   meta: {
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/parameter-properties'],
     type: 'problem',
     docs: {
       description:
