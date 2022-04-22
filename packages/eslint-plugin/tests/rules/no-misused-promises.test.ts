@@ -310,7 +310,7 @@ interface Props {
   onEvent: (() => void) | (() => Promise<void>);
 }
 
-const Component: React.FC<Props> = () => null;
+declare function Component(props: Props): any;
 
 const _ = <Component onEvent={async () => {}} />;
       `,
