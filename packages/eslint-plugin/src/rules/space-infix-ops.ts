@@ -142,7 +142,12 @@ export default util.createRule<Options, MessageIds>({
       const types = typeAnnotation.types;
 
       types.forEach(type => {
-        const operator = sourceCode.getTokenBefore(type);
+        const skipFunctionParenthesize =
+          type.type === TSESTree.AST_NODE_TYPES.TSFunctionType ? 1 : 0;
+        const operator = sourceCode.getTokenBefore(
+          type,
+          skipFunctionParenthesize,
+        );
 
         if (operator != null && UNIONS.includes(operator.value)) {
           const prev = sourceCode.getTokenBefore(operator);
