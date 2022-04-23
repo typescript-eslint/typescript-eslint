@@ -61,6 +61,17 @@ enum E {
   D = foo(),
 }
     `,
+    `
+enum E {
+  A = false,
+  B = 0,
+  C = -0,
+  D = 0n,
+  E = null,
+  F = undefined,
+  G = NaN,
+}
+    `,
   ],
   invalid: [
     {
@@ -74,7 +85,7 @@ enum E {
         {
           line: 4,
           column: 3,
-          messageId: 'duplicateMember',
+          messageId: 'duplicateValue',
           data: { value: 1 },
         },
       ],
@@ -90,7 +101,7 @@ enum E {
         {
           line: 4,
           column: 3,
-          messageId: 'duplicateMember',
+          messageId: 'duplicateValue',
           data: { value: 'A' },
         },
       ],
@@ -108,13 +119,13 @@ enum E {
         {
           line: 4,
           column: 3,
-          messageId: 'duplicateMember',
+          messageId: 'duplicateValue',
           data: { value: 'A' },
         },
         {
           line: 6,
           column: 3,
-          messageId: 'duplicateMember',
+          messageId: 'duplicateValue',
           data: { value: 1 },
         },
       ],

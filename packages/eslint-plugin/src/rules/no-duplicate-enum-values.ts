@@ -8,11 +8,10 @@ export default util.createRule({
     docs: {
       description: 'Disallow duplicate enum member values',
       recommended: false,
-      suggestion: true,
     },
     hasSuggestions: true,
     messages: {
-      duplicateMember: 'Duplicate enum member with value {{value}}.',
+      duplicateValue: 'Duplicate enum member value {{value}}.',
     },
     schema: [],
   },
@@ -58,7 +57,7 @@ export default util.createRule({
           if (seenValues.has(value)) {
             context.report({
               node: member,
-              messageId: 'duplicateMember',
+              messageId: 'duplicateValue',
               data: {
                 value,
               },
