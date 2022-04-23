@@ -183,7 +183,6 @@ class TypeVisitor extends Visitor {
     }
 
     node.extends?.forEach(this.visit, this);
-    node.implements?.forEach(this.visit, this);
     this.visit(node.body);
 
     if (node.typeParameters) {
