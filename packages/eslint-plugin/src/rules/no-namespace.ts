@@ -46,12 +46,15 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
     const filename = context.getFilename();
 
-    function isDeclaration(node: TSESTree.TSModuleDeclaration): boolean {
-      return (
-        node.declare === true ||
-        (node.parent!.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
-          isDeclaration(node.parent!.parent))
-      );
+    function isDeclaration(node: TSESTree.Node): boolean {
+      if (
+        node.type === AST_NODE_TYPES.TSModuleDeclaration &&
+        node.declare === true
+      ) {
+        return true;
+      }
+
+      return node.parent != null && isDeclaration(node.parent);
     }
 
     return {
