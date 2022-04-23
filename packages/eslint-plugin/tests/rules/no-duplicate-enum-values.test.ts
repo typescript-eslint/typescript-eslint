@@ -63,13 +63,15 @@ enum E {
     `,
     `
 enum E {
-  A = false,
+  A = '',
   B = 0,
-  C = -0,
-  D = 0n,
-  E = null,
-  F = undefined,
-  G = NaN,
+}
+    `,
+    `
+enum E {
+  A = 0,
+  B = -0,
+  C = NaN,
 }
     `,
   ],
