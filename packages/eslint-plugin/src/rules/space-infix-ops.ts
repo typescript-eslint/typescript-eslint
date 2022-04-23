@@ -142,11 +142,13 @@ export default util.createRule<Options, MessageIds>({
       const types = typeAnnotation.types;
 
       types.forEach(type => {
-        const skipFunctionParenthesize =
-          type.type === TSESTree.AST_NODE_TYPES.TSFunctionType ? 1 : 0;
+        const skipFunctionParenthesis =
+          type.type === TSESTree.AST_NODE_TYPES.TSFunctionType
+            ? util.isNotOpeningParenToken
+            : 0;
         const operator = sourceCode.getTokenBefore(
           type,
-          skipFunctionParenthesize,
+          skipFunctionParenthesis,
         );
 
         if (operator != null && UNIONS.includes(operator.value)) {
