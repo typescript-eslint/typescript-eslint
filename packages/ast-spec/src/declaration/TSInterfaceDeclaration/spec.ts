@@ -11,7 +11,5 @@ export interface TSInterfaceDeclaration extends BaseNode {
   id: Identifier;
   typeParameters?: TSTypeParameterDeclaration;
   extends?: TSInterfaceHeritage[];
-  implements?: TSInterfaceHeritage[];
-  abstract?: boolean;
   declare?: boolean;
 }

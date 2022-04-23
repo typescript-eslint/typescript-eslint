@@ -3,7 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { Identifier } from '../../expression/Identifier/spec';
 import type { TSModuleBlock } from '../../special/TSModuleBlock/spec';
 import type { Literal } from '../../unions/Literal';
-import type { Modifier } from '../../unions/Modifier';
 
 export interface TSModuleDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSModuleDeclaration;
@@ -22,5 +21,4 @@ export interface TSModuleDeclaration extends BaseNode {
     | TSModuleDeclaration;
   global?: boolean;
   declare?: boolean;
-  modifiers?: Modifier[];
 }
