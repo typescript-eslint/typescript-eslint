@@ -160,6 +160,7 @@ export = {
     'space-before-blocks': 'off',
     '@typescript-eslint/space-before-blocks': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'error',
+    '@typescript-eslint/strict-enums': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/type-annotation-spacing': 'error',
