@@ -668,7 +668,9 @@ export function identifierIsThisKeyword(id: ts.Identifier): boolean {
   return id.originalKeywordKind === SyntaxKind.ThisKeyword;
 }
 
-export function isThisIdentifier(node: ts.Node | undefined): boolean {
+export function isThisIdentifier(
+  node: ts.Node | undefined,
+): node is ts.Identifier {
   return (
     !!node &&
     node.kind === SyntaxKind.Identifier &&
