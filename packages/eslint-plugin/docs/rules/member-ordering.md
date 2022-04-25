@@ -2,11 +2,11 @@
 
 Require a consistent member declaration order.
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate and edit.
+A consistent ordering of fields, methods and constructors can make classes, class expressions, enums, interfaces, and type literals easier to read, navigate and edit.
 
 ## Rule Details
 
-This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
+This rule aims to standardize the way classes, class expressions, enums, interfaces, and type literals are structured and ordered.
 
 ### Grouping and sorting member groups
 
@@ -36,6 +36,7 @@ type Options = {
   default?: OrderConfig;
   classes?: OrderConfig;
   classExpressions?: OrderConfig;
+  enums?: OrderConfig;
   interfaces?: OrderConfig;
   typeLiterals?: OrderConfig;
 };

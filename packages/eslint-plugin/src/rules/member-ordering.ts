@@ -21,13 +21,17 @@ interface SortedOrderConfig {
 }
 
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
-type Member = TSESTree.ClassElement | TSESTree.TypeElement;
+type Member =
+  | TSESTree.ClassElement
+  | TSESTree.TypeElement
+  | TSESTree.TSEnumMember;
 
 export type Options = [
   {
     default?: OrderConfig;
     classes?: OrderConfig;
     classExpressions?: OrderConfig;
+    enums?: OrderConfig;
     interfaces?: OrderConfig;
     typeLiterals?: OrderConfig;
   },
@@ -307,10 +311,16 @@ function getMemberRawName(
   return name;
 }
 
+function getEnumMemberName(member: TSESTree.TSEnumMember): string | null {
+  const enumID = member.id as unknown as Record<string, string | undefined>;
+  const { name } = enumID;
+  return name === null || name === undefined || name === '' ? null : name;
+}
+
 /**
  * Gets the member name based on the member type.
  *
- * @param node the node to be evaluated.
+ * @param node The node to be evaluated.
  * @param sourceCode
  */
 function getMemberName(
@@ -334,6 +344,8 @@ function getMemberName(
       return 'call';
     case AST_NODE_TYPES.TSIndexSignature:
       return util.getNameFromIndexSignature(node);
+    case AST_NODE_TYPES.TSEnumMember:
+      return getEnumMemberName(node);
     default:
       return null;
   }
@@ -471,6 +483,33 @@ function getLowestRank(
   return lowestRanks.map(rank => rank.replace(/-/g, ' ')).join(', ');
 }
 
+/**
+ * An enum with specified values would be something like the following:
+ *
+ * ```ts
+ * enum Foo {
+ *   Bar = 111,
+ *   Baz = 222,
+ * }
+ * ```
+ *
+ * An enum without specified values would be something like the following:
+ *
+ * ```ts
+ * enum Foo {
+ *   Bar,
+ *   Baz,
+ * }
+ * ```
+ */
+function isEnumMemberWithSpecifiedValue(member: Member): boolean {
+  if (member.type !== AST_NODE_TYPES.TSEnumMember) {
+    return false;
+  }
+
+  return member.initializer !== undefined;
+}
+
 export default util.createRule<Options, MessageIds>({
   name: 'member-ordering',
   meta: {
@@ -508,6 +547,13 @@ export default util.createRule<Options, MessageIds>({
               neverConfig,
               arrayConfig(allMemberTypes),
               objectConfig(allMemberTypes),
+            ],
+          },
+          enums: {
+            oneOf: [
+              neverConfig,
+              arrayConfig(['signature', 'field', 'method', 'constructor']),
+              objectConfig(['signature', 'field', 'method', 'constructor']),
             ],
           },
           interfaces: {
@@ -605,29 +651,36 @@ export default util.createRule<Options, MessageIds>({
 
       // Find first member which isn't correctly sorted
       members.forEach(member => {
-        const name = getMemberName(member, context.getSourceCode());
-
         // Note: Not all members have names
-        if (name) {
-          if (
-            caseSensitive
-              ? name < previousName
-              : name.toLowerCase() < previousName.toLowerCase()
-          ) {
-            context.report({
-              node: member,
-              messageId: 'incorrectOrder',
-              data: {
-                member: name,
-                beforeMember: previousName,
-              },
-            });
-
-            isCorrectlySorted = false;
-          }
-
-          previousName = name;
+        const name = getMemberName(member, context.getSourceCode());
+        if (name === null) {
+          return;
         }
+
+        // Don't alphabetically sort enums with defined values, since the enum
+        // is likely to be already sorted in order of the value
+        if (isEnumMemberWithSpecifiedValue(member)) {
+          return;
+        }
+
+        if (
+          caseSensitive
+            ? name < previousName
+            : name.toLowerCase() < previousName.toLowerCase()
+        ) {
+          context.report({
+            node: member,
+            messageId: 'incorrectOrder',
+            data: {
+              member: name,
+              beforeMember: previousName,
+            },
+          });
+
+          isCorrectlySorted = false;
+        }
+
+        previousName = name;
       });
 
       return isCorrectlySorted;
@@ -696,6 +749,13 @@ export default util.createRule<Options, MessageIds>({
           node.body.body,
           options.classExpressions ?? options.default!,
           true,
+        );
+      },
+      TSEnumDeclaration(node): void {
+        validateMembersOrder(
+          node.members,
+          options.enums ?? options.default!,
+          false,
         );
       },
       TSInterfaceDeclaration(node): void {

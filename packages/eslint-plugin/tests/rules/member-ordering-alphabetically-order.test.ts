@@ -9,6 +9,7 @@ import { TSESLint } from '@typescript-eslint/utils';
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
+
 const sortedWithoutGroupingDefaultOption: TSESLint.RunTests<
   MessageIds,
   Options
@@ -60,6 +61,17 @@ interface Foo {
 }
             `,
       options: [{ default: { order: 'alphabetically' } }],
+    },
+
+    // default option + enum + lower/upper case
+    {
+      code: `
+enum Foo {
+  A,
+  a,
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
 
     // default option + type literal + multiple types
@@ -212,6 +224,17 @@ class Foo {
       options: [
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
+    },
+
+    // default option + enum with specified values + lower/upper case
+    {
+      code: `
+enum Foo {
+  a = 0,
+  A = 1,
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
   ],
   invalid: [
