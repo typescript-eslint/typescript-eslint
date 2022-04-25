@@ -1,6 +1,7 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
 import { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
@@ -38,6 +39,7 @@ export const dom_iterable = {
   NodeListOf: TYPE,
   Plugin: TYPE,
   PluginArray: TYPE,
+  RTCRtpTransceiver: TYPE,
   RTCStatsReport: TYPE,
   SVGLengthList: TYPE,
   SVGNumberList: TYPE,
@@ -54,6 +56,7 @@ export const dom_iterable = {
   TouchList: TYPE,
   URLSearchParams: TYPE,
   WEBGL_draw_buffers: TYPE,
+  WEBGL_multi_draw: TYPE,
   WebGL2RenderingContextBase: TYPE,
   WebGL2RenderingContextOverloads: TYPE,
   WebGLRenderingContextBase: TYPE,

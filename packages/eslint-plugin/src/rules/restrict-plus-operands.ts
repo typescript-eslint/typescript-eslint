@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
@@ -8,7 +8,12 @@ type Options = [
     allowAny?: boolean;
   },
 ];
-type MessageIds = 'notNumbers' | 'notStrings' | 'notBigInts';
+type MessageIds =
+  | 'notNumbers'
+  | 'notStrings'
+  | 'notBigInts'
+  | 'notValidAnys'
+  | 'notValidTypes';
 
 export default util.createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',
@@ -26,6 +31,10 @@ export default util.createRule<Options, MessageIds>({
       notStrings:
         "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
       notBigInts: "Operands of '+' operation must be both bigints.",
+      notValidAnys:
+        "Operands of '+' operation with any is possible only with string, number, bigint or any",
+      notValidTypes:
+        "Operands of '+' operation must either be one of string, number, bigint or any (if allowed by option)",
     },
     schema: [
       {
@@ -79,7 +88,20 @@ export default util.createRule<Options, MessageIds>({
 
       if (type.isIntersection()) {
         const types = type.types.map(getBaseTypeOfLiteralType);
-        return types.some(value => value === 'string') ? 'string' : 'invalid';
+
+        if (types.some(value => value === 'string')) {
+          return 'string';
+        }
+
+        if (types.some(value => value === 'number')) {
+          return 'number';
+        }
+
+        if (types.some(value => value === 'bigint')) {
+          return 'bigint';
+        }
+
+        return 'invalid';
       }
 
       const stringType = typeChecker.typeToString(type);
@@ -118,14 +140,14 @@ export default util.createRule<Options, MessageIds>({
         if (leftType === 'invalid') {
           context.report({
             node,
-            messageId: 'notNumbers',
+            messageId: 'notValidTypes',
           });
         }
 
         if (!allowAny && leftType === 'any') {
           context.report({
             node,
-            messageId: 'notNumbers',
+            messageId: 'notValidAnys',
           });
         }
 
@@ -136,7 +158,7 @@ export default util.createRule<Options, MessageIds>({
         if (!allowAny || leftType === 'invalid' || rightType === 'invalid') {
           context.report({
             node,
-            messageId: 'notNumbers',
+            messageId: 'notValidAnys',
           });
         }
 
@@ -157,10 +179,12 @@ export default util.createRule<Options, MessageIds>({
         });
       }
 
-      context.report({
-        node,
-        messageId: 'notNumbers',
-      });
+      if (leftType === 'number' || rightType === 'number') {
+        return context.report({
+          node,
+          messageId: 'notNumbers',
+        });
+      }
     }
 
     return {

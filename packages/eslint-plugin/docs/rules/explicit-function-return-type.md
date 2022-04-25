@@ -1,4 +1,6 @@
-# Require explicit return types on functions and class methods (`explicit-function-return-type`)
+# `explicit-function-return-type`
+
+Require explicit return types on functions and class methods.
 
 Explicit types for function return values makes it clear to any calling code what type is returned.
 This ensures that the return value is assigned to a variable of the correct type; or in the case
@@ -75,6 +77,10 @@ type Options = {
   allowDirectConstAssertionInArrowFunctions?: boolean;
   // if true, concise arrow functions that start with the void keyword will not be checked
   allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+  /**
+   * An array of function/method names that will not have their arguments or their return values checked.
+   */
+  allowedNames?: string[];
 };
 
 const defaults = {
@@ -83,6 +89,7 @@ const defaults = {
   allowHigherOrderFunctions: true,
   allowDirectConstAssertionInArrowFunctions: true,
   allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+  allowedNames: [],
 };
 ```
 
@@ -258,6 +265,21 @@ const log = (message: string) => {
 
 ```ts
 var log = (message: string) => void console.log(message);
+```
+
+### `allowedNames`
+
+You may pass function/method names you would like this rule to ignore, like so:
+
+```json
+{
+  "@typescript-eslint/explicit-function-return-type": [
+    "error",
+    {
+      "allowedNames": ["ignoredFunctionName", "ignoredMethodName"]
+    }
+  ]
+}
 ```
 
 ## When Not To Use It

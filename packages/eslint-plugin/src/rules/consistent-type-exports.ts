@@ -3,7 +3,7 @@ import {
   ParserServices,
   AST_NODE_TYPES,
   TSESLint,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import { SymbolFlags } from 'typescript';
 import * as util from '../util';
 

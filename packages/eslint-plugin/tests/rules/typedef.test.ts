@@ -201,6 +201,26 @@ ruleTester.run('typedef', rule, {
         },
       ],
     },
+    {
+      code: `
+        const {
+          id,
+          details: {
+            name: {
+              first,
+              middle,
+              last,
+              forTest: { moreNested },
+            },
+          },
+        }: User = getUser();
+      `,
+      options: [
+        {
+          objectDestructuring: true,
+        },
+      ],
+    },
     // Function parameters
     'function receivesNumber(a: number): void {}',
     'function receivesStrings(a: string, b: string): void {}',
@@ -507,6 +527,44 @@ class ClassName {
       code: 'const { a, b } = { a: 1, b: 2 };',
       errors: [
         {
+          messageId: 'expectedTypedef',
+        },
+      ],
+      options: [
+        {
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: `
+        const {
+          id,
+          details: {
+            name: {
+              first,
+              middle,
+              last,
+              forTest: { moreNested },
+            },
+          },
+        } = getUser();
+      `,
+      errors: [
+        {
+          data: { name: 'first' },
+          messageId: 'expectedTypedef',
+        },
+        {
+          data: { name: 'middle' },
+          messageId: 'expectedTypedef',
+        },
+        {
+          data: { name: 'last' },
+          messageId: 'expectedTypedef',
+        },
+        {
+          data: { name: 'moreNested' },
           messageId: 'expectedTypedef',
         },
       ],

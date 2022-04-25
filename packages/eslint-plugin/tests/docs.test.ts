@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { JSONSchema4 } from 'json-schema';
 import path from 'path';
 
 import marked from 'marked';
@@ -42,12 +43,48 @@ function parseReadme(): {
   };
 }
 
+function isEmptySchema(schema: JSONSchema4 | JSONSchema4[]): boolean {
+  return Array.isArray(schema)
+    ? schema.length === 0
+    : Object.keys(schema).length === 0;
+}
+
+type TokenType = marked.Token['type'];
+
+function tokenAs<Type extends TokenType>(
+  token: marked.Token,
+  type: Type,
+): marked.Token & { type: Type } {
+  expect(token.type).toBe(type);
+  return token as marked.Token & { type: Type };
+}
+
+function tokenIs<Type extends TokenType>(
+  token: marked.Token,
+  type: Type,
+): token is marked.Token & { type: Type } {
+  return token.type === type;
+}
+
+function tokenIsH1(token: marked.Token): token is marked.Tokens.Heading {
+  return tokenIs(token, 'heading') && token.depth === 1;
+}
+
+function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
+  return tokenIs(token, 'heading') && token.depth === 2;
+}
+
 describe('Validating rule docs', () => {
+  const ignoredFiles = new Set([
+    // this rule doc was left behind on purpose for legacy reasons
+    'camelcase.md',
+    'README.md',
+    'TEMPLATE.md',
+  ]);
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
       .readdirSync(docsRoot)
-      // this rule doc was left behind on purpose for legacy reasons
-      .filter(rule => rule !== 'camelcase.md' && rule !== 'README.md');
+      .filter(rule => !ignoredFiles.has(rule));
     const ruleFiles = Object.keys(rules)
       .map(rule => `${rule}.md`)
       .sort();
@@ -57,16 +94,24 @@ describe('Validating rule docs', () => {
 
   for (const [ruleName, rule] of rulesData) {
     const filePath = path.join(docsRoot, `${ruleName}.md`);
+
+    it(`First header in ${ruleName}.md must be the name of the rule`, () => {
+      const tokens = parseMarkdownFile(filePath);
+
+      const header = tokens.find(tokenIsH1)!;
+
+      expect(header.text).toBe(`\`${ruleName}\``);
+    });
+
     it(`Description of ${ruleName}.md must match`, () => {
       // validate if description of rule is same as in docs
       const tokens = parseMarkdownFile(filePath);
 
       // Rule title not found.
       // Rule title does not match the rule metadata.
-      expect(tokens[0]).toMatchObject({
-        type: 'heading',
-        depth: 1,
-        text: `${rule.meta.docs?.description} (\`${ruleName}\`)`,
+      expect(tokens[1]).toMatchObject({
+        type: 'paragraph',
+        text: `${rule.meta.docs?.description}.`,
       });
     });
 
@@ -74,13 +119,49 @@ describe('Validating rule docs', () => {
       const tokens = parseMarkdownFile(filePath);
 
       // Get all H2 headers objects as the other levels are variable by design.
-      const headers = tokens.filter(
-        token => token.type === 'heading' && token.depth === 2,
-      ) as marked.Tokens.Heading[];
+      const headers = tokens.filter(tokenIsH2);
 
       headers.forEach(header =>
         expect(header.text).toBe(titleCase(header.text)),
       );
+    });
+
+    it(`Options in ${ruleName}.md must match the rule meta`, () => {
+      // TODO(#4365): We don't yet enforce formatting for all rules.
+      if (
+        !isEmptySchema(rule.meta.schema) ||
+        rule.meta.docs?.extendsBaseRule ||
+        !rule.meta.docs?.recommended
+      ) {
+        return;
+      }
+
+      const tokens = parseMarkdownFile(filePath);
+
+      const optionsIndex = tokens.findIndex(
+        token => tokenIsH2(token) && token.text === 'Options',
+      );
+      expect(optionsIndex).toBeGreaterThan(0);
+
+      const codeBlock = tokenAs(tokens[optionsIndex + 1], 'code');
+      tokenAs(tokens[optionsIndex + 2], 'space');
+      const descriptionBlock = tokenAs(tokens[optionsIndex + 3], 'paragraph');
+
+      expect(codeBlock).toMatchObject({
+        lang: 'jsonc',
+        text: `
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/${ruleName}": "${rule.meta.docs?.recommended}"
+  }
+}
+          `.trim(),
+        type: 'code',
+      });
+      expect(descriptionBlock).toMatchObject({
+        text: 'This rule is not configurable.',
+      });
     });
 
     it(`Attributes in ${ruleName}.md must match the metadata`, () => {
@@ -88,14 +169,12 @@ describe('Validating rule docs', () => {
 
       // Verify attributes header exists
       const attributesHeaderIndex = tokens.findIndex(
-        token => token.type === 'heading' && token.text === 'Attributes',
+        token => tokenIs(token, 'heading') && token.text === 'Attributes',
       );
       expect(attributesHeaderIndex).toBeGreaterThan(-1);
 
       // Verify attributes content
-      const attributesList = tokens[
-        attributesHeaderIndex + 1
-      ] as marked.Tokens.List;
+      const attributesList = tokenAs(tokens[attributesHeaderIndex + 1], 'list');
       const recommended = attributesList.items[0];
       expect(rule.meta.docs?.recommended !== false).toBe(recommended.checked);
       const fixable = attributesList.items[1];

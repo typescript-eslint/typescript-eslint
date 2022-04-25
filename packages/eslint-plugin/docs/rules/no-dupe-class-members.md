@@ -1,4 +1,6 @@
-# Disallow duplicate class members (`no-dupe-class-members`)
+# `no-dupe-class-members`
+
+Disallow duplicate class members.
 
 ## Rule Details
 

@@ -1,4 +1,4 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 // tslint regex

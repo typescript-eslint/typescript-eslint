@@ -1,4 +1,6 @@
-# Disallows member access on any typed variables (`no-unsafe-member-access`)
+# `no-unsafe-member-access`
+
+Disallows member access on any typed variables.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Member access on `any` typed variables is not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -51,6 +53,19 @@ const idx = 1;
 arr[idx];
 arr[idx++];
 ```
+
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unsafe-member-access": "error"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## Related To
 

@@ -15,7 +15,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     `
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/utils';
 declare const member: TSESTree.TSEnumMember;
 if (
   member.id.type === AST_NODE_TYPES.Literal &&

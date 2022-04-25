@@ -1,4 +1,4 @@
-import { JSONSchema } from '@typescript-eslint/experimental-utils';
+import { JSONSchema } from '@typescript-eslint/utils';
 import {
   IndividualAndMetaSelectorsString,
   MetaSelectors,

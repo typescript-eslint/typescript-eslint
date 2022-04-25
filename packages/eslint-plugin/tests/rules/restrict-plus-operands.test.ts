@@ -112,6 +112,46 @@ declare const b: string;
 const x = a + b;
     `,
     `
+declare const a: {} & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: unknown & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: number & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: 42 & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: {} & bigint;
+declare const b: bigint;
+const x = a + b;
+    `,
+    `
+declare const a: unknown & bigint;
+declare const b: bigint;
+const x = a + b;
+    `,
+    `
+declare const a: bigint & bigint;
+declare const b: bigint;
+const x = a + b;
+    `,
+    `
+declare const a: 42n & bigint;
+declare const b: bigint;
+const x = a + b;
+    `,
+    `
 function A(s: string) {
   return \`a\${s}b\` as const;
 }
@@ -195,7 +235,7 @@ export const f = (a: any, b: number) => a + b;
       code: 'var foo = [] + {};',
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidTypes',
           line: 1,
           column: 11,
         },
@@ -225,7 +265,7 @@ export const f = (a: any, b: number) => a + b;
       code: 'var foo = [] + [];',
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidTypes',
           line: 1,
           column: 11,
         },
@@ -368,7 +408,7 @@ var foo = pair + pair;
       `,
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidTypes',
           line: 3,
           column: 11,
         },
@@ -555,7 +595,7 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 4,
           column: 19,
         },
@@ -570,6 +610,188 @@ function foo<T extends 1>(a: T) {
       errors: [
         {
           messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: boolean & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: symbol & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: object & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: never & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: any & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notValidAnys',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: boolean & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: number & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: symbol & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: object & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: never & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: any & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notValidAnys',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
           line: 4,
           column: 19,
         },
@@ -622,7 +844,7 @@ const f = (a: any, b: boolean) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 35,
         },
@@ -639,7 +861,7 @@ const f = (a: any, b: []) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 30,
         },
@@ -657,7 +879,7 @@ const f = (a: any, b: any) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 31,
         },
@@ -674,7 +896,7 @@ const f = (a: any, b: string) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 34,
         },
@@ -691,7 +913,7 @@ const f = (a: any, b: bigint) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 34,
         },
@@ -708,7 +930,7 @@ const f = (a: any, b: number) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 34,
         },
@@ -725,7 +947,7 @@ const f = (a: any, b: boolean) => a + b;
       ],
       errors: [
         {
-          messageId: 'notNumbers',
+          messageId: 'notValidAnys',
           line: 2,
           column: 35,
         },

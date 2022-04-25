@@ -1,9 +1,7 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import * as ts from 'typescript';
 import * as util from '../util';
+import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
+import { isBinaryExpression } from 'tsutils';
 
 type ValidChainTarget =
   | TSESTree.BinaryExpression
@@ -51,7 +49,68 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
+    const parserServices = util.getParserServices(context, true);
+
     return {
+      'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
+        node: TSESTree.LogicalExpression,
+      ): void {
+        const leftNode = node.left;
+        const rightNode = node.right;
+        const parentNode = node.parent;
+        const isRightNodeAnEmptyObjectLiteral =
+          rightNode.type === AST_NODE_TYPES.ObjectExpression &&
+          rightNode.properties.length === 0;
+        if (
+          !isRightNodeAnEmptyObjectLiteral ||
+          !parentNode ||
+          parentNode.type !== AST_NODE_TYPES.MemberExpression ||
+          parentNode.optional
+        ) {
+          return;
+        }
+
+        function isLeftSideLowerPrecedence(): boolean {
+          const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+
+          const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
+          const operator = isBinaryExpression(logicalTsNode)
+            ? logicalTsNode.operatorToken.kind
+            : ts.SyntaxKind.Unknown;
+          const leftPrecedence = util.getOperatorPrecedence(
+            leftTsNode.kind,
+            operator,
+          );
+
+          return leftPrecedence < util.OperatorPrecedence.LeftHandSide;
+        }
+        context.report({
+          node: parentNode,
+          messageId: 'optionalChainSuggest',
+          suggest: [
+            {
+              messageId: 'optionalChainSuggest',
+              fix: (fixer): TSESLint.RuleFix => {
+                const leftNodeText = sourceCode.getText(leftNode);
+                // Any node that is made of an operator with higher or equal precedence,
+                const maybeWrappedLeftNode = isLeftSideLowerPrecedence()
+                  ? `(${leftNodeText})`
+                  : leftNodeText;
+                const propertyToBeOptionalText = sourceCode.getText(
+                  parentNode.property,
+                );
+                const maybeWrappedProperty = parentNode.computed
+                  ? `[${propertyToBeOptionalText}]`
+                  : propertyToBeOptionalText;
+                return fixer.replaceTextRange(
+                  parentNode.range,
+                  `${maybeWrappedLeftNode}?.${maybeWrappedProperty}`,
+                );
+              },
+            },
+          ],
+        });
+      },
       [[
         'LogicalExpression[operator="&&"] > Identifier',
         'LogicalExpression[operator="&&"] > MemberExpression',

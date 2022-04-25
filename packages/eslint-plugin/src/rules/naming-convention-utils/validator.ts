@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 import {
   MetaSelectors,
@@ -130,7 +127,9 @@ function createValidator(
         return;
       }
 
-      if (!validatePredefinedFormat(config, name, node, originalName)) {
+      if (
+        !validatePredefinedFormat(config, name, node, originalName, modifiers)
+      ) {
         // fail
         return;
       }
@@ -379,16 +378,19 @@ function createValidator(
     name: string,
     node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
     originalName: string,
+    modifiers: Set<Modifiers>,
   ): boolean {
     const formats = config.format;
     if (formats === null || formats.length === 0) {
       return true;
     }
 
-    for (const format of formats) {
-      const checker = PredefinedFormatToCheckFunction[format];
-      if (checker(name)) {
-        return true;
+    if (!modifiers.has(Modifiers.requiresQuotes)) {
+      for (const format of formats) {
+        const checker = PredefinedFormatToCheckFunction[format];
+        if (checker(name)) {
+          return true;
+        }
       }
     }
 

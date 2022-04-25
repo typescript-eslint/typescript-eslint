@@ -132,6 +132,19 @@ import { F } from './missing';
 function bar<T = F>() {}
 bar<F<number>>();
     `,
+    `
+type A<T = Element> = T;
+type B = A<HTMLInputElement>;
+    `,
+    `
+type A<T = Map<string, string>> = T;
+type B = A<Map<string, number>>;
+    `,
+    `
+type A = Map<string, string>;
+type B<T = A> = T;
+type C2 = B<Map<string, number>>;
+    `,
   ],
   invalid: [
     {
@@ -288,6 +301,129 @@ bar<F<string>>();
 import { F } from './missing';
 function bar<T = F<string>>() {}
 bar();
+      `,
+    },
+    {
+      code: `
+type DefaultE = { foo: string };
+type T<E = DefaultE> = { box: E };
+type G = T<DefaultE>;
+declare module 'bar' {
+  type DefaultE = { somethingElse: true };
+  type G = T<DefaultE>;
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 12,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+type DefaultE = { foo: string };
+type T<E = DefaultE> = { box: E };
+type G = T;
+declare module 'bar' {
+  type DefaultE = { somethingElse: true };
+  type G = T<DefaultE>;
+}
+      `,
+    },
+    {
+      code: `
+type A<T = Map<string, string>> = T;
+type B = A<Map<string, string>>;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+type A<T = Map<string, string>> = T;
+type B = A;
+      `,
+    },
+    {
+      code: `
+type A = Map<string, string>;
+type B<T = A> = T;
+type C = B<A>;
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+type A = Map<string, string>;
+type B<T = A> = T;
+type C = B;
+      `,
+    },
+    {
+      code: `
+type A = Map<string, string>;
+type B<T = A> = T;
+type C = B<Map<string, string>>;
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+type A = Map<string, string>;
+type B<T = A> = T;
+type C = B;
+      `,
+    },
+    {
+      code: `
+type A = Map<string, string>;
+type B = Map<string, string>;
+type C<T = A> = T;
+type D = C<B>;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+type A = Map<string, string>;
+type B = Map<string, string>;
+type C<T = A> = T;
+type D = C;
+      `,
+    },
+    {
+      code: `
+type A = Map<string, string>;
+type B = A;
+type C = Map<string, string>;
+type D = C;
+type E<T = B> = T;
+type F = E<D>;
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+type A = Map<string, string>;
+type B = A;
+type C = Map<string, string>;
+type D = C;
+type E<T = B> = T;
+type F = E;
       `,
     },
   ],

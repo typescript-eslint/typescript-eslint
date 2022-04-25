@@ -1,6 +1,6 @@
 import rule, { MessageIds, Options } from '../../src/rules/no-explicit-any';
 import { RuleTester } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 
 type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
 type SuggestionOutput = TSESLint.SuggestionOutput<MessageIds>;

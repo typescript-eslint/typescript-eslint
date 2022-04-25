@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   createRule,
@@ -38,11 +35,7 @@ export default createRule<Options, MessageIds>({
           if (node.declare) {
             return;
           }
-          if (
-            node.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
-            node.parent.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
-            node.parent.parent?.declare
-          ) {
+          if (isAncestorNamespaceDeclared(node)) {
             return;
           }
         }
@@ -50,5 +43,24 @@ export default createRule<Options, MessageIds>({
         rules['VariableDeclaration:exit'](node);
       },
     };
+
+    function isAncestorNamespaceDeclared(
+      node: TSESTree.VariableDeclaration,
+    ): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor) {
+        if (
+          ancestor.type === AST_NODE_TYPES.TSModuleDeclaration &&
+          ancestor.declare
+        ) {
+          return true;
+        }
+
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
   },
 });

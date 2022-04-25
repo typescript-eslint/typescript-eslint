@@ -1,4 +1,6 @@
-# Disallow the `void` operator except when used to discard a value (`no-meaningless-void-operator`)
+# `no-meaningless-void-operator`
+
+Disallow the `void` operator except when used to discard a value.
 
 Disallow the `void` operator when its argument is already of type `void` or `undefined`.
 

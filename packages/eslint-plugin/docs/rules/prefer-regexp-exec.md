@@ -1,4 +1,6 @@
-# Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided (`prefer-regexp-exec`)
+# `prefer-regexp-exec`
+
+Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided.
 
 As `String#match` is defined to be the same as `RegExp#exec` when the regular expression does not include the `g` flag, prefer a consistent usage.
 

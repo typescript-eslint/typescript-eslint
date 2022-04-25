@@ -1,4 +1,6 @@
-# Disallow magic numbers (`no-magic-numbers`)
+# `no-magic-numbers`
+
+Disallow magic numbers.
 
 ## Rule Details
 
@@ -34,6 +36,7 @@ interface Options extends BaseNoMagicNumbersOptions {
   ignoreEnums?: boolean;
   ignoreNumericLiteralTypes?: boolean;
   ignoreReadonlyClassProperties?: boolean;
+  ignoreTypeIndexes?: boolean;
 }
 
 const defaultOptions: Options = {
@@ -41,6 +44,7 @@ const defaultOptions: Options = {
   ignoreEnums: false,
   ignoreNumericLiteralTypes: false,
   ignoreReadonlyClassProperties: false,
+  ignoreTypeIndexes: false,
 };
 ```
 
@@ -114,6 +118,28 @@ class Foo {
   public static readonly C = 1;
   static readonly D = 1;
 }
+```
+
+### `ignoreTypeIndexes`
+
+A boolean to specify if numbers used to index types are okay. `false` by default.
+
+Examples of **incorrect** code for the `{ "ignoreTypeIndexes": false }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreTypeIndexes": false }]*/
+
+type Foo = Bar[0];
+type Baz = Parameters<Foo>[2];
+```
+
+Examples of **correct** code for the `{ "ignoreTypeIndexes": true }` option:
+
+```ts
+/*eslint @typescript-eslint/no-magic-numbers: ["error", { "ignoreTypeIndexes": true }]*/
+
+type Foo = Bar[0];
+type Baz = Parameters<Foo>[2];
 ```
 
 <sup>

@@ -1,4 +1,4 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';

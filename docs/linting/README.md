@@ -56,8 +56,6 @@ This file will tell ESLint which files and folders it should never lint.
 Add the following lines to the file:
 
 ```ignore title=".eslintignore"
-# don't ever lint node_modules
-node_modules
 # don't lint build output (make sure it's set to your correct build folder name)
 dist
 ```

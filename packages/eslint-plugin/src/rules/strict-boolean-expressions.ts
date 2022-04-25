@@ -2,7 +2,7 @@ import {
   AST_NODE_TYPES,
   ParserServices,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';

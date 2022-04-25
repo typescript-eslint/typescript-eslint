@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 interface Failure {
@@ -51,7 +48,18 @@ type MethodDefinition =
   | TSESTree.MethodDefinition
   | TSESTree.TSAbstractMethodDefinition;
 
-export default util.createRule({
+type MessageIds =
+  | 'omittingRestParameter'
+  | 'omittingSingleParameter'
+  | 'singleParameterDifference';
+
+type Options = [
+  {
+    ignoreDifferentlyNamedParameters?: boolean;
+  },
+];
+
+export default util.createRule<Options, MessageIds>({
   name: 'unified-signatures',
   meta: {
     docs: {
@@ -68,10 +76,24 @@ export default util.createRule({
       singleParameterDifference:
         '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
     },
-    schema: [],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoreDifferentlyNamedParameters: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      ignoreDifferentlyNamedParameters: false,
+    },
+  ],
+  create(context, [{ ignoreDifferentlyNamedParameters }]) {
     const sourceCode = context.getSourceCode();
 
     //----------------------------------------------------------------------
@@ -143,11 +165,9 @@ export default util.createRule({
       const result: Failure[] = [];
       const isTypeParameter = getIsTypeParameter(typeParameters);
       for (const overloads of signatures) {
-        if (overloads.length === 2) {
-          const signature0 =
-            (overloads[0] as MethodDefinition).value || overloads[0];
-          const signature1 =
-            (overloads[1] as MethodDefinition).value || overloads[1];
+        forEachPair(overloads, (a, b) => {
+          const signature0 = (a as MethodDefinition).value ?? a;
+          const signature1 = (b as MethodDefinition).value ?? b;
 
           const unify = compareSignatures(
             signature0,
@@ -155,23 +175,9 @@ export default util.createRule({
             isTypeParameter,
           );
           if (unify !== undefined) {
-            result.push({ unify, only2: true });
+            result.push({ unify, only2: overloads.length === 2 });
           }
-        } else {
-          forEachPair(overloads, (a, b) => {
-            const signature0 = (a as MethodDefinition).value || a;
-            const signature1 = (b as MethodDefinition).value || b;
-
-            const unify = compareSignatures(
-              signature0,
-              signature1,
-              isTypeParameter,
-            );
-            if (unify !== undefined) {
-              result.push({ unify, only2: false });
-            }
-          });
-        }
+        });
       }
       return result;
     }
@@ -201,6 +207,21 @@ export default util.createRule({
         a.typeParameters !== undefined ? a.typeParameters.params : undefined;
       const bTypeParams =
         b.typeParameters !== undefined ? b.typeParameters.params : undefined;
+
+      if (
+        ignoreDifferentlyNamedParameters &&
+        a.params.length === b.params.length
+      ) {
+        for (let i = 0; i < a.params.length; i += 1) {
+          if (
+            a.params[i].type === b.params[i].type &&
+            getStaticParameterName(a.params[i]) !==
+              getStaticParameterName(b.params[i])
+          ) {
+            return false;
+          }
+        }
+      }
 
       return (
         typesAreEqual(a.returnType, b.returnType) &&
@@ -594,6 +615,16 @@ function getOverloadInfo(node: OverloadNode): string {
   }
 }
 
+function getStaticParameterName(param: TSESTree.Node): string | undefined {
+  switch (param.type) {
+    case AST_NODE_TYPES.Identifier:
+      return param.name;
+    case AST_NODE_TYPES.RestElement:
+      return getStaticParameterName(param.argument);
+    default:
+      return undefined;
+  }
+}
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
 }

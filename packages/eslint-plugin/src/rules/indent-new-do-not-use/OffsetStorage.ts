@@ -1,7 +1,7 @@
 // The following code is adapted from the the code in eslint.
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/utils';
 import { BinarySearchTree, TreeValue } from './BinarySearchTree';
 import { TokenInfo } from './TokenInfo';
 

@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import {
@@ -169,6 +169,25 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       };
       function bar(arg: MyType) {}
     `,
+    // PrivateIdentifier is exempt from this rule
+    {
+      code: `
+        class Foo {
+          #privateField = 'foo';
+          #privateMember() {}
+        }
+        function foo(arg: Foo) {}
+      `,
+    },
+    {
+      code: `
+        class HasText {
+          readonly #text: string;
+        }
+
+        export function onDone(task: HasText): void {}
+      `,
+    },
     // methods treated as readonly
     {
       code: `
@@ -222,7 +241,6 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
-
     // parameter properties should work fine
     {
       code: `

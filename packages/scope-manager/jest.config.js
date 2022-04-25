@@ -1,24 +1,19 @@
 'use strict';
 
 // @ts-check
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
+  displayName: 'scope-manager',
+  preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
-    ['^.+\\.tsx?$']: 'ts-jest',
+    '^.+\\.[tj]sx?$': [
+      '@swc/jest',
+      { jsc: { transform: { react: { runtime: 'automatic' } } } },
+    ],
   },
-  testRegex: [
-    './tests/.+\\.test\\.ts$',
-    './tests/eslint-scope/[^/]+\\.test\\.ts$',
-  ],
-  collectCoverage: false,
-  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  coverageReporters: ['text-summary', 'lcov'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  coverageDirectory: '<rootDir>/coverage',
   setupFilesAfterEnv: ['./tests/util/serializers/index.ts'],
 };

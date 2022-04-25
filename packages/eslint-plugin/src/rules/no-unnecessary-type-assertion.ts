@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   isObjectType,
   isObjectFlagSet,
@@ -174,8 +171,8 @@ export default util.createRule<Options, MessageIds>({
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               return fixer.removeRange([
-                originalNode.expression.end,
-                originalNode.end,
+                node.expression.range[1],
+                node.range[1],
               ]);
             },
           });
@@ -220,8 +217,8 @@ export default util.createRule<Options, MessageIds>({
                 messageId: 'contextuallyUnnecessary',
                 fix(fixer) {
                   return fixer.removeRange([
-                    originalNode.expression.end,
-                    originalNode.end,
+                    node.expression.range[1],
+                    node.range[1],
                   ]);
                 },
               });

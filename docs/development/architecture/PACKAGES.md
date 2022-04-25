@@ -55,9 +55,9 @@ It works by:
 A "scope analyser" traverses an AST and builds a model of how variables (and in our case, types) are defined and consumed by the source code.
 This form of static analysis allows you to understand and trace variables throughout the program, allowing you to access powerful information about a program without needing to drop into the much, much heavier type information.
 
-## `@typescript-eslint/experimental-utils`
+## `@typescript-eslint/utils`
 
-[`@typescript-eslint/experimental-utils`] contains public utilities for writing custom rules and plugins in TypeScript.
+[`@typescript-eslint/utils`] contains public utilities for writing custom rules and plugins in TypeScript.
 Rules declared in `@typescript-eslint/eslint-plugin` are created using its utility functions.
 Any custom rules you write generally will be as well.
 
@@ -71,7 +71,7 @@ Any custom rules you write generally will be as well.
 
 [`@typescript-eslint/eslint-plugin-tslint`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin-tslint
 [`@typescript-eslint/eslint-plugin`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin
-[`@typescript-eslint/experimental-utils`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/experimental-utils
+[`@typescript-eslint/utils`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/utils
 [`@typescript-eslint/parser`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser
 [`@typescript-eslint/scope-manager`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/scope-manager
 [`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree

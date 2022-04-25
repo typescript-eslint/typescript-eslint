@@ -1,8 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 import { getEnumNames } from '../util';
 
@@ -89,7 +85,10 @@ function getGroup(node: TSESTree.TypeNode): Group {
 }
 
 function requiresParentheses(node: TSESTree.TypeNode): boolean {
-  return node.type === AST_NODE_TYPES.TSFunctionType;
+  return (
+    node.type === AST_NODE_TYPES.TSFunctionType ||
+    node.type === AST_NODE_TYPES.TSConstructorType
+  );
 }
 
 export type Options = [

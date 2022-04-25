@@ -1,4 +1,6 @@
-# Ensures that literals on classes are exposed in a consistent style (`class-literal-property-style`)
+# `class-literal-property-style`
+
+Ensures that literals on classes are exposed in a consistent style.
 
 When writing TypeScript applications, it's typically safe to store literal values on classes using fields with the `readonly` modifier to prevent them from being reassigned.
 When writing TypeScript libraries that could be used by JavaScript users however, it's typically safer to expose these literals using `getter`s, since the `readonly` modifier is enforced at compile type.

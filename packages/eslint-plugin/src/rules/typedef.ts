@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 const enum OptionKeys {
@@ -152,6 +149,25 @@ export default util.createRule<[Options], MessageIds>({
       );
     }
 
+    function isAncestorHasTypeAnnotation(
+      node: TSESTree.ObjectPattern,
+    ): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor) {
+        if (
+          ancestor.type === AST_NODE_TYPES.ObjectPattern &&
+          ancestor.typeAnnotation
+        ) {
+          return true;
+        }
+
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
+
     return {
       ...(arrayDestructuring && {
         ArrayPattern(node): void {
@@ -196,7 +212,11 @@ export default util.createRule<[Options], MessageIds>({
       }),
       ...(objectDestructuring && {
         ObjectPattern(node): void {
-          if (!node.typeAnnotation && !isForOfStatementContext(node)) {
+          if (
+            !node.typeAnnotation &&
+            !isForOfStatementContext(node) &&
+            !isAncestorHasTypeAnnotation(node)
+          ) {
             report(node);
           }
         },

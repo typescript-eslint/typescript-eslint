@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/experimental-utils",
-  "version": "5.8.1",
+  "version": "5.20.0",
   "description": "(Experimental) Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -35,16 +35,10 @@
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
-    "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@types/json-schema": "^7.0.9",
-    "@typescript-eslint/scope-manager": "5.8.1",
-    "@typescript-eslint/types": "5.8.1",
-    "@typescript-eslint/typescript-estree": "5.8.1",
-    "eslint-scope": "^5.1.1",
-    "eslint-utils": "^3.0.0"
+    "@typescript-eslint/utils": "5.20.0"
   },
   "peerDependencies": {
     "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"
@@ -55,12 +49,5 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
-  },
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "_ts3.4/*"
-      ]
-    }
   }
 }

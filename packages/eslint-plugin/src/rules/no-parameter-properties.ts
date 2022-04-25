@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type Modifier =
@@ -22,6 +19,8 @@ type MessageIds = 'noParamProp';
 export default util.createRule<Options, MessageIds>({
   name: 'no-parameter-properties',
   meta: {
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/parameter-properties'],
     type: 'problem',
     docs: {
       description:

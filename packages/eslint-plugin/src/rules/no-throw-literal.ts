@@ -1,9 +1,6 @@
 import * as ts from 'typescript';
 import * as util from '../util';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 type MessageIds = 'object' | 'undef';
 

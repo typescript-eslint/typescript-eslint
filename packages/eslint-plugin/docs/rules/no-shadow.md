@@ -1,4 +1,6 @@
-# Disallow variable declarations from shadowing variables declared in the outer scope (`no-shadow`)
+# `no-shadow`
+
+Disallow variable declarations from shadowing variables declared in the outer scope.
 
 ## Rule Details
 

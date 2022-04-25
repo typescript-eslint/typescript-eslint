@@ -1,4 +1,6 @@
-# Disallow extra non-null assertion (`no-extra-non-null-assertion`)
+# `no-extra-non-null-assertion`
+
+Disallow extra non-null assertion.
 
 ## Rule Details
 
@@ -44,13 +46,18 @@ function foo(bar?: { n: number }) {
 }
 ```
 
-## How to Use
+## Options
 
-```json
+```jsonc
+// .eslintrc.json
 {
-  "@typescript-eslint/no-extra-non-null-assertion": ["error"]
+  "rules": {
+    "@typescript-eslint/no-extra-non-null-assertion": "error"
+  }
 }
 ```
+
+This rule is not configurable.
 
 ## Attributes
 

@@ -3,7 +3,7 @@ import {
   AST_TOKEN_TYPES,
   TSESLint,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import * as util from '../util';
 
 export const phrases = {
@@ -104,93 +104,96 @@ export default util.createRule({
         const fixable =
           node.parent &&
           node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
+
+        const fix = fixable
+          ? null
+          : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
+              const fixes: TSESLint.RuleFix[] = [];
+              const start = member.range[0];
+              const colonPos = member.returnType!.range[0] - start;
+              const text = sourceCode.getText().slice(start, member.range[1]);
+              const comments = sourceCode
+                .getCommentsBefore(member)
+                .concat(sourceCode.getCommentsAfter(member));
+              let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
+                colonPos + 1,
+              )}`;
+              const lastChar = suggestion.endsWith(';') ? ';' : '';
+              if (lastChar) {
+                suggestion = suggestion.slice(0, -1);
+              }
+              if (shouldWrapSuggestion(node.parent)) {
+                suggestion = `(${suggestion})`;
+              }
+
+              if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
+                if (typeof node.typeParameters !== 'undefined') {
+                  suggestion = `type ${sourceCode
+                    .getText()
+                    .slice(
+                      node.id.range[0],
+                      node.typeParameters.range[1],
+                    )} = ${suggestion}${lastChar}`;
+                } else {
+                  suggestion = `type ${node.id.name} = ${suggestion}${lastChar}`;
+                }
+              }
+
+              const isParentExported =
+                node.parent &&
+                node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration;
+
+              if (
+                node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
+                isParentExported
+              ) {
+                const commentsText = comments.reduce((text, comment) => {
+                  return (
+                    text +
+                    (comment.type === AST_TOKEN_TYPES.Line
+                      ? `//${comment.value}`
+                      : `/*${comment.value}*/`) +
+                    '\n'
+                  );
+                }, '');
+                // comments should move before export and not between export and interface declaration
+                fixes.push(
+                  fixer.insertTextBefore(
+                    node.parent as TSESTree.Node | TSESTree.Token,
+                    commentsText,
+                  ),
+                );
+              } else {
+                comments.forEach(comment => {
+                  let commentText =
+                    comment.type === AST_TOKEN_TYPES.Line
+                      ? `//${comment.value}`
+                      : `/*${comment.value}*/`;
+                  const isCommentOnTheSameLine =
+                    comment.loc.start.line === member.loc.start.line;
+                  if (!isCommentOnTheSameLine) {
+                    commentText += '\n';
+                  } else {
+                    commentText += ' ';
+                  }
+                  suggestion = commentText + suggestion;
+                });
+              }
+
+              const fixStart = node.range[0];
+              fixes.push(
+                fixer.replaceTextRange([fixStart, node.range[1]], suggestion),
+              );
+              return fixes;
+            };
+
         context.report({
           node: member,
           messageId: 'functionTypeOverCallableType',
           data: {
             literalOrInterface: phrases[node.type],
           },
-          fix: fixable
-            ? null
-            : (fixer): TSESLint.RuleFix[] => {
-                const fixes: TSESLint.RuleFix[] = [];
-                const start = member.range[0];
-                const colonPos = member.returnType!.range[0] - start;
-                const text = sourceCode.getText().slice(start, member.range[1]);
-                const comments = sourceCode
-                  .getCommentsBefore(member)
-                  .concat(sourceCode.getCommentsAfter(member));
-                let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
-                  colonPos + 1,
-                )}`;
-                const lastChar = suggestion.endsWith(';') ? ';' : '';
-                if (lastChar) {
-                  suggestion = suggestion.slice(0, -1);
-                }
-                if (shouldWrapSuggestion(node.parent)) {
-                  suggestion = `(${suggestion})`;
-                }
-
-                if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
-                  if (typeof node.typeParameters !== 'undefined') {
-                    suggestion = `type ${sourceCode
-                      .getText()
-                      .slice(
-                        node.id.range[0],
-                        node.typeParameters.range[1],
-                      )} = ${suggestion}${lastChar}`;
-                  } else {
-                    suggestion = `type ${node.id.name} = ${suggestion}${lastChar}`;
-                  }
-                }
-
-                const isParentExported =
-                  node.parent &&
-                  node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration;
-
-                if (
-                  node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
-                  isParentExported
-                ) {
-                  const commentsText = comments.reduce((text, comment) => {
-                    return (
-                      text +
-                      (comment.type === AST_TOKEN_TYPES.Line
-                        ? `//${comment.value}`
-                        : `/*${comment.value}*/`) +
-                      '\n'
-                    );
-                  }, '');
-                  // comments should move before export and not between export and interface declaration
-                  fixes.push(
-                    fixer.insertTextBefore(
-                      node.parent as TSESTree.Node | TSESTree.Token,
-                      commentsText,
-                    ),
-                  );
-                } else {
-                  comments.forEach(comment => {
-                    let commentText =
-                      comment.type === AST_TOKEN_TYPES.Line
-                        ? `//${comment.value}`
-                        : `/*${comment.value}*/`;
-                    const isCommentOnTheSameLine =
-                      comment.loc.start.line === member.loc.start.line;
-                    if (!isCommentOnTheSameLine) {
-                      commentText += '\n';
-                    } else {
-                      commentText += ' ';
-                    }
-                    suggestion = commentText + suggestion;
-                  });
-                }
-
-                const fixStart = node.range[0];
-                fixes.push(
-                  fixer.replaceTextRange([fixStart, node.range[1]], suggestion),
-                );
-                return fixes;
-              },
+          fix,
         });
       }
     }

@@ -1,4 +1,4 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
 import memoize from 'lodash/memoize';
 import { Configuration, RuleSeverity } from 'tslint';
 import { CustomLinter } from '../custom-linter';

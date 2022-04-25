@@ -51,6 +51,8 @@ const config = {
         editUrl: `${githubUrl}/edit/main/packages/website/`,
         beforeDefaultRemarkPlugins,
         remarkPlugins,
+        exclude: ['TEMPLATE.md'],
+        breadcrumbs: false,
       },
     ],
     [
@@ -64,6 +66,7 @@ const config = {
         editUrl: `${githubUrl}/edit/main/packages/website/`,
         beforeDefaultRemarkPlugins,
         remarkPlugins,
+        breadcrumbs: false,
       },
     ],
   ],
@@ -83,7 +86,7 @@ const config = {
         title: 'TypeScript ESLint',
         // hideOnScroll: true,
         logo: {
-          alt: 'TypeScript ESLint',
+          alt: 'TypeScript ESLint logo',
           height: '32px',
           src: 'img/logo.svg',
           width: '32px',

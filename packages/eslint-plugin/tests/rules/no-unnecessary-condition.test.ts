@@ -1,7 +1,7 @@
 import {
   TestCaseError,
   InvalidTestCase,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+} from '@typescript-eslint/utils/dist/ts-eslint';
 import * as path from 'path';
 import rule, {
   Options,

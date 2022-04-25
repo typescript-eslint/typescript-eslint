@@ -1,8 +1,5 @@
 import * as util from '../util';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 // intentionally mirroring the options
 type MessageIds =
@@ -87,12 +84,12 @@ export default util.createRule<Options, MessageIds>({
     function reportIncorrectAssertionType(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
     ): void {
+      const messageId = options.assertionStyle;
+
       // If this node is `as const`, then don't report an error.
-      if (isConst(node.typeAnnotation)) {
+      if (isConst(node.typeAnnotation) && messageId === 'never') {
         return;
       }
-
-      const messageId = options.assertionStyle;
 
       context.report({
         node,

@@ -1,12 +1,6 @@
 import * as util from '../util';
-import {
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import {
-  RuleFixer,
-  RuleFix,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { RuleFixer, RuleFix } from '@typescript-eslint/utils/dist/ts-eslint';
 
 type MessageIds = 'preferExpectErrorComment';
 

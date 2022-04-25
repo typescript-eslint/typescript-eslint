@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import * as parser from '@typescript-eslint/parser';
 import rule, { OptionString } from '../../src/rules/array-type';
 import { RuleTester } from '../RuleTester';

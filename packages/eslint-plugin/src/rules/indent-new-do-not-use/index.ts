@@ -7,7 +7,7 @@ import {
   AST_TOKEN_TYPES,
   TSESLint,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 
 import { OffsetStorage } from './OffsetStorage';
 import { TokenInfo } from './TokenInfo';

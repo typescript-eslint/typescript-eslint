@@ -1,4 +1,6 @@
-# Enforce or disallow the use of the record type (`consistent-indexed-object-style`)
+# `consistent-indexed-object-style`
+
+Enforce or disallow the use of the record type.
 
 TypeScript supports defining object show keys can be flexible using an index signature. TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature. For example, the following types are equal:
 

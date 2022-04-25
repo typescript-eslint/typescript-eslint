@@ -3,7 +3,7 @@ import {
   TSESTree,
   AST_TOKEN_TYPES,
   AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type Prefer = 'type-imports' | 'no-type-imports';

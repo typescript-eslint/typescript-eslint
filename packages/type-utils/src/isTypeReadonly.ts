@@ -1,11 +1,12 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
 import {
+  isConditionalType,
   isObjectType,
   isUnionType,
-  isUnionOrIntersectionType,
   unionTypeParts,
   isPropertyReadonlyInType,
   isSymbolFlagSet,
+  isIntersectionType,
 } from 'tsutils';
 import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
@@ -107,9 +108,16 @@ function isTypeReadonlyObject(
   function checkIndexSignature(kind: ts.IndexKind): Readonlyness {
     const indexInfo = checker.getIndexInfoOfType(type, kind);
     if (indexInfo) {
-      return indexInfo.isReadonly
-        ? Readonlyness.Readonly
-        : Readonlyness.Mutable;
+      if (!indexInfo.isReadonly) {
+        return Readonlyness.Mutable;
+      }
+
+      return isTypeReadonlyRecurser(
+        checker,
+        indexInfo.type,
+        options,
+        seenTypes,
+      );
     }
 
     return Readonlyness.UnknownType;
@@ -119,20 +127,42 @@ function isTypeReadonlyObject(
   if (properties.length) {
     // ensure the properties are marked as readonly
     for (const property of properties) {
-      if (
-        !(
-          isPropertyReadonlyInType(type, property.getEscapedName(), checker) ||
-          (options.treatMethodsAsReadonly &&
-            property.valueDeclaration !== undefined &&
-            hasSymbol(property.valueDeclaration) &&
-            isSymbolFlagSet(
-              property.valueDeclaration.symbol,
-              ts.SymbolFlags.Method,
-            ))
-        )
-      ) {
-        return Readonlyness.Mutable;
+      if (options.treatMethodsAsReadonly) {
+        if (
+          property.valueDeclaration !== undefined &&
+          hasSymbol(property.valueDeclaration) &&
+          isSymbolFlagSet(
+            property.valueDeclaration.symbol,
+            ts.SymbolFlags.Method,
+          )
+        ) {
+          continue;
+        }
+
+        const declarations = property.getDeclarations();
+        const lastDeclaration =
+          declarations !== undefined && declarations.length > 0
+            ? declarations[declarations.length - 1]
+            : undefined;
+        if (
+          lastDeclaration !== undefined &&
+          hasSymbol(lastDeclaration) &&
+          isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
+        ) {
+          continue;
+        }
       }
+
+      if (isPropertyReadonlyInType(type, property.getEscapedName(), checker)) {
+        continue;
+      }
+
+      const name = ts.getNameOfDeclaration(property.valueDeclaration);
+      if (name && ts.isPrivateIdentifier(name)) {
+        continue;
+      }
+
+      return Readonlyness.Mutable;
     }
 
     // all properties were readonly
@@ -192,15 +222,56 @@ function isTypeReadonlyRecurser(
     const result = unionTypeParts(type).every(
       t =>
         seenTypes.has(t) ||
-        isTypeReadonlyRecurser(checker, t, options, seenTypes),
+        isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+          Readonlyness.Readonly,
     );
+    const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
+    return readonlyness;
+  }
+
+  if (isIntersectionType(type)) {
+    // Special case for handling arrays/tuples (as readonly arrays/tuples always have mutable methods).
+    if (
+      type.types.some(t => checker.isArrayType(t) || checker.isTupleType(t))
+    ) {
+      const allReadonlyParts = type.types.every(
+        t =>
+          seenTypes.has(t) ||
+          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+            Readonlyness.Readonly,
+      );
+      return allReadonlyParts ? Readonlyness.Readonly : Readonlyness.Mutable;
+    }
+
+    // Normal case.
+    const isReadonlyObject = isTypeReadonlyObject(
+      checker,
+      type,
+      options,
+      seenTypes,
+    );
+    if (isReadonlyObject !== Readonlyness.UnknownType) {
+      return isReadonlyObject;
+    }
+  }
+
+  if (isConditionalType(type)) {
+    const result = [type.root.node.trueType, type.root.node.falseType]
+      .map(checker.getTypeFromTypeNode)
+      .every(
+        t =>
+          seenTypes.has(t) ||
+          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+            Readonlyness.Readonly,
+      );
+
     const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
     return readonlyness;
   }
 
   // all non-object, non-intersection types are readonly.
   // this should only be primitive types
-  if (!isObjectType(type) && !isUnionOrIntersectionType(type)) {
+  if (!isObjectType(type)) {
     return Readonlyness.Readonly;
   }
 
@@ -243,7 +314,7 @@ function isTypeReadonlyRecurser(
 function isTypeReadonly(
   checker: ts.TypeChecker,
   type: ts.Type,
-  options: ReadonlynessOptions,
+  options: ReadonlynessOptions = readonlynessOptionsDefaults,
 ): boolean {
   return (
     isTypeReadonlyRecurser(checker, type, options, new Set()) ===

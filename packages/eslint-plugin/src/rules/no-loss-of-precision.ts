@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 import { maybeGetESLintCoreRule } from '../util/getESLintCoreRule';
 

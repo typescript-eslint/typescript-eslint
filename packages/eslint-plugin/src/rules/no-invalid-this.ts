@@ -1,7 +1,4 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   InferOptionsTypeFromRule,
@@ -67,12 +64,12 @@ export default createRule<Options, MessageIds>({
           ),
         );
         // baseRule's work
-        rules.FunctionDeclaration(node);
+        rules.FunctionDeclaration?.(node);
       },
       'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void {
         thisIsValidStack.pop();
         // baseRule's work
-        rules['FunctionDeclaration:exit'](node);
+        rules['FunctionDeclaration:exit']?.(node);
       },
       FunctionExpression(node: TSESTree.FunctionExpression): void {
         thisIsValidStack.push(
@@ -82,12 +79,12 @@ export default createRule<Options, MessageIds>({
           ),
         );
         // baseRule's work
-        rules.FunctionExpression(node);
+        rules.FunctionExpression?.(node);
       },
       'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void {
         thisIsValidStack.pop();
         // baseRule's work
-        rules['FunctionExpression:exit'](node);
+        rules['FunctionExpression:exit']?.(node);
       },
       ThisExpression(node: TSESTree.ThisExpression): void {
         const thisIsValidHere = thisIsValidStack[thisIsValidStack.length - 1];

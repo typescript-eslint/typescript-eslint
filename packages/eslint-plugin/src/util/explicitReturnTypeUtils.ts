@@ -3,7 +3,7 @@ import {
   AST_NODE_TYPES,
   ESLintUtils,
   TSESLint,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 
@@ -293,6 +293,50 @@ function checkFunctionExpressionReturnType(
   checkFunctionReturnType(node, options, sourceCode, report);
 }
 
+/**
+ * Check whether any ancestor of the provided function has a valid return type.
+ */
+function ancestorHasReturnType(node: FunctionNode): boolean {
+  let ancestor = node.parent;
+
+  if (ancestor?.type === AST_NODE_TYPES.Property) {
+    ancestor = ancestor.value;
+  }
+
+  // if the ancestor is not a return, then this function was not returned at all, so we can exit early
+  const isReturnStatement = ancestor?.type === AST_NODE_TYPES.ReturnStatement;
+  const isBodylessArrow =
+    ancestor?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    ancestor.body.type !== AST_NODE_TYPES.BlockStatement;
+  if (!isReturnStatement && !isBodylessArrow) {
+    return false;
+  }
+
+  while (ancestor) {
+    switch (ancestor.type) {
+      case AST_NODE_TYPES.ArrowFunctionExpression:
+      case AST_NODE_TYPES.FunctionExpression:
+      case AST_NODE_TYPES.FunctionDeclaration:
+        if (ancestor.returnType) {
+          return true;
+        }
+        break;
+
+      // const x: Foo = () => {};
+      // Assume that a typed variable types the function expression
+      case AST_NODE_TYPES.VariableDeclarator:
+        if (ancestor.id.typeAnnotation) {
+          return true;
+        }
+        break;
+    }
+
+    ancestor = ancestor.parent;
+  }
+
+  return false;
+}
+
 export {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
@@ -300,4 +344,6 @@ export {
   FunctionExpression,
   FunctionNode,
   isTypedFunctionExpression,
+  isValidFunctionExpressionReturnType,
+  ancestorHasReturnType,
 };

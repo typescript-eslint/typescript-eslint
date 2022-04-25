@@ -1,4 +1,6 @@
-# require or disallow padding lines between statements (`padding-line-between-statements`)
+# `padding-line-between-statements`
+
+require or disallow padding lines between statements.
 
 ## Rule Details
 

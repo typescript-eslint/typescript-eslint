@@ -1,4 +1,6 @@
-# Enforces consistent spacing before function parenthesis (`space-before-function-paren`)
+# `space-before-function-paren`
+
+Enforces consistent spacing before function parenthesis.
 
 ## Rule Details
 

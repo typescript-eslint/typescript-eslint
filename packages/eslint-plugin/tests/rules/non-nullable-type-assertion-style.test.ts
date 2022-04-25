@@ -7,7 +7,7 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+    project: './tsconfig.noUncheckedIndexedAccess.json',
   },
   parser: '@typescript-eslint/parser',
 });
@@ -60,6 +60,35 @@ const x = 1 as 1;
     `
 declare function foo<T = any>(): T;
 const bar = foo() as number;
+    `,
+    `
+function first<T>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | null>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | undefined>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | null | undefined>(
+  array: ArrayLike<T>,
+): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+type A = 'a' | 'A';
+type B = 'b' | 'B';
+function first<T extends A | B | null>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
     `,
   ],
 
@@ -197,6 +226,27 @@ type T = string | null | undefined;
 declare const x: T;
 
 const y = x!;
+      `,
+    },
+    {
+      code: `
+function first<T extends string | number>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+      `,
+      errors: [
+        {
+          column: 30,
+          line: 3,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      // Output is not expected to match required formatting due to excess parentheses
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      output: `
+function first<T extends string | number>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0]!) : null;
+}
       `,
     },
   ],

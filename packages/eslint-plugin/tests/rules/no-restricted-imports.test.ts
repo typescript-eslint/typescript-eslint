@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/no-restricted-imports';
 import { RuleTester } from '../RuleTester';
 
@@ -216,6 +216,20 @@ ruleTester.run('no-restricted-imports', rule, {
     {
       code: "export * from 'foo';",
       options: ['import1'],
+    },
+    {
+      code: "import type { MyType } from './types';",
+      options: [
+        {
+          patterns: [
+            {
+              group: ['fail'],
+              message: "Please do not load from 'fail'.",
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
     },
   ],
   invalid: [
@@ -536,10 +550,10 @@ ruleTester.run('no-restricted-imports', rule, {
       ],
     },
     {
-      code: "import type { InvalidTestCase } from '@typescript-eslint/experimental-utils/dist/ts-eslint';",
+      code: "import type { InvalidTestCase } from '@typescript-eslint/utils/dist/ts-eslint';",
       options: [
         {
-          patterns: ['@typescript-eslint/experimental-utils/dist/*'],
+          patterns: ['@typescript-eslint/utils/dist/*'],
         },
       ],
       errors: [

@@ -1,5 +1,5 @@
 {
-  "version": "5.8.1",
+  "version": "5.20.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "stream": true

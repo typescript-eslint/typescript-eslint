@@ -17,8 +17,8 @@ ruleTester.run('consistent-type-exports', rule, {
   valid: [
     "export { Foo } from 'foo';",
     "export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';",
-    "export { BlockScope } from '@typescript-eslint/experimental-utils';",
-    "export type { BlockScope } from '@typescript-eslint/experimental-utils';",
+    "export { BlockScope } from '@typescript-eslint/utils';",
+    "export type { BlockScope } from '@typescript-eslint/utils';",
     `
 const variable = 1;
 class Class {}

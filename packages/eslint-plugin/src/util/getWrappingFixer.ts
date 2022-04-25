@@ -3,7 +3,7 @@ import {
   TSESLint,
   ASTUtils,
   TSESTree,
-} from '@typescript-eslint/experimental-utils';
+} from '@typescript-eslint/utils';
 
 interface WrappingFixerParams {
   /** Source code. */

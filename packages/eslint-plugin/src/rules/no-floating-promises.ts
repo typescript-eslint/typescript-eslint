@@ -1,10 +1,6 @@
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
-import {
-  TSESLint,
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { TSESLint, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
@@ -21,7 +17,8 @@ export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
-      description: 'Requires Promise-like values to be handled appropriately',
+      description:
+        'Requires Promise-like statements to be handled appropriately',
       recommended: 'error',
       suggestion: true,
       requiresTypeChecking: true,

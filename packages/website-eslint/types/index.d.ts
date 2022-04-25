@@ -1,6 +1,6 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { ParserOptions } from '@typescript-eslint/types';
-import type { SourceFile } from 'typescript';
+import type { SourceFile, CompilerOptions } from 'typescript';
 
 export type LintMessage = TSESLint.Linter.LintMessage;
 export type RuleFix = TSESLint.RuleFix;
@@ -13,6 +13,7 @@ export interface WebLinter {
   getAst(): TSESTree.Program;
   getTsAst(): SourceFile;
   getScope(): Record<string, unknown>;
+  updateOptions(options?: Record<string, unknown>): void;
 
   lint(
     code: string,
@@ -22,7 +23,10 @@ export interface WebLinter {
 }
 
 export interface LinterLoader {
-  loadLinter(): WebLinter;
+  loadLinter(
+    libMap: Map<string, string>,
+    compilerOptions: CompilerOptions,
+  ): WebLinter;
 }
 
 export type {

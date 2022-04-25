@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -12,7 +9,10 @@ type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // Extend base schema with additional property to ignore TS numeric literal types
 const schema = util.deepMerge(
-  { ...baseRule.meta.schema },
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
+  Array.isArray(baseRule.meta.schema)
+    ? baseRule.meta.schema[0]
+    : baseRule.meta.schema,
   {
     properties: {
       ignoreNumericLiteralTypes: {
@@ -22,6 +22,9 @@ const schema = util.deepMerge(
         type: 'boolean',
       },
       ignoreReadonlyClassProperties: {
+        type: 'boolean',
+      },
+      ignoreTypeIndexes: {
         type: 'boolean',
       },
     },
@@ -56,29 +59,40 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       Literal(node): void {
+        // If it’s not a numeric literal we’re not interested
+        if (typeof node.value !== 'number' && typeof node.value !== 'bigint') {
+          return;
+        }
+
+        // This will be `true` if we’re configured to ignore this case (eg. it’s
+        // an enum and `ignoreEnums` is `true`). It will be `false` if we’re not
+        // configured to ignore this case. It will remain `undefined` if this is
+        // not one of our exception cases, and we’ll fall back to the base rule.
+        let isAllowed: boolean | undefined;
+
         // Check if the node is a TypeScript enum declaration
-        if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
-          return;
+        if (isParentTSEnumDeclaration(node)) {
+          isAllowed = options.ignoreEnums === true;
         }
-
         // Check TypeScript specific nodes for Numeric Literal
-        if (
-          options.ignoreNumericLiteralTypes &&
-          typeof node.value === 'number' &&
-          isTSNumericLiteralType(node)
-        ) {
-          return;
+        else if (isTSNumericLiteralType(node)) {
+          isAllowed = options.ignoreNumericLiteralTypes === true;
+        }
+        // Check if the node is a type index
+        else if (isAncestorTSIndexedAccessType(node)) {
+          isAllowed = options.ignoreTypeIndexes === true;
+        }
+        // Check if the node is a readonly class property
+        else if (isParentTSReadonlyPropertyDefinition(node)) {
+          isAllowed = options.ignoreReadonlyClassProperties === true;
         }
 
-        // Check if the node is a readonly class property
-        if (
-          typeof node.value === 'number' &&
-          isParentTSReadonlyPropertyDefinition(node)
-        ) {
-          if (options.ignoreReadonlyClassProperties) {
-            return;
-          }
-
+        // If we’ve hit a case where the ignore option is true we can return now
+        if (isAllowed === true) {
+          return;
+        }
+        // If the ignore option is *not* set we can report it now
+        else if (isAllowed === false) {
           let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
             node;
           let raw = node.raw;
@@ -215,4 +229,26 @@ function isParentTSReadonlyPropertyDefinition(node: TSESTree.Literal): boolean {
   }
 
   return false;
+}
+
+/**
+ * Checks if the node is part of a type indexed access (eg. Foo[4])
+ * @param node the node to be validated.
+ * @returns true if the node is part of an indexed access
+ * @private
+ */
+function isAncestorTSIndexedAccessType(node: TSESTree.Literal): boolean {
+  // Handle unary expressions (eg. -4)
+  let ancestor = getLiteralParent(node);
+
+  // Go up another level while we’re part of a type union (eg. 1 | 2) or
+  // intersection (eg. 1 & 2)
+  while (
+    ancestor?.parent?.type === AST_NODE_TYPES.TSUnionType ||
+    ancestor?.parent?.type === AST_NODE_TYPES.TSIntersectionType
+  ) {
+    ancestor = ancestor.parent;
+  }
+
+  return ancestor?.parent?.type === AST_NODE_TYPES.TSIndexedAccessType;
 }

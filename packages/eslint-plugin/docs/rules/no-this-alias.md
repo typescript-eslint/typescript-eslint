@@ -1,4 +1,6 @@
-# Disallow aliasing `this` (`no-this-alias`)
+# `no-this-alias`
+
+Disallow aliasing `this`.
 
 This rule prohibits assigning variables to `this`.
 

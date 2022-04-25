@@ -1,4 +1,6 @@
-# Consistent with type definition either `interface` or `type` (`consistent-type-definitions`)
+# `consistent-type-definitions`
+
+Consistent with type definition either `interface` or `type`.
 
 There are two ways to define a type.
 

@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { TSESLint } from '@typescript-eslint/utils';
 import rule, {
   MessageIds,
   Options,
@@ -269,6 +269,15 @@ type T =
             name: 'T',
           },
           suggestions: null,
+        },
+      ],
+    },
+    {
+      code: `type Expected = (new (x: number) => boolean) ${operator} string;`,
+      output: `type Expected = string ${operator} (new (x: number) => boolean);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
         },
       ],
     },

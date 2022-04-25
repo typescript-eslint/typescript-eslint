@@ -36,7 +36,6 @@ import {
   TSNode,
 } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
-import { Expression } from '@typescript-eslint/types/src/ast-spec';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -1934,7 +1933,7 @@ export class Converter {
             expressions: [],
           });
 
-          const left = this.convertChild(node.left) as Expression;
+          const left = this.convertChild(node.left) as TSESTree.Expression;
           if (
             left.type === AST_NODE_TYPES.SequenceExpression &&
             node.left.kind !== SyntaxKind.ParenthesizedExpression

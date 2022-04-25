@@ -1,7 +1,4 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import rule from '../../src/rules/prefer-ast-types-enum';
 import { batchedSingleLineTests, RuleTester } from '../RuleTester';

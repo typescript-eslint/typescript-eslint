@@ -1,4 +1,6 @@
-# Disallow unnecessary parentheses (`no-extra-parens`)
+# `no-extra-parens`
+
+Disallow unnecessary parentheses.
 
 ## Rule Details
 
