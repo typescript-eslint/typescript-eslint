@@ -51,11 +51,12 @@ Object {
                       "line": 1,
                     },
                   },
+                  "name": "this",
                   "range": Array [
                     17,
                     21,
                   ],
-                  "type": "ThisExpression",
+                  "type": "Identifier",
                 },
                 "loc": Object {
                   "end": Object {
@@ -159,11 +160,12 @@ Object {
                         "line": 2,
                       },
                     },
+                    "name": "this",
                     "range": Array [
                       39,
                       43,
                     ],
-                    "type": "ThisExpression",
+                    "type": "Identifier",
                   },
                   "loc": Object {
                     "end": Object {
