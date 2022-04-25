@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.20.0...v5.21.0) (2022-04-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-misused-promises] prioritize false returns when checking whether a function returns only void ([#4841](https://github.com/typescript-eslint/typescript-eslint/issues/4841)) ([ccadb60](https://github.com/typescript-eslint/typescript-eslint/commit/ccadb6075d6977c4921ffc09fa40f515f4d497c5))
+* **eslint-plugin:** [no-namespace] fix false positive for exported namespaces when allowDeclarations=true ([#4844](https://github.com/typescript-eslint/typescript-eslint/issues/4844)) ([4e7c9be](https://github.com/typescript-eslint/typescript-eslint/commit/4e7c9be6ff7e2448f4151563d7921cd285c2e349))
+* **eslint-plugin:** [space-infix-ops] fix no error when right type is function ([#4848](https://github.com/typescript-eslint/typescript-eslint/issues/4848)) ([d74d559](https://github.com/typescript-eslint/typescript-eslint/commit/d74d559c25e336c3ebe917bf5c43e14ffa2de694))
+
+
+### Features
+
+* **eslint-plugin:** [parameter-properties] add rule to replace `no-parameter-properties` ([#4622](https://github.com/typescript-eslint/typescript-eslint/issues/4622)) ([88ed9ec](https://github.com/typescript-eslint/typescript-eslint/commit/88ed9ec9d6b971a9533565920fdcd6890ea941e9))
+
+
+
+
+
 # [5.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.19.0...v5.20.0) (2022-04-18)
 
 
