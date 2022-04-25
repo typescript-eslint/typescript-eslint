@@ -27,10 +27,7 @@
     {
         "icon": "jest_snapshot",
         "extensions": [
-            ".ts.shot",
-            ".tsx.shot",
-            ".js.shot",
-            ".jsx.shot",
+            ".shot",
         ],
         "extends": "jest_snapshot"
     },
