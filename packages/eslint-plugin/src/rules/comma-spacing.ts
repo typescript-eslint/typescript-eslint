@@ -177,7 +177,7 @@ export default createRule<Options, MessageIds>({
             isCommaToken(prevToken) || ignoredTokens.has(token)
               ? null
               : prevToken,
-            isCommaToken(nextToken) || ignoredTokens.has(token)
+            nextToken && isCommaToken(nextToken) || ignoredTokens.has(token)
               ? null
               : nextToken,
           );
