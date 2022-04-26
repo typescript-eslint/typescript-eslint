@@ -2,52 +2,63 @@
 
 Require a consistent member declaration order.
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate and edit.
+A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate, and edit.
 
 ## Rule Details
 
 This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
 
-### Grouping and sorting member groups
-
-It allows to group members by their type (e.g. `public-static-field`, `protected-static-field`, `private-static-field`, `public-instance-field`, ...) and enforce a certain order for these groups. By default, their order is the same inside `classes`, `classExpressions`, `interfaces` and `typeLiterals` (note: not all member types apply to `interfaces` and `typeLiterals`). It is possible to define the order for any of those individually or to change the default order for all of them by setting the `default` option.
-
-### Sorting members
-
-Besides grouping the members and sorting their groups, this rule also allows to sort the members themselves (e.g. `a`, `b`, `c`, ...). You have 2 options: Sort all of them while ignoring their type or sort them while respecting their types (e.g. sort all fields in an interface alphabetically).
-
 ## Options
 
-These options allow to specify how to group the members and sort their groups.
-
-- Sort groups, don't enforce member order: Use `memberTypes`
-- Sort members, don't enforce group order: Use `order`
-- Sort members within groups: Use `memberTypes` and `order`
-
 ```ts
-type SortedOrderConfig = {
-  memberTypes?: MemberType[] | 'never';
-  order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written';
-};
-
-type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
-
-type Options = {
+interface Options {
   default?: OrderConfig;
   classes?: OrderConfig;
   classExpressions?: OrderConfig;
   interfaces?: OrderConfig;
   typeLiterals?: OrderConfig;
-};
+}
+
+type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
+
+interface SortedOrderConfig {
+  memberTypes?: MemberType[] | 'never';
+  order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written';
+}
+
+// See below for the more specific MemberType strings
+type MemberType = string | string[];
 ```
 
-See below for the possible definitions of `MemberType`.
+You can configure `OrderConfig` options for:
 
-### Deprecated syntax
+- **`default`**: all constructs (used as a fallback)
+- **`classes`**?: override ordering specifically for classes
+- **`classExpressions`**?: override ordering specifically for class expressions
+- **`interfaces`**?: override ordering specifically for interfaces
+- **`typeLiterals`**?: override ordering specifically for type literals
 
-Note: There is a deprecated syntax to specify the member types as an array.
+The `OrderConfig` settings for each kind of construct may configure sorting on one or both two levels:
 
-### Member types (granular form)
+- **`memberType`**: organizing on member type groups such as methods vs. properties
+- **`order`**: organizing based on member names, such as alphabetically
+
+### Groups
+
+You can define many different groups based on different attributes of members.
+The supported member attributes are, in order:
+
+- **Accessibility** (`'public' | 'protected' | 'private'`)
+- **Decoration** (`'decorated'`): Whether the member has an explicit accessibility decorator
+- **Kind** (`'call-signature' | 'constructor' | 'field' | 'get' | 'method' | 'set' | 'signature'`)
+
+Member attributes may be joined with a `'-'` to combine into more specific groups.
+For example, `'public-field'` would come before `'private-field'`.
+
+<details>
+  <summary>Expand this to see the full list of all supported member type groups.</summary>
+
+#### Member types (granular form)
 
 There are multiple ways to specify the member types. The most explicit and granular form is the following:
 
@@ -151,7 +162,7 @@ There are multiple ways to specify the member types. The most explicit and granu
 
 Note: If you only specify some of the possible types, the non-specified ones can have any particular order. This means that they can be placed before, within or after the specified types and the linter won't complain about it.
 
-### Member group types (with accessibility, ignoring scope)
+#### Member group types (with accessibility, ignoring scope)
 
 It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
 
@@ -185,7 +196,7 @@ It is also possible to group member types by their accessibility (`static`, `ins
 ]
 ```
 
-### Member group types (with accessibility and a decorator)
+#### Member group types (with accessibility and a decorator)
 
 It is also possible to group methods or fields with a decorator separately, optionally specifying
 their accessibility.
@@ -228,7 +239,7 @@ their accessibility.
 ]
 ```
 
-### Member group types (with scope, ignoring accessibility)
+#### Member group types (with scope, ignoring accessibility)
 
 Another option is to group the member types by their scope (`public`, `protected`, `private`), ignoring their accessibility.
 
@@ -262,7 +273,7 @@ Another option is to group the member types by their scope (`public`, `protected
 ]
 ```
 
-### Member group types (with scope and accessibility)
+#### Member group types (with scope and accessibility)
 
 The third grouping option is to ignore both scope and accessibility.
 
@@ -292,7 +303,7 @@ The third grouping option is to ignore both scope and accessibility.
 ]
 ```
 
-### Grouping different member types at the same rank
+#### Grouping different member types at the same rank
 
 It is also possible to group different member types at the same rank.
 
@@ -314,6 +325,8 @@ It is also possible to group different member types at the same rank.
   "method"
 ]
 ```
+
+</details>
 
 ### Default configuration
 
@@ -451,19 +464,37 @@ The default configuration looks as follows:
 }
 ```
 
-Note: The default configuration contains member group types which contain other member types (see above). This is intentional to provide better error messages.
+:::note
+The default configuration contains member group types which contain other member types (see above). This is intentional to provide better error messages.
+:::
 
-Note: By default, the members are not sorted. If you want to sort them alphabetically, you have to provide a custom configuration.
+:::tip
+By default, the members are not sorted. If you want to sort them alphabetically, you have to provide a custom configuration.
+:::
 
 ## Examples
 
-### Custom `default` configuration
+### General Order on All Constructs
 
-Note: The `default` options are overwritten in these examples.
+This config specifies the order for all constructs.
+It ignores member types other than signatures, methods, constructors, and fields.
+It also ignores accessibility and scope.
 
-#### Configuration: `{ "default": ["signature", "method", "constructor", "field"] }`
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "default": ["signature", "method", "constructor", "field"] }
+    ]
+  }
+}
+```
 
-##### Incorrect examples
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -477,8 +508,6 @@ interface Foo {
 }
 ```
 
-Note: Wrong order.
-
 ```ts
 type Foo = {
   B: string; // -> field
@@ -490,8 +519,6 @@ type Foo = {
   // no signature
 };
 ```
-
-Note: Not all specified member types have to exist.
 
 ```ts
 class Foo {
@@ -507,8 +534,6 @@ class Foo {
   [Z: string]: any; // -> signature
 }
 ```
-
-Note: Accessibility or scope are ignored with this configuration.
 
 ```ts
 const Foo = class {
@@ -526,9 +551,7 @@ const Foo = class {
 };
 ```
 
-Note: Not all members have to be grouped to find rule violations.
-
-##### Correct examples
+#### ✅ Correct
 
 ```ts
 interface Foo {
@@ -584,11 +607,27 @@ const Foo = class {
 };
 ```
 
-#### Configuration: `{ "default": ["public-instance-method", "public-static-field"] }`
+### Public Instance Methods Before Public Static Fields
 
-Note: This configuration does not apply to interfaces/type literals as accessibility and scope are not part of interfaces/type literals.
+This config doesn't apply to interfaces or type literals as accessibility and scope are not part of them.
+It specifies that public instance methods should come first before public static fields.
+Everything else can be placed anywhere.
 
-##### Incorrect examples
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "default": ["public-instance-method", "public-static-field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -608,8 +647,6 @@ class Foo {
 }
 ```
 
-Note: Public instance methods should come first before public static fields. Everything else can be placed anywhere.
-
 ```ts
 const Foo = class {
   private C: string; // (irrelevant)
@@ -628,9 +665,7 @@ const Foo = class {
 };
 ```
 
-Note: Public instance methods should come first before public static fields. Everything else can be placed anywhere.
-
-##### Correct examples
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -668,7 +703,7 @@ const Foo = class {
 };
 ```
 
-#### Configuration: `{ "default": ["public-static-field", "static-field", "instance-field"] }`
+### Configuration: `{ "default": ["public-static-field", "static-field", "instance-field"] }`
 
 Note: This configuration does not apply to interfaces/type literals as accessibility and scope are not part of interfaces/type literals.
 
@@ -1107,7 +1142,7 @@ Note: Wrong alphabetic order `B(): void` should come after `a: number`.
 
 ## When Not To Use It
 
-If you don't care about the general structure of your classes and interfaces, then you will not need this rule.
+If you don't care about the general order of your members, then you will not need this rule.
 
 ## Related To
 
