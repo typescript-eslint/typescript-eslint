@@ -96,6 +96,12 @@ jobs:
           # Website will be built by the Netlify GitHub App
           yarn build --exclude website
 
+      - name: Run unit tests for ast-spec
+        run: yarn test
+        working-directory: packages/ast-spec
+        env:
+          CI: true
+
       - name: Run unit tests for typescript-estree
         run: npx nx test @typescript-eslint/typescript-estree
         env:
@@ -308,6 +314,7 @@ jobs:
         env:
           CI: true
 
+      # ast-spec is internal only - so don't care about compat on other versions
       # eslint-plugin-internal is internal only - so don't care about compat on other versions
 
   website_tests:

@@ -141,6 +141,19 @@ if (true) {
   `,
 });
 
+/**
+ * In development, this would trigger run-time errors in Jest due to the
+ * `typeChecker.getTypeAtLocation` method being buggy and not having a proper
+ * function signature.
+ */
+valid.push({
+  name: 'Declaring an "empty" variable with array destructuring',
+  code: `
+const myArray = [1];
+const [firstElement] = myArray;
+  `,
+});
+
 // ----------------
 // ASSIGNMENT TESTS
 // ----------------

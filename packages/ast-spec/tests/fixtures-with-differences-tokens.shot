@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures List fixtures with Token differences 1`] = `
+Set {
+  "declaration/ClassDeclaration/fixtures/implements-many/fixture.ts",
+  "declaration/ClassDeclaration/fixtures/implements-one/fixture.ts",
+  "declaration/ExportDefaultDeclaration/fixtures/interface/fixture.ts",
+  "declaration/ExportNamedDeclaration/fixtures/enum/fixture.ts",
+  "declaration/ExportNamedDeclaration/fixtures/interface/fixture.ts",
+}
+`;

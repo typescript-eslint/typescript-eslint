@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportNamedDeclaration enum TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: TSEnumDeclaration {
+        type: "TSEnumDeclaration",
+        id: Identifier {
+          type: "Identifier",
+          name: "Foo",
+
+          range: [12, 15],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 15, line: 1 },
+          },
+        },
+        members: Array [],
+
+        range: [7, 18],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: Array [],
+
+      range: [0, 18],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 18, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 19],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

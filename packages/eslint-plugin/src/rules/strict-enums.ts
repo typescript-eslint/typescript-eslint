@@ -119,9 +119,6 @@ export default util.createRule<Options, MessageIds>({
     ): Map<number, Set<ts.Type>> {
       const functionIdentifier = node.callee;
       const functionType = getTypeFromNode(functionIdentifier);
-      if (functionType === undefined) {
-        return new Map();
-      }
 
       /**
        * There can be potentially multiple signatures for the same function, so
@@ -160,31 +157,12 @@ export default util.createRule<Options, MessageIds>({
       return paramNumToTypesMap;
     }
 
-    function getTypeFromNode(node: TSESTree.Node): ts.Type | undefined {
+    function getTypeFromNode(node: TSESTree.Node): ts.Type {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       return getTypeFromTSNode(tsNode);
     }
 
-    function getTypeFromTSNode(tsNode: ts.Node): ts.Type | undefined {
-      /**
-       * Skip declarations like:
-       *
-       * ```ts
-       * let [, b] = myArray;
-       * ```
-       *
-       * Situations like this will cause a runtime error in the
-       * "getTypeAtLocation" method below.
-       *
-       * Someone should probably fix the getTypeAtLocation method so that it
-       * does not cause runtime errors.
-       */
-      // @ts-expect-error The type definitions for this are wrong and its over
-      // my pay grade to change them
-      if (!tsNode.symbol) {
-        return undefined;
-      }
-
+    function getTypeFromTSNode(tsNode: ts.Node): ts.Type {
       return typeChecker.getTypeAtLocation(tsNode);
     }
 
@@ -342,14 +320,7 @@ export default util.createRule<Options, MessageIds>({
       /** When something is assigned to a variable. */
       AssignmentExpression(node): void {
         const leftType = getTypeFromNode(node.left);
-        if (leftType === undefined) {
-          return;
-        }
-
         const rightType = getTypeFromNode(node.right);
-        if (rightType === undefined) {
-          return;
-        }
 
         if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
           context.report({ node, messageId: 'mismatchedAssignment' });
@@ -359,17 +330,11 @@ export default util.createRule<Options, MessageIds>({
       /** When a comparison between two things happen. */
       BinaryExpression(node): void {
         const leftType = getTypeFromNode(node.left);
-        if (leftType === undefined) {
-          return;
-        }
-
         const rightType = getTypeFromNode(node.right);
-        if (rightType === undefined) {
-          return;
-        }
 
         const leftEnumTypes = getEnumTypes(leftType);
         const rightEnumTypes = getEnumTypes(rightType);
+
         if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
           // This is not an enum comparison
           return;
@@ -410,9 +375,6 @@ export default util.createRule<Options, MessageIds>({
         for (let i = 0; i < node.arguments.length; i++) {
           const argument = node.arguments[i];
           const argumentType = getTypeFromNode(argument);
-          if (argumentType === undefined) {
-            continue;
-          }
 
           /**
            * Disallow mismatched function calls, like the following:
@@ -437,9 +399,6 @@ export default util.createRule<Options, MessageIds>({
       /** When a unary operator is invoked. */
       UpdateExpression(node): void {
         const argumentType = getTypeFromNode(node.argument);
-        if (argumentType === undefined) {
-          return;
-        }
 
         /**
          * Disallow using enums with unary operators, like the following:
@@ -476,7 +435,9 @@ export default util.createRule<Options, MessageIds>({
             continue;
           }
 
-          const leftType = getTypeFromNode(declaration);
+          // We have to use "leftTSNode.name" instead of "leftTSNode" to avoid
+          // runtime errors for reasons that I don't understand
+          const leftType = getTypeFromTSNode(leftTSNode.name);
           if (leftType === undefined) {
             continue;
           }

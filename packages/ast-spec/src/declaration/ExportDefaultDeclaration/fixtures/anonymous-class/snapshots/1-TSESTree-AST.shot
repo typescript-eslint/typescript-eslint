@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportDefaultDeclaration anonymous-class TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportDefaultDeclaration {
+      type: "ExportDefaultDeclaration",
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        body: ClassBody {
+          type: "ClassBody",
+          body: Array [],
+
+          range: [21, 23],
+          loc: {
+            start: { column: 21, line: 1 },
+            end: { column: 23, line: 1 },
+          },
+        },
+        id: null,
+        superClass: null,
+
+        range: [15, 23],
+        loc: {
+          start: { column: 15, line: 1 },
+          end: { column: 23, line: 1 },
+        },
+      },
+      exportKind: "value",
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 23, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 24],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

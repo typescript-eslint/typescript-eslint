@@ -32,6 +32,7 @@ import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
 import noDupeClassMembers from './no-dupe-class-members';
+import noDuplicateEnumValues from './no-duplicate-enum-values';
 import noDuplicateImports from './no-duplicate-imports';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
@@ -160,6 +161,7 @@ export default {
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
   'no-dupe-class-members': noDupeClassMembers,
+  'no-duplicate-enum-values': noDuplicateEnumValues,
   'no-duplicate-imports': noDuplicateImports,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
