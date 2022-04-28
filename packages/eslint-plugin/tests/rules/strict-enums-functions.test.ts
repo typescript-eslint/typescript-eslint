@@ -1,0 +1,441 @@
+import {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/utils/src/ts-eslint';
+import rule, { MessageIds } from '../../src/rules/strict-enums';
+import { fruitEnumDefinition, ruleTester } from './strict-enums';
+
+const valid: ValidTestCase<unknown[]>[] = [];
+const invalid: InvalidTestCase<MessageIds, unknown[]>[] = [];
+
+/** A function that takes a number enum. */
+const fruitFunctionDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit) {}
+`;
+
+/** A function that takes a number enum literal. */
+const fruitLiteralFunctionDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit.Apple) {}
+`;
+
+/** A function that takes a number enum with a default argument. */
+const fruitFunctionWithDefaultArgDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit = Fruit.Apple) {}
+`;
+
+/** A function that takes a number enum literal with a default argument. */
+const fruitLiteralFunctionWithDefaultArgDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit.Apple = Fruit.Apple) {}
+`;
+
+/** A function that takes a number enum with a union. */
+const fruitFunctionWithUnionDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit | null) {}
+`;
+
+/** A function that takes a number enum with a union and a default argument. */
+const fruitFunctionWithUnionAndDefaultDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit | null = Fruit.Apple) {}
+`;
+
+/** A function that takes a number enum literal with a union. */
+const fruitLiteralFunctionWithUnionDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit.Apple | null) {}
+`;
+
+/** A function that takes a number enum literal with a union and a default argument. */
+const fruitLiteralFunctionWithUnionAndDefaultDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit.Apple | null = Fruit.Apple) {}
+`;
+
+/** A function that takes a number enum literal with a union including two enum types. */
+const fruitLiteralFunctionWithComplexUnionDefinition =
+  fruitEnumDefinition +
+  `
+function useFruit(fruit: Fruit.Apple | Fruit.Banana | null) {}
+`;
+
+valid.push({
+  name: 'Using a normal function without any enums',
+  code: `
+function useNumber(num: number) {}
+useNumber(0);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument',
+  code:
+    fruitFunctionDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument',
+  code:
+    fruitFunctionDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument',
+  code:
+    fruitFunctionDefinition +
+    `
+    useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with an "enum literal" argument type)',
+  code:
+    fruitLiteralFunctionDefinition +
+    `
+    useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with an "enum literal" argument type)',
+  code:
+    fruitLiteralFunctionDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with an "enum literal" argument type)',
+  code:
+    fruitLiteralFunctionDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with a default function argument)',
+  code:
+    fruitFunctionWithDefaultArgDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with a default function argument)',
+  code:
+    fruitFunctionWithDefaultArgDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with a default function argument)',
+  code:
+    fruitFunctionWithDefaultArgDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with a "number literal" arument type + default)',
+  code:
+    fruitLiteralFunctionWithDefaultArgDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with a "number literal" arument type + default)',
+  code:
+    fruitLiteralFunctionWithDefaultArgDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with a "number literal" arument type + default)',
+  code:
+    fruitLiteralFunctionWithDefaultArgDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with a "number enum | null" argument type)',
+  code:
+    fruitFunctionWithUnionDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with a "number enum | null" argument type)',
+  code:
+    fruitFunctionWithUnionDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+valid.push({
+  name: 'Using a null literal as a function argument (with a "number enum | null" argument type)',
+  code:
+    fruitFunctionWithUnionDefinition +
+    `
+useFruit(null);
+  `,
+});
+
+valid.push({
+  name: 'Using a null value as a function argument (with a "number enum | null" argument type)',
+  code:
+    fruitFunctionWithUnionDefinition +
+    `
+const fruit = null;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with a "number enum | null" function argument)',
+  code:
+    fruitFunctionWithUnionDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with a "number enum | null" argument type + default)',
+  code:
+    fruitFunctionWithUnionAndDefaultDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with a "number enum | null" argument type + default)',
+  code:
+    fruitFunctionWithUnionAndDefaultDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+valid.push({
+  name: 'Using a null literal as a function argument (with a "number enum | null" argument type + default)',
+  code:
+    fruitFunctionWithUnionAndDefaultDefinition +
+    `
+useFruit(null);
+  `,
+});
+
+valid.push({
+  name: 'Using a null value as a function argument (with a "number enum | null" argument type + default)',
+  code:
+    fruitFunctionWithUnionAndDefaultDefinition +
+    `
+const fruit = null;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with a "number enum | null" function argument + default)',
+  code:
+    fruitFunctionWithUnionAndDefaultDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with a "number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithUnionDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with a "number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithUnionDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+valid.push({
+  name: 'Using a null literal as a function argument (with a "number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithUnionDefinition +
+    `
+useFruit(null);
+  `,
+});
+
+valid.push({
+  name: 'Using a null value as a function argument (with a "number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithUnionDefinition +
+    `
+const fruit = null;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with a "number enum literal | null" function argument)',
+  code:
+    fruitLiteralFunctionWithUnionDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with a "number enum literal | null" argument type + default)',
+  code:
+    fruitLiteralFunctionWithUnionAndDefaultDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with a "number enum literal | null" argument type + default)',
+  code:
+    fruitLiteralFunctionWithUnionAndDefaultDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+valid.push({
+  name: 'Using a null literal as a function argument (with a "number enum literal | null" argument type + default)',
+  code:
+    fruitLiteralFunctionWithUnionAndDefaultDefinition +
+    `
+useFruit(null);
+  `,
+});
+
+valid.push({
+  name: 'Using a null value as a function argument (with a "number enum literal | null" argument type + default)',
+  code:
+    fruitLiteralFunctionWithUnionAndDefaultDefinition +
+    `
+const fruit = null;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with a "number enum literal | null" function argument + default)',
+  code:
+    fruitLiteralFunctionWithUnionAndDefaultDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithComplexUnionDefinition +
+    `
+useFruit(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum value as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithComplexUnionDefinition +
+    `
+const fruit = Fruit.Apple;
+useFruit(fruit);
+  `,
+});
+
+valid.push({
+  name: 'Using a null literal as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithComplexUnionDefinition +
+    `
+useFruit(null);
+  `,
+});
+
+valid.push({
+  name: 'Using a null value as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithComplexUnionDefinition +
+    `
+const fruit = null;
+useFruit(fruit);
+  `,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  code:
+    fruitLiteralFunctionWithComplexUnionDefinition +
+    `
+useFruit(0);
+  `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+ruleTester.run('strict-enums-comparison', rule, {
+  valid,
+  invalid,
+});
