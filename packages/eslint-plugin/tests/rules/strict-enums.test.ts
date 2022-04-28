@@ -487,6 +487,26 @@ if (1 === 2) {
 });
 
 valid.push({
+  name: 'Comparing a number enum literal to literal undefined',
+  code:
+    fruitEnumDefinition +
+    `
+if (Fruit.Apple === undefined) {
+}
+  `,
+});
+
+valid.push({
+  name: 'Comparing a number enum literal to literal null',
+  code:
+    fruitEnumDefinition +
+    `
+if (Fruit.Apple === null) {
+}
+  `,
+});
+
+valid.push({
   name: 'Comparing a number enum literal with an enum literal of the same type',
   code:
     fruitEnumDefinition +

@@ -175,20 +175,6 @@ export default util.createRule<Options, MessageIds>({
       return enumTypes.size > 0;
     }
 
-    function typeIncludesNull(type: ts.Type): boolean {
-      return typeIncludesTypeName(type, 'null');
-    }
-
-    function typeIncludesTypeName(type: ts.Type, typeName: string): boolean {
-      const subTypes = unionTypeParts(type);
-      const subTypeNames = subTypes.map(subType => getTypeName(subType));
-      return subTypeNames.includes(typeName);
-    }
-
-    function typeIncludesUndefined(type: ts.Type): boolean {
-      return typeIncludesTypeName(type, 'undefined');
-    }
-
     function typeSetHasEnum(typeSet: Set<ts.Type>): boolean {
       for (const type of typeSet.values()) {
         const subTypes = unionTypeParts(type);
@@ -217,7 +203,7 @@ export default util.createRule<Options, MessageIds>({
        * circumstances, since the TypeScript compiler should properly type-check
        * this.
        */
-      if (typeIncludesNull(rightType) || typeIncludesUndefined(rightType)) {
+      if (isNullOrUndefined(rightType)) {
         return false;
       }
 
@@ -231,6 +217,16 @@ export default util.createRule<Options, MessageIds>({
 
     function isEnum(type: ts.Type): boolean {
       return isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
+    }
+
+    /**
+     * Returns true if one or more of the provided types are null or undefined.
+     */
+    function isNullOrUndefined(...types: ts.Type[]): boolean {
+      return types.some(type => {
+        const typeName = getTypeName(type);
+        return typeName === 'null' || typeName === 'undefined';
+      });
     }
 
     function isMismatchedEnumFunctionArgument(
@@ -337,6 +333,17 @@ export default util.createRule<Options, MessageIds>({
 
         if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
           // This is not an enum comparison
+          return;
+        }
+
+        /**
+         * As a special exception, allow comparisons to literal null or literal
+         * undefined.
+         *
+         * The TypeScript compiler should handle these cases properly, so the
+         * lint rule is unneeded.
+         */
+        if (isNullOrUndefined(leftType, rightType)) {
           return;
         }
 
