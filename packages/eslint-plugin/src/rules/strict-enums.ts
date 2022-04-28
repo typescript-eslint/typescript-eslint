@@ -8,6 +8,8 @@ import {
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
+const ALLOWED_ENUM_COMPARISON_OPERATORS = new Set(['===', '!==', '&', '|']);
+
 export type Options = [];
 export type MessageIds =
   | 'incorrectComparisonOperator'
@@ -27,7 +29,7 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       incorrectComparisonOperator:
-        'You can only compare enum values (or variables that potentially have enum values) with the strict equality (===) and the strict inequality (!==) operators. (Enums are supposed to be resilient to reorganization, so you should only explicitly compare them.)',
+        'You can only compare enum values (or variables that potentially have enum values) with the "===", "!==", "&", or "|" operators. (Enums are supposed to be resilient to reorganization, so you should only explicitly compare them.)',
       incorrectIncrement:
         'You cannot increment or decrement an enum type. (Enums are supposed to be resilient to reorganization, so you should explicitly assign a new value instead.)',
       mismatchedAssignment:
@@ -362,11 +364,8 @@ export default util.createRule<Options, MessageIds>({
           context.report({ node, messageId: 'mismatchedComparison' });
         }
 
-        /**
-         * Only allow the strict equality and strict inequality operators for
-         * enums comparisons.
-         */
-        if (node.operator !== '===' && node.operator !== '!==') {
+        /** Only allow certain specific operators for enum comparisons. */
+        if (!ALLOWED_ENUM_COMPARISON_OPERATORS.has(node.operator)) {
           context.report({ node, messageId: 'incorrectComparisonOperator' });
         }
       },

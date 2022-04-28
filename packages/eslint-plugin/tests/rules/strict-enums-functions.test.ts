@@ -435,6 +435,41 @@ useFruit(0);
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
 
+valid.push({
+  name: 'Using an enum from a composition type as a function argument',
+  code:
+    fruitFunctionDefinition +
+    `
+interface BaseNode {
+  type: Fruit;
+}
+
+interface AppleNode extends BaseNode {
+  type: Fruit.Apple;
+  apple: number;
+}
+
+interface BananaNode extends BaseNode {
+  type: Fruit.Apple;
+  banana: Number;
+}
+
+type Node = AppleNode | BananaNode;
+
+const fruitNodesSet = new Set([
+  Fruit.Apple,
+  Fruit.Banana,
+]);
+
+const appleNode: AppleNode = {
+  type: Fruit.Apple,
+  apple: 1,
+};
+
+fruitNodesSet.has(appleNode.type);
+  `,
+});
+
 ruleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,

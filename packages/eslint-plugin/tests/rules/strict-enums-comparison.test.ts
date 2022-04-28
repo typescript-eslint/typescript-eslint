@@ -264,6 +264,10 @@ if (vegetable === Vegetable2.Lettuce2) {
   errors: [{ messageId: 'mismatchedComparison' }],
 });
 
+// --------------
+// OPERATOR TESTS
+// --------------
+
 valid.push({
   name: 'Comparing a number enum literal value to an enum literal value of the same type (with strict inequality)',
   code:
