@@ -58,7 +58,7 @@ For example, `'public-field'` would come before `'private-field'`.
 <details>
   <summary>Expand this to see the full list of all supported member type groups.</summary>
 
-#### Member types (granular form)
+#### Member Types (granular form)
 
 There are multiple ways to specify the member types. The most explicit and granular form is the following:
 
@@ -160,9 +160,12 @@ There are multiple ways to specify the member types. The most explicit and granu
 ]
 ```
 
-Note: If you only specify some of the possible types, the non-specified ones can have any particular order. This means that they can be placed before, within or after the specified types and the linter won't complain about it.
+:::note
+If you only specify some of the possible types, the non-specified ones can have any particular order.
+This means that they can be placed before, within or after the specified types and the linter won't complain about it.
+:::
 
-#### Member group types (with accessibility, ignoring scope)
+#### Member Group Types (With Accessibility, Ignoring Scope)
 
 It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
 
@@ -196,7 +199,7 @@ It is also possible to group member types by their accessibility (`static`, `ins
 ]
 ```
 
-#### Member group types (with accessibility and a decorator)
+#### Member Group Types (With Accessibility and a Decorator)
 
 It is also possible to group methods or fields with a decorator separately, optionally specifying
 their accessibility.
@@ -239,7 +242,7 @@ their accessibility.
 ]
 ```
 
-#### Member group types (with scope, ignoring accessibility)
+#### Member Group Types (With Scope, Ignoring Accessibility)
 
 Another option is to group the member types by their scope (`public`, `protected`, `private`), ignoring their accessibility.
 
@@ -273,7 +276,7 @@ Another option is to group the member types by their scope (`public`, `protected
 ]
 ```
 
-#### Member group types (with scope and accessibility)
+#### Member Group Types (With Scope and Accessibility)
 
 The third grouping option is to ignore both scope and accessibility.
 
@@ -303,7 +306,7 @@ The third grouping option is to ignore both scope and accessibility.
 ]
 ```
 
-#### Grouping different member types at the same rank
+#### Grouping Different Member Types at the Same Rank
 
 It is also possible to group different member types at the same rank.
 
@@ -607,11 +610,13 @@ const Foo = class {
 };
 ```
 
-### Public Instance Methods Before Public Static Fields
+### Classes
 
-This config doesn't apply to interfaces or type literals as accessibility and scope are not part of them.
-It specifies that public instance methods should come first before public static fields.
+#### Public Instance Methods Before Public Static Fields
+
+This config specifies that public instance methods should come first before public static fields.
 Everything else can be placed anywhere.
+It doesn't apply to interfaces or type literals as accessibility and scope are not part of them.
 
 ```jsonc
 // .eslintrc.json
@@ -627,7 +632,7 @@ Everything else can be placed anywhere.
 
 <!--tabs-->
 
-#### ❌ Incorrect
+##### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -662,339 +667,327 @@ const Foo = class {
   public static A(): void {} // (irrelevant)
 
   public B(): void {} // -> public instance method
+};
+```
+
+##### ✅ Correct
+
+```ts
+class Foo {
+  public B(): void {} // -> public instance method
+
+  private C: string; // (irrelevant)
+
+  public D: string; // (irrelevant)
+
+  public static E: string; // -> public static field
+
+  constructor() {} // (irrelevant)
+
+  public static A(): void {} // (irrelevant)
+
+  [Z: string]: any; // (irrelevant)
+}
+```
+
+```ts
+const Foo = class {
+  public B(): void {} // -> public instance method
+
+  private C: string; // (irrelevant)
+
+  [Z: string]: any; // (irrelevant)
+
+  public D: string; // (irrelevant)
+
+  constructor() {} // (irrelevant)
+
+  public static A(): void {} // (irrelevant)
+
+  public static E: string; // -> public static field
+};
+```
+
+#### Static Fields Before Instance Fields
+
+This config specifies that static fields should come before instance fields, with public static fields first.
+It doesn't apply to interfaces or type literals as accessibility and scope are not part of them.
+
+```jsonc
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "default": ["public-static-field", "static-field", "instance-field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+class Foo {
+  private E: string; // -> instance field
+
+  private static B: string; // -> static field
+  protected static C: string; // -> static field
+  private static D: string; // -> static field
+
+  public static A: string; // -> public static field
+
+  [Z: string]: any; // (irrelevant)
+}
+```
+
+```ts
+const foo = class {
+  public T(): void {} // method (irrelevant)
+
+  private static B: string; // -> static field
+
+  constructor() {} // constructor (irrelevant)
+
+  private E: string; // -> instance field
+
+  protected static C: string; // -> static field
+  private static D: string; // -> static field
+
+  [Z: string]: any; // signature (irrelevant)
+
+  public static A: string; // -> public static field
+};
+```
+
+##### ✅ Correct
+
+```ts
+class Foo {
+  public static A: string; // -> public static field
+
+  private static B: string; // -> static field
+  protected static C: string; // -> static field
+  private static D: string; // -> static field
+
+  private E: string; // -> instance field
+
+  [Z: string]: any; // (irrelevant)
+}
+```
+
+```ts
+const foo = class {
+  [Z: string]: any; // -> signature (irrelevant)
+
+  public static A: string; // -> public static field
+
+  constructor() {} // -> constructor (irrelevant)
+
+  private static B: string; // -> static field
+  protected static C: string; // -> static field
+  private static D: string; // -> static field
+
+  private E: string; // -> instance field
+
+  public T(): void {} // -> method (irrelevant)
+};
+```
+
+#### Class Declarations
+
+This config only specifies an order for classes: methods, then the constructor, then fields.
+It does not apply to class expressions (use `classExpressions` for them).
+Default settings will be used for class declarations and all other syntax constructs other than class declarations.
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "classes": ["method", "constructor", "field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+class Foo {
+  private C: string; // -> field
+  public D: string; // -> field
+  protected static E: string; // -> field
+
+  constructor() {} // -> constructor
+
+  public static A(): void {} // -> method
+  public B(): void {} // -> method
+}
+```
+
+##### ✅ Correct
+
+```ts
+class Foo {
+  public static A(): void {} // -> method
+  public B(): void {} // -> method
+
+  constructor() {} // -> constructor
+
+  private C: string; // -> field
+  public D: string; // -> field
+  protected static E: string; // -> field
+}
+```
+
+#### Class Expressions
+
+This config only specifies an order for classes expressions: methods, then the constructor, then fields.
+It does not apply to class declarations (use `classes` for them).
+Default settings will be used for class declarations and all other syntax constructs other than class expressions.
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "classExpressions": ["method", "constructor", "field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+const foo = class {
+  private C: string; // -> field
+  public D: string; // -> field
+  protected static E: string; // -> field
+
+  constructor() {} // -> constructor
+
+  public static A(): void {} // -> method
+  public B(): void {} // -> method
+};
+```
+
+##### ✅ Correct
+
+```ts
+const foo = class {
+  public static A(): void {} // -> method
+  public B(): void {} // -> method
+
+  constructor() {} // -> constructor
+
+  private C: string; // -> field
+  public D: string; // -> field
+  protected static E: string; // -> field
+};
+```
+
+### Interfaces
+
+This config only specifies an order for interfaces: signatures, then methods, then constructors, then fields.
+It does not apply to type literals (use `typeLiterals` for them).
+Default settings will be used for type literals and all other syntax constructs other than class expressions.
+
+:::note
+These member types are the only ones allowed for `interfaces`.
+:::
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "interfaces": ["signature", "method", "constructor", "field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+interface Foo {
+  B: string; // -> field
+
+  new (); // -> constructor
+
+  A(): void; // -> method
+
+  [Z: string]: any; // -> signature
+}
+```
+
+#### ✅ Correct
+
+```ts
+interface Foo {
+  [Z: string]: any; // -> signature
+
+  A(): void; // -> method
+
+  new (); // -> constructor
+
+  B: string; // -> field
+}
+```
+
+### Type Literals
+
+This config only specifies an order for type literals: signatures, then methods, then constructors, then fields.
+It does not apply to interfaces (use `interfaces` for them).
+Default settings will be used for interfaces and all other syntax constructs other than class expressions.
+
+:::note
+These member types are the only ones allowed for `typeLiterals`.
+:::
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "typeLiterals": ["signature", "method", "constructor", "field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+type Foo = {
+  B: string; // -> field
+
+  A(): void; // -> method
+
+  new (); // -> constructor
+
+  [Z: string]: any; // -> signature
 };
 ```
 
 #### ✅ Correct
 
 ```ts
-class Foo {
-  public B(): void {} // -> public instance method
-
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public static E: string; // -> public static field
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  [Z: string]: any; // (irrelevant)
-}
-```
-
-```ts
-const Foo = class {
-  public B(): void {} // -> public instance method
-
-  private C: string; // (irrelevant)
-
-  [Z: string]: any; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  public static E: string; // -> public static field
-};
-```
-
-### Configuration: `{ "default": ["public-static-field", "static-field", "instance-field"] }`
-
-Note: This configuration does not apply to interfaces/type literals as accessibility and scope are not part of interfaces/type literals.
-
-##### Incorrect examples
-
-```ts
-class Foo {
-  private E: string; // -> instance field
-
-  private static B: string; // -> static field
-  protected static C: string; // -> static field
-  private static D: string; // -> static field
-
-  public static A: string; // -> public static field
-
-  [Z: string]: any; // (irrelevant)
-}
-```
-
-Note: Public static fields should come first, followed by static fields and instance fields.
-
-```ts
-const foo = class {
-  public T(): void {} // (irrelevant)
-
-  private static B: string; // -> static field
-
-  constructor() {} // (irrelevant)
-
-  private E: string; // -> instance field
-
-  protected static C: string; // -> static field
-  private static D: string; // -> static field
-
-  [Z: string]: any; // (irrelevant)
-
-  public static A: string; // -> public static field
-};
-```
-
-Note: Public static fields should come first, followed by static fields and instance fields.
-
-##### Correct examples
-
-```ts
-class Foo {
-  public static A: string; // -> public static field
-
-  private static B: string; // -> static field
-  protected static C: string; // -> static field
-  private static D: string; // -> static field
-
-  private E: string; // -> instance field
-}
-```
-
-```ts
-const foo = class {
-  [Z: string]: any; // -> signature
-
-  public static A: string; // -> public static field
-
-  constructor() {} // -> constructor
-
-  private static B: string; // -> static field
-  protected static C: string; // -> static field
-  private static D: string; // -> static field
-
-  private E: string; // -> instance field
-
-  public T(): void {} // -> method
-};
-```
-
-### Custom `classes` configuration
-
-Note: If this is not set, the `default` will automatically be applied to classes as well. If a `classes` configuration is provided, only this configuration will be used for `classes` (i.e. nothing will be merged with `default`).
-
-Note: The configuration for `classes` does not apply to class expressions (use `classExpressions` for them).
-
-#### Configuration: `{ "classes": ["method", "constructor", "field"] }`
-
-##### Incorrect example
-
-```ts
-class Foo {
-  private C: string; // -> field
-  public D: string; // -> field
-  protected static E: string; // -> field
-
-  constructor() {} // -> constructor
-
-  public static A(): void {} // -> method
-  public B(): void {} // -> method
-}
-```
-
-##### Correct example
-
-```ts
-class Foo {
-  public static A(): void {} // -> method
-  public B(): void {} // -> method
-
-  constructor() {} // -> constructor
-
-  private C: string; // -> field
-  public D: string; // -> field
-  protected static E: string; // -> field
-}
-```
-
-#### Configuration: `{ "classes": ["public-instance-method", "public-static-field"] }`
-
-##### Incorrect example
-
-```ts
-class Foo {
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public static E: string; // -> public static field
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  public B(): void {} // -> public instance method
-}
-```
-
-##### Correct example
-
-```ts
-class Foo {
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public B(): void {} // -> public instance method
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  public static E: string; // -> public static field
-}
-```
-
-### Custom `classExpressions` configuration
-
-Note: If this is not set, the `default` will automatically be applied to classes expressions as well. If a `classExpressions` configuration is provided, only this configuration will be used for `classExpressions` (i.e. nothing will be merged with `default`).
-
-Note: The configuration for `classExpressions` does not apply to classes (use `classes` for them).
-
-#### Configuration: `{ "classExpressions": ["method", "constructor", "field"] }`
-
-##### Incorrect example
-
-```ts
-const foo = class {
-  private C: string; // -> field
-  public D: string; // -> field
-  protected static E: string; // -> field
-
-  constructor() {} // -> constructor
-
-  public static A(): void {} // -> method
-  public B(): void {} // -> method
-};
-```
-
-##### Correct example
-
-```ts
-const foo = class {
-  public static A(): void {} // -> method
-  public B(): void {} // -> method
-
-  constructor() {} // -> constructor
-
-  private C: string; // -> field
-  public D: string; // -> field
-  protected static E: string; // -> field
-};
-```
-
-#### Configuration: `{ "classExpressions": ["public-instance-method", "public-static-field"] }`
-
-##### Incorrect example
-
-```ts
-const foo = class {
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public static E: string; // -> public static field
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  public B(): void {} // -> public instance method
-};
-```
-
-##### Correct example
-
-```ts
-const foo = class {
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public B(): void {} // -> public instance method
-
-  public static E: string; // -> public static field
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-};
-```
-
-### Custom `interfaces` configuration
-
-Note: If this is not set, the `default` will automatically be applied to classes expressions as well. If a `interfaces` configuration is provided, only this configuration will be used for `interfaces` (i.e. nothing will be merged with `default`).
-
-Note: The configuration for `interfaces` only allows a limited set of member types: `signature`, `field`, `constructor` and `method`.
-
-Note: The configuration for `interfaces` does not apply to type literals (use `typeLiterals` for them).
-
-#### Configuration: `{ "interfaces": ["signature", "method", "constructor", "field"] }`
-
-##### Incorrect example
-
-```ts
-interface Foo {
-  B: string; // -> field
-
-  new (); // -> constructor
-
-  A(): void; // -> method
-
-  [Z: string]: any; // -> signature
-}
-```
-
-##### Correct example
-
-```ts
-interface Foo {
-  [Z: string]: any; // -> signature
-
-  A(): void; // -> method
-
-  new (); // -> constructor
-
-  B: string; // -> field
-}
-```
-
-### Custom `typeLiterals` configuration
-
-Note: If this is not set, the `default` will automatically be applied to classes expressions as well. If a `typeLiterals` configuration is provided, only this configuration will be used for `typeLiterals` (i.e. nothing will be merged with `default`).
-
-Note: The configuration for `typeLiterals` only allows a limited set of member types: `signature`, `field`, `constructor` and `method`.
-
-Note: The configuration for `typeLiterals` does not apply to interfaces (use `interfaces` for them).
-
-#### Configuration: `{ "typeLiterals": ["signature", "method", "constructor", "field"] }`
-
-##### Incorrect example
-
-```ts
-type Foo = {
-  B: string; // -> field
-
-  A(): void; // -> method
-
-  new (); // -> constructor
-
-  [Z: string]: any; // -> signature
-};
-```
-
-##### Correct example
-
-```ts
 type Foo = {
   [Z: string]: any; // -> signature
 
@@ -1006,15 +999,49 @@ type Foo = {
 };
 ```
 
-### Sorting alphabetically within member groups
+### Sorting Options
 
-It is possible to sort all members within a group alphabetically.
+#### Sorting Alphabetically Within Member Groups
 
-#### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically" } }`
+This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
+You can copy and paste the default order from [Default Configuration](#default-configuration).
 
-This will apply the default order (see above) and enforce an alphabetic case-sensitive order within each group.
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      {
+        "default": {
+          "memberTypes": [
+            /* <Default Order> */
+          ],
+          "order": "alphabetically"
+        }
+      }
+    ]
+  }
+}
+```
 
-##### Incorrect examples
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+interface Foo {
+  a: x;
+  B: x;
+  c: x;
+
+  B(): void;
+  c(): void;
+  a(): void;
+}
+```
+
+##### ✅ Correct
 
 ```ts
 interface Foo {
@@ -1022,48 +1049,92 @@ interface Foo {
   a: x;
   c: x;
 
-  new (): Bar;
-  (): Baz;
-
   B(): void;
   a(): void;
   c(): void;
-
-  // Wrong group order, should be placed before all field definitions
-  [a: string]: number;
 }
 ```
 
+#### Sorting Alphabetically Case Insensitive Within Member Groups
+
+This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
+You can copy and paste the default order from [Default Configuration](#default-configuration).
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      {
+        "default": {
+          "memberTypes": [
+            /* <Default Order> */
+          ],
+          "order": "alphabetically-case-insensitive"
+        }
+      }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
 ```ts
 interface Foo {
-  [a: string]: number;
-
   B: x;
   a: x;
   c: x;
 
-  new (): Bar;
-  (): Baz;
-
-  // Wrong alphabetic order within group
-  c(): void;
   B(): void;
+  c(): void;
   a(): void;
 }
 ```
 
-### Sorting alphabetically while ignoring member groups
-
-It is also possible to sort all members and ignore the member groups completely.
-
-#### Configuration: `{ "default": { "memberTypes": "never", "order": "alphabetically" } }`
-
-##### Incorrect example
+##### ✅ Correct
 
 ```ts
 interface Foo {
+  a: x;
+  B: x;
+  c: x;
+
+  a(): void;
+  B(): void;
+  c(): void;
+}
+```
+
+#### Sorting Alphabetically Ignoring Member Groups
+
+This config specifies that members are all sorted in an alphabetic case-sensitive order.
+It ignores any member group types completely by specifying `"never"` for `memberTypes`.
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": [
+      "error",
+      { "default": { "memberTypes": "never", "order": "alphabetically" } }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+interface Foo {
+  static c = 0;
   b(): void;
-  a: b;
+  a: boolean;
 
   [a: string]: number; // Order doesn't matter (no sortable identifier)
   new (): Bar; // Order doesn't matter (no sortable identifier)
@@ -1071,74 +1142,19 @@ interface Foo {
 }
 ```
 
-Note: Wrong alphabetic order `b(): void` should come after `a: b`.
-
-### Sorting alphabetically case-insensitive within member groups
-
-It is possible to sort all members within a group alphabetically with case insensitivity.
-
-#### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically-case-insensitive" } }`
-
-This will apply the default order (see above) and enforce an alphabetic case-insensitive order within each group.
-
-##### Incorrect examples
+##### ✅ Correct
 
 ```ts
 interface Foo {
-  a: x;
-  B: x;
-  c: x;
-
-  new (): Bar;
-  (): Baz;
-
-  a(): void;
+  a: boolean;
   b(): void;
-  C(): void;
-
-  // Wrong group order, should be placed before all field definitions
-  [a: string]: number;
-}
-```
-
-```ts
-interface Foo {
-  [a: string]: number;
-
-  a: x;
-  B: x;
-  c: x;
-
-  new (): Bar;
-  (): Baz;
-
-  // Wrong alphabetic order within group
-  C(): void;
-  b(): void;
-  a(): void;
-}
-```
-
-### Sorting alphabetically case-insensitive while ignoring member groups
-
-It is also possible to sort all members with case insensitivity and ignore the member groups completely.
-
-#### Configuration: `{ "default": { "memberTypes": "never", "order": "alphabetically-case-insensitive" } }`
-
-##### Incorrect example
-
-```ts
-interface Foo {
-  B(): void;
-  a: number;
+  static c = 0;
 
   [a: string]: number; // Order doesn't matter (no sortable identifier)
   new (): Bar; // Order doesn't matter (no sortable identifier)
   (): Baz; // Order doesn't matter (no sortable identifier)
 }
 ```
-
-Note: Wrong alphabetic order `B(): void` should come after `a: number`.
 
 ## When Not To Use It
 
