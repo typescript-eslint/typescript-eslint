@@ -10,6 +10,7 @@ import type {
 
 import { sandboxSingleton } from './loadSandbox';
 import { editorEmbedId } from './EditorEmbed';
+import { useColorMode } from '@docusaurus/theme-common';
 
 export interface SandboxServicesProps {
   readonly jsx?: boolean;
@@ -34,6 +35,7 @@ export const useSandboxServices = (
 ): Error | SandboxServices | undefined => {
   const [services, setServices] = useState<Error | SandboxServices>();
   const [loadedTs, setLoadedTs] = useState<string>(props.ts);
+  const { isDarkTheme } = useColorMode();
 
   useEffect(() => {
     if (props.ts !== loadedTs) {
@@ -73,6 +75,9 @@ export const useSandboxServices = (
           sandboxConfig,
           main,
           ts,
+        );
+        sandboxInstance.monaco.editor.setTheme(
+          isDarkTheme ? 'vs-dark' : 'vs-light',
         );
 
         const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(

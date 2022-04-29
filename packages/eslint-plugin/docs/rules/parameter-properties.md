@@ -15,10 +15,10 @@ declare all properties in the class.
 This rule, in its default state, does not require any argument and would completely disallow the use of parameter properties.
 It may take an options object containing either or both of:
 
-- `"allows"`: allowing certain kinds of properties to be ignored
-- `"prefer"`: either `"class-properties"` _(default)_ or `"parameter-properties"`
+- `"allow"`: allowing certain kinds of properties to be ignored
+- `"prefer"`: either `"class-property"` _(default)_ or `"parameter-property"`
 
-### `"allows"`
+### `"allow"`
 
 If you would like to ignore certain kinds of properties then you may pass an object containing `"allows"` as an array of any of the following options:
 
@@ -46,10 +46,10 @@ For example, to ignore `public` properties:
 
 ### `"prefer"`
 
-By default, the rule prefers class properties (`"class-properties"`).
-You can switch it to instead preferring parameter properties with (`"parameter-properties"`).
+By default, the rule prefers class property (`"class-property"`).
+You can switch it to instead preferring parameter property with (`"parameter-property"`).
 
-In `"parameter-properties"` mode, the rule will issue a report when:
+In `"parameter-property"` mode, the rule will issue a report when:
 
 - A class property and constructor parameter have the same name and type
 - The constructor parameter is assigned to the class property at the beginning of the constructor
