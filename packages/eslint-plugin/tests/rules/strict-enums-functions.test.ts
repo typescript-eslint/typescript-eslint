@@ -490,6 +490,19 @@ useFruit(fruitUnion);
 `,
 });
 
+valid.push({
+  name: 'Using a number enum as a function argument with an enum extension type',
+  code:
+    fruitEnumDefinition +
+    `
+class FruitClass<FruitType extends Fruit> {
+  constructor(type: FruitType) {
+  }
+}
+const fruitClass = new FruitClass(Fruit.Apple);
+  `,
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,

@@ -59,6 +59,10 @@ export default util.createRule<Options, MessageIds>({
     /**
      * If passed an enum member, returns the type of the parent. Otherwise,
      * returns itself.
+     *
+     * For example:
+     * - `Fruit` --> `Fruit`
+     * - `Fruit.Apple` --> `Fruit`
      */
     function getBaseEnumType(type: ts.Type): ts.Type {
       const symbol = type.getSymbol();
@@ -90,10 +94,30 @@ export default util.createRule<Options, MessageIds>({
      * - Fruit.Apple --> [Fruit]
      * - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
      * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
+     * - T extends Fruit --> [Fruit]
      */
     function getEnumTypes(type: ts.Type): Set<ts.Type> {
+      /**
+       * First, we get all the parts of the union. For non-union types, this
+       * will be an array with the type in it. For example:
+       * - Fruit --> [Fruit]
+       * - Fruit | Vegetable --> [Fruit, Vegetable]
+       */
       const subTypes = unionTypeParts(type);
-      const enumSubTypes = subTypes.filter(subType => isEnum(subType));
+
+      /**
+       * Next, we must resolve generic types with constraints. For example:
+       * - Fruit --> Fruit
+       * - T extends Fruit --> Fruit
+       */
+      const subTypesConstraints = subTypes.map(subType => {
+        const constraint = subType.getConstraint();
+        return constraint === undefined ? subType : constraint;
+      });
+
+      const enumSubTypes = subTypesConstraints.filter(subType =>
+        isEnum(subType),
+      );
       const baseEnumSubTypes = enumSubTypes.map(subType =>
         getBaseEnumType(subType),
       );
@@ -480,8 +504,12 @@ export default util.createRule<Options, MessageIds>({
             continue;
           }
 
-          // We have to use "leftTSNode.name" instead of "leftTSNode" to avoid
-          // runtime errors for reasons that I don't understand
+          /**
+           * We have to use `leftTSNode.name` instead of `leftTSNode` to avoid
+           * runtime errors because the `typeChecker.getTypeAtLocation` method
+           * expects a `ts.BindingName` instead of a`ts.VariableDeclaration`.
+           * https://github.com/microsoft/TypeScript/issues/48878
+           */
           const leftType = getTypeFromTSNode(leftTSNode.name);
           if (leftType === undefined) {
             continue;
