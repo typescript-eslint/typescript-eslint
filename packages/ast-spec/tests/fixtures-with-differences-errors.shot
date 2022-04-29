@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures List fixtures with Error differences 1`] = `
+Object {
+  "Babel errored but TSESTree didn't": Set {
+    "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
+    "declaration/ExportAllDeclaration/fixtures/_error_/type-kind/fixture.ts",
+    "declaration/ExportNamedDeclaration/fixtures/_error_/anonymous-class/fixture.ts",
+  },
+  "TSESTree errored but Babel didn't": Set {
+    "declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture.ts",
+    "declaration/ExportNamedDeclaration/fixtures/_error_/aliased-literal/fixture.ts",
+  },
+}
+`;

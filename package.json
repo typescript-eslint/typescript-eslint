@@ -55,6 +55,10 @@
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "devDependencies": {
+    "@babel/code-frame": "^7.14.5",
+    "@babel/eslint-parser": "^7.15.4",
+    "@babel/parser": "^7.15.7",
+    "@babel/types": "^7.15.6",
     "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
     "@nrwl/cli": "13.8.5",
@@ -63,6 +67,7 @@
     "@nrwl/workspace": "13.8.5",
     "@swc/core": "^1.2.159",
     "@swc/jest": "^0.2.20",
+    "@types/babel__code-frame": "^7.0.3",
     "@types/debug": "^4.1.7",
     "@types/eslint-visitor-keys": "^1.0.0",
     "@types/glob": "^7.2.0",
@@ -93,6 +98,8 @@
     "glob": "^8.0.1",
     "husky": "^7.0.4",
     "jest": "^27.3.1",
+    "jest-diff": "^27.3.1",
+    "jest-snapshot": "^27.3.1",
     "jest-specific-snapshot": "^5.0.0",
     "lerna": "^4.0.0",
     "lint-staged": "^12.0.2",

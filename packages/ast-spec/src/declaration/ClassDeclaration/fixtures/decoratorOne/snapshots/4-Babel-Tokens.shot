@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration decoratorOne Babel - Tokens 1`] = `
+Array [
+  Punctuator {
+    type: "Punctuator",
+    value: "@",
+
+    range: [0, 1],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 1, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "decorator",
+
+    range: [1, 10],
+    loc: {
+      start: { column: 1, line: 1 },
+      end: { column: 10, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [11, 16],
+    loc: {
+      start: { column: 0, line: 2 },
+      end: { column: 5, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [17, 20],
+    loc: {
+      start: { column: 6, line: 2 },
+      end: { column: 9, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [21, 22],
+    loc: {
+      start: { column: 10, line: 2 },
+      end: { column: 11, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [22, 23],
+    loc: {
+      start: { column: 11, line: 2 },
+      end: { column: 12, line: 2 },
+    },
+  },
+]
+`;
