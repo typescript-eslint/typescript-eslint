@@ -1,6 +1,12 @@
 import { unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
 
+const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+
+function isFlagSet(flags: number, flag: number): boolean {
+  return (flags & flag) !== 0;
+}
+
 /**
  * Gets all of the type flags in a type, iterating through unions automatically
  */
@@ -14,7 +20,7 @@ export function getTypeFlags(type: ts.Type): number {
 
 /**
  * Checks if the given type is (or accepts) the given flags
- * @param flagsToCheck composition of one or more `ts.TypeFlags`
+ * @param flagsToCheck The composition of one or more `ts.TypeFlags`
  * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
  */
 export function isTypeFlagSet(
@@ -24,9 +30,19 @@ export function isTypeFlagSet(
 ): boolean {
   const flags = getTypeFlags(type);
 
-  if (isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+  if (isReceiver && isFlagSet(flags, ANY_OR_UNKNOWN)) {
     return true;
   }
 
-  return (flags & flagsToCheck) !== 0;
+  return isFlagSet(flags, flagsToCheck);
+}
+
+/**
+ * @param flagsToCheck The composition of one or more `ts.SymbolFlags`
+ */
+export function isSymbolFlagSet(
+  symbol: ts.Symbol,
+  flagsToCheck: number,
+): boolean {
+  return isFlagSet(symbol.flags, flagsToCheck);
 }

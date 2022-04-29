@@ -78,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
         return type;
       }
 
-      if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
+      if (!util.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
         return type;
       }
 
@@ -211,6 +211,24 @@ export default util.createRule<Options, MessageIds>({
       return types.some(type => util.isTypeFlagSet(type, NULL_OR_UNDEFINED));
     }
 
+    function isRestParameter(parameter: ts.Symbol): boolean {
+      const declarations = parameter.getDeclarations();
+      if (declarations === undefined) {
+        return false;
+      }
+
+      for (const declaration of declarations) {
+        if (
+          ts.isParameter(declaration) &&
+          declaration.dotDotDotToken !== undefined
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     function setHasAnyElement<T>(set: Set<T>, ...elements: T[]): boolean {
       return elements.some(element => set.has(element));
     }
@@ -272,8 +290,9 @@ export default util.createRule<Options, MessageIds>({
       const paramNumToTypesMap = new Map<number, Set<ts.Type>>();
 
       for (const signature of signatures) {
-        for (let i = 0; i < signature.parameters.length; i++) {
-          const parameter = signature.parameters[i];
+        const parameters = signature.getParameters();
+        for (let i = 0; i < parameters.length; i++) {
+          const parameter = parameters[i];
           if (parameter.valueDeclaration === undefined) {
             continue;
           }
@@ -283,15 +302,29 @@ export default util.createRule<Options, MessageIds>({
             parameter.valueDeclaration,
           );
 
+          /**
+           * Annoyingly, the type of variadic functions is `Fruit[]` instead of
+           * `Fruit`, so we must manually convert it.
+           */
+          let parameterTypesToUse: readonly ts.Type[];
+          if (isRestParameter(parameter) && isArray(parameterType)) {
+            parameterTypesToUse = typeChecker.getTypeArguments(parameterType);
+          } else {
+            parameterTypesToUse = [parameterType];
+          }
+
           let paramTypeSet = paramNumToTypesMap.get(i);
           if (paramTypeSet === undefined) {
             paramTypeSet = new Set<ts.Type>();
             paramNumToTypesMap.set(i, paramTypeSet);
           }
 
-          const parameterSubTypes = tsutils.unionTypeParts(parameterType);
-          for (const parameterSubType of parameterSubTypes) {
-            paramTypeSet.add(parameterSubType);
+          for (const parameterTypeToUse of parameterTypesToUse) {
+            const parameterSubTypes =
+              tsutils.unionTypeParts(parameterTypeToUse);
+            for (const parameterSubType of parameterSubTypes) {
+              paramTypeSet.add(parameterSubType);
+            }
           }
         }
       }
@@ -487,6 +520,16 @@ export default util.createRule<Options, MessageIds>({
           }
         }
       }
+
+      /**
+       * Allow variadic function calls that "match" the array on the other end,
+       * like the following:
+       *
+       * ```ts
+       * function useFruits(...fruits: Fruit[]) {}
+       * useFruits(Fruit.Apple);
+       * ```
+       */
 
       return true;
     }

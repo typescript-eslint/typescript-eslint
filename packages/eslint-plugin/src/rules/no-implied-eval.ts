@@ -1,6 +1,5 @@
 import * as ts from 'typescript';
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as util from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
@@ -69,7 +68,7 @@ export default util.createRule({
 
       if (
         symbol &&
-        tsutils.isSymbolFlagSet(
+        util.isSymbolFlagSet(
           symbol,
           ts.SymbolFlags.Function | ts.SymbolFlags.Method,
         )

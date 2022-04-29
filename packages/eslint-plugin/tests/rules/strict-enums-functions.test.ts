@@ -558,8 +558,8 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-function useSomething(something: any) {}
-useSomething(Fruit.Apple);
+function useAnything(something: any) {}
+useAnything(Fruit.Apple);
   `,
 });
 
@@ -568,8 +568,8 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-function useSomething(something: unknown) {}
-useSomething(Fruit.Apple);
+function useUnknown(something: unknown) {}
+useUnknown(Fruit.Apple);
   `,
 });
 
@@ -594,12 +594,12 @@ useFruitOrFruitArray([Fruit.Apple]);
 });
 
 valid.push({
-  name: 'Adding a number enum literal to a number enum array',
+  name: 'Using a number enum literal for a variadic function',
   code:
     fruitEnumDefinition +
     `
-const fruits: Fruit[] = [];
-fruits.push(Fruit.Apple);
+function useFruits(...fruits: Fruit[]) {}
+useFruits(Fruit.Apple);
   `,
 });
 

@@ -1,6 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
-import * as tsutils from 'tsutils';
 import * as util from '../util';
 
 export default util.createRule({
@@ -33,7 +32,7 @@ export default util.createRule({
       symbol: ts.Symbol,
       checker: ts.TypeChecker,
     ): ts.Symbol | null {
-      return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+      return util.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
         ? checker.getAliasedSymbol(symbol)
         : null;
     }

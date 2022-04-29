@@ -2,6 +2,7 @@ import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
+import { isSymbolFlagSet } from './typeFlagUtils';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -123,7 +124,7 @@ function isTypeReadonlyObject(
         if (
           property.valueDeclaration !== undefined &&
           hasSymbol(property.valueDeclaration) &&
-          tsutils.isSymbolFlagSet(
+          isSymbolFlagSet(
             property.valueDeclaration.symbol,
             ts.SymbolFlags.Method,
           )
@@ -139,7 +140,7 @@ function isTypeReadonlyObject(
         if (
           lastDeclaration !== undefined &&
           hasSymbol(lastDeclaration) &&
-          tsutils.isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
+          isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
         ) {
           continue;
         }
