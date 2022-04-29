@@ -103,7 +103,6 @@ export default util.createRule<Options, MessageIds>({
      * - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
      * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
      * - T extends Fruit --> [Fruit]
-     * - Array<Fruit.Apple> --> [Fruit]
      */
     function getEnumTypes(type: ts.Type): Set<ts.Type> {
       /**
@@ -196,6 +195,12 @@ export default util.createRule<Options, MessageIds>({
 
     function insideJestTest(): boolean {
       return process.env.JEST_WORKER_ID !== undefined;
+    }
+
+    function isArray(
+      type: ts.Type,
+    ): type is ts.TypeReference | ts.TupleTypeReference {
+      return typeChecker.isArrayType(type) || typeChecker.isTupleType(type);
     }
 
     function isEnum(type: ts.Type): boolean {
@@ -457,6 +462,29 @@ export default util.createRule<Options, MessageIds>({
         const paramEnumTypes = getEnumTypes(paramType);
         if (setHasAnyElementFromSet(paramEnumTypes, argumentEnumTypes)) {
           return false;
+        }
+      }
+
+      /**
+       * Allow function calls that have an enum array that "matches" the array
+       * on the other end, like the following:
+       *
+       * ```ts
+       * function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
+       * useFruitOrFruitArray([Fruit.Apple]);
+       * ```
+       */
+      if (isArray(argumentType)) {
+        const arrayTypes = typeChecker.getTypeArguments(argumentType);
+        for (const arrayType of arrayTypes) {
+          const arrayEnumTypes = getEnumTypes(arrayType);
+
+          for (const paramType of paramTypeSet.values()) {
+            const paramEnumTypes = getEnumTypes(paramType);
+            if (setHasAnyElementFromSet(paramEnumTypes, arrayEnumTypes)) {
+              return false;
+            }
+          }
         }
       }
 

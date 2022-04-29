@@ -593,6 +593,16 @@ useFruitOrFruitArray([Fruit.Apple]);
   `,
 });
 
+valid.push({
+  name: 'Adding a number enum literal to a number enum array',
+  code:
+    fruitEnumDefinition +
+    `
+const fruits: Fruit[] = [];
+fruits.push(Fruit.Apple);
+  `,
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,

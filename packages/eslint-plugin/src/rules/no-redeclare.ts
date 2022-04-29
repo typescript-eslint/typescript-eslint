@@ -1,3 +1,4 @@
+import { ScopeType } from '@typescript-eslint/scope-manager';
 import { TSESTree, TSESLint, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
@@ -254,7 +255,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Node.js or ES modules has a special scope.
         if (
-          scope.type === 'global' &&
+          scope.type === ScopeType.global &&
           scope.childScopes[0] &&
           // The special scope's block is the Program node.
           scope.block === scope.childScopes[0].block
