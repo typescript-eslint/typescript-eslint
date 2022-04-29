@@ -114,7 +114,11 @@ export default util.createRule<Options, MessageIds>({
      * parameter/argument types of the "real" foo function (as opposed to
      * looking at the arguments of the call expression itself).
      *
+     * Note that this function breaks apart types with a union for the purposes
+     * of inserting each union member in the set.
+     *
      * @returns A `Map` of argument index number to a `Set` of one or more
+     * types.
      */
     function getRealFunctionParameterTypes(
       node: TSESTree.CallExpression,
@@ -146,13 +150,16 @@ export default util.createRule<Options, MessageIds>({
             parameter.valueDeclaration,
           );
 
-          let typeSet = paramNumToTypesMap.get(i);
-          if (typeSet === undefined) {
-            typeSet = new Set<ts.Type>();
-            paramNumToTypesMap.set(i, typeSet);
+          let paramTypeSet = paramNumToTypesMap.get(i);
+          if (paramTypeSet === undefined) {
+            paramTypeSet = new Set<ts.Type>();
+            paramNumToTypesMap.set(i, paramTypeSet);
           }
 
-          typeSet.add(parameterType);
+          const parameterSubTypes = unionTypeParts(parameterType);
+          for (const parameterSubType of parameterSubTypes) {
+            paramTypeSet.add(parameterSubType);
+          }
         }
       }
 
@@ -175,19 +182,6 @@ export default util.createRule<Options, MessageIds>({
     function hasEnumTypes(type: ts.Type): boolean {
       const enumTypes = getEnumTypes(type);
       return enumTypes.size > 0;
-    }
-
-    function typeSetHasEnum(typeSet: Set<ts.Type>): boolean {
-      for (const type of typeSet.values()) {
-        const subTypes = unionTypeParts(type);
-        for (const subType of subTypes) {
-          if (isEnum(subType)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
     }
 
     function isAssigningNonEnumValueToEnumVariable(
@@ -232,20 +226,25 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isMismatchedEnumFunctionArgument(
-      i: number,
-      type: ts.Type,
-      paramNumToTypesMap: Map<number, Set<ts.Type>>,
+      argumentType: ts.Type, // From the function call
+      paramTypeSet: Set<ts.Type>, // From the function itself
     ): boolean {
-      const typeSet = paramNumToTypesMap.get(i);
-      if (typeSet === undefined) {
-        // This should never happen
+      const argumentEnumTypes = getEnumTypes(argumentType);
+
+      /**
+       * First, allow function calls that have nothing to do with enums, like
+       * the following:
+       *
+       * ```ts
+       * function useNumber(num: number) {}
+       * useNumber(0);
+       * ```
+       */
+      if (argumentEnumTypes.size === 0 && !typeSetHasEnum(paramTypeSet)) {
         return false;
       }
 
-      // First, ignore all function arguments that don't have any enum types
-      if (!typeSetHasEnum(typeSet)) {
-        return false;
-      }
+      const argumentSubTypes = unionTypeParts(argumentType);
 
       /**
        * Allow function calls that exactly match the function type, like the
@@ -255,8 +254,16 @@ export default util.createRule<Options, MessageIds>({
        * function useApple(apple: Fruit.Apple) {}
        * useApple(Fruit.Apple);
        * ```
+       *
+       * Additionally, allow function calls that match one of the types in a
+       * union, like the following:
+       *
+       * ```ts
+       * function useApple(apple: Fruit.Apple | null) {}
+       * useApple(null);
+       * ```
        */
-      if (typeSet.has(type)) {
+      if (setHasAnyElement(paramTypeSet, ...argumentSubTypes)) {
         return false;
       }
 
@@ -269,8 +276,7 @@ export default util.createRule<Options, MessageIds>({
        * useFruit(Fruit.Apple);
        * ```
        */
-      const baseEnumType = getBaseEnumType(type);
-      if (typeSet.has(baseEnumType)) {
+      if (setHasAnyElementFromSet(paramTypeSet, argumentEnumTypes)) {
         return false;
       }
 
@@ -283,31 +289,45 @@ export default util.createRule<Options, MessageIds>({
        * useFruit(Fruit.Apple);
        * ```
        */
-      for (const paramType of typeSet.values()) {
+      for (const paramType of paramTypeSet.values()) {
         if (!paramType.isUnion()) {
           continue;
         }
 
-        /**
-         * Naively, you would expect the parts of a "Fruit | null" type to be:
-         * [Fruit, null]
-         *
-         * Instead, they are actually:
-         * [Fruit.Apple, Fruit.Banana, Fruit.Pear, null]
-         *
-         * Thus, we must get the base types.
-         */
-        const subTypes = unionTypeParts(paramType);
-
-        for (const subType of subTypes) {
-          const baseEnumTypeSubType = getBaseEnumType(subType);
-          if (baseEnumType === baseEnumTypeSubType) {
-            return false;
-          }
+        const paramEnumTypes = getEnumTypes(paramType);
+        if (setHasAnyElementFromSet(paramEnumTypes, argumentEnumTypes)) {
+          return false;
         }
       }
 
       return true;
+    }
+
+    function setHasAnyElement<T>(set: Set<T>, ...elements: T[]): boolean {
+      return elements.some(element => set.has(element));
+    }
+
+    function setHasAnyElementFromSet<T>(set1: Set<T>, set2: Set<T>): boolean {
+      for (const value of set2.values()) {
+        if (set1.has(value)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function typeSetHasEnum(typeSet: Set<ts.Type>): boolean {
+      for (const type of typeSet.values()) {
+        const subTypes = unionTypeParts(type);
+        for (const subType of subTypes) {
+          if (isEnum(subType)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
     }
 
     // ------------------
@@ -381,6 +401,11 @@ export default util.createRule<Options, MessageIds>({
         for (let i = 0; i < node.arguments.length; i++) {
           const argument = node.arguments[i];
           const argumentType = getTypeFromNode(argument);
+          const paramTypeSet = paramNumToTypesMap.get(i);
+          if (paramTypeSet === undefined) {
+            // This should never happen
+            continue;
+          }
 
           /**
            * Disallow mismatched function calls, like the following:
@@ -390,13 +415,7 @@ export default util.createRule<Options, MessageIds>({
            * useFruit(0);
            * ```
            */
-          if (
-            isMismatchedEnumFunctionArgument(
-              i,
-              argumentType,
-              paramNumToTypesMap,
-            )
-          ) {
+          if (isMismatchedEnumFunctionArgument(argumentType, paramTypeSet)) {
             context.report({ node, messageId: 'mismatchedFunctionArgument' });
           }
         }

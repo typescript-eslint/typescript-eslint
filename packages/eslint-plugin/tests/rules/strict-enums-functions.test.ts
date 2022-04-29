@@ -103,7 +103,7 @@ invalid.push({
   code:
     fruitFunctionDefinition +
     `
-    useFruit(0);
+useFruit(0);
   `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
@@ -113,7 +113,7 @@ valid.push({
   code:
     fruitLiteralFunctionDefinition +
     `
-    useFruit(Fruit.Apple);
+useFruit(Fruit.Apple);
   `,
 });
 
@@ -214,6 +214,7 @@ useFruit(fruit);
   `,
 });
 
+// TODO: name
 valid.push({
   name: 'Using a null literal as a function argument (with a "number enum | null" argument type)',
   code:
@@ -468,6 +469,26 @@ const appleNode: AppleNode = {
 
 fruitNodesSet.has(appleNode.type);
   `,
+});
+
+valid.push({
+  name: 'Using a partial union type as a function argument',
+  code:
+    fruitFunctionDefinition +
+    `
+declare const fruitUnion: Fruit.Apple | Fruit.Banana;
+useFruit(fruitUnion);
+`,
+});
+
+valid.push({
+  name: 'Using a full union type as a function argument',
+  code:
+    fruitFunctionDefinition +
+    `
+declare const fruitUnion: Fruit.Apple | Fruit.Banana | Fruit.Pear;
+useFruit(fruitUnion);
+`,
 });
 
 ruleTester.run('strict-enums-comparison', rule, {
