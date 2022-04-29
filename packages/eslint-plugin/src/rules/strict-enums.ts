@@ -109,6 +109,69 @@ export default util.createRule<Options, MessageIds>({
       return new Set(intersectingValues);
     }
 
+    function getTypeFromNode(node: TSESTree.Node): ts.Type {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      return getTypeFromTSNode(tsNode);
+    }
+
+    function getTypeFromTSNode(tsNode: ts.Node): ts.Type {
+      return typeChecker.getTypeAtLocation(tsNode);
+    }
+
+    function getTypeName(type: ts.Type): string {
+      return util.getTypeName(typeChecker, type);
+    }
+
+    function hasEnumTypes(type: ts.Type): boolean {
+      const enumTypes = getEnumTypes(type);
+      return enumTypes.size > 0;
+    }
+
+    function isEnum(type: ts.Type): boolean {
+      return isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
+    }
+
+    /**
+     * Returns true if one or more of the provided types are null or undefined.
+     */
+    function isNullOrUndefined(...types: ts.Type[]): boolean {
+      return types.some(type => {
+        const typeName = getTypeName(type);
+        return typeName === 'null' || typeName === 'undefined';
+      });
+    }
+
+    function setHasAnyElement<T>(set: Set<T>, ...elements: T[]): boolean {
+      return elements.some(element => set.has(element));
+    }
+
+    function setHasAnyElementFromSet<T>(set1: Set<T>, set2: Set<T>): boolean {
+      for (const value of set2.values()) {
+        if (set1.has(value)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function typeSetHasEnum(typeSet: Set<ts.Type>): boolean {
+      for (const type of typeSet.values()) {
+        const subTypes = unionTypeParts(type);
+        for (const subType of subTypes) {
+          if (isEnum(subType)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    // --------------
+    // Main functions
+    // --------------
+
     /**
      * Given a call expression like `foo(1)`, derive the corresponding
      * parameter/argument types of the "real" foo function (as opposed to
@@ -166,24 +229,6 @@ export default util.createRule<Options, MessageIds>({
       return paramNumToTypesMap;
     }
 
-    function getTypeFromNode(node: TSESTree.Node): ts.Type {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      return getTypeFromTSNode(tsNode);
-    }
-
-    function getTypeFromTSNode(tsNode: ts.Node): ts.Type {
-      return typeChecker.getTypeAtLocation(tsNode);
-    }
-
-    function getTypeName(type: ts.Type): string {
-      return util.getTypeName(typeChecker, type);
-    }
-
-    function hasEnumTypes(type: ts.Type): boolean {
-      const enumTypes = getEnumTypes(type);
-      return enumTypes.size > 0;
-    }
-
     function isAssigningNonEnumValueToEnumVariable(
       leftType: ts.Type,
       rightType: ts.Type,
@@ -211,18 +256,35 @@ export default util.createRule<Options, MessageIds>({
       return intersectingTypes.size === 0;
     }
 
-    function isEnum(type: ts.Type): boolean {
-      return isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
-    }
+    function isMismatchedEnumComparison(
+      leftType: ts.Type,
+      rightType: ts.Type,
+      leftEnumTypes: Set<ts.Type>,
+      rightEnumTypes: Set<ts.Type>,
+    ): boolean {
+      /**
+       * As a special exception, allow comparisons to literal null or literal
+       * undefined.
+       *
+       * The TypeScript compiler should handle these cases properly, so the
+       * lint rule is unneeded.
+       */
+      if (isNullOrUndefined(leftType, rightType)) {
+        return false;
+      }
 
-    /**
-     * Returns true if one or more of the provided types are null or undefined.
-     */
-    function isNullOrUndefined(...types: ts.Type[]): boolean {
-      return types.some(type => {
-        const typeName = getTypeName(type);
-        return typeName === 'null' || typeName === 'undefined';
-      });
+      /**
+       * Disallow mismatched comparisons, like the following:
+       *
+       * ```ts
+       * if (fruit === 0) {}
+       * ```
+       */
+      const intersectingTypes = getIntersectingSet(
+        leftEnumTypes,
+        rightEnumTypes,
+      );
+      return intersectingTypes.size === 0;
     }
 
     function isMismatchedEnumFunctionArgument(
@@ -303,33 +365,6 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
-    function setHasAnyElement<T>(set: Set<T>, ...elements: T[]): boolean {
-      return elements.some(element => set.has(element));
-    }
-
-    function setHasAnyElementFromSet<T>(set1: Set<T>, set2: Set<T>): boolean {
-      for (const value of set2.values()) {
-        if (set1.has(value)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    function typeSetHasEnum(typeSet: Set<ts.Type>): boolean {
-      for (const type of typeSet.values()) {
-        const subTypes = unionTypeParts(type);
-        for (const subType of subTypes) {
-          if (isEnum(subType)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
-
     // ------------------
     // AST node callbacks
     // ------------------
@@ -358,35 +393,20 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        /**
-         * As a special exception, allow comparisons to literal null or literal
-         * undefined.
-         *
-         * The TypeScript compiler should handle these cases properly, so the
-         * lint rule is unneeded.
-         */
-        if (isNullOrUndefined(leftType, rightType)) {
-          return;
-        }
-
-        /**
-         * Disallow mismatched comparisons, like the following:
-         *
-         * ```ts
-         * if (fruit === 0) {}
-         * ```
-         */
-        const intersectingTypes = getIntersectingSet(
-          leftEnumTypes,
-          rightEnumTypes,
-        );
-        if (intersectingTypes.size === 0) {
-          context.report({ node, messageId: 'mismatchedComparison' });
-        }
-
         /** Only allow certain specific operators for enum comparisons. */
         if (!ALLOWED_ENUM_COMPARISON_OPERATORS.has(node.operator)) {
           context.report({ node, messageId: 'incorrectComparisonOperator' });
+        }
+
+        if (
+          isMismatchedEnumComparison(
+            leftType,
+            rightType,
+            leftEnumTypes,
+            rightEnumTypes,
+          )
+        ) {
+          context.report({ node, messageId: 'mismatchedComparison' });
         }
       },
 

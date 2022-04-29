@@ -1,7 +1,7 @@
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-export const ruleTester = new RuleTester({
+export const strictEnumsRuleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2015,
     tsconfigRootDir: rootDir,

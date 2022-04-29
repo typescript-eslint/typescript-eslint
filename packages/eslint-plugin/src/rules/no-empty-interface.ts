@@ -1,5 +1,6 @@
 import * as util from '../util';
 import { TSESLint } from '@typescript-eslint/utils';
+import { ScopeType } from '@typescript-eslint/scope-manager';
 
 type Options = [
   {
@@ -78,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
             let useAutoFix = true;
             if (util.isDefinitionFile(filename)) {
               const scope = context.getScope();
-              if (scope.type === 'tsModule' && scope.block.declare) {
+              if (scope.type === ScopeType.tsModule && scope.block.declare) {
                 useAutoFix = false;
               }
             }

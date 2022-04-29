@@ -3,7 +3,7 @@ import {
   ValidTestCase,
 } from '@typescript-eslint/utils/src/ts-eslint';
 import rule, { MessageIds } from '../../src/rules/strict-enums';
-import { fruitEnumDefinition, ruleTester } from './strict-enums';
+import { fruitEnumDefinition, strictEnumsRuleTester } from './strict-enums';
 
 const valid: ValidTestCase<unknown[]>[] = [];
 const invalid: InvalidTestCase<MessageIds, unknown[]>[] = [];
@@ -134,7 +134,7 @@ fruit -= 1;
   errors: [{ messageId: 'mismatchedAssignment' }],
 });
 
-ruleTester.run('strict-enums-incrementing', rule, {
+strictEnumsRuleTester.run('strict-enums-incrementing', rule, {
   valid,
   invalid,
 });

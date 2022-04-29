@@ -6,7 +6,7 @@ import rule, { MessageIds } from '../../src/rules/strict-enums';
 import {
   fruit2EnumDefinition,
   fruitEnumDefinition,
-  ruleTester,
+  strictEnumsRuleTester,
 } from './strict-enums';
 
 const valid: ValidTestCase<unknown[]>[] = [];
@@ -196,7 +196,7 @@ const foo: Fruit & Fruit2 = Fruit.Apple;
   `,
 });
 
-ruleTester.run('strict-enums-assignment', rule, {
+strictEnumsRuleTester.run('strict-enums-assignment', rule, {
   valid,
   invalid,
 });

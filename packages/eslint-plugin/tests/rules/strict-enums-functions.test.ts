@@ -3,7 +3,7 @@ import {
   ValidTestCase,
 } from '@typescript-eslint/utils/src/ts-eslint';
 import rule, { MessageIds } from '../../src/rules/strict-enums';
-import { fruitEnumDefinition, ruleTester } from './strict-enums';
+import { fruitEnumDefinition, strictEnumsRuleTester } from './strict-enums';
 
 const valid: ValidTestCase<unknown[]>[] = [];
 const invalid: InvalidTestCase<MessageIds, unknown[]>[] = [];
@@ -214,7 +214,6 @@ useFruit(fruit);
   `,
 });
 
-// TODO: name
 valid.push({
   name: 'Using a null literal as a function argument (with a "number enum | null" argument type)',
   code:
@@ -491,7 +490,7 @@ useFruit(fruitUnion);
 `,
 });
 
-ruleTester.run('strict-enums-comparison', rule, {
+strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,
 });

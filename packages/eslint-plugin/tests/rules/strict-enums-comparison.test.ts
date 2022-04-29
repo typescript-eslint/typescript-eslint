@@ -6,7 +6,7 @@ import rule, { MessageIds } from '../../src/rules/strict-enums';
 import {
   fruit2EnumDefinition,
   fruitEnumDefinition,
-  ruleTester,
+  strictEnumsRuleTester,
 } from './strict-enums';
 
 const valid: ValidTestCase<unknown[]>[] = [];
@@ -35,6 +35,10 @@ enum Vegetable2 {
   Celery2 = 'celery2',
 }
 `;
+
+// ----------------------
+// COMPARISON TYPES TESTS
+// ----------------------
 
 valid.push({
   name: 'Comparing a number with a number',
@@ -264,6 +268,19 @@ if (vegetable === Vegetable2.Lettuce2) {
   errors: [{ messageId: 'mismatchedComparison' }],
 });
 
+valid.push({
+  name: 'Comparing a generic enum extension value with a number enum literal',
+  code:
+    fruitEnumDefinition +
+    `
+class FruitClass<FruitType extends Fruit> {
+  constructor(type: FruitType) {
+    if (type === Fruit.Apple) {}
+  }
+}
+  `,
+});
+
 // --------------
 // OPERATOR TESTS
 // --------------
@@ -354,7 +371,7 @@ if (Fruit.Apple < Fruit.Banana) {
   errors: [{ messageId: 'incorrectComparisonOperator' }],
 });
 
-ruleTester.run('strict-enums-comparison', rule, {
+strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,
 });
