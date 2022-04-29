@@ -8,7 +8,12 @@ import {
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
-const ALLOWED_ENUM_COMPARISON_OPERATORS = new Set(['===', '!==', '&', '|']);
+const ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS = new Set(['&', '|']);
+const ALLOWED_ENUM_NON_BINARY_COMPARISON_OPERATORS = new Set(['===', '!==']);
+const ALLOWED_ENUM_COMPARISON_OPERATORS = new Set([
+  ...ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS.values(),
+  ...ALLOWED_ENUM_NON_BINARY_COMPARISON_OPERATORS.values(),
+]);
 
 export type Options = [];
 export type MessageIds =
@@ -299,11 +304,27 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isMismatchedEnumComparison(
+      operator: string,
       leftType: ts.Type,
       rightType: ts.Type,
       leftEnumTypes: Set<ts.Type>,
       rightEnumTypes: Set<ts.Type>,
     ): boolean {
+      /**
+       * Allow composing a variable based on enum literals using binary
+       * operators, like the following:
+       *
+       * ```ts
+       * const flags = Flag.Value1 | Flag.Value2;
+       * ```
+       *
+       * (Even though this is an assignment, it still matches the
+       * `BinaryExpression` node type.)
+       */
+      if (ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS.has(operator)) {
+        return false;
+      }
+
       /**
        * As a special exception, allow comparisons to literal null or literal
        * undefined.
@@ -346,6 +367,22 @@ export default util.createRule<Options, MessageIds>({
        */
       if (argumentEnumTypes.size === 0 && !typeSetHasEnum(paramTypeSet)) {
         return false;
+      }
+
+      /**
+       * Allow passing enum values into functions that take in `number`, like
+       * the following:
+       *
+       * ```ts
+       * function useNumber(num: number) {}
+       * useNumber(Fruit.Apple);
+       * ```
+       */
+      for (const paramType of paramTypeSet.values()) {
+        const paramTypeName = getTypeName(paramType);
+        if (paramTypeName === 'number') {
+          return false;
+        }
       }
 
       const argumentSubTypes = unionTypeParts(argumentType);
@@ -455,6 +492,7 @@ export default util.createRule<Options, MessageIds>({
 
         if (
           isMismatchedEnumComparison(
+            node.operator,
             leftType,
             rightType,
             leftEnumTypes,
@@ -495,7 +533,7 @@ export default util.createRule<Options, MessageIds>({
               node,
               messageId: 'mismatchedFunctionArgument',
               data: {
-                ordinal: getOrdinalSuffix(i),
+                ordinal: getOrdinalSuffix(i + 1), // e.g. 0 --> 1st
               },
             });
           }

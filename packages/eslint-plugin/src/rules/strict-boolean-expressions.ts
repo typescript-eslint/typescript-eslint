@@ -730,7 +730,7 @@ export default util.createRule<Options, MessageId>({
 
       if (
         types.some(type =>
-          tsutils.isTypeFlagSet(
+          util.isTypeFlagSet(
             type,
             ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.VoidLike,
           ),
@@ -767,7 +767,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       const numbers = types.filter(type =>
-        tsutils.isTypeFlagSet(
+        util.isTypeFlagSet(
           type,
           ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
         ),
@@ -783,7 +783,7 @@ export default util.createRule<Options, MessageId>({
       if (
         types.some(
           type =>
-            !tsutils.isTypeFlagSet(
+            !util.isTypeFlagSet(
               type,
               ts.TypeFlags.Null |
                 ts.TypeFlags.Undefined |

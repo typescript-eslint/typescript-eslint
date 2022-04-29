@@ -196,6 +196,20 @@ const foo: Fruit & Fruit2 = Fruit.Apple;
   `,
 });
 
+valid.push({
+  name: 'Assignment to a variable with a composition of binary flags',
+  code:
+    fruitEnumDefinition +
+    fruit2EnumDefinition +
+    `
+enum Flag {
+  Value1 = 1 << 0,
+  Value2 = 1 << 1,
+}
+const flags = Flag.Value1 | Flag.Value2;
+  `,
+});
+
 strictEnumsRuleTester.run('strict-enums-assignment', rule, {
   valid,
   invalid,

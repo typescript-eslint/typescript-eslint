@@ -109,7 +109,7 @@ useFruit(0);
 });
 
 valid.push({
-  name: 'Using a number enum literal as a function argument (with an "enum literal" argument type)',
+  name: 'Using a number enum literal as a function argument (with an "enum literal" parameter type)',
   code:
     fruitLiteralFunctionDefinition +
     `
@@ -118,7 +118,7 @@ useFruit(Fruit.Apple);
 });
 
 valid.push({
-  name: 'Using a number enum value as a function argument (with an "enum literal" argument type)',
+  name: 'Using a number enum value as a function argument (with an "enum literal" parameter type)',
   code:
     fruitLiteralFunctionDefinition +
     `
@@ -128,7 +128,7 @@ useFruit(fruit);
 });
 
 invalid.push({
-  name: 'Using a number literal as a function argument (with an "enum literal" argument type)',
+  name: 'Using a number literal as a function argument (with an "enum literal" parameter type)',
   code:
     fruitLiteralFunctionDefinition +
     `
@@ -196,7 +196,7 @@ useFruit(0);
 });
 
 valid.push({
-  name: 'Using a number enum literal as a function argument (with a "number enum | null" argument type)',
+  name: 'Using a number enum literal as a function argument (with a "number enum | null" parameter type)',
   code:
     fruitFunctionWithUnionDefinition +
     `
@@ -205,7 +205,7 @@ useFruit(Fruit.Apple);
 });
 
 valid.push({
-  name: 'Using a number enum value as a function argument (with a "number enum | null" argument type)',
+  name: 'Using a number enum value as a function argument (with a "number enum | null" parameter type)',
   code:
     fruitFunctionWithUnionDefinition +
     `
@@ -215,7 +215,7 @@ useFruit(fruit);
 });
 
 valid.push({
-  name: 'Using a null literal as a function argument (with a "number enum | null" argument type)',
+  name: 'Using a null literal as a function argument (with a "number enum | null" parameter type)',
   code:
     fruitFunctionWithUnionDefinition +
     `
@@ -224,7 +224,7 @@ useFruit(null);
 });
 
 valid.push({
-  name: 'Using a null value as a function argument (with a "number enum | null" argument type)',
+  name: 'Using a null value as a function argument (with a "number enum | null" parameter type)',
   code:
     fruitFunctionWithUnionDefinition +
     `
@@ -244,7 +244,7 @@ useFruit(0);
 });
 
 valid.push({
-  name: 'Using a number enum literal as a function argument (with a "number enum | null" argument type + default)',
+  name: 'Using a number enum literal as a function argument (with a "number enum | null" parameter type + default)',
   code:
     fruitFunctionWithUnionAndDefaultDefinition +
     `
@@ -253,7 +253,7 @@ useFruit(Fruit.Apple);
 });
 
 valid.push({
-  name: 'Using a number enum value as a function argument (with a "number enum | null" argument type + default)',
+  name: 'Using a number enum value as a function argument (with a "number enum | null" parameter type + default)',
   code:
     fruitFunctionWithUnionAndDefaultDefinition +
     `
@@ -263,7 +263,7 @@ useFruit(fruit);
 });
 
 valid.push({
-  name: 'Using a null literal as a function argument (with a "number enum | null" argument type + default)',
+  name: 'Using a null literal as a function argument (with a "number enum | null" parameter type + default)',
   code:
     fruitFunctionWithUnionAndDefaultDefinition +
     `
@@ -272,7 +272,7 @@ useFruit(null);
 });
 
 valid.push({
-  name: 'Using a null value as a function argument (with a "number enum | null" argument type + default)',
+  name: 'Using a null value as a function argument (with a "number enum | null" parameter type + default)',
   code:
     fruitFunctionWithUnionAndDefaultDefinition +
     `
@@ -292,7 +292,7 @@ useFruit(0);
 });
 
 valid.push({
-  name: 'Using a number enum literal as a function argument (with a "number enum literal | null" argument type)',
+  name: 'Using a number enum literal as a function argument (with a "number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithUnionDefinition +
     `
@@ -301,7 +301,7 @@ useFruit(Fruit.Apple);
 });
 
 valid.push({
-  name: 'Using a number enum value as a function argument (with a "number enum literal | null" argument type)',
+  name: 'Using a number enum value as a function argument (with a "number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithUnionDefinition +
     `
@@ -311,7 +311,7 @@ useFruit(fruit);
 });
 
 valid.push({
-  name: 'Using a null literal as a function argument (with a "number enum literal | null" argument type)',
+  name: 'Using a null literal as a function argument (with a "number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithUnionDefinition +
     `
@@ -320,7 +320,7 @@ useFruit(null);
 });
 
 valid.push({
-  name: 'Using a null value as a function argument (with a "number enum literal | null" argument type)',
+  name: 'Using a null value as a function argument (with a "number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithUnionDefinition +
     `
@@ -340,7 +340,7 @@ useFruit(0);
 });
 
 valid.push({
-  name: 'Using a number enum literal as a function argument (with a "number enum literal | null" argument type + default)',
+  name: 'Using a number enum literal as a function argument (with a "number enum literal | null" parameter type + default)',
   code:
     fruitLiteralFunctionWithUnionAndDefaultDefinition +
     `
@@ -349,7 +349,7 @@ useFruit(Fruit.Apple);
 });
 
 valid.push({
-  name: 'Using a number enum value as a function argument (with a "number enum literal | null" argument type + default)',
+  name: 'Using a number enum value as a function argument (with a "number enum literal | null" parameter type + default)',
   code:
     fruitLiteralFunctionWithUnionAndDefaultDefinition +
     `
@@ -359,7 +359,7 @@ useFruit(fruit);
 });
 
 valid.push({
-  name: 'Using a null literal as a function argument (with a "number enum literal | null" argument type + default)',
+  name: 'Using a null literal as a function argument (with a "number enum literal | null" parameter type + default)',
   code:
     fruitLiteralFunctionWithUnionAndDefaultDefinition +
     `
@@ -368,7 +368,7 @@ useFruit(null);
 });
 
 valid.push({
-  name: 'Using a null value as a function argument (with a "number enum literal | null" argument type + default)',
+  name: 'Using a null value as a function argument (with a "number enum literal | null" parameter type + default)',
   code:
     fruitLiteralFunctionWithUnionAndDefaultDefinition +
     `
@@ -388,7 +388,7 @@ useFruit(0);
 });
 
 valid.push({
-  name: 'Using a number enum literal as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  name: 'Using a number enum literal as a function argument (with a "number enum literal | number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithComplexUnionDefinition +
     `
@@ -397,7 +397,7 @@ useFruit(Fruit.Apple);
 });
 
 valid.push({
-  name: 'Using a number enum value as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  name: 'Using a number enum value as a function argument (with a "number enum literal | number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithComplexUnionDefinition +
     `
@@ -407,7 +407,7 @@ useFruit(fruit);
 });
 
 valid.push({
-  name: 'Using a null literal as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  name: 'Using a null literal as a function argument (with a "number enum literal | number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithComplexUnionDefinition +
     `
@@ -416,7 +416,7 @@ useFruit(null);
 });
 
 valid.push({
-  name: 'Using a null value as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  name: 'Using a null value as a function argument (with a "number enum literal | number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithComplexUnionDefinition +
     `
@@ -426,7 +426,7 @@ useFruit(fruit);
 });
 
 invalid.push({
-  name: 'Using a number literal as a function argument (with a "number enum literal | number enum literal | null" argument type)',
+  name: 'Using a number literal as a function argument (with a "number enum literal | number enum literal | null" parameter type)',
   code:
     fruitLiteralFunctionWithComplexUnionDefinition +
     `
@@ -516,6 +516,26 @@ class FruitClass<FruitType extends Fruit> {
   }
 }
 const fruitClass = new FruitClass(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum array as a function argument with an number enum array type',
+  code:
+    fruitEnumDefinition +
+    `
+function useFruitArray(fruitArray: Fruit[]) {}
+useFruitArray([Fruit.Apple, Fruit.Banana]);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum literal for a function with type parameter of number',
+  code:
+    fruitEnumDefinition +
+    `
+function useNumber(num: number) {}
+useNumber(Fruit.Apple);
   `,
 });
 
