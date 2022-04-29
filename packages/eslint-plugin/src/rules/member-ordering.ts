@@ -503,11 +503,10 @@ function getLowestRank(
  * ```
  */
 function isEnumMemberWithSpecifiedValue(member: Member): boolean {
-  if (member.type !== AST_NODE_TYPES.TSEnumMember) {
-    return false;
-  }
-
-  return member.initializer !== undefined;
+  return (
+    member.type === AST_NODE_TYPES.TSEnumMember &&
+    member.initializer !== undefined
+  );
 }
 
 export default util.createRule<Options, MessageIds>({
