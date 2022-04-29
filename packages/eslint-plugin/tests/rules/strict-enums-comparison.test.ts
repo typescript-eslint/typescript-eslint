@@ -7,34 +7,12 @@ import {
   fruit2EnumDefinition,
   fruitEnumDefinition,
   strictEnumsRuleTester,
+  vegetable2EnumDefinition,
+  vegetableEnumDefinition,
 } from './strict-enums';
 
 const valid: ValidTestCase<unknown[]>[] = [];
 const invalid: InvalidTestCase<MessageIds, unknown[]>[] = [];
-
-/**
- * A string enum.
- *
- * String enums are only used for comparison tests, since the TypeScript
- * compiler does a good job of ensuring safety for string enum variable
- * assignment and usage in functions.
- */
-const vegetableEnumDefinition = `
- enum Vegetable {
-   Lettuce = 'lettuce',
-   Carrot = 'carrot',
-   Celery = 'celery',
- }
- `;
-
-/** A different string enum. */
-const vegetable2EnumDefinition = `
-enum Vegetable2 {
-  Lettuce2 = 'lettuce2',
-  Carrot2 = 'carrot2',
-  Celery2 = 'celery2',
-}
-`;
 
 // ----------------------
 // COMPARISON TYPES TESTS

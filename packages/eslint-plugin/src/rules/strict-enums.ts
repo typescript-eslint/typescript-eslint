@@ -370,8 +370,8 @@ export default util.createRule<Options, MessageIds>({
       }
 
       /**
-       * Allow passing enum values into functions that take in `number`, like
-       * the following:
+       * Allow passing enum values into functions that take in `number` or
+       * `string`, like the following:
        *
        * ```ts
        * function useNumber(num: number) {}
@@ -380,7 +380,7 @@ export default util.createRule<Options, MessageIds>({
        */
       for (const paramType of paramTypeSet.values()) {
         const paramTypeName = getTypeName(paramType);
-        if (paramTypeName === 'number') {
+        if (paramTypeName === 'number' || paramTypeName === 'string') {
           return false;
         }
       }

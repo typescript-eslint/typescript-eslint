@@ -3,7 +3,11 @@ import {
   ValidTestCase,
 } from '@typescript-eslint/utils/src/ts-eslint';
 import rule, { MessageIds } from '../../src/rules/strict-enums';
-import { fruitEnumDefinition, strictEnumsRuleTester } from './strict-enums';
+import {
+  fruitEnumDefinition,
+  strictEnumsRuleTester,
+  vegetableEnumDefinition,
+} from './strict-enums';
 
 const valid: ValidTestCase<unknown[]>[] = [];
 const invalid: InvalidTestCase<MessageIds, unknown[]>[] = [];
@@ -536,6 +540,16 @@ valid.push({
     `
 function useNumber(num: number) {}
 useNumber(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a string enum literal for a function with type parameter of string',
+  code:
+    vegetableEnumDefinition +
+    `
+function useString(str: string) {}
+useString(Vegetable.Lettuce);
   `,
 });
 

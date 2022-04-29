@@ -32,7 +32,9 @@ export function isAssignmentOperator<T extends ts.SyntaxKind>(
   operator: ts.Token<T>,
 ): boolean {
   return (
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     operator.kind >= SyntaxKind.FirstAssignment &&
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     operator.kind <= SyntaxKind.LastAssignment
   );
 }
@@ -234,6 +236,7 @@ export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
  */
 export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
   return (
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
   );
 }
@@ -245,6 +248,7 @@ export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
  */
 export function isJSXToken(node: ts.Node): boolean {
   return (
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     node.kind >= SyntaxKind.JsxElement && node.kind <= SyntaxKind.JsxAttribute
   );
 }
@@ -439,7 +443,9 @@ export function getTokenType(
     if (token.originalKeywordKind === SyntaxKind.NullKeyword) {
       return AST_TOKEN_TYPES.Null;
     } else if (
+      // eslint-disable-next-line @typescript-eslint/strict-enums
       token.originalKeywordKind >= SyntaxKind.FirstFutureReservedWord &&
+      // eslint-disable-next-line @typescript-eslint/strict-enums
       token.originalKeywordKind <= SyntaxKind.LastKeyword
     ) {
       return AST_TOKEN_TYPES.Identifier;
@@ -448,7 +454,9 @@ export function getTokenType(
   }
 
   if (
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     token.kind >= SyntaxKind.FirstKeyword &&
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     token.kind <= SyntaxKind.LastFutureReservedWord
   ) {
     if (
@@ -462,14 +470,18 @@ export function getTokenType(
   }
 
   if (
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     token.kind >= SyntaxKind.FirstPunctuation &&
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     token.kind <= SyntaxKind.LastPunctuation
   ) {
     return AST_TOKEN_TYPES.Punctuator;
   }
 
   if (
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     token.kind >= SyntaxKind.NoSubstitutionTemplateLiteral &&
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     token.kind <= SyntaxKind.TemplateTail
   ) {
     return AST_TOKEN_TYPES.Template;
