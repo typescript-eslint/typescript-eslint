@@ -573,6 +573,26 @@ useSomething(Fruit.Apple);
   `,
 });
 
+valid.push({
+  name: 'Using a number enum literal for a function with type parameter of enum | enum array',
+  code:
+    fruitEnumDefinition +
+    `
+function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
+useFruitOrFruitArray(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum array for a function with type parameter of enum | enum array',
+  code:
+    fruitEnumDefinition +
+    `
+function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
+useFruitOrFruitArray([Fruit.Apple]);
+  `,
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,

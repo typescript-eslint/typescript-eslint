@@ -3,6 +3,7 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
+const TYPE_NAME_TRUNCATION_THRESHOLD = 40;
 const NULL_OR_UNDEFINED = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
@@ -44,7 +45,7 @@ export default util.createRule<Options, MessageIds>({
       mismatchedComparison:
         'The two things in the comparison do not have a shared enum type.',
       mismatchedFunctionArgument:
-        'The {{ ordinal }} argument in the function call does not match the declared enum type of the function signature.',
+        'The {{ ordinal }} argument in the function call ({{ argumentType}}) does not match the declared enum type of the function signature ({{ parameterType }}).',
     },
     schema: [
       {
@@ -102,6 +103,7 @@ export default util.createRule<Options, MessageIds>({
      * - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
      * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
      * - T extends Fruit --> [Fruit]
+     * - Array<Fruit.Apple> --> [Fruit]
      */
     function getEnumTypes(type: ts.Type): Set<ts.Type> {
       /**
@@ -168,13 +170,32 @@ export default util.createRule<Options, MessageIds>({
       return typeChecker.getTypeAtLocation(tsNode);
     }
 
-    function getTypeName(type: ts.Type): string {
-      return util.getTypeName(typeChecker, type);
+    function getTypeName(...types: ts.Type[]): string {
+      const typeNamesArray = types.map(type =>
+        util.getTypeName(typeChecker, type),
+      );
+      const typeNames = typeNamesArray.join(', ');
+      if (
+        typeNames.length <= TYPE_NAME_TRUNCATION_THRESHOLD ||
+        insideJestTest() // Never truncate in tests
+      ) {
+        return typeNames;
+      }
+
+      const truncatedTypeNames = typeNames.substring(
+        0,
+        TYPE_NAME_TRUNCATION_THRESHOLD,
+      );
+      return `${truncatedTypeNames} [snip]`;
     }
 
     function hasEnumTypes(type: ts.Type): boolean {
       const enumTypes = getEnumTypes(type);
       return enumTypes.size > 0;
+    }
+
+    function insideJestTest(): boolean {
+      return process.env.JEST_WORKER_ID !== undefined;
     }
 
     function isEnum(type: ts.Type): boolean {
@@ -532,6 +553,8 @@ export default util.createRule<Options, MessageIds>({
               messageId: 'mismatchedFunctionArgument',
               data: {
                 ordinal: getOrdinalSuffix(i + 1), // e.g. 0 --> 1st
+                argumentType: getTypeName(argumentType),
+                parameterType: getTypeName(...paramTypeSet.values()),
               },
             });
           }
