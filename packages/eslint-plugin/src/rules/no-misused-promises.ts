@@ -549,7 +549,7 @@ function isVoidReturningFunctionType(
         return false;
       }
 
-      hadVoidReturn ||= tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void);
+      hadVoidReturn ||= util.isTypeFlagSet(returnType, ts.TypeFlags.Void);
     }
   }
 

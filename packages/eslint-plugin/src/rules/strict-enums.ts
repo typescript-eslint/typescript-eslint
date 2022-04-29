@@ -1,19 +1,15 @@
 import * as util from '../util';
-import {
-  getCallSignaturesOfType,
-  isSymbolFlagSet,
-  isTypeFlagSet,
-  unionTypeParts,
-} from 'tsutils';
+import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
-const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT = new Set([
-  'any',
-  'unknown',
-  'number',
-  'string',
-]);
+const NULL_OR_UNDEFINED = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
+
+const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
+  ts.TypeFlags.Any |
+  ts.TypeFlags.Unknown |
+  ts.TypeFlags.Number |
+  ts.TypeFlags.String;
 
 const ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS = new Set(['&', '|']);
 const ALLOWED_ENUM_NON_BINARY_COMPARISON_OPERATORS = new Set(['===', '!==']);
@@ -81,7 +77,7 @@ export default util.createRule<Options, MessageIds>({
         return type;
       }
 
-      if (!isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
+      if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
         return type;
       }
 
@@ -114,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
        * - Fruit --> [Fruit]
        * - Fruit | Vegetable --> [Fruit, Vegetable]
        */
-      const subTypes = unionTypeParts(type);
+      const subTypes = tsutils.unionTypeParts(type);
 
       /**
        * Next, we must resolve generic types with constraints. For example:
@@ -182,17 +178,11 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isEnum(type: ts.Type): boolean {
-      return isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
+      return util.isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
     }
 
-    /**
-     * Returns true if one or more of the provided types are null or undefined.
-     */
     function isNullOrUndefined(...types: ts.Type[]): boolean {
-      return types.some(type => {
-        const typeName = getTypeName(type);
-        return typeName === 'null' || typeName === 'undefined';
-      });
+      return types.some(type => util.isTypeFlagSet(type, NULL_OR_UNDEFINED));
     }
 
     function setHasAnyElement<T>(set: Set<T>, ...elements: T[]): boolean {
@@ -211,7 +201,7 @@ export default util.createRule<Options, MessageIds>({
 
     function typeSetHasEnum(typeSet: Set<ts.Type>): boolean {
       for (const type of typeSet.values()) {
-        const subTypes = unionTypeParts(type);
+        const subTypes = tsutils.unionTypeParts(type);
         for (const subType of subTypes) {
           if (isEnum(subType)) {
             return true;
@@ -247,7 +237,7 @@ export default util.createRule<Options, MessageIds>({
        * There can be potentially multiple signatures for the same function, so
        * we have to iterate over all of them.
        */
-      const signatures = getCallSignaturesOfType(functionType);
+      const signatures = tsutils.getCallSignaturesOfType(functionType);
 
       /**
        * Indexed by parameter number. For example, the first function parameter
@@ -273,7 +263,7 @@ export default util.createRule<Options, MessageIds>({
             paramNumToTypesMap.set(i, paramTypeSet);
           }
 
-          const parameterSubTypes = unionTypeParts(parameterType);
+          const parameterSubTypes = tsutils.unionTypeParts(parameterType);
           for (const parameterSubType of parameterSubTypes) {
             paramTypeSet.add(parameterSubType);
           }
@@ -386,13 +376,14 @@ export default util.createRule<Options, MessageIds>({
        * ```
        */
       for (const paramType of paramTypeSet.values()) {
-        const paramTypeName = getTypeName(paramType);
-        if (ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT.has(paramTypeName)) {
+        if (
+          util.isTypeFlagSet(paramType, ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT)
+        ) {
           return false;
         }
       }
 
-      const argumentSubTypes = unionTypeParts(argumentType);
+      const argumentSubTypes = tsutils.unionTypeParts(argumentType);
 
       /**
        * Allow function calls that exactly match the function type, like the

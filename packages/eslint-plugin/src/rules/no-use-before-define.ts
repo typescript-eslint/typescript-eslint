@@ -59,7 +59,7 @@ function isOuterEnum(
   reference: TSESLint.Scope.Reference,
 ): boolean {
   return (
-    variable.defs[0].type == DefinitionType.TSEnumName &&
+    variable.defs[0].type === DefinitionType.TSEnumName &&
     variable.scope.variableScope !== reference.from.variableScope
   );
 }

@@ -34,9 +34,7 @@ export default util.createRule({
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
 
-      if (
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
-      ) {
+      if (util.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         return undefined;
       }
 

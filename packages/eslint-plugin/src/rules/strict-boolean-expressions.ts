@@ -739,7 +739,7 @@ export default util.createRule<Options, MessageId>({
         variantTypes.add('nullish');
       }
       const booleans = types.filter(type =>
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+        util.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
       );
 
       // If incoming type is either "true" or "false", there will be one type
@@ -755,7 +755,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       const strings = types.filter(type =>
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike),
+        util.isTypeFlagSet(type, ts.TypeFlags.StringLike),
       );
 
       if (strings.length) {
@@ -815,7 +815,7 @@ export default util.createRule<Options, MessageId>({
         variantTypes.add('any');
       }
 
-      if (types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.Never))) {
+      if (types.some(type => util.isTypeFlagSet(type, ts.TypeFlags.Never))) {
         variantTypes.add('never');
       }
 

@@ -328,7 +328,7 @@ export default createRule<Options, MessageId>({
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
         const NULL = ts.TypeFlags.Null;
-        const isComparable = (type: ts.Type, flag: ts.TypeFlags): boolean => {
+        const isComparable = (type: ts.Type, flag: number): boolean => {
           // Allow comparison to `any`, `unknown` or a naked type parameter.
           flag |=
             ts.TypeFlags.Any |
