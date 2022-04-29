@@ -491,6 +491,22 @@ useFruit(fruitUnion);
 });
 
 valid.push({
+  name: 'Using a partial union type as a function argument (from a type narrowing switch statement)',
+  code:
+    fruitFunctionDefinition +
+    `
+function foo(fruit: Fruit) {
+  switch (fruit) {
+    case Fruit.Apple:
+    case Fruit.Banana: {
+      useFruit(fruit);
+    }
+  }
+}
+`,
+});
+
+valid.push({
   name: 'Using a number enum as a function argument with an enum extension type',
   code:
     fruitEnumDefinition +

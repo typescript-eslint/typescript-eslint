@@ -30,11 +30,11 @@ Subsequently, this rule bans potentially-dangerous patterns that you might alrea
 
 This rule bans:
 
-1. Mismatched enum declarations
-1. Mismatched enum assignments
-1. Enum incrementing/decrementing
-1. Mismatched enum comparisons
-1. Mismatched enum function arguments
+1. Comparing enums with unsafe operators - `incorrectComparisonOperator`
+1. Enum incrementing/decrementing - `incorrectIncrement`
+1. Mismatched enum declarations/assignments - `mismatchedAssignment`
+1. Mismatched enum comparisons - `mismatchedComparison`
+1. Mismatched enum function arguments - `mismatchedFunctionArgument`
 
 <!--tabs-->
 
@@ -104,6 +104,19 @@ function useFruit(fruit: Fruit) {}
 useFruit(Fruit.Apple);
 ```
 
+## Error Information
+
+- `incorrectComparisonOperator` - You cannot compare enums with the "{{ operator }}" operator. You can only compare with the "===", "!==", "&", or "|" operators.
+  - Enums are supposed to be resilient to reorganization, so you should only explicitly compare them. For example, if you used a greater than sign to compare a number enum, and then someone reassigned/reordered the values of the enum, then it could potentially break your code.
+- `incorrectIncrement` - You cannot increment or decrement an enum type.
+  - Enums are supposed to be resilient to reorganization, so you should explicitly assign a new value instead. For example, if someone someone reassigned/reordered the values of the enum, then it could potentially break your code.
+- `mismatchedAssignment` - The type of the assignment does not match the declared enum type of the variable.
+  - In other words, you are trying to assign a `Foo` enum value to a variable with a `Bar` type. Enums are supposed to be resilient to reorganization, so these kinds of assignments can be dangerous.
+- `mismatchedComparison` - The two things in the comparison do not have a shared enum type.
+  - You might be trying to compare using a number literal, like `Foo.Value1 === 1`. Or, you might be trying to compare use a disparate enum type, like `Foo.Value1 === Bar.Value1`. Either way, you need to use a value that corresponds to the correct enum, like `foo === Foo.Value1`, where `foo` is type `Foo`. Enums are supposed to be resilient to reorganization, so these types of comparisons can be dangerous.
+- `mismatchedFunctionArgument` - The argument in the function call does not match the declared enum type of the function signature.
+  - You might be trying to use a number literal, like `useFoo(1)`. Or, you might be trying to use a disparate enum type, like `useFoo(Bar.Value1)`. Either way, you need to use a value that corresponds to the correct enum, like `useFoo(Foo.Value1)`. Enums are supposed to be resilient to reorganization, so non-exact function calls like this can be dangerous.
+
 ## Number Enums vs String Enums
 
 Surprisingly, the TypeScript compiler deals with string enums in a safer way than it does with number enums. If we duplicate the first example above by using a string enum, the TypeScript compiler will correctly throw an error:
@@ -115,7 +128,7 @@ enum Vegetable {
 }
 
 let vegetable = Vegetable.Lettuce;
-vegetable = 'tomato'; // Type '"tomato"' is not assignable to type 'Vegetable'.
+vegetable = 'definatelyNotAVegetable'; // Type '"definatelyNotAVegetable"' is not assignable to type 'Vegetable'.
 
 // Even "valid" strings will not work, which is good!
 vegetable = 'carrot'; // Type '"carrot"' is not assignable to type 'Vegetable'.

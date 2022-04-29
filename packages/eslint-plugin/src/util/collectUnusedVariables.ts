@@ -5,7 +5,10 @@ import {
   TSESTree,
   ESLintUtils,
 } from '@typescript-eslint/utils';
-import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
+import {
+  ImplicitLibVariable,
+  ScopeType,
+} from '@typescript-eslint/scope-manager';
 import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
 
 class UnusedVarsVisitor<
@@ -98,7 +101,7 @@ class UnusedVarsVisitor<
       const scope = this.#scopeManager.acquire(node, inner);
 
       if (scope) {
-        if (scope.type === 'function-expression-name') {
+        if (scope.type === ScopeType.functionExpressionName) {
           return scope.childScopes[0] as T;
         }
         return scope as T;

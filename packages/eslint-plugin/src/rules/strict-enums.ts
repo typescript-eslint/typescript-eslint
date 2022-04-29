@@ -29,15 +29,14 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       incorrectComparisonOperator:
-        'You can only compare enum values (or variables that potentially have enum values) with the "===", "!==", "&", or "|" operators. (Enums are supposed to be resilient to reorganization, so you should only explicitly compare them.)',
-      incorrectIncrement:
-        'You cannot increment or decrement an enum type. (Enums are supposed to be resilient to reorganization, so you should explicitly assign a new value instead.)',
+        'You cannot compare enums with the "{{ operator }}" operator. You can only compare with the "===", "!==", "&", or "|" operators.',
+      incorrectIncrement: 'You cannot increment or decrement an enum type.',
       mismatchedAssignment:
-        'The type of the assignment does not match the declared enum type of the variable. In other words, you are trying to assign a Foo enum value to a variable with a Bar type. (Enums are supposed to be resilient to reorganization, so this kind of code can be dangerous.)',
+        'The type of the enum assignment ({{ assignmentType }}) does not match the declared enum type ({{ declaredType }}) of the variable.',
       mismatchedComparison:
-        'The two things in the comparison do not have a shared enum type. You might be trying to use a number literal, like `Foo.Value1 === 1`. Or, you might be trying to use a disparate enum type, like `Foo.Value1 === Bar.Value1`. Either way, you need to use a value that corresponds to the correct enum, like `foo === Foo.Value1`, where `foo` is type `Foo`. (Enums are supposed to be resilient to reorganization, so this kind of code can be dangerous.)',
+        'The two things in the comparison do not have a shared enum type.',
       mismatchedFunctionArgument:
-        'The argument in the function call does not match the declared enum type of the function signature. You might be trying to use a number literal, like `useFoo(1);`. Or, you might be trying to use a disparate enum type, like `useFoo(Bar.Value1)`. Either way, you need to use a value that corresponds to the correct enum, like `useFoo(Foo.Value1)`. (Enums are supposed to be resilient to reorganization, so this kind of code can be dangerous.)',
+        'The {{ ordinal }} argument in the function call does not match the declared enum type of the function signature.',
     },
     schema: [
       {
@@ -131,6 +130,25 @@ export default util.createRule<Options, MessageIds>({
     function getIntersectingSet<T>(a: Set<T>, b: Set<T>): Set<T> {
       const intersectingValues = [...a.values()].filter(value => b.has(value));
       return new Set(intersectingValues);
+    }
+
+    /**
+     * From:
+     * https://stackoverflow.com/questions/13627308/add-st-nd-rd-and-th-ordinal-suffix-to-a-number
+     */
+    function getOrdinalSuffix(i: number): string {
+      const j = i % 10;
+      const k = i % 100;
+      if (j == 1 && k != 11) {
+        return `${i}st`;
+      }
+      if (j == 2 && k != 12) {
+        return `${i}nd`;
+      }
+      if (j == 3 && k != 13) {
+        return `${i}rd`;
+      }
+      return `${i}th`;
     }
 
     function getTypeFromNode(node: TSESTree.Node): ts.Type {
@@ -400,7 +418,14 @@ export default util.createRule<Options, MessageIds>({
         const rightType = getTypeFromNode(node.right);
 
         if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
-          context.report({ node, messageId: 'mismatchedAssignment' });
+          context.report({
+            node,
+            messageId: 'mismatchedAssignment',
+            data: {
+              assignmentType: getTypeName(leftType),
+              declaredType: getTypeName(rightType),
+            },
+          });
         }
       },
 
@@ -419,7 +444,13 @@ export default util.createRule<Options, MessageIds>({
 
         /** Only allow certain specific operators for enum comparisons. */
         if (!ALLOWED_ENUM_COMPARISON_OPERATORS.has(node.operator)) {
-          context.report({ node, messageId: 'incorrectComparisonOperator' });
+          context.report({
+            node,
+            messageId: 'incorrectComparisonOperator',
+            data: {
+              operator: node.operator,
+            },
+          });
         }
 
         if (
@@ -460,7 +491,13 @@ export default util.createRule<Options, MessageIds>({
            * ```
            */
           if (isMismatchedEnumFunctionArgument(argumentType, paramTypeSet)) {
-            context.report({ node, messageId: 'mismatchedFunctionArgument' });
+            context.report({
+              node,
+              messageId: 'mismatchedFunctionArgument',
+              data: {
+                ordinal: getOrdinalSuffix(i),
+              },
+            });
           }
         }
       },
