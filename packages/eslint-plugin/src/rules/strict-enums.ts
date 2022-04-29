@@ -8,6 +8,13 @@ import {
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
+const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT = new Set([
+  'any',
+  'unknown',
+  'number',
+  'string',
+]);
+
 const ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS = new Set(['&', '|']);
 const ALLOWED_ENUM_NON_BINARY_COMPARISON_OPERATORS = new Set(['===', '!==']);
 const ALLOWED_ENUM_COMPARISON_OPERATORS = new Set([
@@ -370,8 +377,8 @@ export default util.createRule<Options, MessageIds>({
       }
 
       /**
-       * Allow passing enum values into functions that take in `number` or
-       * `string`, like the following:
+       * Allow passing enum values into functions that take in generic types
+       * that should basically match any enum, like the following:
        *
        * ```ts
        * function useNumber(num: number) {}
@@ -380,7 +387,7 @@ export default util.createRule<Options, MessageIds>({
        */
       for (const paramType of paramTypeSet.values()) {
         const paramTypeName = getTypeName(paramType);
-        if (paramTypeName === 'number' || paramTypeName === 'string') {
+        if (ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT.has(paramTypeName)) {
           return false;
         }
       }

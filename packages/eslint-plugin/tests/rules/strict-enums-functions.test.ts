@@ -553,6 +553,26 @@ useString(Vegetable.Lettuce);
   `,
 });
 
+valid.push({
+  name: 'Using a number enum literal for a function with type parameter of any',
+  code:
+    fruitEnumDefinition +
+    `
+function useSomething(something: any) {}
+useSomething(Fruit.Apple);
+  `,
+});
+
+valid.push({
+  name: 'Using a number enum literal for a function with type parameter of unknown',
+  code:
+    fruitEnumDefinition +
+    `
+function useSomething(something: unknown) {}
+useSomething(Fruit.Apple);
+  `,
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,

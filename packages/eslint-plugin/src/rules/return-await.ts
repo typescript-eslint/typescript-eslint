@@ -172,6 +172,8 @@ export default util.createRule({
         ts.SyntaxKind.AwaitExpression,
         ts.SyntaxKind.Unknown,
       );
+
+      // eslint-disable-next-line @typescript-eslint/strict-enums
       return nodePrecedence > awaitPrecedence;
     }
 
