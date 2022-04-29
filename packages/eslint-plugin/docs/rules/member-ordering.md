@@ -55,282 +55,6 @@ The supported member attributes are, in order:
 Member attributes may be joined with a `'-'` to combine into more specific groups.
 For example, `'public-field'` would come before `'private-field'`.
 
-<details>
-  <summary>Expand this to see the full list of all supported member type groups.</summary>
-
-#### Member Types (granular form)
-
-There are multiple ways to specify the member types. The most explicit and granular form is the following:
-
-```jsonc
-[
-  // Index signature
-  "signature",
-
-  // Fields
-  "public-static-field",
-  "protected-static-field",
-  "private-static-field",
-  "public-decorated-field",
-  "protected-decorated-field",
-  "private-decorated-field",
-  "public-instance-field",
-  "protected-instance-field",
-  "private-instance-field",
-  "public-abstract-field",
-  "protected-abstract-field",
-  "private-abstract-field",
-
-  // Constructors
-  "public-constructor",
-  "protected-constructor",
-  "private-constructor",
-
-  // Getters
-  "public-static-get",
-  "protected-static-get",
-  "private-static-get",
-
-  "public-decorated-get",
-  "protected-decorated-get",
-  "private-decorated-get",
-
-  "public-instance-get",
-  "protected-instance-get",
-  "private-instance-get",
-
-  "public-abstract-get",
-  "protected-abstract-get",
-  "private-abstract-get",
-
-  "public-get",
-  "protected-get",
-  "private-get",
-
-  "static-get",
-  "instance-get",
-  "abstract-get",
-
-  "decorated-get",
-
-  "get",
-
-  // Setters
-  "public-static-set",
-  "protected-static-set",
-  "private-static-set",
-
-  "public-decorated-set",
-  "protected-decorated-set",
-  "private-decorated-set",
-
-  "public-instance-set",
-  "protected-instance-set",
-  "private-instance-set",
-
-  "public-abstract-set",
-  "protected-abstract-set",
-  "private-abstract-set",
-
-  "public-set",
-  "protected-set",
-  "private-set",
-
-  "static-set",
-  "instance-set",
-  "abstract-set",
-
-  "decorated-set",
-
-  "set",
-
-  // Methods
-  "public-static-method",
-  "protected-static-method",
-  "private-static-method",
-  "public-decorated-method",
-  "protected-decorated-method",
-  "private-decorated-method",
-  "public-instance-method",
-  "protected-instance-method",
-  "private-instance-method",
-  "public-abstract-method",
-  "protected-abstract-method",
-  "private-abstract-method"
-]
-```
-
-:::note
-If you only specify some of the possible types, the non-specified ones can have any particular order.
-This means that they can be placed before, within or after the specified types and the linter won't complain about it.
-:::
-
-#### Member Group Types (With Accessibility, Ignoring Scope)
-
-It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
-
-```jsonc
-[
-  // Index signature
-  // No accessibility for index signature. See above.
-
-  // Fields
-  "public-field", // = ["public-static-field", "public-instance-field"]
-  "protected-field", // = ["protected-static-field", "protected-instance-field"]
-  "private-field", // = ["private-static-field", "private-instance-field"]
-
-  // Constructors
-  // Only the accessibility of constructors is configurable. See below.
-
-  // Getters
-  "public-get", // = ["public-static-get", "public-instance-get"]
-  "protected-get", // = ["protected-static-get", "protected-instance-get"]
-  "private-get", // = ["private-static-get", "private-instance-get"]
-
-  // Setters
-  "public-set", // = ["public-static-set", "public-instance-set"]
-  "protected-set", // = ["protected-static-set", "protected-instance-set"]
-  "private-set", // = ["private-static-set", "private-instance-set"]
-
-  // Methods
-  "public-method", // = ["public-static-method", "public-instance-method"]
-  "protected-method", // = ["protected-static-method", "protected-instance-method"]
-  "private-method" // = ["private-static-method", "private-instance-method"]
-]
-```
-
-#### Member Group Types (With Accessibility and a Decorator)
-
-It is also possible to group methods or fields with a decorator separately, optionally specifying
-their accessibility.
-
-```jsonc
-[
-  // Index signature
-  // No decorators for index signature.
-
-  // Fields
-  "public-decorated-field",
-  "protected-decorated-field",
-  "private-decorated-field",
-
-  "decorated-field", // = ["public-decorated-field", "protected-decorated-field", "private-decorated-field"]
-
-  // Constructors
-  // There are no decorators for constructors.
-
-  // Getters
-  "public-decorated-get",
-  "protected-decorated-get",
-  "private-decorated-get",
-
-  "decorated-get" // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
-
-  // Setters
-  "public-decorated-set",
-  "protected-decorated-set",
-  "private-decorated-set",
-
-  "decorated-set" // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
-
-  // Methods
-  "public-decorated-method",
-  "protected-decorated-method",
-  "private-decorated-method",
-
-  "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
-]
-```
-
-#### Member Group Types (With Scope, Ignoring Accessibility)
-
-Another option is to group the member types by their scope (`public`, `protected`, `private`), ignoring their accessibility.
-
-```jsonc
-[
-  // Index signature
-  // No scope for index signature. See above.
-
-  // Fields
-  "static-field", // = ["public-static-field", "protected-static-field", "private-static-field"]
-  "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
-  "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
-
-  // Constructors
-  "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
-
-  // Getters
-  "static-get", // = ["public-static-get", "protected-static-get", "private-static-get"]
-  "instance-get", // = ["public-instance-get", "protected-instance-get", "private-instance-get"]
-  "abstract-get" // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
-
-  // Setters
-  "static-set", // = ["public-static-set", "protected-static-set", "private-static-set"]
-  "instance-set", // = ["public-instance-set", "protected-instance-set", "private-instance-set"]
-  "abstract-set" // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
-
-  // Methods
-  "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
-  "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
-  "abstract-method" // = ["public-abstract-method", "protected-abstract-method", "private-abstract-method"]
-]
-```
-
-#### Member Group Types (With Scope and Accessibility)
-
-The third grouping option is to ignore both scope and accessibility.
-
-```jsonc
-[
-  // Index signature
-  // No grouping for index signature. See above.
-
-  // Fields
-  "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
-  //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
-
-  // Constructors
-  // Only the accessibility of constructors is configurable. See above.
-
-  // Getters
-  "get" // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
-  //                "public-abstract-get", "protected-abstract-get", "private-abstract-get"]
-
-  // Setters
-  "set" // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
-  //                "public-abstract-set", "protected-abstract-set", "private-abstract-set"]
-
-  // Methods
-  "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
-  //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"]
-]
-```
-
-#### Grouping Different Member Types at the Same Rank
-
-It is also possible to group different member types at the same rank.
-
-```jsonc
-[
-  // Index signature
-  "signature",
-
-  // Fields
-  "field",
-
-  // Constructors
-  "constructor",
-
-  // Getters and Setters at the same rank
-  ["get", "set"],
-
-  // Methods
-  "method"
-]
-```
-
-</details>
-
 ### Default configuration
 
 The default configuration looks as follows:
@@ -468,11 +192,13 @@ The default configuration looks as follows:
 ```
 
 :::note
-The default configuration contains member group types which contain other member types (see above). This is intentional to provide better error messages.
+The default configuration contains member group types which contain other member types.
+This is intentional to provide better error messages.
 :::
 
 :::tip
-By default, the members are not sorted. If you want to sort them alphabetically, you have to provide a custom configuration.
+By default, the members are not sorted.
+If you want to sort them alphabetically, you have to provide a custom configuration.
 :::
 
 ## Examples
@@ -1154,6 +880,280 @@ interface Foo {
   new (): Bar; // Order doesn't matter (no sortable identifier)
   (): Baz; // Order doesn't matter (no sortable identifier)
 }
+```
+
+## All Supported Options
+
+### Member Types (Granular Form)
+
+There are multiple ways to specify the member types.
+The most explicit and granular form is the following:
+
+```jsonc
+[
+  // Index signature
+  "signature",
+
+  // Fields
+  "public-static-field",
+  "protected-static-field",
+  "private-static-field",
+  "public-decorated-field",
+  "protected-decorated-field",
+  "private-decorated-field",
+  "public-instance-field",
+  "protected-instance-field",
+  "private-instance-field",
+  "public-abstract-field",
+  "protected-abstract-field",
+  "private-abstract-field",
+
+  // Constructors
+  "public-constructor",
+  "protected-constructor",
+  "private-constructor",
+
+  // Getters
+  "public-static-get",
+  "protected-static-get",
+  "private-static-get",
+
+  "public-decorated-get",
+  "protected-decorated-get",
+  "private-decorated-get",
+
+  "public-instance-get",
+  "protected-instance-get",
+  "private-instance-get",
+
+  "public-abstract-get",
+  "protected-abstract-get",
+  "private-abstract-get",
+
+  "public-get",
+  "protected-get",
+  "private-get",
+
+  "static-get",
+  "instance-get",
+  "abstract-get",
+
+  "decorated-get",
+
+  "get",
+
+  // Setters
+  "public-static-set",
+  "protected-static-set",
+  "private-static-set",
+
+  "public-decorated-set",
+  "protected-decorated-set",
+  "private-decorated-set",
+
+  "public-instance-set",
+  "protected-instance-set",
+  "private-instance-set",
+
+  "public-abstract-set",
+  "protected-abstract-set",
+  "private-abstract-set",
+
+  "public-set",
+  "protected-set",
+  "private-set",
+
+  "static-set",
+  "instance-set",
+  "abstract-set",
+
+  "decorated-set",
+
+  "set",
+
+  // Methods
+  "public-static-method",
+  "protected-static-method",
+  "private-static-method",
+  "public-decorated-method",
+  "protected-decorated-method",
+  "private-decorated-method",
+  "public-instance-method",
+  "protected-instance-method",
+  "private-instance-method",
+  "public-abstract-method",
+  "protected-abstract-method",
+  "private-abstract-method"
+]
+```
+
+:::note
+If you only specify some of the possible types, the non-specified ones can have any particular order.
+This means that they can be placed before, within or after the specified types and the linter won't complain about it.
+:::
+
+### Member Group Types (With Accessibility, Ignoring Scope)
+
+It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
+
+```jsonc
+[
+  // Index signature
+  // No accessibility for index signature.
+
+  // Fields
+  "public-field", // = ["public-static-field", "public-instance-field"]
+  "protected-field", // = ["protected-static-field", "protected-instance-field"]
+  "private-field", // = ["private-static-field", "private-instance-field"]
+
+  // Constructors
+  // Only the accessibility of constructors is configurable. See below.
+
+  // Getters
+  "public-get", // = ["public-static-get", "public-instance-get"]
+  "protected-get", // = ["protected-static-get", "protected-instance-get"]
+  "private-get", // = ["private-static-get", "private-instance-get"]
+
+  // Setters
+  "public-set", // = ["public-static-set", "public-instance-set"]
+  "protected-set", // = ["protected-static-set", "protected-instance-set"]
+  "private-set", // = ["private-static-set", "private-instance-set"]
+
+  // Methods
+  "public-method", // = ["public-static-method", "public-instance-method"]
+  "protected-method", // = ["protected-static-method", "protected-instance-method"]
+  "private-method" // = ["private-static-method", "private-instance-method"]
+]
+```
+
+### Member Group Types (With Accessibility and a Decorator)
+
+It is also possible to group methods or fields with a decorator separately, optionally specifying
+their accessibility.
+
+```jsonc
+[
+  // Index signature
+  // No decorators for index signature.
+
+  // Fields
+  "public-decorated-field",
+  "protected-decorated-field",
+  "private-decorated-field",
+
+  "decorated-field", // = ["public-decorated-field", "protected-decorated-field", "private-decorated-field"]
+
+  // Constructors
+  // There are no decorators for constructors.
+
+  // Getters
+  "public-decorated-get",
+  "protected-decorated-get",
+  "private-decorated-get",
+
+  "decorated-get" // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
+
+  // Setters
+  "public-decorated-set",
+  "protected-decorated-set",
+  "private-decorated-set",
+
+  "decorated-set" // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
+
+  // Methods
+  "public-decorated-method",
+  "protected-decorated-method",
+  "private-decorated-method",
+
+  "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
+]
+```
+
+### Member Group Types (With Scope, Ignoring Accessibility)
+
+Another option is to group the member types by their scope (`public`, `protected`, `private`), ignoring their accessibility.
+
+```jsonc
+[
+  // Index signature
+  // No scope for index signature.
+
+  // Fields
+  "static-field", // = ["public-static-field", "protected-static-field", "private-static-field"]
+  "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
+  "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
+
+  // Constructors
+  "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
+
+  // Getters
+  "static-get", // = ["public-static-get", "protected-static-get", "private-static-get"]
+  "instance-get", // = ["public-instance-get", "protected-instance-get", "private-instance-get"]
+  "abstract-get" // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+
+  // Setters
+  "static-set", // = ["public-static-set", "protected-static-set", "private-static-set"]
+  "instance-set", // = ["public-instance-set", "protected-instance-set", "private-instance-set"]
+  "abstract-set" // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+
+  // Methods
+  "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
+  "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
+  "abstract-method" // = ["public-abstract-method", "protected-abstract-method", "private-abstract-method"]
+]
+```
+
+### Member Group Types (With Scope and Accessibility)
+
+The third grouping option is to ignore both scope and accessibility.
+
+```jsonc
+[
+  // Index signature
+  // No grouping for index signature.
+
+  // Fields
+  "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
+  //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
+
+  // Constructors
+  // Only the accessibility of constructors is configurable.
+
+  // Getters
+  "get" // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
+  //                "public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+
+  // Setters
+  "set" // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
+  //                "public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+
+  // Methods
+  "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
+  //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"]
+]
+```
+
+### Grouping Different Member Types at the Same Rank
+
+It is also possible to group different member types at the same rank.
+
+```jsonc
+[
+  // Index signature
+  "signature",
+
+  // Fields
+  "field",
+
+  // Constructors
+  "constructor",
+
+  // Getters and Setters at the same rank
+  ["get", "set"],
+
+  // Methods
+  "method"
+]
 ```
 
 ## When Not To Use It
