@@ -311,10 +311,16 @@ function getMemberRawName(
   return name;
 }
 
-function getEnumMemberName(member: TSESTree.TSEnumMember): string | null {
-  const enumID = member.id as unknown as Record<string, string | undefined>;
-  const { name } = enumID;
-  return name === null || name === undefined || name === '' ? null : name;
+function getEnumMemberName(
+  member:
+    | TSESTree.TSEnumMemberComputedName
+    | TSESTree.TSEnumMemberNonComputedName,
+): string | null {
+  if (!('name' in member.id)) {
+    return null;
+  }
+
+  return member.id.name === '' ? null : member.id.name;
 }
 
 /**
