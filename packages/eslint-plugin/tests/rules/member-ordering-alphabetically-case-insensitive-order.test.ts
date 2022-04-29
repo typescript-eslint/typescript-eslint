@@ -30,6 +30,24 @@ interface Foo {
       ],
     },
 
+    // default option + enum + lower/upper case
+    {
+      code: `
+enum Foo {
+  a,
+  B,
+}
+            `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
     // default option + type literal + lower/upper case
     {
       code: `
@@ -103,6 +121,7 @@ class Foo {
       ],
     },
   ],
+
   invalid: [
     // default option + interface + wrong order (multiple)
     {
@@ -139,12 +158,74 @@ interface Foo {
       ],
     },
 
+    // default option + enum + wrong order (multiple)
+    {
+      code: `
+enum Foo {
+  c,
+  B,
+  a,
+}
+          `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+      ],
+    },
+
     // default option + interface + lower/upper case wrong order
     {
       code: `
 interface Foo {
   B : b;
   a : b;
+}
+            `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+      ],
+    },
+
+    // default option + enum + lower/upper case wrong order
+    {
+      code: `
+enum Foo {
+  B,
+  a,
 }
             `,
       options: [

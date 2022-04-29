@@ -74,6 +74,39 @@ enum Foo {
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
 
+    // default option + enum + numbers
+    {
+      code: `
+enum Foo {
+  a1,
+  aa,
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + enum with specified values + lower/upper case
+    {
+      code: `
+enum Foo {
+  a = 0,
+  A = 1,
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + enum with specified values + numbers
+    {
+      code: `
+enum Foo {
+  a1 = 0,
+  aa = 1,
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
     // default option + type literal + multiple types
     {
       code: `
@@ -220,23 +253,13 @@ class Foo {
   #b = 2;
   #c = 3;
 }
-      `,
+            `,
       options: [
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
     },
-
-    // default option + enum with specified values + lower/upper case
-    {
-      code: `
-enum Foo {
-  a = 0,
-  A = 1,
-}
-            `,
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
   ],
+
   invalid: [
     // default option + interface + wrong order
     {
@@ -303,6 +326,34 @@ interface Foo {
   c : string;
   b : string;
   a : string;
+}
+          `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+      ],
+    },
+
+    // default option + enum + wrong order (multiple)
+    {
+      code: `
+enum Foo {
+  c,
+  b,
+  a,
 }
           `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -548,12 +599,34 @@ interface Foo {
       options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
     },
 
+    // classes option + enum + lower/upper case --> Only member group order is checked (default config)
+    {
+      code: `
+enum Foo {
+  a,
+  A,
+}
+            `,
+      options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
     // classes option + interface + numbers --> Only member group order is checked (default config)
     {
       code: `
 interface Foo {
   aa : b;
   a1 : b;
+}
+            `,
+      options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // classes option + enum + numbers --> Only member group order is checked (default config)
+    {
+      code: `
+enum Foo {
+  aa,
+  a1,
 }
             `,
       options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
@@ -762,12 +835,38 @@ interface Foo {
       ],
     },
 
+    // classExpressions option + enum + lower/upper case --> Only member group order is checked (default config)
+    {
+      code: `
+enum Foo {
+  a,
+  A,
+}
+            `,
+      options: [
+        { classExpressions: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
     // classExpressions option + interface + numbers --> Only member group order is checked (default config)
     {
       code: `
 interface Foo {
   aa : b;
   a1 : b;
+}
+            `,
+      options: [
+        { classExpressions: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // classExpressions option + enum + numbers --> Only member group order is checked (default config)
+    {
+      code: `
+enum Foo {
+  aa,
+  a1,
 }
             `,
       options: [
@@ -999,12 +1098,38 @@ interface Foo {
       ],
     },
 
+    // interfaces option + enum + lower/upper case
+    {
+      code: `
+enum Foo {
+  A,
+  a,
+}
+            `,
+      options: [
+        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
     // interfaces option + interface + numbers
     {
       code: `
 interface Foo {
   a1 : b;
   aa : b;
+}
+            `,
+      options: [
+        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // interfaces option + enum + numbers
+    {
+      code: `
+enum Foo {
+  a1,
+  aa,
 }
             `,
       options: [
@@ -1241,12 +1366,38 @@ interface Foo {
       ],
     },
 
+    // typeLiterals option + enum + lower/upper case --> Only member group order is checked (default config)
+    {
+      code: `
+enum Foo {
+  a,
+  A,
+}
+            `,
+      options: [
+        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
     // typeLiterals option + interface + numbers --> Only member group order is checked (default config)
     {
       code: `
 interface Foo {
   aa : b;
   a1 : b;
+}
+            `,
+      options: [
+        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // typeLiterals option + enum + numbers --> Only member group order is checked (default config)
+    {
+      code: `
+enum Foo {
+  aa,
+  a1,
 }
             `,
       options: [
@@ -2654,7 +2805,7 @@ class Foo {
   #b = 2;
   #a = 1;
 }
-      `,
+            `,
       options: [
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
