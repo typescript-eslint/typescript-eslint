@@ -95,7 +95,7 @@ export type Options = [
   {
     checkIntersections?: boolean;
     checkUnions?: boolean;
-    groupOrder?: Group[];
+    groupOrder?: string[];
   },
 ];
 export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
