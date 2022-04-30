@@ -295,6 +295,7 @@ export default util.createRule({
 
             for (const literalTypeFlag of literalTypeFlags) {
               if (typePart.typeFlags === literalTypeFlag) {
+                // eslint-disable-next-line @typescript-eslint/strict-enums
                 addToMapGroup(
                   seenLiteralTypes,
                   literalToPrimitiveTypeFlags[literalTypeFlag],
@@ -306,6 +307,7 @@ export default util.createRule({
 
             for (const primitiveTypeFlag of primitiveTypeFlags) {
               if (typePart.typeFlags === primitiveTypeFlag) {
+                // eslint-disable-next-line @typescript-eslint/strict-enums
                 addToMapGroup(seenPrimitiveTypes, primitiveTypeFlag, typeNode);
               }
             }
@@ -387,6 +389,7 @@ export default util.createRule({
 
             for (const literalTypeFlag of literalTypeFlags) {
               if (typePart.typeFlags === literalTypeFlag) {
+                // eslint-disable-next-line @typescript-eslint/strict-enums
                 addToMapGroup(
                   seenLiteralTypes,
                   literalToPrimitiveTypeFlags[literalTypeFlag],

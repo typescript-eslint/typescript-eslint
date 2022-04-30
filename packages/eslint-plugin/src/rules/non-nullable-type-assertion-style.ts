@@ -1,8 +1,9 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
-
 import * as util from '../util';
+
+const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
 export default util.createRule({
   name: 'non-nullable-type-assertion-style',
@@ -34,7 +35,7 @@ export default util.createRule({
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
 
-      if (util.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+      if (util.isTypeFlagSet(type, ANY_OR_UNKNOWN)) {
         return undefined;
       }
 

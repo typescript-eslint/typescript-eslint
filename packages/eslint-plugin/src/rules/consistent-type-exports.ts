@@ -214,6 +214,7 @@ function isSpecifierTypeBased(
   const symbol = checker.getSymbolAtLocation(node);
   const aliasedSymbol = checker.getAliasedSymbol(symbol!);
 
+  // eslint-disable-next-line @typescript-eslint/strict-enums
   if (!aliasedSymbol || aliasedSymbol.escapedName === 'unknown') {
     return undefined;
   }
