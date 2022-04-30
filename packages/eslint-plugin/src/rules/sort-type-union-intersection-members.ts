@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { getEnumNames } from '@typescript-eslint/type-utils';
 import * as util from '../util';
-import { getEnumNames } from '../util';
 
 enum Group {
   conditional = 'conditional',

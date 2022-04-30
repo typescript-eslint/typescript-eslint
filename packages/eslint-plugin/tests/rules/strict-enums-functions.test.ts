@@ -528,7 +528,7 @@ valid.push({
   code:
     fruitFunctionDefinition +
     `
-declare fruit: Fruit;
+declare const fruit: Fruit;
 switch (fruit) {
   case Fruit.Apple:
   case Fruit.Banana: {
@@ -734,12 +734,26 @@ useFruits(Fruit.Apple);
   `,
 });
 
+// TODO: failing
 valid.push({
-  name: 'Using a number enum literal for a generic function with a default generic type that is unspecified',
+  name: 'ZZ Using a number enum literal for a generic function with a default generic type that is unspecified as any',
   code:
     fruitEnumDefinition +
     `
+function a(fruit: Fruit) {}
+a(Fruit.Apple);
+
 function toEqual<E = any>(expected: E): void {}
+toEqual(Fruit.Apple);
+    `,
+});
+
+valid.push({
+  name: 'Using a number enum literal for a generic function with a default generic type that is unspecified as a number enum',
+  code:
+    fruitEnumDefinition +
+    `
+function toEqual<E = Fruit>(expected: E): void {}
 toEqual(Fruit.Apple);
     `,
 });
@@ -771,6 +785,57 @@ invalid.push({
     `
 function toEqual<E = any>(expected: E): void {}
 toEqual<Fruit>(0);
+    `,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum literal for a generic function with a default generic type that is unspecified as any + extra arg',
+  code:
+    fruitEnumDefinition +
+    `
+function toEqual<E = any>(arg1: number, expected: E): void {}
+toEqual(0, Fruit.Apple);
+    `,
+});
+
+valid.push({
+  name: 'Using a number enum literal for a generic function with a default generic type that is unspecified as a number enum + extra arg',
+  code:
+    fruitEnumDefinition +
+    `
+function toEqual<E = Fruit>(arg1: number, expected: E): void {}
+toEqual(0, Fruit.Apple);
+    `,
+});
+
+valid.push({
+  name: 'Using a number enum literal for a generic function with a default generic type that is specified as any + extra arg',
+  code:
+    fruitEnumDefinition +
+    `
+function toEqual<E = any>(arg1: number, expected: E): void {}
+toEqual<any>(0, Fruit.Apple);
+    `,
+});
+
+valid.push({
+  name: 'Using a number enum literal for a generic function with a default generic type that is specified as a number enum + extra arg',
+  code:
+    fruitEnumDefinition +
+    `
+function toEqual<E = any>(arg1: number, expected: E): void {}
+toEqual<Fruit>(0, Fruit.Apple);
+    `,
+});
+
+invalid.push({
+  name: 'Using a number literal for a generic function with a default generic type that is specified as a number enum + extra arg',
+  code:
+    fruitEnumDefinition +
+    `
+function toEqual<E = any>(arg1: number, expected: E): void {}
+toEqual<Fruit>(0, 0);
     `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });

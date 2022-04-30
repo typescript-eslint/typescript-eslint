@@ -1,5 +1,6 @@
 import { unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
+import { getEnumValues } from './getEnum';
 
 const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
@@ -12,6 +13,24 @@ export function getTypeFlags(type: ts.Type): number {
     flags |= t.flags;
   }
   return flags;
+}
+
+/**
+ * Returns an array containing the names of every type flag that matches the
+ * given type flags.
+ *
+ * Useful for debugging and inspecting the AST.
+ */
+export function getTypeFlagNames(type: ts.Type): string[] {
+  const flagNames: string[] = [];
+  for (const flag of getEnumValues(ts.TypeFlags)) {
+    if (isTypeFlagSet(type, flag)) {
+      const flagName = ts.TypeFlags[flag];
+      flagNames.push(flagName);
+    }
+  }
+
+  return flagNames;
 }
 
 function isFlagSet(flags: number, flag: number): boolean {
