@@ -734,15 +734,11 @@ useFruits(Fruit.Apple);
   `,
 });
 
-// TODO: failing
 valid.push({
-  name: 'ZZ Using a number enum literal for a generic function with a default generic type that is unspecified as any',
+  name: 'Using a number enum literal for a generic function with a default generic type that is unspecified as any',
   code:
     fruitEnumDefinition +
     `
-function a(fruit: Fruit) {}
-a(Fruit.Apple);
-
 function toEqual<E = any>(expected: E): void {}
 toEqual(Fruit.Apple);
     `,
