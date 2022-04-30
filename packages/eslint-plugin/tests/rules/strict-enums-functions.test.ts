@@ -603,6 +603,16 @@ useFruits(Fruit.Apple);
   `,
 });
 
+valid.push({
+  name: 'Using a number enum literal for a generic function with a default generic type',
+  code:
+    fruitEnumDefinition +
+    `
+function toEqual<E = any>(expected: E): void {}
+toEqual(Fruit.Apple);
+    `,
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,
