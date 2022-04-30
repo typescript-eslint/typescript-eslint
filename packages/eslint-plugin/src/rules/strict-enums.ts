@@ -426,8 +426,9 @@ export default util.createRule<Options, MessageIds>({
       }
 
       /**
-       * Allow passing enum values into functions that take in generic types
-       * that should basically match any enum, like the following:
+       * Allow passing enum values into functions that take in the "any" type
+       * and similar types that should basically match any enum, like the
+       * following:
        *
        * ```ts
        * function useNumber(num: number) {}
