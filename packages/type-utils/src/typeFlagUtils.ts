@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
 /**
- * Gets all of the type flags in a type, iterating through unions automatically
+ * Gets all of the type flags in a type, iterating through unions automatically.
  */
 export function getTypeFlags(type: ts.Type): number {
   let flags = 0;
@@ -19,7 +19,7 @@ function isFlagSet(flags: number, flag: number): boolean {
 }
 
 /**
- * @param flagsToCheck The composition of one or more `ts.SymbolFlags`
+ * @param flagsToCheck The composition of one or more `ts.SymbolFlags`.
  */
 export function isSymbolFlagSet(
   symbol: ts.Symbol,
@@ -29,11 +29,9 @@ export function isSymbolFlagSet(
 }
 
 /**
- * Checks if the given type is (or accepts) the given flags.
- *
- * Note that if the type is a union, it will decompose it into the parts and get
- * the flags of every union constituent. If this is not desired, use the
- * `isTypeFlagSetSimple` function instead.
+ * Note that if the type is a union, this function will decompose it into the
+ * parts and get the flags of every union constituent. If this is not desired,
+ * use the `isTypeFlagSetSimple` function instead.
  *
  * @param flagsToCheck The composition of one or more `ts.TypeFlags`.
  * @param isReceiver True if the type is a receiving type (i.e. the type of a
