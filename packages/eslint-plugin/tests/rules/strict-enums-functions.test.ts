@@ -20,6 +20,13 @@ function useFruit(fruit: Fruit) {}
 `;
 
 valid.push({
+  name: 'Using a number enum literal on a non-existent function',
+  code: `
+useFruit(0);
+  `,
+});
+
+valid.push({
   name: 'Using a number enum literal on a function that takes a number enum',
   code:
     fruitFunctionDefinition +
@@ -474,7 +481,7 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitSubset(fruit: Fruit.Apple | Fruit.Banana) {}
+function useFruit(fruit: Fruit.Apple | Fruit.Banana) {}
 declare const fruitUnion: Fruit.Apple | Fruit.Banana;
 useFruit(fruitUnion);
 `,
@@ -485,7 +492,7 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitSubset(fruit: Fruit.Apple | Fruit.Banana) {}
+function useFruit(fruit: Fruit.Apple | Fruit.Banana) {}
 useFruit(0);
     `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
@@ -544,25 +551,30 @@ valid.push({
     fruitEnumDefinition +
     `
 class FruitClass<FruitType extends Fruit> {
-  constructor(type: FruitType) {
-  }
+  constructor(type: FruitType) {}
+  useFruit(type: FruitType) {}
 }
 const fruitClass = new FruitClass(Fruit.Apple);
-  `,
+fruitClass.useFruit(Fruit.Apple);
+`,
 });
 
 invalid.push({
-  name: 'Using a number literal as a function argument with an enum extension type',
+  name: 'ZZ Using a number literal as a function argument with an enum extension type',
   code:
     fruitEnumDefinition +
     `
 class FruitClass<FruitType extends Fruit> {
-  constructor(type: FruitType) {
-  }
+  constructor(type: FruitType) {}
+  useFruit(type: FruitType) {}
 }
 const fruitClass = new FruitClass(0);
+fruitClass.useFruit(0);
   `,
-  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+  errors: [
+    { messageId: 'mismatchedAssignment' },
+    { messageId: 'mismatchedFunctionArgument' },
+  ],
 });
 
 valid.push({
@@ -570,8 +582,8 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitArray(fruitArray: Fruit[]) {}
-useFruitArray([Fruit.Apple, Fruit.Banana]);
+function useFruit(fruitArray: Fruit[]) {}
+useFruit([Fruit.Apple, Fruit.Banana]);
   `,
 });
 
@@ -580,8 +592,8 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitArray(fruitArray: Fruit[]) {}
-useFruitArray([0, 1]);
+function useFruit(fruitArray: Fruit[]) {}
+useFruit([0, 1]);
   `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
@@ -591,8 +603,8 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitArray(fruitArray: Fruit[]) {}
-useFruitArray([Fruit.Apple, 1]);
+function useFruit(fruitArray: Fruit[]) {}
+useFruit([Fruit.Apple, 1]);
   `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
@@ -676,8 +688,8 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
-useFruitOrFruitArray(0);
+function useFruit(fruitOrFruitArray: Fruit | Fruit[]) {}
+useFruit(0);
   `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
@@ -687,8 +699,8 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
-useFruitOrFruitArray(Fruit.Apple);
+function useFruit(fruitOrFruitArray: Fruit | Fruit[]) {}
+useFruit(Fruit.Apple);
   `,
 });
 
@@ -697,8 +709,8 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
-useFruitOrFruitArray([Fruit.Apple]);
+function useFruit(fruitOrFruitArray: Fruit | Fruit[]) {}
+useFruit([Fruit.Apple]);
   `,
 });
 
@@ -707,8 +719,8 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
-useFruitOrFruitArray([0]);
+function useFruit(fruitOrFruitArray: Fruit | Fruit[]) {}
+useFruit([0]);
   `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
@@ -718,8 +730,8 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruits(...fruits: Fruit[]) {}
-useFruits(0);
+function useFruit(...fruits: Fruit[]) {}
+useFruit(0);
   `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
@@ -729,8 +741,8 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-function useFruits(...fruits: Fruit[]) {}
-useFruits(Fruit.Apple);
+function useFruit(...fruits: Fruit[]) {}
+useFruit(Fruit.Apple);
   `,
 });
 

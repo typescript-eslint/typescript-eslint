@@ -169,23 +169,20 @@ export default util.createRule<Options, MessageIds>({
       return typeChecker.getTypeAtLocation(tsNode);
     }
 
-    function getTypeName(...types: ts.Type[]): string {
-      const typeNamesArray = types.map(type =>
-        util.getTypeName(typeChecker, type),
-      );
-      const typeNames = typeNamesArray.join(', ');
+    function getTypeName(type: ts.Type): string {
+      const typeName = util.getTypeName(typeChecker, type);
       if (
-        typeNames.length <= TYPE_NAME_TRUNCATION_THRESHOLD ||
+        typeName.length <= TYPE_NAME_TRUNCATION_THRESHOLD ||
         insideJestTest() // Never truncate in tests
       ) {
-        return typeNames;
+        return typeName;
       }
 
-      const truncatedTypeNames = typeNames.substring(
+      const truncatedTypeName = typeName.substring(
         0,
         TYPE_NAME_TRUNCATION_THRESHOLD,
       );
-      return `${truncatedTypeNames} [snip]`;
+      return `${truncatedTypeName} [snip]`;
     }
 
     function hasEnumTypes(type: ts.Type): boolean {
@@ -211,28 +208,6 @@ export default util.createRule<Options, MessageIds>({
       return types.some(type => util.isTypeFlagSet(type, NULL_OR_UNDEFINED));
     }
 
-    function isRestParameter(parameter: ts.Symbol): boolean {
-      const declarations = parameter.getDeclarations();
-      if (declarations === undefined) {
-        return false;
-      }
-
-      for (const declaration of declarations) {
-        if (
-          ts.isParameter(declaration) &&
-          declaration.dotDotDotToken !== undefined
-        ) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    function setHasAnyElement<T>(set: Set<T>, ...elements: T[]): boolean {
-      return elements.some(element => set.has(element));
-    }
-
     function setHasAnyElementFromSet<T>(set1: Set<T>, set2: Set<T>): boolean {
       for (const value of set2.values()) {
         if (set1.has(value)) {
@@ -243,94 +218,9 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
-    function typeSetHasEnum(typeSet: Set<ts.Type>): boolean {
-      for (const type of typeSet.values()) {
-        const subTypes = tsutils.unionTypeParts(type);
-        for (const subType of subTypes) {
-          if (isEnum(subType)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
-
     // --------------
     // Main functions
     // --------------
-
-    /**
-     * Given a call expression like `foo(1)`, derive the corresponding
-     * parameter/argument types of the "real" foo function (as opposed to
-     * looking at the arguments of the call expression itself).
-     *
-     * Note that this function breaks apart types with a union for the purposes
-     * of inserting each union member in the set.
-     *
-     * @returns A `Map` of argument index number to a `Set` of one or more
-     * types.
-     */
-    function getRealFunctionParameterTypes(
-      node: TSESTree.CallExpression,
-    ): Map<number, Set<ts.Type>> {
-      const functionIdentifier = node.callee;
-      const functionType = getTypeFromNode(functionIdentifier);
-
-      /**
-       * There can be potentially multiple signatures for the same function, so
-       * we have to iterate over all of them.
-       */
-      const signatures = tsutils.getCallSignaturesOfType(functionType);
-
-      /**
-       * Indexed by parameter number. For example, the first function parameter
-       * type names are stored at index 0.
-       */
-      const paramNumToTypesMap = new Map<number, Set<ts.Type>>();
-
-      for (const signature of signatures) {
-        const parameters = signature.getParameters();
-        for (let i = 0; i < parameters.length; i++) {
-          const parameter = parameters[i];
-          if (parameter.valueDeclaration === undefined) {
-            continue;
-          }
-
-          const parameterType = typeChecker.getTypeOfSymbolAtLocation(
-            parameter,
-            parameter.valueDeclaration,
-          );
-
-          /**
-           * Annoyingly, the type of variadic functions is `Fruit[]` instead of
-           * `Fruit`, so we must manually convert it.
-           */
-          let parameterTypesToUse: readonly ts.Type[];
-          if (isRestParameter(parameter) && isArray(parameterType)) {
-            parameterTypesToUse = typeChecker.getTypeArguments(parameterType);
-          } else {
-            parameterTypesToUse = [parameterType];
-          }
-
-          let paramTypeSet = paramNumToTypesMap.get(i);
-          if (paramTypeSet === undefined) {
-            paramTypeSet = new Set<ts.Type>();
-            paramNumToTypesMap.set(i, paramTypeSet);
-          }
-
-          for (const parameterTypeToUse of parameterTypesToUse) {
-            const parameterSubTypes =
-              tsutils.unionTypeParts(parameterTypeToUse);
-            for (const parameterSubType of parameterSubTypes) {
-              paramTypeSet.add(parameterSubType);
-            }
-          }
-        }
-      }
-
-      return paramNumToTypesMap;
-    }
 
     function isAssigningNonEnumValueToEnumVariable(
       leftType: ts.Type,
@@ -408,9 +298,10 @@ export default util.createRule<Options, MessageIds>({
 
     function isMismatchedEnumFunctionArgument(
       argumentType: ts.Type, // From the function call
-      paramTypeSet: Set<ts.Type>, // From the function itself
+      parameterType: ts.Type, // From the function itself
     ): boolean {
       const argumentEnumTypes = getEnumTypes(argumentType);
+      const parameterEnumTypes = getEnumTypes(parameterType);
 
       /**
        * First, allow function calls that have nothing to do with enums, like
@@ -421,7 +312,7 @@ export default util.createRule<Options, MessageIds>({
        * useNumber(0);
        * ```
        */
-      if (argumentEnumTypes.size === 0 && !typeSetHasEnum(paramTypeSet)) {
+      if (argumentEnumTypes.size === 0 && parameterEnumTypes.size === 0) {
         return false;
       }
 
@@ -435,15 +326,17 @@ export default util.createRule<Options, MessageIds>({
        * useNumber(Fruit.Apple);
        * ```
        */
-      for (const paramType of paramTypeSet.values()) {
-        if (
-          util.isTypeFlagSet(paramType, ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT)
-        ) {
-          return false;
-        }
+      if (
+        util.isTypeFlagSet(parameterType, ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT)
+      ) {
+        return false;
       }
 
       const argumentSubTypes = tsutils.unionTypeParts(argumentType);
+      const parameterSubTypes = tsutils.unionTypeParts(parameterType);
+
+      const argumentSubTypesSet = new Set(argumentSubTypes);
+      const parameterSubTypesSet = new Set(parameterSubTypes);
 
       /**
        * Allow function calls that exactly match the function type, like the
@@ -462,7 +355,7 @@ export default util.createRule<Options, MessageIds>({
        * useApple(null);
        * ```
        */
-      if (setHasAnyElement(paramTypeSet, ...argumentSubTypes)) {
+      if (setHasAnyElementFromSet(argumentSubTypesSet, parameterSubTypesSet)) {
         return false;
       }
 
@@ -475,28 +368,8 @@ export default util.createRule<Options, MessageIds>({
        * useFruit(Fruit.Apple);
        * ```
        */
-      if (setHasAnyElementFromSet(paramTypeSet, argumentEnumTypes)) {
+      if (setHasAnyElementFromSet(argumentEnumTypes, parameterEnumTypes)) {
         return false;
-      }
-
-      /**
-       * Allow function calls that match function types with a union, like the
-       * following:
-       *
-       * ```ts
-       * function useFruit(fruit: Fruit | null) {}
-       * useFruit(Fruit.Apple);
-       * ```
-       */
-      for (const paramType of paramTypeSet.values()) {
-        if (!paramType.isUnion()) {
-          continue;
-        }
-
-        const paramEnumTypes = getEnumTypes(paramType);
-        if (setHasAnyElementFromSet(paramEnumTypes, argumentEnumTypes)) {
-          return false;
-        }
       }
 
       /**
@@ -512,12 +385,8 @@ export default util.createRule<Options, MessageIds>({
         const arrayTypes = typeChecker.getTypeArguments(argumentType);
         for (const arrayType of arrayTypes) {
           const arrayEnumTypes = getEnumTypes(arrayType);
-
-          for (const paramType of paramTypeSet.values()) {
-            const paramEnumTypes = getEnumTypes(paramType);
-            if (setHasAnyElementFromSet(paramEnumTypes, arrayEnumTypes)) {
-              return false;
-            }
+          if (setHasAnyElementFromSet(arrayEnumTypes, parameterEnumTypes)) {
+            return false;
           }
         }
       }
@@ -531,6 +400,7 @@ export default util.createRule<Options, MessageIds>({
        * useFruits(Fruit.Apple);
        * ```
        */
+      // TODO
 
       return true;
     }
@@ -596,7 +466,11 @@ export default util.createRule<Options, MessageIds>({
 
       /** When a function is invoked. */
       CallExpression(node): void {
-        const paramNumToTypesMap = getRealFunctionParameterTypes(node);
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const signature = typeChecker.getResolvedSignature(tsNode);
+        if (signature === undefined) {
+          return;
+        }
 
         /**
          * Iterate through the arguments provided to the call function and cross
@@ -605,11 +479,7 @@ export default util.createRule<Options, MessageIds>({
         for (let i = 0; i < node.arguments.length; i++) {
           const argument = node.arguments[i];
           const argumentType = getTypeFromNode(argument);
-          const paramTypeSet = paramNumToTypesMap.get(i);
-          if (paramTypeSet === undefined) {
-            // This should never happen
-            continue;
-          }
+          const parameterType = signature.getTypeParameterAtPosition(i);
 
           /**
            * Disallow mismatched function calls, like the following:
@@ -619,14 +489,14 @@ export default util.createRule<Options, MessageIds>({
            * useFruit(0);
            * ```
            */
-          if (isMismatchedEnumFunctionArgument(argumentType, paramTypeSet)) {
+          if (isMismatchedEnumFunctionArgument(argumentType, parameterType)) {
             context.report({
               node,
               messageId: 'mismatchedFunctionArgument',
               data: {
                 ordinal: getOrdinalSuffix(i + 1), // e.g. 0 --> 1st
                 argumentType: getTypeName(argumentType),
-                parameterType: getTypeName(...paramTypeSet.values()),
+                parameterType: getTypeName(parameterType),
               },
             });
           }
