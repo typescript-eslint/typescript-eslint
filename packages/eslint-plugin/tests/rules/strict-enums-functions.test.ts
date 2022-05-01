@@ -550,6 +550,27 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
+function useFruit<FruitType extends Fruit>(fruitType: FruitType) {}
+useFruit(Fruit.Apple)
+`,
+});
+
+invalid.push({
+  name: 'Using a number literal as a function argument with an enum extension type',
+  code:
+    fruitEnumDefinition +
+    `
+function useFruit<FruitType extends Fruit>(fruitType: FruitType) {}
+useFruit(0)
+`,
+  errors: [{ messageId: 'mismatchedFunctionArgument' }],
+});
+
+valid.push({
+  name: 'Using a number enum as a class argument with an enum extension type',
+  code:
+    fruitEnumDefinition +
+    `
 class FruitClass<FruitType extends Fruit> {
   constructor(type: FruitType) {}
   useFruit(type: FruitType) {}
@@ -560,7 +581,7 @@ fruitClass.useFruit(Fruit.Apple);
 });
 
 invalid.push({
-  name: 'ZZ Using a number literal as a function argument with an enum extension type',
+  name: 'Using a number literal as a class argument with an enum extension type',
   code:
     fruitEnumDefinition +
     `
