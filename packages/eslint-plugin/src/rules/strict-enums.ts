@@ -222,6 +222,80 @@ export default util.createRule<Options, MessageIds>({
     // Main functions
     // --------------
 
+    function checkCallExpression(
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
+    ): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const signature = typeChecker.getResolvedSignature(tsNode);
+      if (signature === undefined) {
+        return;
+      }
+
+      /**
+       * The `getDeclaration` method actually returns
+       * `ts.SignatureDeclaration | undefined`, not `ts.SignatureDeclaration`.
+       */
+      const declaration = signature.getDeclaration();
+      if (declaration === undefined) {
+        return;
+      }
+
+      /**
+       * Iterate through the arguments provided to the call function and cross
+       * reference their types to the types of the "real" function parameters.
+       */
+      for (let i = 0; i < node.arguments.length; i++) {
+        const argument = node.arguments[i];
+        const argumentType = getTypeFromNode(argument);
+        let parameterType = signature.getTypeParameterAtPosition(i);
+
+        /**
+         * If this function parameter is a generic type that extends another
+         * type, we want to compare the calling argument to the constraint
+         * instead.
+         *
+         * For example:
+         *
+         * ```ts
+         * function useFruit<FruitType extends Fruit>(fruitType: FruitType) {}
+         * useFruit(0)
+         * ```
+         *
+         * Here, we want to compare `Fruit.Apple` to `Fruit`, not `FruitType`,
+         * because `FruitType` would just be equal to 0 in this case (and
+         * would be unsafe).
+         */
+        const parameter = declaration.parameters[i];
+        if (parameter !== undefined) {
+          const parameterTSNode = getTypeFromTSNode(parameter);
+          const constraint = parameterTSNode.getConstraint();
+          if (constraint !== undefined) {
+            parameterType = constraint;
+          }
+        }
+
+        /**
+         * Disallow mismatched function calls, like the following:
+         *
+         * ```ts
+         * function useFruit(fruit: Fruit) {}
+         * useFruit(0);
+         * ```
+         */
+        if (isMismatchedEnumFunctionArgument(argumentType, parameterType)) {
+          context.report({
+            node,
+            messageId: 'mismatchedFunctionArgument',
+            data: {
+              ordinal: getOrdinalSuffix(i + 1), // e.g. 0 --> 1st
+              argumentType: getTypeName(argumentType),
+              parameterType: getTypeName(parameterType),
+            },
+          });
+        }
+      }
+    }
+
     function isAssigningNonEnumValueToEnumVariable(
       leftType: ts.Type,
       rightType: ts.Type,
@@ -391,17 +465,6 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
-      /**
-       * Allow variadic function calls that "match" the array on the other end,
-       * like the following:
-       *
-       * ```ts
-       * function useFruits(...fruits: Fruit[]) {}
-       * useFruits(Fruit.Apple);
-       * ```
-       */
-      // TODO
-
       return true;
     }
 
@@ -466,41 +529,16 @@ export default util.createRule<Options, MessageIds>({
 
       /** When a function is invoked. */
       CallExpression(node): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const signature = typeChecker.getResolvedSignature(tsNode);
-        if (signature === undefined) {
-          return;
-        }
+        checkCallExpression(node);
+      },
 
+      /** When something is instantiated with the "new" keyword. */
+      NewExpression(node): void {
         /**
-         * Iterate through the arguments provided to the call function and cross
-         * reference their types to the types of the "real" function parameters.
+         * We need to perform the exact same checks on a class constructor
+         * invocation as we do on a normal function invocation.
          */
-        for (let i = 0; i < node.arguments.length; i++) {
-          const argument = node.arguments[i];
-          const argumentType = getTypeFromNode(argument);
-          const parameterType = signature.getTypeParameterAtPosition(i);
-
-          /**
-           * Disallow mismatched function calls, like the following:
-           *
-           * ```ts
-           * function useFruit(fruit: Fruit) {}
-           * useFruit(0);
-           * ```
-           */
-          if (isMismatchedEnumFunctionArgument(argumentType, parameterType)) {
-            context.report({
-              node,
-              messageId: 'mismatchedFunctionArgument',
-              data: {
-                ordinal: getOrdinalSuffix(i + 1), // e.g. 0 --> 1st
-                argumentType: getTypeName(argumentType),
-                parameterType: getTypeName(parameterType),
-              },
-            });
-          }
-        }
+        checkCallExpression(node);
       },
 
       /** When a unary operator is invoked. */

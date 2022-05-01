@@ -546,12 +546,32 @@ switch (fruit) {
 });
 
 valid.push({
+  name: 'Using a number enum as a function argument with an extension type',
+  code:
+    fruitEnumDefinition +
+    `
+function useFruit<FruitType extends number>(fruitType: FruitType) {}
+useFruit(Fruit.Apple);
+`,
+});
+
+valid.push({
+  name: 'Using a number literal as a function argument with an extension type',
+  code:
+    fruitEnumDefinition +
+    `
+function useFruit<FruitType extends number>(fruitType: FruitType) {}
+useFruit(0);
+`,
+});
+
+valid.push({
   name: 'Using a number enum as a function argument with an enum extension type',
   code:
     fruitEnumDefinition +
     `
 function useFruit<FruitType extends Fruit>(fruitType: FruitType) {}
-useFruit(Fruit.Apple)
+useFruit(Fruit.Apple);
 `,
 });
 
@@ -561,7 +581,7 @@ invalid.push({
     fruitEnumDefinition +
     `
 function useFruit<FruitType extends Fruit>(fruitType: FruitType) {}
-useFruit(0)
+useFruit(0);
 `,
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
@@ -593,7 +613,7 @@ const fruitClass = new FruitClass(0);
 fruitClass.useFruit(0);
   `,
   errors: [
-    { messageId: 'mismatchedAssignment' },
+    { messageId: 'mismatchedFunctionArgument' },
     { messageId: 'mismatchedFunctionArgument' },
   ],
 });
@@ -608,8 +628,9 @@ useFruit([Fruit.Apple, Fruit.Banana]);
   `,
 });
 
+// TODO: name
 invalid.push({
-  name: 'Using a number array as a function argument with an number enum array type',
+  name: 'ZZ Using a number array as a function argument with an number enum array type',
   code:
     fruitEnumDefinition +
     `
