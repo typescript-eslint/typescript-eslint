@@ -239,6 +239,16 @@ fruits = [0, 1];
   errors: [{ messageId: 'mismatchedAssignment' }],
 });
 
+valid.push({
+  name: 'Assigning an empty array to a variable with a number enum array',
+  code:
+    fruitEnumDefinition +
+    fruit2EnumDefinition +
+    `
+const fruitArray: Fruit[] = [];
+  `,
+});
+
 strictEnumsRuleTester.run('strict-enums-assignment', rule, {
   valid,
   invalid,

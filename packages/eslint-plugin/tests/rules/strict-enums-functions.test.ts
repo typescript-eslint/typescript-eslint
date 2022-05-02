@@ -996,6 +996,17 @@ toEqual<Fruit>(0, 0);
   errors: [{ messageId: 'mismatchedFunctionArgument' }],
 });
 
+valid.push({
+  name: 'Using JSON.stringify',
+  code: `
+JSON.stringify(
+  {},
+  (_, value: unknown) => value ?? undefined,
+  2,
+);
+        `,
+});
+
 strictEnumsRuleTester.run('strict-enums-functions', rule, {
   valid,
   invalid,
