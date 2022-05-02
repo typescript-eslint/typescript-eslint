@@ -435,6 +435,7 @@ export default util.createRule<Options, MessageIds>({
           return false;
         }
 
+        let atLeastOneParamIsEnum = false;
         for (const parameterSubType of parameterSubTypes) {
           if (!isArray(parameterSubType)) {
             continue;
@@ -444,6 +445,10 @@ export default util.createRule<Options, MessageIds>({
             typeChecker.getTypeArguments(parameterSubType)[0];
           if (parameterArrayType === undefined) {
             return false;
+          }
+
+          if (hasEnumTypes(parameterArrayType)) {
+            atLeastOneParamIsEnum = true;
           }
 
           if (
@@ -456,7 +461,7 @@ export default util.createRule<Options, MessageIds>({
           }
         }
 
-        return true;
+        return atLeastOneParamIsEnum;
       }
 
       /**

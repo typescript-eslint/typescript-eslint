@@ -1007,6 +1007,15 @@ JSON.stringify(
         `,
 });
 
+valid.push({
+  name: 'Using flatten',
+  code: `
+function flatten<T>(arr: T[][]): T[] {
+  return arr.reduce((acc, a) => acc.concat(a), []);
+}
+        `,
+});
+
 strictEnumsRuleTester.run('strict-enums-functions', rule, {
   valid,
   invalid,

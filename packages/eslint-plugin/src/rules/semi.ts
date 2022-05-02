@@ -56,7 +56,6 @@ export default util.createRule<Options, MessageIds>({
     const checkForSemicolon =
       rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>;
 
-    // eslint-disable-next-line @typescript-eslint/strict-enums
     const nodesToCheck = SEMI_AST_NODE_TYPES.reduce<TSESLint.RuleListener>(
       (accumulator, node) => {
         accumulator[node as string] = checkForSemicolon;
