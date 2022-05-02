@@ -4,7 +4,8 @@ import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
 const TYPE_NAME_TRUNCATION_THRESHOLD = 40;
-const NULL_OR_UNDEFINED = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
+const NULL_OR_UNDEFINED_OR_ANY =
+  ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Any;
 
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Any |
@@ -213,8 +214,10 @@ export default util.createRule<Options, MessageIds>({
       return util.isTypeFlagSet(type, ts.TypeFlags.Never);
     }
 
-    function isNullOrUndefined(...types: ts.Type[]): boolean {
-      return types.some(type => util.isTypeFlagSet(type, NULL_OR_UNDEFINED));
+    function isNullOrUndefinedOrAny(...types: ts.Type[]): boolean {
+      return types.some(type =>
+        util.isTypeFlagSet(type, NULL_OR_UNDEFINED_OR_ANY),
+      );
     }
 
     function setHasAnyElementFromSet<T>(set1: Set<T>, set2: Set<T>): boolean {
@@ -358,11 +361,11 @@ export default util.createRule<Options, MessageIds>({
       }
 
       /**
-       * As a special case, allow assignment of null and undefined in all
-       * circumstances, since the TypeScript compiler should properly type-check
-       * this.
+       * As a special case, allow assignment of null and undefined and any in
+       * all circumstances, since the TypeScript compiler should properly
+       * type-check this.
        */
-      if (isNullOrUndefined(rightType)) {
+      if (isNullOrUndefinedOrAny(rightType)) {
         return false;
       }
 
@@ -397,15 +400,33 @@ export default util.createRule<Options, MessageIds>({
       }
 
       /**
-       * As a special exception, allow comparisons to literal null or literal
-       * undefined.
+       * As a special exception, allow comparisons to null or undefined or any.
        *
        * The TypeScript compiler should handle these cases properly, so the
        * lint rule is unneeded.
        */
-      if (isNullOrUndefined(leftType, rightType)) {
+      if (isNullOrUndefinedOrAny(leftType, rightType)) {
         return false;
       }
+
+      /**
+       * Allow comparing numbers to numbers and strings to strings, like the
+       * following:
+       *
+       * ```ts
+       * declare const left: number | Fruit;
+       * declare const right: number | Fruit;
+       * if (left === right) {}
+       * ```
+       */
+      /*
+      if (hasNumberType(leftType) && hasNumberType(rightType)) {
+        return false;
+      }
+      if (hasStringType(leftType) && hasStringType(rightType)) {
+        return false;
+      }
+      */
 
       /**
        * Disallow mismatched comparisons, like the following:

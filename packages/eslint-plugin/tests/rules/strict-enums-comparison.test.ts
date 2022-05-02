@@ -40,17 +40,6 @@ if (Fruit.Apple === thing) {
 });
 
 valid.push({
-  name: 'Comparing a number enum literal to unknown',
-  code:
-    fruitEnumDefinition +
-    `
-declare thing: unknown;
-if (Fruit.Apple === thing) {
-}
-  `,
-});
-
-valid.push({
   name: 'Comparing a number enum literal to literal undefined',
   code:
     fruitEnumDefinition +
@@ -285,9 +274,10 @@ valid.push({
   name: 'Comparing a number union to a number union',
   code:
     fruitEnumDefinition +
+    fruit2EnumDefinition +
     `
 declare const left: number | Fruit;
-declare const right: number | Fruit;
+declare const right: number | Fruit2;
 if (left === right) {}
     `,
 });
@@ -295,10 +285,11 @@ if (left === right) {}
 valid.push({
   name: 'Comparing a string union to a string union',
   code:
-    fruitEnumDefinition +
+    vegetableEnumDefinition +
+    vegetable2EnumDefinition +
     `
-declare const left: string | Fruit;
-declare const right: string | Fruit;
+declare const left: string | Vegetable;
+declare const right: string | Vegetable2;
 if (left === right) {}
     `,
 });
