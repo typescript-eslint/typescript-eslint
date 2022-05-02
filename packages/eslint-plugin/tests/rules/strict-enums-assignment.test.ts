@@ -163,7 +163,7 @@ const fruitCopy: Fruit = fruit;
 });
 
 valid.push({
-  name: 'Assignment to variables with a composition type that includes individual enum values',
+  name: 'Assigning variables with a composition type that includes individual enum values',
   code: `
 enum Foo {
   A = 1,
@@ -187,7 +187,7 @@ const z: Foo.A | Foo.B | Foo.C | Foo.D = foo;
  * doing and allow it.
  */
 valid.push({
-  name: 'Assignment to a variable with a intersection enum type',
+  name: 'Assigning a variable with a intersection enum type',
   code:
     fruitEnumDefinition +
     fruit2EnumDefinition +
@@ -197,17 +197,46 @@ const foo: Fruit & Fruit2 = Fruit.Apple;
 });
 
 valid.push({
-  name: 'Assignment to a variable with a composition of binary flags',
-  code:
-    fruitEnumDefinition +
-    fruit2EnumDefinition +
-    `
+  name: 'Assigning to a variable with a composition of binary flags',
+  code: `
 enum Flag {
   Value1 = 1 << 0,
   Value2 = 1 << 1,
 }
 const flags = Flag.Value1 | Flag.Value2;
   `,
+});
+
+valid.push({
+  name: 'Assigning a number enum array to a variable with a number enum array',
+  code:
+    fruitEnumDefinition +
+    `
+declare let fruits: Fruit[];
+fruits = [Fruit.Apple, Fruit.Banana];
+  `,
+});
+
+valid.push({
+  name: 'Assigning a number enum array to a variable with a number array',
+  code:
+    fruitEnumDefinition +
+    `
+declare let numbers: number[];
+numbers = [Fruit.Apple, Fruit.Banana];
+  `,
+});
+
+invalid.push({
+  name: 'Assigning a number array to a variable with a number enum array',
+  code:
+    fruitEnumDefinition +
+    fruit2EnumDefinition +
+    `
+declare let fruits: Fruit[];
+fruits = [0, 1];
+  `,
+  errors: [{ messageId: 'mismatchedAssignment' }],
 });
 
 strictEnumsRuleTester.run('strict-enums-assignment', rule, {

@@ -43,7 +43,7 @@ export default util.createRule<Options, MessageIds>({
       mismatchedAssignment:
         'The type of the enum assignment ({{ assignmentType }}) does not match the declared enum type ({{ declaredType }}) of the variable.',
       mismatchedComparison:
-        'The two things in the comparison do not have a shared enum type.',
+        'The two things in the comparison ({{ leftType }} and {{ rightType }}) do not have a shared enum type.',
       mismatchedFunctionArgument:
         'The {{ ordinal }} argument in the function call ({{ argumentType}}) does not match the declared enum type of the function signature ({{ parameterType }}).',
     },
@@ -197,7 +197,12 @@ export default util.createRule<Options, MessageIds>({
     function isArray(
       type: ts.Type,
     ): type is ts.TypeReference | ts.TupleTypeReference {
-      return typeChecker.isArrayType(type) || typeChecker.isTupleType(type);
+      const typeName = getTypeName(type);
+      return (
+        typeChecker.isArrayType(type) ||
+        typeChecker.isTupleType(type) ||
+        typeName.startsWith('Iterable<')
+      );
     }
 
     function isEnum(type: ts.Type): boolean {
@@ -300,6 +305,37 @@ export default util.createRule<Options, MessageIds>({
       leftType: ts.Type,
       rightType: ts.Type,
     ): boolean {
+      // Handle arrays recursively
+      if (isArray(leftType)) {
+        const leftArrayType = typeChecker.getTypeArguments(leftType)[0];
+        if (leftArrayType === undefined) {
+          return false;
+        }
+
+        const rightSubTypes = tsutils.unionTypeParts(rightType);
+        for (const rightSubType of rightSubTypes) {
+          if (!isArray(rightSubType)) {
+            continue;
+          }
+
+          const rightArrayType = typeChecker.getTypeArguments(rightSubType)[0];
+          if (rightArrayType === undefined) {
+            return false;
+          }
+
+          if (
+            !isAssigningNonEnumValueToEnumVariable(
+              leftArrayType,
+              rightArrayType,
+            )
+          ) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
       const leftEnumTypes = getEnumTypes(leftType);
       if (leftEnumTypes.size === 0) {
         // This is not an enum assignment
@@ -374,8 +410,39 @@ export default util.createRule<Options, MessageIds>({
       argumentType: ts.Type, // From the function call
       parameterType: ts.Type, // From the function itself
     ): boolean {
-      const argumentEnumTypes = getEnumTypes(argumentType);
-      const parameterEnumTypes = getEnumTypes(parameterType);
+      const argumentSubTypes = tsutils.unionTypeParts(argumentType);
+      const parameterSubTypes = tsutils.unionTypeParts(parameterType);
+
+      // Handle arrays recursively
+      if (isArray(argumentType)) {
+        const argumentArrayType = typeChecker.getTypeArguments(argumentType)[0];
+        if (argumentArrayType === undefined) {
+          return false;
+        }
+
+        for (const parameterSubType of parameterSubTypes) {
+          if (!isArray(parameterSubType)) {
+            continue;
+          }
+
+          const parameterArrayType =
+            typeChecker.getTypeArguments(parameterSubType)[0];
+          if (parameterArrayType === undefined) {
+            return false;
+          }
+
+          if (
+            !isMismatchedEnumFunctionArgument(
+              argumentArrayType,
+              parameterArrayType,
+            )
+          ) {
+            return false;
+          }
+        }
+
+        return true;
+      }
 
       /**
        * First, allow function calls that have nothing to do with enums, like
@@ -386,7 +453,9 @@ export default util.createRule<Options, MessageIds>({
        * useNumber(0);
        * ```
        */
-      if (argumentEnumTypes.size === 0 && parameterEnumTypes.size === 0) {
+      const argumentEnumTypes = getEnumTypes(argumentType);
+      const parameterEnumTypes = getEnumTypes(parameterType);
+      if (parameterEnumTypes.size === 0) {
         return false;
       }
 
@@ -400,35 +469,44 @@ export default util.createRule<Options, MessageIds>({
        * useNumber(Fruit.Apple);
        * ```
        */
-      if (
-        util.isTypeFlagSet(parameterType, ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT)
-      ) {
-        return false;
+      for (const parameterSubType of parameterSubTypes) {
+        if (
+          util.isTypeFlagSet(
+            parameterSubType,
+            ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT,
+          )
+        ) {
+          return false;
+        }
       }
 
-      const argumentSubTypes = tsutils.unionTypeParts(argumentType);
-      const parameterSubTypes = tsutils.unionTypeParts(parameterType);
-
-      const argumentSubTypesSet = new Set(argumentSubTypes);
-      const parameterSubTypesSet = new Set(parameterSubTypes);
+      /**
+       * Disallow passing number literals or string literals into functions that
+       * take in an enum, like the following:
+       *
+       * ```ts
+       * function useFruit(fruit: Fruit) {}
+       * declare const fruit: Fruit.Apple | 1;
+       * useFruit(fruit)
+       * ```
+       */
+      for (const argumentSubType of argumentSubTypes) {
+        if (argumentSubType.isLiteral() && !isEnum(argumentSubType)) {
+          return true;
+        }
+      }
 
       /**
-       * Allow function calls that exactly match the function type, like the
+       * Allow function calls that match one of the types in a union, like the
        * following:
        *
        * ```ts
-       * function useApple(apple: Fruit.Apple) {}
-       * useApple(Fruit.Apple);
-       * ```
-       *
-       * Additionally, allow function calls that match one of the types in a
-       * union, like the following:
-       *
-       * ```ts
-       * function useApple(apple: Fruit.Apple | null) {}
+       * function useApple(fruitOrNull: Fruit | null) {}
        * useApple(null);
        * ```
        */
+      const argumentSubTypesSet = new Set(argumentSubTypes);
+      const parameterSubTypesSet = new Set(parameterSubTypes);
       if (setHasAnyElementFromSet(argumentSubTypesSet, parameterSubTypesSet)) {
         return false;
       }
@@ -438,31 +516,12 @@ export default util.createRule<Options, MessageIds>({
        * type, like the following:
        *
        * ```ts
-       * function useFruit(apple: Fruit) {}
+       * function useFruit(fruit: Fruit) {}
        * useFruit(Fruit.Apple);
        * ```
        */
       if (setHasAnyElementFromSet(argumentEnumTypes, parameterEnumTypes)) {
         return false;
-      }
-
-      /**
-       * Allow function calls that have an enum array that "matches" the array
-       * on the other end, like the following:
-       *
-       * ```ts
-       * function useFruitOrFruitArray(fruitOrFruitArray: Fruit | Fruit[]) {}
-       * useFruitOrFruitArray([Fruit.Apple]);
-       * ```
-       */
-      if (isArray(argumentType)) {
-        const arrayTypes = typeChecker.getTypeArguments(argumentType);
-        for (const arrayType of arrayTypes) {
-          const arrayEnumTypes = getEnumTypes(arrayType);
-          if (setHasAnyElementFromSet(arrayEnumTypes, parameterEnumTypes)) {
-            return false;
-          }
-        }
       }
 
       return true;
@@ -483,8 +542,8 @@ export default util.createRule<Options, MessageIds>({
             node,
             messageId: 'mismatchedAssignment',
             data: {
-              assignmentType: getTypeName(leftType),
-              declaredType: getTypeName(rightType),
+              assignmentType: getTypeName(rightType),
+              declaredType: getTypeName(leftType),
             },
           });
         }
@@ -523,7 +582,14 @@ export default util.createRule<Options, MessageIds>({
             rightEnumTypes,
           )
         ) {
-          context.report({ node, messageId: 'mismatchedComparison' });
+          context.report({
+            node,
+            messageId: 'mismatchedComparison',
+            data: {
+              leftType: getTypeName(leftType),
+              rightType: getTypeName(rightType),
+            },
+          });
         }
       },
 
@@ -597,7 +663,14 @@ export default util.createRule<Options, MessageIds>({
           }
 
           if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
-            context.report({ node, messageId: 'mismatchedAssignment' });
+            context.report({
+              node,
+              messageId: 'mismatchedAssignment',
+              data: {
+                assignmentType: getTypeName(rightType),
+                declaredType: getTypeName(leftType),
+              },
+            });
           }
         }
       },

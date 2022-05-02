@@ -246,8 +246,9 @@ if (vegetable === Vegetable2.Lettuce2) {
   errors: [{ messageId: 'mismatchedComparison' }],
 });
 
+// TODO
 valid.push({
-  name: 'Comparing a generic enum extension value with a number enum literal',
+  name: 'ZZ Comparing a generic enum extension value with a number enum literal',
   code:
     fruitEnumDefinition +
     `
