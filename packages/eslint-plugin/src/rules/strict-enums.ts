@@ -209,6 +209,10 @@ export default util.createRule<Options, MessageIds>({
       return util.isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
     }
 
+    function isNever(type: ts.Type): boolean {
+      return util.isTypeFlagSet(type, ts.TypeFlags.Never);
+    }
+
     function isNullOrUndefined(...types: ts.Type[]): boolean {
       return types.some(type => util.isTypeFlagSet(type, NULL_OR_UNDEFINED));
     }
@@ -320,6 +324,17 @@ export default util.createRule<Options, MessageIds>({
 
           const rightArrayType = typeChecker.getTypeArguments(rightSubType)[0];
           if (rightArrayType === undefined) {
+            return false;
+          }
+
+          /**
+           * Allow empty arrays, like the following:
+           *
+           * ```ts
+           * const fruitArray: Fruit[] = [];
+           * ```
+           */
+          if (isNever(rightArrayType)) {
             return false;
           }
 

@@ -231,7 +231,6 @@ invalid.push({
   name: 'Assigning a number array to a variable with a number enum array',
   code:
     fruitEnumDefinition +
-    fruit2EnumDefinition +
     `
 declare let fruits: Fruit[];
 fruits = [0, 1];
@@ -243,7 +242,6 @@ valid.push({
   name: 'Assigning an empty array to a variable with a number enum array',
   code:
     fruitEnumDefinition +
-    fruit2EnumDefinition +
     `
 const fruitArray: Fruit[] = [];
   `,
