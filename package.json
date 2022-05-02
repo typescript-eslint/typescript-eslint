@@ -98,7 +98,7 @@
     "glob": "^8.0.1",
     "husky": "^7.0.4",
     "jest": "^27.3.1",
-    "jest-diff": "^27.3.1",
+    "jest-diff": "^28.0.2",
     "jest-snapshot": "^27.3.1",
     "jest-specific-snapshot": "^5.0.0",
     "lerna": "^4.0.0",
