@@ -1,3 +1,4 @@
+import { ScopeType } from './scope';
 import { TSESTree } from '@typescript-eslint/types';
 import { assert } from './assert';
 import {
@@ -106,7 +107,10 @@ class ScopeManager {
    */
   public acquire(node: TSESTree.Node, inner = false): Scope | null {
     function predicate(testScope: Scope): boolean {
-      if (testScope.type === 'function' && testScope.functionExpressionScope) {
+      if (
+        testScope.type === ScopeType.function &&
+        testScope.functionExpressionScope
+      ) {
         return false;
       }
       return true;

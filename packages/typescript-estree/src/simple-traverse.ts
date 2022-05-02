@@ -47,6 +47,7 @@ class SimpleTraverser {
 
     if ('enter' in this.selectors) {
       this.selectors.enter(node, parent);
+      // eslint-disable-next-line @typescript-eslint/strict-enums
     } else if (node.type in this.selectors) {
       this.selectors[node.type](node, parent);
     }

@@ -35,6 +35,7 @@ class ClassVisitor extends Visitor {
 
   visit(node: TSESTree.Node | null | undefined): void {
     // make sure we only handle the nodes we are designed to handle
+    // eslint-disable-next-line @typescript-eslint/strict-enums
     if (node && node.type in this) {
       super.visit(node);
     } else {

@@ -362,7 +362,7 @@ abstract class ScopeBase<
 
     if (this.shouldStaticallyClose()) {
       closeRef = this.#staticCloseRef;
-    } else if (this.type !== 'global') {
+    } else if (this.type !== ScopeType.global) {
       closeRef = this.#dynamicCloseRef;
     } else {
       closeRef = this.#globalCloseRef;

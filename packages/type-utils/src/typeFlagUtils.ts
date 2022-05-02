@@ -7,7 +7,7 @@ const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 /**
  * Gets all of the type flags in a type, iterating through unions automatically.
  */
-export function getTypeFlags(type: ts.Type): number {
+export function getTypeFlags(type: ts.Type): number | ts.TypeFlags {
   let flags = 0;
   for (const t of unionTypeParts(type)) {
     flags |= t.flags;
@@ -42,7 +42,7 @@ function isFlagSet(flags: number, flag: number): boolean {
  */
 export function isSymbolFlagSet(
   symbol: ts.Symbol,
-  flagsToCheck: number,
+  flagsToCheck: number | ts.SymbolFlags,
 ): boolean {
   return isFlagSet(symbol.flags, flagsToCheck);
 }
@@ -58,7 +58,7 @@ export function isSymbolFlagSet(
  */
 export function isTypeFlagSet(
   type: ts.Type,
-  flagsToCheck: number,
+  flagsToCheck: number | ts.TypeFlags,
   isReceiver?: boolean,
 ): boolean {
   const flags = getTypeFlags(type);
@@ -77,7 +77,7 @@ export function isTypeFlagSet(
  */
 export function isTypeFlagSetSimple(
   type: ts.Type,
-  flagsToCheck: number,
+  flagsToCheck: number | ts.TypeFlags,
 ): boolean {
   return isFlagSet(type.flags, flagsToCheck);
 }
