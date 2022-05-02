@@ -29,6 +29,28 @@ if (1 === 2) {
 });
 
 valid.push({
+  name: 'Comparing a number enum literal to any',
+  code:
+    fruitEnumDefinition +
+    `
+declare thing: any;
+if (Fruit.Apple === thing) {
+}
+  `,
+});
+
+valid.push({
+  name: 'Comparing a number enum literal to unknown',
+  code:
+    fruitEnumDefinition +
+    `
+declare thing: unknown;
+if (Fruit.Apple === thing) {
+}
+  `,
+});
+
+valid.push({
   name: 'Comparing a number enum literal to literal undefined',
   code:
     fruitEnumDefinition +
@@ -246,9 +268,8 @@ if (vegetable === Vegetable2.Lettuce2) {
   errors: [{ messageId: 'mismatchedComparison' }],
 });
 
-// TODO
 valid.push({
-  name: 'ZZ Comparing a generic enum extension value with a number enum literal',
+  name: 'Comparing a generic enum extension value with a number enum literal',
   code:
     fruitEnumDefinition +
     `
@@ -258,6 +279,28 @@ class FruitClass<FruitType extends Fruit> {
   }
 }
   `,
+});
+
+valid.push({
+  name: 'Comparing a number union to a number union',
+  code:
+    fruitEnumDefinition +
+    `
+declare const left: number | Fruit;
+declare const right: number | Fruit;
+if (left === right) {}
+    `,
+});
+
+valid.push({
+  name: 'Comparing a string union to a string union',
+  code:
+    fruitEnumDefinition +
+    `
+declare const left: string | Fruit;
+declare const right: string | Fruit;
+if (left === right) {}
+    `,
 });
 
 // --------------
