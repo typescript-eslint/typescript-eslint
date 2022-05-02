@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.21.0...v5.22.0) (2022-05-02)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [comma-spacing] verify `nextToken` exists ([#4868](https://github.com/typescript-eslint/typescript-eslint/issues/4868)) ([23746f8](https://github.com/typescript-eslint/typescript-eslint/commit/23746f8babace7c2354368d6fb0881be26e19c41))
+
+
+### Features
+
+* **eslint-plugin:** [no-duplicate-enum-values] add rule ([#4833](https://github.com/typescript-eslint/typescript-eslint/issues/4833)) ([5899164](https://github.com/typescript-eslint/typescript-eslint/commit/5899164b35d91106512a2720b23ba92e1893132f))
+
+
+
+
+
 # [5.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.20.0...v5.21.0) (2022-04-25)
 
 

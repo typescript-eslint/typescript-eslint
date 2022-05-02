@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.21.0...v5.22.0) (2022-05-02)
+
+
+### Bug Fixes
+
+* add rule to vscode settings ([#4881](https://github.com/typescript-eslint/typescript-eslint/issues/4881)) ([3eab889](https://github.com/typescript-eslint/typescript-eslint/commit/3eab889022c9d1617f275017d6951f663ea57f24))
+* **eslint-plugin:** [comma-spacing] verify `nextToken` exists ([#4868](https://github.com/typescript-eslint/typescript-eslint/issues/4868)) ([23746f8](https://github.com/typescript-eslint/typescript-eslint/commit/23746f8babace7c2354368d6fb0881be26e19c41))
+
+
+### Features
+
+* **ast-spec:** add fixture test framework and some initial fixtures ([#3258](https://github.com/typescript-eslint/typescript-eslint/issues/3258)) ([f3cf87b](https://github.com/typescript-eslint/typescript-eslint/commit/f3cf87bf20fd0542f92a96a318aa9ee5bf23c1f6))
+* **eslint-plugin:** [no-duplicate-enum-values] add rule ([#4833](https://github.com/typescript-eslint/typescript-eslint/issues/4833)) ([5899164](https://github.com/typescript-eslint/typescript-eslint/commit/5899164b35d91106512a2720b23ba92e1893132f))
+
+
+
+
+
 # [5.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.20.0...v5.21.0) (2022-04-25)
 
 

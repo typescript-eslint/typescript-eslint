@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "5.21.0",
+  "version": "5.22.0",
   "private": true,
   "scripts": {
     "build": "docusaurus build",
@@ -24,7 +24,7 @@
     "@docusaurus/theme-common": "^2.0.0-beta.18",
     "@docusaurus/theme-search-algolia": "^2.0.0-beta.18",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/website-eslint": "5.21.0",
+    "@typescript-eslint/website-eslint": "5.22.0",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json5": "^2.2.0",
