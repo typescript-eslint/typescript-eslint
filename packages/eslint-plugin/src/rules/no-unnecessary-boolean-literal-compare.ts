@@ -2,10 +2,6 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 import * as util from '../util';
 
-const NULL_OR_UNDEFINED = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
-const BOOLEAN_OR_BOOLEAN_LITERAL =
-  ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral;
-
 type MessageIds =
   | 'direct'
   | 'negated'
@@ -112,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
     function isBooleanType(expressionType: ts.Type): boolean {
       return util.isTypeFlagSetSimple(
         expressionType,
-        BOOLEAN_OR_BOOLEAN_LITERAL,
+        ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
       );
     }
 
@@ -130,7 +126,11 @@ export default util.createRule<Options, MessageIds>({
       const { types } = expressionType;
 
       const nonNullishTypes = types.filter(
-        type => !util.isTypeFlagSetSimple(type, NULL_OR_UNDEFINED),
+        type =>
+          !util.isTypeFlagSetSimple(
+            type,
+            ts.TypeFlags.Undefined | ts.TypeFlags.Null,
+          ),
       );
 
       const hasNonNullishType = nonNullishTypes.length > 0;
