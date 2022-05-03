@@ -99,9 +99,9 @@ export default createRule<Options, MessageIds>({
             propertySymbol?.getDeclarations()?.[0]?.modifiers?.[0].kind;
           if (
             (allowPrivateClassPropertyAccess &&
-              modifierKind === ts.SyntaxKind.PrivateKeyword) ||
+              modifierKind == ts.SyntaxKind.PrivateKeyword) ||
             (allowProtectedClassPropertyAccess &&
-              modifierKind === ts.SyntaxKind.ProtectedKeyword)
+              modifierKind == ts.SyntaxKind.ProtectedKeyword)
           ) {
             return;
           }
