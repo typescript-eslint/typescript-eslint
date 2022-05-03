@@ -338,6 +338,37 @@ if (Fruit.Apple < Fruit.Banana) {
   `,
 });
 
+valid.push({
+  name: 'Comparing a string enum literal value to an intersection with a string (simple)',
+  code:
+    vegetableEnumDefinition +
+    `
+type WeirdString = string & { __someBrand: void; };
+declare weirdString: WeirdString;
+if (Vegetable.Lettuce === weirdString) {
+}
+  `,
+});
+
+valid.push({
+  name: 'ZZ Comparing a string enum literal value to an intersection with a string (complicated)',
+  code:
+    vegetableEnumDefinition +
+    `
+enum InternalSymbolName {
+  Foo = "foo",
+  Bar = "bar",
+}
+type __String =
+  | (string & { __escapedIdentifier: void; })
+  | (void & { __escapedIdentifier: void; })
+  | InternalSymbolName;
+declare const weirdString: __String;
+if (weirdString === 'someArbitraryValue') {
+}
+  `,
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,

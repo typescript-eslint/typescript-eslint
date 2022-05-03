@@ -165,6 +165,44 @@ export default util.createRule<Options, MessageIds>({
       return enumTypes.size > 0;
     }
 
+    function hasNumberType(type: ts.Type): boolean {
+      return hasType(type, ts.TypeFlags.Number);
+    }
+
+    function hasNumberLiteralType(type: ts.Type): boolean {
+      return hasType(type, ts.TypeFlags.NumberLiteral);
+    }
+
+    function hasStringType(type: ts.Type): boolean {
+      return hasType(type, ts.TypeFlags.String);
+    }
+
+    function hasStringLiteralType(type: ts.Type): boolean {
+      return hasType(type, ts.TypeFlags.StringLiteral);
+    }
+
+    function hasType(type: ts.Type, typeFlag: ts.TypeFlags): boolean {
+      if (type.isUnion()) {
+        const unionSubTypes = tsutils.unionTypeParts(type);
+        for (const subType of unionSubTypes) {
+          if (hasType(subType, typeFlag)) {
+            return true;
+          }
+        }
+      }
+
+      if (type.isIntersection()) {
+        const intersectionSubTypes = tsutils.intersectionTypeParts(type);
+        for (const subType of intersectionSubTypes) {
+          if (hasType(subType, typeFlag)) {
+            return true;
+          }
+        }
+      }
+
+      return util.isTypeFlagSet(type, typeFlag);
+    }
+
     function isArray(
       type: ts.Type,
     ): type is ts.TypeReference | ts.TupleTypeReference {
@@ -373,25 +411,6 @@ export default util.createRule<Options, MessageIds>({
       if (isNullOrUndefinedOrAny(leftType, rightType)) {
         return false;
       }
-
-      /**
-       * Allow comparing numbers to numbers and strings to strings, like the
-       * following:
-       *
-       * ```ts
-       * declare const left: number | Fruit;
-       * declare const right: number | Fruit;
-       * if (left === right) {}
-       * ```
-       */
-      /*
-      if (hasNumberType(leftType) && hasNumberType(rightType)) {
-        return false;
-      }
-      if (hasStringType(leftType) && hasStringType(rightType)) {
-        return false;
-      }
-      */
 
       /**
        * Disallow mismatched comparisons, like the following:
