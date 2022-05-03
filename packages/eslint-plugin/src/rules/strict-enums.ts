@@ -165,20 +165,12 @@ export default util.createRule<Options, MessageIds>({
       return enumTypes.size > 0;
     }
 
-    function hasNumberType(type: ts.Type): boolean {
-      return hasType(type, ts.TypeFlags.Number);
+    function hasNumber(type: ts.Type): boolean {
+      return hasType(type, ts.TypeFlags.NumberLike);
     }
 
-    function hasNumberLiteralType(type: ts.Type): boolean {
-      return hasType(type, ts.TypeFlags.NumberLiteral);
-    }
-
-    function hasStringType(type: ts.Type): boolean {
-      return hasType(type, ts.TypeFlags.String);
-    }
-
-    function hasStringLiteralType(type: ts.Type): boolean {
-      return hasType(type, ts.TypeFlags.StringLiteral);
+    function hasString(type: ts.Type): boolean {
+      return hasType(type, ts.TypeFlags.StringLike);
     }
 
     function hasType(type: ts.Type, typeFlag: ts.TypeFlags): boolean {
@@ -200,7 +192,10 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
-      return util.isTypeFlagSet(type, typeFlag);
+      return (
+        util.isTypeFlagSet(type, typeFlag) &&
+        !util.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
+      );
     }
 
     function isArray(
@@ -409,6 +404,17 @@ export default util.createRule<Options, MessageIds>({
        * lint rule is unneeded.
        */
       if (isNullOrUndefinedOrAny(leftType, rightType)) {
+        return false;
+      }
+
+      /**
+       * Allow comparing numbers to numbers and strings to strings in
+       * complicated union/intersection types.
+       */
+      if (hasNumber(leftType) && hasNumber(rightType)) {
+        return false;
+      }
+      if (hasString(leftType) && hasString(rightType)) {
         return false;
       }
 
