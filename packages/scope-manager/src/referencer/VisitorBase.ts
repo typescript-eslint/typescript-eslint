@@ -67,7 +67,6 @@ abstract class VisitorBase {
    * Dispatching node.
    */
   visit(node: TSESTree.Node | null | undefined): void {
-    // eslint-disable-next-line @typescript-eslint/strict-enums
     if (node == null || node.type == null) {
       return;
     }
