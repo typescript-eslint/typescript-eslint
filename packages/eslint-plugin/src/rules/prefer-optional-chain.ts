@@ -82,7 +82,6 @@ export default util.createRule({
             operator,
           );
 
-          // eslint-disable-next-line @typescript-eslint/strict-enums
           return leftPrecedence < util.OperatorPrecedence.LeftHandSide;
         }
         context.report({

@@ -54,7 +54,6 @@ export const isTokenOfTypeWithConditions = <
     token: TSESTree.Token | null | undefined,
   ): token is TSESTree.Token & { type: TokenType } & Conditions =>
     token?.type === tokenType &&
-    // eslint-disable-next-line @typescript-eslint/strict-enums
     entries.every(([key, value]) => token[key] === value);
 };
 

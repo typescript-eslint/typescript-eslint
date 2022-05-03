@@ -76,7 +76,6 @@ export default util.createRule({
         return true;
       }
 
-      // eslint-disable-next-line @typescript-eslint/strict-enums
       if (symbol && symbol.escapedName === FUNCTION_CONSTRUCTOR) {
         const declarations = symbol.getDeclarations() ?? [];
         for (const declaration of declarations) {
