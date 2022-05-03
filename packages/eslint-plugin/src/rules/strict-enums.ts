@@ -172,10 +172,7 @@ export default util.createRule<Options, MessageIds>({
 
     function getTypeName(type: ts.Type): string {
       const typeName = util.getTypeName(typeChecker, type);
-      if (
-        typeName.length <= TYPE_NAME_TRUNCATION_THRESHOLD ||
-        insideJestTest() // Never truncate in tests
-      ) {
+      if (typeName.length <= TYPE_NAME_TRUNCATION_THRESHOLD) {
         return typeName;
       }
 
@@ -189,10 +186,6 @@ export default util.createRule<Options, MessageIds>({
     function hasEnumTypes(type: ts.Type): boolean {
       const enumTypes = getEnumTypes(type);
       return enumTypes.size > 0;
-    }
-
-    function insideJestTest(): boolean {
-      return process.env.JEST_WORKER_ID !== undefined;
     }
 
     function isArray(
