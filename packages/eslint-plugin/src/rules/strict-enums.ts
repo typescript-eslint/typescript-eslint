@@ -173,6 +173,10 @@ export default util.createRule<Options, MessageIds>({
       return hasType(type, ts.TypeFlags.StringLike);
     }
 
+    /**
+     * This will return false for any enum-like type, since it would
+     * subsequently not be a "pure" type anymore.
+     */
     function hasType(type: ts.Type, typeFlag: ts.TypeFlags): boolean {
       if (type.isUnion()) {
         const unionSubTypes = tsutils.unionTypeParts(type);
