@@ -3,26 +3,14 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
-const TYPE_NAME_TRUNCATION_THRESHOLD = 40;
-const NULL_OR_UNDEFINED_OR_ANY =
-  ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Any;
-
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Any |
   ts.TypeFlags.Unknown |
   ts.TypeFlags.Number |
   ts.TypeFlags.String;
 
-const ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS = new Set(['&', '|']);
-const ALLOWED_ENUM_NON_BINARY_COMPARISON_OPERATORS = new Set(['===', '!==']);
-const ALLOWED_ENUM_COMPARISON_OPERATORS = new Set([
-  ...ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS.values(),
-  ...ALLOWED_ENUM_NON_BINARY_COMPARISON_OPERATORS.values(),
-]);
-
 export type Options = [];
 export type MessageIds =
-  | 'incorrectComparisonOperator'
   | 'incorrectIncrement'
   | 'mismatchedAssignment'
   | 'mismatchedComparison'
@@ -38,8 +26,6 @@ export default util.createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      incorrectComparisonOperator:
-        'You cannot compare enums with the "{{ operator }}" operator. You can only compare with the "===", "!==", "&", or "|" operators.',
       incorrectIncrement: 'You cannot increment or decrement an enum type.',
       mismatchedAssignment:
         'The type of the enum assignment ({{ assignmentType }}) does not match the declared enum type ({{ declaredType }}) of the variable.',
@@ -171,16 +157,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function getTypeName(type: ts.Type): string {
-      const typeName = util.getTypeName(typeChecker, type);
-      if (typeName.length <= TYPE_NAME_TRUNCATION_THRESHOLD) {
-        return typeName;
-      }
-
-      const truncatedTypeName = typeName.substring(
-        0,
-        TYPE_NAME_TRUNCATION_THRESHOLD,
-      );
-      return `${truncatedTypeName} [snip]`;
+      return util.getTypeName(typeChecker, type);
     }
 
     function hasEnumTypes(type: ts.Type): boolean {
@@ -209,7 +186,10 @@ export default util.createRule<Options, MessageIds>({
 
     function isNullOrUndefinedOrAny(...types: ts.Type[]): boolean {
       return types.some(type =>
-        util.isTypeFlagSet(type, NULL_OR_UNDEFINED_OR_ANY),
+        util.isTypeFlagSet(
+          type,
+          ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Any,
+        ),
       );
     }
 
@@ -375,21 +355,12 @@ export default util.createRule<Options, MessageIds>({
       operator: string,
       leftType: ts.Type,
       rightType: ts.Type,
-      leftEnumTypes: Set<ts.Type>,
-      rightEnumTypes: Set<ts.Type>,
     ): boolean {
-      /**
-       * Allow composing a variable based on enum literals using binary
-       * operators, like the following:
-       *
-       * ```ts
-       * const flags = Flag.Value1 | Flag.Value2;
-       * ```
-       *
-       * (Even though this is an assignment, it still matches the
-       * `BinaryExpression` node type.)
-       */
-      if (ALLOWED_ENUM_BINARY_COMPARISON_OPERATORS.has(operator)) {
+      const leftEnumTypes = getEnumTypes(leftType);
+      const rightEnumTypes = getEnumTypes(rightType);
+
+      if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
+        // This is not an enum comparison
         return false;
       }
 
@@ -589,34 +560,7 @@ export default util.createRule<Options, MessageIds>({
         const leftType = getTypeFromNode(node.left);
         const rightType = getTypeFromNode(node.right);
 
-        const leftEnumTypes = getEnumTypes(leftType);
-        const rightEnumTypes = getEnumTypes(rightType);
-
-        if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
-          // This is not an enum comparison
-          return;
-        }
-
-        /** Only allow certain specific operators for enum comparisons. */
-        if (!ALLOWED_ENUM_COMPARISON_OPERATORS.has(node.operator)) {
-          context.report({
-            node,
-            messageId: 'incorrectComparisonOperator',
-            data: {
-              operator: node.operator,
-            },
-          });
-        }
-
-        if (
-          isMismatchedEnumComparison(
-            node.operator,
-            leftType,
-            rightType,
-            leftEnumTypes,
-            rightEnumTypes,
-          )
-        ) {
+        if (isMismatchedEnumComparison(node.operator, leftType, rightType)) {
           context.report({
             node,
             messageId: 'mismatchedComparison',

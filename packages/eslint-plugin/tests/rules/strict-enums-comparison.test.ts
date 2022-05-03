@@ -318,51 +318,7 @@ if (Vegetable.Lettuce !== Vegetable.Carrot) {
   `,
 });
 
-invalid.push({
-  name: 'Comparing a number enum literal value to an enum literal value of the same type (with loose equality)',
-  code:
-    fruitEnumDefinition +
-    `
-if (Fruit.Apple == Fruit.Banana) {
-}
-  `,
-  errors: [{ messageId: 'incorrectComparisonOperator' }],
-});
-
-invalid.push({
-  name: 'Comparing a string enum literal value to an enum literal value of the same type (with loose equality)',
-  code:
-    vegetableEnumDefinition +
-    `
-if (Vegetable.Lettuce == Vegetable.Carrot) {
-}
-  `,
-  errors: [{ messageId: 'incorrectComparisonOperator' }],
-});
-
-invalid.push({
-  name: 'Comparing a number enum literal value to an enum literal value of the same type (with loose inequality)',
-  code:
-    fruitEnumDefinition +
-    `
-if (Fruit.Apple != Fruit.Banana) {
-}
-  `,
-  errors: [{ messageId: 'incorrectComparisonOperator' }],
-});
-
-invalid.push({
-  name: 'Comparing a string enum literal value to an enum literal value of the same type (with loose inequality)',
-  code:
-    vegetableEnumDefinition +
-    `
-if (Vegetable.Lettuce != Vegetable.Carrot) {
-}
-  `,
-  errors: [{ messageId: 'incorrectComparisonOperator' }],
-});
-
-invalid.push({
+valid.push({
   name: 'Comparing a number enum literal value to an enum literal value of the same type (with greater than)',
   code:
     fruitEnumDefinition +
@@ -370,10 +326,9 @@ invalid.push({
 if (Fruit.Apple > Fruit.Banana) {
 }
   `,
-  errors: [{ messageId: 'incorrectComparisonOperator' }],
 });
 
-invalid.push({
+valid.push({
   name: 'Comparing a number enum literal value to an enum literal value of the same type (with less than)',
   code:
     fruitEnumDefinition +
@@ -381,7 +336,6 @@ invalid.push({
 if (Fruit.Apple < Fruit.Banana) {
 }
   `,
-  errors: [{ messageId: 'incorrectComparisonOperator' }],
 });
 
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {

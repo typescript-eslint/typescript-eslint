@@ -24,13 +24,10 @@ See the examples below for the types of patterns that are prevented.
 
 The goal of this rule is to make enums work like they do in other languages. One of the main benefits of enums is that they allow you to write code that is future-safe, because enums are supposed to be resilient to reorganization. If you arbitrarily change the values of an enum (or change the ordering of an enum with computed values), the idea is that nothing in your code-base should break.
 
-Subsequently, this rule bans potentially-dangerous patterns that you might already be using, like using the greater than operator to select a subset of enum values.
-
 ## Banned Patterns
 
 This rule bans:
 
-1. Comparing enums with unsafe operators - `incorrectComparisonOperator`
 1. Enum incrementing/decrementing - `incorrectIncrement`
 1. Mismatched enum declarations/assignments - `mismatchedAssignment`
 1. Mismatched enum comparisons - `mismatchedComparison`
@@ -41,28 +38,18 @@ This rule bans:
 ### ❌ Incorrect
 
 ```ts
-const fruit: Fruit = 0;
-```
-
-```ts
-let fruit = Fruit.Apple;
-fruit = 1;
-```
-
-```ts
 let fruit = Fruit.Apple;
 fruit++;
+```
+
+```ts
+const fruit: Fruit = 0;
 ```
 
 ```ts
 if (fruit === 0) {
 }
 if (vegetable === 'lettuce') {
-}
-```
-
-```ts
-if (fruit > Fruit.Apple) {
 }
 ```
 
@@ -74,12 +61,12 @@ useFruit(0);
 ### ✅ Correct
 
 ```ts
-const fruit = Fruit.Apple;
+let fruit = Fruit.Apple;
+fruit = Fruit.Banana;
 ```
 
 ```ts
-let fruit = Fruit.Apple;
-fruit = Fruit.Banana;
+const fruit = Fruit.Apple;
 ```
 
 ```ts
@@ -95,19 +82,12 @@ if (vegetable === Vegetable.Lettuce) {
 ```
 
 ```ts
-if (fruit !== Fruit.Apple) {
-}
-```
-
-```ts
 function useFruit(fruit: Fruit) {}
 useFruit(Fruit.Apple);
 ```
 
 ## Error Information
 
-- `incorrectComparisonOperator` - You cannot compare enums with the "{{ operator }}" operator. You can only compare with the "===", "!==", "&", or "|" operators.
-  - Enums are supposed to be resilient to reorganization, so you should only explicitly compare them. For example, if you used a greater than sign to compare a number enum, and then someone reassigned/reordered the values of the enum, then it could potentially break your code.
 - `incorrectIncrement` - You cannot increment or decrement an enum type.
   - Enums are supposed to be resilient to reorganization, so you should explicitly assign a new value instead. For example, if someone someone reassigned/reordered the values of the enum, then it could potentially break your code.
 - `mismatchedAssignment` - The type of the assignment does not match the declared enum type of the variable.
@@ -146,6 +126,17 @@ if (vegetable === 'lettuce') {
 if (vegetable === Vegetable.Lettuce) {
 }
 ```
+
+## Comparison Operators
+
+Since it is a common pattern, this rule allows using greater than or less than to compare numeric enums, like this:
+
+```ts
+if (fruit > Fruit.Banana) {
+}
+```
+
+This pattern allows you to select a subset of enums. However, it can lead to bugs when enum values are arbitrarily changed, because the subset will also change. The TypeScript compiler cannot warn you about this, so you should use this pattern with care.
 
 ## Options
 
