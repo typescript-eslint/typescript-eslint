@@ -31,11 +31,11 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       incorrectIncrement: 'You cannot increment or decrement an enum type.',
       mismatchedAssignment:
-        'The type of the enum assignment ({{ assignmentType }}) does not match the declared enum type ({{ declaredType }}) of the variable.',
+        'The type of the enum assignment does not match the declared enum type of the variable.',
       mismatchedComparison:
-        'The two things in the comparison ({{ leftType }} and {{ rightType }}) do not have a shared enum type.',
+        'The two things in the comparison do not have a shared enum type.',
       mismatchedFunctionArgument:
-        'The {{ ordinal }} argument in the function call ({{ argumentType}}) does not match the declared enum type of the function signature ({{ parameterType }}).',
+        'The {{ ordinal }} argument in the function call does not match the declared enum type of the function signature.',
     },
     schema: [
       {
@@ -586,10 +586,6 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node,
             messageId: 'mismatchedAssignment',
-            data: {
-              assignmentType: getTypeName(rightType),
-              declaredType: getTypeName(leftType),
-            },
           });
         }
       },
@@ -603,10 +599,6 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node,
             messageId: 'mismatchedComparison',
-            data: {
-              leftType: getTypeName(leftType),
-              rightType: getTypeName(rightType),
-            },
           });
         }
       },
@@ -638,7 +630,10 @@ export default util.createRule<Options, MessageIds>({
          * ```
          */
         if (hasEnumTypes(argumentType)) {
-          context.report({ node, messageId: 'incorrectIncrement' });
+          context.report({
+            node,
+            messageId: 'incorrectIncrement',
+          });
         }
       },
 
