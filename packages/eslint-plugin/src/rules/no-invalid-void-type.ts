@@ -128,7 +128,7 @@ export default util.createRule<[Options], MessageIds>({
 
     /**
      * @brief checks that a union containing void is valid
-     * @returns true if every member of the union is specified as a valid type in
+     * @return true if every member of the union is specified as a valid type in
      * validUnionMembers, or is a valid generic type parametrized by void
      */
     function isValidUnionType(node: TSESTree.TSUnionType): boolean {

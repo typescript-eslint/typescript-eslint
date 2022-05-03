@@ -320,6 +320,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const rightSubTypes = tsutils.unionTypeParts(rightType);
+
         for (const rightSubType of rightSubTypes) {
           if (!isArray(rightSubType)) {
             continue;

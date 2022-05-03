@@ -367,7 +367,7 @@ function getMemberName(
  * @param memberGroups the valid names to be validated.
  * @param orderConfig the current order to be validated.
  *
- * @returns Index of the matching member type in the order configuration.
+ * @return Index of the matching member type in the order configuration.
  */
 function getRankOrder(
   memberGroups: BaseMemberType[],
@@ -564,7 +564,7 @@ export default util.createRule<Options, MessageIds>({
      * @param groupOrder Group order to be validated.
      * @param supportsModifiers A flag indicating whether the type supports modifiers (scope or accessibility) or not.
      *
-     * @returns Array of member groups or null if one of the groups is not correctly sorted.
+     * @return Array of member groups or null if one of the groups is not correctly sorted.
      */
     function checkGroupSort(
       members: Member[],
@@ -616,7 +616,7 @@ export default util.createRule<Options, MessageIds>({
      * @param members Members to be validated.
      * @param caseSensitive indicates if the alpha ordering is case sensitive or not.
      *
-     * @returns True if all members are correctly sorted.
+     * @return True if all members are correctly sorted.
      */
     function checkAlphaSort(
       members: Member[],
