@@ -44,7 +44,8 @@
     "start": "nx run website:start",
     "test": "nx run-many --target=test --all --parallel",
     "test-integration": "yarn jest -c ./tests/integration/jest.config.js",
-    "typecheck": "nx run-many --target=typecheck --all --parallel"
+    "typecheck": "nx run-many --target=typecheck --all --parallel",
+    "test:prefer-literal-enum-member": "ts-node packages/eslint-plugin/tests/rules/prefer-literal-enum-member.test.ts"
   },
   "config": {
     "commitizen": {

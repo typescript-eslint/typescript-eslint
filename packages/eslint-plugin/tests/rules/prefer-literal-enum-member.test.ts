@@ -23,21 +23,6 @@ enum ValidLiteral {
 }
     `,
     `
-enum ValidNumber {
-  A = 42,
-}
-    `,
-    `
-enum ValidNumber {
-  A = -42,
-}
-    `,
-    `
-enum ValidNumber {
-  A = +42,
-}
-    `,
-    `
 enum ValidNull {
   A = null,
 }
@@ -50,11 +35,6 @@ enum ValidPlain {
     `
 enum ValidQuotedKey {
   'a',
-}
-    `,
-    `
-enum ValidQuotedKeyWithAssignment {
-  'a' = 1,
 }
     `,
     noFormat`
@@ -71,7 +51,6 @@ enum Foo {
   D = 1 | 0,
   E = 1 & 0,
   F = 1 ^ 0,
-  G = ~1,
 }
       `,
       options: [{ allowBitwiseExpressions: true }],
@@ -197,6 +176,11 @@ enum InvalidVariable {
 }
       `,
       errors: [
+        {
+          messageId: 'notLiteral',
+          line: 5,
+          column: 3,
+        },
         {
           messageId: 'notLiteral',
           line: 7,
@@ -334,6 +318,58 @@ enum Foo {
 }
       `,
       options: [{ allowBitwiseExpressions: true }],
+      errors: [
+        {
+          messageId: 'notLiteral',
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 6,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 7,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 8,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 9,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 10,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+const x = 1;
+enum Foo {
+  A = x,
+  B = 2,
+  C = +3,
+  D = -4,
+  E = +x,
+  F = -x,
+  G = ~x,
+}
+      `,
+      options: [{ allowBitwiseExpressions: false }],
       errors: [
         {
           messageId: 'notLiteral',

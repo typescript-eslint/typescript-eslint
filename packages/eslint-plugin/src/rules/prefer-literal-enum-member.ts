@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
@@ -12,7 +12,7 @@ export default createRule({
       requiresTypeChecking: false,
     },
     messages: {
-      notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
+      notLiteral: `Explicit enum value must only be a literal value (string, boolean, etc) except number.`,
     },
     schema: [
       {
@@ -32,29 +32,27 @@ export default createRule({
     },
   ],
   create(context, [{ allowBitwiseExpressions }]) {
+    const sourceCode = context.getSourceCode();
+
     return {
       TSEnumMember(node): void {
         // If there is no initializer, then this node is just the name of the member, so ignore.
         if (node.initializer == null) {
           return;
         }
+
+        const token = sourceCode.getLastToken(node.initializer);
         // any old literal
-        if (node.initializer.type === AST_NODE_TYPES.Literal) {
+        if (
+          node.initializer.type === AST_NODE_TYPES.Literal &&
+          (token === null || token.type !== AST_TOKEN_TYPES.Numeric)
+        ) {
           return;
         }
         // TemplateLiteral without expressions
         if (
           node.initializer.type === AST_NODE_TYPES.TemplateLiteral &&
           node.initializer.expressions.length === 0
-        ) {
-          return;
-        }
-        // -1 and +1
-        if (
-          node.initializer.type === AST_NODE_TYPES.UnaryExpression &&
-          node.initializer.argument.type === AST_NODE_TYPES.Literal &&
-          (['+', '-'].includes(node.initializer.operator) ||
-            (allowBitwiseExpressions && node.initializer.operator === '~'))
         ) {
           return;
         }
