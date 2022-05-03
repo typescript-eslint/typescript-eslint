@@ -157,7 +157,6 @@ export default createRule<Options, MessageIds>({
     }
     function isAllowedTypeImportPattern(importSource: string): boolean {
       return (
-        allowedImportTypeMatchers.length > 0 &&
         // As long as there's one matching pattern that allows type import
         allowedImportTypeMatchers.some(matcher => matcher.ignores(importSource))
       );
