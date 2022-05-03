@@ -3,6 +3,9 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
+/** These operators are always considered to be safe. */
+const ALLOWED_ENUM_OPERATORS = new Set(['in', '|', '&', '|=', '&=']);
+
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Any |
   ts.TypeFlags.Unknown |
@@ -393,6 +396,13 @@ export default util.createRule<Options, MessageIds>({
       leftType: ts.Type,
       rightType: ts.Type,
     ): boolean {
+      /**
+       * Allow any comparisons with the some whitelisted operators.
+       */
+      if (ALLOWED_ENUM_OPERATORS.has(operator)) {
+        return false;
+      }
+
       const leftEnumTypes = getEnumTypes(leftType);
       const rightEnumTypes = getEnumTypes(rightType);
 

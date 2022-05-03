@@ -294,52 +294,8 @@ if (left === right) {}
     `,
 });
 
-// --------------
-// OPERATOR TESTS
-// --------------
-
 valid.push({
-  name: 'Comparing a number enum literal value to an enum literal value of the same type (with strict inequality)',
-  code:
-    fruitEnumDefinition +
-    `
-if (Fruit.Apple !== Fruit.Banana) {
-}
-  `,
-});
-
-valid.push({
-  name: 'Comparing a string enum literal value to an enum literal value of the same type (with strict inequality)',
-  code:
-    vegetableEnumDefinition +
-    `
-if (Vegetable.Lettuce !== Vegetable.Carrot) {
-}
-  `,
-});
-
-valid.push({
-  name: 'Comparing a number enum literal value to an enum literal value of the same type (with greater than)',
-  code:
-    fruitEnumDefinition +
-    `
-if (Fruit.Apple > Fruit.Banana) {
-}
-  `,
-});
-
-valid.push({
-  name: 'Comparing a number enum literal value to an enum literal value of the same type (with less than)',
-  code:
-    fruitEnumDefinition +
-    `
-if (Fruit.Apple < Fruit.Banana) {
-}
-  `,
-});
-
-valid.push({
-  name: 'Comparing a string enum literal value to an intersection with a string (simple)',
+  name: 'Comparing a string enum literal to an intersection with a string (simple)',
   code:
     vegetableEnumDefinition +
     `
@@ -351,7 +307,7 @@ if (Vegetable.Lettuce === weirdString) {
 });
 
 valid.push({
-  name: 'ZZ Comparing a string enum literal value to an intersection with a string (complicated)',
+  name: 'Comparing a string literal to an intersection with a string (complicated)',
   code:
     vegetableEnumDefinition +
     `
@@ -366,6 +322,17 @@ type __String =
 declare const weirdString: __String;
 if (weirdString === 'someArbitraryValue') {
 }
+  `,
+});
+
+valid.push({
+  name: 'Comparing using the in operator',
+  code:
+    vegetableEnumDefinition +
+    `
+const foo = {};
+const vegetable = Vegetable.Lettuce;
+if (vegetable in foo) {}
   `,
 });
 
