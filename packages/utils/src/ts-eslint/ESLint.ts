@@ -375,14 +375,10 @@ namespace ESLint {
    */
   export interface Formatter {
     /**
-     * The method to convert the LintResult objects to text
+     * The method to convert the LintResult objects to text.
+     * Promise return supported since 8.4.0
      */
-    format(results: LintResult[]): string;
-    /**
-     * The method to asynchronously convert the LintResult objects to text.
-     * @since 8.4.0
-     */
-    format(results: LintResult[]): Promise<string>;
+    format(results: LintResult[]): string | Promise<string>;
   }
 }
 
