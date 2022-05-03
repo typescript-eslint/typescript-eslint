@@ -1,0 +1,67 @@
+name: "Bug: Report a complex bug with repro repo"
+description: Report a complex bug you encountered by providing an isolated repro repo
+title: "Bug: "
+labels:
+  - bug
+  - triage
+body:
+  - type: checkboxes
+    id: sanity-checks
+    attributes:
+      label: Before You File a Bug Report Please Confirm You Have Done The Following...
+      options:
+        - label: I have updated to the latest version of the packages.
+          required: true
+        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3Abug) and found none that matched my issue.
+          required: true
+        - label: I have tried restarting my IDE and the issue persists.
+          required: true
+        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: Tell us exactly what went wrong and what to look for. Please be as specific as possible here.
+      placeholder: I expected that the file X should report the error "foo bar"...
+    validations:
+      required: true
+  - type: input
+    id: repro-repo
+    attributes:
+      label: Repro Repo Link
+      description: Link to an isolated repro repro on github
+      placeholder: https://github.com/your-username/repro-repo
+    validations:
+      required: true
+  - type: textarea
+    id: repro-steps
+    attributes:
+      label: Repro Steps
+      description: The steps we need to take to reproduce the bug using your repro
+      value: |
+        1) clone the repo
+        2) `yarn install`
+        3) `yarn lint`
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions
+      render: markdown
+      value: |
+        <!-- Fill in the relevant versions and delete the others -->
+        | package                                | version |
+        | -------------------------------------- | ------- |
+        | `@typescript-eslint/eslint-plugin`     | `X.Y.Z` |
+        | `@typescript-eslint/parser`            | `X.Y.Z` |
+        | `@typescript-eslint/scope-manager`     | `X.Y.Z` |
+        | `@typescript-eslint/typescript-estree` | `X.Y.Z` |
+        | `@typescript-eslint/type-utils`        | `X.Y.Z` |
+        | `@typescript-eslint/utils`             | `X.Y.Z` |
+        | `TypeScript`                           | `X.Y.Z` |
+        | `ESLint`                               | `X.Y.Z` |
+        | `node`                                 | `X.Y.Z` |
+    validations:
+      required: true

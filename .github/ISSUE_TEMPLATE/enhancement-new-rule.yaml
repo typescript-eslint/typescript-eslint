@@ -1,0 +1,69 @@
+name: "Enhancement: Propose a New Rule"
+description: "Propose a new lint rule"
+title: "Rule proposal: a short description of my proposal"
+labels:
+  - "enhancement: new plugin rule"
+  - "package: eslint-plugin"
+  - triage
+body:
+  - type: checkboxes
+    id: sanity-checks
+    attributes:
+      label: Before You File a Proposal Please Confirm You Have Done The Following...
+      options:
+        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3A%22enhancement%3A+new+plugin+rule%22) and found none that match my proposal.
+          required: true
+        - label: I have searched the [current rule list](https://typescript-eslint.io/rules/#supported-rules) and found no rules that match my proposal.
+          required: true
+        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+          required: true
+  - type: checkboxes
+    id: rule-fits-the-brief
+    attributes:
+      label: My proposal is suitable for this project
+      options:
+        - label: My proposal specifically checks TypeScript syntax, or it proposes a check that requires type information to be accurate.
+          required: true
+        - label: My proposal is not a "formatting rule"; meaning it does not just enforce how code is formatted (white space, brace placement, etc).
+          required: true
+        - label: I believe my proposal would be useful to the broader TypeScript community (meaning it is not a niche proposal).
+          required: true
+  - type: markdown
+    id: suggestion-go-elsewhere
+    attributes:
+      value: |
+        If you answered no to one or more of the above, then your rule *likely* doesn't belong in this project, and will *likely* be rejected.
+        That doesn't mean your proposal isn't useful! It just means you should consider either proposing it to another project (like [eslint-plugin-unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn)), or publishing it in a new plugin.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Explain what your proposed rule would do and why this is useful.
+      placeholder: My rule would check that things of type foo are not assigned to bars.
+    validations:
+      required: true
+  - type: textarea
+    id: fail-cases
+    attributes:
+      label: Fail
+      description: Specify an example of code that should be detected and errored on.
+      render: typescript
+      value: |
+        var replace = 'me';
+    validations:
+      required: true
+  - type: textarea
+    id: pass-cases
+    attributes:
+      label: Pass
+      description: Specify an example of code that would be accepted in its place
+      render: typescript
+      value: |
+        const replace = 'me';
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Info
+      description: Any additional info you'd like to provide.
