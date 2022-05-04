@@ -205,30 +205,21 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    function isArray(
-      type: ts.Type,
-    ): type is ts.TypeReference | ts.TupleTypeReference {
-      const typeName = getTypeName(type);
-      return (
-        typeChecker.isArrayType(type) ||
-        typeChecker.isTupleType(type) ||
-        typeName.startsWith('Iterable<')
-      );
-    }
-
     function isEnum(type: ts.Type): boolean {
       return util.isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
     }
 
-    function isNever(type: ts.Type): boolean {
-      return util.isTypeFlagSet(type, ts.TypeFlags.Never);
-    }
-
-    function isNullOrUndefinedOrAny(...types: ts.Type[]): boolean {
+    function isNullOrUndefinedOrAnyOrUnknownOrNever(
+      ...types: ts.Type[]
+    ): boolean {
       return types.some(type =>
         util.isTypeFlagSet(
           type,
-          ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Any,
+          ts.TypeFlags.Null |
+            ts.TypeFlags.Undefined |
+            ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.Never,
         ),
       );
     }
@@ -325,47 +316,42 @@ export default util.createRule<Options, MessageIds>({
       leftType: ts.Type,
       rightType: ts.Type,
     ): boolean {
-      // Handle arrays recursively
-      if (isArray(leftType)) {
-        const leftArrayType = typeChecker.getTypeArguments(leftType)[0];
-        if (leftArrayType === undefined) {
-          return false;
-        }
+      /**
+       * First, recursively check for containers like the following:
+       *
+       * ```ts
+       * declare let fruits: Fruit[];
+       * fruits = [0, 1];
+       * ```
+       */
+      if (
+        util.isTypeReferenceType(leftType) &&
+        util.isTypeReferenceType(rightType)
+      ) {
+        const leftTypeArguments = typeChecker.getTypeArguments(leftType);
+        const rightTypeArguments = typeChecker.getTypeArguments(rightType);
 
-        const rightSubTypes = tsutils.unionTypeParts(rightType);
-
-        for (const rightSubType of rightSubTypes) {
-          if (!isArray(rightSubType)) {
+        for (let i = 0; i < leftTypeArguments.length; i++) {
+          const leftTypeArgument = leftTypeArguments[i];
+          const rightTypeArgument = rightTypeArguments[i];
+          if (
+            leftTypeArgument === undefined ||
+            rightTypeArgument === undefined
+          ) {
             continue;
           }
 
-          const rightArrayType = typeChecker.getTypeArguments(rightSubType)[0];
-          if (rightArrayType === undefined) {
-            return false;
-          }
-
-          /**
-           * Allow empty arrays, like the following:
-           *
-           * ```ts
-           * const fruitArray: Fruit[] = [];
-           * ```
-           */
-          if (isNever(rightArrayType)) {
-            return false;
-          }
-
           if (
-            !isAssigningNonEnumValueToEnumVariable(
-              leftArrayType,
-              rightArrayType,
+            isAssigningNonEnumValueToEnumVariable(
+              leftTypeArgument,
+              rightTypeArgument,
             )
           ) {
-            return false;
+            return true;
           }
         }
 
-        return true;
+        return false;
       }
 
       const leftEnumTypes = getEnumTypes(leftType);
@@ -375,11 +361,10 @@ export default util.createRule<Options, MessageIds>({
       }
 
       /**
-       * As a special case, allow assignment of null and undefined and any in
-       * all circumstances, since the TypeScript compiler should properly
-       * type-check this.
+       * As a special case, allow assignment of certain types that the
+       * TypeScript compiler should handle properly.
        */
-      if (isNullOrUndefinedOrAny(rightType)) {
+      if (isNullOrUndefinedOrAnyOrUnknownOrNever(rightType)) {
         return false;
       }
 
@@ -417,7 +402,7 @@ export default util.createRule<Options, MessageIds>({
        * The TypeScript compiler should handle these cases properly, so the
        * lint rule is unneeded.
        */
-      if (isNullOrUndefinedOrAny(leftType, rightType)) {
+      if (isNullOrUndefinedOrAnyOrUnknownOrNever(leftType, rightType)) {
         return false;
       }
 
@@ -450,48 +435,54 @@ export default util.createRule<Options, MessageIds>({
       argumentType: ts.Type, // From the function call
       parameterType: ts.Type, // From the function itself
     ): boolean {
-      const argumentSubTypes = tsutils.unionTypeParts(argumentType);
-      const parameterSubTypes = tsutils.unionTypeParts(parameterType);
+      /**
+       * First, recursively check for functions with type containers like the
+       * following:
+       *
+       * ```ts
+       * function useFruits(fruits: Fruit[]) {}
+       * useFruits([0, 1]);
+       * ```
+       */
+      if (util.isTypeReferenceType(argumentType)) {
+        const argumentTypeArguments =
+          typeChecker.getTypeArguments(argumentType);
 
-      // Handle arrays recursively
-      if (isArray(argumentType)) {
-        const argumentArrayType = typeChecker.getTypeArguments(argumentType)[0];
-        if (argumentArrayType === undefined) {
-          return false;
-        }
-
-        let atLeastOneParamIsEnum = false;
+        const parameterSubTypes = tsutils.unionTypeParts(parameterType);
         for (const parameterSubType of parameterSubTypes) {
-          if (!isArray(parameterSubType)) {
+          if (!util.isTypeReferenceType(parameterSubType)) {
             continue;
           }
+          const parameterTypeArguments =
+            typeChecker.getTypeArguments(parameterSubType);
 
-          const parameterArrayType =
-            typeChecker.getTypeArguments(parameterSubType)[0];
-          if (parameterArrayType === undefined) {
-            return false;
-          }
+          for (let i = 0; i < argumentTypeArguments.length; i++) {
+            const argumentTypeArgument = argumentTypeArguments[i];
+            const parameterTypeArgument = parameterTypeArguments[i];
+            if (
+              argumentTypeArgument === undefined ||
+              parameterTypeArgument === undefined
+            ) {
+              continue;
+            }
 
-          if (hasEnumTypes(parameterArrayType)) {
-            atLeastOneParamIsEnum = true;
-          }
-
-          if (
-            !isMismatchedEnumFunctionArgument(
-              argumentArrayType,
-              parameterArrayType,
-            )
-          ) {
-            return false;
+            if (
+              isMismatchedEnumFunctionArgument(
+                argumentTypeArgument,
+                parameterTypeArgument,
+              )
+            ) {
+              return true;
+            }
           }
         }
 
-        return atLeastOneParamIsEnum;
+        return false;
       }
 
       /**
-       * First, allow function calls that have nothing to do with enums, like
-       * the following:
+       * Allow function calls that have nothing to do with enums, like the
+       * following:
        *
        * ```ts
        * function useNumber(num: number) {}
@@ -514,6 +505,7 @@ export default util.createRule<Options, MessageIds>({
        * useNumber(Fruit.Apple);
        * ```
        */
+      const parameterSubTypes = tsutils.unionTypeParts(parameterType);
       for (const parameterSubType of parameterSubTypes) {
         if (
           util.isTypeFlagSet(
@@ -535,6 +527,7 @@ export default util.createRule<Options, MessageIds>({
        * useFruit(fruit)
        * ```
        */
+      const argumentSubTypes = tsutils.unionTypeParts(argumentType);
       for (const argumentSubType of argumentSubTypes) {
         if (argumentSubType.isLiteral() && !isEnum(argumentSubType)) {
           return true;

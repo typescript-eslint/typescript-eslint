@@ -274,6 +274,18 @@ const fruitArray: Fruit[] = [];
   `,
 });
 
+invalid.push({
+  name: 'Assigning a mismatched number enum array',
+  code:
+    fruitEnumDefinition +
+    fruit2EnumDefinition +
+    `
+declare let fruits: Fruit[];
+fruits = [Fruit2.Apple2, Fruit2.Banana2];
+  `,
+  errors: [{ messageId: 'mismatchedAssignment' }],
+});
+
 valid.push({
   name: 'Assigning a new variable with a composition of bitflags',
   code:
