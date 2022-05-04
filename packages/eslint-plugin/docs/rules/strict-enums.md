@@ -144,6 +144,6 @@ No options are provided.
 
 ## Attributes
 
-- [x] ✅ Recommended
+- [ ] ✅ Recommended
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
