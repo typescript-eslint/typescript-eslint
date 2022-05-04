@@ -231,6 +231,28 @@ ruleTester.run('no-restricted-imports', rule, {
         },
       ],
     },
+    {
+      code: `
+import type { foo } from 'import1/private/bar';
+import type { foo } from 'import2/private/bar';
+      `,
+      options: [
+        {
+          patterns: [
+            {
+              group: ['import1/private/*'],
+              message: 'usage of import1 private modules not allowed.',
+              allowTypeImports: true,
+            },
+            {
+              group: ['import2/private/*'],
+              message: 'usage of import2 private modules not allowed.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
