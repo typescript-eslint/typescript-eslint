@@ -25,7 +25,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallows the usage of unsafe enum patterns',
-      recommended: 'error',
+      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
