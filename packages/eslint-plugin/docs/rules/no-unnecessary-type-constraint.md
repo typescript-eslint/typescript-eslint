@@ -76,5 +76,5 @@ If you don't care about the specific styles of your type constraints, or never u
 ## Attributes
 
 - [x] ✅ Recommended
-- [x] 🔧 Fixable
+- [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
