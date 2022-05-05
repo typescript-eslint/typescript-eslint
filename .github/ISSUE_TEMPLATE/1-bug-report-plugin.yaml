@@ -1,6 +1,6 @@
-name: "Bug: Report a Bug With a Rule"
-description: Report a bug you encountered with a lint rule
-title: "[rule name here] <short description of issue>"
+name: "🐛 Report a Bug With a Rule"
+description: "Report a bug you encountered with a lint rule"
+title: "Bug: [rule name here] <short description of the issue>"
 labels:
   - bug
   - "package: eslint-plugin"
@@ -10,26 +10,39 @@ body:
     id: sanity-checks
     attributes:
       label: Before You File a Bug Report Please Confirm You Have Done The Following...
+      description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
       options:
+        - label: I have tried restarting my IDE and the issue persists.
+          required: true
         - label: I have updated to the latest version of the packages.
           required: true
         - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3Abug+label%3A%22package%3A+eslint-plugin%22) and found none that matched my issue.
           required: true
         - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
           required: true
-  - type: markdown
-    id: complexity-note
-    attributes:
-      value: |
-        ## Note For Complex Issues
-        If your issue requires some complex repro - such as multiple files or a specific folder structure - please do not use this template.
-        Instead, select the ["Report a complex bug with repro repo" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=bug-report-complex.yaml), and follow the steps.
   - type: input
     id: playground-link
     attributes:
       label: Playground Link
-      description: Link to an isolated repro in [our online playground](https://typescript-eslint.io/play/)
+      description: |
+        Link to an isolated reproduction [in our online playground](https://typescript-eslint.io/play/).
+        If either of the following holds true:
+        - You can't reproduce the issue in the playground consider filing using the complex issue template mentioned above.
+        - Your issue requires some complex setup - such as multiple files or a specific folder structure.
+
+        ***Please do not use this template.*** Instead, select the
+        ["Report a complex bug you encountered by providing an isolated reproduction repository" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=7-bug-report-complex.yaml).
       placeholder: https://typescript-eslint.io/play/...
+    validations:
+      required: true
+  - type: textarea
+    id: repro-code
+    attributes:
+      label: Repro Code
+      description: A ***minimal*** code sample which reproduces the issue
+      render: typescript
+    validations:
+      required: true
   - type: textarea
     id: eslint-config
     attributes:
@@ -58,14 +71,6 @@ body:
           }
         }
   - type: textarea
-    id: repro-code
-    attributes:
-      label: Repro Code
-      description: A ***minimal*** code sample which reproduces the issue
-      render: typescript
-    validations:
-      required: true
-  - type: textarea
     id: expected
     attributes:
       label: Expected Result
@@ -90,7 +95,6 @@ body:
     id: versions
     attributes:
       label: Versions
-      render: markdown
       value: |
         | package                                | version |
         | -------------------------------------- | ------- |

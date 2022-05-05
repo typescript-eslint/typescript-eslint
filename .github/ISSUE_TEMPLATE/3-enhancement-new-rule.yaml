@@ -1,8 +1,8 @@
-name: "Enhancement: Propose a New Rule Option Or Additional Checks"
-description: "Propose a new lint rule option or propose that a lint rule checks more cases"
-title: "[rule-name] a short description of my proposal"
+name: "✨ Enhancement: Propose a New Rule"
+description: "Propose a new lint rule"
+title: "Rule proposal: <a short description of my proposal>"
 labels:
-  - "enhancement: plugin rule option"
+  - "enhancement: new plugin rule"
   - "package: eslint-plugin"
   - triage
 body:
@@ -10,8 +10,9 @@ body:
     id: sanity-checks
     attributes:
       label: Before You File a Proposal Please Confirm You Have Done The Following...
+      description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
       options:
-        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3A%22enhancement%3A+plugin+rule+option%22) and found none that match my proposal.
+        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3A%22enhancement%3A+new+plugin+rule%22) and found none that match my proposal.
           required: true
         - label: I have searched the [current rule list](https://typescript-eslint.io/rules/#supported-rules) and found no rules that match my proposal.
           required: true
@@ -22,20 +23,30 @@ body:
     attributes:
       label: My proposal is suitable for this project
       options:
+        - label: My proposal specifically checks TypeScript syntax, or it proposes a check that requires type information to be accurate.
+          required: true
+        - label: My proposal is not a "formatting rule"; meaning it does not just enforce how code is formatted (whitespace, brace placement, etc).
+          required: true
         - label: I believe my proposal would be useful to the broader TypeScript community (meaning it is not a niche proposal).
           required: true
+  - type: markdown
+    id: suggestion-go-elsewhere
+    attributes:
+      value: |
+        If you answered no to one or more of the above, then your rule *likely* doesn't belong in this project, and will *likely* be rejected.
+        That doesn't mean your proposal isn't useful! It just means you should consider either proposing it to another project (like [eslint-plugin-unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn)), or publishing it in a new plugin.
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: Explain what your proposal would do and why this is useful.
-      placeholder: I propose that the foo rule should also check for when bars are force to be a baz.
+      description: Explain what your proposed rule would do and why this is useful.
+      placeholder: My rule would check that things of type foo are not assigned to bars.
     validations:
       required: true
   - type: textarea
     id: fail-cases
     attributes:
-      label: Fail
+      label: Fail Cases
       description: Specify an example of code that should be detected and errored on.
       render: typescript
       value: |
@@ -45,7 +56,7 @@ body:
   - type: textarea
     id: pass-cases
     attributes:
-      label: Pass
+      label: Pass Cases
       description: Specify an example of code that would be accepted in its place
       render: typescript
       value: |
