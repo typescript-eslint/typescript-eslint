@@ -42,6 +42,8 @@ This is about the smallest config file we recommend. There's a lot more you can 
 
 The `.cjs` extension will explicitly set the file to a [CommonJS module](https://nodejs.org/dist/latest-v18.x/docs/api/modules.html), in case your project has `"type": "module"` in its package.json.
 
+If your project doesn't use ESM, naming the file as `.eslintrc.js` is fine. See [ESLint's Configuration Files docs](https://eslint.org/docs/user-guide/configuring/configuration-files) for more info.
+
 :::
 
 ### Details
