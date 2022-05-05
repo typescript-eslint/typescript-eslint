@@ -138,6 +138,63 @@ function data<T extends TODO>() {}
       filename: 'react.tsx',
     },
     {
+      code: noFormat`const data = <T extends any, >() => {};`,
+      errors: [
+        {
+          data: { constraint: 'any', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 28,
+          column: 15,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              output: noFormat`const data = <T, >() => {};`,
+            },
+          ],
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: noFormat`const data = <T extends any ,>() => {};`,
+      errors: [
+        {
+          data: { constraint: 'any', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 28,
+          column: 15,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              output: noFormat`const data = <T ,>() => {};`,
+            },
+          ],
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: noFormat`const data = <T extends any , >() => {};`,
+      errors: [
+        {
+          data: { constraint: 'any', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 28,
+          column: 15,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              output: noFormat`const data = <T , >() => {};`,
+            },
+          ],
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
       code: 'const data = <T extends any = unknown>() => {};',
       errors: [
         {
@@ -283,7 +340,7 @@ function data<T extends TODO>() {}
 class Data {
   member<T extends unknown>() {}
 }
-      `,
+      `.trimEnd(),
       errors: [
         {
           data: { constraint: 'unknown', name: 'T' },
@@ -298,7 +355,7 @@ class Data {
 class Data {
   member<T>() {}
 }
-              `,
+              `.trimEnd(),
             },
           ],
         },
@@ -309,7 +366,7 @@ class Data {
 const Data = class {
   member<T extends unknown>() {}
 };
-      `,
+      `.trimEnd(),
       errors: [
         {
           data: { constraint: 'unknown', name: 'T' },
@@ -324,7 +381,7 @@ const Data = class {
 const Data = class {
   member<T>() {}
 };
-              `,
+              `.trimEnd(),
             },
           ],
         },
