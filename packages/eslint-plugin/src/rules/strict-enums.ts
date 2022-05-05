@@ -659,14 +659,7 @@ export default util.createRule<Options, MessageIds>({
            * https://github.com/microsoft/TypeScript/issues/48878
            */
           const leftType = getTypeFromTSNode(leftTSNode.name);
-          if (leftType === undefined) {
-            continue;
-          }
-
           const rightType = getTypeFromTSNode(leftTSNode.initializer);
-          if (rightType === undefined) {
-            continue;
-          }
 
           if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
             context.report({
