@@ -4,6 +4,9 @@ title: Linting your TypeScript Codebase
 sidebar_label: Linting your TypeScript Codebase
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
 
 ## Installation
@@ -76,9 +79,22 @@ dist
 
 With that configured, open a terminal to the root of your project, and run the following command:
 
-```bash npm2yarn
+<Tabs groupId="npm2yarn">
+<TabItem value="npm">
+
+```bash
 npx eslint . --ext .js,.jsx,.ts,.tsx
 ```
+
+</TabItem>
+<TabItem value="Yarn">
+
+```bash
+yarn eslint . --ext .js,.jsx,.ts,.tsx
+```
+
+</TabItem>
+</Tabs>
 
 That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.
 
