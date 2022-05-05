@@ -16,10 +16,10 @@ npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-e
 
 ## Configuration
 
-Next, create a `.eslintrc.js` config file in the root of your project, and populate it with the following:
+Next, create a `.eslintrc.cjs` config file in the root of your project, and populate it with the following:
 
 <!-- prettier-ignore -->
-```js title=".eslintrc.js"
+```js title=".eslintrc.cjs"
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -34,6 +34,12 @@ module.exports = {
 ```
 
 This is about the smallest config file we recommend. There's a lot more you can add to this as you further onboard, but this will be enough to get you started.
+
+:::info
+
+The `.cjs` extension will explicitly set the file to a [CommonJS module](https://nodejs.org/dist/latest-v18.x/docs/api/modules.html), in case your project has `"type": "module"` in its package.json.
+
+:::
 
 ### Details
 
@@ -68,13 +74,29 @@ dist
 
 ## Running ESLint
 
-With that configured, open a terminal to the root of your project, and run the following command
+With that configured, open a terminal to the root of your project, and run the following command:
 
 ```bash npm2yarn
-npm run eslint . --ext .js,.jsx,.ts,.tsx
+npx eslint . --ext .js,.jsx,.ts,.tsx
 ```
 
 That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.
+
+You are also recommended to add an npm script in your package.json, so you don't have to repeat the same command every time you run ESLint.
+
+```json title="package.json"
+{
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  }
+}
+```
+
+This way, you can invoke the `lint` script directly:
+
+```bash npm2yarn
+npm run lint
+```
 
 You can also get results in realtime inside most IDEs via a plugin - search your IDE's extension store.
 
