@@ -323,6 +323,70 @@ fruitOrBoolean === true;
     `,
 });
 
+valid.push({
+  name: "Comparing various valid types (Brad's test)",
+  code: `
+enum Str { A = 'a' }
+enum Num { B = 1 }
+enum Mixed { A = 'a', B = 1 }
+
+declare const str: Str;
+declare const strOrString: Str | string;
+
+declare const num: Num;
+declare const numOrNumber: Num | number;
+
+declare const mixed: Mixed;
+declare const mixedOrStringOrNumber: Mixed | string | number;
+
+function someFunction() {}
+
+// following are all ignored due to the presence of "| string" or "| number"
+strOrString === 'a';
+numOrNumber === 1;
+mixedOrStringOrNumber === 'a';
+mixedOrStringOrNumber === 1;
+
+// following are all ignored because the value can never be an enum value
+str === 1;
+num === 'a';
+str === {};
+num === {};
+mixed === {};
+str === true;
+num === true;
+mixed === true;
+str === someFunction;
+num === someFunction;
+mixed === someFunction;
+        `,
+});
+
+invalid.push({
+  name: "Comparing various invalid types (Brad's test)",
+  code: `
+enum Str { A = 'a' }
+enum Num { B = 1 }
+enum Mixed { A = 'a', B = 1 }
+
+declare const str: Str;
+declare const num: Num;
+declare const mixed: Mixed;
+
+// following are all errors because the value might be an enum value
+str === 'a';
+num === 1;
+mixed === 'a';
+mixed === 1;
+        `,
+  errors: [
+    { messageId: 'mismatchedComparison' },
+    { messageId: 'mismatchedComparison' },
+    { messageId: 'mismatchedComparison' },
+    { messageId: 'mismatchedComparison' },
+  ],
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,
