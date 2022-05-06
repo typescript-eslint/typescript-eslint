@@ -29,25 +29,51 @@ function createSummaryJson(
   return '';
 }
 
+export function genVersions(state: ConfigModel): string {
+  return [
+    '| package | version |',
+    '| -- | -- |',
+    `| \`@typescript-eslint/eslint-plugin\` | \`${process.env.TS_ESLINT_VERSION}\` |`,
+    `| \`@typescript-eslint/parser\` | \`${process.env.TS_ESLINT_VERSION}\` |`,
+    `| \`TypeScript\` | \`${state.ts}\` |`,
+    `| \`ESLint\` | \`${process.env.ESLINT_VERSION}\` |`,
+    `| \`node\` | \`web\` |`,
+  ].join('\n');
+}
+
 export function createMarkdown(state: ConfigModel): string {
   return [
-    '## Repro',
     `[Playground](${document.location.toString()})`,
     createSummary(state.code, 'Code', 'ts', 30),
     createSummaryJson(state.rules, 'rules', 'Eslint config'),
     createSummaryJson(state.tsConfig, 'compilerOptions', 'TypeScript config'),
-    '## Expected Result\n',
-    '## Actual Result\n',
-    '## Additional Info\n',
-    '## Versions',
-    `| package                            | version |
-| ---------------------------------- | ------- |
-| \`@typescript-eslint/eslint-plugin\` | \`${process.env.TS_ESLINT_VERSION}\` |
-| \`@typescript-eslint/parser\`        | \`${process.env.TS_ESLINT_VERSION}\` |
-| \`TypeScript\`                       | \`${state.ts}\` |
-| \`ESLint\`                           | \`${process.env.ESLINT_VERSION}\` |
-| \`Env\`                              | \`web\` |`,
+    genVersions(state),
   ]
     .filter(Boolean)
     .join('\n\n');
+}
+
+export function createMarkdownParams(state: ConfigModel): string {
+  const params = {
+    labels: 'bug,package:+eslint-plugin,triage',
+    template: '1-bug-report-plugin.yaml',
+    title: 'Bug:+[rule+name+here]+<short+description+of+the+issue>',
+    'playground-link': document.location.toString(),
+    'repro-code': state.code,
+    'eslint-config':
+      `module.exports = ` +
+      JSON.stringify(
+        { parser: '@typescript-eslint/parser', rules: state.rules },
+        null,
+        2,
+      ),
+    'typescript-config': JSON.stringify(
+      { compilerOptions: state.tsConfig },
+      null,
+      2,
+    ),
+    versions: genVersions(state),
+  };
+
+  return new URLSearchParams(params).toString();
 }
