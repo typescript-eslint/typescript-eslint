@@ -294,7 +294,7 @@ export default util.createRule<Options, MessageIds>({
          */
         if (isMismatchedEnumFunctionArgument(argumentType, parameterType)) {
           context.report({
-            node,
+            node: node.arguments[i],
             messageId: 'mismatchedFunctionArgument',
             data: {
               ordinal: getOrdinalSuffix(i + 1), // e.g. 0 --> 1st
