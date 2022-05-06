@@ -27,7 +27,7 @@ body:
       description: |
         Link to an isolated reproduction [in our online playground](https://typescript-eslint.io/play/).
         If either of the following holds true:
-        - You can't reproduce the issue in the playground consider filing using the complex issue template mentioned above.
+        - You can't reproduce the issue in the playground
         - Your issue requires some complex setup - such as multiple files or a specific folder structure.
 
         ***Please do not use this template.*** Instead, select the
