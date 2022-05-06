@@ -207,12 +207,7 @@ const z: Foo.A | Foo.B | Foo.C | Foo.D = foo;
   `,
 });
 
-/**
- * Intersection enum types are not checked by this rule. Even though doing this
- * would almost certainly be a bad idea, a programmer would have to go to great
- * lengths to do this, so we assume that the programmer knows what they are
- * doing and allow it.
- */
+// Intersection types are always allowed; see the docs
 valid.push({
   name: 'Assigning a variable with a intersection enum type',
   code:

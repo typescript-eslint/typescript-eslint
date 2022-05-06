@@ -157,28 +157,28 @@ export default util.createRule<Options, MessageIds>({
       return util.getTypeName(typeChecker, type);
     }
 
+    function hasBooleanAndNotEnum(type: ts.Type): boolean {
+      return hasTypeAndNotEnum(type, ts.TypeFlags.BooleanLike);
+    }
+
     function hasEnumTypes(type: ts.Type): boolean {
       const enumTypes = getEnumTypes(type);
       return enumTypes.size > 0;
     }
 
-    function hasNumber(type: ts.Type): boolean {
-      return hasType(type, ts.TypeFlags.NumberLike);
+    function hasNumberAndNotEnum(type: ts.Type): boolean {
+      return hasTypeAndNotEnum(type, ts.TypeFlags.NumberLike);
     }
 
-    function hasString(type: ts.Type): boolean {
-      return hasType(type, ts.TypeFlags.StringLike);
+    function hasStringAndNotEnum(type: ts.Type): boolean {
+      return hasTypeAndNotEnum(type, ts.TypeFlags.StringLike);
     }
 
-    /**
-     * This will return false for any enum-like type, since it would
-     * subsequently not be a "pure" type anymore.
-     */
-    function hasType(type: ts.Type, typeFlag: ts.TypeFlags): boolean {
+    function hasTypeAndNotEnum(type: ts.Type, typeFlag: ts.TypeFlags): boolean {
       if (type.isUnion()) {
         const unionSubTypes = tsutils.unionTypeParts(type);
         for (const subType of unionSubTypes) {
-          if (hasType(subType, typeFlag)) {
+          if (hasTypeAndNotEnum(subType, typeFlag)) {
             return true;
           }
         }
@@ -187,7 +187,7 @@ export default util.createRule<Options, MessageIds>({
       if (type.isIntersection()) {
         const intersectionSubTypes = tsutils.intersectionTypeParts(type);
         for (const subType of intersectionSubTypes) {
-          if (hasType(subType, typeFlag)) {
+          if (hasTypeAndNotEnum(subType, typeFlag)) {
             return true;
           }
         }
@@ -375,39 +375,53 @@ export default util.createRule<Options, MessageIds>({
       leftType: ts.Type,
       rightType: ts.Type,
     ): boolean {
-      /**
-       * Allow any comparisons with the some whitelisted operators.
-       */
+      /** Allow any comparisons with whitelisted operators. */
       if (ALLOWED_ENUM_OPERATORS.has(operator)) {
         return false;
       }
 
-      const leftEnumTypes = getEnumTypes(leftType);
-      const rightEnumTypes = getEnumTypes(rightType);
-
-      if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
-        // This is not an enum comparison
-        return false;
-      }
-
       /**
-       * As a special exception, allow comparisons to null or undefined or any.
+       * Allow exact comparisons to some standard types, like null and
+       * undefined.
        *
-       * The TypeScript compiler should handle these cases properly, so the
+       * The TypeScript compiler should properly type-check these cases, so the
        * lint rule is unneeded.
        */
       if (isNullOrUndefinedOrAnyOrUnknownOrNever(leftType, rightType)) {
         return false;
       }
 
-      /**
-       * Allow comparing numbers to numbers and strings to strings in
-       * complicated union/intersection types.
-       */
-      if (hasNumber(leftType) && hasNumber(rightType)) {
+      /** Allow comparison that don't have anything to do with enums. */
+      const leftEnumTypes = getEnumTypes(leftType);
+      const rightEnumTypes = getEnumTypes(rightType);
+      if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
         return false;
       }
-      if (hasString(leftType) && hasString(rightType)) {
+
+      /**
+       * Allow comparisons that contain a union with a boolean, number, or
+       * string, like the following:
+       *
+       * ```ts
+       * declare const fruitOrBoolean: Fruit | boolean;
+       * if (fruitOrBoolean === true) {}
+       * ```
+       *
+       * The TypeScript API is limited in that there is no "type relationship"
+       * functionality. So there is no way to ask:
+       *
+       * "Is true assignable to one of the non-enum types? If yes, ignore it,
+       * else report."
+       *
+       * Thus, we bail out and ignore this case.
+       */
+      if (hasBooleanAndNotEnum(leftType) && hasBooleanAndNotEnum(rightType)) {
+        return false;
+      }
+      if (hasNumberAndNotEnum(leftType) && hasNumberAndNotEnum(rightType)) {
+        return false;
+      }
+      if (hasStringAndNotEnum(leftType) && hasStringAndNotEnum(rightType)) {
         return false;
       }
 

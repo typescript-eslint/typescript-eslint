@@ -341,8 +341,8 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-declare const fruitOrBool: Fruit | boolean;
-if (fruitOrBool === true) {}
+declare const fruitOrBoolean: Fruit | boolean;
+if (fruitOrBoolean === true) {}
     `,
 });
 
