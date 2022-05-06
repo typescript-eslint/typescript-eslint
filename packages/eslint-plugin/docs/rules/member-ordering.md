@@ -213,7 +213,7 @@ It also ignores accessibility and scope.
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "default": ["signature", "method", "constructor", "field"] }
     ]
@@ -348,7 +348,7 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "default": ["public-instance-method", "public-static-field"] }
     ]
@@ -442,7 +442,7 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
 ```jsonc
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "default": ["public-static-field", "static-field", "instance-field"] }
     ]
@@ -531,7 +531,7 @@ Default settings will be used for class declarations and all other syntax constr
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "classes": ["method", "constructor", "field"] }
     ]
@@ -581,7 +581,7 @@ Default settings will be used for class declarations and all other syntax constr
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "classExpressions": ["method", "constructor", "field"] }
     ]
@@ -635,7 +635,7 @@ These member types are the only ones allowed for `interfaces`.
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "interfaces": ["signature", "method", "constructor", "field"] }
     ]
@@ -687,7 +687,7 @@ These member types are the only ones allowed for `typeLiterals`.
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "typeLiterals": ["signature", "method", "constructor", "field"] }
     ]
@@ -736,7 +736,7 @@ You can copy and paste the default order from [Default Configuration](#default-c
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       {
         "default": {
@@ -790,7 +790,7 @@ You can copy and paste the default order from [Default Configuration](#default-c
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       {
         "default": {
@@ -844,7 +844,7 @@ It ignores any member group types completely by specifying `"never"` for `member
 // .eslintrc.json
 {
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": [
+    "@typescript-eslint/member-ordering": [
       "error",
       { "default": { "memberTypes": "never", "order": "alphabetically" } }
     ]

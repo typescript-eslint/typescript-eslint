@@ -591,7 +591,7 @@ callback, etc. that would cause the code to be unreadable or impractical.
 
 ## Further Reading
 
-- [Advance Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
+- [Advanced Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
 
 ## Related To
 
