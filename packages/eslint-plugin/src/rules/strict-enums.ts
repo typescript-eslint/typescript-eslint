@@ -37,13 +37,7 @@ export default util.createRule<Options, MessageIds>({
       mismatchedFunctionArgument:
         'The {{ ordinal }} argument in the function call does not match the declared enum type of the function signature.',
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {},
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
