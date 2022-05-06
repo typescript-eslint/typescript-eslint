@@ -336,6 +336,16 @@ if (vegetable in foo) {}
   `,
 });
 
+valid.push({
+  name: 'Comparing using a type of enum | boolean',
+  code:
+    fruitEnumDefinition +
+    `
+declare const fruitOrBool: Fruit | boolean;
+if (fruitOrBool === true) {}
+    `,
+});
+
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid,
   invalid,
