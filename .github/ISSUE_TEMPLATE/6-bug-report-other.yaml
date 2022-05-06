@@ -23,10 +23,9 @@ body:
     id: complexity-note
     attributes:
       value: |
-        ## Note For Complex Issues
+        ### Note For Complex Issues
         If your issue requires some complex reproduction - such as multiple files or a specific folder structure - please do not use this template.
         Instead, select the ["Report a Complex Bug With a Reproduction Repository" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=7-bug-report-complex.yaml).
-        ---
   - type: dropdown
     id: package
     attributes:
