@@ -23,8 +23,7 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-if (1 === 2) {
-}
+1 === 2;
   `,
 });
 
@@ -34,8 +33,7 @@ valid.push({
     fruitEnumDefinition +
     `
 declare thing: any;
-if (Fruit.Apple === thing) {
-}
+Fruit.Apple === thing;
   `,
 });
 
@@ -44,8 +42,7 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-if (Fruit.Apple === undefined) {
-}
+Fruit.Apple === undefined;
   `,
 });
 
@@ -54,8 +51,7 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-if (Fruit.Apple === null) {
-}
+Fruit.Apple === null;
   `,
 });
 
@@ -64,8 +60,7 @@ valid.push({
   code:
     fruitEnumDefinition +
     `
-if (Fruit.Apple === Fruit.Banana) {
-}
+Fruit.Apple === Fruit.Banana;
   `,
 });
 
@@ -75,8 +70,7 @@ valid.push({
     fruitEnumDefinition +
     `
 const fruit = Fruit.Apple;
-if (fruit === Fruit.Banana) {
-}
+fruit === Fruit.Banana;
   `,
 });
 
@@ -86,8 +80,7 @@ valid.push({
     vegetableEnumDefinition +
     `
 const vegetable = Vegetable.Lettuce;
-if (vegetable === Vegetable.Carrot) {
-}
+vegetable === Vegetable.Carrot;
   `,
 });
 
@@ -98,8 +91,7 @@ valid.push({
     `
 const fruit1 = Fruit.Apple;
 const fruit2 = Fruit.Banana;
-if (fruit1 === fruit2) {
-}
+fruit1 === fruit2;
   `,
 });
 
@@ -110,8 +102,7 @@ valid.push({
     `
 const vegetable1 = Vegetable.Lettuce;
 const vegetable2 = Vegetable.Carrot;
-if (vegetable1 === vegetable2) {
-}
+vegetable1 === vegetable2;
   `,
 });
 
@@ -120,8 +111,7 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-if (Fruit.Apple === 1) {
-}
+Fruit.Apple === 1;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -131,8 +121,7 @@ invalid.push({
   code:
     vegetableEnumDefinition +
     `
-if (Vegetable.Lettuce === 'carrot') {
-}
+Vegetable.Lettuce === 'carrot';
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -142,8 +131,7 @@ invalid.push({
   code:
     fruitEnumDefinition +
     `
-if (1 === Fruit.Apple) {
-}
+1 === Fruit.Apple;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -153,8 +141,7 @@ invalid.push({
   code:
     vegetableEnumDefinition +
     `
-if ('carrot' === Vegetable.Lettuce) {
-}
+'carrot' === Vegetable.Lettuce;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -165,8 +152,7 @@ invalid.push({
     fruitEnumDefinition +
     `
 const fruit = Fruit.Apple;
-if (fruit === 1) {
-}
+fruit === 1;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -177,8 +163,7 @@ invalid.push({
     vegetableEnumDefinition +
     `
 const vegetable = Vegetable.Lettuce;
-if (vegetable === 'carrot') {
-}
+vegetable === 'carrot';
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -189,8 +174,7 @@ invalid.push({
     fruitEnumDefinition +
     `
 const fruit = Fruit.Apple;
-if (1 === fruit) {
-}
+1 === fruit;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -201,8 +185,7 @@ invalid.push({
     vegetableEnumDefinition +
     `
 const vegetable = Vegetable.Lettuce;
-if ('carrot' === vegetable) {
-}
+'carrot' === vegetable;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -213,8 +196,7 @@ invalid.push({
     fruitEnumDefinition +
     fruit2EnumDefinition +
     `
-if (Fruit.Apple === Fruit2.Apple2) {
-}
+Fruit.Apple === Fruit2.Apple2;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -225,8 +207,7 @@ invalid.push({
     vegetableEnumDefinition +
     vegetable2EnumDefinition +
     `
-if (Vegetable.Lettuce === Vegetable2.Lettuce2) {
-}
+Vegetable.Lettuce === Vegetable2.Lettuce2;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -238,8 +219,7 @@ invalid.push({
     fruit2EnumDefinition +
     `
 const fruit = Fruit.Apple;
-if (fruit === Fruit2.Apple2) {
-}
+fruit === Fruit2.Apple2;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -251,8 +231,7 @@ invalid.push({
     vegetable2EnumDefinition +
     `
 const vegetable = Vegetable.Lettuce;
-if (vegetable === Vegetable2.Lettuce2) {
-}
+vegetable === Vegetable2.Lettuce2;
   `,
   errors: [{ messageId: 'mismatchedComparison' }],
 });
@@ -278,7 +257,7 @@ valid.push({
     `
 declare const left: number | Fruit;
 declare const right: number | Fruit2;
-if (left === right) {}
+left === right;
     `,
 });
 
@@ -290,7 +269,7 @@ valid.push({
     `
 declare const left: string | Vegetable;
 declare const right: string | Vegetable2;
-if (left === right) {}
+left === right;
     `,
 });
 
@@ -301,8 +280,7 @@ valid.push({
     `
 type WeirdString = string & { __someBrand: void; };
 declare weirdString: WeirdString;
-if (Vegetable.Lettuce === weirdString) {
-}
+Vegetable.Lettuce === weirdString;
   `,
 });
 
@@ -320,8 +298,7 @@ type __String =
   | (void & { __escapedIdentifier: void; })
   | InternalSymbolName;
 declare const weirdString: __String;
-if (weirdString === 'someArbitraryValue') {
-}
+weirdString === 'someArbitraryValue';
   `,
 });
 
@@ -332,7 +309,7 @@ valid.push({
     `
 const foo = {};
 const vegetable = Vegetable.Lettuce;
-if (vegetable in foo) {}
+vegetable in foo;
   `,
 });
 
@@ -342,7 +319,7 @@ valid.push({
     fruitEnumDefinition +
     `
 declare const fruitOrBoolean: Fruit | boolean;
-if (fruitOrBoolean === true) {}
+fruitOrBoolean === true;
     `,
 });
 

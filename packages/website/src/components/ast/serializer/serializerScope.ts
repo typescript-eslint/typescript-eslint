@@ -194,7 +194,6 @@ export function createScopeSerializer(): Serializer {
           start: { ...data.loc.start },
           end: { ...data.loc.end },
         },
-        // eslint-disable-next-line @typescript-eslint/strict-enums
         value: data.type === 'Identifier' ? `<"${data.name}">` : '',
       };
     }
