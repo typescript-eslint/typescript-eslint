@@ -3,8 +3,32 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 
+/**
+ * TypeScript only allows number enums, string enums, or mixed enums with both
+ * numbers and strings.
+ *
+ * Mixed enums are be a union of a number enum and a string enum, so there is
+ * no separate kind for them.
+ */
+enum EnumKind {
+  NON_ENUM,
+  HAS_NUMBER_VALUES,
+  HAS_STRING_VALUES,
+}
+
 /** These operators are always considered to be safe. */
 const ALLOWED_ENUM_OPERATORS = new Set(['in', '|', '&', '|=', '&=']);
+
+/**
+ * See the comment for `EnumKind`.
+ *
+ * This rule can safely ignore other kinds of types (and leave the validation in
+ * question to the TypeScript compiler).
+ */
+const IMPOSSIBLE_ENUM_TYPES =
+  ts.TypeFlags.BooleanLike |
+  ts.TypeFlags.NonPrimitive |
+  ts.TypeFlags.ESSymbolLike;
 
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Any |
@@ -77,6 +101,69 @@ export default util.createRule<Options, MessageIds>({
       }
 
       return parentType;
+    }
+
+    /**
+     * See the comment for the `EnumKind` enum.
+     */
+    function getEnumKind(type: ts.Type): EnumKind {
+      if (type.isUnion()) {
+        throw new Error(
+          'The "getEnumKind" function is not meant to be used on unions. Use the "getEnumKinds" function instead.',
+        );
+      }
+
+      if (type.isIntersection()) {
+        throw new Error(
+          'The "getEnumKind" function is not meant to be used on intersections.',
+        );
+      }
+
+      if (!isEnum(type)) {
+        return EnumKind.NON_ENUM;
+      }
+
+      const isStringLiteral = util.isTypeFlagSet(
+        type,
+        ts.TypeFlags.StringLiteral,
+      );
+      const isNumberLiteral = util.isTypeFlagSet(
+        type,
+        ts.TypeFlags.NumberLiteral,
+      );
+
+      if (isStringLiteral && !isNumberLiteral) {
+        return EnumKind.HAS_STRING_VALUES;
+      }
+
+      if (isNumberLiteral && !isStringLiteral) {
+        return EnumKind.HAS_NUMBER_VALUES;
+      }
+
+      throw new Error(
+        'Failed to derive the type of enum, since it did not have string values or number values.',
+      );
+    }
+
+    /**
+     * Returns a set containing the single `EnumKind` (if it is not a union), or
+     * a set containing N `EnumKind` (if it is a union).
+     */
+    function getEnumKinds(type: ts.Type): Set<EnumKind> {
+      if (type.isUnion()) {
+        const subTypes = tsutils.unionTypeParts(type);
+        const enumKinds = subTypes.map(subType => getEnumKind(subType));
+        return new Set(enumKinds);
+      }
+
+      if (type.isIntersection()) {
+        throw new Error(
+          'The getEnumKinds function is not meant to be used on intersections.',
+        );
+      }
+
+      const enumKind = getEnumKind(type);
+      return new Set([enumKind]);
     }
 
     /**
@@ -157,49 +244,33 @@ export default util.createRule<Options, MessageIds>({
       return util.getTypeName(typeChecker, type);
     }
 
-    function hasBooleanAndNotEnum(type: ts.Type): boolean {
-      return hasTypeAndNotEnum(type, ts.TypeFlags.BooleanLike);
-    }
-
     function hasEnumTypes(type: ts.Type): boolean {
       const enumTypes = getEnumTypes(type);
       return enumTypes.size > 0;
     }
 
-    function hasNumberAndNotEnum(type: ts.Type): boolean {
-      return hasTypeAndNotEnum(type, ts.TypeFlags.NumberLike);
-    }
-
-    function hasStringAndNotEnum(type: ts.Type): boolean {
-      return hasTypeAndNotEnum(type, ts.TypeFlags.StringLike);
-    }
-
-    function hasTypeAndNotEnum(type: ts.Type, typeFlag: ts.TypeFlags): boolean {
-      if (type.isUnion()) {
-        const unionSubTypes = tsutils.unionTypeParts(type);
-        for (const subType of unionSubTypes) {
-          if (hasTypeAndNotEnum(subType, typeFlag)) {
-            return true;
-          }
-        }
-      }
-
+    function hasIntersection(type: ts.Type): boolean {
       if (type.isIntersection()) {
-        const intersectionSubTypes = tsutils.intersectionTypeParts(type);
-        for (const subType of intersectionSubTypes) {
-          if (hasTypeAndNotEnum(subType, typeFlag)) {
+        return true;
+      }
+
+      if (type.isUnion()) {
+        const subTypes = tsutils.unionTypeParts(type);
+        for (const subType of subTypes) {
+          if (subType.isIntersection()) {
             return true;
           }
         }
       }
 
-      return (
-        util.isTypeFlagSet(type, typeFlag) &&
-        !util.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
-      );
+      return false;
     }
 
     function isEnum(type: ts.Type): boolean {
+      /**
+       * The "EnumLiteral" flag will be set on both enum base types and enum
+       * members/values.
+       */
       return util.isTypeFlagSet(type, ts.TypeFlags.EnumLiteral);
     }
 
@@ -216,6 +287,22 @@ export default util.createRule<Options, MessageIds>({
             ts.TypeFlags.Never,
         ),
       );
+    }
+
+    function isNumber(type: ts.Type): boolean {
+      /**
+       * The "NumberLike" flag will be set on both number literals and number
+       * variables.
+       */
+      return util.isTypeFlagSet(type, ts.TypeFlags.NumberLike);
+    }
+
+    function isString(type: ts.Type): boolean {
+      /**
+       * The "StrikeLike" flag will be set on both string literals and string
+       * variables.
+       */
+      return util.isTypeFlagSet(type, ts.TypeFlags.StringLike);
     }
 
     function setHasAnyElementFromSet<T>(set1: Set<T>, set2: Set<T>): boolean {
@@ -375,8 +462,37 @@ export default util.createRule<Options, MessageIds>({
       leftType: ts.Type,
       rightType: ts.Type,
     ): boolean {
-      /** Allow any comparisons with whitelisted operators. */
+      /** Allow comparisons with whitelisted operators. */
       if (ALLOWED_ENUM_OPERATORS.has(operator)) {
+        return false;
+      }
+
+      /** Allow comparisons that don't have anything to do with enums. */
+      const leftEnumTypes = getEnumTypes(leftType);
+      const rightEnumTypes = getEnumTypes(rightType);
+      if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
+        return false;
+      }
+
+      /**
+       * Allow comparisons to any intersection. Enum intersections would be rare
+       * in real-life code, so they are out of scope for this rule.
+       */
+      if (hasIntersection(leftType) || hasIntersection(rightType)) {
+        return false;
+      }
+
+      /**
+       * Allow comparisons to things with a type that can never be an enum (like
+       * a function).
+       *
+       * (The TypeScript compiler should properly type-check these cases, so the
+       * lint rule is unneeded.)
+       */
+      if (
+        util.isTypeFlagSet(leftType, IMPOSSIBLE_ENUM_TYPES) ||
+        util.isTypeFlagSet(rightType, IMPOSSIBLE_ENUM_TYPES)
+      ) {
         return false;
       }
 
@@ -391,37 +507,41 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      /** Allow comparison that don't have anything to do with enums. */
-      const leftEnumTypes = getEnumTypes(leftType);
-      const rightEnumTypes = getEnumTypes(rightType);
-      if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
-        return false;
-      }
-
       /**
-       * Allow comparisons that contain a union with a boolean, number, or
-       * string, like the following:
+       * Allow number enums to be compared with strings and string enums to be
+       * compared with numbers.
        *
-       * ```ts
-       * declare const fruitOrBoolean: Fruit | boolean;
-       * if (fruitOrBoolean === true) {}
-       * ```
-       *
-       * The TypeScript API is limited in that there is no "type relationship"
-       * functionality. So there is no way to ask:
-       *
-       * "Is true assignable to one of the non-enum types? If yes, ignore it,
-       * else report."
-       *
-       * Thus, we bail out and ignore this case.
+       * (The TypeScript compiler should properly type-check these cases, so the
+       * lint rule is unneeded.)
        */
-      if (hasBooleanAndNotEnum(leftType) && hasBooleanAndNotEnum(rightType)) {
+      const leftEnumKinds = getEnumKinds(leftType);
+      const rightEnumKinds = getEnumKinds(rightType);
+      if (
+        leftEnumKinds.has(EnumKind.HAS_STRING_VALUES) &&
+        leftEnumKinds.size === 1 &&
+        isNumber(rightType)
+      ) {
         return false;
       }
-      if (hasNumberAndNotEnum(leftType) && hasNumberAndNotEnum(rightType)) {
+      if (
+        leftEnumKinds.has(EnumKind.HAS_NUMBER_VALUES) &&
+        leftEnumKinds.size === 1 &&
+        isString(rightType)
+      ) {
         return false;
       }
-      if (hasStringAndNotEnum(leftType) && hasStringAndNotEnum(rightType)) {
+      if (
+        rightEnumKinds.has(EnumKind.HAS_STRING_VALUES) &&
+        rightEnumKinds.size === 1 &&
+        isNumber(leftType)
+      ) {
+        return false;
+      }
+      if (
+        rightEnumKinds.has(EnumKind.HAS_NUMBER_VALUES) &&
+        rightEnumKinds.size === 1 &&
+        isString(leftType)
+      ) {
         return false;
       }
 

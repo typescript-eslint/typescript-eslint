@@ -349,6 +349,7 @@ mixedOrStringOrNumber === 1;
 
 // following are all ignored because the value can never be an enum value
 str === 1;
+/*
 num === 'a';
 str === {};
 num === {};
@@ -359,6 +360,7 @@ mixed === true;
 str === someFunction;
 num === someFunction;
 mixed === someFunction;
+*/
         `,
 });
 
