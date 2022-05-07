@@ -108,7 +108,7 @@ enum Vegetable {
 }
 
 let vegetable = Vegetable.Lettuce;
-vegetable = 'definatelyNotAVegetable'; // Type '"definatelyNotAVegetable"' is not assignable to type 'Vegetable'.
+vegetable = 'definitelyNotAVegetable'; // Type '"definitelyNotAVegetable"' is not assignable to type 'Vegetable'.
 
 // Even "valid" strings will not work, which is good!
 vegetable = 'carrot'; // Type '"carrot"' is not assignable to type 'Vegetable'.
