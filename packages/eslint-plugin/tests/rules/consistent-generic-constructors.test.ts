@@ -16,6 +16,9 @@ ruleTester.run('consistent-generic-constructors', rule, {
     'const a: Foo = new Foo<string>();',
     'const a: Bar = new Foo<string>();',
     'const a: Bar<string> = new Foo<string>();',
+    'const a: Foo<string> = Foo<string>();',
+    'const a: Foo<string> = Foo();',
+    'const a: Foo = Foo<string>();',
     // lhs
     {
       code: 'const a = new Foo();',
@@ -39,6 +42,22 @@ ruleTester.run('consistent-generic-constructors', rule, {
     },
     {
       code: 'const a: Bar<string> = new Foo<string>();',
+      options: ['lhs'],
+    },
+    {
+      code: 'const a: Foo<string> = Foo<string>();',
+      options: ['lhs'],
+    },
+    {
+      code: 'const a: Foo<string> = Foo();',
+      options: ['lhs'],
+    },
+    {
+      code: 'const a: Foo = Foo<string>();',
+      options: ['lhs'],
+    },
+    {
+      code: 'const a = new (class C<T> {})<string>();',
       options: ['lhs'],
     },
   ],
