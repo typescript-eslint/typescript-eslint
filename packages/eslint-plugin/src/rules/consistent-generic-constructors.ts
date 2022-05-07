@@ -43,7 +43,8 @@ export default createRule<Options, MessageIds>({
         if (
           lhs &&
           (lhs.type !== AST_NODE_TYPES.TSTypeReference ||
-            lhs.typeName.type !== AST_NODE_TYPES.Identifier)
+            lhs.typeName.type !== AST_NODE_TYPES.Identifier ||
+            lhs.typeName.name !== rhs.callee.name)
         ) {
           return;
         }
@@ -61,12 +62,8 @@ export default createRule<Options, MessageIds>({
               ];
             },
           });
-        } else if (
-          mode === 'rhs' &&
-          lhs?.typeParameters &&
-          !rhs.typeParameters &&
-          (lhs.typeName as TSESTree.Identifier).name === rhs.callee.name
-        ) {
+        }
+        if (mode === 'rhs' && lhs?.typeParameters && !rhs.typeParameters) {
           context.report({
             node,
             messageId: 'preferRHS',
