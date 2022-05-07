@@ -41,7 +41,7 @@ The rule never reports when there are type parameters on both sides, or neither 
 
 ```ts
 const map: Map<string, number> = new Map();
-const set: Set<string> = new Set<string>();
+const set: Set<string> = new Set();
 ```
 
 #### ✅ Correct
