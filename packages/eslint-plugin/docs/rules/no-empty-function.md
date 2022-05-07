@@ -28,7 +28,8 @@ This rule adds the following options:
 type AdditionalAllowOptionEntries =
   | 'private-constructors'
   | 'protected-constructors'
-  | 'decoratedFunctions';
+  | 'decoratedFunctions'
+  | 'overrideMethods';
 
 type AllowOptionEntries =
   | BaseNoEmptyFunctionAllowOptionEntries
@@ -74,6 +75,22 @@ function foo() {}
 class Foo {
   @decorator()
   foo() {}
+}
+```
+
+### allow: `overrideMethods`
+
+Examples of correct code for the `{ "allow": ["overrideMethods"] }` option:
+
+```ts
+abstract class Base {
+  protected greet(): void {
+    console.log('Hello!');
+  }
+}
+
+class Foo extends Base {
+  protected override greet(): void {}
 }
 ```
 
