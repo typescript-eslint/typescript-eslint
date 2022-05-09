@@ -35,7 +35,7 @@ For example, to ignore `public` properties:
 
 ```json
 {
-  "@typescript-eslint/parameter-property": [
+  "@typescript-eslint/parameter-properties": [
     true,
     {
       "allow": ["public"]
