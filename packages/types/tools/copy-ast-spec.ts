@@ -60,14 +60,16 @@ async function copyFile(
     encoding: 'utf-8',
   });
 
-  await execAsync('yarn', ['prettier', '--write', outpath], {});
+  await execAsync('yarn', ['prettier', '--write', outpath], {
+    shell: true,
+  });
 
   console.log('Copied', fileName);
 }
 
 async function main(): Promise<void> {
   // ensure the package is built
-  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
+  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH, shell: true });
 
   await Promise.all([
     copyFile('dist', 'ast-spec.ts', code =>

@@ -28,7 +28,7 @@ const FIXTURES_DIR = path.resolve(
 const SNAPSHOTS_DIR = path.resolve(__dirname, 'snapshots');
 
 const fixtures = glob
-  .sync(`${FIXTURES_DIR}/**/*.src.{js,ts,jsx,tsx}`)
+  .sync(`**/*.src.{js,ts,jsx,tsx}`, { cwd: FIXTURES_DIR, absolute: true })
   .map(absolute => {
     const relative = path.relative(FIXTURES_DIR, absolute);
     const { name, dir, ext } = path.parse(relative);

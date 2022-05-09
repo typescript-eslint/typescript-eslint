@@ -92,7 +92,10 @@ class FixturesTester {
     return this.fixtures
       .map(fixture =>
         glob
-          .sync(`${fixture.directory}/${fixture.pattern}`, {})
+          .sync(fixture.pattern, {
+            cwd: fixture.directory,
+            absolute: true,
+          })
           .map(filename => ({
             filename,
             ignoreSourceType: fixture.ignoreSourceType,
@@ -346,7 +349,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Not yet supported in Babel
      * Directive field is not added to module and namespace
-     * @see https://github.com/babel/babel/issues/9228
      */
     'directive-in-module',
     'directive-in-namespace',
