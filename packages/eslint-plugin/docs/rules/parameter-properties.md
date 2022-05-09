@@ -332,7 +332,7 @@ class Foo {
 
 ### protected readonly
 
-Examples of code for the `{ "allows": ["protected readonly"] }` options:
+Examples of code for the `{ "allow": ["protected readonly"] }` options:
 
 <!--tabs-->
 
@@ -378,7 +378,7 @@ class Foo {
 
 ### public readonly
 
-Examples of code for the `{ "allows": ["public readonly"] }` options:
+Examples of code for the `{ "allow": ["public readonly"] }` options:
 
 <!--tabs-->
 
@@ -424,7 +424,7 @@ class Foo {
 
 ### `"parameter-property"`
 
-Examples of code for the `{ "prefer": ["parameter-property"] }` option:
+Examples of code for the `{ "prefer": "parameter-property" }` option:
 
 <!--tabs-->
 
