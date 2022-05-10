@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "5.22.0",
+  "version": "5.23.0",
   "private": true,
   "scripts": {
     "build": "docusaurus build",
@@ -24,20 +24,20 @@
     "@docusaurus/theme-common": "^2.0.0-beta.18",
     "@docusaurus/theme-search-algolia": "^2.0.0-beta.18",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/website-eslint": "5.22.0",
+    "@typescript-eslint/website-eslint": "5.23.0",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json5": "^2.2.0",
     "konamimojisplosion": "^0.5.1",
     "lzstring.ts": "^2.0.2",
     "react": "^18.0.0",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.1.0",
     "remark-docusaurus-tabs": "^0.2.0",
     "typescript": "*"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.0.0-beta.18",
-    "@types/react": "^17.0.34",
+    "@types/react": "^18.0.9",
     "@types/react-helmet": "^6.1.4",
     "@types/react-router-dom": "^5.3.2",
     "copy-webpack-plugin": "^9.1.0",
