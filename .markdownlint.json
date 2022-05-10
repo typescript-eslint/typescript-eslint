@@ -67,7 +67,9 @@
       "h1",
       "p",
       "details",
-      "summary"
+      "summary",
+      "Tabs",
+      "TabItem"
     ]
   },
   // MD034/no-bare-urls - Bare URL used
