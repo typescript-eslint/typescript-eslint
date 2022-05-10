@@ -90,7 +90,7 @@ body:
     id: additional
     attributes:
       label: Additional Info
-      description: Any additional info you'd like to provide. If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. i.e. `eslint --ext ".ts,.js" src --debug`
+      description: Any additional info you'd like to provide. If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. e.g. `eslint --ext ".ts,.js" src --debug`
   - type: textarea
     id: versions
     attributes:
