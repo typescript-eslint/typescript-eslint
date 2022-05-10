@@ -15,7 +15,7 @@ addSerializer(serializer);
 // prettier-ignore
 const ONLY = [].join(path.sep);
 
-const FIXTURES_DIR = path.resolve(
+const fixturesDir = path.resolve(
   __dirname,
   '..',
   '..',
@@ -25,15 +25,15 @@ const FIXTURES_DIR = path.resolve(
   'shared-fixtures',
   'fixtures',
 );
-const SNAPSHOTS_DIR = path.resolve(__dirname, 'snapshots');
+const snapshotsDir = path.resolve(__dirname, 'snapshots');
 
 const fixtures = glob
-  .sync(`**/*.src.{js,ts,jsx,tsx}`, { cwd: FIXTURES_DIR, absolute: true })
+  .sync(`**/*.src.{js,ts,jsx,tsx}`, { cwd: fixturesDir, absolute: true })
   .map(absolute => {
-    const relative = path.relative(FIXTURES_DIR, absolute);
+    const relative = path.relative(fixturesDir, absolute);
     const { name, dir, ext } = path.parse(relative);
     const segments = dir.split(path.sep);
-    const snapshotPath = path.join(SNAPSHOTS_DIR, dir);
+    const snapshotPath = path.join(snapshotsDir, dir);
     return {
       absolute,
       isJsx: isJSXFileType(ext),
@@ -97,14 +97,16 @@ fixtures.forEach(f => nestDescribe(f));
 
 if (ONLY === '') {
   // ensure that the snapshots are cleaned up, because jest-specific-snapshot won't do this check
-  const snapshots = glob.sync(`${SNAPSHOTS_DIR}/**/*.shot`).map(absolute => {
-    const relative = path.relative(SNAPSHOTS_DIR, absolute);
-    const { name, dir } = path.parse(relative);
-    return {
-      relative,
-      fixturePath: path.join(FIXTURES_DIR, dir, name),
-    };
-  });
+  const snapshots = glob
+    .sync(`**/*.shot`, { cwd: snapshotsDir, absolute: true })
+    .map(absolute => {
+      const relative = path.relative(snapshotsDir, absolute);
+      const { name, dir } = path.parse(relative);
+      return {
+        relative,
+        fixturePath: path.join(fixturesDir, dir, name),
+      };
+    });
 
   describe('ast snapshots should have an associated test', () => {
     for (const snap of snapshots) {
