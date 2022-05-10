@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.22.0...v5.23.0) (2022-05-09)
+
+
+### Bug Fixes
+
+* **ast-spec:** correct `AwaitExpression.argument` type ([#4880](https://github.com/typescript-eslint/typescript-eslint/issues/4880)) ([3ec5f53](https://github.com/typescript-eslint/typescript-eslint/commit/3ec5f53bad79b133ef5dee71c402160b3acf13cf))
+* **eslint-plugin:** [no-restricted-imports] allow type import as long as there's one matching pattern ([#4898](https://github.com/typescript-eslint/typescript-eslint/issues/4898)) ([0419d28](https://github.com/typescript-eslint/typescript-eslint/commit/0419d287b637e805c33036a45760badc2498e19b))
+* **eslint-plugin:** [no-unnecessary-type-constraint] change to suggestion fix, fix multiple trailing comma failures ([#4901](https://github.com/typescript-eslint/typescript-eslint/issues/4901)) ([4507ac8](https://github.com/typescript-eslint/typescript-eslint/commit/4507ac84c76da0ced43b6679305afe1891e7afca))
+
+
+### Features
+
+* **utils:** update eslint types ([#4896](https://github.com/typescript-eslint/typescript-eslint/issues/4896)) ([da48527](https://github.com/typescript-eslint/typescript-eslint/commit/da485279f13cb95db1ee131a4f9c5367d54020fe))
+
+
+
+
+
 # [5.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.21.0...v5.22.0) (2022-05-02)
 
 
