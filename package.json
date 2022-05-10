@@ -97,9 +97,9 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "glob": "^8.0.1",
     "husky": "^8.0.1",
-    "jest": "^27.3.1",
-    "jest-diff": "^27.3.1",
-    "jest-snapshot": "^27.3.1",
+    "jest": "^28.1.0",
+    "jest-diff": "^28.1.0",
+    "jest-snapshot": "^28.1.0",
     "jest-specific-snapshot": "^5.0.0",
     "lerna": "^4.0.0",
     "lint-staged": "^12.4.1",
@@ -107,7 +107,7 @@
     "markdownlint-cli": "^0.31.1",
     "ncp": "^2.0.0",
     "prettier": "2.5.1",
-    "pretty-format": "^27.3.1",
+    "pretty-format": "^28.1.0",
     "rimraf": "^3.0.2",
     "tmp": "^0.2.1",
     "ts-node": "^10.7.0",
@@ -116,6 +116,7 @@
   },
   "resolutions": {
     "@types/node": "^17.0.31",
-    "typescript": "4.6.3"
+    "pretty-format": "^28.1.0",
+    "typescript": "4.6.4"
   }
 }
