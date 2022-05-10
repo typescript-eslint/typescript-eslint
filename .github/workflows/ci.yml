@@ -446,7 +446,10 @@ jobs:
         typecheck,
         unit_test_on_primary_node_version,
         unit_tests_on_other_node_versions,
-        linting_and_style,
+        spellcheck,
+        check_format,
+        markdownlint,
+        eslint,
         integration_tests,
       ]
     if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
