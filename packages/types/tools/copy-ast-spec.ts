@@ -15,6 +15,7 @@ async function execAsync(
   return new Promise((resolve, reject) => {
     const child = childProcess.spawn(command, args, {
       ...options,
+      shell: process.platform === 'win32',
       stdio: 'inherit',
     });
 
