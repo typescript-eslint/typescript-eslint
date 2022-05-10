@@ -1,6 +1,6 @@
 // The following tests are adapted from the tests in eslint.
 // Original Code: https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/tests/lib/rules/no-unused-vars.js
-// Licence      : https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/LICENSE
+// License      : https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/LICENSE
 
 'use strict';
 
