@@ -15,6 +15,7 @@ async function execAsync(
   return new Promise((resolve, reject) => {
     const child = childProcess.spawn(command, args, {
       ...options,
+      shell: process.platform === 'win32',
       stdio: 'inherit',
     });
 
@@ -60,16 +61,14 @@ async function copyFile(
     encoding: 'utf-8',
   });
 
-  await execAsync('yarn', ['prettier', '--write', outpath], {
-    shell: true,
-  });
+  await execAsync('yarn', ['prettier', '--write', outpath], {});
 
   console.log('Copied', fileName);
 }
 
 async function main(): Promise<void> {
   // ensure the package is built
-  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH, shell: true });
+  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
 
   await Promise.all([
     copyFile('dist', 'ast-spec.ts', code =>
