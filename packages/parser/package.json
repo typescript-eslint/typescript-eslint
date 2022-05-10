@@ -47,7 +47,7 @@
     "@typescript-eslint/scope-manager": "5.23.0",
     "@typescript-eslint/types": "5.23.0",
     "@typescript-eslint/typescript-estree": "5.23.0",
-    "debug": "^4.3.2"
+    "debug": "^4.3.4"
   },
   "devDependencies": {
     "@types/glob": "*",
