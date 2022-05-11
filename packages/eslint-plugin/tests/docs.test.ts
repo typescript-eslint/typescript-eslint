@@ -2,7 +2,7 @@ import fs from 'fs';
 import { JSONSchema4 } from 'json-schema';
 import path from 'path';
 
-import marked from 'marked';
+import { marked } from 'marked';
 import rules from '../src/rules';
 import { titleCase } from 'title-case';
 

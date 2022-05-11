@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@typescript-eslint/types": "5.23.0",
-    "eslint-visitor-keys": "^3.0.0"
+    "eslint-visitor-keys": "^3.3.0"
   },
   "devDependencies": {
     "@types/eslint-visitor-keys": "*"
