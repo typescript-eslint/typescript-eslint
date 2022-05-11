@@ -58,8 +58,8 @@ html[data-theme='dark'] {
 
 .theme-code-block,
 .theme-code-block pre {
-  color: var(--token-color);
-  background-color: var(--token-background);
+  color: var(--token-color) !important;
+  background-color: var(--token-background) !important;
   --ifm-color-emphasis-300: var(--token-border);
 }
 
