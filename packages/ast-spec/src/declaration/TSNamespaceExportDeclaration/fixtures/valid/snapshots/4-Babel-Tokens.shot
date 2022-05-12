@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSNamespaceExportDeclaration valid Babel - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [0, 6],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 6, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "as",
+
+    range: [7, 9],
+    loc: {
+      start: { column: 7, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "namespace",
+
+    range: [10, 19],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "a",
+
+    range: [20, 21],
+    loc: {
+      start: { column: 20, line: 1 },
+      end: { column: 21, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [21, 22],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 22, line: 1 },
+    },
+  },
+]
+`;

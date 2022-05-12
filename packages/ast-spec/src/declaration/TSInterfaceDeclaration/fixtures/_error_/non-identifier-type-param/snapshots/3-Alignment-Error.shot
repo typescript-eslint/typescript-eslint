@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ non-identifier-type-param Error Alignment 1`] = `"Both errored"`;
