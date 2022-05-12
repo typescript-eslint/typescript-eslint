@@ -26,8 +26,8 @@ This rule ensures that type arguments appear consistently on one side of the dec
 
 This rule takes a string option:
 
-- If it's set to `rhs` (default), only type arguments on the right-hand side are allowed.
-- If it's set to `lhs`, only type arguments on the left-hand side are allowed.
+- If it's set to `rhs` (default), type arguments that **only** appear on the left-hand side are disallowed.
+- If it's set to `lhs`, type arguments that **only** appear on the right-hand side are disallowed.
 
 ## Rule Details
 
