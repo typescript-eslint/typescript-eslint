@@ -143,13 +143,12 @@ export default util.createRule<Options, MessageIds>({
     function isAllowedEmptyOverrideMethod(
       node: TSESTree.FunctionExpression,
     ): boolean {
-      if (isAllowedOverrideMethods && isBodyEmpty(node)) {
-        return (
-          node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
-          node.parent.override === true
-        );
-      }
-      return false;
+      return (
+        isAllowedOverrideMethods &&
+        isBodyEmpty(node) &&
+        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.override === true
+      );
     }
 
     return {
