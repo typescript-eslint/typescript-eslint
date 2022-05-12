@@ -71,6 +71,34 @@ x ?? 'foo';
       `,
     ),
 
+    {
+      code: 'x !== undefined && x !== null ? x : y;',
+      options: [{ ignoreTernaryTests: true }],
+    },
+
+    ...[
+      'x !== null && x !== undefined && x !== 5 ? x : y',
+      'x === null || x === undefined || x === 5 ? x : y',
+      'x === undefined && x !== null ? x : y;',
+      'x === undefined && x === null ? x : y;',
+      'x !== undefined && x === null ? x : y;',
+      'x === undefined || x !== null ? x : y;',
+      'x === undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? y : x;',
+      `
+declare const x: string | undefined | null;
+x !== undefined ? x : y;
+      `,
+      `
+declare const x: string | undefined | null;
+x !== null ? x : y;
+      `,
+    ].map(code => ({
+      code: code.trim(),
+      options: [{ ignoreTernaryTests: false }] as const,
+    })),
+
     // ignoreConditionalTests
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
@@ -160,6 +188,101 @@ x || 'foo';
 declare const x: ${type} | ${nullish};
 x ?? 'foo';
               `.trimRight(),
+            },
+          ],
+        },
+      ],
+    })),
+
+    ...[
+      'x !== undefined && x !== null ? x : y;',
+      'x !== null && x !== undefined ? x : y;',
+      'x === undefined || x === null ? y : x;',
+      'x === null || x === undefined ? y : x;',
+      'undefined !== x && x !== null ? x : y;',
+      'null !== x && x !== undefined ? x : y;',
+      'undefined === x || x === null ? y : x;',
+      'null === x || x === undefined ? y : x;',
+      'x !== undefined && null !== x ? x : y;',
+      'x !== null && undefined !== x ? x : y;',
+      'x === undefined || null === x ? y : x;',
+      'x === null || undefined === x ? y : x;',
+      'undefined !== x && null !== x ? x : y;',
+      'null !== x && undefined !== x ? x : y;',
+      'undefined === x || null === x ? y : x;',
+      'null === x || undefined === x ? y : x;',
+    ].map(code => ({
+      code,
+      output: null,
+      options: [{ ignoreTernaryTests: false }] as const,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary' as const,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 38,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: 'x ?? y;',
+            },
+          ],
+        },
+      ],
+    })),
+
+    ...[
+      `
+declare const x: string | undefined;
+x !== undefined ? x : y;
+      `.trim(),
+      `
+declare const x: string | undefined;
+undefined !== x ? x : y;
+      `.trim(),
+      `
+declare const x: string | undefined;
+undefined === x ? y : x;
+      `.trim(),
+      `
+declare const x: string | undefined;
+undefined === x ? y : x;
+      `.trim(),
+      `
+declare const x: string | null;
+x !== null ? x : y;
+      `.trim(),
+      `
+declare const x: string | null;
+null !== x ? x : y;
+      `.trim(),
+      `
+declare const x: string | null;
+null === x ? y : x;
+      `.trim(),
+      `
+declare const x: string | null;
+null === x ? y : x;
+      `.trim(),
+    ].map(code => ({
+      code,
+      output: null,
+      options: [{ ignoreTernaryTests: false }] as const,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary' as const,
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: code.split('\n')[1].length,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[0]}
+x ?? y;
+              `.trim(),
             },
           ],
         },
@@ -482,7 +605,6 @@ if (function werid() { return x ?? 'foo' }) {}
         },
       ],
     })),
-
     // https://github.com/typescript-eslint/typescript-eslint/issues/1290
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
