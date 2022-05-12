@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSDeclareFunction {
+        type: 'TSDeclareFunction',
+        async: false,
+        declare: true,
+        expression: false,
+        generator: false,
+        id: Identifier {
+          type: 'Identifier',
+          name: 'foo',
+
+          range: [17, 20],
+          loc: {
+            start: { column: 17, line: 1 },
+            end: { column: 20, line: 1 },
+          },
+        },
+        params: Array [],
+        typeParameters: TSTypeParameterDeclaration {
+          type: 'TSTypeParameterDeclaration',
+          params: Array [
+            TSTypeParameter {
+              type: 'TSTypeParameter',
+-             name: Identifier {
+-               type: 'Identifier',
+-               name: 'T',
+-
+-               range: [21, 22],
+-               loc: {
+-                 start: { column: 21, line: 1 },
+-                 end: { column: 22, line: 1 },
+-               },
+-             },
++             name: 'T',
+
+              range: [21, 22],
+              loc: {
+                start: { column: 21, line: 1 },
+                end: { column: 22, line: 1 },
+              },
+            },
+          ],
+
+          range: [20, 23],
+          loc: {
+            start: { column: 20, line: 1 },
+            end: { column: 23, line: 1 },
+          },
+        },
+
+        range: [0, 26],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 26, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 27],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
+`;

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ImportDeclaration side-effect TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ImportDeclaration {
+      type: "ImportDeclaration",
+      assertions: Array [],
+      importKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'mod'",
+        value: "mod",
+
+        range: [7, 12],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 12, line: 1 },
+        },
+      },
+      specifiers: Array [],
+
+      range: [0, 13],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 13, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 14],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

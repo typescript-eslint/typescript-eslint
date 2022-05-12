@@ -19,6 +19,7 @@ Program {
             end: { column: 32, line: 1 },
           },
         },
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
