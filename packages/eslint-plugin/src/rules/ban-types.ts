@@ -185,8 +185,7 @@ export default util.createRule<Options, MessageIds>({
           customMessage,
         },
         fix: fixWith
-          ? (fixer: TSESLint.RuleFixer): TSESLint.RuleFix =>
-              fixer.replaceText(typeNode, fixWith)
+          ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
           : null,
       });
     }
