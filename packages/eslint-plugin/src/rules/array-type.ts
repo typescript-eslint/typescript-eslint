@@ -61,6 +61,7 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSIntersectionType:
     case AST_NODE_TYPES.TSTypeOperator:
     case AST_NODE_TYPES.TSInferType:
+    case AST_NODE_TYPES.TSConstructorType:
       return true;
     case AST_NODE_TYPES.Identifier:
       return node.name === 'ReadonlyArray';
