@@ -65,11 +65,24 @@ export default createRule<Options, MessageIds>({
         }
         if (mode === 'rhs' && lhs?.typeParameters && !rhs.typeParameters) {
           const hasParens = sourceCode.getTokenAfter(rhs.callee)?.value === '(';
+          const extraComments = new Set(
+            sourceCode.getCommentsInside(lhs.parent!),
+          );
+          sourceCode
+            .getCommentsInside(lhs.typeParameters)
+            .forEach(c => extraComments.delete(c));
           context.report({
             node,
             messageId: 'preferRHS',
             *fix(fixer) {
               yield fixer.remove(lhs.parent!);
+              for (const comment of extraComments) {
+                yield fixer.insertTextAfter(
+                  rhs.callee,
+                  // @ts-expect-error: `sourceCode.getText` should accept `TSESTree.Comment`
+                  sourceCode.getText(comment),
+                );
+              }
               yield fixer.insertTextAfter(
                 rhs.callee,
                 sourceCode.getText(lhs.typeParameters),

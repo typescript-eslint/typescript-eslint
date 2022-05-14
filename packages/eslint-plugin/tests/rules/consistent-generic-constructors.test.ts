@@ -117,14 +117,13 @@ ruleTester.run('consistent-generic-constructors', rule, {
       output: noFormat`const a = new Foo<number>();`,
     },
     {
-      code: 'const a: Foo/* comment */ <string> = new Foo();',
+      code: 'const a: /* comment */ Foo/* another */ <string> = new Foo();',
       errors: [
         {
           messageId: 'preferRHS',
         },
       ],
-      // FIXME
-      output: 'const a = new Foo<string>();',
+      output: noFormat`const a = new Foo/* comment *//* another */<string>();`,
     },
     {
       code: 'const a: Foo/* comment */ <string> = new Foo /* another */();',
@@ -133,8 +132,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferRHS',
         },
       ],
-      // FIXME
-      output: 'const a = new Foo<string> /* another */();',
+      output: noFormat`const a = new Foo/* comment */<string> /* another */();`,
     },
     {
       code: noFormat`const a: Foo<string> = new \n Foo \n ();`,
@@ -204,6 +202,16 @@ ruleTester.run('consistent-generic-constructors', rule, {
         },
       ],
       output: noFormat`const a: Foo<string> = new Foo/* comment */  /* another */();`,
+    },
+    {
+      code: 'const a = new Foo</* comment */ string, /* another */ number>();',
+      options: ['lhs'],
+      errors: [
+        {
+          messageId: 'preferLHS',
+        },
+      ],
+      output: noFormat`const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
     },
   ],
 });
