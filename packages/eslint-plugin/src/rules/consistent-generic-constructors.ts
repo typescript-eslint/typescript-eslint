@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 type MessageIds = 'preferLHS' | 'preferRHS';
@@ -15,9 +15,9 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       preferLHS:
-        'The generic type arguments should be specified on the left-hand side of the constructor call.',
+        'The generic type arguments should be specified on the left-hand side of the declaration as a type annotation.',
       preferRHS:
-        'The generic type arguments should be specified on the right-hand side of the constructor call.',
+        'The generic type arguments should be specified on the right-hand side of the declaration as constructor type arguments.',
     },
     fixable: 'code',
     schema: [
@@ -29,7 +29,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['rhs'],
   create(context, [mode]) {
     return {
-      VariableDeclarator(node: TSESTree.VariableDeclarator): void {
+      VariableDeclarator(node): void {
         const sourceCode = context.getSourceCode();
         const lhs = node.id.typeAnnotation?.typeAnnotation;
         const rhs = node.init;
