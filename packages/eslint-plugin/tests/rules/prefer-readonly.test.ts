@@ -717,5 +717,30 @@ class Foo {
         }
       `,
     },
+    {
+      code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private _name: string;
+  };
+}
+      `,
+      output: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private readonly _name: string;
+  };
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: '_name',
+          },
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
   ],
 });
