@@ -108,6 +108,44 @@ ruleTester.run('consistent-generic-constructors', rule, {
       output: noFormat`const a = new Map<string, number> ();`,
     },
     {
+      code: noFormat`const a: Foo<number> = new Foo;`,
+      errors: [
+        {
+          messageId: 'preferRHS',
+        },
+      ],
+      output: noFormat`const a = new Foo<number>();`,
+    },
+    {
+      code: 'const a: Foo/* comment */ <string> = new Foo();',
+      errors: [
+        {
+          messageId: 'preferRHS',
+        },
+      ],
+      // FIXME
+      output: 'const a = new Foo<string>();',
+    },
+    {
+      code: 'const a: Foo/* comment */ <string> = new Foo /* another */();',
+      errors: [
+        {
+          messageId: 'preferRHS',
+        },
+      ],
+      // FIXME
+      output: 'const a = new Foo<string> /* another */();',
+    },
+    {
+      code: noFormat`const a: Foo<string> = new \n Foo \n ();`,
+      errors: [
+        {
+          messageId: 'preferRHS',
+        },
+      ],
+      output: noFormat`const a = new \n Foo<string> \n ();`,
+    },
+    {
       code: 'const a = new Foo<string>();',
       options: ['lhs'],
       errors: [
@@ -146,6 +184,26 @@ ruleTester.run('consistent-generic-constructors', rule, {
         },
       ],
       output: noFormat`const a: Map< string, number > = new Map();`,
+    },
+    {
+      code: noFormat`const a = new \n Foo<string> \n ();`,
+      options: ['lhs'],
+      errors: [
+        {
+          messageId: 'preferLHS',
+        },
+      ],
+      output: noFormat`const a: Foo<string> = new \n Foo \n ();`,
+    },
+    {
+      code: 'const a = new Foo/* comment */ <string> /* another */();',
+      options: ['lhs'],
+      errors: [
+        {
+          messageId: 'preferLHS',
+        },
+      ],
+      output: noFormat`const a: Foo<string> = new Foo/* comment */  /* another */();`,
     },
   ],
 });

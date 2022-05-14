@@ -49,32 +49,34 @@ export default createRule<Options, MessageIds>({
           return;
         }
         if (mode === 'lhs' && !lhs && rhs.typeParameters) {
+          const { typeParameters, callee } = rhs;
+          const typeAnnotation =
+            sourceCode.getText(callee) + sourceCode.getText(typeParameters);
           context.report({
             node,
             messageId: 'preferLHS',
             fix(fixer) {
-              const { typeParameters, callee } = rhs;
-              const typeAnnotation =
-                sourceCode.getText(callee) + sourceCode.getText(typeParameters);
               return [
-                fixer.remove(typeParameters!),
+                fixer.remove(typeParameters),
                 fixer.insertTextAfter(node.id, ': ' + typeAnnotation),
               ];
             },
           });
         }
         if (mode === 'rhs' && lhs?.typeParameters && !rhs.typeParameters) {
+          const hasParens = sourceCode.getTokenAfter(rhs.callee)?.value === '(';
           context.report({
             node,
             messageId: 'preferRHS',
-            fix(fixer) {
-              return [
-                fixer.remove(lhs.parent!),
-                fixer.insertTextAfter(
-                  rhs.callee,
-                  sourceCode.getText(lhs.typeParameters),
-                ),
-              ];
+            *fix(fixer) {
+              yield fixer.remove(lhs.parent!);
+              yield fixer.insertTextAfter(
+                rhs.callee,
+                sourceCode.getText(lhs.typeParameters),
+              );
+              if (!hasParens) {
+                yield fixer.insertTextAfter(rhs.callee, '()');
+              }
             },
           });
         }
