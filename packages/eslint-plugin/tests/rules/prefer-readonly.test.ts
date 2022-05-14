@@ -292,6 +292,19 @@ class Foo {
     },
     {
       code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private _name: string;
+
+    public test(value: string) {
+      this._name = value;
+    }
+  };
+}
+      `,
+    },
+    {
+      code: `
 class Foo {
   private value: Record<string, number> = {};
 
