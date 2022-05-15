@@ -419,9 +419,7 @@ export default util.createRule<Options, MessageIds>({
 
         const unusedVars = collectUnusedVariables();
 
-        for (let i = 0, l = unusedVars.length; i < l; ++i) {
-          const unusedVar = unusedVars[i];
-
+        for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
             context.report({

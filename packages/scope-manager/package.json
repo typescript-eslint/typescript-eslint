@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "5.19.0",
+  "version": "5.23.0",
   "description": "TypeScript scope analyser for ESLint",
   "keywords": [
     "eslint",
@@ -30,6 +30,7 @@
   "scripts": {
     "build": "cd ../../ && nx build @typescript-eslint/scope-manager",
     "clean": "cd ../../ && nx clean @typescript-eslint/scope-manager",
+    "clean-fixtures": "cd ../../ && nx clean-fixtures @typescript-eslint/scope-manager",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "generate:lib": "cd ../../ && nx generate-lib @typescript-eslint/scope-manager",
     "lint": "cd ../../ && nx lint @typescript-eslint/scope-manager",
@@ -37,12 +38,12 @@
     "typecheck": "cd ../../ && nx typecheck @typescript-eslint/scope-manager"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.19.0",
-    "@typescript-eslint/visitor-keys": "5.19.0"
+    "@typescript-eslint/types": "5.23.0",
+    "@typescript-eslint/visitor-keys": "5.23.0"
   },
   "devDependencies": {
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "5.19.0",
+    "@typescript-eslint/typescript-estree": "5.23.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

@@ -234,7 +234,7 @@ export const acceptsCallback: AcceptsCallback;
 
 ### `treatMethodsAsReadonly`
 
-This option allows you to treat all mutable methods as though they were readonly. This may be desirable in when you are never reassigning methods.
+This option allows you to treat all mutable methods as though they were readonly. This may be desirable when you are never reassigning methods.
 
 Examples of code for this rule with `{treatMethodsAsReadonly: false}`:
 

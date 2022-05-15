@@ -223,7 +223,6 @@ interface RuleContext<
   /**
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * This was added in v6.6.0
    * @since 6.6.0
    */
   getCwd?(): string;
@@ -235,7 +234,6 @@ interface RuleContext<
 
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
-   * This was added in v7.28.0
    * @since 7.28.0
    */
   getPhysicalFilename?(): string;

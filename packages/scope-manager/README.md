@@ -7,7 +7,7 @@
 </p>
 
 This is a fork of [`eslint-scope`](https://github.com/eslint/eslint-scope), enhanced to support TypeScript functionality.
-[You can view the original licence for the code here](https://github.com/eslint/eslint-scope/blob/dbddf14d5771b21b5da704213e4508c660ca1c64/LICENSE).
+[You can view the original license for the code here](https://github.com/eslint/eslint-scope/blob/dbddf14d5771b21b5da704213e4508c660ca1c64/LICENSE).
 
 This package is consumed automatically by [`@typescript-eslint/parser`](../parser).
 You probably don't want to use it directly.

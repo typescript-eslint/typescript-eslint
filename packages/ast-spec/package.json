@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "5.19.0",
+  "version": "5.23.0",
   "description": "TypeScript-ESTree AST spec",
   "private": true,
   "keywords": [
@@ -32,8 +32,10 @@
     "build": "tsc -b tsconfig.build.json && api-extractor run --local",
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf .rollup.cache && rimraf coverage",
+    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
     "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "test": "jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "funding": {
@@ -41,7 +43,17 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.18.16",
+    "@babel/core": "*",
+    "@babel/eslint-parser": "*",
+    "@babel/parser": "*",
+    "@microsoft/api-extractor": "^7.23.2",
+    "@types/babel__core": "*",
+    "glob": "*",
+    "jest-diff": "*",
+    "jest-snapshot": "*",
+    "jest-specific-snapshot": "*",
+    "make-dir": "*",
+    "pretty-format": "*",
     "typescript": "*"
   }
 }

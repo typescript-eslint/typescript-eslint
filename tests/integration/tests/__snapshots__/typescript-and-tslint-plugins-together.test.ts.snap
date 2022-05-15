@@ -19,6 +19,7 @@ Array [
     "source": "// prettier-ignore
 const noSemi = true
 ",
+    "suppressedMessages": Array [],
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },

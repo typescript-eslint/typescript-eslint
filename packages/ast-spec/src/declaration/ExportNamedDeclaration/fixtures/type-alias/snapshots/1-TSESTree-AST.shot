@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportNamedDeclaration type-alias TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: TSTypeAliasDeclaration {
+        type: "TSTypeAliasDeclaration",
+        id: Identifier {
+          type: "Identifier",
+          name: "A",
+
+          range: [12, 13],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 13, line: 1 },
+          },
+        },
+        typeAnnotation: TSLiteralType {
+          type: "TSLiteralType",
+          literal: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [16, 17],
+            loc: {
+              start: { column: 16, line: 1 },
+              end: { column: 17, line: 1 },
+            },
+          },
+
+          range: [16, 17],
+          loc: {
+            start: { column: 16, line: 1 },
+            end: { column: 17, line: 1 },
+          },
+        },
+
+        range: [7, 18],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      exportKind: "type",
+      source: null,
+      specifiers: Array [],
+
+      range: [0, 18],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 18, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 19],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

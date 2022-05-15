@@ -4,5 +4,7 @@
     "composite": false,
     "rootDir": "."
   },
-  "include": ["src", "typings", "tests", "tools", "./rollup.config.ts"]
+  "include": ["src", "typings", "tests", "tools", "./rollup.config.ts"],
+  "exclude": ["**/fixtures/**"],
+  "references": [{ "path": "../typescript-estree/tsconfig.build.json" }]
 }

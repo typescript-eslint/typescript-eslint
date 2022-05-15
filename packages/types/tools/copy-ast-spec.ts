@@ -1,11 +1,29 @@
-import chlidProcess from 'child_process';
+import childProcess from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
-const execAsync = promisify(chlidProcess.exec);
+
+// the promisify util will eat the stderr logs
+async function execAsync(
+  command: string,
+  args: ReadonlyArray<string>,
+  options: childProcess.SpawnOptions,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = childProcess.spawn(command, args, {
+      ...options,
+      shell: process.platform === 'win32',
+      stdio: 'inherit',
+    });
+
+    child.on('error', e => reject(e));
+    child.on('exit', () => resolve());
+    child.on('close', () => resolve());
+  });
+}
 
 const AST_SPEC_PATH = path.resolve(__dirname, '../../ast-spec');
 const OUTPUT_PATH = path.join(path.resolve(__dirname, '../src/generated'));
@@ -43,12 +61,15 @@ async function copyFile(
     encoding: 'utf-8',
   });
 
-  await execAsync(`yarn prettier --write ${outpath}`);
+  await execAsync('yarn', ['prettier', '--write', outpath], {});
 
   console.log('Copied', fileName);
 }
 
 async function main(): Promise<void> {
+  // ensure the package is built
+  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
+
   await Promise.all([
     copyFile('dist', 'ast-spec.ts', code =>
       code.replace(/export declare enum/g, 'export enum'),

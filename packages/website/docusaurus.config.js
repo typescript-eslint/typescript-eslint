@@ -52,6 +52,7 @@ const config = {
         beforeDefaultRemarkPlugins,
         remarkPlugins,
         exclude: ['TEMPLATE.md'],
+        breadcrumbs: false,
       },
     ],
     [
@@ -65,6 +66,7 @@ const config = {
         editUrl: `${githubUrl}/edit/main/packages/website/`,
         beforeDefaultRemarkPlugins,
         remarkPlugins,
+        breadcrumbs: false,
       },
     ],
   ],
