@@ -1,8 +1,8 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
-type MessageIds = 'preferLHS' | 'preferRHS';
-type Options = ['lhs' | 'rhs'];
+type MessageIds = 'preferTypeAnnotation' | 'preferConstructor';
+type Options = ['type-annotation' | 'constructor'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -10,23 +10,23 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce specifying generic type arguments on LHS or RHS of constructor call',
+        'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
       recommended: false,
     },
     messages: {
-      preferLHS:
-        'The generic type arguments should be specified on the left-hand side of the declaration as a type annotation.',
-      preferRHS:
-        'The generic type arguments should be specified on the right-hand side of the declaration as constructor type arguments.',
+      preferTypeAnnotation:
+        'The generic type arguments should be specified as part of the type annotation.',
+      preferConstructor:
+        'The generic type arguments should be specified as part of the constructor type arguments.',
     },
     fixable: 'code',
     schema: [
       {
-        enum: ['lhs', 'rhs'],
+        enum: ['type-annotation', 'constructor'],
       },
     ],
   },
-  defaultOptions: ['rhs'],
+  defaultOptions: ['constructor'],
   create(context, [mode]) {
     return {
       VariableDeclarator(node): void {
@@ -48,13 +48,13 @@ export default createRule<Options, MessageIds>({
         ) {
           return;
         }
-        if (mode === 'lhs' && !lhs && rhs.typeParameters) {
+        if (mode === 'type-annotation' && !lhs && rhs.typeParameters) {
           const { typeParameters, callee } = rhs;
           const typeAnnotation =
             sourceCode.getText(callee) + sourceCode.getText(typeParameters);
           context.report({
             node,
-            messageId: 'preferLHS',
+            messageId: 'preferTypeAnnotation',
             fix(fixer) {
               return [
                 fixer.remove(typeParameters),
@@ -63,7 +63,11 @@ export default createRule<Options, MessageIds>({
             },
           });
         }
-        if (mode === 'rhs' && lhs?.typeParameters && !rhs.typeParameters) {
+        if (
+          mode === 'constructor' &&
+          lhs?.typeParameters &&
+          !rhs.typeParameters
+        ) {
           const hasParens = sourceCode.getTokenAfter(rhs.callee)?.value === '(';
           const extraComments = new Set(
             sourceCode.getCommentsInside(lhs.parent!),
@@ -73,7 +77,7 @@ export default createRule<Options, MessageIds>({
             .forEach(c => extraComments.delete(c));
           context.report({
             node,
-            messageId: 'preferRHS',
+            messageId: 'preferConstructor',
             *fix(fixer) {
               yield fixer.remove(lhs.parent!);
               for (const comment of extraComments) {

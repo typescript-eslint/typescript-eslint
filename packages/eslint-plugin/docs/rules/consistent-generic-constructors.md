@@ -1,8 +1,8 @@
 # `consistent-generic-constructors`
 
-Enforce specifying generic type arguments on LHS or RHS of constructor call.
+Enforce specifying generic type arguments on type annotation or constructor name of a constructor call.
 
-When constructing a generic class, you can specify the type arguments on either the left-hand side or the right-hand side:
+When constructing a generic class, you can specify the type arguments on either the left-hand side (as a type annotation) or the right-hand side (as part of the constructor call):
 
 ```ts
 // Left-hand side
@@ -19,21 +19,24 @@ This rule ensures that type arguments appear consistently on one side of the dec
 ```jsonc
 {
   "rules": {
-    "@typescript-eslint/consistent-generic-constructors": ["error", "rhs"]
+    "@typescript-eslint/consistent-generic-constructors": [
+      "error",
+      "constructor"
+    ]
   }
 }
 ```
 
 This rule takes a string option:
 
-- If it's set to `rhs` (default), type arguments that **only** appear on the left-hand side are disallowed.
-- If it's set to `lhs`, type arguments that **only** appear on the right-hand side are disallowed.
+- If it's set to `constructor` (default), type arguments that **only** appear on the type annotation are disallowed.
+- If it's set to `type-annotation`, type arguments that **only** appear on the constructor are disallowed.
 
 ## Rule Details
 
-The rule never reports when there are type parameters on both sides, or neither sides of the declaration. It also doesn't report if the names of the two sides don't match.
+The rule never reports when there are type parameters on both sides, or neither sides of the declaration. It also doesn't report if the names of the type annotation and the constructor don't match.
 
-### `rhs`
+### `constructor`
 
 <!--tabs-->
 
@@ -54,7 +57,7 @@ const set = new Set();
 const set: Set<string> = new Set<string>();
 ```
 
-### `lhs`
+### `type-annotation`
 
 <!--tabs-->
 

@@ -7,7 +7,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('consistent-generic-constructors', rule, {
   valid: [
-    // default: rhs
+    // default: constructor
     'const a = new Foo();',
     'const a = new Foo<string>();',
     'const a: Foo<string> = new Foo<string>();',
@@ -19,46 +19,46 @@ ruleTester.run('consistent-generic-constructors', rule, {
     'const a: Foo<string> = Foo<string>();',
     'const a: Foo<string> = Foo();',
     'const a: Foo = Foo<string>();',
-    // lhs
+    // type-annotation
     {
       code: 'const a = new Foo();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Foo<string> = new Foo();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Foo<string> = new Foo<string>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Foo = new Foo();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Bar = new Foo<string>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Bar<string> = new Foo<string>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Foo<string> = Foo<string>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Foo<string> = Foo();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a: Foo = Foo<string>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
     {
       code: 'const a = new (class C<T> {})<string>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
     },
   ],
   invalid: [
@@ -66,7 +66,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: 'const a: Foo<string> = new Foo();',
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: 'const a = new Foo<string>();',
@@ -75,7 +75,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: 'const a: Map<string, number> = new Map();',
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: 'const a = new Map<string, number>();',
@@ -84,7 +84,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: noFormat`const a: Map <string, number> = new Map();`,
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: noFormat`const a = new Map<string, number>();`,
@@ -93,7 +93,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: noFormat`const a: Map< string, number > = new Map();`,
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: noFormat`const a = new Map< string, number >();`,
@@ -102,7 +102,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: noFormat`const a: Map<string, number> = new Map ();`,
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: noFormat`const a = new Map<string, number> ();`,
@@ -111,7 +111,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: noFormat`const a: Foo<number> = new Foo;`,
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: noFormat`const a = new Foo<number>();`,
@@ -120,7 +120,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: 'const a: /* comment */ Foo/* another */ <string> = new Foo();',
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: noFormat`const a = new Foo/* comment *//* another */<string>();`,
@@ -129,7 +129,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: 'const a: Foo/* comment */ <string> = new Foo /* another */();',
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: noFormat`const a = new Foo/* comment */<string> /* another */();`,
@@ -138,77 +138,77 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: noFormat`const a: Foo<string> = new \n Foo \n ();`,
       errors: [
         {
-          messageId: 'preferRHS',
+          messageId: 'preferConstructor',
         },
       ],
       output: noFormat`const a = new \n Foo<string> \n ();`,
     },
     {
       code: 'const a = new Foo<string>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
       errors: [
         {
-          messageId: 'preferLHS',
+          messageId: 'preferTypeAnnotation',
         },
       ],
       output: 'const a: Foo<string> = new Foo();',
     },
     {
       code: 'const a = new Map<string, number>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
       errors: [
         {
-          messageId: 'preferLHS',
+          messageId: 'preferTypeAnnotation',
         },
       ],
       output: 'const a: Map<string, number> = new Map();',
     },
     {
       code: noFormat`const a = new Map <string, number> ();`,
-      options: ['lhs'],
+      options: ['type-annotation'],
       errors: [
         {
-          messageId: 'preferLHS',
+          messageId: 'preferTypeAnnotation',
         },
       ],
       output: noFormat`const a: Map<string, number> = new Map  ();`,
     },
     {
       code: noFormat`const a = new Map< string, number >();`,
-      options: ['lhs'],
+      options: ['type-annotation'],
       errors: [
         {
-          messageId: 'preferLHS',
+          messageId: 'preferTypeAnnotation',
         },
       ],
       output: noFormat`const a: Map< string, number > = new Map();`,
     },
     {
       code: noFormat`const a = new \n Foo<string> \n ();`,
-      options: ['lhs'],
+      options: ['type-annotation'],
       errors: [
         {
-          messageId: 'preferLHS',
+          messageId: 'preferTypeAnnotation',
         },
       ],
       output: noFormat`const a: Foo<string> = new \n Foo \n ();`,
     },
     {
       code: 'const a = new Foo/* comment */ <string> /* another */();',
-      options: ['lhs'],
+      options: ['type-annotation'],
       errors: [
         {
-          messageId: 'preferLHS',
+          messageId: 'preferTypeAnnotation',
         },
       ],
       output: noFormat`const a: Foo<string> = new Foo/* comment */  /* another */();`,
     },
     {
       code: 'const a = new Foo</* comment */ string, /* another */ number>();',
-      options: ['lhs'],
+      options: ['type-annotation'],
       errors: [
         {
-          messageId: 'preferLHS',
+          messageId: 'preferTypeAnnotation',
         },
       ],
       output: noFormat`const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
