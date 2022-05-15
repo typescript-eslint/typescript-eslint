@@ -1,6 +1,6 @@
 # `no-non-null-asserted-nullish-coalescing`
 
-Disallow non-null assertions in the left operand of a nullish coalescing operator.
+Disallows non-null assertions in the left operand of a nullish coalescing operator.
 
 ## Rule Details
 

@@ -1,6 +1,6 @@
 # `require-array-sort-compare`
 
-Require `Array#sort` calls to always provide a `compareFunction`.
+Requires `Array#sort` calls to always provide a `compareFunction`.
 
 This rule prevents invoking the `Array#sort()` method without providing a `compare` argument.
 

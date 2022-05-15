@@ -1,6 +1,6 @@
 # `no-extra-semi`
 
-Disallow unnecessary semicolons.
+Disallows unnecessary semicolons.
 
 ## Rule Details
 

@@ -1,6 +1,6 @@
 # `indent`
 
-Enforce consistent indentation.
+Enforces consistent indentation.
 
 ## Warning
 

@@ -1,6 +1,6 @@
 # `space-infix-ops`
 
-Require spacing around infix operators.
+Requires spacing around infix operators.
 
 This rule extends the base [`eslint/space-infix-ops`](https://eslint.org/docs/rules/space-infix-ops) rule.
 

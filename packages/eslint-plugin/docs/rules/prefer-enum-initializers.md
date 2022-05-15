@@ -1,6 +1,6 @@
 # `prefer-enum-initializers`
 
-Require each enum member value to be explicitly initialized.
+Requires each enum member value to be explicitly initialized.
 
 This rule recommends having each `enum`s member value explicitly initialized.
 

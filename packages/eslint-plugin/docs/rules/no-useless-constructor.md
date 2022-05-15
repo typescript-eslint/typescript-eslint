@@ -1,6 +1,6 @@
 # `no-useless-constructor`
 
-Disallow unnecessary constructors.
+Disallows unnecessary constructors.
 
 ## Rule Details
 

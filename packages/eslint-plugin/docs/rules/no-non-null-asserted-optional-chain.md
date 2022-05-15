@@ -1,6 +1,6 @@
 # `no-non-null-asserted-optional-chain`
 
-Disallow non-null assertions after an optional chain expression.
+Disallows non-null assertions after an optional chain expression.
 
 ## Rule Details
 

@@ -1,6 +1,6 @@
 # `no-confusing-non-null-assertion`
 
-Disallow non-null assertion in locations that may be confusing.
+Disallows non-null assertion in locations that may be confusing.
 
 ## Rule Details
 

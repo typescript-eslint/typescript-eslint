@@ -1,6 +1,6 @@
 # `unbound-method`
 
-Enforce unbound methods are called with their expected scope.
+Enforces unbound methods are called with their expected scope.
 
 Warns when a method is used outside of a method call.
 

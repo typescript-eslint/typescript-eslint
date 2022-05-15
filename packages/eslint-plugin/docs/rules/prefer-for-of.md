@@ -1,6 +1,6 @@
 # `prefer-for-of`
 
-Enforce the use of `for-of` loop over the standard `for` loop where possible.
+Enforces the use of `for-of` loop over the standard `for` loop where possible.
 
 This rule recommends a for-of loop when the loop index is only used to read from an array that is being iterated.
 

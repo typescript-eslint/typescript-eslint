@@ -1,6 +1,6 @@
 # `no-unnecessary-qualifier`
 
-Disallow unnecessary namespace qualifiers.
+Disallows unnecessary namespace qualifiers.
 
 ## Rule Details
 

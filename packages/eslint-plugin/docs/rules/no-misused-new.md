@@ -1,6 +1,6 @@
 # `no-misused-new`
 
-Enforce valid definition of `new` and `constructor`.
+Enforces valid definition of `new` and `constructor`.
 
 Warns on apparent attempts to define constructors for interfaces or `new` for classes.
 

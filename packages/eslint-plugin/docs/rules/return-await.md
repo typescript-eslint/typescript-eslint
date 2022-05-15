@@ -1,6 +1,6 @@
 # `return-await`
 
-Enforce consistent returning of awaited values.
+Enforces consistent returning of awaited values.
 
 Returning an awaited promise can make sense for better stack trace information as well as for consistent error handling (returned promises will not be caught in an async function try/catch).
 

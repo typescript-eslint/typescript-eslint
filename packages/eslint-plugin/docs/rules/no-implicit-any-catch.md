@@ -1,6 +1,6 @@
 # `no-implicit-any-catch`
 
-Disallow usage of the implicit `any` type in catch clauses.
+Disallows usage of the implicit `any` type in catch clauses.
 
 TypeScript 4.0 added support for adding an explicit `any` or `unknown` type annotation on a catch clause variable.
 

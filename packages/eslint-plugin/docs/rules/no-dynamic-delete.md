@@ -1,6 +1,6 @@
 # `no-dynamic-delete`
 
-Disallow the delete operator with computed key expressions.
+Disallows using the `delete` operator on computed key expressions.
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 

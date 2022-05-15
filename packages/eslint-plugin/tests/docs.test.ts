@@ -111,7 +111,10 @@ describe('Validating rule docs', () => {
       // Rule title does not match the rule metadata.
       expect(tokens[1]).toMatchObject({
         type: 'paragraph',
-        text: `${rule.meta.docs?.description}.`,
+        text: `${rule.meta.docs?.description.replace(
+          /(?<!`)(require|enforce|disallow)/gi,
+          '$1s',
+        )}.`,
       });
     });
 

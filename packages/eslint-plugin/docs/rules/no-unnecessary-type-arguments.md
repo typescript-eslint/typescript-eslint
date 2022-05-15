@@ -1,6 +1,6 @@
 # `no-unnecessary-type-arguments`
 
-Disallow type arguments that are equal to the default.
+Disallows type arguments that are equal to the default.
 
 Warns if an explicitly specified type argument is the default for that type parameter.
 

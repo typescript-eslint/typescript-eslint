@@ -1,6 +1,6 @@
 # `no-redeclare`
 
-Disallow variable redeclaration.
+Disallows variable redeclaration.
 
 ## Rule Details
 

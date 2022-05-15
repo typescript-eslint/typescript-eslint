@@ -1,6 +1,6 @@
 # `unified-signatures`
 
-Disallow two overloads that could be unified into one with a union or an optional/rest parameter.
+Disallows two overloads that could be unified into one with a union or an optional/rest parameter.
 
 ## Rule Details
 

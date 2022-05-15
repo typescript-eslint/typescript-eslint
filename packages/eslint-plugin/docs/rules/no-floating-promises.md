@@ -1,6 +1,6 @@
 # `no-floating-promises`
 
-Require Promise-like statements to be handled appropriately.
+Requires Promise-like statements to be handled appropriately.
 
 A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
 

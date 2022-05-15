@@ -1,6 +1,6 @@
 # `dot-notation`
 
-Enforce dot notation whenever possible.
+Enforces dot notation whenever possible.
 
 ## Rule Details
 

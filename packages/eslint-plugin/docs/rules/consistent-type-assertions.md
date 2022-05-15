@@ -1,6 +1,6 @@
 # `consistent-type-assertions`
 
-Enforce consistent usage of type assertions.
+Enforces consistent usage of type assertions.
 
 ## Rule Details
 

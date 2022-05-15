@@ -1,6 +1,6 @@
 # `init-declarations`
 
-Require or disallow initialization in variable declarations.
+Requires or disallows initialization in variable declarations.
 
 ## Rule Details
 

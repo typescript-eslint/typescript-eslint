@@ -1,6 +1,6 @@
 # `no-invalid-this`
 
-Disallow `this` keywords outside of classes or class-like objects.
+Disallows `this` keywords outside of classes or class-like objects.
 
 ## Rule Details
 

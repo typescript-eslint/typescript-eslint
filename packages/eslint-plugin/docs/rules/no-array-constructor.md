@@ -1,6 +1,6 @@
 # `no-array-constructor`
 
-Disallow generic `Array` constructors.
+Disallows generic `Array` constructors.
 
 ## Rule Details
 

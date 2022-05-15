@@ -1,6 +1,6 @@
 # `no-non-null-assertion`
 
-Disallow non-null assertions using the `!` postfix operator.
+Disallows non-null assertions using the `!` postfix operator.
 
 ## Rule Details
 

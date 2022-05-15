@@ -1,6 +1,6 @@
 # `no-extraneous-class`
 
-Disallow classes used as namespaces.
+Disallows classes used as namespaces.
 
 This rule warns when a class is accidentally used as a namespace.
 
