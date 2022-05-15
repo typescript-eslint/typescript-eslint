@@ -34,7 +34,6 @@ export = {
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'warn',
     '@typescript-eslint/non-nullable-type-assertion-style': 'warn',
-    '@typescript-eslint/parameter-properties': 'warn',
     '@typescript-eslint/prefer-for-of': 'warn',
     '@typescript-eslint/prefer-function-type': 'warn',
     '@typescript-eslint/prefer-includes': 'warn',
