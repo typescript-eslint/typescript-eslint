@@ -46,11 +46,6 @@
     "test-integration": "yarn jest -c ./tests/integration/jest.config.js",
     "typecheck": "nx run-many --target=typecheck --all --parallel"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "engines": {
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
@@ -59,8 +54,6 @@
     "@babel/eslint-parser": "^7.17.0",
     "@babel/parser": "^7.17.0",
     "@babel/types": "^7.17.10",
-    "@commitlint/cli": "^16.2.4",
-    "@commitlint/config-conventional": "^16.2.4",
     "@nrwl/cli": "14.1.4",
     "@nrwl/nx-cloud": "14.0.3",
     "@nrwl/tao": "14.1.4",
@@ -86,7 +79,6 @@
     "cross-env": "^7.0.3",
     "cross-fetch": "^3.1.5",
     "cspell": "^5.20.0",
-    "cz-conventional-changelog": "^3.3.0",
     "downlevel-dts": "^0.9.0",
     "enhanced-resolve": "^5.9.3",
     "eslint": "^8.15.0",
