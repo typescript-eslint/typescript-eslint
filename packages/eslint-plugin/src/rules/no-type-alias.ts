@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow the use of type aliases',
+      description: 'Disallow type aliases',
       // too opinionated to be recommended
       recommended: false,
     },

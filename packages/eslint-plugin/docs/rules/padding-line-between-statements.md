@@ -1,6 +1,6 @@
 # `padding-line-between-statements`
 
-require or disallow padding lines between statements.
+Require or disallow padding lines between statements.
 
 ## Rule Details
 

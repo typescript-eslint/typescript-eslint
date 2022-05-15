@@ -21,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Requires that `.toString()` is only called on objects which provide useful information when stringified',
+        'Require `.toString()` to only be called on objects which provide useful information when stringified',
       recommended: false,
       requiresTypeChecking: true,
     },

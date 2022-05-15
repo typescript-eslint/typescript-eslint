@@ -1,6 +1,6 @@
 # `restrict-plus-operands`
 
-When adding two variables, operands must both be of type number or of type string.
+Require both operands of addition to have type `number` or `string`.
 
 ## Rule Details
 

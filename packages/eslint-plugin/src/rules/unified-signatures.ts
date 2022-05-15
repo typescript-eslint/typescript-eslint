@@ -64,7 +64,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter',
+        'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
       // too opinionated to be recommended
       recommended: false,
     },

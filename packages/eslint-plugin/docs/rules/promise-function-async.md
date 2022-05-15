@@ -1,8 +1,7 @@
 # `promise-function-async`
 
-Requires any function or method that returns a Promise to be marked async.
+Require any function or method that returns a Promise to be marked async.
 
-Requires any function or method that returns a Promise to be marked async.
 Ensures that each function is only capable of:
 
 - returning a rejected promise, or

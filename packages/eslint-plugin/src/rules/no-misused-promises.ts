@@ -59,7 +59,7 @@ export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
   meta: {
     docs: {
-      description: 'Avoid using Promises in places not designed to handle them',
+      description: 'Disallow Promises in places not designed to handle them',
       recommended: 'error',
       requiresTypeChecking: true,
     },

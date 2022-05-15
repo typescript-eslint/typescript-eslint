@@ -1,6 +1,6 @@
 # `comma-spacing`
 
-Enforces consistent spacing before and after commas.
+Enforce consistent spacing before and after commas.
 
 ## Rule Details
 

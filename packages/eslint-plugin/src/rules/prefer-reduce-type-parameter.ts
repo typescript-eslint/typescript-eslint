@@ -29,7 +29,7 @@ export default util.createRule({
     docs: {
       recommended: false,
       description:
-        'Prefer using type parameter when calling `Array#reduce` instead of casting',
+        'Enforce using type parameter when calling `Array#reduce` instead of casting',
       requiresTypeChecking: true,
     },
     messages: {

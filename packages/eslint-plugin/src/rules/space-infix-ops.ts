@@ -14,8 +14,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description:
-        'This rule is aimed at ensuring there are spaces around infix operators.',
+      description: 'Require spacing around infix operators',
       recommended: false,
       extendsBaseRule: true,
     },

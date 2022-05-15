@@ -1,6 +1,6 @@
 # `consistent-type-exports`
 
-Enforces consistent usage of type exports.
+Enforce consistent usage of type exports.
 
 TypeScript 3.8 added support for type-only exports.
 

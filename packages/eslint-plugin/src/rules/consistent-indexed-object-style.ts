@@ -9,7 +9,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforce or disallow the use of the record type',
+      description: 'Require or disallow the `Record` type',
       // too opinionated to be recommended
       recommended: false,
     },

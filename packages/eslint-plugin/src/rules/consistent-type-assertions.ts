@@ -22,7 +22,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces consistent usage of type assertions',
+      description: 'Enforce consistent usage of type assertions',
       recommended: false,
     },
     messages: {

@@ -1,6 +1,6 @@
 # `typedef`
 
-Requires type annotations to exist.
+Require type annotations in certain places.
 
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.

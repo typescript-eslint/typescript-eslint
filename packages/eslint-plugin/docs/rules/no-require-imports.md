@@ -1,6 +1,6 @@
 # `no-require-imports`
 
-Disallows invocation of `require()`.
+Disallow invocation of `require()`.
 
 Prefer the newer ES6-style imports over `require()`.
 

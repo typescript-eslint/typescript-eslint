@@ -126,7 +126,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Enforces unbound methods are called with their expected scope',
+        'Enforce unbound methods are called with their expected scope',
       recommended: 'error',
       requiresTypeChecking: true,
     },

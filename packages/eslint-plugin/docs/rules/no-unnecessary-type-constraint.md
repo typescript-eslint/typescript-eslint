@@ -1,6 +1,6 @@
 # `no-unnecessary-type-constraint`
 
-Disallows unnecessary constraints on generic types.
+Disallow unnecessary constraints on generic types.
 
 ## Rule Details
 

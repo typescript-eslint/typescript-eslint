@@ -12,7 +12,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Consistent with type definition either `interface` or `type`',
+        'Enforce type definitions to consistently use either `interface` or `type`',
       // too opinionated to be recommended
       recommended: false,
     },

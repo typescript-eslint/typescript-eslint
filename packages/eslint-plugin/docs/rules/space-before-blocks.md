@@ -1,6 +1,6 @@
 # `space-before-blocks`
 
-Enforces consistent spacing before blocks.
+Enforce consistent spacing before blocks.
 
 ## Rule Details
 
