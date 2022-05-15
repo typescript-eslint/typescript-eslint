@@ -282,6 +282,6 @@ function foo(arg: MyType) {}
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

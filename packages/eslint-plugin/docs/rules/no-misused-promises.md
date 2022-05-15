@@ -229,6 +229,6 @@ misuses of them outside of what the TypeScript compiler will check.
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -113,6 +113,6 @@ const msg1 = `arg = ${arg}`;
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

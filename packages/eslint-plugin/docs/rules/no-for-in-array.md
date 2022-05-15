@@ -66,6 +66,6 @@ If you want to iterate through a loop using the indices in an array as strings, 
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

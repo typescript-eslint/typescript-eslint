@@ -121,6 +121,6 @@ If you do not want to enforce consistent type assertions.
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

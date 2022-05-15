@@ -70,6 +70,6 @@ This rule is not configurable.
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

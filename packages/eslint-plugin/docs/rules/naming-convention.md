@@ -705,6 +705,6 @@ If you do not want to enforce naming conventions for anything.
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

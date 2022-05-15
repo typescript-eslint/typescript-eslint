@@ -290,6 +290,6 @@ If you wish to make sure all functions have explicit return types, as opposed to
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

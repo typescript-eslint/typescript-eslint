@@ -114,6 +114,6 @@ export { Button, type ButtonProps } from 'some-library';
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

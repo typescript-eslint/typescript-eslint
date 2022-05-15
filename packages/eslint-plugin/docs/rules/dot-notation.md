@@ -92,6 +92,6 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

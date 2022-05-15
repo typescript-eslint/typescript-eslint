@@ -51,6 +51,6 @@ If you don't care about TypeScript module syntax, then you will not need this ru
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

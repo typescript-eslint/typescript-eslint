@@ -65,6 +65,6 @@ If you need to assign `this` to variables, you shouldn’t use this rule.
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

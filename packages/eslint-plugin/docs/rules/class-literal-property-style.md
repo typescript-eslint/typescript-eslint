@@ -113,6 +113,6 @@ for how literal values are exposed by your classes.
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

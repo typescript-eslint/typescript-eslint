@@ -295,6 +295,6 @@ you will not need this rule.
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

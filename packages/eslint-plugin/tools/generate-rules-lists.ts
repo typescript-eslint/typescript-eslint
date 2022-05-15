@@ -20,14 +20,14 @@ interface RuleDetails {
 type RuleColumn = [
   string,
   string,
-  ':heavy_check_mark:' | ':white_check_mark:' | '',
+  ':lock:' | ':white_check_mark:' | '',
   ':wrench:' | '',
   ':thought_balloon:' | '',
 ];
 
 const emojiKey = {
   recommended: ':white_check_mark:',
-  strict: ':heavy_check_mark:',
+  strict: ':lock:',
   fixable: ':wrench:',
   requiresTypeChecking: ':thought_balloon:',
 } as const;

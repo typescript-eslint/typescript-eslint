@@ -293,7 +293,7 @@ describe('Validating README.md', () => {
       it('Recommended column should be correct', () => {
         expect(ruleRow[2]).toBe(
           rule.meta.docs?.recommended === 'strict'
-            ? ':heavy_check_mark:'
+            ? ':lock:'
             : rule.meta.docs?.recommended
             ? ':white_check_mark:'
             : '',

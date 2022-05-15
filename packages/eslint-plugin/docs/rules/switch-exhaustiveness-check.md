@@ -127,6 +127,6 @@ If program doesn't have union types with many parts. Downside of this rule is th
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

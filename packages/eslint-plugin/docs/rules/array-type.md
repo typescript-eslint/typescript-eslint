@@ -127,6 +127,6 @@ This matrix lists all possible option combinations and their expected results fo
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

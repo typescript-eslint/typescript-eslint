@@ -55,6 +55,6 @@ This is generally not preferred, but can sometimes be useful for visual consiste
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

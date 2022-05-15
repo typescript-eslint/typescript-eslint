@@ -43,6 +43,6 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

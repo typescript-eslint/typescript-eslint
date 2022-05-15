@@ -75,6 +75,6 @@ In addition, each of the following properties may be provided, and default to `t
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

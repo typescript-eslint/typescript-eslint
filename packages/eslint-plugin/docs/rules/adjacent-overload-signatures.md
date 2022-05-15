@@ -109,6 +109,6 @@ If you don't care about the general structure of the code, then you will not nee
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

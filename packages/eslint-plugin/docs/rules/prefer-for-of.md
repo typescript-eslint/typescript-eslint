@@ -63,6 +63,6 @@ If you transpile for browsers that do not support for-of loops, you may wish to 
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

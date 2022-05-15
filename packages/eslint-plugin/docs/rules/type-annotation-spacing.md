@@ -316,6 +316,6 @@ If you don't want to enforce spacing for your type annotations, you can safely t
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

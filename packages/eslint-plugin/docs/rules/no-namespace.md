@@ -140,6 +140,6 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

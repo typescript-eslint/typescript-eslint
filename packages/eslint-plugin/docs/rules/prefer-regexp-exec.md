@@ -63,6 +63,6 @@ If you prefer consistent use of `String#match` for both, with `g` flag and witho
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -57,6 +57,6 @@ If you don't care about strict null-checking, then you will not need this rule.
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

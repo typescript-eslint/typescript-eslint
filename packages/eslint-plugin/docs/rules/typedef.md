@@ -345,6 +345,6 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

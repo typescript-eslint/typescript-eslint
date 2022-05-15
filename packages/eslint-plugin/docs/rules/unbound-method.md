@@ -123,6 +123,6 @@ If you're wanting to use `toBeCalled` and similar matches in `jest` tests, you c
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

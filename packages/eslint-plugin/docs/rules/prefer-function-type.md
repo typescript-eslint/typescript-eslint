@@ -103,6 +103,6 @@ If you specifically want to use an interface or type literal with a single call 
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

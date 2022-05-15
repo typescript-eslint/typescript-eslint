@@ -109,6 +109,6 @@ If you don't want to enforce a particular style for object/interface function ty
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

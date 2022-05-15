@@ -73,6 +73,6 @@ If you don't care about having empty/meaningless interfaces, then you will not n
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

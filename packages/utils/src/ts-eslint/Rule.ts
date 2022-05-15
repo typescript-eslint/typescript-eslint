@@ -73,7 +73,7 @@ interface RuleMetaData<TMessageIds extends string> {
    */
   replacedBy?: readonly string[];
   /**
-   * The options schema. Supply an empty array if This rule is not configurable.
+   * The options schema. Supply an empty array if there are no options.
    */
   schema: JSONSchema4 | readonly JSONSchema4[];
 }

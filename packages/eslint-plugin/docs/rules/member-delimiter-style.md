@@ -213,6 +213,6 @@ If you don't care about enforcing a consistent member delimiter in interfaces an
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

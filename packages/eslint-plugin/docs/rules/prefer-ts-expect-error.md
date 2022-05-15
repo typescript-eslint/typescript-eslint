@@ -87,6 +87,6 @@ If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able 
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

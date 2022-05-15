@@ -94,6 +94,6 @@ If you don't mind `"[object Object]"` in your strings, then you will not need th
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

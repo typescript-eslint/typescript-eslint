@@ -124,6 +124,6 @@ If you do not use Promise-like values in your codebase, or want to allow them to
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

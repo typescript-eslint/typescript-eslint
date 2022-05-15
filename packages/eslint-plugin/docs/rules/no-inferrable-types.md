@@ -157,6 +157,6 @@ TSLint: [no-inferrable-types](https://palantir.github.io/tslint/rules/no-inferra
 
 - Configs:
   - [x] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

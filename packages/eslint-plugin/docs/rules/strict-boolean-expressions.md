@@ -202,6 +202,6 @@ This rule provides following fixes and suggestions for particular types in boole
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

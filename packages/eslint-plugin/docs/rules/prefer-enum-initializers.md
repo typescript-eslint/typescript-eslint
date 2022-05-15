@@ -92,6 +92,6 @@ If you don't care about `enum`s having implicit values you can safely disable th
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

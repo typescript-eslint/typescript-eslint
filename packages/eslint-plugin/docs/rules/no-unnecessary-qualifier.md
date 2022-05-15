@@ -101,6 +101,6 @@ If you don't care about having unneeded namespace or enum qualifiers, then you d
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

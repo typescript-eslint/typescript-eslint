@@ -40,6 +40,6 @@ See [discussion on this rule's lack of type information](https://github.com/type
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -89,6 +89,6 @@ If you specifically want to use an interface or type literal for stylistic reaso
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

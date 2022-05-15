@@ -601,6 +601,6 @@ callback, etc. that would cause the code to be unreadable or impractical.
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -71,6 +71,6 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 
 - Configs:
   - [ ] ✅ Recommended
-  - [x] ✔ Strict
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

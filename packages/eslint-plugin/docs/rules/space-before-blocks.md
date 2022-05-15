@@ -57,6 +57,6 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/maste
 
 - Configs:
   - [ ] ✅ Recommended
-  - [ ] ✔ Strict
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
