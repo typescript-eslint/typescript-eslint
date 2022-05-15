@@ -164,12 +164,7 @@ export default util.createRule({
       );
 
       let didReport = false;
-      for (
-        let receiverIndex = 0;
-        receiverIndex < receiverNode.properties.length;
-        receiverIndex += 1
-      ) {
-        const receiverProperty = receiverNode.properties[receiverIndex];
+      for (const receiverProperty of receiverNode.properties) {
         if (receiverProperty.type === AST_NODE_TYPES.RestElement) {
           // don't bother checking rest
           continue;

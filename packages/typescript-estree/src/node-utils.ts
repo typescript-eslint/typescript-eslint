@@ -278,8 +278,7 @@ export function getTSNodeAccessibility(
   if (!modifiers) {
     return null;
   }
-  for (let i = 0; i < modifiers.length; i++) {
-    const modifier = modifiers[i];
+  for (const modifier of modifiers) {
     switch (modifier.kind) {
       case SyntaxKind.PublicKeyword:
         return 'public';
