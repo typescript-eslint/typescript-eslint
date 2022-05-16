@@ -40,7 +40,7 @@ These rules are those whose reports are almost always for a bad practice and/or 
 }
 ```
 
-::tip
+:::tip
 We strongly recommend all TypeScript projects extend from this configuration.
 :::
 
@@ -58,7 +58,7 @@ Rules in this configuration are similarly useful to those in `recommended`.
 }
 ```
 
-::tip
+:::tip
 We recommend all TypeScript projects extend from this configuration, with the caveat that rules using type information take longer to run.
 See [Linting with Type Information](/docs/linting/type-linting) for more details.
 :::
@@ -77,7 +77,7 @@ Additional strict rules that can also catch bugs but are more opinionated than r
 }
 ```
 
-::tip
+:::tip
 We recommend a TypeScript project extend from this configuration only if a nontrivial percentage of its developers are highly proficient in TypeScript.
 :::
 
@@ -89,4 +89,4 @@ See [ESLint's Configuring Rules docs](https://eslint.org/docs/user-guide/configu
 
 ### Suggesting Configuration Changes
 
-If you feel strongly that a specific rule should (or should not) be one of these configurations, please feel free to [file an issue](TODO: NEW ISSUE TEMPLATE) along with a **detailed** argument explaining your reasoning.
+If you feel strongly that a specific rule should (or should not) be one of these configurations, please feel free to [file an issue](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose) along with a **detailed** argument explaining your reasoning.
