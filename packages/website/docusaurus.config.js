@@ -21,44 +21,40 @@ const config = {
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
   clientModules: [require.resolve('./src/clientModules.js')],
+  presets: [
+    [
+      'classic',
+      /** @type {import('@docusaurus/preset-classic').Options} */
+      ({
+        docs: {
+          id: 'rules-docs',
+          path: '../eslint-plugin/docs/rules',
+          sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
+          routeBasePath: 'rules',
+          editUrl: `${githubUrl}/edit/main/packages/website/`,
+          beforeDefaultRemarkPlugins,
+          remarkPlugins,
+          exclude: ['TEMPLATE.md'],
+          breadcrumbs: false,
+        },
+        // TODO enable this
+        blog: false,
+        pages: {
+          beforeDefaultRemarkPlugins,
+          remarkPlugins,
+        },
+        theme: {
+          customCss: require.resolve('./src/css/custom.css'),
+        },
+      }),
+    ],
+  ],
   plugins: [
     require.resolve('./webpack.plugin'),
-    '@docusaurus/plugin-debug',
-    [
-      '@docusaurus/theme-classic',
-      /** @type {import('@docusaurus/theme-classic').Options} */
-      {
-        customCss: require.resolve('./src/css/custom.css'),
-      },
-    ],
-    '@docusaurus/theme-search-algolia',
-    [
-      '@docusaurus/plugin-content-pages',
-      /** @type {import('@docusaurus/theme-search-algolia').Options} */
-      {
-        beforeDefaultRemarkPlugins,
-        remarkPlugins,
-      },
-    ],
     [
       '@docusaurus/plugin-content-docs',
       /** @type {import('@docusaurus/plugin-content-docs').Options} */
-      {
-        id: 'rules-docs',
-        path: '../eslint-plugin/docs/rules',
-        sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
-        routeBasePath: 'rules',
-        editUrl: `${githubUrl}/edit/main/packages/website/`,
-        beforeDefaultRemarkPlugins,
-        remarkPlugins,
-        exclude: ['TEMPLATE.md'],
-        breadcrumbs: false,
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      /** @type {import('@docusaurus/plugin-content-docs').Options} */
-      {
+      ({
         id: 'base-docs',
         path: '../../docs',
         routeBasePath: 'docs',
@@ -67,7 +63,7 @@ const config = {
         beforeDefaultRemarkPlugins,
         remarkPlugins,
         breadcrumbs: false,
-      },
+      }),
     ],
   ],
   themeConfig:
