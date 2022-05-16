@@ -86,6 +86,14 @@ x ?? 'foo';
       'x === undefined || x === null ? x : y;',
       'x !== undefined || x === null ? x : y;',
       'x !== undefined || x === null ? y : x;',
+      'x == null ? x : y;',
+      'x == undefined ? x : y;',
+      'x != null ? y : x;',
+      'x != undefined ? y : x;',
+      'null == x ? x : y;',
+      'undefined == x ? x : y;',
+      'null != x ? y : x;',
+      'undefined != x ? y : x;',
       `
 declare const x: string | undefined | null;
 x !== undefined ? x : y;
@@ -211,6 +219,14 @@ x ?? 'foo';
       'null !== x && undefined !== x ? x : y;',
       'undefined === x || null === x ? y : x;',
       'null === x || undefined === x ? y : x;',
+      'undefined != x ? x : y;',
+      'null != x ? x : y;',
+      'undefined == x  ? y : x;',
+      'null == x ? y : x;',
+      'x != undefined ? x : y;',
+      'x != null ? x : y;',
+      'x == undefined  ? y : x;',
+      'x == null ? y : x;',
     ].map(code => ({
       code,
       output: null,
@@ -221,7 +237,7 @@ x ?? 'foo';
           line: 1,
           column: 1,
           endLine: 1,
-          endColumn: 38,
+          endColumn: code.length,
           suggestions: [
             {
               messageId: 'suggestNullish' as const,

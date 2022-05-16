@@ -93,10 +93,11 @@ export default util.createRule<Options, MessageIds>({
         if (
           node.consequent.type === AST_NODE_TYPES.Identifier &&
           ((node.test.type === AST_NODE_TYPES.BinaryExpression &&
-            node.test.operator === '!==') ||
+            (node.test.operator === '!==' || node.test.operator === '!=')) ||
             (node.test.type === AST_NODE_TYPES.LogicalExpression &&
               node.test.left.type === AST_NODE_TYPES.BinaryExpression &&
-              node.test.left.operator === '!=='))
+              (node.test.left.operator === '!==' ||
+                node.test.left.operator === '!=')))
         ) {
           identifier = node.consequent;
           alternate = node.alternate;
@@ -110,6 +111,11 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (
+          isFixableLooseTernary({
+            requiredOperator,
+            identifier,
+            node,
+          }) ||
           isFixableExplicitTernary({
             requiredOperator,
             identifier,
@@ -326,6 +332,42 @@ function isFixableExplicitTernary({
   }
 
   return true;
+}
+
+function isFixableLooseTernary({
+  node,
+  identifier,
+  requiredOperator,
+}: {
+  requiredOperator: '!==' | '===';
+  identifier: TSESTree.Identifier;
+  node: TSESTree.ConditionalExpression;
+}): boolean {
+  if (node.test.type !== AST_NODE_TYPES.BinaryExpression) {
+    return false;
+  }
+
+  const { left, right, operator } = node.test;
+  if (requiredOperator === '===' && operator !== '==') {
+    return false;
+  }
+  if (requiredOperator === '!==' && operator !== '!=') {
+    return false;
+  }
+
+  const isIdentifier = (
+    i: TSESTree.Expression | TSESTree.PrivateIdentifier,
+  ): boolean =>
+    i.type === AST_NODE_TYPES.Identifier && i.name === identifier.name;
+
+  if (isIdentifier(right) && (isNull(left) || isUndefined(left))) {
+    return true;
+  }
+
+  if (isIdentifier(left) && (isNull(right) || isUndefined(right))) {
+    return true;
+  }
+  return false;
 }
 
 /**

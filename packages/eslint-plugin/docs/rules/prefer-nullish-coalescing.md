@@ -71,6 +71,8 @@ Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTern
 const foo: any = 'bar';
 foo !== undefined && foo !== null ? foo : 'a string';
 foo === undefined || foo === null ? 'a string' : foo;
+foo == undefined ? 'a string' : foo;
+foo == null ? 'a string' : foo;
 
 const foo: ?string = 'bar';
 foo !== undefined ? foo : 'a string';
@@ -85,6 +87,8 @@ Correct code for `ignoreTernaryTests: false`:
 
 ```ts
 const foo: any = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
 foo ?? 'a string';
 foo ?? 'a string';
 
