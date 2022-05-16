@@ -89,4 +89,4 @@ See [ESLint's Configuring Rules docs](https://eslint.org/docs/user-guide/configu
 
 ### Suggesting Configuration Changes
 
-If you feel strongly that a specific rule should (or should not) be one of these configurations, please feel free to [file an issue](TODO: NEW ISSUE TEMPLATE) along with a **detailed** argument explaining your reasoning.
+If you feel strongly that a specific rule should (or should not) be one of these configurations, please feel free to [file an issue](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose) along with a **detailed** argument explaining your reasoning.
