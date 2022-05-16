@@ -105,6 +105,10 @@ const defaultTypes = {
     message: 'Use symbol instead',
     fixWith: 'symbol',
   },
+  BigInt: {
+    message: 'Use bigint instead',
+    fixWith: 'bigint',
+  },
 
   Function: {
     message: [
@@ -149,6 +153,7 @@ const str: String = 'foo';
 const bool: Boolean = true;
 const num: Number = 1;
 const symb: Symbol = Symbol('foo');
+const bigInt: BigInt = 1n;
 
 // use a proper function type
 const func: Function = () => 1;
@@ -169,6 +174,7 @@ const str: string = 'foo';
 const bool: boolean = true;
 const num: number = 1;
 const symb: symbol = Symbol('foo');
+const bigInt: bigint = 1n;
 
 // use a proper function type
 const func: () => number = () => 1;
@@ -189,6 +195,8 @@ const curly2: Record<'a', string> = { a: 'string' };
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

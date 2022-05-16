@@ -100,6 +100,8 @@ If you understand the language specification enough, you can turn this rule off 
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information
