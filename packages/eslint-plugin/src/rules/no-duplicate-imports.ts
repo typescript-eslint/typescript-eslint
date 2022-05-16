@@ -11,6 +11,7 @@ export default util.createRule<Options, MessageIds>({
   name: 'no-duplicate-imports',
   meta: {
     deprecated: true,
+    replacedBy: ['import/no-duplicates'],
     type: 'problem',
     docs: {
       description: 'Disallow duplicate imports',
