@@ -692,8 +692,7 @@ export class Converter {
      * to the result, we remove them from the array, so that they
      * are not handled twice.
      */
-    for (let i = 0; i < modifiers.length; i++) {
-      const modifier = modifiers[i];
+    for (const modifier of modifiers) {
       switch (modifier.kind) {
         /**
          * Ignore ExportKeyword and DefaultKeyword, they are handled

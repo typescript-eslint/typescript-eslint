@@ -16,7 +16,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',

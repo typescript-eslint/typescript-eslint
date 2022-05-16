@@ -85,6 +85,8 @@ type Foo = {
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
