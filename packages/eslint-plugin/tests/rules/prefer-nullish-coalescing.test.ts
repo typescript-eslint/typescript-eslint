@@ -77,6 +77,7 @@ x ?? 'foo';
     },
 
     ...[
+      'x !== undefined && x !== null ? "foo" : "bar";',
       'x !== null && x !== undefined && x !== 5 ? x : y',
       'x === null || x === undefined || x === 5 ? x : y',
       'x === undefined && x !== null ? x : y;',
@@ -95,12 +96,28 @@ x ?? 'foo';
       'null != x ? y : x;',
       'undefined != x ? y : x;',
       `
+declare const x: string | null;
+x === undefined ? x : y;
+      `,
+      `
 declare const x: string | undefined | null;
 x !== undefined ? x : y;
       `,
       `
 declare const x: string | undefined | null;
 x !== null ? x : y;
+      `,
+      `
+declare const x: string | null | any;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | null | unknown;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | undefined;
+x === null ? x : y;
       `,
     ].map(code => ({
       code: code.trim(),
