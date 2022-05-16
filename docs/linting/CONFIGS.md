@@ -40,7 +40,7 @@ These rules are those whose reports are almost always for a bad practice and/or 
 }
 ```
 
-::tip
+:::tip
 We strongly recommend all TypeScript projects extend from this configuration.
 :::
 
@@ -58,7 +58,7 @@ Rules in this configuration are similarly useful to those in `recommended`.
 }
 ```
 
-::tip
+:::tip
 We recommend all TypeScript projects extend from this configuration, with the caveat that rules using type information take longer to run.
 See [Linting with Type Information](/docs/linting/type-linting) for more details.
 :::
@@ -77,7 +77,7 @@ Additional strict rules that can also catch bugs but are more opinionated than r
 }
 ```
 
-::tip
+:::tip
 We recommend a TypeScript project extend from this configuration only if a nontrivial percentage of its developers are highly proficient in TypeScript.
 :::
 
