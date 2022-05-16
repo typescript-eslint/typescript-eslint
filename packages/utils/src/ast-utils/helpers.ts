@@ -26,9 +26,7 @@ export const isNodeOfTypeWithConditions = <
 ): ((
   node: TSESTree.Node | null | undefined,
 ) => node is TSESTree.Node & { type: NodeType } & Conditions) => {
-  const entries = Object.entries(conditions) as ObjectEntries<
-    TSESTree.Node & { type: NodeType }
-  >;
+  const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Node>;
 
   return (
     node: TSESTree.Node | null | undefined,
@@ -46,9 +44,7 @@ export const isTokenOfTypeWithConditions = <
 ): ((
   token: TSESTree.Token | null | undefined,
 ) => token is TSESTree.Token & { type: TokenType } & Conditions) => {
-  const entries = Object.entries(conditions) as ObjectEntries<
-    TSESTree.Token & { type: TokenType }
-  >;
+  const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Token>;
 
   return (
     token: TSESTree.Token | null | undefined,
