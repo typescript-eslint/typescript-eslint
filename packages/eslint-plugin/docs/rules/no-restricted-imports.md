@@ -71,6 +71,8 @@ export type { Baz } from 'import-baz';
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

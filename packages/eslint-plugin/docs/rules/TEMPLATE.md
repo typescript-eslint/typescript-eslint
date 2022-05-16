@@ -22,6 +22,8 @@ To fill out: tell us more about this rule.
 
 ## Options
 
+This rule is not configurable.
+
 ```jsonc
 // .eslintrc.json
 {
@@ -52,6 +54,8 @@ For example if this rule requires a feature released in a certain TS version.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
