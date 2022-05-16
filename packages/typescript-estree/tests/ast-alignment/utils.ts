@@ -240,8 +240,7 @@ export function preprocessBabylonAST(ast: File): any {
        * @see https://github.com/babel/babel/blob/381277a/eslint/babel-eslint-parser/src/convert/convertAST.cjs#L81-L102
        */
       TemplateLiteral(node: any) {
-        for (let j = 0; j < node.quasis.length; j++) {
-          const q = node.quasis[j];
+        for (const q of node.quasis) {
           q.range[0] -= 1;
           q.loc.start.column -= 1;
           if (q.tail) {

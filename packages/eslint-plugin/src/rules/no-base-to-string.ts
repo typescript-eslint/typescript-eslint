@@ -22,7 +22,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require `.toString()` to only be called on objects which provide useful information when stringified',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

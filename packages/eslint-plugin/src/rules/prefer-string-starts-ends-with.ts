@@ -23,7 +23,7 @@ export default createRule({
     docs: {
       description:
         'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

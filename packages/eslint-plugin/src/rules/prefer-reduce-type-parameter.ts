@@ -27,9 +27,9 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: false,
       description:
         'Enforce using type parameter when calling `Array#reduce` instead of casting',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

@@ -85,6 +85,19 @@ foo?.a?.b?.c?.d?.e;
 
 **Note:** there are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-optional-chain": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
@@ -96,6 +109,8 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

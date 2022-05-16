@@ -8,7 +8,7 @@ export default util.createRule({
     docs: {
       description:
         'Disallow using the `delete` operator on computed key expressions',
-      recommended: false,
+      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

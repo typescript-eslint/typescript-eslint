@@ -72,7 +72,16 @@ mismatchExample.indexOf(value) >= 0;
 
 ## Options
 
-There are no options.
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-includes": "warn"
+  }
+}
+```
+
+This rule is not configurable.
 
 ## When Not To Use It
 
@@ -80,6 +89,8 @@ If you don't want to suggest `includes`, you can safely turn this rule off.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

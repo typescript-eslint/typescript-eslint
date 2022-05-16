@@ -23,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforce consistent usage of type assertions',
-      recommended: false,
+      recommended: 'strict',
     },
     messages: {
       as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",

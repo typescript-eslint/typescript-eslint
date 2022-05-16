@@ -22,10 +22,7 @@ class WithScope extends ScopeBase<
       return super.close(scopeManager);
     }
     assert(this.leftToResolve);
-    for (let i = 0; i < this.leftToResolve.length; ++i) {
-      const ref = this.leftToResolve[i];
-      this.delegateToUpperScope(ref);
-    }
+    this.leftToResolve.forEach(ref => this.delegateToUpperScope(ref));
     this.leftToResolve = null;
     return this.upper;
   }

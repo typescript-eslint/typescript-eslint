@@ -21,7 +21,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     docs: {
       description: 'Disallow type arguments that are equal to the default',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',

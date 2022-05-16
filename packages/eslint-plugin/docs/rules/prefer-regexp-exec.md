@@ -44,13 +44,16 @@ search.exec(text);
 
 ## Options
 
-There are no options.
-
-```json
+```jsonc
+// .eslintrc.json
 {
-  "@typescript-eslint/prefer-regexp-exec": "error"
+  "rules": {
+    "@typescript-eslint/prefer-regexp-exec": "warn"
+  }
 }
 ```
+
+This rule is not configurable.
 
 ## When Not To Use It
 
@@ -58,6 +61,8 @@ If you prefer consistent use of `String#match` for both, with `g` flag and witho
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

@@ -8,7 +8,7 @@ export default util.createRule({
     docs: {
       description:
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
-      recommended: false,
+      recommended: 'strict',
     },
     messages: {
       preferForOf:

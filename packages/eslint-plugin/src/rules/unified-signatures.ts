@@ -66,7 +66,7 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
       // too opinionated to be recommended
-      recommended: false,
+      recommended: 'strict',
     },
     type: 'suggestion',
     messages: {

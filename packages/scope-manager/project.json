@@ -48,9 +48,7 @@
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
-        "commands": [
-          "rimraf -g \"./src/**/fixtures/**/snapshots\""
-        ]
+        "commands": ["rimraf -g \"./src/**/fixtures/**/snapshots\""]
       }
     },
     "lint": {

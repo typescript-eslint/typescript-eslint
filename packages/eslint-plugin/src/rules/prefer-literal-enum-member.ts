@@ -7,7 +7,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Require all enum members to be literal values',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: false,
     },
     messages: {

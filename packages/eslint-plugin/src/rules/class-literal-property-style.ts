@@ -41,7 +41,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce that literals on classes are exposed in a consistent style',
-      recommended: false,
+      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

@@ -45,6 +45,19 @@ let x: string;
 x! ?? '';
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not need to use this rule, as the nullish coalescing operator is not supported.
@@ -56,6 +69,8 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

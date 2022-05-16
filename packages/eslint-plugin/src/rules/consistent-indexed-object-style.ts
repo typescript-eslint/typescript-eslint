@@ -10,8 +10,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require or disallow the `Record` type',
-      // too opinionated to be recommended
-      recommended: false,
+      recommended: 'strict',
     },
     messages: {
       preferRecord: 'A record is preferred over an index signature.',
