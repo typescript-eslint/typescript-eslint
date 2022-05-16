@@ -9,7 +9,7 @@ on:
       - '**'
 
 env:
-  PRIMARY_NODE_VERSION: 12
+  PRIMARY_NODE_VERSION: 16
   NX_BRANCH: ${{ github.event.number }}
   NX_RUN_GROUP: ${{ github.run_id }}
   # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app

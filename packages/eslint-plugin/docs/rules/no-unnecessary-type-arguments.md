@@ -54,12 +54,27 @@ interface I<T = number> {}
 class Impl implements I<string> {}
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unnecessary-type-arguments": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## Related To
 
 - TSLint: [use-default-type-parameter](https://palantir.github.io/tslint/rules/use-default-type-parameter)
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

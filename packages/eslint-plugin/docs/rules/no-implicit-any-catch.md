@@ -8,6 +8,8 @@ By default, TypeScript will type a catch clause variable as `any`, so explicitly
 
 The `noImplicitAny` flag in TypeScript does not cover this for backwards compatibility reasons, however you can use `useUnknownInCatchVariables` (part of `strict`) instead of this rule.
 
+## DEPRECATED
+
 ## Rule Details
 
 This rule requires an explicit type to be declared on a catch clause variable.
@@ -83,6 +85,8 @@ If you are not using TypeScript 4.0 (or greater), then you will not be able to u
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
