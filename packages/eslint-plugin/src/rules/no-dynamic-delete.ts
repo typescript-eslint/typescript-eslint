@@ -7,7 +7,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow the delete operator with computed key expressions',
-      recommended: false,
+      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

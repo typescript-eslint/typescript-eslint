@@ -66,6 +66,10 @@ const defaultTypes: Types = {
     message: 'Use symbol instead',
     fixWith: 'symbol',
   },
+  BigInt: {
+    message: 'Use bigint instead',
+    fixWith: 'bigint',
+  },
 
   Function: {
     message: [
