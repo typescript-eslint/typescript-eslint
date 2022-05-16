@@ -74,7 +74,7 @@ foo === undefined || foo === null ? 'a string' : foo;
 foo == undefined ? 'a string' : foo;
 foo == null ? 'a string' : foo;
 
-const foo: ?string = 'bar';
+const foo: string | undefined = 'bar';
 foo !== undefined ? foo : 'a string';
 foo === undefined ? 'a string' : foo;
 
