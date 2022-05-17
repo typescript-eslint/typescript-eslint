@@ -56,10 +56,10 @@ html[data-theme='dark'] {
   --token-color-highlight: rgba(247, 235, 198, 0.2);
 }
 
-div[class*='codeBlockContainer'],
-div[class*='codeBlockContainer'] pre {
-  color: var(--token-color);
-  background-color: var(--token-background);
+.theme-code-block,
+.theme-code-block pre {
+  color: var(--token-color) !important;
+  background-color: var(--token-background) !important;
   --ifm-color-emphasis-300: var(--token-border);
 }
 

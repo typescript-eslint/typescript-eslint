@@ -47,7 +47,31 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: 'const [a] = 1;',
+      code: '[a] = [1];',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'b = [a] = [1];',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const [b]: [number] = ([a] = [1]);',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const [a] = [1];',
       options: [
         {
           arrayDestructuring: false,
