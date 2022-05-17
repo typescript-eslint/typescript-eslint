@@ -92,6 +92,8 @@ If you don't mind `"[object Object]"` in your strings, then you will not need th
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

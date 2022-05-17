@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "5.22.0",
+  "version": "5.25.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,10 +44,10 @@
     "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "5.22.0",
-    "@typescript-eslint/types": "5.22.0",
-    "@typescript-eslint/typescript-estree": "5.22.0",
-    "debug": "^4.3.2"
+    "@typescript-eslint/scope-manager": "5.25.0",
+    "@typescript-eslint/types": "5.25.0",
+    "@typescript-eslint/typescript-estree": "5.25.0",
+    "debug": "^4.3.4"
   },
   "devDependencies": {
     "@types/glob": "*",

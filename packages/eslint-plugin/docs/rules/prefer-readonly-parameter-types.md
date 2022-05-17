@@ -191,7 +191,7 @@ Examples of code for this rule with `{ignoreInferredTypes: true}`:
 ```ts
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
 
-acceceptsCallback((options: CallbackOptions) => {});
+acceptsCallback((options: CallbackOptions) => {});
 ```
 
 <details>
@@ -214,7 +214,7 @@ export const acceptsCallback: AcceptsCallback;
 ```ts
 import { acceptsCallback } from 'external-dependency';
 
-acceceptsCallback(options => {});
+acceptsCallback(options => {});
 ```
 
 <details>
@@ -280,6 +280,8 @@ function foo(arg: MyType) {}
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

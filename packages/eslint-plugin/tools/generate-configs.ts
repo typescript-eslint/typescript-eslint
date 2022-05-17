@@ -49,8 +49,14 @@ const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
 );
 const EXTENDS = ['./configs/base', './configs/eslint-recommended'];
 
-const ruleEntries: [string, TSESLint.RuleModule<string, unknown[]>][] =
-  Object.entries(rules).sort((a, b) => a[0].localeCompare(b[0]));
+type RuleEntry = [
+  string,
+  TSESLint.RuleModule<string, unknown[], TSESLint.RuleListener>,
+];
+
+const ruleEntries: RuleEntry[] = Object.entries(rules).sort((a, b) =>
+  a[0].localeCompare(b[0]),
+);
 
 /**
  * Helper function reduces records to key - value pairs.
@@ -92,10 +98,13 @@ function reducer<TMessageIds extends string>(
 
   const ruleName = `${RULE_NAME_PREFIX}${key}`;
   const recommendation = value.meta.docs?.recommended;
+
   const usedSetting = settings.errorLevel
     ? settings.errorLevel
     : !recommendation
     ? DEFAULT_RULE_SETTING
+    : recommendation === 'strict'
+    ? 'warn'
     : recommendation;
 
   if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
@@ -134,6 +143,19 @@ function writeConfig(config: LinterConfig, filePath: string): void {
   fs.writeFileSync(filePath, configStr);
 }
 
+const recommendedValues = new Set<TSESLint.RuleRecommendation | undefined>([
+  'error',
+  'warn',
+]);
+
+function entryIsRecommended(entry: RuleEntry): boolean {
+  return recommendedValues.has(entry[1].meta.docs?.recommended);
+}
+
+function entryIsStrict(entry: RuleEntry): boolean {
+  return entry[1].meta.docs?.recommended === 'strict';
+}
+
 const baseConfig: LinterConfig = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -162,7 +184,7 @@ console.log(
   '------------------------------ recommended.ts (should not require program) ------------------------------',
 );
 const recommendedRules = ruleEntries
-  .filter(entry => !!entry[1].meta.docs?.recommended)
+  .filter(entryIsRecommended)
   .reduce<LinterConfigRules>(
     (config, entry) =>
       reducer(config, entry, {
@@ -185,7 +207,7 @@ console.log(
   '--------------------------------- recommended-requiring-type-checking.ts ---------------------------------',
 );
 const recommendedRulesRequiringProgram = ruleEntries
-  .filter(entry => !!entry[1].meta.docs?.recommended)
+  .filter(entryIsRecommended)
   .reduce<LinterConfigRules>(
     (config, entry) =>
       reducer(config, entry, {
@@ -205,3 +227,20 @@ writeConfig(
     '../src/configs/recommended-requiring-type-checking.ts',
   ),
 );
+
+console.log();
+console.log(
+  '--------------------------------- strict.ts ---------------------------------',
+);
+const strictRules = ruleEntries.filter(entryIsStrict).reduce<LinterConfigRules>(
+  (config, entry) =>
+    reducer(config, entry, {
+      filterDeprecated: false,
+    }),
+  {},
+);
+const strictConfig: LinterConfig = {
+  extends: EXTENDS,
+  rules: strictRules,
+};
+writeConfig(strictConfig, path.resolve(__dirname, '../src/configs/strict.ts'));

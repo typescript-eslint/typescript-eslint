@@ -20,7 +20,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Bans `// tslint:<rule-flag>` comments from being used',
-      recommended: false,
+      recommended: 'strict',
     },
     messages: {
       commentDetected: 'tslint comment detected: "{{ text }}"',

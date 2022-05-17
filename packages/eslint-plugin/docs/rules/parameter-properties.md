@@ -20,9 +20,9 @@ It may take an options object containing either or both of:
 
 ### `"allow"`
 
-If you would like to ignore certain kinds of properties then you may pass an object containing `"allows"` as an array of any of the following options:
+If you would like to ignore certain kinds of properties then you may pass an object containing `"allow"` as an array of any of the following options:
 
-- `allows`, an array containing one or more of the allowed modifiers. Valid values are:
+- `allow`, an array containing one or more of the allowed modifiers. Valid values are:
   - `readonly`, allows **readonly** parameter properties.
   - `private`, allows **private** parameter properties.
   - `protected`, allows **protected** parameter properties.
@@ -102,7 +102,7 @@ class Foo {
 
 ### readonly
 
-Examples of code for the `{ "allows": ["readonly"] }` options:
+Examples of code for the `{ "allow": ["readonly"] }` options:
 
 <!--tabs-->
 
@@ -148,7 +148,7 @@ class Foo {
 
 ### private
 
-Examples of code for the `{ "allows": ["private"] }` options:
+Examples of code for the `{ "allow": ["private"] }` options:
 
 <!--tabs-->
 
@@ -194,7 +194,7 @@ class Foo {
 
 ### protected
 
-Examples of code for the `{ "allows": ["protected"] }` options:
+Examples of code for the `{ "allow": ["protected"] }` options:
 
 <!--tabs-->
 
@@ -240,7 +240,7 @@ class Foo {
 
 ### public
 
-Examples of code for the `{ "allows": ["public"] }` options:
+Examples of code for the `{ "allow": ["public"] }` options:
 
 <!--tabs-->
 
@@ -286,7 +286,7 @@ class Foo {
 
 ### private readonly
 
-Examples of code for the `{ "allows": ["private readonly"] }` options:
+Examples of code for the `{ "allow": ["private readonly"] }` options:
 
 <!--tabs-->
 
@@ -332,7 +332,7 @@ class Foo {
 
 ### protected readonly
 
-Examples of code for the `{ "allows": ["protected readonly"] }` options:
+Examples of code for the `{ "allow": ["protected readonly"] }` options:
 
 <!--tabs-->
 
@@ -378,7 +378,7 @@ class Foo {
 
 ### public readonly
 
-Examples of code for the `{ "allows": ["public readonly"] }` options:
+Examples of code for the `{ "allow": ["public readonly"] }` options:
 
 <!--tabs-->
 
@@ -422,9 +422,9 @@ class Foo {
 }
 ```
 
-### `"parameter-properties"`
+### `"parameter-property"`
 
-Examples of code for the `{ "prefer": ["parameter-properties"] }` option:
+Examples of code for the `{ "prefer": "parameter-property" }` option:
 
 <!--tabs-->
 
@@ -489,6 +489,8 @@ If you don't care about the using parameter properties in constructors, then you
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -46,11 +46,13 @@ import { es2019_object } from './es2019.object';
 import { es2019_string } from './es2019.string';
 import { es2019_symbol } from './es2019.symbol';
 import { es2020_bigint } from './es2020.bigint';
+import { es2020_date } from './es2020.date';
 import { es2020_promise } from './es2020.promise';
 import { es2020_sharedmemory } from './es2020.sharedmemory';
 import { es2020_string } from './es2020.string';
 import { es2020_symbol_wellknown } from './es2020.symbol.wellknown';
 import { es2020_intl } from './es2020.intl';
+import { es2020_number } from './es2020.number';
 import { es2021_promise } from './es2021.promise';
 import { es2021_string } from './es2021.string';
 import { es2021_weakref } from './es2021.weakref';
@@ -121,11 +123,13 @@ const lib = {
   'es2019.string': es2019_string,
   'es2019.symbol': es2019_symbol,
   'es2020.bigint': es2020_bigint,
+  'es2020.date': es2020_date,
   'es2020.promise': es2020_promise,
   'es2020.sharedmemory': es2020_sharedmemory,
   'es2020.string': es2020_string,
   'es2020.symbol.wellknown': es2020_symbol_wellknown,
   'es2020.intl': es2020_intl,
+  'es2020.number': es2020_number,
   'es2021.promise': es2021_promise,
   'es2021.string': es2021_string,
   'es2021.weakref': es2021_weakref,
