@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.23.0...v5.24.0) (2022-05-16)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.22.0...v5.23.0) (2022-05-09)
+
+
+### Bug Fixes
+
+* **ast-spec:** correct `AwaitExpression.argument` type ([#4880](https://github.com/typescript-eslint/typescript-eslint/issues/4880)) ([3ec5f53](https://github.com/typescript-eslint/typescript-eslint/commit/3ec5f53bad79b133ef5dee71c402160b3acf13cf))
+
+
+
+
+
 # [5.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.21.0...v5.22.0) (2022-05-02)
 
 

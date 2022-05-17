@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "5.22.0",
+  "version": "5.24.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -44,14 +44,14 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "5.22.0",
-    "@typescript-eslint/type-utils": "5.22.0",
-    "@typescript-eslint/utils": "5.22.0",
-    "debug": "^4.3.2",
+    "@typescript-eslint/scope-manager": "5.24.0",
+    "@typescript-eslint/type-utils": "5.24.0",
+    "@typescript-eslint/utils": "5.24.0",
+    "debug": "^4.3.4",
     "functional-red-black-tree": "^1.0.1",
-    "ignore": "^5.1.8",
+    "ignore": "^5.2.0",
     "regexpp": "^3.2.0",
-    "semver": "^7.3.5",
+    "semver": "^7.3.7",
     "tsutils": "^3.21.0"
   },
   "devDependencies": {
@@ -59,9 +59,9 @@
     "@types/json-schema": "*",
     "@types/marked": "*",
     "@types/prettier": "*",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.1",
     "json-schema": "*",
-    "marked": "^3.0.7",
+    "marked": "^4.0.15",
     "prettier": "*",
     "title-case": "^3.0.3",
     "typescript": "*"

@@ -35,7 +35,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Flags unnecessary equality comparisons against boolean literals',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',

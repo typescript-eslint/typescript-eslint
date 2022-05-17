@@ -1885,6 +1885,36 @@ interface FooInterface {
         },
       ],
     },
+    {
+      code: 'const foo: Array<new (...args: any[]) => void> = [];',
+      output: 'const foo: (new (...args: any[]) => void)[] = [];',
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'const foo: ReadonlyArray<new (...args: any[]) => void> = [];',
+      output: 'const foo: readonly (new (...args: any[]) => void)[] = [];',
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'T',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
   ],
 });
 

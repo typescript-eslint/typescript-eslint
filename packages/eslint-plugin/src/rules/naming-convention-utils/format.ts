@@ -4,7 +4,7 @@ import { PredefinedFormats } from './enums';
 These format functions are taken from `tslint-consistent-codestyle/naming-convention`:
 https://github.com/ajafff/tslint-consistent-codestyle/blob/ab156cc8881bcc401236d999f4ce034b59039e81/rules/namingConventionRule.ts#L603-L645
 
-The licence for the code can be viewed here:
+The license for the code can be viewed here:
 https://github.com/ajafff/tslint-consistent-codestyle/blob/ab156cc8881bcc401236d999f4ce034b59039e81/LICENSE
 */
 
