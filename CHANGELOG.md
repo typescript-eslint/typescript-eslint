@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.23.0...v5.24.0) (2022-05-16)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [array-type] in fixer add missing parens for constructor types [#4756](https://github.com/typescript-eslint/typescript-eslint/issues/4756) ([#4971](https://github.com/typescript-eslint/typescript-eslint/issues/4971)) ([0377070](https://github.com/typescript-eslint/typescript-eslint/commit/03770708900da663eb64c19465b3f937bab55b3d))
+* **website:** missing colon before tip notes in configs.md ([#4982](https://github.com/typescript-eslint/typescript-eslint/issues/4982)) ([f3a1aba](https://github.com/typescript-eslint/typescript-eslint/commit/f3a1aba6704c5978c9f6002d6b1fc076421103d1))
+
+
+### Features
+
+* **eslint-plugin:** Add BigInt object type to default ban-types list ([#4970](https://github.com/typescript-eslint/typescript-eslint/issues/4970)) ([1867728](https://github.com/typescript-eslint/typescript-eslint/commit/1867728ba104a6a21941ed300828110964a43b96))
+* **eslint-plugin:** add new 'strict' config ([#4706](https://github.com/typescript-eslint/typescript-eslint/issues/4706)) ([4a500b2](https://github.com/typescript-eslint/typescript-eslint/commit/4a500b2d92a91873dbb729793d1ee1c36ef06ed8))
+
+
+
+
+
 # [5.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.22.0...v5.23.0) (2022-05-09)
 
 

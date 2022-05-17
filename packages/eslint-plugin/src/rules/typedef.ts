@@ -178,7 +178,11 @@ export default util.createRule<[Options], MessageIds>({
             return;
           }
 
-          if (!node.typeAnnotation && !isForOfStatementContext(node)) {
+          if (
+            !node.typeAnnotation &&
+            !isForOfStatementContext(node) &&
+            node.parent?.type !== AST_NODE_TYPES.AssignmentExpression
+          ) {
             report(node);
           }
         },

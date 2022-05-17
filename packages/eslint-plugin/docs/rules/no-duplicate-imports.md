@@ -2,6 +2,10 @@
 
 Disallows duplicate imports.
 
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`import/no-duplicates`](https://github.com/import-js/eslint-plugin-import/blob/HEAD/docs/rules/no-duplicates.md) rule.
+
 ## Rule Details
 
 This rule extends the base [`eslint/no-duplicate-imports`](https://eslint.org/docs/rules/no-duplicate-imports) rule.
