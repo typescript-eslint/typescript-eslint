@@ -240,11 +240,7 @@ const strictRules = ruleEntries.filter(entryIsStrict).reduce<LinterConfigRules>(
   {},
 );
 const strictConfig: LinterConfig = {
-  extends: [
-    ...EXTENDS,
-    './configs/recommended',
-    './configs/recommended-requiring-type-checking',
-  ],
+  extends: EXTENDS,
   rules: strictRules,
 };
 writeConfig(strictConfig, path.resolve(__dirname, '../src/configs/strict.ts'));
