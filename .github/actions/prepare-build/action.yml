@@ -1,0 +1,22 @@
+name: "Prepare: Build"
+description: "Prepares the repo for a job by running the build"
+# inputs:  - no inputs
+# outputs: - no outputs
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache@v3
+      id: build-cache
+      with:
+        path: "**/dist/**"
+        key: ${{ runner.os }}-build-${{ github.ref }}
+        restore-keys: |
+          ${{ runner.os }}-build-
+
+    # if the cache was hit - this will run in <1s
+    - name: Build
+      shell: bash
+      # Website will be built by the Netlify GitHub App
+      run: |
+        yarn build --exclude website
