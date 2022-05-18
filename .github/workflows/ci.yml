@@ -246,6 +246,7 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: "https://registry.npmjs.org"
       - name: Build
         uses: ./.github/actions/prepare-build
 
