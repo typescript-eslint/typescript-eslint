@@ -68,7 +68,8 @@ describe('recommended.json config', () => {
   const ruleConfigs = Object.entries(rules)
     .filter(
       ([, rule]) =>
-        rule.meta.docs?.recommended !== false &&
+        rule.meta.docs?.recommended &&
+        rule.meta.docs.recommended !== 'strict' &&
         rule.meta.docs?.requiresTypeChecking !== true,
     )
     .map<[string, string]>(([name, rule]) => [
@@ -91,13 +92,29 @@ describe('recommended-requiring-type-checking.json config', () => {
   const ruleConfigs = Object.entries(rules)
     .filter(
       ([, rule]) =>
-        rule.meta.docs?.recommended !== false &&
-        rule.meta.docs?.requiresTypeChecking === true,
+        rule.meta.docs?.recommended &&
+        rule.meta.docs.recommended !== 'strict' &&
+        rule.meta.docs.requiresTypeChecking === true,
     )
     .map<[string, string]>(([name, rule]) => [
       `${RULE_NAME_PREFIX}${name}`,
       rule.meta.docs?.recommended ? rule.meta.docs.recommended : 'off',
     ]);
+
+  it('contains all recommended rules that require type checking, excluding the deprecated ones', () => {
+    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+  });
+
+  itHasBaseRulesOverriden(unfilteredConfigRules);
+});
+
+describe('strict.json config', () => {
+  const unfilteredConfigRules: Record<string, string> =
+    plugin.configs['strict'].rules;
+  const configRules = filterRules(unfilteredConfigRules);
+  const ruleConfigs = Object.entries(rules)
+    .filter(([, rule]) => rule.meta.docs?.recommended === 'strict')
+    .map<[string, string]>(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'warn']);
 
   it('contains all recommended rules that require type checking, excluding the deprecated ones', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));

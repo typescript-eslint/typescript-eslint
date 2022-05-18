@@ -272,6 +272,15 @@ type T =
         },
       ],
     },
+    {
+      code: `type Expected = (new (x: number) => boolean) ${operator} string;`,
+      output: `type Expected = string ${operator} (new (x: number) => boolean);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+        },
+      ],
+    },
   ];
 };
 

@@ -35,7 +35,6 @@ import {
   TSNode,
 } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
-import { Expression } from '@typescript-eslint/types/src/ast-spec';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -693,8 +692,7 @@ export class Converter {
      * to the result, we remove them from the array, so that they
      * are not handled twice.
      */
-    for (let i = 0; i < modifiers.length; i++) {
-      const modifier = modifiers[i];
+    for (const modifier of modifiers) {
       switch (modifier.kind) {
         /**
          * Ignore ExportKeyword and DefaultKeyword, they are handled
@@ -1925,7 +1923,7 @@ export class Converter {
             expressions: [],
           });
 
-          const left = this.convertChild(node.left) as Expression;
+          const left = this.convertChild(node.left) as TSESTree.Expression;
           if (
             left.type === AST_NODE_TYPES.SequenceExpression &&
             node.left.kind !== SyntaxKind.ParenthesizedExpression

@@ -1,42 +1,55 @@
 import { analyze } from '@typescript-eslint/scope-manager/dist/analyze';
 import { visitorKeys } from '@typescript-eslint/visitor-keys/dist/visitor-keys';
 import { astConverter } from '@typescript-eslint/typescript-estree/dist/ast-converter';
-import { createASTProgram } from './create-ast-program.js';
 import { extra } from './config.js';
+import { CompilerHost } from './CompilerHost';
+import { createProgram } from 'typescript';
 
-function parseAndGenerateServices(code, options) {
-  const { ast, program } = createASTProgram(code, options);
-  const { estree, astMaps } = astConverter(
-    ast,
-    { ...extra, code, jsx: options.jsx ?? false },
-    true,
+export function createASTProgram(code, isJsx, compilerOptions, libs) {
+  const fileName = isJsx ? '/demo.tsx' : '/demo.ts';
+  const compilerHost = new CompilerHost(libs, isJsx);
+
+  compilerHost.files[fileName] = code;
+  const program = createProgram(
+    Object.keys(compilerHost.files),
+    compilerOptions,
+    compilerHost,
   );
-
+  const ast = program.getSourceFile(fileName);
   return {
-    ast: estree,
-    tsAst: ast,
-    services: {
-      hasFullTypeInformation: true,
-      program,
-      esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
-      tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
-    },
+    ast,
+    program,
   };
 }
 
-export function parseForESLint(code, parserOptions) {
-  const { ast, tsAst, services } = parseAndGenerateServices(code, {
-    ...parserOptions,
-    jsx: parserOptions.ecmaFeatures?.jsx ?? false,
-    useJSXTextNode: true,
-    projectFolderIgnoreList: [],
-  });
+export function parseForESLint(code, eslintOptions, compilerOptions, libs) {
+  const isJsx = eslintOptions.ecmaFeatures?.jsx ?? false;
+
+  const { ast: tsAst, program } = createASTProgram(
+    code,
+    isJsx,
+    compilerOptions,
+    libs,
+  );
+
+  const { estree: ast, astMaps } = astConverter(
+    tsAst,
+    { ...extra, code, jsx: isJsx },
+    true,
+  );
+
+  const services = {
+    hasFullTypeInformation: true,
+    program,
+    esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
+    tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
+  };
 
   const scopeManager = analyze(ast, {
     ecmaVersion:
-      parserOptions.ecmaVersion === 'latest' ? 1e8 : parserOptions.ecmaVersion,
-    globalReturn: parserOptions.ecmaFeatures?.globalReturn ?? false,
-    sourceType: parserOptions.sourceType ?? 'script',
+      eslintOptions.ecmaVersion === 'latest' ? 1e8 : eslintOptions.ecmaVersion,
+    globalReturn: eslintOptions.ecmaFeatures?.globalReturn ?? false,
+    sourceType: eslintOptions.sourceType ?? 'script',
   });
 
   return {

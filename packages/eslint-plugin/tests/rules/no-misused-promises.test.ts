@@ -166,6 +166,156 @@ async function test(p: Promise<boolean> | undefined) {
   }
 }
     `,
+    `
+let f;
+f = async () => 10;
+    `,
+    `
+let f: () => Promise<void>;
+f = async () => 10;
+const g = async () => 0;
+const h: () => Promise<void> = async () => 10;
+    `,
+    `
+const obj = {
+  f: async () => 10,
+};
+    `,
+    `
+const f = async () => 123;
+const obj = {
+  f,
+};
+    `,
+    `
+const obj = {
+  async f() {
+    return 0;
+  },
+};
+    `,
+    `
+type O = { f: () => Promise<void>; g: () => Promise<void> };
+const g = async () => 0;
+const obj: O = {
+  f: async () => 10,
+  g,
+};
+    `,
+    `
+type O = { f: () => Promise<void> };
+const name = 'f';
+const obj: O = {
+  async [name]() {
+    return 10;
+  },
+};
+    `,
+    `
+const obj: number = {
+  g() {
+    return 10;
+  },
+};
+    `,
+    `
+const obj = {
+  f: async () => 'foo',
+  async g() {
+    return 0;
+  },
+};
+    `,
+    `
+function f() {
+  return async () => 0;
+}
+function g() {
+  return;
+}
+    `,
+    {
+      code: `
+type O = {
+  bool: boolean;
+  func: () => Promise<void>;
+};
+const Component = (obj: O) => null;
+<Component bool func={async () => 10} />;
+      `,
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+const Component: any = () => null;
+<Component func={async () => 10} />;
+      `,
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => Promise<void>): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+  (name: string, callback: () => Promise<void>): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+interface ItLike {
+  (name: string, callback: () => Promise<void>): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => Promise<void>): void;
+}
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+    },
+    {
+      code: `
+interface Props {
+  onEvent: (() => void) | (() => Promise<void>);
+}
+
+declare function Component(props: Props): any;
+
+const _ = <Component onEvent={async () => {}} />;
+      `,
+      filename: 'react.tsx',
+    },
   ],
 
   invalid: [
@@ -265,7 +415,7 @@ if (!Promise.resolve()) {
       errors: [
         {
           line: 2,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -279,7 +429,7 @@ new Promise(async (resolve, reject) => {
       errors: [
         {
           line: 2,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -296,7 +446,7 @@ fnWithCallback('val', async (err, res) => {
       errors: [
         {
           line: 6,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -311,7 +461,7 @@ fnWithCallback('val', (err, res) => Promise.resolve(res));
       errors: [
         {
           line: 6,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -332,7 +482,7 @@ fnWithCallback('val', (err, res) => {
       errors: [
         {
           line: 6,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -349,7 +499,7 @@ fnWithCallback?.('val', (err, res) => Promise.resolve(res));
       errors: [
         {
           line: 8,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -372,7 +522,7 @@ fnWithCallback('val', (err, res) => {
       errors: [
         {
           line: 8,
-          messageId: 'voidReturn',
+          messageId: 'voidReturnArgument',
         },
       ],
     },
@@ -429,6 +579,294 @@ function test(p: Promise<void> | undefined) {
         {
           line: 3,
           messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+      options: [{ checksVoidReturn: { variables: true } }],
+    },
+    {
+      code: `
+const f: () => void = async () => {
+  return 0;
+};
+const g = async () => 1,
+  h: () => void = async () => {};
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'voidReturnVariable',
+        },
+        {
+          line: 6,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+const obj: {
+  f?: () => void;
+} = {};
+obj.f = async () => {
+  return 0;
+};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+      options: [{ checksVoidReturn: { properties: true } }],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const f = async () => 0;
+const obj: O = {
+  f,
+};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  async f() {
+    return 0;
+  },
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void; g: () => void; h: () => void };
+function f(): O {
+  const h = async () => 0;
+  return {
+    async f() {
+      return 123;
+    },
+    g: async () => 0,
+    h,
+  };
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 9,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 10,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnReturnValue',
+        },
+      ],
+    },
+    {
+      code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnReturnValue',
+        },
+      ],
+      options: [{ checksVoidReturn: { returns: true } }],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+      options: [{ checksVoidReturn: { attributes: true } }],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const g = async () => 'foo';
+const Component = (obj: O) => null;
+<Component func={g} />;
+      `,
+      filename: 'react.tsx',
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
         },
       ],
     },

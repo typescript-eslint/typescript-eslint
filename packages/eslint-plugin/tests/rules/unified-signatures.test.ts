@@ -159,8 +159,58 @@ async function rest(...args: any[], y?: string): Promise<number[] | string> {
   return y || args;
 }
     `,
+    {
+      code: `
+function f(a: number): void;
+function f(b: string): void;
+function f(a: number | string): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(a: boolean, ...c: number[]): void;
+function f(a: boolean, ...d: string[]): void;
+function f(a: boolean, ...c: (number | string)[]): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+class C {
+  constructor();
+  constructor(a: number, b: number);
+  constructor(c?: number, b?: number) {}
+
+  a(): void;
+  a(a: number, b: number): void;
+  a(a?: number, d?: number): void {}
+}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
   ],
   invalid: [
+    {
+      code: `
+function f(a: number): void;
+function f(b: string): void;
+function f(a: number | string): void {}
+      `,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
+          line: 3,
+          column: 12,
+        },
+      ],
+    },
     {
       code: `
 function f(x: number): void;
@@ -182,6 +232,29 @@ function f(x: any): any {
           column: 12,
         },
       ],
+    },
+    {
+      code: `
+function f(x: number): void;
+function f(x: string): void;
+function f(x: any): any {
+  return x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
+          line: 3,
+          column: 12,
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
     },
     {
       code: `
@@ -221,6 +294,28 @@ interface I {
           column: 6,
         },
       ],
+    },
+    {
+      // For 3 or more overloads, mentions the line.
+      code: `
+interface I {
+  a0(): void;
+  a0(x: string): string;
+  a0(x: number): void;
+}
+      `,
+      errors: [
+        {
+          messageId: 'omittingSingleParameter',
+          data: {
+            failureStringStart:
+              'This overload and the one on line 3 can be combined into one signature',
+          },
+          line: 5,
+          column: 6,
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
     },
     {
       // Error for extra parameter.

@@ -1,0 +1,65 @@
+.tierArea {
+  margin: 32px auto;
+  width: 100%;
+}
+
+.sponsorsTier {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  max-width: 800px;
+  margin: 10px auto;
+  padding: 0;
+}
+
+.sponsorsTier li {
+  list-style: none;
+  margin: 5px;
+  max-width: 120px;
+}
+
+.sponsorsTier img {
+  margin: auto;
+}
+
+.sponsorsTier a,
+.sponsorsTier a:hover {
+  background: none;
+  border: none;
+}
+
+.tier-sponsor {
+  gap: 16px;
+}
+
+.tier-sponsor img {
+  display: inline-block;
+  max-height: 120px;
+  width: 120px;
+}
+
+.tier-supporter img {
+  max-height: 45px;
+  width: 45px;
+}
+
+.tier-contributor img {
+  max-height: 30px;
+  width: 30px;
+}
+
+@media screen and (min-width: 700px) {
+  .tierArea {
+    min-width: 500px;
+    width: 50vw;
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .tierArea {
+    margin: 16px 0;
+    width: auto;
+    padding: 0 60px;
+  }
+}

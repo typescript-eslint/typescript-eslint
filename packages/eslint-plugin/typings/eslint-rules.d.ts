@@ -319,6 +319,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         ignoreNumericLiteralTypes?: boolean;
         ignoreEnums?: boolean;
         ignoreReadonlyClassProperties?: boolean;
+        ignoreTypeIndexes?: boolean;
       },
     ],
     {
@@ -374,6 +375,7 @@ declare module 'eslint/lib/rules/no-shadow' {
         builtinGlobals?: boolean;
         hoist?: 'all' | 'functions' | 'never';
         allow?: string[];
+        ignoreOnInitialization?: boolean;
       },
     ],
     {
@@ -416,6 +418,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
           caughtErrorsIgnorePattern?: string;
+          destructuredArrayIgnorePattern?: string;
         },
     ],
     {
@@ -837,6 +840,29 @@ declare module 'eslint/lib/rules/space-infix-ops' {
       LogicalExpression(node: TSESTree.LogicalExpression): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/space-before-blocks' {
+  import { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'missingSpace' | 'unexpectedSpace',
+    [
+      | 'always'
+      | 'never'
+      | {
+          classes?: 'always' | 'never' | 'off';
+          functions?: 'always' | 'never' | 'off';
+          keywords?: 'always' | 'never' | 'off';
+        },
+    ],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      ClassBody(node: TSESTree.ClassBody): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
     }
   >;
   export = rule;

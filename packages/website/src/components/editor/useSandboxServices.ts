@@ -10,6 +10,7 @@ import type {
 
 import { sandboxSingleton } from './loadSandbox';
 import { editorEmbedId } from './EditorEmbed';
+import { useColorMode } from '@docusaurus/theme-common';
 
 export interface SandboxServicesProps {
   readonly jsx?: boolean;
@@ -34,6 +35,7 @@ export const useSandboxServices = (
 ): Error | SandboxServices | undefined => {
   const [services, setServices] = useState<Error | SandboxServices>();
   const [loadedTs, setLoadedTs] = useState<string>(props.ts);
+  const { isDarkTheme } = useColorMode();
 
   useEffect(() => {
     if (props.ts !== loadedTs) {
@@ -47,7 +49,15 @@ export const useSandboxServices = (
     setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
-      .then(({ main, sandboxFactory, ts, linter }) => {
+      .then(async ({ main, sandboxFactory, ts, linter }) => {
+        const compilerOptions: Monaco.languages.typescript.CompilerOptions = {
+          noResolve: true,
+          target: main.languages.typescript.ScriptTarget.ESNext,
+          jsx: props.jsx ? main.languages.typescript.JsxEmit.React : undefined,
+          lib: ['esnext'],
+          module: main.languages.typescript.ModuleKind.ESNext,
+        };
+
         const sandboxConfig: Partial<SandboxConfig> = {
           text: '',
           monacoSettings: {
@@ -57,15 +67,7 @@ export const useSandboxServices = (
             scrollBeyondLastLine: false,
             smoothScrolling: true,
           },
-          compilerOptions: {
-            noResolve: true,
-            strict: true,
-            target: main.languages.typescript.ScriptTarget.ESNext,
-            jsx: props.jsx
-              ? main.languages.typescript.JsxEmit.React
-              : undefined,
-            module: main.languages.typescript.ModuleKind.ESNext,
-          },
+          compilerOptions: compilerOptions,
           domID: editorEmbedId,
         };
 
@@ -74,8 +76,18 @@ export const useSandboxServices = (
           main,
           ts,
         );
+        sandboxInstance.monaco.editor.setTheme(
+          isDarkTheme ? 'vs-dark' : 'vs-light',
+        );
 
-        const webLinter = linter.loadLinter();
+        const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
+          sandboxInstance.getCompilerOptions(),
+          props.ts,
+          true,
+          window.ts,
+        );
+
+        const webLinter = linter.loadLinter(libMap, compilerOptions);
 
         props.onLoaded(webLinter.ruleNames, sandboxInstance.supportedVersions);
 

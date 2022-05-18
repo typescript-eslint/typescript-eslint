@@ -24,6 +24,15 @@ module.exports = {
       './tsconfig.eslint.json',
       './packages/*/tsconfig.json',
       './tests/integration/tsconfig.json',
+      /**
+       * We are currently in the process of transitioning to nx's out of the box structure and
+       * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
+       * files here for now in addition to the tsconfig.json glob pattern.
+       *
+       * TODO(#4665): Clean this up once all packages have been transitioned.
+       */
+      './packages/scope-manager/tsconfig.build.json',
+      './packages/scope-manager/tsconfig.spec.json',
     ],
     allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
@@ -55,6 +64,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
@@ -73,9 +83,6 @@ module.exports = {
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
-
-    // TODO - enable this
-    '@typescript-eslint/naming-convention': 'off',
 
     //
     // Internal repo rules

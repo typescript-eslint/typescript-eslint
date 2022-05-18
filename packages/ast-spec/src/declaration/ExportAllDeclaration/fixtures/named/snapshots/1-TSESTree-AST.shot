@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportAllDeclaration named TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportAllDeclaration {
+      type: "ExportAllDeclaration",
+      assertions: Array [],
+      exported: Identifier {
+        type: "Identifier",
+        name: "mod",
+
+        range: [12, 15],
+        loc: {
+          start: { column: 12, line: 1 },
+          end: { column: 15, line: 1 },
+        },
+      },
+      exportKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'module'",
+        value: "module",
+
+        range: [21, 29],
+        loc: {
+          start: { column: 21, line: 1 },
+          end: { column: 29, line: 1 },
+        },
+      },
+
+      range: [0, 30],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 30, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 31],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

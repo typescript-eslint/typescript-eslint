@@ -1,2 +1,2 @@
-const x: X<never>;
+var x: X<never>;
 Observable.empty<never>();

@@ -9,7 +9,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces using a particular method signature syntax.',
+      description: 'Enforces using a particular method signature syntax',
       recommended: false,
     },
     fixable: 'code',
@@ -115,6 +115,10 @@ export default util.createRule<Options, MessageIds>({
     return {
       ...(mode === 'property' && {
         TSMethodSignature(methodNode): void {
+          if (methodNode.kind !== 'method') {
+            return;
+          }
+
           const parent = methodNode.parent;
           const members =
             parent?.type === AST_NODE_TYPES.TSInterfaceBody

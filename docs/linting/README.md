@@ -4,6 +4,9 @@ title: Linting your TypeScript Codebase
 sidebar_label: Linting your TypeScript Codebase
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
 
 ## Installation
@@ -16,10 +19,10 @@ npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-e
 
 ## Configuration
 
-Next, create a `.eslintrc.js` config file in the root of your project, and populate it with the following:
+Next, create a `.eslintrc.cjs` config file in the root of your project, and populate it with the following:
 
 <!-- prettier-ignore -->
-```js title=".eslintrc.js"
+```js title=".eslintrc.cjs"
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -34,6 +37,14 @@ module.exports = {
 ```
 
 This is about the smallest config file we recommend. There's a lot more you can add to this as you further onboard, but this will be enough to get you started.
+
+:::info
+
+The `.cjs` extension will explicitly set the file to a [CommonJS module](https://nodejs.org/dist/latest-v18.x/docs/api/modules.html), in case your project has `"type": "module"` in its package.json.
+
+If your project doesn't use ESM, naming the file as `.eslintrc.js` is fine. See [ESLint's Configuration Files docs](https://eslint.org/docs/user-guide/configuring/configuration-files) for more info.
+
+:::
 
 ### Details
 
@@ -56,8 +67,6 @@ This file will tell ESLint which files and folders it should never lint.
 Add the following lines to the file:
 
 ```ignore title=".eslintignore"
-# don't ever lint node_modules
-node_modules
 # don't lint build output (make sure it's set to your correct build folder name)
 dist
 ```
@@ -70,13 +79,42 @@ dist
 
 ## Running ESLint
 
-With that configured, open a terminal to the root of your project, and run the following command
+With that configured, open a terminal to the root of your project, and run the following command:
 
-```bash npm2yarn
-npm run eslint . --ext .js,.jsx,.ts,.tsx
+<Tabs groupId="npm2yarn">
+<TabItem value="npm">
+
+```bash
+npx eslint . --ext .js,.jsx,.ts,.tsx
 ```
 
+</TabItem>
+<TabItem value="Yarn">
+
+```bash
+yarn eslint . --ext .js,.jsx,.ts,.tsx
+```
+
+</TabItem>
+</Tabs>
+
 That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.
+
+You are also recommended to add an npm script in your package.json, so you don't have to repeat the same command every time you run ESLint.
+
+```json title="package.json"
+{
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  }
+}
+```
+
+This way, you can invoke the `lint` script directly:
+
+```bash npm2yarn
+npm run lint
+```
 
 You can also get results in realtime inside most IDEs via a plugin - search your IDE's extension store.
 

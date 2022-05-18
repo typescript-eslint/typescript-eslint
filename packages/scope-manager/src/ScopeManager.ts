@@ -132,17 +132,9 @@ class ScopeManager {
           return scope;
         }
       }
-    } else {
-      for (let i = 0; i < scopes.length; ++i) {
-        const scope = scopes[i];
-
-        if (predicate(scope)) {
-          return scope;
-        }
-      }
+      return null;
     }
-
-    return null;
+    return scopes.find(predicate) ?? null;
   }
 
   protected nestScope<T extends Scope>(scope: T): T;

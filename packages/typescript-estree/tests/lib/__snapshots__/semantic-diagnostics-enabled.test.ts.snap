@@ -138,7 +138,7 @@ TSError {
   "column": 21,
   "index": 21,
   "lineNumber": 1,
-  "message": "Octal literals are not allowed in strict mode.",
+  "message": "Octal literals are not available when targeting ECMAScript 5 and higher. Use the syntax '0o0'.",
 }
 `;
 
@@ -1130,22 +1130,36 @@ TSError {
   "column": 1,
   "index": 62,
   "lineNumber": 7,
-  "message": "An object literal cannot have multiple properties with the same name in strict mode.",
+  "message": "An object literal cannot have multiple properties with the same name.",
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 64,
+  "lineNumber": 7,
+  "message": "An object literal cannot have multiple properties with the same name.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `
 TSError {
   "column": 1,
   "index": 39,
   "lineNumber": 5,
-  "message": "An object literal cannot have multiple properties with the same name in strict mode.",
+  "message": "An object literal cannot have multiple properties with the same name.",
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 41,
+  "lineNumber": 5,
+  "message": "An object literal cannot have multiple properties with the same name.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `
 TSError {
@@ -2653,6 +2667,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-infer-nested.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-infer-simple.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-infer-with-constraint.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-with-null.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 

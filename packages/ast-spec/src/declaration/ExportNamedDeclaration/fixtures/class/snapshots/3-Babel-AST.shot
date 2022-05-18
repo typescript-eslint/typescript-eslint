@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportNamedDeclaration class Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        body: ClassBody {
+          type: "ClassBody",
+          body: Array [],
+
+          range: [17, 19],
+          loc: {
+            start: { column: 17, line: 1 },
+            end: { column: 19, line: 1 },
+          },
+        },
+        id: Identifier {
+          type: "Identifier",
+          name: "Foo",
+
+          range: [13, 16],
+          loc: {
+            start: { column: 13, line: 1 },
+            end: { column: 16, line: 1 },
+          },
+        },
+        superClass: null,
+
+        range: [7, 19],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 19, line: 1 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: Array [],
+
+      range: [0, 19],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 19, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 20],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

@@ -281,6 +281,7 @@ ruleTester.run('comma-spacing', rule, {
     'class Foo<T, T1> {}',
     'interface Foo<T, T1,>{}',
     'interface A<> {}',
+    'let foo,',
   ],
 
   invalid: [
@@ -782,6 +783,18 @@ ruleTester.run('comma-spacing', rule, {
         {
           messageId: 'missing',
           column: 15,
+          line: 1,
+          data: { loc: 'before' },
+        },
+      ],
+    },
+    {
+      code: 'let foo ,',
+      output: 'let foo,',
+      errors: [
+        {
+          messageId: 'unexpected',
+          column: 9,
           line: 1,
           data: { loc: 'before' },
         },

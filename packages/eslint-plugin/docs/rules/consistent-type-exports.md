@@ -13,6 +13,37 @@ This rule aims to standardize the use of type exports style across a codebase.
 
 Given a class `Button`, and an interface `ButtonProps`, examples of code:
 
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+interface ButtonProps {
+  onClick: () => void;
+}
+class Button implements ButtonProps {
+  onClick() {
+    console.log('button!');
+  }
+}
+export { Button, ButtonProps };
+```
+
+### ✅ Correct
+
+```ts
+interface ButtonProps {
+  onClick: () => void;
+}
+class Button implements ButtonProps {
+  onClick() {
+    console.log('button!');
+  }
+}
+export { Button };
+export type { ButtonProps };
+```
+
 ## Options
 
 ```ts
@@ -70,8 +101,6 @@ export type { ButtonProps } from 'some-library';
 ### ✅ Correct
 
 ```ts
-export { Button } from 'some-library';
-export type { ButtonProps } from 'some-library';
 export { Button, type ButtonProps } from 'some-library';
 ```
 
@@ -79,9 +108,12 @@ export { Button, type ButtonProps } from 'some-library';
 
 - If you are using a TypeScript version less than 3.8, then you will not be able to use this rule as type exports are not supported.
 - If you specifically want to use both export kinds for stylistic reasons, you can disable this rule.
+- If you use `--isolatedModules` the compiler would error if a type is not re-exported using `export type`. If you also don't wish to enforce one style over the other, you can disable this rule.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

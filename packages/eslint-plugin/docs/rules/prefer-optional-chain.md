@@ -22,6 +22,10 @@ function myFunc(foo: T | null) {
 function myFunc(foo: T | null) {
   return foo && foo.a && foo.a.b && foo.a.b.c;
 }
+// or
+function myFunc(foo: T | null) {
+  return (((foo || {}).a || {}).b || {}).c;
+}
 
 function myFunc(foo: T | null) {
   return foo?.['a']?.b?.c;
@@ -57,6 +61,9 @@ foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
+(((foo || {}).a || {}).b {}).c;
+(((foo || {})['a'] || {}).b {}).c;
+
 // this rule also supports converting chained strict nullish checks:
 foo &&
   foo.a != null &&
@@ -78,6 +85,19 @@ foo?.a?.b?.c?.d?.e;
 
 **Note:** there are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-optional-chain": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
@@ -89,6 +109,8 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

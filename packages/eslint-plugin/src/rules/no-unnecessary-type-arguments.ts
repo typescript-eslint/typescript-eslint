@@ -12,7 +12,8 @@ type ParameterCapableTSNode =
   | ts.TypeReferenceNode
   | ts.ExpressionWithTypeArguments
   | ts.JsxOpeningElement
-  | ts.JsxSelfClosingElement;
+  | ts.JsxSelfClosingElement
+  | ts.TypeQueryNode;
 
 type MessageIds = 'unnecessaryTypeParameter';
 
@@ -22,7 +23,7 @@ export default util.createRule<[], MessageIds>({
     docs: {
       description:
         'Enforces that type arguments will not be used if not required',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',
