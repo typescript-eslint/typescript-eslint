@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
 import * as semver from 'semver';
 import * as ts from 'typescript';
 import * as util from '../util';
@@ -33,10 +33,12 @@ export default util.createRule({
       recommended: 'error',
       suggestion: true,
     },
-    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       unnecessaryConstraint:
         'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
+      removeUnnecessaryConstraint:
+        'Remove the unnecessary `{{constraint}}` constraint.',
     },
     schema: [],
     type: 'suggestion',
@@ -58,12 +60,25 @@ export default util.createRule({
       : new Map([[AST_NODE_TYPES.TSUnknownKeyword, 'unknown']]);
 
     const inJsx = context.getFilename().toLowerCase().endsWith('tsx');
+    const source = context.getSourceCode();
 
     const checkNode = (
       node: TypeParameterWithConstraint,
       inArrowFunction: boolean,
     ): void => {
       const constraint = unnecessaryConstraints.get(node.constraint.type);
+      function shouldAddTrailingComma(): boolean {
+        if (!inArrowFunction || !inJsx) {
+          return false;
+        }
+        // Only <T>() => {} would need trailing comma
+        return (
+          (node.parent as TSESTree.TSTypeParameterDeclaration).params.length ===
+            1 &&
+          source.getTokensAfter(node)[0].value !== ',' &&
+          !node.default
+        );
+      }
 
       if (constraint) {
         context.report({
@@ -71,12 +86,17 @@ export default util.createRule({
             constraint,
             name: node.name.name,
           },
-          fix(fixer) {
-            return fixer.replaceTextRange(
-              [node.name.range[1], node.constraint.range[1]],
-              inArrowFunction && inJsx ? ',' : '',
-            );
-          },
+          suggest: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              fix(fixer): TSESLint.RuleFix | null {
+                return fixer.replaceTextRange(
+                  [node.name.range[1], node.constraint.range[1]],
+                  shouldAddTrailingComma() ? ',' : '',
+                );
+              },
+            },
+          ],
           messageId: 'unnecessaryConstraint',
           node,
         });

@@ -9,7 +9,7 @@ describe('Index', () => {
     checkAccessibility();
 
     // 2. Check accessibility in dark mode
-    cy.contains('🌞').click();
+    cy.get('[class*=toggleButton]').click();
     checkAccessibility();
   });
 });

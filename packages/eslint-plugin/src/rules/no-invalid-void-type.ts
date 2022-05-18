@@ -20,7 +20,7 @@ export default util.createRule<[Options], MessageIds>({
     docs: {
       description:
         'Disallows usage of `void` type outside of generic or return types',
-      recommended: false,
+      recommended: 'strict',
     },
     messages: {
       invalidVoidForGeneric:

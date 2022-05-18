@@ -112,6 +112,8 @@ export { Button, type ButtonProps } from 'some-library';
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

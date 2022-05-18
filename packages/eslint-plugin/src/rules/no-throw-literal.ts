@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow throwing literals as exceptions',
-      recommended: false,
+      recommended: 'strict',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },

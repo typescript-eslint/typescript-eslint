@@ -537,6 +537,8 @@ function isVoidReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
+  let hadVoidReturn = false;
+
   for (const subType of tsutils.unionTypeParts(type)) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
@@ -547,12 +549,11 @@ function isVoidReturningFunctionType(
         return false;
       }
 
-      if (tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void)) {
-        return true;
-      }
+      hadVoidReturn ||= tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void);
     }
   }
-  return false;
+
+  return hadVoidReturn;
 }
 
 /**

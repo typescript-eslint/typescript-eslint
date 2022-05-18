@@ -304,6 +304,18 @@ declare const it: ItLike;
 it('', async () => {});
       `,
     },
+    {
+      code: `
+interface Props {
+  onEvent: (() => void) | (() => Promise<void>);
+}
+
+declare function Component(props: Props): any;
+
+const _ = <Component onEvent={async () => {}} />;
+      `,
+      filename: 'react.tsx',
+    },
   ],
 
   invalid: [

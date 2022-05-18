@@ -8,12 +8,35 @@ import * as util from '../util';
 
 export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
 
+type MemberKind =
+  | 'call-signature'
+  | 'constructor'
+  | 'field'
+  | 'get'
+  | 'method'
+  | 'set'
+  | 'signature';
+
+type DecoratedMemberKind = 'field' | 'method' | 'get' | 'set';
+
+type NonCallableMemberKind = Exclude<MemberKind, 'constructor' | 'signature'>;
+
+type MemberScope = 'static' | 'instance' | 'abstract';
+
+type BaseMemberType =
+  | MemberKind
+  | `${TSESTree.Accessibility}-${Exclude<MemberKind, 'signature'>}`
+  | `${TSESTree.Accessibility}-decorated-${DecoratedMemberKind}`
+  | `decorated-${DecoratedMemberKind}`
+  | `${TSESTree.Accessibility}-${MemberScope}-${NonCallableMemberKind}`
+  | `${MemberScope}-${NonCallableMemberKind}`;
+
+type MemberType = BaseMemberType | BaseMemberType[];
+
 type Order =
   | 'alphabetically'
   | 'alphabetically-case-insensitive'
   | 'as-written';
-
-type MemberType = string | string[];
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
@@ -69,7 +92,7 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
   additionalProperties: false,
 });
 
-export const defaultOrder = [
+export const defaultOrder: MemberType[] = [
   // Index signature
   'signature',
   'call-signature',
@@ -198,53 +221,48 @@ export const defaultOrder = [
   'method',
 ];
 
-const allMemberTypes = [
-  'signature',
-  'field',
-  'method',
-  'call-signature',
-  'constructor',
-  'get',
-  'set',
-].reduce<string[]>((all, type) => {
-  all.push(type);
+const allMemberTypes = Array.from(
+  (
+    [
+      'signature',
+      'field',
+      'method',
+      'call-signature',
+      'constructor',
+      'get',
+      'set',
+    ] as const
+  ).reduce<Set<MemberType>>((all, type) => {
+    all.add(type);
 
-  ['public', 'protected', 'private'].forEach(accessibility => {
-    if (type !== 'signature') {
-      all.push(`${accessibility}-${type}`); // e.g. `public-field`
-    }
-
-    // Only class instance fields, methods, get and set can have decorators attached to them
-    if (
-      type === 'field' ||
-      type === 'method' ||
-      type === 'get' ||
-      type === 'set'
-    ) {
-      const decoratedMemberType = `${accessibility}-decorated-${type}`;
-      const decoratedMemberTypeNoAccessibility = `decorated-${type}`;
-      if (!all.includes(decoratedMemberType)) {
-        all.push(decoratedMemberType);
+    (['public', 'protected', 'private'] as const).forEach(accessibility => {
+      if (type !== 'signature') {
+        all.add(`${accessibility}-${type}`); // e.g. `public-field`
       }
-      if (!all.includes(decoratedMemberTypeNoAccessibility)) {
-        all.push(decoratedMemberTypeNoAccessibility);
+
+      // Only class instance fields, methods, get and set can have decorators attached to them
+      if (
+        type === 'field' ||
+        type === 'method' ||
+        type === 'get' ||
+        type === 'set'
+      ) {
+        all.add(`${accessibility}-decorated-${type}`);
+        all.add(`decorated-${type}`);
       }
-    }
 
-    if (type !== 'constructor' && type !== 'signature') {
-      // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-      ['static', 'instance', 'abstract'].forEach(scope => {
-        if (!all.includes(`${scope}-${type}`)) {
-          all.push(`${scope}-${type}`);
-        }
+      if (type !== 'constructor' && type !== 'signature') {
+        // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+        (['static', 'instance', 'abstract'] as const).forEach(scope => {
+          all.add(`${scope}-${type}`);
+          all.add(`${accessibility}-${scope}-${type}`);
+        });
+      }
+    });
 
-        all.push(`${accessibility}-${scope}-${type}`);
-      });
-    }
-  });
-
-  return all;
-}, []);
+    return all;
+  }, new Set<MemberType>()),
+);
 
 const functionExpressions = [
   AST_NODE_TYPES.FunctionExpression,
@@ -256,7 +274,7 @@ const functionExpressions = [
  *
  * @param node the node to be evaluated.
  */
-function getNodeType(node: Member): string | null {
+function getNodeType(node: Member): MemberKind | null {
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
@@ -352,7 +370,7 @@ function getMemberName(
  * @return Index of the matching member type in the order configuration.
  */
 function getRankOrder(
-  memberGroups: string[],
+  memberGroups: BaseMemberType[],
   orderConfig: MemberType[],
 ): number {
   let rank = -1;
@@ -403,8 +421,9 @@ function getRank(
       ? node.accessibility
       : 'public';
 
-  // Collect all existing member groups (e.g. 'public-instance-field', 'instance-field', 'public-field', 'constructor' etc.)
-  const memberGroups = [];
+  // Collect all existing member groups that apply to this node...
+  // (e.g. 'public-instance-field', 'instance-field', 'public-field', 'constructor' etc.)
+  const memberGroups: BaseMemberType[] = [];
 
   if (supportsModifiers) {
     const decorated = 'decorators' in node && node.decorators!.length > 0;
@@ -419,17 +438,20 @@ function getRank(
       memberGroups.push(`decorated-${type}`);
     }
 
-    if (type !== 'constructor') {
-      // Constructors have no scope
-      memberGroups.push(`${accessibility}-${scope}-${type}`);
-      memberGroups.push(`${scope}-${type}`);
-    }
+    if (type !== 'signature') {
+      if (type !== 'constructor') {
+        // Constructors have no scope
+        memberGroups.push(`${accessibility}-${scope}-${type}`);
+        memberGroups.push(`${scope}-${type}`);
+      }
 
-    memberGroups.push(`${accessibility}-${type}`);
+      memberGroups.push(`${accessibility}-${type}`);
+    }
   }
 
   memberGroups.push(type);
 
+  // ...then get the rank order for those member groups based on the node
   return getRankOrder(memberGroups, orderConfig);
 }
 

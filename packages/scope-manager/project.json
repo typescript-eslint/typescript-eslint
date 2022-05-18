@@ -43,6 +43,14 @@
         ]
       }
     },
+    "clean-fixtures": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": "packages/scope-manager",
+        "commands": ["rimraf -g \"./src/**/fixtures/**/snapshots\""]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
