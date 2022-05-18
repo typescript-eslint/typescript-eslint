@@ -1,0 +1,121 @@
+name: "🐛 Report a Bug With Another Package"
+description: "Report a bug you encountered with another one of our packages (parser, util, scope-manager, etc)"
+title: "Bug: <short description of the issue>"
+labels:
+  - bug
+  - triage
+body:
+  - type: checkboxes
+    id: sanity-checks
+    attributes:
+      label: Before You File a Bug Report Please Confirm You Have Done The Following...
+      description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
+      options:
+        - label: I have tried restarting my IDE and the issue persists.
+          required: true
+        - label: I have updated to the latest version of the packages.
+          required: true
+        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3Abug) and found none that matched my issue.
+          required: true
+        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+          required: true
+  - type: markdown
+    id: complexity-note
+    attributes:
+      value: |
+        ### Note For Complex Issues
+        If your issue requires some complex reproduction - such as multiple files or a specific folder structure - please do not use this template.
+        Instead, select the ["Report a Complex Bug With a Reproduction Repository" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=7-bug-report-complex.yaml).
+  - type: dropdown
+    id: package
+    attributes:
+      label: Relevant Package
+      description: Select the package against which you want to report the bug.
+      options:
+        - ast-spec
+        - eslint-plugin-tslint
+        - parser
+        - scope-manager
+        - typescript-estree
+        - utils
+    validations:
+      required: true
+  - type: input
+    id: playground-link
+    attributes:
+      label: Playground Link
+      description: (Optional) Link to an isolated reproduction [in our online playground](https://typescript-eslint.io/play/).
+      placeholder: https://typescript-eslint.io/play/...
+  - type: textarea
+    id: repro-code
+    attributes:
+      label: Repro Code
+      description: A ***minimal*** code sample which reproduces the issue
+      render: typescript
+    validations:
+      required: true
+  - type: textarea
+    id: eslint-config
+    attributes:
+      label: ESLint Config
+      description: (Optional) A ***minimal*** ESLint config for reproducing the issue
+      render: javascript
+      value: |
+        module.exports = {
+          parser: "@typescript-eslint/parser",
+          rules: {
+            "@typescript-eslint/<rule-name>": ["error", ...<options>],
+          },
+        };
+  - type: textarea
+    id: typescript-config
+    attributes:
+      label: tsconfig
+      description: (Optional) A ***minimal*** tsconfig for reproducing the issue, if you're using type-aware linting
+      render: jsonc
+      value: |
+        {
+          "compilerOptions": {
+            // ...
+          }
+        }
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Result
+      description: What did you expect to happen? Please be specific here - list the exact lines and messages you expect.
+      placeholder: I expected that the 3rd line should report the error "foo bar"...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Result
+      description: What actually happened? Please be specific here - list the exact lines and messages that caused errors.
+      placeholder: There was no error on the 3rd line...
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Info
+      description: Any additional info you'd like to provide. If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. i.e. `eslint --ext ".ts,.js" src --debug`
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions
+      value: |
+        <!-- Fill in the relevant versions and delete the others -->
+        | package                                | version |
+        | -------------------------------------- | ------- |
+        | `@typescript-eslint/eslint-plugin`     | `X.Y.Z` |
+        | `@typescript-eslint/parser`            | `X.Y.Z` |
+        | `@typescript-eslint/scope-manager`     | `X.Y.Z` |
+        | `@typescript-eslint/typescript-estree` | `X.Y.Z` |
+        | `@typescript-eslint/type-utils`        | `X.Y.Z` |
+        | `@typescript-eslint/utils`             | `X.Y.Z` |
+        | `TypeScript`                           | `X.Y.Z` |
+        | `ESLint`                               | `X.Y.Z` |
+        | `node`                                 | `X.Y.Z` |
+    validations:
+      required: true

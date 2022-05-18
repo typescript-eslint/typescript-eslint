@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration implements-one TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [28, 30],
+        loc: {
+          start: { column: 28, line: 1 },
+          end: { column: 30, line: 1 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      implements: Array [
+        TSClassImplements {
+          type: "TSClassImplements",
+          expression: Identifier {
+            type: "Identifier",
+            name: "Object",
+
+            range: [21, 27],
+            loc: {
+              start: { column: 21, line: 1 },
+              end: { column: 27, line: 1 },
+            },
+          },
+
+          range: [21, 27],
+          loc: {
+            start: { column: 21, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+      ],
+      superClass: null,
+
+      range: [0, 30],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 30, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 31],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

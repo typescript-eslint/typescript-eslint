@@ -8,6 +8,7 @@ module.exports = {
       items: [
         'linting/linting',
         'linting/type-linting',
+        'linting/configs',
         'linting/monorepo',
         'linting/troubleshooting',
         'linting/tslint',

@@ -185,7 +185,7 @@ if (ONLY === '') {
   describe('ast snapshots should have an associated test', () => {
     for (const snap of snapshots) {
       it(snap.relative, () => {
-        fs.existsSync(snap.fixturePath);
+        expect(fs.existsSync(snap.fixturePath)).toBeTruthy();
       });
     }
   });

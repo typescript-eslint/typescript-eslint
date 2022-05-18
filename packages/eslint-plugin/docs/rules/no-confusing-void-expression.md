@@ -154,6 +154,8 @@ Also, if you prefer concise coding style then also don't use it.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

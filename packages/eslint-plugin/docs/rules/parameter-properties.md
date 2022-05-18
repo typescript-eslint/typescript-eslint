@@ -15,14 +15,14 @@ declare all properties in the class.
 This rule, in its default state, does not require any argument and would completely disallow the use of parameter properties.
 It may take an options object containing either or both of:
 
-- `"allows"`: allowing certain kinds of properties to be ignored
-- `"prefer"`: either `"class-properties"` _(default)_ or `"parameter-properties"`
+- `"allow"`: allowing certain kinds of properties to be ignored
+- `"prefer"`: either `"class-property"` _(default)_ or `"parameter-property"`
 
-### `"allows"`
+### `"allow"`
 
-If you would like to ignore certain kinds of properties then you may pass an object containing `"allows"` as an array of any of the following options:
+If you would like to ignore certain kinds of properties then you may pass an object containing `"allow"` as an array of any of the following options:
 
-- `allows`, an array containing one or more of the allowed modifiers. Valid values are:
+- `allow`, an array containing one or more of the allowed modifiers. Valid values are:
   - `readonly`, allows **readonly** parameter properties.
   - `private`, allows **private** parameter properties.
   - `protected`, allows **protected** parameter properties.
@@ -46,10 +46,10 @@ For example, to ignore `public` properties:
 
 ### `"prefer"`
 
-By default, the rule prefers class properties (`"class-properties"`).
-You can switch it to instead preferring parameter properties with (`"parameter-properties"`).
+By default, the rule prefers class property (`"class-property"`).
+You can switch it to instead preferring parameter property with (`"parameter-property"`).
 
-In `"parameter-properties"` mode, the rule will issue a report when:
+In `"parameter-property"` mode, the rule will issue a report when:
 
 - A class property and constructor parameter have the same name and type
 - The constructor parameter is assigned to the class property at the beginning of the constructor
@@ -102,7 +102,7 @@ class Foo {
 
 ### readonly
 
-Examples of code for the `{ "allows": ["readonly"] }` options:
+Examples of code for the `{ "allow": ["readonly"] }` options:
 
 <!--tabs-->
 
@@ -148,7 +148,7 @@ class Foo {
 
 ### private
 
-Examples of code for the `{ "allows": ["private"] }` options:
+Examples of code for the `{ "allow": ["private"] }` options:
 
 <!--tabs-->
 
@@ -194,7 +194,7 @@ class Foo {
 
 ### protected
 
-Examples of code for the `{ "allows": ["protected"] }` options:
+Examples of code for the `{ "allow": ["protected"] }` options:
 
 <!--tabs-->
 
@@ -240,7 +240,7 @@ class Foo {
 
 ### public
 
-Examples of code for the `{ "allows": ["public"] }` options:
+Examples of code for the `{ "allow": ["public"] }` options:
 
 <!--tabs-->
 
@@ -286,7 +286,7 @@ class Foo {
 
 ### private readonly
 
-Examples of code for the `{ "allows": ["private readonly"] }` options:
+Examples of code for the `{ "allow": ["private readonly"] }` options:
 
 <!--tabs-->
 
@@ -332,7 +332,7 @@ class Foo {
 
 ### protected readonly
 
-Examples of code for the `{ "allows": ["protected readonly"] }` options:
+Examples of code for the `{ "allow": ["protected readonly"] }` options:
 
 <!--tabs-->
 
@@ -378,7 +378,7 @@ class Foo {
 
 ### public readonly
 
-Examples of code for the `{ "allows": ["public readonly"] }` options:
+Examples of code for the `{ "allow": ["public readonly"] }` options:
 
 <!--tabs-->
 
@@ -422,9 +422,9 @@ class Foo {
 }
 ```
 
-### `"parameter-properties"`
+### `"parameter-property"`
 
-Examples of code for the `{ "prefer": ["parameter-properties"] }` option:
+Examples of code for the `{ "prefer": "parameter-property" }` option:
 
 <!--tabs-->
 
@@ -489,6 +489,8 @@ If you don't care about the using parameter properties in constructors, then you
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -1,5 +1,7 @@
-
 {
+  // This matches the value configured on the autoformatter
+  "editor.rulers": [80],
+
   // An array of language ids which should be validated by ESLint
   "eslint.validate": [
       "javascript",
@@ -27,10 +29,7 @@
     {
         "icon": "jest_snapshot",
         "extensions": [
-            ".ts.shot",
-            ".tsx.shot",
-            ".js.shot",
-            ".jsx.shot",
+            ".shot",
         ],
         "extends": "jest_snapshot"
     },

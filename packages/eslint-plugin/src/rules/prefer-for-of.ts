@@ -8,7 +8,7 @@ export default util.createRule({
     docs: {
       description:
         'Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated',
-      recommended: false,
+      recommended: 'strict',
     },
     messages: {
       preferForOf:

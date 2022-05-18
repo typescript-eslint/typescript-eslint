@@ -217,7 +217,8 @@ export interface EstreeToTsNodeTypes {
     | ts.JsxOpeningElement
     | ts.JsxSelfClosingElement
     | ts.NewExpression
-    | ts.CallExpression;
+    | ts.CallExpression
+    | ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypePredicate]: ts.TypePredicateNode;
   [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypeReference]: ts.TypeReferenceNode;
