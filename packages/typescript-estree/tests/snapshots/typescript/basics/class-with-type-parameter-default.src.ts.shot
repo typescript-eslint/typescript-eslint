@@ -106,7 +106,7 @@ Object {
               },
               "typeParameters": undefined,
             },
-            "in": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 17,
@@ -135,7 +135,7 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": undefined,
+            "out": false,
             "range": Array [
               10,
               17,

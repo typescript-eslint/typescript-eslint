@@ -123,7 +123,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 19,

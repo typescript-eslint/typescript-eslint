@@ -71,7 +71,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -100,7 +100,7 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": undefined,
+            "out": false,
             "range": Array [
               8,
               11,

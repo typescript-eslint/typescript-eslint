@@ -205,7 +205,7 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": undefined,
+            "out": false,
             "range": Array [
               14,
               18,

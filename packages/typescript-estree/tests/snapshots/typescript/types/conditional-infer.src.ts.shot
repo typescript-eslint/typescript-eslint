@@ -94,7 +94,7 @@ Object {
             "typeParameter": Object {
               "constraint": undefined,
               "default": undefined,
-              "in": undefined,
+              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 36,
@@ -123,7 +123,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "out": undefined,
+              "out": false,
               "range": Array [
                 35,
                 36,
@@ -250,7 +250,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -279,7 +279,7 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": undefined,
+            "out": false,
             "range": Array [
               13,
               14,
