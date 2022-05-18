@@ -100,6 +100,7 @@ const additionalKeys: AdditionalKeys = {
   TSIndexedAccessType: ['indexType', 'objectType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],
+  TSInstantiationExpression: ['expression', 'typeParameters'],
   TSInterfaceBody: ['body'],
   TSInterfaceDeclaration: ['id', 'typeParameters', 'extends', 'body'],
   TSInterfaceHeritage: ['expression', 'typeParameters'],
