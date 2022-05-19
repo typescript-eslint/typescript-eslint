@@ -15,8 +15,8 @@ const config = {
   tagline: 'Tooling which enables ESLint to support TypeScript',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
-  onBrokenLinks: 'warn', // TODO: 'throw'
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn', // If Markdown link resolution fails, it will result in a broken link anyways
   favicon: 'img/favicon.ico',
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
