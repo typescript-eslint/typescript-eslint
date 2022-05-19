@@ -2574,13 +2574,19 @@ export class Converter {
       }
 
       case SyntaxKind.ExpressionWithTypeArguments: {
+        const parentKind = parent.kind;
+        const type =
+          parentKind === SyntaxKind.InterfaceDeclaration
+            ? AST_NODE_TYPES.TSInterfaceHeritage
+            : parentKind === SyntaxKind.HeritageClause
+            ? AST_NODE_TYPES.TSClassImplements
+            : AST_NODE_TYPES.TSInstantiationExpression;
         const result = this.createNode<
-          TSESTree.TSInterfaceHeritage | TSESTree.TSClassImplements
+          | TSESTree.TSInterfaceHeritage
+          | TSESTree.TSClassImplements
+          | TSESTree.TSInstantiationExpression
         >(node, {
-          type:
-            parent && parent.kind === SyntaxKind.InterfaceDeclaration
-              ? AST_NODE_TYPES.TSInterfaceHeritage
-              : AST_NODE_TYPES.TSClassImplements,
+          type,
           expression: this.convertChild(node.expression),
         });
 
