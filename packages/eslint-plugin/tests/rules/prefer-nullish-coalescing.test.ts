@@ -244,26 +244,49 @@ x ?? 'foo';
       'x != null ? x : y;',
       'x == undefined  ? y : x;',
       'x == null ? y : x;',
-    ].map(code => ({
-      code,
-      output: null,
-      options: [{ ignoreTernaryTests: false }] as const,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary' as const,
-          line: 1,
-          column: 1,
-          endLine: 1,
-          endColumn: code.length,
-          suggestions: [
-            {
-              messageId: 'suggestNullish' as const,
-              output: 'x ?? y;',
-            },
-          ],
-        },
-      ],
-    })),
+    ].flatMap(code => [
+      {
+        code,
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x ?? y;',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]'),
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]')
+              .length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x.z[1][this[this.o]]["3"][a.b.c] ?? y;',
+              },
+            ],
+          },
+        ],
+      },
+    ]),
 
     ...[
       `

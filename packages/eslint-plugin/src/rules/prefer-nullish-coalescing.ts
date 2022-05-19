@@ -87,11 +87,12 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        let identifier: TSESTree.Identifier;
+        let identifier: TSESTree.Identifier | TSESTree.MemberExpression;
         let alternate: TSESTree.Expression;
         let requiredOperator: '!==' | '===';
         if (
-          node.consequent.type === AST_NODE_TYPES.Identifier &&
+          (node.consequent.type === AST_NODE_TYPES.Identifier ||
+            node.consequent.type === AST_NODE_TYPES.MemberExpression) &&
           ((node.test.type === AST_NODE_TYPES.BinaryExpression &&
             (node.test.operator === '!==' || node.test.operator === '!=')) ||
             (node.test.type === AST_NODE_TYPES.LogicalExpression &&
@@ -102,7 +103,10 @@ export default util.createRule<Options, MessageIds>({
           identifier = node.consequent;
           alternate = node.alternate;
           requiredOperator = '!==';
-        } else if (node.alternate.type === AST_NODE_TYPES.Identifier) {
+        } else if (
+          node.alternate.type === AST_NODE_TYPES.Identifier ||
+          node.alternate.type === AST_NODE_TYPES.MemberExpression
+        ) {
           identifier = node.alternate;
           alternate = node.consequent;
           requiredOperator = '===';
@@ -138,7 +142,10 @@ export default util.createRule<Options, MessageIds>({
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   return fixer.replaceText(
                     node,
-                    `${identifier.name} ?? ${sourceCode.text.slice(
+                    `${sourceCode.text.slice(
+                      identifier.range[0],
+                      identifier.range[1],
+                    )} ?? ${sourceCode.text.slice(
                       alternate.range[0],
                       alternate.range[1],
                     )}`,
@@ -282,7 +289,7 @@ function isFixableExplicitTernary({
   node,
 }: {
   requiredOperator: '!==' | '===';
-  identifier: TSESTree.Identifier;
+  identifier: TSESTree.Identifier | TSESTree.MemberExpression;
   node: TSESTree.ConditionalExpression;
 }): boolean {
   if (node.test.type !== AST_NODE_TYPES.LogicalExpression) {
@@ -306,10 +313,7 @@ function isFixableExplicitTernary({
     return false;
   }
 
-  const isIdentifier = (
-    i: TSESTree.Expression | TSESTree.PrivateIdentifier,
-  ): boolean =>
-    i.type === AST_NODE_TYPES.Identifier && i.name === identifier.name;
+  const isIdentifier = isEqualIndentierCurry(identifier);
 
   const hasUndefinedCheck =
     (isIdentifier(left.left) && isUndefined(left.right)) ||
@@ -340,7 +344,7 @@ function isFixableLooseTernary({
   requiredOperator,
 }: {
   requiredOperator: '!==' | '===';
-  identifier: TSESTree.Identifier;
+  identifier: TSESTree.Identifier | TSESTree.MemberExpression;
   node: TSESTree.ConditionalExpression;
 }): boolean {
   if (node.test.type !== AST_NODE_TYPES.BinaryExpression) {
@@ -355,10 +359,7 @@ function isFixableLooseTernary({
     return false;
   }
 
-  const isIdentifier = (
-    i: TSESTree.Expression | TSESTree.PrivateIdentifier,
-  ): boolean =>
-    i.type === AST_NODE_TYPES.Identifier && i.name === identifier.name;
+  const isIdentifier = isEqualIndentierCurry(identifier);
 
   if (isIdentifier(right) && (isNull(left) || isUndefined(left))) {
     return true;
@@ -387,7 +388,7 @@ function isFixableImplicitTernary({
   parserServices: ReturnType<typeof util.getParserServices>;
   checker: ts.TypeChecker;
   requiredOperator: '!==' | '===';
-  identifier: TSESTree.Identifier;
+  identifier: TSESTree.Identifier | TSESTree.MemberExpression;
   node: TSESTree.ConditionalExpression;
 }): boolean {
   if (node.test.type !== AST_NODE_TYPES.BinaryExpression) {
@@ -397,10 +398,7 @@ function isFixableImplicitTernary({
   if (operator !== requiredOperator) {
     return false;
   }
-  const isIdentifier = (
-    i: TSESTree.Expression | TSESTree.PrivateIdentifier,
-  ): boolean =>
-    i.type === AST_NODE_TYPES.Identifier && i.name === identifier.name;
+  const isIdentifier = isEqualIndentierCurry(identifier);
 
   const i = isIdentifier(left) ? left : isIdentifier(right) ? right : null;
   if (!i) {
@@ -433,6 +431,77 @@ function isFixableImplicitTernary({
     return true;
   }
 
+  return false;
+}
+
+function isEqualIndentierCurry(
+  a: TSESTree.Identifier | TSESTree.MemberExpression,
+) {
+  if (a.type === AST_NODE_TYPES.Identifier) {
+    return function (b: any): boolean {
+      if (a.type !== b.type) {
+        return false;
+      }
+      return !!a.name && !!b.name && a.name === b.name;
+    };
+  }
+  return function (b: any): boolean {
+    if (a.type !== b.type) {
+      return false;
+    }
+    return isEqualMemberExpression(a, b);
+  };
+}
+function isEqualMemberExpression(
+  a: TSESTree.MemberExpression,
+  b: TSESTree.MemberExpression,
+): boolean {
+  return (
+    isEqualMemberExpressionProperty(a.property, b.property) &&
+    isEqualMemberExpressionObject(a.object, b.object)
+  );
+}
+
+function isEqualMemberExpressionProperty(
+  a: TSESTree.MemberExpression['property'],
+  b: TSESTree.MemberExpression['property'],
+): boolean {
+  if (a.type !== b.type) {
+    return false;
+  }
+  if (a.type === AST_NODE_TYPES.ThisExpression) {
+    return true;
+  }
+  if (
+    a.type === AST_NODE_TYPES.Literal ||
+    a.type === AST_NODE_TYPES.Identifier
+  ) {
+    return (
+      // @ts-ignore
+      (!!a.name && !!b.name && a.name === b.name) ||
+      // @ts-ignore
+      (!!a.value && !!b.value && a.value === b.value)
+    );
+  }
+  if (a.type === AST_NODE_TYPES.MemberExpression) {
+    return isEqualMemberExpression(a, b as typeof a);
+  }
+  return false;
+}
+
+function isEqualMemberExpressionObject(a: any, b: any): boolean {
+  if (a.type !== b.type) {
+    return false;
+  }
+  if (a.type === AST_NODE_TYPES.ThisExpression) {
+    return true;
+  }
+  if (a.type === AST_NODE_TYPES.Identifier) {
+    return a.name === b.name;
+  }
+  if (a.type === AST_NODE_TYPES.MemberExpression) {
+    return isEqualMemberExpression(a, b);
+  }
   return false;
 }
 
