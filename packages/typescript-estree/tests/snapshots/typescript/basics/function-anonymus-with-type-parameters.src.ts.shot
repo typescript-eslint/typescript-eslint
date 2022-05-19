@@ -167,6 +167,7 @@ Object {
                 Object {
                   "constraint": undefined,
                   "default": undefined,
+                  "in": false,
                   "loc": Object {
                     "end": Object {
                       "column": 21,
@@ -195,6 +196,7 @@ Object {
                     ],
                     "type": "Identifier",
                   },
+                  "out": false,
                   "range": Array [
                     20,
                     21,

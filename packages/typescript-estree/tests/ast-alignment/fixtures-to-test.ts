@@ -496,6 +496,14 @@ tester.addFixturePatternConfig('typescript/types', {
      * Babel doesn't support TS 4.7 new feature yet.
      */
     'conditional-infer-with-constraint',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * Babel doesn't support TS 4.7 new features yet.
+     */
+    'optional-variance-in',
+    'optional-variance-out',
+    'optional-variance-in-out',
+    'optional-variance-in-and-out',
   ],
 });
 

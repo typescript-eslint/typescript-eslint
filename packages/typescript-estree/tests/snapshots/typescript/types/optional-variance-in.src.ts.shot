@@ -1,158 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`typescript types mapped.src 1`] = `
+exports[`typescript types optional-variance-in.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 35,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "map",
-            "range": Array [
-              4,
-              35,
-            ],
-            "type": "Identifier",
-            "typeAnnotation": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 35,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 7,
-                  "line": 1,
-                },
-              },
-              "range": Array [
-                7,
-                35,
-              ],
-              "type": "TSTypeAnnotation",
-              "typeAnnotation": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 35,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 9,
-                    "line": 1,
-                  },
-                },
-                "nameType": null,
-                "range": Array [
-                  9,
-                  35,
-                ],
-                "type": "TSMappedType",
-                "typeAnnotation": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 32,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 26,
-                      "line": 1,
-                    },
-                  },
-                  "range": Array [
-                    26,
-                    32,
-                  ],
-                  "type": "TSNumberKeyword",
-                },
-                "typeParameter": Object {
-                  "constraint": Object {
-                    "loc": Object {
-                      "end": Object {
-                        "column": 23,
-                        "line": 1,
-                      },
-                      "start": Object {
-                        "column": 17,
-                        "line": 1,
-                      },
-                    },
-                    "range": Array [
-                      17,
-                      23,
-                    ],
-                    "type": "TSStringKeyword",
-                  },
-                  "default": undefined,
-                  "in": false,
-                  "loc": Object {
-                    "end": Object {
-                      "column": 23,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 12,
-                      "line": 1,
-                    },
-                  },
-                  "name": Object {
-                    "loc": Object {
-                      "end": Object {
-                        "column": 13,
-                        "line": 1,
-                      },
-                      "start": Object {
-                        "column": 12,
-                        "line": 1,
-                      },
-                    },
-                    "name": "P",
-                    "range": Array [
-                      12,
-                      13,
-                    ],
-                    "type": "Identifier",
-                  },
-                  "out": false,
-                  "range": Array [
-                    12,
-                    23,
-                  ],
-                  "type": "TSTypeParameter",
-                },
-              },
-            },
+      "id": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 13,
+            "line": 1,
           },
-          "init": null,
-          "loc": Object {
-            "end": Object {
-              "column": 35,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 4,
-              "line": 1,
-            },
+          "start": Object {
+            "column": 5,
+            "line": 1,
           },
-          "range": Array [
-            4,
-            35,
-          ],
-          "type": "VariableDeclarator",
         },
-      ],
-      "kind": "let",
+        "name": "Consumer",
+        "range": Array [
+          5,
+          13,
+        ],
+        "type": "Identifier",
+      },
       "loc": Object {
         "end": Object {
-          "column": 36,
+          "column": 37,
           "line": 1,
         },
         "start": Object {
@@ -162,9 +34,191 @@ Object {
       },
       "range": Array [
         0,
-        36,
+        37,
       ],
-      "type": "VariableDeclaration",
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 36,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 22,
+            "line": 1,
+          },
+        },
+        "params": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 27,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 23,
+                "line": 1,
+              },
+            },
+            "name": "x",
+            "range": Array [
+              23,
+              27,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 27,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 24,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                24,
+                27,
+              ],
+              "type": "TSTypeAnnotation",
+              "typeAnnotation": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 27,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 26,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  26,
+                  27,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 26,
+                      "line": 1,
+                    },
+                  },
+                  "name": "T",
+                  "range": Array [
+                    26,
+                    27,
+                  ],
+                  "type": "Identifier",
+                },
+                "typeParameters": undefined,
+              },
+            },
+          },
+        ],
+        "range": Array [
+          22,
+          36,
+        ],
+        "returnType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 36,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 29,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            29,
+            36,
+          ],
+          "type": "TSTypeAnnotation",
+          "typeAnnotation": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 36,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 32,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              32,
+              36,
+            ],
+            "type": "TSVoidKeyword",
+          },
+        },
+        "type": "TSFunctionType",
+      },
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 19,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": undefined,
+            "default": undefined,
+            "in": true,
+            "loc": Object {
+              "end": Object {
+                "column": 18,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 14,
+                "line": 1,
+              },
+            },
+            "name": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 18,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+              },
+              "name": "T",
+              "range": Array [
+                17,
+                18,
+              ],
+              "type": "Identifier",
+            },
+            "out": false,
+            "range": Array [
+              14,
+              18,
+            ],
+            "type": "TSTypeParameter",
+          },
+        ],
+        "range": Array [
+          13,
+          19,
+        ],
+        "type": "TSTypeParameterDeclaration",
+      },
     },
   ],
   "comments": Array [],
@@ -180,14 +234,14 @@ Object {
   },
   "range": Array [
     0,
-    37,
+    38,
   ],
   "sourceType": "script",
   "tokens": Array [
     Object {
       "loc": Object {
         "end": Object {
-          "column": 3,
+          "column": 4,
           "line": 1,
         },
         "start": Object {
@@ -197,82 +251,10 @@ Object {
       },
       "range": Array [
         0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "let",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 7,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": Array [
         4,
-        7,
       ],
       "type": "Identifier",
-      "value": "map",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 8,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 7,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        7,
-        8,
-      ],
-      "type": "Punctuator",
-      "value": ":",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 10,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 9,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        9,
-        10,
-      ],
-      "type": "Punctuator",
-      "value": "{",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
-          "column": 12,
-          "line": 1,
-        },
-        "start": Object {
-          "column": 11,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        11,
-        12,
-      ],
-      "type": "Punctuator",
-      "value": "[",
+      "value": "type",
     },
     Object {
       "loc": Object {
@@ -281,16 +263,34 @@ Object {
           "line": 1,
         },
         "start": Object {
-          "column": 12,
+          "column": 5,
           "line": 1,
         },
       },
       "range": Array [
-        12,
+        5,
         13,
       ],
       "type": "Identifier",
-      "value": "P",
+      "value": "Consumer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        14,
+      ],
+      "type": "Punctuator",
+      "value": "<",
     },
     Object {
       "loc": Object {
@@ -313,7 +313,7 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 23,
+          "column": 18,
           "line": 1,
         },
         "start": Object {
@@ -323,10 +323,64 @@ Object {
       },
       "range": Array [
         17,
-        23,
+        18,
       ],
       "type": "Identifier",
-      "value": "string",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        18,
+        19,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 20,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        20,
+        21,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 23,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        23,
+      ],
+      "type": "Punctuator",
+      "value": "(",
     },
     Object {
       "loc": Object {
@@ -343,8 +397,8 @@ Object {
         23,
         24,
       ],
-      "type": "Punctuator",
-      "value": "]",
+      "type": "Identifier",
+      "value": "x",
     },
     Object {
       "loc": Object {
@@ -367,7 +421,7 @@ Object {
     Object {
       "loc": Object {
         "end": Object {
-          "column": 32,
+          "column": 27,
           "line": 1,
         },
         "start": Object {
@@ -377,15 +431,51 @@ Object {
       },
       "range": Array [
         26,
-        32,
+        27,
       ],
       "type": "Identifier",
-      "value": "number",
+      "value": "T",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 33,
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 27,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        27,
+        28,
+      ],
+      "type": "Punctuator",
+      "value": ")",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 29,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        29,
+        31,
+      ],
+      "type": "Punctuator",
+      "value": "=>",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
           "line": 1,
         },
         "start": Object {
@@ -395,43 +485,25 @@ Object {
       },
       "range": Array [
         32,
-        33,
+        36,
       ],
-      "type": "Punctuator",
-      "value": ";",
+      "type": "Keyword",
+      "value": "void",
     },
     Object {
       "loc": Object {
         "end": Object {
-          "column": 35,
+          "column": 37,
           "line": 1,
         },
         "start": Object {
-          "column": 34,
-          "line": 1,
-        },
-      },
-      "range": Array [
-        34,
-        35,
-      ],
-      "type": "Punctuator",
-      "value": "}",
-    },
-    Object {
-      "loc": Object {
-        "end": Object {
           "column": 36,
           "line": 1,
         },
-        "start": Object {
-          "column": 35,
-          "line": 1,
-        },
       },
       "range": Array [
-        35,
         36,
+        37,
       ],
       "type": "Punctuator",
       "value": ";",
