@@ -1,0 +1,1 @@
+namespace A.B.C {}
