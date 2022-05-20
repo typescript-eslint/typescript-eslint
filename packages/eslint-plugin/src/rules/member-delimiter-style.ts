@@ -68,8 +68,8 @@ const definition = {
   additionalProperties: false,
 };
 
-const isLastTokenEndOfLine = (token: string, line: string): boolean => {
-  const positionInLine = line.indexOf(token);
+const isLastTokenEndOfLine = (token: LastTokenType, line: string): boolean => {
+  const positionInLine = token.loc.start.column;
 
   return positionInLine === line.length - 1;
 };
@@ -85,7 +85,7 @@ const makeFixFunction = ({
   // if removing is the action but last token is not the end of the line
   if (
     optsNone &&
-    !isLastTokenEndOfLine(lastToken.value, lastTokenLine) &&
+    !isLastTokenEndOfLine(lastToken, lastTokenLine) &&
     !isSingleLine
   ) {
     return null;
