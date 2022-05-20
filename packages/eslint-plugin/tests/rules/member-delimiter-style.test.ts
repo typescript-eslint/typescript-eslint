@@ -3548,5 +3548,43 @@ type Foo = {a: {
         },
       ],
     },
+    {
+      code: `
+type Foo = {
+  a: {
+    b: true;
+  }; c: false;
+}
+      `,
+      output: `
+type Foo = {
+  a: {
+    b: true
+  }; c: false
+}
+      `,
+      options: [
+        {
+          multiline: { delimiter: 'none' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 13,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 5,
+          column: 5,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 5,
+          column: 15,
+        },
+      ],
+    },
   ],
 });
