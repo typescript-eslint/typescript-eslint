@@ -36,7 +36,7 @@ function validateBoolean(
   return value;
 }
 
-const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.ts$/;
+const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
     return compilerOptions.lib.reduce((acc, lib) => {
@@ -109,13 +109,6 @@ function parseForESLint(
     lib: options.lib,
     sourceType: options.sourceType,
   };
-
-  if (typeof options.filePath === 'string') {
-    const tsx = options.filePath.endsWith('.tsx');
-    if (tsx || options.filePath.endsWith('.ts')) {
-      parserOptions.jsx = tsx;
-    }
-  }
 
   /**
    * Allow the user to suppress the warning from typescript-estree if they are using an unsupported

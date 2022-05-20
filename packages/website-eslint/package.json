@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "rollup --config=rollup.config.js",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore"
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore"
   },
   "dependencies": {
     "@typescript-eslint/types": "5.25.0",
