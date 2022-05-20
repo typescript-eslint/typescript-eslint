@@ -34,6 +34,17 @@ ruleTester.run('ts-expect-error', rule, {
         },
       ],
     },
+    {
+      code: '// @ts-expect-error: TS1234 because xyz',
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: ': TS\\d+ because .+',
+          },
+          minimumDescriptionLength: 10,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -157,6 +168,61 @@ if (false) {
         {
           data: { directive: 'expect-error', minimumDescriptionLength: 10 },
           messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '// @ts-expect-error: TS1234 because xyz',
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: ': TS\\d+ because .+',
+          },
+          minimumDescriptionLength: 25,
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', minimumDescriptionLength: 25 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: '// @ts-expect-error: TS1234',
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: ': TS\\d+ because .+',
+          },
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', format: ': TS\\d+ because .+' },
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: noFormat`// @ts-expect-error    : TS1234`,
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: ': TS\\d+ because .+',
+          },
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', format: ': TS\\d+ because .+' },
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
           line: 1,
           column: 1,
         },
