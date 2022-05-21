@@ -43,7 +43,7 @@ export default util.createRule<[Options], MessageIds>({
       tsDirectiveCommentRequiresDescription:
         'Include a description after the "@ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary. The description must be {{minimumDescriptionLength}} characters or longer.',
       tsDirectiveCommentDescriptionNotMatchPattern:
-        'The description for "@ts-{{directive}}" directive must match the {{format}} format.',
+        'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
     },
     schema: [
       {
