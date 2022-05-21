@@ -1,25 +1,36 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
+type DirectiveConfig =
+  | boolean
+  | 'allow-with-description'
+  | { descriptionFormat: string };
+
 interface Options {
-  'ts-expect-error'?:
-    | boolean
-    | 'allow-with-description'
-    | { descriptionFormat: string };
-  'ts-ignore'?:
-    | boolean
-    | 'allow-with-description'
-    | { descriptionFormat: string };
-  'ts-nocheck'?:
-    | boolean
-    | 'allow-with-description'
-    | { descriptionFormat: string };
-  'ts-check'?:
-    | boolean
-    | 'allow-with-description'
-    | { descriptionFormat: string };
+  'ts-expect-error'?: DirectiveConfig;
+  'ts-ignore'?: DirectiveConfig;
+  'ts-nocheck'?: DirectiveConfig;
+  'ts-check'?: DirectiveConfig;
   minimumDescriptionLength?: number;
 }
+
+const directiveConfigSchema = {
+  oneOf: [
+    {
+      type: 'boolean',
+      default: true,
+    },
+    {
+      enum: ['allow-with-description'],
+    },
+    {
+      type: 'object',
+      properties: {
+        descriptionFormat: { type: 'string' },
+      },
+    },
+  ],
+};
 
 export const defaultMinimumDescriptionLength = 3;
 
@@ -49,74 +60,10 @@ export default util.createRule<[Options], MessageIds>({
       {
         type: 'object',
         properties: {
-          'ts-expect-error': {
-            oneOf: [
-              {
-                type: 'boolean',
-                default: true,
-              },
-              {
-                enum: ['allow-with-description'],
-              },
-              {
-                type: 'object',
-                properties: {
-                  descriptionFormat: { type: 'string' },
-                },
-              },
-            ],
-          },
-          'ts-ignore': {
-            oneOf: [
-              {
-                type: 'boolean',
-                default: true,
-              },
-              {
-                enum: ['allow-with-description'],
-              },
-              {
-                type: 'object',
-                properties: {
-                  descriptionFormat: { type: 'string' },
-                },
-              },
-            ],
-          },
-          'ts-nocheck': {
-            oneOf: [
-              {
-                type: 'boolean',
-                default: true,
-              },
-              {
-                enum: ['allow-with-description'],
-              },
-              {
-                type: 'object',
-                properties: {
-                  descriptionFormat: { type: 'string' },
-                },
-              },
-            ],
-          },
-          'ts-check': {
-            oneOf: [
-              {
-                type: 'boolean',
-                default: true,
-              },
-              {
-                enum: ['allow-with-description'],
-              },
-              {
-                type: 'object',
-                properties: {
-                  descriptionFormat: { type: 'string' },
-                },
-              },
-            ],
-          },
+          'ts-expect-error': directiveConfigSchema,
+          'ts-ignore': directiveConfigSchema,
+          'ts-nocheck': directiveConfigSchema,
+          'ts-check': directiveConfigSchema,
           minimumDescriptionLength: {
             type: 'number',
             default: defaultMinimumDescriptionLength,
