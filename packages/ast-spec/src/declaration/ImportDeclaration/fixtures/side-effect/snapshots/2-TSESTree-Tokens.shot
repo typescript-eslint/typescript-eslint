@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ImportDeclaration side-effect TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "import",
+
+    range: [0, 6],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 6, line: 1 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'mod'",
+
+    range: [7, 12],
+    loc: {
+      start: { column: 7, line: 1 },
+      end: { column: 12, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [12, 13],
+    loc: {
+      start: { column: 12, line: 1 },
+      end: { column: 13, line: 1 },
+    },
+  },
+]
+`;

@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration decorator-many Babel - Tokens 1`] = `
+Array [
+  Punctuator {
+    type: "Punctuator",
+    value: "@",
+
+    range: [0, 1],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 1, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "decoratorOne",
+
+    range: [1, 13],
+    loc: {
+      start: { column: 1, line: 1 },
+      end: { column: 13, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "@",
+
+    range: [14, 15],
+    loc: {
+      start: { column: 0, line: 2 },
+      end: { column: 1, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "decoratorTwo",
+
+    range: [15, 27],
+    loc: {
+      start: { column: 1, line: 2 },
+      end: { column: 13, line: 2 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [28, 33],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 5, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [34, 37],
+    loc: {
+      start: { column: 6, line: 3 },
+      end: { column: 9, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [38, 39],
+    loc: {
+      start: { column: 10, line: 3 },
+      end: { column: 11, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [39, 40],
+    loc: {
+      start: { column: 11, line: 3 },
+      end: { column: 12, line: 3 },
+    },
+  },
+]
+`;
