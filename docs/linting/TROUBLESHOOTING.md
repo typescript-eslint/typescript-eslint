@@ -121,15 +121,18 @@ For example; the `JSX` namespace from `@types/react` is a global 3rd party type 
 
 Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any role) can be turned off for TypeScript files alone by adding an `overrides` section to `.eslintrc.cjs`:
 
-```json
-    "overrides": [
-        {
-            "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
-            "rules": {
-                "no-undef": "off"
-            }
-        }
-    ]
+```js title=".eslintrc.cjs"
+module.exports ={
+  // ... the rest of your config ...
+  overrides: [
+    {
+      files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+      rules: {
+        'no-undef': 'off',
+      },
+    },
+  ],
+};
 ```
 
 If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
