@@ -1,4 +1,6 @@
-export const extra = {
+import type { Extra } from '@typescript-eslint/typescript-estree/dist/parser-options';
+
+export const extra: Extra = {
   code: '',
   comment: true,
   comments: [],
