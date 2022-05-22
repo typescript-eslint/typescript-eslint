@@ -12,6 +12,7 @@ export const extra: Extra = {
   filePath: '',
   jsx: false,
   loc: true,
+  // eslint-disable-next-line no-console
   log: console.log,
   preserveNodeMaps: true,
   projects: [],

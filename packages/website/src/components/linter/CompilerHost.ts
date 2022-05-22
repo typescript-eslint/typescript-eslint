@@ -42,8 +42,6 @@ export function createVirtualCompilerHost(
     ...sys,
     getCanonicalFileName: (fileName: string) => fileName,
     getDefaultLibFileName: options => '/' + ts.getDefaultLibFileName(options),
-    getCurrentDirectory: () => '/',
-    getDirectories: () => [],
     getNewLine: () => sys.newLine,
     getSourceFile(fileName, languageVersionOrOptions): SourceFile | undefined {
       if (this.fileExists(fileName)) {
