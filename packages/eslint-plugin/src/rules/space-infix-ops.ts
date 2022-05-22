@@ -1,4 +1,10 @@
-import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment  */
+
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  TSESTree,
+} from '@typescript-eslint/utils';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
 
@@ -180,6 +186,33 @@ export default util.createRule<Options, MessageIds>({
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
     }
 
+    function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
+      // transform it to a ConditionalExpression
+      return rules.ConditionalExpression({
+        type: AST_NODE_TYPES.ConditionalExpression,
+        test: {
+          type: AST_NODE_TYPES.BinaryExpression,
+          operator: 'extends',
+          left: node.checkType as any,
+          right: node.extendsType as any,
+
+          // location data
+          range: [node.checkType.range[0], node.extendsType.range[1]],
+          loc: {
+            start: node.checkType.loc.start,
+            end: node.extendsType.loc.end,
+          },
+        },
+        consequent: node.trueType as any,
+        alternate: node.falseType as any,
+
+        // location data
+        parent: node.parent,
+        range: node.range,
+        loc: node.loc,
+      });
+    }
+
     return {
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
@@ -187,6 +220,7 @@ export default util.createRule<Options, MessageIds>({
       TSTypeAliasDeclaration: checkForTypeAliasAssignment,
       TSUnionType: checkForTypeAnnotationSpace,
       TSIntersectionType: checkForTypeAnnotationSpace,
+      TSConditionalType: checkForTypeConditional,
     };
   },
 });
