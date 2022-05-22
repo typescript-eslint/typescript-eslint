@@ -47,7 +47,7 @@ export function createVirtualCompilerHost(
     getNewLine: () => sys.newLine,
     getSourceFile(fileName, languageVersionOrOptions): SourceFile | undefined {
       if (this.fileExists(fileName)) {
-        const file = this.readFile(fileName)!;
+        const file = this.readFile(fileName) ?? '';
         return ts.createSourceFile(
           fileName,
           file,
