@@ -316,6 +316,34 @@ const _ = <Component onEvent={async () => {}} />;
       `,
       filename: 'react.tsx',
     },
+    `
+console.log({ ...(await Promise.resolve({ key: 42 })) });
+    `,
+    `
+const getData = Promise.resolve({ key: 42 });
+
+console.log({
+  someData: 42,
+  ...(await getData()),
+});
+    `,
+    {
+      code: `
+console.log({ ...Promise.resolve({ key: 42 }) });
+      `,
+      options: [{ checksSpreads: false }],
+    },
+    {
+      code: `
+const getData = Promise.resolve({ key: 42 });
+
+console.log({
+  someData: 42,
+  ...getData(),
+});
+      `,
+      options: [{ checksSpreads: false }],
+    },
   ],
 
   invalid: [
@@ -867,6 +895,33 @@ it('', async () => {});
         {
           line: 11,
           messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+console.log({ ...Promise.resolve({ key: 42 }) });
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'spread',
+        },
+      ],
+    },
+    {
+      code: `
+const getData = () => Promise.resolve({ key: 42 });
+
+console.log({
+  someData: 42,
+  ...getData(),
+});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'spread',
         },
       ],
     },
