@@ -106,4 +106,4 @@ Thanks goes to these wonderful people:
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
-<sup>'This list is auto-generated using `yarn generate-contributors`. It shows the top 100 contributors with > 3 contributions.'</sup>
+<sup>This list is auto-generated using `yarn generate-contributors`. It shows the top 100 contributors with > 3 contributions.</sup>

@@ -142,7 +142,10 @@ async function main(): Promise<void> {
       .map(c => getData<User>(c.url)),
   );
 
-  writeTable(users, 5);
+  writeTable(
+    users.filter(c => c.login),
+    5,
+  );
 }
 
 main().catch(error => {
