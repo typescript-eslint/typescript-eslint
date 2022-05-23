@@ -48,7 +48,7 @@ function Playground(): JSX.Element {
     rules: {},
     tsConfig: {},
   });
-  const { isDarkTheme } = useColorMode();
+  const { colorMode } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
   const [tsAst, setTsAST] = useState<SourceFile | string | null>();
   const [scope, setScope] = useState<Record<string, unknown> | string | null>();
@@ -83,7 +83,7 @@ function Playground(): JSX.Element {
             jsx={state.jsx}
             code={state.code}
             tsConfig={state.tsConfig}
-            darkTheme={isDarkTheme}
+            darkTheme={colorMode === 'dark'}
             sourceType={state.sourceType}
             rules={state.rules}
             showAST={state.showAST}

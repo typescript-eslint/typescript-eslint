@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
+
+
+### Bug Fixes
+
+* **ast-spec:** add `SpreadElement` to `ArrayExpression.elements` ([#5025](https://github.com/typescript-eslint/typescript-eslint/issues/5025)) ([9f3121b](https://github.com/typescript-eslint/typescript-eslint/commit/9f3121b228b9c066bff7a6011aecf269ac55f17c))
+
+
+### Features
+
+* [4.7] support instantiation expressions ([#4938](https://github.com/typescript-eslint/typescript-eslint/issues/4938)) ([79fbc77](https://github.com/typescript-eslint/typescript-eslint/commit/79fbc7743ae5dce3190f8168776e0204755390ad))
+* [4.7] support optional variance annotation ([#4831](https://github.com/typescript-eslint/typescript-eslint/issues/4831)) ([7e7b24c](https://github.com/typescript-eslint/typescript-eslint/commit/7e7b24c196e6d968e48f97f46feae5e7027e22d2))
+
+
+
+
+
 # [5.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.24.0...v5.25.0) (2022-05-17)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec

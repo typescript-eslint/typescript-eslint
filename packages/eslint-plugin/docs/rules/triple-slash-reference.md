@@ -44,6 +44,22 @@ import * as foo from 'foo';
 import foo = require('foo');
 ```
 
+## Options
+
+```ts
+type Options = {
+  lib?: 'always' | 'never';
+  path?: 'always' | 'never';
+  types?: 'always' | 'never' | 'prefer-import';
+};
+
+const defaultOptions: Options = {
+  lib: 'always',
+  path: 'never',
+  types: 'prefer-import',
+};
+```
+
 ## When To Use It
 
 If you want to ban use of one or all of the triple slash reference directives, or any time you might use triple-slash type reference directives and ES6 import declarations in the same file.
