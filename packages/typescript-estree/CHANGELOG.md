@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
+
+
+### Features
+
+* [4.7] support instantiation expressions ([#4938](https://github.com/typescript-eslint/typescript-eslint/issues/4938)) ([79fbc77](https://github.com/typescript-eslint/typescript-eslint/commit/79fbc7743ae5dce3190f8168776e0204755390ad))
+* [4.7] support optional variance annotation ([#4831](https://github.com/typescript-eslint/typescript-eslint/issues/4831)) ([7e7b24c](https://github.com/typescript-eslint/typescript-eslint/commit/7e7b24c196e6d968e48f97f46feae5e7027e22d2))
+* **typescript-estree:** `extends` constraints for `infer` ([#4830](https://github.com/typescript-eslint/typescript-eslint/issues/4830)) ([8cbbcc3](https://github.com/typescript-eslint/typescript-eslint/commit/8cbbcc3d317779e0dcba15d3835137f38383de34))
+
+
+
+
+
 # [5.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.24.0...v5.25.0) (2022-05-17)
 
 
