@@ -122,7 +122,7 @@ For example; the `JSX` namespace from `@types/react` is a global 3rd party type 
 Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any rule) can be turned off for TypeScript files alone by adding an `overrides` section to `.eslintrc.cjs`:
 
 ```js title=".eslintrc.cjs"
-module.exports ={
+module.exports = {
   // ... the rest of your config ...
   overrides: [
     {
