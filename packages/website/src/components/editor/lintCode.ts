@@ -10,7 +10,7 @@ export interface LintCodeAction {
   };
 }
 
-export type LintCodeActionGroup = [string, LintCodeAction];
+export type LintCodeActionGroup = [string, LintCodeAction[]];
 
 export function lintCode(
   linter: WebLinter,
@@ -58,27 +58,24 @@ export function lintCode(
     };
     const markerUri = createURI(marker);
 
+    const fixes = [];
     if (message.fix) {
-      codeActions.push([
-        markerUri,
-        {
-          message: `Fix this ${message.ruleId ?? 'unknown'} problem`,
-          fix: message.fix,
-        },
-      ]);
+      fixes.push({
+        message: `Fix this ${message.ruleId ?? 'unknown'} problem`,
+        fix: message.fix,
+      });
     }
     if (message.suggestions) {
       for (const suggestion of message.suggestions) {
-        codeActions.push([
-          markerUri,
-          {
-            message: `${suggestion.desc} (${message.ruleId ?? 'unknown'})`,
-            fix: suggestion.fix,
-          },
-        ]);
+        fixes.push({
+          message: `${suggestion.desc} (${message.ruleId ?? 'unknown'})`,
+          fix: suggestion.fix,
+        });
       }
     }
-
+    if (fixes.length > 0) {
+      codeActions.push([markerUri, fixes]);
+    }
     markers.push(marker);
   }
 

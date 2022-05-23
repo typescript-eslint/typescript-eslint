@@ -33,3 +33,11 @@ export interface SelectedRange {
   start: SelectedPosition;
   end: SelectedPosition;
 }
+
+export interface ErrorItem {
+  group: string;
+  message: string;
+  location: string;
+  severity: number;
+  hasFixers: boolean;
+}

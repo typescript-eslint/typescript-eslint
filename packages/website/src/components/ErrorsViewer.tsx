@@ -1,19 +1,14 @@
 import React from 'react';
 import type Monaco from 'monaco-editor';
+import type { ErrorItem } from './types';
 
 import styles from './ast/ASTViewer.module.css';
 
-export interface ASTTsViewerProps {
-  readonly value?: Monaco.editor.IMarker[];
+export interface ErrorsViewerProps {
+  readonly value?: ErrorItem[];
 }
 
-interface POCModel {
-  message: string;
-  location: string;
-  severity: string;
-}
-
-function parseSeverity(severity: Monaco.MarkerSeverity): string {
+function severityClass(severity: Monaco.MarkerSeverity): string {
   switch (severity) {
     case 8:
       return 'danger';
@@ -25,25 +20,14 @@ function parseSeverity(severity: Monaco.MarkerSeverity): string {
   return 'info';
 }
 
-export default function ErrorsViewer(props: ASTTsViewerProps): JSX.Element {
+export default function ErrorsViewer(props: ErrorsViewerProps): JSX.Element {
   if (props.value) {
     const values = Object.entries(
-      props.value.reduce<Record<string, POCModel[]>>((acc, obj) => {
-        const isTypescript = obj.owner === 'typescript';
-        const code =
-          typeof obj.code === 'string' ? obj.code : obj.code?.value ?? '';
-
-        const key = isTypescript ? obj.owner : code;
-
-        if (!acc[key]) {
-          acc[key] = [];
+      props.value.reduce<Record<string, ErrorItem[]>>((acc, obj) => {
+        if (!acc[obj.group]) {
+          acc[obj.group] = [];
         }
-
-        acc[key].push({
-          message: (isTypescript ? `TS${code}: ` : '') + obj.message,
-          location: `${obj.startLineNumber}:${obj.startColumn} - ${obj.endLineNumber}:${obj.endColumn}`,
-          severity: parseSeverity(obj.severity),
-        });
+        acc[obj.group].push(obj);
         return acc;
       }, {}),
     );
@@ -53,23 +37,27 @@ export default function ErrorsViewer(props: ASTTsViewerProps): JSX.Element {
           return (
             <div className="margin-top--sm" key={group}>
               <h4>{group}</h4>
-              <div>
-                {data.map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div
-                        className={`admonition alert alert--${item.severity}`}
-                      >
-                        <div className="admonition-content">
-                          <span>
-                            {item.message} {item.location}
-                          </span>
+              {data.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`admonition alert alert--${severityClass(
+                      item.severity,
+                    )}`}
+                  >
+                    <div className="admonition-content">
+                      <div className="row row--no-gutters">
+                        <div className="col col--11">
+                          {item.message} {item.location}
                         </div>
+                        {item.hasFixers && (
+                          <div className="col col--1">Fixable</div>
+                        )}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
           );
         })}
