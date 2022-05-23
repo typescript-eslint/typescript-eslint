@@ -90,7 +90,7 @@ The exact behavior is as follows:
   - If `parserOptions.project` is _not_ provided:
     - The setting will be respected.
   - If `parserOptions.project` is provided (i.e. you are using rules with type information):
-    - **always parsed as if this is `false`,**
+    - **always parsed as if this is `false`**
 
 ### `parserOptions.ecmaFeatures.globalReturn`
 
