@@ -14,7 +14,7 @@ See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled 
 ## Rule Details
 
 This rule accepts a single option which is an object with `checksConditionals`,
-`checksVoidReturn`, and `checkSpreads` properties indicating which types of
+`checksVoidReturn`, and `checksSpreads` properties indicating which types of
 misuse to flag. All are enabled by default.
 
 ## Options
@@ -24,7 +24,7 @@ type Options = [
   {
     checksConditionals?: boolean;
     checksVoidReturn?: boolean | ChecksVoidReturnOptions;
-    checkSpreads?: boolean;
+    checksSpreads?: boolean;
   },
 ];
 
@@ -40,7 +40,7 @@ const defaultOptions: Options = [
   {
     checksConditionals: true,
     checksVoidReturn: true,
-    checkSpreads: true,
+    checksSpreads: true,
   },
 ];
 ```
@@ -103,7 +103,7 @@ For example, if you don't mind that passing a `() => Promise<void>` to a `() => 
 }
 ```
 
-### `"checkSpreads"`
+### `"checksSpreads"`
 
 If you don't want to check object spreads, you can add this configuration:
 
@@ -112,7 +112,7 @@ If you don't want to check object spreads, you can add this configuration:
   "@typescript-eslint/no-misused-promises": [
     "error",
     {
-      "checkSpreads": false
+      "checksSpreads": false
     }
   ]
 }
@@ -229,9 +229,9 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
-### `checkSpreads: true`
+### `checksSpreads: true`
 
-Examples of code for this rule with `checkSpreads: true`:
+Examples of code for this rule with `checksSpreads: true`:
 
 <!--tabs-->
 
