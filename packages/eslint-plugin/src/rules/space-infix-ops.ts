@@ -1,10 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment  */
-
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
 
@@ -75,7 +69,10 @@ export default util.createRule<Options, MessageIds>({
     };
 
     function isSpaceChar(token: TSESTree.Token): boolean {
-      return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=';
+      return (
+        token.type === AST_TOKEN_TYPES.Punctuator &&
+        /^[=|?|:]$/.test(token.value)
+      );
     }
 
     function checkAndReportAssignmentSpace(
@@ -187,30 +184,18 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
-      // transform it to a ConditionalExpression
-      return rules.ConditionalExpression({
-        type: AST_NODE_TYPES.ConditionalExpression,
-        test: {
-          type: AST_NODE_TYPES.BinaryExpression,
-          operator: 'extends',
-          left: node.checkType as any,
-          right: node.extendsType as any,
+      const extendsTypeNode = sourceCode.getTokenByRangeStart(
+        node.extendsType.range[0],
+      )!;
+      const trueTypeNode = sourceCode.getTokenByRangeStart(
+        node.trueType.range[0],
+      )!;
+      const falseTypeNode = sourceCode.getTokenByRangeStart(
+        node.falseType.range[0],
+      );
 
-          // location data
-          range: [node.checkType.range[0], node.extendsType.range[1]],
-          loc: {
-            start: node.checkType.loc.start,
-            end: node.extendsType.loc.end,
-          },
-        },
-        consequent: node.trueType as any,
-        alternate: node.falseType as any,
-
-        // location data
-        parent: node.parent,
-        range: node.range,
-        loc: node.loc,
-      });
+      checkAndReportAssignmentSpace(node, extendsTypeNode, trueTypeNode);
+      checkAndReportAssignmentSpace(node, trueTypeNode, falseTypeNode);
     }
 
     return {
