@@ -119,7 +119,7 @@ As of our v4.0.0 release, this also applies to types.
 If you use global types from a 3rd party package (i.e. anything from an `@types` package), then you will have to configure ESLint appropriately to define these global types.
 For example; the `JSX` namespace from `@types/react` is a global 3rd party type that you must define in your ESLint config.
 
-Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any role) can be turned off for TypeScript files alone by adding an `overrides` section to `.eslintrc.cjs`:
+Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any rule) can be turned off for TypeScript files alone by adding an `overrides` section to `.eslintrc.cjs`:
 
 ```js title=".eslintrc.cjs"
 module.exports ={
