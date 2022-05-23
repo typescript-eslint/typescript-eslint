@@ -4,11 +4,13 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type Prefer = 'type-imports' | 'no-type-imports';
+type FixStyle = 'separate-type-imports' | 'inline-type-imports';
 
 type Options = [
   {
     prefer?: Prefer;
     disallowTypeAnnotations?: boolean;
+    fixStyle?: FixStyle;
   },
 ];
 
@@ -19,6 +21,8 @@ interface SourceImports {
   typeOnlyNamedImport: TSESTree.ImportDeclaration | null;
   // ImportDeclaration for value-only import only with named imports.
   valueOnlyNamedImport: TSESTree.ImportDeclaration | null;
+  // ImportDeclaration for value-only import only with default imports and/or named imports.
+  valueImport: TSESTree.ImportDeclaration | null;
 }
 interface ReportValueImport {
   node: TSESTree.ImportDeclaration;
@@ -47,7 +51,8 @@ type MessageIds =
   | 'valueOverType'
   | 'noImportTypeAnnotations'
   | 'someImportsInDecoMeta'
-  | 'aImportInDecoMeta';
+  | 'aImportInDecoMeta'
+  | 'inlineTypes';
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
@@ -68,6 +73,7 @@ export default util.createRule<Options, MessageIds>({
         'Type import {{typeImports}} is used by decorator metadata.',
       valueOverType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
+      inlineTypes: 'Type imports can be inlined.',
     },
     schema: [
       {
@@ -78,6 +84,9 @@ export default util.createRule<Options, MessageIds>({
           },
           disallowTypeAnnotations: {
             type: 'boolean',
+          },
+          fixStyle: {
+            enum: ['separate-type-imports', 'inline-type-imports'],
           },
         },
         additionalProperties: false,
@@ -90,12 +99,14 @@ export default util.createRule<Options, MessageIds>({
     {
       prefer: 'type-imports',
       disallowTypeAnnotations: true,
+      fixStyle: 'separate-type-imports',
     },
   ],
 
   create(context, [option]) {
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
+    const fixStyle = option.fixStyle ?? 'separate-type-imports';
     const sourceCode = context.getSourceCode();
 
     const sourceImportsMap: { [key: string]: SourceImports } = {};
@@ -106,13 +117,15 @@ export default util.createRule<Options, MessageIds>({
             // prefer type imports
             ImportDeclaration(node): void {
               const source = node.source.value;
+              // sourceImports is the object containing all the specifics for a particular import source, type or value
               const sourceImports =
                 sourceImportsMap[source] ??
                 (sourceImportsMap[source] = {
                   source,
-                  reportValueImports: [],
-                  typeOnlyNamedImport: null,
-                  valueOnlyNamedImport: null,
+                  reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
+                  typeOnlyNamedImport: null, // if only type imports
+                  valueOnlyNamedImport: null, // if only value imports with named specifiers
+                  valueImport: null, // if only value imports
                 });
               if (node.importKind === 'type') {
                 if (
@@ -122,6 +135,7 @@ export default util.createRule<Options, MessageIds>({
                       specifier.type === AST_NODE_TYPES.ImportSpecifier,
                   )
                 ) {
+                  // definitely import type { TypeX }
                   sourceImports.typeOnlyNamedImport = node;
                 }
               } else {
@@ -133,6 +147,15 @@ export default util.createRule<Options, MessageIds>({
                   )
                 ) {
                   sourceImports.valueOnlyNamedImport = node;
+                  sourceImports.valueImport = node;
+                } else if (
+                  !sourceImports.valueImport &&
+                  node.specifiers.some(
+                    specifier =>
+                      specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
+                  )
+                ) {
+                  sourceImports.valueImport = node;
                 }
               }
 
@@ -238,17 +261,33 @@ export default util.createRule<Options, MessageIds>({
                   unusedSpecifiers,
                   inlineTypeSpecifiers,
                 });
+              } else if (
+                fixStyle === 'inline-type-imports' &&
+                node.importKind === 'type' &&
+                node.specifiers.some(
+                  spec => spec.type === AST_NODE_TYPES.ImportSpecifier,
+                )
+              ) {
+                sourceImports.reportValueImports.push({
+                  node,
+                  typeSpecifiers,
+                  valueSpecifiers,
+                  unusedSpecifiers,
+                  inlineTypeSpecifiers,
+                });
               }
             },
             'Program:exit'(): void {
               for (const sourceImports of Object.values(sourceImportsMap)) {
                 if (sourceImports.reportValueImports.length === 0) {
+                  // nothing to fix. value specifiers and type specifiers are correctly written
                   continue;
                 }
                 for (const report of sourceImports.reportValueImports) {
                   if (
                     report.valueSpecifiers.length === 0 &&
-                    report.unusedSpecifiers.length === 0
+                    report.unusedSpecifiers.length === 0 &&
+                    report.node.importKind !== 'type'
                   ) {
                     // import is all type-only, convert the entire import to `import type`
                     context.report({
@@ -262,15 +301,16 @@ export default util.createRule<Options, MessageIds>({
                         );
                       },
                     });
-                  } else {
+                  } else if (fixStyle === 'separate-type-imports') {
                     const isTypeImport = report.node.importKind === 'type';
 
-                    // we have a mixed type/value import, so we need to split them out into multiple exports
+                    // we have a mixed type/value import or just value imports, so we need to split them out into multiple imports if separate-type-imports is configured
                     const importNames = (
                       isTypeImport
-                        ? report.valueSpecifiers
+                        ? report.valueSpecifiers // import type { A } from 'roo'; // WHERE A is used in value position
                         : report.typeSpecifiers
-                    ).map(specifier => `"${specifier.local.name}"`);
+                    ) // import { A, B } from 'roo'; // WHERE A is used in type position and B is in value position
+                      .map(specifier => `"${specifier.local.name}"`);
 
                     const message = ((): {
                       messageId: MessageIds;
@@ -294,12 +334,12 @@ export default util.createRule<Options, MessageIds>({
                         if (isTypeImport) {
                           return {
                             messageId: 'someImportsInDecoMeta',
-                            data: { typeImports },
+                            data: { typeImports }, // typeImports are all the value specifiers that are in the type position
                           };
                         } else {
                           return {
                             messageId: 'someImportsAreOnlyTypes',
-                            data: { typeImports },
+                            data: { typeImports }, // typeImports are all the type specifiers in the value position
                           };
                         }
                       }
@@ -310,12 +350,14 @@ export default util.createRule<Options, MessageIds>({
                       ...message,
                       *fix(fixer) {
                         if (isTypeImport) {
+                          // take all the valueSpecifiers and put them on a new line
                           yield* fixToValueImportDeclaration(
                             fixer,
                             report,
                             sourceImports,
                           );
                         } else {
+                          // take all the typeSpecifiers and put them on a new line
                           yield* fixToTypeImportDeclaration(
                             fixer,
                             report,
@@ -324,6 +366,26 @@ export default util.createRule<Options, MessageIds>({
                         }
                       },
                     });
+                  } else if (fixStyle === 'inline-type-imports') {
+                    // grab type imports and add to existing import if present. Unsure what imports we will fix so no imports in message
+                    // import ValueImport, { type AType } from 'foo'
+                    //                       ^^^^ add
+                    // import ValueImport from 'foo'
+                    // import type { type AType } from 'foo'
+                    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ remove and add to value import above -> import ValueImport, { type AType } from 'foo'
+                    if (sourceImports.valueImport) {
+                      context.report({
+                        node: report.node,
+                        messageId: 'inlineTypes',
+                        *fix(fixer) {
+                          yield* fixInlineTypeImportDeclaration(
+                            fixer,
+                            report,
+                            sourceImports,
+                          );
+                        },
+                      });
+                    }
                   }
                 }
               }
@@ -396,12 +458,12 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Returns information for fixing named specifiers.
+     * Returns information for fixing named specifiers, type or value
      */
     function getFixesNamedSpecifiers(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.ImportDeclaration,
-      typeNamedSpecifiers: TSESTree.ImportSpecifier[],
+      subsetNamedSpecifiers: TSESTree.ImportSpecifier[],
       allNamedSpecifiers: TSESTree.ImportSpecifier[],
     ): {
       typeNamedSpecifiersText: string;
@@ -415,16 +477,17 @@ export default util.createRule<Options, MessageIds>({
       }
       const typeNamedSpecifiersTexts: string[] = [];
       const removeTypeNamedSpecifiers: TSESLint.RuleFix[] = [];
-      if (typeNamedSpecifiers.length === allNamedSpecifiers.length) {
+      if (subsetNamedSpecifiers.length === allNamedSpecifiers.length) {
         // import Foo, {Type1, Type2} from 'foo'
         // import DefType, {Type1, Type2} from 'foo'
         const openingBraceToken = util.nullThrows(
           sourceCode.getTokenBefore(
-            typeNamedSpecifiers[0],
+            subsetNamedSpecifiers[0],
             util.isOpeningBraceToken,
           ),
           util.NullThrowsReasons.MissingToken('{', node.type),
         );
+        // TODO: why require default import as well?  What about import type { type1, type2 }?
         const commaToken = util.nullThrows(
           sourceCode.getTokenBefore(openingBraceToken, util.isCommaToken),
           util.NullThrowsReasons.MissingToken(',', node.type),
@@ -451,20 +514,20 @@ export default util.createRule<Options, MessageIds>({
           ),
         );
       } else {
-        const typeNamedSpecifierGroups: TSESTree.ImportSpecifier[][] = [];
+        const namedSpecifierGroups: TSESTree.ImportSpecifier[][] = [];
         let group: TSESTree.ImportSpecifier[] = [];
         for (const namedSpecifier of allNamedSpecifiers) {
-          if (typeNamedSpecifiers.includes(namedSpecifier)) {
+          if (subsetNamedSpecifiers.includes(namedSpecifier)) {
             group.push(namedSpecifier);
           } else if (group.length) {
-            typeNamedSpecifierGroups.push(group);
+            namedSpecifierGroups.push(group);
             group = [];
           }
         }
         if (group.length) {
-          typeNamedSpecifierGroups.push(group);
+          namedSpecifierGroups.push(group);
         }
-        for (const namedSpecifiers of typeNamedSpecifierGroups) {
+        for (const namedSpecifiers of namedSpecifierGroups) {
           const { removeRange, textRange } = getNamedSpecifierRanges(
             namedSpecifiers,
             allNamedSpecifiers,
@@ -541,7 +604,117 @@ export default util.createRule<Options, MessageIds>({
       if (!util.isCommaToken(before) && !util.isOpeningBraceToken(before)) {
         insertText = `,${insertText}`;
       }
-      return fixer.insertTextBefore(closingBraceToken, `${insertText}`);
+      return fixer.insertTextBefore(closingBraceToken, insertText);
+    }
+
+    /**
+     * insert type keyword to named import node.
+     * e.g.
+     * import ADefault, { Already, type Type1, type Type2 } from 'foo'
+     *                             ^^^^ insert
+     * or
+     * import { Already, type Type1, type Type2 } from 'foo'
+     *                               ^^^^^^^^^^ insert
+     */
+    function* fixInsertTypeKeywordInNamedSpecifierList(
+      fixer: TSESLint.RuleFixer,
+      target: TSESTree.ImportDeclaration,
+      typeSpecifiers: TSESTree.ImportSpecifier[],
+    ): IterableIterator<TSESLint.RuleFix> {
+      const existingSpecifiers = target.specifiers.map(spec => spec.local.name);
+      for (const [i, spec] of typeSpecifiers.entries()) {
+        const insertText = sourceCode.text.slice(...spec.range);
+        if (existingSpecifiers.includes(spec.local.name)) {
+          yield fixer.replaceTextRange(spec.range, `type ${insertText}`);
+        } else {
+          const closingBraceToken = util.nullThrows(
+            sourceCode.getFirstTokenBetween(
+              sourceCode.getFirstToken(target)!,
+              target.source,
+              util.isClosingBraceToken,
+            ),
+            util.NullThrowsReasons.MissingToken('}', target.type),
+          );
+          const before = sourceCode.getTokenBefore(closingBraceToken)!;
+          // imports might be on a new line or one one line.
+          // To insert multiple type imports, we need to take into account the index of specifiers as well
+          if (
+            i > 0 ||
+            (!util.isCommaToken(before) && !util.isOpeningBraceToken(before))
+          ) {
+            // import may not have a trailing comma.
+            yield fixer.insertTextAfter(before, `, type ${insertText}`);
+          } else {
+            yield fixer.insertTextAfter(before, `type ${insertText}`);
+          }
+        }
+      }
+    }
+
+    function* fixInlineTypeImportDeclaration(
+      fixer: TSESLint.RuleFixer,
+      report: ReportValueImport,
+      sourceImports: SourceImports,
+    ): IterableIterator<TSESLint.RuleFix> {
+      const { node } = report;
+      // cannot mix default and named import types. Only care about named specifiers
+      const { namedSpecifiers } = classifySpecifier(node);
+      const typeNamedSpecifiers = namedSpecifiers.filter(specifier =>
+        report.typeSpecifiers.includes(specifier),
+      );
+
+      if (sourceImports.valueImport) {
+        // move import named type specifiers to its value import
+        // import { type A }
+        //          ^^^^^^ insert
+        // or
+        // import A, { type A }
+        //         ^^^^^^^^^^^^ insert
+        // or
+        // import A, { C, type A }
+        //                ^^^^^^ insert
+        const { namedSpecifiers: valueImportNamedSpecifiers } =
+          classifySpecifier(sourceImports.valueImport);
+        if (
+          sourceImports.valueOnlyNamedImport ||
+          valueImportNamedSpecifiers.length
+        ) {
+          yield* fixInsertTypeKeywordInNamedSpecifierList(
+            fixer,
+            sourceImports.valueImport,
+            typeNamedSpecifiers,
+          );
+        } else {
+          const defaultSpecifier = sourceCode.getTokenAfter(
+            sourceCode.getFirstToken(sourceImports.valueImport)!,
+          );
+          if (defaultSpecifier && !util.isCommaToken(defaultSpecifier)) {
+            const insertText = typeNamedSpecifiers
+              .map(spec => {
+                const insertText = sourceCode.text.slice(...spec.range);
+                return `type ${insertText}`;
+              })
+              .join(', ');
+
+            yield fixer.insertTextAfter(
+              defaultSpecifier,
+              `, { ${insertText} }`,
+            );
+          }
+        }
+
+        if (node.importKind === 'type') {
+          // remove line + space leftover
+          yield fixer.remove(node);
+          const lastToken = sourceCode.getLastToken(node);
+          if (lastToken) {
+            yield fixer.replaceTextRange(
+              [lastToken.range[1], lastToken.range[1] + 1],
+              '',
+            );
+          }
+        }
+      }
     }
 
     function* fixToTypeImportDeclaration(
@@ -594,6 +767,7 @@ export default util.createRule<Options, MessageIds>({
       const afterFixes: TSESLint.RuleFix[] = [];
       if (typeNamedSpecifiers.length) {
         if (sourceImports.typeOnlyNamedImport) {
+          // TODO: is this ever the case? Seems like this isn't called when the source import is import type ...
           const insertTypeNamedSpecifiers =
             fixInsertNamedSpecifiersInNamedSpecifierList(
               fixer,
@@ -603,6 +777,7 @@ export default util.createRule<Options, MessageIds>({
           if (sourceImports.typeOnlyNamedImport.range[1] <= node.range[0]) {
             yield insertTypeNamedSpecifiers;
           } else {
+            // TODO: delay inserting b/c....
             afterFixes.push(insertTypeNamedSpecifiers);
           }
         } else {
@@ -794,6 +969,9 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
+      // we have some valueSpecifiers intermixed in types that need to be put on their own line
+      // import type { Type1, A } from 'foo'
+      // import type { A } from 'foo'
       const valueNamedSpecifiers = namedSpecifiers.filter(specifier =>
         report.valueSpecifiers.includes(specifier),
       );
@@ -807,6 +985,7 @@ export default util.createRule<Options, MessageIds>({
       const afterFixes: TSESLint.RuleFix[] = [];
       if (valueNamedSpecifiers.length) {
         if (sourceImports.valueOnlyNamedImport) {
+          // TODO: The only use we have of this is for `isTypeImport` block.  Do we need this?
           const insertTypeNamedSpecifiers =
             fixInsertNamedSpecifiersInNamedSpecifierList(
               fixer,
@@ -819,6 +998,8 @@ export default util.createRule<Options, MessageIds>({
             afterFixes.push(insertTypeNamedSpecifiers);
           }
         } else {
+          // some are types.
+          // Add new value import and later remove those value specifiers from import type
           yield fixer.insertTextBefore(
             node,
             `import {${
@@ -862,6 +1043,8 @@ export default util.createRule<Options, MessageIds>({
       fixer: TSESLint.RuleFixer,
       node: TSESTree.ImportSpecifier,
     ): IterableIterator<TSESLint.RuleFix> {
+      // import { type Foo } from 'foo'
+      //          ^^^^ remove
       const typeToken = util.nullThrows(
         sourceCode.getFirstToken(node, isTypeToken),
         util.NullThrowsReasons.MissingToken('type', node.type),
