@@ -113,7 +113,7 @@ function writeTable(contributors: User[], perLine = 5): void {
   lines.push('<!-- prettier-ignore-end -->');
   lines.push('');
   lines.push(
-    "<sup>'This list is auto-generated using `yarn generate-contributors`. It shows the top 100 contributors with > 3 contributions.'</sup>",
+    `<sup>This list is auto-generated using \`yarn generate-contributors\`. It shows the top ${PAGE_LIMIT} contributors with > ${COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT} contributions.</sup>`,
   );
   lines.push('');
 
