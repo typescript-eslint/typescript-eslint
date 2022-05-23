@@ -12,7 +12,7 @@ import CopyIcon from '@site/src/icons/copy.svg';
 
 import useDebouncedToggle from './hooks/useDebouncedToggle';
 
-import { createMarkdown } from './lib/markdown';
+import { createMarkdown, createMarkdownParams } from './lib/markdown';
 
 import type { RuleDetails } from './types';
 
@@ -97,8 +97,8 @@ function OptionsSelector({
     }
     window
       .open(
-        `https://github.com/typescript-eslint/typescript-eslint/issues/new?body=${encodeURIComponent(
-          createMarkdown(state),
+        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${createMarkdownParams(
+          state,
         )}`,
         '_blank',
       )
@@ -202,7 +202,7 @@ function OptionsSelector({
           </Tooltip>
         </button>
         <button className={styles.optionLabel} onClick={openIssue}>
-          Report Issue
+          Report as Issue
           <CopyIcon />
         </button>
       </Expander>

@@ -101,6 +101,7 @@ const excludedNames = new Set([
 
   // These names *seem* to be spam websites, but we're not sure.
   // If your name is mistakenly on this list, we're sorry; please let us know!
+  '420HUBS.COM',
   'Deal Empire',
   'Florian Studio',
   'java',
@@ -163,19 +164,14 @@ async function main(): Promise<void> {
         id: name,
         image: fromAccount.imageUrl,
         name: fromAccount.name,
-        tier:
-          slug === 'sponsor' || totalDonations >= 750_00
-            ? 'sponsor'
-            : slug === 'supporter-plus' || totalDonations >= 150_00
-            ? 'supporter'
-            : slug,
+        tier: getReportedTierSlug(slug, totalDonations),
         totalDonations,
         twitterHandle: fromAccount.twitterHandle,
         website: fromAccount.website,
       };
     })
-    .filter(({ id, totalDonations }) => {
-      if (uniqueNames.has(id) || totalDonations < 10_00) {
+    .filter(({ id, tier }) => {
+      if (uniqueNames.has(id) || !tier) {
         return false;
       }
 
@@ -196,6 +192,36 @@ async function main(): Promise<void> {
       2,
     ),
   );
+}
+
+function getReportedTierSlug(slug: string, totalDonations: number): string {
+  // Sponsors: Donors of $750 and/or a monthly amount of $100 or more
+  if (
+    totalDonations >= 750_00 ||
+    (slug === 'sponsor' && totalDonations >= 100_00)
+  ) {
+    return 'sponsor';
+  }
+
+  // Gold Supporters: Donors of $150 and/or a monthly amount of $10 or more.
+  // We also only show gold supporters who have donated at least twice.
+  if (
+    totalDonations >= 150_00 ||
+    (slug === 'gold-supporter' && totalDonations >= 20_00)
+  ) {
+    return 'supporter';
+  }
+
+  // Supporters: Donors of $50 and/or a monthly amount of $3 or more.
+  // We also only show supporters who have donated at least twice.
+  if (
+    totalDonations >= 50_00 ||
+    (slug === 'supporter' && totalDonations >= 6_00)
+  ) {
+    return 'contributor';
+  }
+
+  return undefined;
 }
 
 main().catch(error => {

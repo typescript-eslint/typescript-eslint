@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [member-delimiter-style] autofixer result is not as expected when comments after the delimiter with option `delimiter: 'none'` ([#5029](https://github.com/typescript-eslint/typescript-eslint/issues/5029)) ([ed7b5f6](https://github.com/typescript-eslint/typescript-eslint/commit/ed7b5f61d93799fec3e38a87935ab9caa3abe279))
+* **eslint-plugin:** [member-delimiter-style] autofixer result is not as expected with option `delimiter: 'none'` ([#5023](https://github.com/typescript-eslint/typescript-eslint/issues/5023)) ([9e97a11](https://github.com/typescript-eslint/typescript-eslint/commit/9e97a11ecd80be5c63c980bfe8d8e57400221cec))
+* **eslint-plugin:** [prefer-readonly] correct issue with anonymus functions ([#4974](https://github.com/typescript-eslint/typescript-eslint/issues/4974)) ([952e2f0](https://github.com/typescript-eslint/typescript-eslint/commit/952e2f068862dde089ec03d3eb5452d1ee3e9271)), closes [#2590](https://github.com/typescript-eslint/typescript-eslint/issues/2590)
+
+
+
+
+
 # [5.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.24.0...v5.25.0) (2022-05-17)
 
 
