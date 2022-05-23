@@ -12,7 +12,7 @@ Doing so is generally unnecessary in JavaScript and TypeScript projects.
 - Wrapper classes add extra runtime bloat and cognitive complexity to code without adding any structural improvements
   - Whatever would be put on them, such as utility functions, are already organized by virtue of being in a module.
   - As an alternative, you can always `import * as ...` the module to get all of them in a single object.
-- IDEs can't provide as good autocompletions when you start typing the names of the helpers, since they're on a class instead of freely available to import
+- IDEs can't provide as good suggestions when you start typing the names of the helpers, since they're on a class instead of freely available to import
 - It's more difficult to statically analyze code for unused variables, etc. when they're all on the class (see: [Finding dead code (and dead types) in TypeScript](https://effectivetypescript.com/2020/10/20/tsprune)).
 
 This rule also flags classes that have only a constructor and no fields.
