@@ -2,7 +2,6 @@ import React from 'react';
 import type Monaco from 'monaco-editor';
 
 import styles from './ast/ASTViewer.module.css';
-import clsx from 'clsx';
 
 export interface ASTTsViewerProps {
   readonly value?: Monaco.editor.IMarker[];
@@ -17,13 +16,13 @@ interface POCModel {
 function parseSeverity(severity: Monaco.MarkerSeverity): string {
   switch (severity) {
     case 8:
-      return 'alert--danger';
+      return 'danger';
     case 4:
-      return 'alert--caution';
+      return 'caution';
     case 2:
-      return 'alert--note';
+      return 'note';
   }
-  return 'alert--info';
+  return 'info';
 }
 
 export default function ErrorsViewer(props: ASTTsViewerProps): JSX.Element {
@@ -59,10 +58,7 @@ export default function ErrorsViewer(props: ASTTsViewerProps): JSX.Element {
                   return (
                     <div key={index}>
                       <div
-                        className={clsx(
-                          'admonition admonition-danger alert',
-                          item.severity,
-                        )}
+                        className={`admonition alert alert--${item.severity}`}
                       >
                         <div className="admonition-content">
                           <span>
