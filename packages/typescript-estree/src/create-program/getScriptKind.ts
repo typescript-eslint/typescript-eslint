@@ -3,8 +3,9 @@ import * as ts from 'typescript';
 
 function getScriptKind(filePath: string, jsx: boolean): ts.ScriptKind {
   const extension = path.extname(filePath).toLowerCase();
-  // note - we respect the user's extension when it is known we could override it and force it to match their
-  // jsx setting, but that could create weird situations where we throw parse errors when TSC doesn't
+  // note - we only respect the user's jsx setting for unknown extensions
+  // this is so that we always match TS's internal script kind logic, preventing
+  // weird errors due to a mismatch.
   // https://github.com/microsoft/TypeScript/blob/da00ba67ed1182ad334f7c713b8254fba174aeba/src/compiler/utilities.ts#L6948-L6968
   switch (extension) {
     case ts.Extension.Js:
