@@ -24,6 +24,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
+  onMarkersChange,
   onChange,
   onSelect,
   rules,
@@ -35,6 +36,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 }) => {
   const [decorations, setDecorations] = useState<string[]>([]);
   const fixes = useRef(new Map<string, LintCodeAction>()).current;
+
+  useEffect(() => {
+    sandboxInstance.monaco.editor.onDidChangeMarkers(e => {
+      const markers = sandboxInstance.monaco.editor.getModelMarkers({});
+      onMarkersChange(markers);
+    });
+  }, []);
 
   useEffect(() => {
     const config = {

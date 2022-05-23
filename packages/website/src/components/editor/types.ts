@@ -10,5 +10,6 @@ export interface CommonEditorProps extends ConfigModel {
   readonly onTsASTChange: (value: string | SourceFile) => void;
   readonly onEsASTChange: (value: string | TSESTree.Program) => void;
   readonly onScopeChange: (value: string | Record<string, unknown>) => void;
+  readonly onMarkersChange: (value: Monaco.editor.IMarker[]) => void;
   readonly onSelect: (position: Monaco.Position | null) => void;
 }
