@@ -55,4 +55,5 @@ jobs:
           title: "chore: update sponsors"
           body: "💸"
           branch: auto-update-sponsors
-          committer: typescript-eslint[bot] <noreply@github.com>
+          committer: typescript-eslint[bot] <typescript-eslint[bot]@users.noreply.github.com>
+          author: typescript-eslint[bot] <typescript-eslint[bot]@users.noreply.github.com>
