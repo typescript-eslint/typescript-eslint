@@ -5,7 +5,7 @@ on:
     - cron: "0 0 1 * *"
 
 env:
-  PRIMARY_NODE_VERSION: 12
+  PRIMARY_NODE_VERSION: 16
 
 jobs:
   generate-contributors:
@@ -25,17 +25,18 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-      - name: Get yarn cache directory path
+      - name: Get yarn cache directory path and node version for cache key
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: |
+          echo "::set-output name=dir::$(yarn cache dir)"
+          echo "::set-output name=node_version::$(node --version)"
 
       - uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-node-${{ steps.yarn-cache-dir-path.outputs.node_version }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-node-${{ steps.yarn-cache-dir-path.outputs.node_version }}-yarn-
 
       - name: Install dependencies
         run: |
