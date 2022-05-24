@@ -1,30 +1,7 @@
-import type { ScriptKind, System, SourceFile, CompilerHost } from 'typescript';
+import type { System, SourceFile, CompilerHost } from 'typescript';
+import type { LintUtils } from '@typescript-eslint/website-eslint';
 
-function getScriptKind(
-  ts: typeof import('typescript'),
-  filePath: string,
-): ScriptKind {
-  const extension = (/(\.[a-z]+)$/.exec(filePath)?.[0] ?? '').toLowerCase();
-
-  switch (extension) {
-    case '.ts':
-      return ts.ScriptKind.TS;
-    case '.tsx':
-      return ts.ScriptKind.TSX;
-
-    case '.js':
-      return ts.ScriptKind.JS;
-    case '.jsx':
-      return ts.ScriptKind.JSX;
-
-    case '.json':
-      return ts.ScriptKind.JSON;
-
-    default:
-      // unknown extension, force typescript to ignore the file extension, and respect the user's setting
-      return ts.ScriptKind.TS;
-  }
-}
+import { extra } from './config';
 
 /**
  * Creates an in-memory CompilerHost -which is essentially an extra wrapper to System
@@ -36,22 +13,23 @@ function getScriptKind(
  */
 export function createVirtualCompilerHost(
   sys: System,
-  ts: typeof import('typescript'),
+  lintUtils: LintUtils,
 ): CompilerHost {
   return {
     ...sys,
     getCanonicalFileName: (fileName: string) => fileName,
-    getDefaultLibFileName: options => '/' + ts.getDefaultLibFileName(options),
+    getDefaultLibFileName: options =>
+      '/' + window.ts.getDefaultLibFileName(options),
     getNewLine: () => sys.newLine,
     getSourceFile(fileName, languageVersionOrOptions): SourceFile | undefined {
       if (this.fileExists(fileName)) {
         const file = this.readFile(fileName) ?? '';
-        return ts.createSourceFile(
+        return window.ts.createSourceFile(
           fileName,
           file,
           languageVersionOrOptions,
           true,
-          getScriptKind(ts, fileName),
+          lintUtils.getScriptKind(extra, fileName),
         );
       }
       return undefined;

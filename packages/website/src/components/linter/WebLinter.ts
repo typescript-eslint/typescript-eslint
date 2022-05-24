@@ -36,7 +36,7 @@ export class WebLinter {
     this.lintUtils = lintUtils;
     this.linter = lintUtils.createLinter();
 
-    this.host = createVirtualCompilerHost(system, window.ts);
+    this.host = createVirtualCompilerHost(system, lintUtils);
 
     this.linter.defineParser(PARSER_NAME, {
       parseForESLint: (text, options?: ParserOptions) => {
