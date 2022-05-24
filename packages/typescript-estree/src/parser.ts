@@ -237,8 +237,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Enable JSX - note the applicable file extension is still required
    */
-  if (typeof options.jsx === 'boolean' && options.jsx) {
-    extra.jsx = true;
+  if (typeof options.jsx !== 'boolean') {
+    extra.jsx = false;
+  } else {
+    extra.jsx = options.jsx;
   }
 
   /**
