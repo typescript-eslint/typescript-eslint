@@ -82,13 +82,11 @@ function getExtension(fileName: string | undefined): string | null {
     return null;
   }
 
-  for (const definitionExt of DEFINITION_EXTENSIONS) {
-    if (fileName.endsWith(definitionExt)) {
-      return definitionExt;
-    }
-  }
-
-  return path.extname(fileName);
+  return (
+    DEFINITION_EXTENSIONS.find(definitionExt =>
+      fileName.endsWith(definitionExt),
+    ) ?? path.extname(fileName)
+  );
 }
 
 function getAstFromProgram(
