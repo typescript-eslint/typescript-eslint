@@ -1,6 +1,6 @@
 import type Monaco from 'monaco-editor';
-import { createURI } from './utils';
-import type { LintCodeAction } from './lintCode';
+import type { LintCodeAction } from '../linter/lintCode';
+import { createURI } from '../linter/utils';
 
 export function createProvideCodeActions(
   fixes: Map<string, LintCodeAction>,

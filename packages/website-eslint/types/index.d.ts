@@ -1,38 +1,13 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type { ParserOptions } from '@typescript-eslint/types';
-import type { SourceFile, CompilerOptions } from 'typescript';
+import type { TSESLint } from '@typescript-eslint/utils';
 
-export type LintMessage = TSESLint.Linter.LintMessage;
-export type RuleFix = TSESLint.RuleFix;
-export type RulesRecord = TSESLint.Linter.RulesRecord;
-export type RuleEntry = TSESLint.Linter.RuleEntry;
+import { analyze } from '@typescript-eslint/scope-manager/dist/analyze';
+import { astConverter } from '@typescript-eslint/typescript-estree/dist/ast-converter';
+import { getScriptKind } from '@typescript-eslint/typescript-estree/dist/create-program/getScriptKind';
 
-export interface WebLinter {
-  ruleNames: { name: string; description?: string }[];
-
-  getAst(): TSESTree.Program;
-  getTsAst(): SourceFile;
-  getScope(): Record<string, unknown>;
-  updateOptions(options?: Record<string, unknown>): void;
-
-  lint(
-    code: string,
-    parserOptions: ParserOptions,
-    rules?: RulesRecord,
-  ): LintMessage[];
+export interface LintUtils {
+  createLinter: () => TSESLint.Linter;
+  analyze: typeof analyze;
+  visitorKeys: TSESLint.SourceCode.VisitorKeys;
+  astConverter: typeof astConverter;
+  getScriptKind: typeof getScriptKind;
 }
-
-export interface LinterLoader {
-  loadLinter(
-    libMap: Map<string, string>,
-    compilerOptions: CompilerOptions,
-  ): WebLinter;
-}
-
-export type {
-  DebugLevel,
-  EcmaVersion,
-  ParserOptions,
-  SourceType,
-  TSESTree,
-} from '@typescript-eslint/types';
