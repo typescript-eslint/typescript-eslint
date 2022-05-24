@@ -47,7 +47,7 @@ function ErrorBlock({ item, onClick, isLocked }: ErrorBlockProps): JSX.Element {
                       onClick();
                     }}
                   >
-                    apply
+                    fix
                   </button>
                 </div>
               ))}
