@@ -335,6 +335,9 @@ console.log({ ...(condition || (await Promise.resolve({ key: 42 }))) });
 console.log({ ...(condition ? {} : await Promise.resolve({ key: 42 })) });
 console.log({ ...(condition ? await Promise.resolve({ key: 42 }) : {}) });
     `,
+    `
+console.log([...(await Promise.resolve(42))]);
+    `,
     {
       code: `
 console.log({ ...Promise.resolve({ key: 42 }) });
@@ -360,6 +363,13 @@ console.log({ ...(condition && Promise.resolve({ key: 42 })) });
 console.log({ ...(condition || Promise.resolve({ key: 42 })) });
 console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
 console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
+      `,
+      options: [{ checksSpreads: false }],
+    },
+    {
+      code: `
+// This is invalid Typescript, but it shouldn't trigger this linter specifically
+console.log([...Promise.resolve(42)]);
       `,
       options: [{ checksSpreads: false }],
     },
