@@ -1,5 +1,6 @@
 import debug from 'debug';
 import path from 'path';
+import * as ts from 'typescript';
 import { getProgramsForProjects } from './createWatchProgram';
 import { firstDefined } from '../node-utils';
 import { Extra } from '../parser-options';
@@ -7,7 +8,16 @@ import { ASTAndProgram, getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
 
-const DEFAULT_EXTRA_FILE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
+const DEFAULT_EXTRA_FILE_EXTENSIONS = [
+  ts.Extension.Ts,
+  ts.Extension.Tsx,
+  ts.Extension.Js,
+  ts.Extension.Jsx,
+  ts.Extension.Mjs,
+  ts.Extension.Mts,
+  ts.Extension.Cjs,
+  ts.Extension.Cts,
+] as readonly string[];
 
 /**
  * @param code The code of the file being linted

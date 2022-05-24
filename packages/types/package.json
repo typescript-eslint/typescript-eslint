@@ -33,9 +33,9 @@
     "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only ../scope-manager/tools/generate-lib.ts",
-    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "lint": "eslint . --ignore-path='../../.eslintignore'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "nx": {
