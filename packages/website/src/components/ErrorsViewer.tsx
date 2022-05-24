@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import type { ErrorItem } from './types';
 
@@ -6,6 +6,12 @@ import styles from './ErrorsViewer.module.css';
 
 export interface ErrorsViewerProps {
   readonly value?: ErrorItem[];
+}
+
+export interface ErrorBlockProps {
+  readonly item: ErrorItem;
+  readonly onClick: () => void;
+  readonly isLocked: boolean;
 }
 
 function severityClass(severity: Monaco.MarkerSeverity): string {
@@ -20,7 +26,7 @@ function severityClass(severity: Monaco.MarkerSeverity): string {
   return 'info';
 }
 
-function ErrorBlock({ item }: { item: ErrorItem }): JSX.Element {
+function ErrorBlock({ item, onClick, isLocked }: ErrorBlockProps): JSX.Element {
   return (
     <div className={`admonition alert alert--${severityClass(item.severity)}`}>
       <div className="admonition-content">
@@ -35,7 +41,11 @@ function ErrorBlock({ item }: { item: ErrorItem }): JSX.Element {
                   <span>&gt; {fixer.message}</span>
                   <button
                     className="button button--primary button--sm"
-                    onClick={fixer.fix}
+                    disabled={isLocked}
+                    onClick={(): void => {
+                      fixer.fix();
+                      onClick();
+                    }}
                   >
                     apply
                   </button>
@@ -54,6 +64,12 @@ export default function ErrorsViewer({
 }: ErrorsViewerProps): JSX.Element {
   const [model, setModel] = useState<[string, ErrorItem[]][]>();
 
+  const [isLocked, setIsLocked] = useState<boolean>(false);
+
+  const onClick = useCallback(() => {
+    setIsLocked(true);
+  }, [isLocked]);
+
   useEffect(() => {
     if (value) {
       setModel(
@@ -70,6 +86,7 @@ export default function ErrorsViewer({
     } else {
       setModel(undefined);
     }
+    setIsLocked(false);
   }, [value]);
 
   if (model) {
@@ -79,9 +96,14 @@ export default function ErrorsViewer({
           return (
             <div className="margin-top--sm" key={group}>
               <h4>{group}</h4>
-              {data.map((item, index) => {
-                return <ErrorBlock item={item} key={index} />;
-              })}
+              {data.map((item, index) => (
+                <ErrorBlock
+                  isLocked={isLocked}
+                  onClick={onClick}
+                  item={item}
+                  key={index}
+                />
+              ))}
             </div>
           );
         })}
