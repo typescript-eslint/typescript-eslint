@@ -5,12 +5,36 @@ on:
     - cron: "0 0 * * 1"
   workflow_dispatch:
 
+env:
+  PRIMARY_NODE_VERSION: 16
+
 jobs:
   build:
     name: Commit if needed
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
 
       - name: Get typescript-eslint Github app token
         id: get_token
@@ -19,10 +43,8 @@ jobs:
           APP_PEM: ${{ secrets.GH_APP_PEM }}
           APP_ID: ${{ secrets.GH_APP_ID }}
 
-      - uses: Codecademy/run-on-yarn@v1
-        with:
-          command: generate-sponsors
-          node-version: 16
+      - name: Generate sponsors
+        run: yarn generate-sponsors
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
