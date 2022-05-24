@@ -39,9 +39,15 @@
   width: 120px;
 }
 
+.tier-supporter,
+.tier-contributor {
+  align-items: center;
+  gap: 4px 16px;
+}
+
 .tier-supporter img {
-  max-height: 45px;
-  width: 45px;
+  max-height: 60px;
+  width: 60px;
 }
 
 .tier-contributor img {

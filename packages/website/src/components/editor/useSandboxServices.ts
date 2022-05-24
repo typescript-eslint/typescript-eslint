@@ -35,7 +35,7 @@ export const useSandboxServices = (
 ): Error | SandboxServices | undefined => {
   const [services, setServices] = useState<Error | SandboxServices>();
   const [loadedTs, setLoadedTs] = useState<string>(props.ts);
-  const { isDarkTheme } = useColorMode();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (props.ts !== loadedTs) {
@@ -77,7 +77,7 @@ export const useSandboxServices = (
           ts,
         );
         sandboxInstance.monaco.editor.setTheme(
-          isDarkTheme ? 'vs-dark' : 'vs-light',
+          colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
         const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(

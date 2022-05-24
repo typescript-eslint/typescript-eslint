@@ -78,16 +78,19 @@ Default `false`.
 
 Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-**NOTE:** this setting does not affect known file types (`.js`, `.jsx`, `.ts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions. The exact behavior is as follows:
+**NOTE:** this setting does not affect known file types (`.js`, `.mjs`, `.cjs`, `.jsx`, `.ts`, `.mts`, `.cts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions.
 
-- if `parserOptions.project` is _not_ provided:
-  - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
-  - `.ts` files are parsed as if this is false.
-  - unknown extensions (`.md`, `.vue`) will respect this setting.
-- if `parserOptions.project` is provided (i.e. you are using rules with type information):
-  - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
-  - `.ts` files are parsed as if this is false.
-  - "unknown" extensions (`.md`, `.vue`) **are parsed as if this is false**.
+<!-- https://github.com/microsoft/TypeScript/blob/d6e483b8dabd8fd37c00954c3f2184bb7f1eb90c/src/compiler/utilities.ts#L6281-L6285 -->
+
+The exact behavior is as follows:
+
+- `.js`, `.mjs`, `.cjs`, `.jsx`, `.tsx` files are always parsed as if this is `true`.
+- `.ts`, `.mts`, `.cts` files are always parsed as if this is `false`.
+- For "unknown" extensions (`.md`, `.vue`):
+  - If `parserOptions.project` is _not_ provided:
+    - The setting will be respected.
+  - If `parserOptions.project` is provided (i.e. you are using rules with type information):
+    - **always parsed as if this is `false`**
 
 ### `parserOptions.ecmaFeatures.globalReturn`
 
@@ -203,7 +206,8 @@ For example, by default it will ensure that a glob like `./**/tsconfig.json` wil
 Default `undefined`.
 
 This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation.
-The default extensions are `.ts`, `.tsx`, `.js`, and `.jsx`. Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
+The default extensions are `['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx']`.
+Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
 
 ### `parserOptions.warnOnUnsupportedTypeScriptVersion`
 
