@@ -15,7 +15,7 @@ jobs:
 
       - name: Get typescript-eslint Github app token
         id: get_token
-        uses: getsentry/action-github-app-token@82072c48b0c1abb36c6ce57ff31b1b6ea35d270f
+        uses: getsentry/action-github-app-token@38a3ce582e170ddfe8789f509597c6944f2292a9
         with:
           private_key: ${{ secrets.GH_APP_PEM }}
           app_id: ${{ secrets.GH_APP_ID }}
@@ -48,7 +48,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ steps.get_token.outputs.app_token }}
+          token: ${{ steps.get_token.outputs.token }}
           commit-message: "chore: update contributors"
           title: "chore: update contributors"
           body: ""

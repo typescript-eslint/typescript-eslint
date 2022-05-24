@@ -50,7 +50,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ steps.get_token.outputs.app_token }}
+          token: ${{ steps.get_token.outputs.token }}
           commit-message: "chore: update sponsors"
           title: "chore: update sponsors"
           body: "💸"
