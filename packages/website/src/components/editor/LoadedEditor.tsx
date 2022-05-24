@@ -8,7 +8,7 @@ import type { CommonEditorProps } from './types';
 import { debounce } from '../lib/debounce';
 import { lintCode, LintCodeAction } from './lintCode';
 import { createProvideCodeActions } from './createProvideCodeActions';
-import { createURI, parseMarkers } from '@site/src/components/editor/utils';
+import { parseMarkers } from '@site/src/components/editor/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -116,7 +116,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       ),
       sandboxInstance.monaco.editor.onDidChangeMarkers(() => {
         const markers = sandboxInstance.monaco.editor.getModelMarkers({});
-        onMarkersChange(parseMarkers(markers, fixes));
+        onMarkersChange(parseMarkers(markers, fixes, sandboxInstance.editor));
       }),
     ];
 

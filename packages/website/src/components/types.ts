@@ -40,4 +40,5 @@ export interface ErrorItem {
   location: string;
   severity: number;
   hasFixers: boolean;
+  fixers: { message: string; fix(): void }[];
 }

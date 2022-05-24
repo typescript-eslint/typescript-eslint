@@ -23,18 +23,45 @@ export function createURI(marker: Monaco.editor.IMarkerData): string {
 export function parseMarkers(
   markers: Monaco.editor.IMarker[],
   fixes: Map<string, LintCodeAction[]>,
+  editor: Monaco.editor.IStandaloneCodeEditor,
 ): ErrorItem[] {
   return markers.map(marker => {
     const isTypescript = marker.owner === 'typescript';
     const code =
       typeof marker.code === 'string' ? marker.code : marker.code?.value ?? '';
+    const uri = createURI(marker);
+
+    const fixers =
+      fixes.get(uri)?.map(item => {
+        item.fix;
+        return {
+          message: item.message,
+          fix(): void {
+            const model = editor.getModel()!;
+            const start = model.getPositionAt(item.fix.range[0]);
+            const end = model.getPositionAt(item.fix.range[1]);
+            editor.executeEdits(model.getValue(), [
+              {
+                range: {
+                  startLineNumber: start.lineNumber,
+                  startColumn: start.column,
+                  endLineNumber: end.lineNumber,
+                  endColumn: end.column,
+                },
+                text: item.fix.text,
+              },
+            ]);
+          },
+        };
+      }) ?? [];
 
     return {
       group: isTypescript ? marker.owner : code,
       message: (isTypescript ? `TS${code}: ` : '') + marker.message,
       location: `${marker.startLineNumber}:${marker.startColumn} - ${marker.endLineNumber}:${marker.endColumn}`,
       severity: marker.severity,
-      hasFixers: fixes.has(createURI(marker)), // TODO: expose fixers
+      hasFixers: fixers.length > 0,
+      fixers: fixers,
     };
   });
 }

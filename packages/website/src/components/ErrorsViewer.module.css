@@ -1,0 +1,23 @@
+.list {
+  font-family: var(--ifm-font-family-monospace);
+  background: transparent;
+  border: none;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0;
+  font-feature-settings: 'liga' 0, 'calt' 0;
+  box-sizing: border-box;
+  white-space: break-spaces;
+  margin: 0;
+}
+
+.fixer {
+  margin: 0.5rem 1.5rem;
+  /*border-top: 1px solid var(--ifm-alert-border-color);*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
