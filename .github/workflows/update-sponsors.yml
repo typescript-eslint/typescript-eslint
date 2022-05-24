@@ -22,6 +22,7 @@ jobs:
       - uses: Codecademy/run-on-yarn@v1
         with:
           command: generate-sponsors
+          node-version: 16
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
