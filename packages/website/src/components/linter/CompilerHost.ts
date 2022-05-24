@@ -1,8 +1,6 @@
 import type { System, SourceFile, CompilerHost } from 'typescript';
 import type { LintUtils } from '@typescript-eslint/website-eslint';
 
-import { extra } from './config';
-
 /**
  * Creates an in-memory CompilerHost -which is essentially an extra wrapper to System
  * which works with TypeScript objects - returns both a compiler host, and a way to add new SourceFile
@@ -29,7 +27,7 @@ export function createVirtualCompilerHost(
           file,
           languageVersionOrOptions,
           true,
-          lintUtils.getScriptKind(extra, fileName),
+          lintUtils.getScriptKind(fileName, false),
         );
       }
       return undefined;
