@@ -15,8 +15,9 @@ const DEFINITION_EXTENSIONS = [
  * Check if the context file name is *.d.ts or *.d.tsx
  */
 function isDefinitionFile(fileName: string): boolean {
+  const lowerFileName = fileName.toLowerCase();
   for (const definitionExt of DEFINITION_EXTENSIONS) {
-    if (fileName.endsWith(definitionExt)) {
+    if (lowerFileName.endsWith(definitionExt)) {
       return true;
     }
   }
