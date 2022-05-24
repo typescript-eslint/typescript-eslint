@@ -53,3 +53,5 @@ jobs:
           title: "chore: update contributors"
           body: ""
           branch: auto-update-contributors
+          committer: typescript-eslint[bot] <typescript-eslint[bot]@users.noreply.github.com>
+          author: typescript-eslint[bot] <typescript-eslint[bot]@users.noreply.github.com>

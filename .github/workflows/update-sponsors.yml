@@ -3,7 +3,6 @@ name: Update Sponsors Data
 on:
   schedule:
     - cron: "0 0 * * 1"
-  workflow_dispatch:
 
 env:
   PRIMARY_NODE_VERSION: 16
