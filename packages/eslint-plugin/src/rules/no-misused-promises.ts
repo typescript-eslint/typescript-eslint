@@ -390,14 +390,7 @@ export default util.createRule<Options, MessageId>({
     function checkSpread(node: TSESTree.SpreadElement): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
-      if (
-        node.argument.type === AST_NODE_TYPES.CallExpression &&
-        tsutils.isThenableType(
-          checker,
-          tsNode.expression,
-          checker.getTypeAtLocation(tsNode.expression),
-        )
-      ) {
+      if (isSometimesThenable(checker, tsNode.expression)) {
         context.report({
           messageId: 'spread',
           node: node.argument,
@@ -412,6 +405,18 @@ export default util.createRule<Options, MessageId>({
     };
   },
 });
+
+function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
+  const type = checker.getTypeAtLocation(node);
+
+  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+    if (tsutils.isThenableType(checker, node, subType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 // Variation on the thenable check which requires all forms of the type (read:
 // alternates in a union) to be thenable. Otherwise, you might be trying to
