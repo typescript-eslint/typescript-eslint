@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import type { ErrorItem } from './types';
 
@@ -10,7 +10,7 @@ export interface ErrorsViewerProps {
 
 export interface ErrorBlockProps {
   readonly item: ErrorItem;
-  readonly onClick: () => void;
+  readonly setIsLocked: (value: boolean) => void;
   readonly isLocked: boolean;
 }
 
@@ -26,7 +26,11 @@ function severityClass(severity: Monaco.MarkerSeverity): string {
   return 'info';
 }
 
-function ErrorBlock({ item, onClick, isLocked }: ErrorBlockProps): JSX.Element {
+function ErrorBlock({
+  item,
+  setIsLocked,
+  isLocked,
+}: ErrorBlockProps): JSX.Element {
   return (
     <div className={`admonition alert alert--${severityClass(item.severity)}`}>
       <div className="admonition-content">
@@ -44,7 +48,7 @@ function ErrorBlock({ item, onClick, isLocked }: ErrorBlockProps): JSX.Element {
                     disabled={isLocked}
                     onClick={(): void => {
                       fixer.fix();
-                      onClick();
+                      setIsLocked(true);
                     }}
                   >
                     fix
@@ -66,10 +70,6 @@ export default function ErrorsViewer({
 
   const [isLocked, setIsLocked] = useState<boolean>(false);
 
-  const onClick = useCallback(() => {
-    setIsLocked(true);
-  }, [isLocked]);
-
   useEffect(() => {
     if (value) {
       setModel(
@@ -89,27 +89,23 @@ export default function ErrorsViewer({
     setIsLocked(false);
   }, [value]);
 
-  if (model) {
-    return (
-      <div className={styles.list}>
-        {model.map(([group, data]) => {
-          return (
-            <div className="margin-top--sm" key={group}>
-              <h4>{group}</h4>
-              {data.map((item, index) => (
-                <ErrorBlock
-                  isLocked={isLocked}
-                  onClick={onClick}
-                  item={item}
-                  key={index}
-                />
-              ))}
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
-  return <div className={styles.list}></div>;
+  return (
+    <div className={styles.list}>
+      {model?.map(([group, data]) => {
+        return (
+          <div className="margin-top--sm" key={group}>
+            <h4>{group}</h4>
+            {data.map((item, index) => (
+              <ErrorBlock
+                isLocked={isLocked}
+                setIsLocked={setIsLocked}
+                item={item}
+                key={index}
+              />
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
 }
