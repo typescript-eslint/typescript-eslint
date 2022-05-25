@@ -185,13 +185,14 @@ async function main(): Promise<void> {
     __dirname,
     '../packages/website/data/sponsors.json',
   );
-  fs.writeFileSync(rcPath, await stringifyObject(allSponsorsConfig));
+  fs.writeFileSync(rcPath, await stringifyObject(rcPath, allSponsorsConfig));
 }
 
-async function stringifyObject(data: unknown): Promise<string> {
-  const config = await prettier.resolveConfig(
-    path.join(__dirname, '../.prettierrc.json'),
-  );
+async function stringifyObject(
+  filePath: string,
+  data: unknown,
+): Promise<string> {
+  const config = await prettier.resolveConfig(filePath);
   const text = JSON.stringify(
     data,
     (_, value: unknown) => value ?? undefined,
