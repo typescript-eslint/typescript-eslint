@@ -190,7 +190,7 @@ async function main(): Promise<void> {
       allSponsorsConfig,
       (_, value: unknown) => value ?? undefined,
       2,
-    ),
+    ) + '\n',
   );
 }
 
