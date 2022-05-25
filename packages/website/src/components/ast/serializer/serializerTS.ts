@@ -20,6 +20,7 @@ export const propsToFilter = [
   'jsDocComment',
   'lineMap',
   'externalModuleIndicator',
+  'setExternalModuleIndicator',
   'bindDiagnostics',
   'transformFlags',
   'resolvedModules',

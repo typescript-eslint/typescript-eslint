@@ -1,6 +1,6 @@
 import type Monaco from 'monaco-editor';
-import { LintCodeAction } from '@site/src/components/editor/lintCode';
-import type { ErrorItem } from '@site/src/components/types';
+import type { ErrorItem } from '../types';
+import { LintCodeAction } from './lintCode';
 
 export function ensurePositiveInt(
   value: number | undefined,
@@ -33,7 +33,6 @@ export function parseMarkers(
 
     const fixers =
       fixes.get(uri)?.map(item => {
-        item.fix;
         return {
           message: item.message,
           fix(): void {

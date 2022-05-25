@@ -1,6 +1,6 @@
 import type * as TsWorker from '../../vendor/tsWorker';
 import type * as SandboxFactory from '../../vendor/sandbox';
-import type { LinterLoader } from '@typescript-eslint/website-eslint';
+import type { LintUtils } from '@typescript-eslint/website-eslint';
 
 type Monaco = typeof import('monaco-editor');
 type TS = typeof import('typescript');
@@ -10,7 +10,7 @@ declare global {
     main: Monaco,
     tsWorker: typeof TsWorker,
     sandboxFactory: typeof SandboxFactory,
-    linter: LinterLoader,
+    lintUtils: LintUtils,
   ) => void;
   interface WindowRequire {
     (files: string[], cb: WindowRequireCb): void;
@@ -31,7 +31,7 @@ export interface SandboxModel {
   tsWorker: typeof TsWorker;
   sandboxFactory: typeof SandboxFactory;
   ts: TS;
-  linter: LinterLoader;
+  lintUtils: LintUtils;
 }
 
 function loadSandbox(tsVersion: string): Promise<SandboxModel> {
@@ -61,7 +61,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
           'sandbox/index',
           'linter/index',
         ],
-        (main, tsWorker, sandboxFactory, linter) => {
+        (main, tsWorker, sandboxFactory, lintUtils) => {
           const isOK = main && window.ts && sandboxFactory;
           if (isOK) {
             resolve({
@@ -69,7 +69,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
               tsWorker,
               sandboxFactory,
               ts: window.ts,
-              linter,
+              lintUtils,
             });
           } else {
             reject(

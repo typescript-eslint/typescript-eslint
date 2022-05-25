@@ -17,7 +17,7 @@ import ASTViewerTS from './ASTViewerTS';
 
 import type { RuleDetails, SelectedRange } from './types';
 
-import type { TSESTree } from '@typescript-eslint/website-eslint';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceFile } from 'typescript';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 import ErrorsViewer from '@site/src/components/ErrorsViewer';
@@ -45,7 +45,7 @@ function Playground(): JSX.Element {
     showAST: false,
     sourceType: 'module',
     code: '',
-    ts: process.env.TS_VERSION,
+    ts: process.env.TS_VERSION!,
     rules: {},
     tsConfig: {},
   });

@@ -1,4 +1,6 @@
-export const extra = {
+import type { Extra } from '@typescript-eslint/typescript-estree/dist/parser-options';
+
+export const extra: Extra = {
   code: '',
   comment: true,
   comments: [],
@@ -10,6 +12,7 @@ export const extra = {
   filePath: '',
   jsx: false,
   loc: true,
+  // eslint-disable-next-line no-console
   log: console.log,
   preserveNodeMaps: true,
   projects: [],

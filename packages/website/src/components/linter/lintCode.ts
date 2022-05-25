@@ -1,5 +1,6 @@
-import type { RulesRecord, WebLinter } from '@typescript-eslint/website-eslint';
+import type { TSESLint } from '@typescript-eslint/utils';
 import type Monaco from 'monaco-editor';
+import type { WebLinter } from './WebLinter';
 import { createURI, ensurePositiveInt } from './utils';
 
 export interface LintCodeAction {
@@ -15,7 +16,7 @@ export type LintCodeActionGroup = [string, LintCodeAction[]];
 export function lintCode(
   linter: WebLinter,
   code: string,
-  rules: RulesRecord | undefined,
+  rules: TSESLint.Linter.RulesRecord | undefined,
   jsx?: boolean,
   sourceType?: 'module' | 'script',
 ): [Monaco.editor.IMarkerData[], string | undefined, LintCodeActionGroup[]] {
@@ -26,11 +27,11 @@ export function lintCode(
         jsx: jsx ?? false,
         globalReturn: false,
       },
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
       project: ['./tsconfig.json'],
       sourceType: sourceType ?? 'module',
     },
-    rules,
+    rules ?? {},
   );
   const markers: Monaco.editor.IMarkerData[] = [];
   let fatalMessage: string | undefined = undefined;
@@ -58,7 +59,7 @@ export function lintCode(
     };
     const markerUri = createURI(marker);
 
-    const fixes = [];
+    const fixes: LintCodeAction[] = [];
     if (message.fix) {
       fixes.push({
         message: `Fix this ${message.ruleId ?? 'unknown'} problem`,
