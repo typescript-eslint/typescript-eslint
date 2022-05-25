@@ -55,7 +55,7 @@ export function parseMarkers(
       }) ?? [];
 
     return {
-      group: isTypescript ? marker.owner : code,
+      group: isTypescript ? 'TypeScript' : code,
       message: (isTypescript ? `TS${code}: ` : '') + marker.message,
       location: `${marker.startLineNumber}:${marker.startColumn} - ${marker.endLineNumber}:${marker.endColumn}`,
       severity: marker.severity,
