@@ -320,7 +320,7 @@ const _ = <Component onEvent={async () => {}} />;
 console.log({ ...(await Promise.resolve({ key: 42 })) });
     `,
     `
-const getData = Promise.resolve({ key: 42 });
+const getData = () => Promise.resolve({ key: 42 });
 
 console.log({
   someData: 42,
@@ -346,7 +346,7 @@ console.log({ ...Promise.resolve({ key: 42 }) });
     },
     {
       code: `
-const getData = Promise.resolve({ key: 42 });
+const getData = () => Promise.resolve({ key: 42 });
 
 console.log({
   someData: 42,
