@@ -35,6 +35,7 @@ interface MakeFixFunctionParams {
   optsNone: boolean;
   optsSemi: boolean;
   lastToken: LastTokenType;
+  commentsAfterLastToken: LastTokenType | undefined;
   missingDelimiter: boolean;
   lastTokenLine: string;
   isSingleLine: boolean;
@@ -74,10 +75,29 @@ const isLastTokenEndOfLine = (token: LastTokenType, line: string): boolean => {
   return positionInLine === line.length - 1;
 };
 
+const isCommentsEndOfLine = (
+  token: LastTokenType,
+  comments: LastTokenType | undefined,
+  line: string,
+): boolean => {
+  if (!comments) {
+    return false;
+  }
+
+  if (comments.loc.end.line > token.loc.end.line) {
+    return true;
+  }
+
+  const positionInLine = comments.loc.end.column;
+
+  return positionInLine === line.length;
+};
+
 const makeFixFunction = ({
   optsNone,
   optsSemi,
   lastToken,
+  commentsAfterLastToken,
   missingDelimiter,
   lastTokenLine,
   isSingleLine,
@@ -86,6 +106,7 @@ const makeFixFunction = ({
   if (
     optsNone &&
     !isLastTokenEndOfLine(lastToken, lastTokenLine) &&
+    !isCommentsEndOfLine(lastToken, commentsAfterLastToken, lastTokenLine) &&
     !isSingleLine
   ) {
     return null;
@@ -206,6 +227,10 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
+      const commentsAfterLastToken = sourceCode
+        .getCommentsAfter(lastToken)
+        .pop();
+
       const sourceCodeLines = sourceCode.getLines();
       const lastTokenLine = sourceCodeLines[lastToken?.loc.start.line - 1];
 
@@ -255,6 +280,7 @@ export default util.createRule<Options, MessageIds>({
             optsNone,
             optsSemi,
             lastToken,
+            commentsAfterLastToken,
             missingDelimiter,
             lastTokenLine,
             isSingleLine: opts.type === 'single-line',

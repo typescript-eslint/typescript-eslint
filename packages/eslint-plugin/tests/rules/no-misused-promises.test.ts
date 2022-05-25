@@ -316,6 +316,63 @@ const _ = <Component onEvent={async () => {}} />;
       `,
       filename: 'react.tsx',
     },
+    `
+console.log({ ...(await Promise.resolve({ key: 42 })) });
+    `,
+    `
+const getData = () => Promise.resolve({ key: 42 });
+
+console.log({
+  someData: 42,
+  ...(await getData()),
+});
+    `,
+    `
+declare const condition: boolean;
+
+console.log({ ...(condition && (await Promise.resolve({ key: 42 }))) });
+console.log({ ...(condition || (await Promise.resolve({ key: 42 }))) });
+console.log({ ...(condition ? {} : await Promise.resolve({ key: 42 })) });
+console.log({ ...(condition ? await Promise.resolve({ key: 42 }) : {}) });
+    `,
+    `
+console.log([...(await Promise.resolve(42))]);
+    `,
+    {
+      code: `
+console.log({ ...Promise.resolve({ key: 42 }) });
+      `,
+      options: [{ checksSpreads: false }],
+    },
+    {
+      code: `
+const getData = () => Promise.resolve({ key: 42 });
+
+console.log({
+  someData: 42,
+  ...getData(),
+});
+      `,
+      options: [{ checksSpreads: false }],
+    },
+    {
+      code: `
+declare const condition: boolean;
+
+console.log({ ...(condition && Promise.resolve({ key: 42 })) });
+console.log({ ...(condition || Promise.resolve({ key: 42 })) });
+console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
+console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
+      `,
+      options: [{ checksSpreads: false }],
+    },
+    {
+      code: `
+// This is invalid Typescript, but it shouldn't trigger this linter specifically
+console.log([...Promise.resolve(42)]);
+      `,
+      options: [{ checksSpreads: false }],
+    },
   ],
 
   invalid: [
@@ -868,6 +925,49 @@ it('', async () => {});
           line: 11,
           messageId: 'voidReturnArgument',
         },
+      ],
+    },
+    {
+      code: `
+console.log({ ...Promise.resolve({ key: 42 }) });
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'spread',
+        },
+      ],
+    },
+    {
+      code: `
+const getData = () => Promise.resolve({ key: 42 });
+
+console.log({
+  someData: 42,
+  ...getData(),
+});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'spread',
+        },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+
+console.log({ ...(condition && Promise.resolve({ key: 42 })) });
+console.log({ ...(condition || Promise.resolve({ key: 42 })) });
+console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
+console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
+      `,
+      errors: [
+        { line: 4, messageId: 'spread' },
+        { line: 5, messageId: 'spread' },
+        { line: 6, messageId: 'spread' },
+        { line: 7, messageId: 'spread' },
       ],
     },
   ],

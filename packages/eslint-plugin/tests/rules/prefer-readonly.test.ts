@@ -292,6 +292,19 @@ class Foo {
     },
     {
       code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private _name: string;
+
+    public test(value: string) {
+      this._name = value;
+    }
+  };
+}
+      `,
+    },
+    {
+      code: `
 class Foo {
   private value: Record<string, number> = {};
 
@@ -703,6 +716,31 @@ class Foo {
           private readonly incorrectlyInlineLambda = () => 7;
         }
       `,
+    },
+    {
+      code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private _name: string;
+  };
+}
+      `,
+      output: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private readonly _name: string;
+  };
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: '_name',
+          },
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
     },
   ],
 });

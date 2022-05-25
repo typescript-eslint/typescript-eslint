@@ -17,7 +17,7 @@ import ASTViewerTS from './ASTViewerTS';
 
 import type { RuleDetails, SelectedRange } from './types';
 
-import type { TSESTree } from '@typescript-eslint/website-eslint';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceFile } from 'typescript';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 
@@ -44,11 +44,11 @@ function Playground(): JSX.Element {
     showAST: false,
     sourceType: 'module',
     code: '',
-    ts: process.env.TS_VERSION,
+    ts: process.env.TS_VERSION!,
     rules: {},
     tsConfig: {},
   });
-  const { isDarkTheme } = useColorMode();
+  const { colorMode } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
   const [tsAst, setTsAST] = useState<SourceFile | string | null>();
   const [scope, setScope] = useState<Record<string, unknown> | string | null>();
@@ -83,7 +83,7 @@ function Playground(): JSX.Element {
             jsx={state.jsx}
             code={state.code}
             tsConfig={state.tsConfig}
-            darkTheme={isDarkTheme}
+            darkTheme={colorMode === 'dark'}
             sourceType={state.sourceType}
             rules={state.rules}
             showAST={state.showAST}

@@ -69,7 +69,7 @@ interface ParseOptions {
    * Enable parsing of JSX.
    * For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
    *
-   * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
+   * NOTE: this setting does not effect known file types (.js, .cjs, .mjs, .jsx, .ts, .mts, .cts, .tsx, .json) because the
    * TypeScript compiler has its own internal handling for known file extensions.
    *
    * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsecmafeaturesjsx

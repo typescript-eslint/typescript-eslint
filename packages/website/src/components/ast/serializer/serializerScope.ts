@@ -1,5 +1,5 @@
 import type { ASTViewerModel, Serializer, SelectedRange } from '../types';
-import type { TSESTree } from '@typescript-eslint/website-eslint';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { isRecord } from '../utils';
 
 function isESTreeNode(
