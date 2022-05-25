@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import type { ErrorItem } from './types';
 
@@ -24,6 +24,18 @@ function severityClass(severity: Monaco.MarkerSeverity): string {
       return 'note';
   }
   return 'info';
+}
+
+function groupErrorItems(items: ErrorItem[]): [string, ErrorItem[]][] {
+  return Object.entries(
+    items.reduce<Record<string, ErrorItem[]>>((acc, obj) => {
+      if (!acc[obj.group]) {
+        acc[obj.group] = [];
+      }
+      acc[obj.group].push(obj);
+      return acc;
+    }, {}),
+  ).sort(([a], [b]) => a.localeCompare(b));
 }
 
 function ErrorBlock({
@@ -66,26 +78,14 @@ function ErrorBlock({
 export default function ErrorsViewer({
   value,
 }: ErrorsViewerProps): JSX.Element {
-  const [model, setModel] = useState<[string, ErrorItem[]][]>();
+  const model = useMemo(
+    () => (value ? groupErrorItems(value) : undefined),
+    [value],
+  );
 
   const [isLocked, setIsLocked] = useState<boolean>(false);
 
   useEffect(() => {
-    if (value) {
-      setModel(
-        Object.entries(
-          value.reduce<Record<string, ErrorItem[]>>((acc, obj) => {
-            if (!acc[obj.group]) {
-              acc[obj.group] = [];
-            }
-            acc[obj.group].push(obj);
-            return acc;
-          }, {}),
-        ).sort(([a], [b]) => a.localeCompare(b)),
-      );
-    } else {
-      setModel(undefined);
-    }
     setIsLocked(false);
   }, [value]);
 
