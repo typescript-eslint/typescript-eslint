@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: Array [
+          TSPropertySignature {
+            type: "TSPropertySignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop",
+
+              range: [16, 20],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 6, line: 2 },
+              },
+            },
+
+            range: [16, 21],
+            loc: {
+              start: { column: 2, line: 2 },
+              end: { column: 7, line: 2 },
+            },
+          },
+        ],
+
+        range: [12, 23],
+        loc: {
+          start: { column: 12, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "F",
+
+        range: [10, 11],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 11, line: 1 },
+        },
+      },
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 24],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

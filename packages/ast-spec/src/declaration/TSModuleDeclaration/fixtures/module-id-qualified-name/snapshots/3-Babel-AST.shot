@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSModuleDeclaration module-id-qualified-name Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleDeclaration {
+        type: "TSModuleDeclaration",
+        body: TSModuleDeclaration {
+          type: "TSModuleDeclaration",
+          body: TSModuleBlock {
+            type: "TSModuleBlock",
+            body: Array [],
+
+            range: [13, 15],
+            loc: {
+              start: { column: 13, line: 1 },
+              end: { column: 15, line: 1 },
+            },
+          },
+          id: Identifier {
+            type: "Identifier",
+            name: "C",
+
+            range: [11, 12],
+            loc: {
+              start: { column: 11, line: 1 },
+              end: { column: 12, line: 1 },
+            },
+          },
+
+          range: [11, 15],
+          loc: {
+            start: { column: 11, line: 1 },
+            end: { column: 15, line: 1 },
+          },
+        },
+        id: Identifier {
+          type: "Identifier",
+          name: "B",
+
+          range: [9, 10],
+          loc: {
+            start: { column: 9, line: 1 },
+            end: { column: 10, line: 1 },
+          },
+        },
+
+        range: [9, 15],
+        loc: {
+          start: { column: 9, line: 1 },
+          end: { column: 15, line: 1 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "A",
+
+        range: [7, 8],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 8, line: 1 },
+        },
+      },
+
+      range: [0, 15],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 15, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 16],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

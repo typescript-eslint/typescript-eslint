@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import type Monaco from 'monaco-editor';
-import type { LintMessage, WebLinter } from '@typescript-eslint/website-eslint';
+import type { TSESLint } from '@typescript-eslint/utils';
 import type { RuleDetails } from '../types';
 import type {
   createTypeScriptSandbox,
   SandboxConfig,
 } from '../../vendor/sandbox';
 
+import { WebLinter } from '../linter/WebLinter';
 import { sandboxSingleton } from './loadSandbox';
 import { editorEmbedId } from './EditorEmbed';
 import { useColorMode } from '@docusaurus/theme-common';
@@ -24,7 +25,7 @@ export interface SandboxServicesProps {
 export type SandboxInstance = ReturnType<typeof createTypeScriptSandbox>;
 
 export interface SandboxServices {
-  fixes: Map<string, LintMessage>;
+  fixes: Map<string, TSESLint.Linter.LintMessage>;
   main: typeof Monaco;
   sandboxInstance: SandboxInstance;
   webLinter: WebLinter;
@@ -35,7 +36,7 @@ export const useSandboxServices = (
 ): Error | SandboxServices | undefined => {
   const [services, setServices] = useState<Error | SandboxServices>();
   const [loadedTs, setLoadedTs] = useState<string>(props.ts);
-  const { isDarkTheme } = useColorMode();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (props.ts !== loadedTs) {
@@ -44,17 +45,17 @@ export const useSandboxServices = (
   }, [props.ts, loadedTs]);
 
   useEffect(() => {
-    const fixes = new Map<string, LintMessage>();
+    const fixes = new Map<string, TSESLint.Linter.LintMessage>();
     let sandboxInstance: SandboxInstance | undefined;
     setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
-      .then(async ({ main, sandboxFactory, ts, linter }) => {
+      .then(async ({ main, sandboxFactory, ts, lintUtils }) => {
         const compilerOptions: Monaco.languages.typescript.CompilerOptions = {
           noResolve: true,
           target: main.languages.typescript.ScriptTarget.ESNext,
           jsx: props.jsx ? main.languages.typescript.JsxEmit.React : undefined,
-          lib: ['esnext'],
+          lib: ['es2021', 'esnext'],
           module: main.languages.typescript.ModuleKind.ESNext,
         };
 
@@ -77,7 +78,7 @@ export const useSandboxServices = (
           ts,
         );
         sandboxInstance.monaco.editor.setTheme(
-          isDarkTheme ? 'vs-dark' : 'vs-light',
+          colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
         const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
@@ -86,8 +87,9 @@ export const useSandboxServices = (
           true,
           window.ts,
         );
+        const system = sandboxInstance.tsvfs.createSystem(libMap);
 
-        const webLinter = linter.loadLinter(libMap, compilerOptions);
+        const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
         props.onLoaded(webLinter.ruleNames, sandboxInstance.supportedVersions);
 

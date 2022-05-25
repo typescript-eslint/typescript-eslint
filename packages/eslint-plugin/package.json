@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "5.24.0",
+  "version": "5.26.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -36,17 +36,17 @@
     "check-configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:configs": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-configs.ts",
     "generate:rules-lists": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-rules-lists.ts",
-    "lint": "eslint . --ext .js,.ts --ignore-path ../../.eslintignore",
+    "lint": "eslint . --ignore-path ../../.eslintignore",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "5.24.0",
-    "@typescript-eslint/type-utils": "5.24.0",
-    "@typescript-eslint/utils": "5.24.0",
+    "@typescript-eslint/scope-manager": "5.26.0",
+    "@typescript-eslint/type-utils": "5.26.0",
+    "@typescript-eslint/utils": "5.26.0",
     "debug": "^4.3.4",
     "functional-red-black-tree": "^1.0.1",
     "ignore": "^5.2.0",

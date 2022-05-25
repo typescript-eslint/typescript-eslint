@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ImportDeclaration named-many TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ImportDeclaration {
+      type: "ImportDeclaration",
+      assertions: Array [],
+      importKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'mod'",
+        value: "mod",
+
+        range: [24, 29],
+        loc: {
+          start: { column: 24, line: 1 },
+          end: { column: 29, line: 1 },
+        },
+      },
+      specifiers: Array [
+        ImportSpecifier {
+          type: "ImportSpecifier",
+          imported: Identifier {
+            type: "Identifier",
+            name: "a",
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+          importKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            name: "a",
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+
+          range: [9, 10],
+          loc: {
+            start: { column: 9, line: 1 },
+            end: { column: 10, line: 1 },
+          },
+        },
+        ImportSpecifier {
+          type: "ImportSpecifier",
+          imported: Identifier {
+            type: "Identifier",
+            name: "b",
+
+            range: [12, 13],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+          importKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            name: "b",
+
+            range: [12, 13],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+
+          range: [12, 13],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 13, line: 1 },
+          },
+        },
+        ImportSpecifier {
+          type: "ImportSpecifier",
+          imported: Identifier {
+            type: "Identifier",
+            name: "c",
+
+            range: [15, 16],
+            loc: {
+              start: { column: 15, line: 1 },
+              end: { column: 16, line: 1 },
+            },
+          },
+          importKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            name: "c",
+
+            range: [15, 16],
+            loc: {
+              start: { column: 15, line: 1 },
+              end: { column: 16, line: 1 },
+            },
+          },
+
+          range: [15, 16],
+          loc: {
+            start: { column: 15, line: 1 },
+            end: { column: 16, line: 1 },
+          },
+        },
+      ],
+
+      range: [0, 30],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 30, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 31],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

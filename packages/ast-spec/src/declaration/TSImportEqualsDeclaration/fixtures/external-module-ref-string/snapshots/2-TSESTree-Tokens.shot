@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-string TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "import",
+
+    range: [0, 6],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 6, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "F",
+
+    range: [7, 8],
+    loc: {
+      start: { column: 7, line: 1 },
+      end: { column: 8, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [9, 10],
+    loc: {
+      start: { column: 9, line: 1 },
+      end: { column: 10, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "require",
+
+    range: [11, 18],
+    loc: {
+      start: { column: 11, line: 1 },
+      end: { column: 18, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [18, 19],
+    loc: {
+      start: { column: 18, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'mod'",
+
+    range: [19, 24],
+    loc: {
+      start: { column: 19, line: 1 },
+      end: { column: 24, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [24, 25],
+    loc: {
+      start: { column: 24, line: 1 },
+      end: { column: 25, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [25, 26],
+    loc: {
+      start: { column: 25, line: 1 },
+      end: { column: 26, line: 1 },
+    },
+  },
+]
+`;

@@ -150,6 +150,13 @@ export function preprocessBabylonAST(ast: File): any {
             type: AST_NODE_TYPES.Identifier,
           };
         }
+        // Babel does not support TS 4.7 optional variance yet.
+        if (!node.in) {
+          node.in = false;
+        }
+        if (!node.out) {
+          node.out = false;
+        }
       },
       MethodDefinition(node) {
         /**

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import type Monaco from 'monaco-editor';
 import { useEffect, useRef, useState } from 'react';
-import type { WebLinter } from '@typescript-eslint/website-eslint';
 import type { SandboxInstance } from './useSandboxServices';
 import type { CommonEditorProps } from './types';
+import type { WebLinter } from '../linter/WebLinter';
 
 import { debounce } from '../lib/debounce';
-import { lintCode, LintCodeAction } from './lintCode';
+import { lintCode, LintCodeAction } from '../linter/lintCode';
 import { createProvideCodeActions } from './createProvideCodeActions';
 
 export interface LoadedEditorProps extends CommonEditorProps {
@@ -83,9 +83,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         );
       }
 
-      onEsASTChange(fatalMessage ?? webLinter.getAst());
-      onTsASTChange(fatalMessage ?? webLinter.getTsAst());
-      onScopeChange(fatalMessage ?? webLinter.getScope());
+      onEsASTChange(fatalMessage ?? webLinter.storedAST ?? '');
+      onTsASTChange(fatalMessage ?? webLinter.storedTsAST ?? '');
+      onScopeChange(fatalMessage ?? webLinter.storedScope ?? '');
       onSelect(sandboxInstance.editor.getPosition());
     }, 500),
     [code, jsx, sandboxInstance, rules, sourceType, tsConfig, webLinter],

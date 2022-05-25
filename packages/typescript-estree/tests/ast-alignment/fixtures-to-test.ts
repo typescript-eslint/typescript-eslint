@@ -453,6 +453,13 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * Babel doesn't support TS 4.7 new features yet.
+     */
+    'instantiation-expression',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
@@ -484,6 +491,19 @@ tester.addFixturePatternConfig('typescript/types', {
     'template-literal-type-2',
     'template-literal-type-3',
     'template-literal-type-4',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * Babel doesn't support TS 4.7 new feature yet.
+     */
+    'conditional-infer-with-constraint',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * Babel doesn't support TS 4.7 new features yet.
+     */
+    'optional-variance-in',
+    'optional-variance-out',
+    'optional-variance-in-out',
+    'optional-variance-in-and-out',
   ],
 });
 
