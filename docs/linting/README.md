@@ -85,27 +85,27 @@ With that configured, open a terminal to the root of your project, and run the f
 <TabItem value="npm">
 
 ```bash
-npx eslint . --ext .js,.jsx,.ts,.tsx
+npx eslint .
 ```
 
 </TabItem>
 <TabItem value="Yarn">
 
 ```bash
-yarn eslint . --ext .js,.jsx,.ts,.tsx
+yarn eslint .
 ```
 
 </TabItem>
 </Tabs>
 
-That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.
+That's it - ESLint will lint all TypeScript compatible files within the current folder, and will output the results to your terminal.
 
 You are also recommended to add an npm script in your package.json, so you don't have to repeat the same command every time you run ESLint.
 
 ```json title="package.json"
 {
   "scripts": {
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint ."
   }
 }
 ```
@@ -115,6 +115,10 @@ This way, you can invoke the `lint` script directly:
 ```bash npm2yarn
 npm run lint
 ```
+
+:::note
+If you use non-standard file extensions, you will need to explicitly tell ESLint to lint those extensions using the [`--ext` flag](https://eslint.org/docs/user-guide/command-line-interface#--ext)
+:::
 
 You can also get results in realtime inside most IDEs via a plugin - search your IDE's extension store.
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "5.25.0",
+  "version": "5.26.0",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "keywords": [
     "eslint",
@@ -32,13 +32,13 @@
     "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "eslint . --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.25.0",
+    "@typescript-eslint/types": "5.26.0",
     "eslint-visitor-keys": "^3.3.0"
   },
   "devDependencies": {

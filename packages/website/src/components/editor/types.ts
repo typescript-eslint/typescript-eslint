@@ -1,6 +1,6 @@
 import type Monaco from 'monaco-editor';
 import type { ConfigModel, SelectedRange } from '../types';
-import type { TSESTree } from '@typescript-eslint/website-eslint';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceFile } from 'typescript';
 
 export interface CommonEditorProps extends ConfigModel {
