@@ -92,7 +92,7 @@ foo ?? 'a string';
 foo ?? 'a string';
 foo ?? 'a string';
 
-const foo: ?string = 'bar';
+const foo: string | undefined = 'bar';
 foo ?? 'a string';
 foo ?? 'a string';
 

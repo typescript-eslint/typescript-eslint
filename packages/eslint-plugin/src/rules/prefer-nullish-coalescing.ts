@@ -36,7 +36,7 @@ export default util.createRule<Options, MessageIds>({
       preferNullish:
         'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
       preferNullishOverTernary:
-        'Prefer using nullish coalescing operator (`??`) instead of ternary expression, as it is simpler to read.',
+        'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
       suggestNullish: 'Fix to nullish coalescing operator (`??`).',
     },
     schema: [
@@ -279,7 +279,7 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
 }
 
 /**
- * This is for cases where we check both undefined and null.
+ * This is for ternary expressions where we check both undefined and null.
  * example: foo === undefined && foo === null ? 'a string' : foo
  * output: foo ?? 'a string'
  */
@@ -313,23 +313,22 @@ function isFixableExplicitTernary({
     return false;
   }
 
-  const isIdentifier = isEqualIndentierCurry(identifier);
-
   const hasUndefinedCheck =
-    (isIdentifier(left.left) && isUndefined(left.right)) ||
-    (isIdentifier(left.right) && isUndefined(left.left)) ||
-    (isIdentifier(right.left) && isUndefined(right.right)) ||
-    (isIdentifier(right.right) && isUndefined(right.left));
+    (util.isNodeEqual(identifier, left.left) && util.isUndefined(left.right)) ||
+    (util.isNodeEqual(identifier, left.right) && util.isUndefined(left.left)) ||
+    (util.isNodeEqual(identifier, right.left) &&
+      util.isUndefined(right.right)) ||
+    (util.isNodeEqual(identifier, right.right) && util.isUndefined(right.left));
 
   if (!hasUndefinedCheck) {
     return false;
   }
 
   const hasNullCheck =
-    (isIdentifier(left.left) && isNull(left.right)) ||
-    (isIdentifier(left.right) && isNull(left.left)) ||
-    (isIdentifier(right.left) && isNull(right.right)) ||
-    (isIdentifier(right.right) && isNull(right.left));
+    (util.isNodeEqual(identifier, left.left) && util.isNull(left.right)) ||
+    (util.isNodeEqual(identifier, left.right) && util.isNull(left.left)) ||
+    (util.isNodeEqual(identifier, right.left) && util.isNull(right.right)) ||
+    (util.isNodeEqual(identifier, right.right) && util.isNull(right.left));
 
   if (!hasNullCheck) {
     return false;
@@ -338,6 +337,11 @@ function isFixableExplicitTernary({
   return true;
 }
 
+/*
+ * this is for ternary expressions where == or != is used.
+ * example: foo == null ? 'a string' : a
+ * example: foo != undefined ? a : 'a string'
+ */
 function isFixableLooseTernary({
   node,
   identifier,
@@ -359,21 +363,26 @@ function isFixableLooseTernary({
     return false;
   }
 
-  const isIdentifier = isEqualIndentierCurry(identifier);
-
-  if (isIdentifier(right) && (isNull(left) || isUndefined(left))) {
+  if (
+    util.isNodeEqual(identifier, right) &&
+    (util.isNull(left) || util.isUndefined(left))
+  ) {
     return true;
   }
 
-  if (isIdentifier(left) && (isNull(right) || isUndefined(right))) {
+  if (
+    util.isNodeEqual(identifier, left) &&
+    (util.isNull(right) || util.isUndefined(right))
+  ) {
     return true;
   }
+
   return false;
 }
 
 /**
- * This is for cases where we check either undefined or null and fall back to
- * using type information to ensure that our checks are correct.
+ * This is for ternary expressions where we check only undefined or null and
+ * need to type information to ensure that our checks are still correct.
  * example: const foo:? string = 'bar';
  *          foo !== undefined ? foo : 'a string';
  * output: foo ?? 'a string'
@@ -398,9 +407,12 @@ function isFixableImplicitTernary({
   if (operator !== requiredOperator) {
     return false;
   }
-  const isIdentifier = isEqualIndentierCurry(identifier);
 
-  const i = isIdentifier(left) ? left : isIdentifier(right) ? right : null;
+  const i = util.isNodeEqual(identifier, left)
+    ? left
+    : util.isNodeEqual(identifier, right)
+    ? right
+    : null;
   if (!i) {
     return false;
   }
@@ -417,100 +429,20 @@ function isFixableImplicitTernary({
   const hasUndefinedType = (flags & ts.TypeFlags.Undefined) !== 0;
 
   if (
-    (hasUndefinedType && hasNullType) ||
-    (!hasUndefinedType && !hasNullType)
+    hasNullType &&
+    !hasUndefinedType &&
+    (util.isNull(right) || util.isNull(left))
   ) {
-    return false;
-  }
-
-  if (hasNullType && (isNull(right) || isNull(left))) {
     return true;
   }
 
-  if (hasUndefinedType && (isUndefined(right) || isUndefined(left))) {
-    return true;
-  }
-
-  return false;
-}
-
-function isEqualIndentierCurry(
-  a: TSESTree.Identifier | TSESTree.MemberExpression,
-) {
-  if (a.type === AST_NODE_TYPES.Identifier) {
-    return function (b: any): boolean {
-      if (a.type !== b.type) {
-        return false;
-      }
-      return !!a.name && !!b.name && a.name === b.name;
-    };
-  }
-  return function (b: any): boolean {
-    if (a.type !== b.type) {
-      return false;
-    }
-    return isEqualMemberExpression(a, b);
-  };
-}
-function isEqualMemberExpression(
-  a: TSESTree.MemberExpression,
-  b: TSESTree.MemberExpression,
-): boolean {
-  return (
-    isEqualMemberExpressionProperty(a.property, b.property) &&
-    isEqualMemberExpressionObject(a.object, b.object)
-  );
-}
-
-function isEqualMemberExpressionProperty(
-  a: TSESTree.MemberExpression['property'],
-  b: TSESTree.MemberExpression['property'],
-): boolean {
-  if (a.type !== b.type) {
-    return false;
-  }
-  if (a.type === AST_NODE_TYPES.ThisExpression) {
-    return true;
-  }
   if (
-    a.type === AST_NODE_TYPES.Literal ||
-    a.type === AST_NODE_TYPES.Identifier
+    hasUndefinedType &&
+    !hasNullType &&
+    (util.isUndefined(right) || util.isUndefined(left))
   ) {
-    return (
-      // @ts-ignore
-      (!!a.name && !!b.name && a.name === b.name) ||
-      // @ts-ignore
-      (!!a.value && !!b.value && a.value === b.value)
-    );
-  }
-  if (a.type === AST_NODE_TYPES.MemberExpression) {
-    return isEqualMemberExpression(a, b as typeof a);
-  }
-  return false;
-}
-
-function isEqualMemberExpressionObject(a: any, b: any): boolean {
-  if (a.type !== b.type) {
-    return false;
-  }
-  if (a.type === AST_NODE_TYPES.ThisExpression) {
     return true;
   }
-  if (a.type === AST_NODE_TYPES.Identifier) {
-    return a.name === b.name;
-  }
-  if (a.type === AST_NODE_TYPES.MemberExpression) {
-    return isEqualMemberExpression(a, b);
-  }
+
   return false;
-}
-
-function isUndefined(
-  i: TSESTree.Expression | TSESTree.PrivateIdentifier,
-): boolean {
-  return i.type === AST_NODE_TYPES.Identifier && i.name === 'undefined';
-}
-
-function isNull(i: TSESTree.Expression | TSESTree.PrivateIdentifier): boolean {
-  return i.type === AST_NODE_TYPES.Literal && i.value === null;
 }

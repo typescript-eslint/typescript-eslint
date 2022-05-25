@@ -96,6 +96,14 @@ x ?? 'foo';
       'null != x ? y : x;',
       'undefined != x ? y : x;',
       `
+declare const x: string;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | undefined;
+x === null ? x : y;
+      `,
+      `
 declare const x: string | null;
 x === undefined ? x : y;
       `,
