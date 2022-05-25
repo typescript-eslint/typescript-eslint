@@ -87,6 +87,8 @@ x ?? 'foo';
       'x === undefined || x === null ? x : y;',
       'x !== undefined || x === null ? x : y;',
       'x !== undefined || x === null ? y : x;',
+      'x === null || x === null ? y : x;',
+      'x === undefined || x === undefined ? y : x;',
       'x == null ? x : y;',
       'x == undefined ? x : y;',
       'x != null ? y : x;',
