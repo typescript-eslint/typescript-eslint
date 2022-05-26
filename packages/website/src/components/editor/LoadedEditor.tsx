@@ -72,7 +72,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
       // fallback when event is not preset, ts < 4.0.5
       if (!sandboxInstance.monaco.editor.onDidChangeMarkers) {
-        const markers = sandboxInstance.monaco.editor.getModelMarkers({});
+        const markers = sandboxInstance.monaco.editor.getModelMarkers({
+          resource: sandboxInstance.getModel().uri,
+        });
         onMarkersChange(
           parseMarkers(markers, codeActions, sandboxInstance.editor),
         );
@@ -109,7 +111,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       ),
       // may not be defined in ts < 4.0.5
       sandboxInstance.monaco.editor.onDidChangeMarkers?.(() => {
-        const markers = sandboxInstance.monaco.editor.getModelMarkers({});
+        const markers = sandboxInstance.monaco.editor.getModelMarkers({
+          resource: sandboxInstance.getModel().uri,
+        });
         onMarkersChange(
           parseMarkers(markers, codeActions, sandboxInstance.editor),
         );
