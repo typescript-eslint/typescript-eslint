@@ -999,6 +999,96 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        type Test<T> = T extends boolean? true :false
+      `,
+      output: `
+        type Test<T> = T extends boolean ? true : false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 48,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean?
+          true :false
+      `,
+      output: `
+        type Test<T> = T extends boolean ?
+          true : false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 16,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean?
+          true
+          :false
+      `,
+      output: `
+        type Test<T> = T extends boolean ?
+          true
+          : false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 11,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean
+          ?true:
+          false
+      `,
+      output: `
+        type Test<T> = T extends boolean
+          ? true :
+          false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 11,
+          line: 3,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 16,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
         interface Test {
           prop: string| number;
         }
