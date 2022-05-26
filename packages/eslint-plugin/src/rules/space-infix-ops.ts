@@ -69,7 +69,10 @@ export default util.createRule<Options, MessageIds>({
     };
 
     function isSpaceChar(token: TSESTree.Token): boolean {
-      return token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=';
+      return (
+        token.type === AST_TOKEN_TYPES.Punctuator &&
+        /^[=|?|:]$/.test(token.value)
+      );
     }
 
     function checkAndReportAssignmentSpace(
@@ -180,6 +183,21 @@ export default util.createRule<Options, MessageIds>({
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
     }
 
+    function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
+      const extendsTypeNode = sourceCode.getTokenByRangeStart(
+        node.extendsType.range[0],
+      )!;
+      const trueTypeNode = sourceCode.getTokenByRangeStart(
+        node.trueType.range[0],
+      )!;
+      const falseTypeNode = sourceCode.getTokenByRangeStart(
+        node.falseType.range[0],
+      );
+
+      checkAndReportAssignmentSpace(node, extendsTypeNode, trueTypeNode);
+      checkAndReportAssignmentSpace(node, trueTypeNode, falseTypeNode);
+    }
+
     return {
       ...rules,
       TSEnumMember: checkForEnumAssignmentSpace,
@@ -187,6 +205,7 @@ export default util.createRule<Options, MessageIds>({
       TSTypeAliasDeclaration: checkForTypeAliasAssignment,
       TSUnionType: checkForTypeAnnotationSpace,
       TSIntersectionType: checkForTypeAnnotationSpace,
+      TSConditionalType: checkForTypeConditional,
     };
   },
 });
