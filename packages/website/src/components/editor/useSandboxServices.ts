@@ -76,8 +76,14 @@ export const useSandboxServices = (
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+        const libs = ((window.ts as any).libs as string[]) ?? ['esnext'];
+
         const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
-          sandboxInstance.getCompilerOptions(),
+          {
+            ...sandboxInstance.getCompilerOptions(),
+            lib: libs.filter(item => !item.includes('.')),
+          },
           props.ts,
           true,
           window.ts,
