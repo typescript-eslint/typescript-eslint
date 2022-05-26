@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import type Monaco from 'monaco-editor';
-import type { TSESLint } from '@typescript-eslint/utils';
 import type { RuleDetails } from '../types';
 import type {
   createTypeScriptSandbox,
@@ -26,7 +25,6 @@ export interface SandboxServicesProps {
 export type SandboxInstance = ReturnType<typeof createTypeScriptSandbox>;
 
 export interface SandboxServices {
-  fixes: Map<string, TSESLint.Linter.LintMessage>;
   main: typeof Monaco;
   sandboxInstance: SandboxInstance;
   webLinter: WebLinter;
@@ -46,7 +44,6 @@ export const useSandboxServices = (
   }, [props.ts, loadedTs]);
 
   useEffect(() => {
-    const fixes = new Map<string, TSESLint.Linter.LintMessage>();
     let sandboxInstance: SandboxInstance | undefined;
     setLoadedTs(props.ts);
 
@@ -95,7 +92,6 @@ export const useSandboxServices = (
         props.onLoaded(webLinter.ruleNames, sandboxInstance.supportedVersions);
 
         setServices({
-          fixes,
           main,
           sandboxInstance,
           webLinter,
