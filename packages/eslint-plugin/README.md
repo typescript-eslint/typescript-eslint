@@ -59,8 +59,6 @@ You can also enable all the recommended rules for our plugin. Add `plugin:@types
 }
 ```
 
-**Note: Make sure to use `eslint --ext .js,.ts` since by [default](https://eslint.org/docs/user-guide/command-line-interface#--ext) `eslint` will only search for `.js` files.**
-
 ### Recommended Configs
 
 You can also use [`eslint:recommended`](https://eslint.org/docs/rules/) (the set of rules which are recommended for all projects by the ESLint Team) with this plugin:

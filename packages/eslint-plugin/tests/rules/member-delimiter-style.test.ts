@@ -3586,5 +3586,41 @@ type Foo = {
         },
       ],
     },
+    {
+      code: `
+type Foo = {
+  a: true; /** something */ /** some
+  thing */ b: true; /** something */ c: false; // something
+}
+      `,
+      output: `
+type Foo = {
+  a: true /** something */ /** some
+  thing */ b: true; /** something */ c: false // something
+}
+      `,
+      options: [
+        {
+          multiline: { delimiter: 'none' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedSemi',
+          line: 3,
+          column: 11,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 20,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 47,
+        },
+      ],
+    },
   ],
 });

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
 import type { ASTViewerBaseProps, ASTViewerModelMap } from './ast/types';
-import type { TSESTree } from '@typescript-eslint/website-eslint';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { serialize } from './ast/serializer/serializer';
 import { createESTreeSerializer } from './ast/serializer/serializerESTree';
 
