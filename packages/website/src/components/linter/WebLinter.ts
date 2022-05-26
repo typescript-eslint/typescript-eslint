@@ -40,7 +40,7 @@ export class WebLinter {
 
     this.linter.defineParser(PARSER_NAME, {
       parseForESLint: (text, options?: ParserOptions) => {
-        return this.eslintParse(text, compilerOptions, options);
+        return this.eslintParse(text, options);
       },
     });
 
@@ -70,7 +70,6 @@ export class WebLinter {
 
   eslintParse(
     code: string,
-    compilerOptions: CompilerOptions,
     eslintOptions: ParserOptions = {},
   ): TSESLint.Linter.ESLintParseResult {
     const isJsx = eslintOptions?.ecmaFeatures?.jsx ?? false;
@@ -80,7 +79,7 @@ export class WebLinter {
 
     const program = window.ts.createProgram(
       [fileName],
-      compilerOptions,
+      this.compilerOptions,
       this.host,
     );
     const tsAst = program.getSourceFile(fileName)!;
