@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as prettier from 'prettier';
 
 const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';
 
@@ -184,14 +185,24 @@ async function main(): Promise<void> {
     __dirname,
     '../packages/website/data/sponsors.json',
   );
-  fs.writeFileSync(
-    rcPath,
-    JSON.stringify(
-      allSponsorsConfig,
-      (_, value: unknown) => value ?? undefined,
-      2,
-    ),
+  fs.writeFileSync(rcPath, await stringifyObject(rcPath, allSponsorsConfig));
+}
+
+async function stringifyObject(
+  filePath: string,
+  data: unknown,
+): Promise<string> {
+  const config = await prettier.resolveConfig(filePath);
+  const text = JSON.stringify(
+    data,
+    (_, value: unknown) => value ?? undefined,
+    2,
   );
+
+  return prettier.format(text, {
+    ...config,
+    parser: 'json',
+  });
 }
 
 function getReportedTierSlug(slug: string, totalDonations: number): string {

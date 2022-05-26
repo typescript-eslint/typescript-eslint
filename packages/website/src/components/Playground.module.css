@@ -10,10 +10,6 @@
   border: 1px solid var(--ifm-color-emphasis-100);
 }
 
-.sourceCodeStandalone {
-  width: 100%;
-}
-
 .codeBlocks {
   display: flex;
   flex-direction: row;

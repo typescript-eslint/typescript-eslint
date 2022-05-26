@@ -9,6 +9,7 @@ import { debounce } from '../lib/debounce';
 import { lintCode, LintCodeAction } from '../linter/lintCode';
 import { createProvideCodeActions } from './createProvideCodeActions';
 import { createCompilerOptions } from '@site/src/components/editor/config';
+import { parseMarkers } from '../linter/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -25,6 +26,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
+  onMarkersChange,
   onChange,
   onSelect,
   rules,
@@ -35,7 +37,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   webLinter,
 }) => {
   const [decorations, setDecorations] = useState<string[]>([]);
-  const fixes = useRef(new Map<string, LintCodeAction>()).current;
+  const fixes = useRef(new Map<string, LintCodeAction[]>()).current;
 
   useEffect(() => {
     const config = createCompilerOptions(jsx, tsConfig);
@@ -107,6 +109,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           onChange(sandboxInstance.getModel().getValue());
         }, 500),
       ),
+      sandboxInstance.monaco.editor.onDidChangeMarkers(() => {
+        const markers = sandboxInstance.monaco.editor.getModelMarkers({});
+        onMarkersChange(parseMarkers(markers, fixes, sandboxInstance.editor));
+      }),
     ];
 
     return (): void => {
