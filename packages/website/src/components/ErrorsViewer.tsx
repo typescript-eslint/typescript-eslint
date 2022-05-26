@@ -83,7 +83,7 @@ export default function ErrorsViewer({
     [value],
   );
 
-  const [isLocked, setIsLocked] = useState<boolean>(false);
+  const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
     setIsLocked(false);
