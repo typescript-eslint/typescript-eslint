@@ -6,10 +6,13 @@ import type { CommonEditorProps } from './types';
 import type { WebLinter } from '../linter/WebLinter';
 
 import { debounce } from '../lib/debounce';
-import { lintCode, LintCodeAction } from '../linter/lintCode';
 import { createProvideCodeActions } from './createProvideCodeActions';
 import { createCompilerOptions } from '@site/src/components/editor/config';
-import { parseMarkers } from '../linter/utils';
+import {
+  parseMarkers,
+  parseLintResults,
+  LintCodeAction,
+} from '../linter/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -37,12 +40,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   webLinter,
 }) => {
   const [decorations, setDecorations] = useState<string[]>([]);
-  const fixes = useRef(new Map<string, LintCodeAction[]>()).current;
+  const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
 
   useEffect(() => {
     const config = createCompilerOptions(jsx, tsConfig);
-
-    webLinter.updateOptions(config);
+    webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
   }, [
     jsx,
@@ -56,17 +58,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       // eslint-disable-next-line no-console
       console.info('[Editor] linting triggered');
 
-      const [markers, fatalMessage, codeActions] = lintCode(
-        webLinter,
-        code,
-        rules,
-        jsx,
-        sourceType,
-      );
-      fixes.clear();
-      for (const codeAction of codeActions) {
-        fixes.set(codeAction[0], codeAction[1]);
-      }
+      webLinter.updateParserOptions(jsx, sourceType);
+
+      const messages = webLinter.lint(code, rules ?? {});
+
+      const markers = parseLintResults(messages, codeActions);
 
       sandboxInstance.monaco.editor.setModelMarkers(
         sandboxInstance.editor.getModel()!,
@@ -74,15 +70,17 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         markers,
       );
 
-      if (fatalMessage) {
-        setDecorations(
-          sandboxInstance.editor.deltaDecorations(decorations, []),
+      // fallback when event is not preset, ts < 4.0.5
+      if (!sandboxInstance.monaco.editor.onDidChangeMarkers) {
+        const markers = sandboxInstance.monaco.editor.getModelMarkers({});
+        onMarkersChange(
+          parseMarkers(markers, codeActions, sandboxInstance.editor),
         );
       }
 
-      onEsASTChange(fatalMessage ?? webLinter.storedAST ?? '');
-      onTsASTChange(fatalMessage ?? webLinter.storedTsAST ?? '');
-      onScopeChange(fatalMessage ?? webLinter.storedScope ?? '');
+      onEsASTChange(webLinter.storedAST);
+      onTsASTChange(webLinter.storedTsAST);
+      onScopeChange(webLinter.storedScope);
       onSelect(sandboxInstance.editor.getPosition());
     }, 500),
     [code, jsx, sandboxInstance, rules, sourceType, tsConfig, webLinter],
@@ -92,7 +90,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const subscriptions = [
       main.languages.registerCodeActionProvider(
         'typescript',
-        createProvideCodeActions(fixes),
+        createProvideCodeActions(codeActions),
       ),
       sandboxInstance.editor.onDidChangeCursorPosition(
         debounce(() => {
@@ -109,15 +107,20 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           onChange(sandboxInstance.getModel().getValue());
         }, 500),
       ),
-      sandboxInstance.monaco.editor.onDidChangeMarkers(() => {
+      // may not be defined in ts < 4.0.5
+      sandboxInstance.monaco.editor.onDidChangeMarkers?.(() => {
         const markers = sandboxInstance.monaco.editor.getModelMarkers({});
-        onMarkersChange(parseMarkers(markers, fixes, sandboxInstance.editor));
+        onMarkersChange(
+          parseMarkers(markers, codeActions, sandboxInstance.editor),
+        );
       }),
     ];
 
     return (): void => {
       for (const subscription of subscriptions) {
-        subscription.dispose();
+        if (subscription) {
+          subscription.dispose();
+        }
       }
     };
   }, []);

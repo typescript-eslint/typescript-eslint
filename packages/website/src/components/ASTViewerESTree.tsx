@@ -7,7 +7,7 @@ import { serialize } from './ast/serializer/serializer';
 import { createESTreeSerializer } from './ast/serializer/serializerESTree';
 
 export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
-  readonly value: TSESTree.BaseNode | string;
+  readonly value: TSESTree.BaseNode;
 }
 
 export default function ASTViewerESTree({
@@ -18,12 +18,8 @@ export default function ASTViewerESTree({
   const [model, setModel] = useState<string | ASTViewerModelMap>('');
 
   useEffect(() => {
-    if (typeof value === 'string') {
-      setModel(value);
-    } else {
-      const astSerializer = createESTreeSerializer();
-      setModel(serialize(value, astSerializer));
-    }
+    const astSerializer = createESTreeSerializer();
+    setModel(serialize(value, astSerializer));
   }, [value]);
 
   return (

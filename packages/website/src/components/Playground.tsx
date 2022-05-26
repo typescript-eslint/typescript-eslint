@@ -15,7 +15,7 @@ import { shallowEqual } from './lib/shallowEqual';
 import ASTViewerESTree from './ASTViewerESTree';
 import ASTViewerTS from './ASTViewerTS';
 
-import type { RuleDetails, SelectedRange } from './types';
+import type { RuleDetails, SelectedRange, ErrorItem } from './types';
 
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceFile } from 'typescript';
@@ -50,10 +50,10 @@ function Playground(): JSX.Element {
     tsConfig: {},
   });
   const { colorMode } = useColorMode();
-  const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
-  const [tsAst, setTsAST] = useState<SourceFile | string | null>();
-  const [scope, setScope] = useState<Record<string, unknown> | string | null>();
-  const [markers, setMarkers] = useState<Monaco.editor.IMarker[]>();
+  const [esAst, setEsAst] = useState<TSESTree.Program | null>();
+  const [tsAst, setTsAST] = useState<SourceFile | null>();
+  const [scope, setScope] = useState<Record<string, unknown> | null>();
+  const [markers, setMarkers] = useState<ErrorItem[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -99,7 +99,7 @@ function Playground(): JSX.Element {
           />
         </div>
         <div className={styles.astViewer}>
-          {(tsAst && state.showAST === 'ts' && (
+          {(state.showAST === 'ts' && tsAst && (
             <ASTViewerTS
               value={tsAst}
               position={position}

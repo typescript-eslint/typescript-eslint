@@ -5,7 +5,6 @@ import type {
   System,
 } from 'typescript';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type { ParserServices } from '@typescript-eslint/utils/dist/ts-estree';
 import type { ParserOptions } from '@typescript-eslint/types';
 import type { LintUtils } from '@typescript-eslint/website-eslint';
 
@@ -22,6 +21,16 @@ export class WebLinter {
   public storedScope?: Record<string, unknown>;
 
   private compilerOptions: CompilerOptions;
+  private readonly parserOptions: ParserOptions = {
+    ecmaFeatures: {
+      jsx: false,
+      globalReturn: false,
+    },
+    ecmaVersion: 'latest',
+    project: ['./tsconfig.json'],
+    sourceType: 'module',
+  };
+
   private linter: TSESLint.Linter;
   private lintUtils: LintUtils;
 
@@ -54,17 +63,21 @@ export class WebLinter {
 
   lint(
     code: string,
-    parserOptions: ParserOptions,
     rules: TSESLint.Linter.RulesRecord,
   ): TSESLint.Linter.LintMessage[] {
     return this.linter.verify(code, {
       parser: PARSER_NAME,
-      parserOptions,
+      parserOptions: this.parserOptions,
       rules,
     });
   }
 
-  updateOptions(options: CompilerOptions = {}): void {
+  updateParserOptions(jsx?: boolean, sourceType?: TSESLint.SourceType): void {
+    this.parserOptions.ecmaFeatures!.jsx = jsx ?? false;
+    this.parserOptions.sourceType = sourceType ?? 'module';
+  }
+
+  updateCompilerOptions(options: CompilerOptions = {}): void {
     this.compilerOptions = options;
   }
 
@@ -75,13 +88,17 @@ export class WebLinter {
     const isJsx = eslintOptions?.ecmaFeatures?.jsx ?? false;
     const fileName = isJsx ? '/demo.tsx' : '/demo.ts';
 
+    this.storedAST = undefined;
+    this.storedTsAST = undefined;
+    this.storedScope = undefined;
+
     this.host.writeFile(fileName, code, false);
 
-    const program = window.ts.createProgram(
-      [fileName],
-      this.compilerOptions,
-      this.host,
-    );
+    const program = window.ts.createProgram({
+      rootNames: [fileName],
+      options: this.compilerOptions,
+      host: this.host,
+    });
     const tsAst = program.getSourceFile(fileName)!;
 
     const { estree: ast, astMaps } = this.lintUtils.astConverter(
@@ -103,16 +120,14 @@ export class WebLinter {
     this.storedTsAST = tsAst;
     this.storedScope = scopeManager as unknown as Record<string, unknown>;
 
-    const services: ParserServices = {
-      hasFullTypeInformation: true,
-      program,
-      esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
-      tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
-    };
-
     return {
       ast,
-      services,
+      services: {
+        hasFullTypeInformation: true,
+        program,
+        esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
+        tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
+      },
       scopeManager,
       visitorKeys: this.lintUtils.visitorKeys,
     };
