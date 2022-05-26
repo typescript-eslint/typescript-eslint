@@ -12,6 +12,7 @@ import { WebLinter } from '../linter/WebLinter';
 import { sandboxSingleton } from './loadSandbox';
 import { editorEmbedId } from './EditorEmbed';
 import { useColorMode } from '@docusaurus/theme-common';
+import { createCompilerOptions } from '@site/src/components/editor/config';
 
 export interface SandboxServicesProps {
   readonly jsx?: boolean;
@@ -51,13 +52,7 @@ export const useSandboxServices = (
 
     sandboxSingleton(props.ts)
       .then(async ({ main, sandboxFactory, ts, lintUtils }) => {
-        const compilerOptions: Monaco.languages.typescript.CompilerOptions = {
-          noResolve: true,
-          target: main.languages.typescript.ScriptTarget.ESNext,
-          jsx: props.jsx ? main.languages.typescript.JsxEmit.React : undefined,
-          lib: ['es2021', 'esnext'],
-          module: main.languages.typescript.ModuleKind.ESNext,
-        };
+        const compilerOptions = createCompilerOptions(props.jsx);
 
         const sandboxConfig: Partial<SandboxConfig> = {
           text: '',

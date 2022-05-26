@@ -8,6 +8,7 @@ import type { WebLinter } from '../linter/WebLinter';
 import { debounce } from '../lib/debounce';
 import { lintCode, LintCodeAction } from '../linter/lintCode';
 import { createProvideCodeActions } from './createProvideCodeActions';
+import { createCompilerOptions } from '@site/src/components/editor/config';
 import { parseMarkers } from '../linter/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
@@ -39,13 +40,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   const fixes = useRef(new Map<string, LintCodeAction[]>()).current;
 
   useEffect(() => {
-    const config = {
-      noResolve: true,
-      target: main.languages.typescript.ScriptTarget.ESNext,
-      module: main.languages.typescript.ModuleKind.ESNext,
-      ...tsConfig,
-      jsx: jsx ? main.languages.typescript.JsxEmit.React : undefined,
-    };
+    const config = createCompilerOptions(jsx, tsConfig);
 
     webLinter.updateOptions(config);
     sandboxInstance.setCompilerSettings(config);
