@@ -108,7 +108,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     sandboxInstance.setCompilerSettings(config);
 
     const text = JSON.stringify({ compilerOptions: tsConfig ?? {} }, null, 4);
-    if (text === tabs.tsconfig.getValue()) {
+    if (text !== tabs.tsconfig.getValue()) {
       tabs.tsconfig.setValue(text);
     }
   }, [jsx, tsConfig]);
