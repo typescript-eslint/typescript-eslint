@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { CompilerFlags } from '../types';
+import type { CompilerFlags, ConfigModel } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
 
 interface ModalTypeScriptProps {
   readonly isOpen: boolean;
-  readonly onClose: (config?: CompilerFlags) => void;
+  readonly onClose: (config?: Partial<ConfigModel>) => void;
   readonly config?: CompilerFlags;
 }
 
@@ -69,7 +69,7 @@ function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
         Object.entries(newConfig).filter(checkOptions),
       );
       if (!shallowEqual(cfg, props.config)) {
-        props.onClose(cfg);
+        props.onClose({ tsConfig: cfg });
       } else {
         props.onClose();
       }

@@ -20,7 +20,6 @@
   flex-direction: row;
   height: 100%;
   width: calc(100vw - 20rem);
-  background: var(--playground-main-color);
 }
 
 .astViewer {
@@ -45,6 +44,9 @@
 }
 
 .tabContainer {
+  display: flex;
+  justify-content: space-between;
+  background: var(--playground-main-color);
   border-bottom: 1px solid var(--playground-secondary-color);
 }
 
@@ -55,6 +57,10 @@
   color: var(--ifm-color-emphasis-600);
   padding: 0.5rem 1rem;
   cursor: pointer;
+}
+
+.tabStyle svg {
+  margin-left: 0.3rem;
 }
 
 .tabStyle:hover {

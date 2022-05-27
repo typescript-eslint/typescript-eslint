@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { RuleDetails, RulesRecord, RuleEntry } from '../types';
+import type {
+  RuleDetails,
+  RulesRecord,
+  RuleEntry,
+  ConfigModel,
+} from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
 
 export interface ModalEslintProps {
   readonly isOpen: boolean;
-  readonly onClose: (value?: RulesRecord) => void;
+  readonly onClose: (value?: Partial<ConfigModel>) => void;
   readonly ruleOptions: RuleDetails[];
   readonly rules: RulesRecord;
 }
@@ -65,7 +70,7 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
           .filter(checkOptions),
       );
       if (!shallowEqual(cfg, props.rules)) {
-        props.onClose(cfg);
+        props.onClose({ rules: cfg });
       } else {
         props.onClose();
       }
