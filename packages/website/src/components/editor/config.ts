@@ -53,7 +53,6 @@ export function getEslintSchema(
         additionalProperties: false,
       },
     },
-    additionalProperties: false,
   };
 }
 
@@ -72,9 +71,7 @@ export function getTsConfigSchema(): JSONSchema4 {
       compilerOptions: {
         type: 'object',
         properties: properties,
-        additionalProperties: false,
       },
     },
-    additionalProperties: false,
   };
 }

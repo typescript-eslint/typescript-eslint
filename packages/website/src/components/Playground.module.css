@@ -100,4 +100,9 @@
     height: 30rem;
     width: 100%;
   }
+
+  .astViewer {
+    height: auto;
+    max-height: 30rem;
+  }
 }
