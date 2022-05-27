@@ -48,10 +48,9 @@ export function createEditOperation(
 export function parseMarkers(
   markers: Monaco.editor.IMarker[],
   fixes: Map<string, LintCodeAction[]>,
-  editor: Monaco.editor.IStandaloneCodeEditor,
+  model: Monaco.editor.ITextModel,
 ): ErrorItem[] {
   return markers.map(marker => {
-    const isTypescript = marker.owner === 'typescript';
     const code =
       typeof marker.code === 'string' ? marker.code : marker.code?.value ?? '';
     const uri = createURI(marker);
@@ -61,17 +60,20 @@ export function parseMarkers(
         return {
           message: item.message,
           fix(): void {
-            const model = editor.getModel()!;
-            editor.executeEdits(model.getValue(), [
-              createEditOperation(model, item),
-            ]);
+            model.applyEdits([createEditOperation(model, item)]);
           },
         };
       }) ?? [];
 
     return {
-      group: isTypescript ? 'TypeScript' : code,
-      message: (isTypescript ? `TS${code}: ` : '') + marker.message,
+      group:
+        marker.owner === 'eslint'
+          ? code
+          : marker.owner === 'typescript'
+          ? 'TypeScript'
+          : marker.owner,
+      message:
+        (marker.owner !== 'eslint' && code ? `${code}: ` : '') + marker.message,
       location: `${marker.startLineNumber}:${marker.startColumn} - ${marker.endLineNumber}:${marker.endColumn}`,
       severity: marker.severity,
       hasFixers: fixers.length > 0,

@@ -59,6 +59,9 @@ function Playground(): JSX.Element {
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedRange, setSelectedRange] = useReducer(rangeReducer, null);
   const [position, setPosition] = useState<Monaco.Position | null>(null);
+  const [activeTab, setTab] = useState<'code' | 'tsconfig' | 'eslintrc'>(
+    'code',
+  );
 
   return (
     <div className={styles.codeContainer}>
@@ -74,10 +77,31 @@ function Playground(): JSX.Element {
       <div className={styles.codeBlocks}>
         <div className={clsx(styles.sourceCode)}>
           {isLoading && <Loader />}
+          <div>
+            <button
+              disabled={activeTab === 'code'}
+              onClick={(): void => setTab('code')}
+            >
+              code.ts
+            </button>
+            <button
+              disabled={activeTab === 'tsconfig'}
+              onClick={(): void => setTab('tsconfig')}
+            >
+              tsconfig.json
+            </button>
+            <button
+              disabled={activeTab === 'eslintrc'}
+              onClick={(): void => setTab('eslintrc')}
+            >
+              .eslintrc
+            </button>
+          </div>
           <EditorEmbed />
           <LoadingEditor
             ts={state.ts}
             jsx={state.jsx}
+            activeTab={activeTab}
             code={state.code}
             tsConfig={state.tsConfig}
             darkTheme={colorMode === 'dark'}
@@ -89,7 +113,7 @@ function Playground(): JSX.Element {
             onScopeChange={setScope}
             onMarkersChange={setMarkers}
             decoration={selectedRange}
-            onChange={(code): void => setState({ code: code })}
+            onChange={setState}
             onLoaded={(ruleNames, tsVersions): void => {
               setRuleNames(ruleNames);
               setTSVersion(tsVersions);

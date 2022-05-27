@@ -12,6 +12,8 @@ export interface RuleDetails {
   description?: string;
 }
 
+export type TabType = 'code' | 'tsconfig' | 'eslintrc';
+
 export interface ConfigModel {
   jsx?: boolean;
   sourceType?: SourceType;

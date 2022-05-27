@@ -61,6 +61,10 @@ export class WebLinter {
     });
   }
 
+  getRules(): [string, TSESLint.RuleModule<string, unknown[]>][] {
+    return Array.from(this.linter.getRules());
+  }
+
   lint(
     code: string,
     rules: TSESLint.Linter.RulesRecord,
