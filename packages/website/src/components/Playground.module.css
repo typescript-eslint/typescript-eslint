@@ -50,6 +50,10 @@
   border-bottom: 1px solid var(--playground-secondary-color);
 }
 
+.tabCode {
+  height: calc(100%);
+}
+
 .tabStyle {
   border: none;
   border-right: 1px solid var(--playground-secondary-color);
@@ -70,4 +74,30 @@
 .tabStyle:disabled {
   background: var(--playground-secondary-color);
   color: var(--ifm-color-emphasis-900);
+}
+
+@media only screen and (max-width: 996px) {
+  .codeContainer {
+    display: block;
+    width: 100%;
+    position: static;
+  }
+  .codeBlocks {
+    display: block;
+    width: 100%;
+  }
+
+  .options {
+    width: 100%;
+  }
+
+  .tabCode {
+    height: calc(30rem - 3.2rem);
+  }
+
+  .astViewer,
+  .sourceCode {
+    height: 30rem;
+    width: 100%;
+  }
 }

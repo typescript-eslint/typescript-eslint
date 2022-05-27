@@ -29,12 +29,6 @@ export function getEslintSchema(
   let definitions = {};
   const properties = rules.reduce<Record<string, JSONSchema4>>(
     (rules, [name, config]) => {
-      const additional = !config.meta.schema
-        ? []
-        : Array.isArray(config.meta.schema)
-        ? (config.meta.schema as JSONSchema4[])
-        : [config.meta.schema];
-
       if ('definitions' in config.meta.schema) {
         definitions = {
           ...definitions,
@@ -56,9 +50,7 @@ export function getEslintSchema(
                 type: ['string', 'number'],
                 enum: ['off', 'warn', 'error', 0, 1, 2],
               },
-              ...additional,
             ],
-            additionalItems: false,
           },
         ],
       };

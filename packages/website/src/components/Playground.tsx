@@ -113,7 +113,9 @@ function Playground(): JSX.Element {
             change={setTab}
             showModal={(): void => setShowModal(activeTab)}
           />
-          <EditorEmbed />
+          <div className={styles.tabCode}>
+            <EditorEmbed />
+          </div>
           <LoadingEditor
             ts={state.ts}
             jsx={state.jsx}
