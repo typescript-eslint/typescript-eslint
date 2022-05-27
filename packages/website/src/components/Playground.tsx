@@ -15,12 +15,13 @@ import { shallowEqual } from './lib/shallowEqual';
 import ASTViewerESTree from './ASTViewerESTree';
 import ASTViewerTS from './ASTViewerTS';
 
-import type { RuleDetails, SelectedRange, ErrorItem } from './types';
+import type { RuleDetails, SelectedRange, ErrorItem, TabType } from './types';
 
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceFile } from 'typescript';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 import ErrorsViewer from '@site/src/components/ErrorsViewer';
+import EditorTabs from '@site/src/components/EditorTabs';
 
 function rangeReducer<T extends SelectedRange | null>(
   prevState: T,
@@ -59,9 +60,7 @@ function Playground(): JSX.Element {
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedRange, setSelectedRange] = useReducer(rangeReducer, null);
   const [position, setPosition] = useState<Monaco.Position | null>(null);
-  const [activeTab, setTab] = useState<'code' | 'tsconfig' | 'eslintrc'>(
-    'code',
-  );
+  const [activeTab, setTab] = useState<TabType>('code');
 
   return (
     <div className={styles.codeContainer}>
@@ -77,26 +76,11 @@ function Playground(): JSX.Element {
       <div className={styles.codeBlocks}>
         <div className={clsx(styles.sourceCode)}>
           {isLoading && <Loader />}
-          <div>
-            <button
-              disabled={activeTab === 'code'}
-              onClick={(): void => setTab('code')}
-            >
-              code.ts
-            </button>
-            <button
-              disabled={activeTab === 'tsconfig'}
-              onClick={(): void => setTab('tsconfig')}
-            >
-              tsconfig.json
-            </button>
-            <button
-              disabled={activeTab === 'eslintrc'}
-              onClick={(): void => setTab('eslintrc')}
-            >
-              .eslintrc
-            </button>
-          </div>
+          <EditorTabs
+            tabs={['code', 'tsconfig', 'eslintrc']}
+            activeTab={activeTab}
+            change={setTab}
+          />
           <EditorEmbed />
           <LoadingEditor
             ts={state.ts}

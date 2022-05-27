@@ -1,13 +1,18 @@
+:root {
+  --playground-main-color: var(--ifm-background-surface-color);
+  --playground-secondary-color: var(--ifm-color-emphasis-100);
+}
+
 .options {
   width: 20rem;
-  background: var(--ifm-background-surface-color);
+  background: var(--playground-main-color);
   overflow: auto;
 }
 
 .sourceCode {
   height: 100%;
   width: 50%;
-  border: 1px solid var(--ifm-color-emphasis-100);
+  border: 1px solid var(--playground-secondary-color);
 }
 
 .codeBlocks {
@@ -15,12 +20,13 @@
   flex-direction: row;
   height: 100%;
   width: calc(100vw - 20rem);
+  background: var(--playground-main-color);
 }
 
 .astViewer {
   height: 100%;
   width: 50%;
-  border: 1px solid var(--ifm-color-emphasis-100);
+  border: 1px solid var(--playground-secondary-color);
   padding: 0;
   overflow: auto;
   word-wrap: initial;
@@ -36,4 +42,26 @@
   height: calc(100% - var(--ifm-navbar-height));
   top: var(--ifm-navbar-height);
   z-index: calc(var(--ifm-z-index-fixed) - 1);
+}
+
+.tabContainer {
+  border-bottom: 1px solid var(--playground-secondary-color);
+}
+
+.tabStyle {
+  border: none;
+  border-right: 1px solid var(--playground-secondary-color);
+  background: var(--playground-main-color);
+  color: var(--ifm-color-emphasis-600);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.tabStyle:hover {
+  background: var(--playground-secondary-color);
+}
+
+.tabStyle:disabled {
+  background: var(--playground-secondary-color);
+  color: var(--ifm-color-emphasis-900);
 }
