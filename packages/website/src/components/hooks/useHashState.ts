@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import type { CompilerFlags, ConfigModel, RulesRecord } from '../types';
+import type { ConfigModel } from '../types';
 
 import * as lz from 'lzstring.ts';
 import { shallowEqual } from '../lib/shallowEqual';
+import { toJsonConfig } from '@site/src/components/config/utils';
 
 function writeQueryParam(value: string): string {
   return lz.LZString.compressToEncodedURIComponent(value);
@@ -27,6 +28,19 @@ function readShowAST(value: string | null): 'ts' | 'scope' | 'es' | boolean {
   return Boolean(value);
 }
 
+function readLegacyParam(
+  data: string | null,
+  prop: string,
+): string | undefined {
+  try {
+    return toJsonConfig(JSON.parse(readQueryParam(data, '{}')), prop);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e, data, prop);
+  }
+  return undefined;
+}
+
 const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
   if (!hash) {
     return;
@@ -34,7 +48,26 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
 
   try {
     const searchParams = new URLSearchParams(hash);
+
+    let eslintrc: string | undefined;
+    if (searchParams.has('eslintrc')) {
+      eslintrc = readQueryParam(searchParams.get('eslintrc'), '');
+    } else if (searchParams.has('rules')) {
+      eslintrc = readLegacyParam(searchParams.get('rules'), 'rules');
+    }
+
+    let tsconfig: string | undefined;
+    if (searchParams.has('tsconfig')) {
+      tsconfig = readQueryParam(searchParams.get('tsconfig'), '');
+    } else if (searchParams.has('tsConfig')) {
+      tsconfig = readLegacyParam(
+        searchParams.get('tsConfig'),
+        'compilerOptions',
+      );
+    }
+
     return {
+      // @ts-expect-error: process.env.TS_VERSION
       ts: (searchParams.get('ts') ?? process.env.TS_VERSION).trim(),
       jsx: searchParams.has('jsx'),
       showAST:
@@ -47,16 +80,8 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
       code: searchParams.has('code')
         ? readQueryParam(searchParams.get('code'), '')
         : '',
-      rules: searchParams.has('rules')
-        ? (JSON.parse(
-            readQueryParam(searchParams.get('rules'), '{}'),
-          ) as RulesRecord)
-        : undefined,
-      tsConfig: searchParams.has('tsConfig')
-        ? (JSON.parse(
-            readQueryParam(searchParams.get('tsConfig'), '{}'),
-          ) as CompilerFlags)
-        : undefined,
+      eslintrc: eslintrc,
+      tsconfig: tsconfig,
     };
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -73,11 +98,11 @@ const writeStateToUrl = (newState: ConfigModel): string => {
       sourceType: newState.sourceType,
       showAST: newState.showAST,
       code: newState.code ? writeQueryParam(newState.code) : undefined,
-      rules: newState.rules
-        ? writeQueryParam(JSON.stringify(newState.rules))
+      eslintrc: newState.eslintrc
+        ? writeQueryParam(newState.eslintrc)
         : undefined,
-      tsConfig: newState.tsConfig
-        ? writeQueryParam(JSON.stringify(newState.tsConfig))
+      tsconfig: newState.tsconfig
+        ? writeQueryParam(newState.tsconfig)
         : undefined,
     })
       .filter(item => item[1])
@@ -116,11 +141,7 @@ function useHashState(
 
   useEffect(() => {
     const newState = { ...state, ...tmpState };
-    if (
-      !shallowEqual(newState, state) ||
-      !shallowEqual(newState.rules, state.rules) ||
-      !shallowEqual(newState.tsConfig, state.tsConfig)
-    ) {
+    if (!shallowEqual(newState, state)) {
       const newHash = writeStateToUrl(newState);
       setState(newState);
       setHash(newHash);

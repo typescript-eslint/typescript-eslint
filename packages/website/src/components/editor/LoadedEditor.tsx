@@ -11,20 +11,19 @@ import type { CommonEditorProps } from './types';
 import type { TabType } from '../types';
 import type { WebLinter } from '../linter/WebLinter';
 
-import { parse } from 'json5';
 import { debounce } from '../lib/debounce';
 import { createProvideCodeActions } from './createProvideCodeActions';
 import {
   createCompilerOptions,
   getEslintSchema,
   getTsConfigSchema,
-} from '@site/src/components/editor/config';
+} from './config';
 import {
   parseMarkers,
   parseLintResults,
   LintCodeAction,
 } from '../linter/utils';
-import { ConfigModel } from '../types';
+import { parseESLintRC, parseTSConfig } from '../config/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -44,11 +43,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   onMarkersChange,
   onChange,
   onSelect,
-  rules,
   sandboxInstance,
   showAST,
   sourceType,
-  tsConfig,
+  tsconfig,
+  eslintrc,
   webLinter,
   activeTab,
 }) => {
@@ -71,54 +70,34 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, []);
 
   useEffect(() => {
-    // TODO: find a better way we should not convert data from and to json so many times,
-    // TODO: all configs should be stored as string and parsed only when needed
-    const update: Partial<ConfigModel> = {};
-    try {
-      const eslintrc: unknown = parse(tabs.eslintrc.getValue());
-      if (eslintrc && typeof eslintrc === 'object' && 'rules' in eslintrc) {
-        // @ts-expect-error: we have to do something about this
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        update.rules = eslintrc.rules ?? {};
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+    const config = createCompilerOptions(jsx, parseTSConfig(tsconfig));
+    webLinter.updateCompilerOptions(config);
+    sandboxInstance.setCompilerSettings(config);
+  }, [jsx, tsconfig]);
+
+  useEffect(() => {
+    if (tsconfig !== tabs.tsconfig.getValue()) {
+      tabs.tsconfig.setValue(tsconfig ?? '{}');
     }
-    try {
-      const config: unknown = parse(tabs.tsconfig.getValue());
-      if (config && typeof config === 'object' && 'compilerOptions' in config) {
-        // @ts-expect-error: we have to do something about this
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        update.tsConfig = config.compilerOptions ?? {};
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
+  }, [tsconfig]);
+
+  useEffect(() => {
+    webLinter.updateRules(parseESLintRC(eslintrc));
+
+    if (eslintrc !== tabs.eslintrc.getValue()) {
+      tabs.eslintrc.setValue(eslintrc ?? '{}');
     }
-    onChange(update);
+  }, [eslintrc]);
+
+  useEffect(() => {
+    onChange({
+      eslintrc: tabs.eslintrc.getValue(),
+      tsconfig: tabs.tsconfig.getValue(),
+    });
 
     sandboxInstance.editor.setModel(tabs[activeTab]);
     updateMarkers();
   }, [activeTab]);
-
-  useEffect(() => {
-    const config = createCompilerOptions(jsx, tsConfig);
-    webLinter.updateCompilerOptions(config);
-    sandboxInstance.setCompilerSettings(config);
-
-    const text = JSON.stringify({ compilerOptions: tsConfig ?? {} }, null, 4);
-    if (text !== tabs.tsconfig.getValue()) {
-      tabs.tsconfig.setValue(text);
-    }
-  }, [jsx, tsConfig]);
-
-  useEffect(() => {
-    const text = JSON.stringify({ rules: rules ?? {} }, null, 4);
-    if (text !== tabs.eslintrc.getValue()) {
-      tabs.eslintrc.setValue(text);
-    }
-  }, [rules]);
 
   useEffect(
     debounce(() => {
@@ -127,7 +106,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
       webLinter.updateParserOptions(jsx, sourceType);
 
-      const messages = webLinter.lint(code, rules ?? {});
+      const messages = webLinter.lint(code);
 
       const markers = parseLintResults(messages, codeActions);
 
@@ -147,7 +126,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       onScopeChange(webLinter.storedScope);
       onSelect(sandboxInstance.editor.getPosition());
     }, 500),
-    [code, jsx, rules, sourceType, tsConfig, webLinter],
+    [code, jsx, tsconfig, eslintrc, sourceType, webLinter],
   );
 
   useEffect(() => {
@@ -158,7 +137,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         {
           uri: 'eslint-schema.json', // id of the first schema
           fileMatch: [tabs.eslintrc.uri.toString()], // associate with our model
-          schema: getEslintSchema(webLinter.getRules()),
+          schema: getEslintSchema(webLinter.ruleNames),
         },
         {
           uri: 'ts-schema.json', // id of the first schema

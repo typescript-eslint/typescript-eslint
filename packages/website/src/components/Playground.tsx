@@ -55,8 +55,15 @@ function Playground(): JSX.Element {
     sourceType: 'module',
     code: '',
     ts: process.env.TS_VERSION!,
-    rules: {},
-    tsConfig: {},
+    // Default TS config
+    tsconfig:
+      '{\n' +
+      '  "compilerOptions": {\n' +
+      '    "strictNullChecks": true\n' +
+      '  }\n' +
+      '}',
+    // Default eslint config
+    eslintrc: '{\n' + '  "rules": {\n' + '  }\n' + '}',
   });
   const { colorMode } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();
@@ -83,17 +90,17 @@ function Playground(): JSX.Element {
 
   return (
     <div className={styles.codeContainer}>
-      {state.rules && ruleNames.length > 0 && (
+      {ruleNames.length > 0 && (
         <ConfigEslint
           isOpen={showModal === 'eslintrc'}
           ruleOptions={ruleNames}
-          rules={state.rules}
+          config={state.eslintrc}
           onClose={updateModal}
         />
       )}
       <ConfigTypeScript
         isOpen={showModal === 'tsconfig'}
-        config={state.tsConfig}
+        config={state.tsconfig}
         onClose={updateModal}
       />
       <div className={clsx(styles.options, 'thin-scrollbar')}>
@@ -121,10 +128,10 @@ function Playground(): JSX.Element {
             jsx={state.jsx}
             activeTab={activeTab}
             code={state.code}
-            tsConfig={state.tsConfig}
+            tsconfig={state.tsconfig}
+            eslintrc={state.eslintrc}
             darkTheme={colorMode === 'dark'}
             sourceType={state.sourceType}
-            rules={state.rules}
             showAST={state.showAST}
             onEsASTChange={setEsAst}
             onTsASTChange={setTsAST}

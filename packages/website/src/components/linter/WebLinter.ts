@@ -33,6 +33,7 @@ export class WebLinter {
 
   private linter: TSESLint.Linter;
   private lintUtils: LintUtils;
+  private rules: TSESLint.Linter.RulesRecord = {};
 
   public ruleNames: { name: string; description?: string }[];
 
@@ -61,19 +62,16 @@ export class WebLinter {
     });
   }
 
-  getRules(): [string, TSESLint.RuleModule<string, unknown[]>][] {
-    return Array.from(this.linter.getRules());
-  }
-
-  lint(
-    code: string,
-    rules: TSESLint.Linter.RulesRecord,
-  ): TSESLint.Linter.LintMessage[] {
+  lint(code: string): TSESLint.Linter.LintMessage[] {
     return this.linter.verify(code, {
       parser: PARSER_NAME,
       parserOptions: this.parserOptions,
-      rules,
+      rules: this.rules,
     });
+  }
+
+  updateRules(rules: TSESLint.Linter.RulesRecord): void {
+    this.rules = rules;
   }
 
   updateParserOptions(jsx?: boolean, sourceType?: TSESLint.SourceType): void {
