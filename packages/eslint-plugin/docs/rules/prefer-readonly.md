@@ -89,11 +89,3 @@ class Container {
 ## Related To
 
 - TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

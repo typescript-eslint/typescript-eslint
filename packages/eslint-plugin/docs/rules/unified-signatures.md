@@ -79,11 +79,3 @@ function f(...a: string[]): void;
 ## Related To
 
 - TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

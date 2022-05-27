@@ -72,11 +72,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about the specific styles of your type constraints, or never use them in the first place, then you will not need this rule.
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

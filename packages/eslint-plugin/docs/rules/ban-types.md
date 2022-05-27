@@ -201,11 +201,3 @@ const curly2: Record<'a', string> = { a: 'string' };
 ## Related To
 
 - TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -130,11 +130,3 @@ or in invalid places, then you don't need this rule.
 ## Related To
 
 - TSLint: [invalid-void](https://palantir.github.io/tslint/rules/invalid-void/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

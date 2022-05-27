@@ -147,11 +147,3 @@ type Baz = Parameters<Foo>[2];
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-magic-numbers.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

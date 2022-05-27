@@ -348,11 +348,3 @@ If you think defaulting to public is a good default, then you should consider us
 ## Related To
 
 - TSLint: [member-access](http://palantir.github.io/tslint/rules/member-access/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -26,11 +26,3 @@ See [`eslint/no-extra-semi` options](https://eslint.org/docs/rules/no-extra-semi
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-extra-semi.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,4 +1,3 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import fs from 'fs';
 import { JSONSchema4 } from 'json-schema';
 import path from 'path';
@@ -169,38 +168,6 @@ describe('Validating rule docs', () => {
           text: 'This rule is not configurable.',
         });
       });
-
-      it(`Attributes in ${ruleName}.md must match the metadata`, () => {
-        const tokens = parseMarkdownFile(filePath);
-
-        // Verify attributes header exists
-        const attributesHeaderIndex = tokens.findIndex(
-          token => tokenIs(token, 'heading') && token.text === 'Attributes',
-        );
-        expect(attributesHeaderIndex).toBeGreaterThan(-1);
-
-        // Verify attributes content...
-        const attributesList = tokenAs(
-          tokens[attributesHeaderIndex + 1],
-          'list',
-        );
-        // ...starting with configs
-        const configs = attributesList.items[0];
-        expect(configs.text).toMatch(/Configs:\n/);
-        const configsList = tokenAs(configs.tokens[1], 'list');
-        const recommended = configsList.items[0];
-        expect(shouldBeRecommended(rule.meta.docs)).toBe(recommended.checked);
-        const strict = configsList.items[1];
-        expect(shouldBeStrict(rule.meta.docs)).toBe(strict.checked);
-
-        // Verify other attributes
-        const fixable = attributesList.items[1];
-        expect(rule.meta.fixable !== undefined).toBe(fixable.checked);
-        const requiresTypeChecking = attributesList.items[2];
-        expect(rule.meta.docs?.requiresTypeChecking === true).toBe(
-          requiresTypeChecking.checked,
-        );
-      });
     });
   }
 });
@@ -316,13 +283,3 @@ describe('Validating README.md', () => {
     });
   }
 });
-
-function shouldBeRecommended(
-  docs: TSESLint.RuleMetaDataDocs | undefined,
-): boolean {
-  return docs?.recommended !== false && docs?.recommended !== 'strict';
-}
-
-function shouldBeStrict(docs: TSESLint.RuleMetaDataDocs | undefined): boolean {
-  return docs?.recommended !== false;
-}

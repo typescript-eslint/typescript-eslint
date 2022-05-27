@@ -36,11 +36,3 @@ See [`eslint/require-await` options](https://eslint.org/docs/rules/require-await
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

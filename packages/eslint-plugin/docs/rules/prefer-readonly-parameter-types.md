@@ -277,11 +277,3 @@ type MyType = {
 };
 function foo(arg: MyType) {}
 ```
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

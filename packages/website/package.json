@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.0.0-beta.18",
+    "@typescript-eslint/eslint-plugin": "5.26.0",
     "@types/react": "^18.0.9",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",

@@ -58,11 +58,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you prefer consistent use of `String#match` for both, with `g` flag and without it, you can turn this rule off.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

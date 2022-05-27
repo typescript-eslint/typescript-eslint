@@ -58,11 +58,3 @@ If you transpile for browsers that do not support for-of loops, you may wish to 
 ## Related To
 
 - TSLint: ['prefer-for-of'](https://palantir.github.io/tslint/rules/prefer-for-of/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

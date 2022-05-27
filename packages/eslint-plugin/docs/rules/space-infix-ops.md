@@ -30,11 +30,3 @@ See [`eslint/space-infix-ops` options](https://eslint.org/docs/rules/space-infix
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/space-infix-ops.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

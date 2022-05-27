@@ -277,11 +277,3 @@ misuses of them outside of what the TypeScript compiler will check.
 ## Related To
 
 - [`no-floating-promises`](./no-floating-promises.md)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

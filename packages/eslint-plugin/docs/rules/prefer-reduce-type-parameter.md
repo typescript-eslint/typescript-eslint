@@ -67,11 +67,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't want to use typechecking in your linting, you can't use this rule.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

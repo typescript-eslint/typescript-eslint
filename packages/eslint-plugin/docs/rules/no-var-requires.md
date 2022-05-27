@@ -46,11 +46,3 @@ If you don't care about TypeScript module syntax, then you will not need this ru
 ## Related To
 
 - TSLint: [no-var-requires](https://palantir.github.io/tslint/rules/no-var-requires/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

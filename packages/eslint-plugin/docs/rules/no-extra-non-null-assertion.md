@@ -58,11 +58,3 @@ function foo(bar?: { n: number }) {
 ```
 
 This rule is not configurable.
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

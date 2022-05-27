@@ -183,11 +183,3 @@ and you want to be able to specify `any`.
 ## Related To
 
 - TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

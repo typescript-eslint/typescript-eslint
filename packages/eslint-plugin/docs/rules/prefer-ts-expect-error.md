@@ -82,11 +82,3 @@ If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able 
 ## Further Reading
 
 - [Original Implementing PR](https://github.com/microsoft/TypeScript/pull/36014)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

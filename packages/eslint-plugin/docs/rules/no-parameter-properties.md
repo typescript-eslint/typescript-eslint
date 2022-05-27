@@ -399,11 +399,3 @@ If you don't care about the using parameter properties in constructors, then you
 ## Related To
 
 - TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

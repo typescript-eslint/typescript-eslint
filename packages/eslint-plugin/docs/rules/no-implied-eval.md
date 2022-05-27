@@ -113,11 +113,3 @@ If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setIm
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-implied-eval.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

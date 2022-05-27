@@ -50,11 +50,3 @@ This rule is not configurable.
 ## Related To
 
 - TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

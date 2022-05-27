@@ -26,11 +26,3 @@ See [`eslint/no-unused-vars` options](https://eslint.org/docs/rules/no-unused-va
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-unused-vars.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1163,11 +1163,3 @@ If you don't care about the general order of your members, then you will not nee
 ## Related To
 
 - TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

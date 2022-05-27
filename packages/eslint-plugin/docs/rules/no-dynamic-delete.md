@@ -64,11 +64,3 @@ Even repeated minor performance slowdowns likely do not significantly affect you
 ## Related To
 
 - TSLint: [no-dynamic-delete](https://palantir.github.io/tslint/rules/no-dynamic-delete)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

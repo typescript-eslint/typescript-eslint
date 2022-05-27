@@ -68,11 +68,3 @@ If you don't care about having empty/meaningless interfaces, then you will not n
 ## Related To
 
 - TSLint: [no-empty-interface](https://palantir.github.io/tslint/rules/no-empty-interface/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

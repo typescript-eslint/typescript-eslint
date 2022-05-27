@@ -50,11 +50,3 @@ import 'some-other-module';
 ```
 
 This rule is not configurable.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information
