@@ -1,6 +1,6 @@
 // babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
-import type { File, Program } from '@babel/types';
+import type { File, Identifier, Program, TSTypeQuery } from '@babel/types';
 import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';
 
@@ -293,6 +293,27 @@ export function preprocessBabylonAST(ast: File): any {
       TSTypePredicate(node: any) {
         if (node.loc?.start?.index) {
           delete node.loc.start.index;
+        }
+      },
+      TSTypeQuery(node: TSTypeQuery) {
+        const { exprName } = node;
+        const processIdentifier = (identifier: Identifier) => {
+          if (identifier.name === 'this') {
+            (identifier.type as string) = 'ThisExpression';
+            delete (identifier as { name?: string }).name;
+          }
+        };
+        if (exprName.type === 'Identifier') {
+          processIdentifier(exprName);
+        } else if (exprName.type === 'TSQualifiedName') {
+          let qualifiedName = exprName;
+          while (true) {
+            if (qualifiedName.left.type === 'Identifier') {
+              processIdentifier(qualifiedName.left);
+              return;
+            }
+            qualifiedName = qualifiedName.left;
+          }
         }
       },
     },
