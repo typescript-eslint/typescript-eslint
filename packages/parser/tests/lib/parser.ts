@@ -40,7 +40,6 @@ describe('parser', () => {
       // ts-estree specific
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-      useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',
@@ -62,7 +61,6 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true,
       warnOnUnsupportedTypeScriptVersion: true,
     });
     spy.mockClear();
@@ -71,7 +69,6 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true,
       loggerFn: false,
       warnOnUnsupportedTypeScriptVersion: false,
     });
@@ -98,7 +95,6 @@ describe('parser', () => {
       // ts-estree specific
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-      useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',
