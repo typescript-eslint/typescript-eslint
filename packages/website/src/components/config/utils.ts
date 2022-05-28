@@ -75,3 +75,12 @@ export function getTypescriptOptions(): OptionDeclarations[] {
       !allowedCategories.includes(item.category.message),
   );
 }
+
+export const defaultTsConfig = toJsonConfig(
+  {
+    strictNullChecks: true,
+  },
+  'compilerOptions',
+);
+
+export const defaultEslintConfig = toJsonConfig({}, 'rules');

@@ -17,8 +17,8 @@ export type TabType = 'code' | 'tsconfig' | 'eslintrc';
 export interface ConfigModel {
   jsx?: boolean;
   sourceType?: SourceType;
-  eslintrc?: string;
-  tsconfig?: string;
+  eslintrc: string;
+  tsconfig: string;
   code: string;
   ts: string;
   showAST?: boolean | 'ts' | 'es' | 'scope';

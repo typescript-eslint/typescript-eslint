@@ -30,6 +30,10 @@ import ErrorsViewer from '@site/src/components/ErrorsViewer';
 import EditorTabs from '@site/src/components/EditorTabs';
 import ConfigEslint from '@site/src/components/config/ConfigEslint';
 import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
+import {
+  defaultEslintConfig,
+  defaultTsConfig,
+} from '@site/src/components/config/utils';
 
 function rangeReducer<T extends SelectedRange | null>(
   prevState: T,
@@ -55,15 +59,8 @@ function Playground(): JSX.Element {
     sourceType: 'module',
     code: '',
     ts: process.env.TS_VERSION!,
-    // Default TS config
-    tsconfig:
-      '{\n' +
-      '  "compilerOptions": {\n' +
-      '    "strictNullChecks": true\n' +
-      '  }\n' +
-      '}',
-    // Default eslint config
-    eslintrc: '{\n' + '  "rules": {\n' + '  }\n' + '}',
+    tsconfig: defaultTsConfig,
+    eslintrc: defaultEslintConfig,
   });
   const { colorMode } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();

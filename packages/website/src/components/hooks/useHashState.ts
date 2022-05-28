@@ -80,8 +80,8 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
       code: searchParams.has('code')
         ? readQueryParam(searchParams.get('code'), '')
         : '',
-      eslintrc: eslintrc,
-      tsconfig: tsconfig,
+      eslintrc: eslintrc ?? '',
+      tsconfig: tsconfig ?? '',
     };
   } catch (e) {
     // eslint-disable-next-line no-console

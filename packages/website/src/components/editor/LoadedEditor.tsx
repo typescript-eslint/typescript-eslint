@@ -23,7 +23,12 @@ import {
   parseLintResults,
   LintCodeAction,
 } from '../linter/utils';
-import { parseESLintRC, parseTSConfig } from '../config/utils';
+import {
+  defaultEslintConfig,
+  defaultTsConfig,
+  parseESLintRC,
+  parseTSConfig,
+} from '../config/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -33,6 +38,8 @@ export interface LoadedEditorProps extends CommonEditorProps {
 
 export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
+  tsconfig,
+  eslintrc,
   darkTheme,
   decoration,
   jsx,
@@ -46,19 +53,29 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   sandboxInstance,
   showAST,
   sourceType,
-  tsconfig,
-  eslintrc,
   webLinter,
   activeTab,
 }) => {
   const [decorations, setDecorations] = useState<string[]>([]);
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
-    return {
+    const tabsDefault = {
       code: sandboxInstance.editor.getModel()!,
-      tsconfig: sandboxInstance.monaco.editor.createModel('{}', 'json'),
-      eslintrc: sandboxInstance.monaco.editor.createModel('{}', 'json'),
+      tsconfig: sandboxInstance.monaco.editor.createModel(
+        defaultTsConfig,
+        'json',
+        sandboxInstance.monaco.Uri.file('./tsconfig.json'),
+      ),
+      eslintrc: sandboxInstance.monaco.editor.createModel(
+        defaultEslintConfig,
+        'json',
+        sandboxInstance.monaco.Uri.file('./.eslintrc'),
+      ),
     };
+    tabsDefault.code.updateOptions({ tabSize: 2, insertSpaces: true });
+    tabsDefault.eslintrc.updateOptions({ tabSize: 2, insertSpaces: true });
+    tabsDefault.tsconfig.updateOptions({ tabSize: 2, insertSpaces: true });
+    return tabsDefault;
   });
 
   const updateMarkers = useCallback(() => {
@@ -76,25 +93,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [jsx, tsconfig]);
 
   useEffect(() => {
-    if (tsconfig !== tabs.tsconfig.getValue()) {
-      tabs.tsconfig.setValue(tsconfig ?? '{}');
-    }
-  }, [tsconfig]);
-
-  useEffect(() => {
     webLinter.updateRules(parseESLintRC(eslintrc));
-
-    if (eslintrc !== tabs.eslintrc.getValue()) {
-      tabs.eslintrc.setValue(eslintrc ?? '{}');
-    }
   }, [eslintrc]);
 
   useEffect(() => {
-    onChange({
-      eslintrc: tabs.eslintrc.getValue(),
-      tsconfig: tabs.tsconfig.getValue(),
-    });
-
     sandboxInstance.editor.setModel(tabs[activeTab]);
     updateMarkers();
   }, [activeTab]);
@@ -164,6 +166,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           }
         }, 150),
       ),
+      tabs.eslintrc.onDidChangeContent(
+        debounce(() => {
+          onChange({ eslintrc: tabs.eslintrc.getValue() });
+        }, 500),
+      ),
+      tabs.tsconfig.onDidChangeContent(
+        debounce(() => {
+          onChange({ tsconfig: tabs.tsconfig.getValue() });
+        }, 500),
+      ),
       tabs.code.onDidChangeContent(
         debounce(() => {
           onChange({ code: tabs.code.getValue() });
@@ -200,19 +212,37 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   });
 
   useEffect(() => {
-    const modelValue = tabs.code.getValue();
-    if (modelValue === code) {
-      return;
+    if (code !== tabs.code.getValue()) {
+      tabs.code.applyEdits([
+        {
+          range: tabs.code.getFullModelRange(),
+          text: code,
+        },
+      ]);
     }
-    // eslint-disable-next-line no-console
-    console.info('[Editor] updating editor model');
-    tabs.code.applyEdits([
-      {
-        range: tabs.code.getFullModelRange(),
-        text: code,
-      },
-    ]);
   }, [code]);
+
+  useEffect(() => {
+    if (tsconfig !== tabs.tsconfig.getValue()) {
+      tabs.tsconfig.applyEdits([
+        {
+          range: tabs.tsconfig.getFullModelRange(),
+          text: tsconfig,
+        },
+      ]);
+    }
+  }, [tsconfig]);
+
+  useEffect(() => {
+    if (eslintrc !== tabs.eslintrc.getValue()) {
+      tabs.eslintrc.applyEdits([
+        {
+          range: tabs.eslintrc.getFullModelRange(),
+          text: eslintrc,
+        },
+      ]);
+    }
+  }, [eslintrc]);
 
   useEffect(() => {
     sandboxInstance.monaco.editor.setTheme(darkTheme ? 'vs-dark' : 'vs-light');
