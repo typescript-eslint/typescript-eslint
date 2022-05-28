@@ -29,6 +29,7 @@ body:
         - scope-manager
         - typescript-estree
         - utils
+        - website
     validations:
       required: true
   - type: checkboxes

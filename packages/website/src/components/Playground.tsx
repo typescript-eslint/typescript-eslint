@@ -17,9 +17,10 @@ import ASTViewerTS from './ASTViewerTS';
 
 import type { RuleDetails, SelectedRange } from './types';
 
-import type { TSESTree } from '@typescript-eslint/website-eslint';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceFile } from 'typescript';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
+import ErrorsViewer from '@site/src/components/ErrorsViewer';
 
 function rangeReducer<T extends SelectedRange | null>(
   prevState: T,
@@ -44,14 +45,15 @@ function Playground(): JSX.Element {
     showAST: false,
     sourceType: 'module',
     code: '',
-    ts: process.env.TS_VERSION,
+    ts: process.env.TS_VERSION!,
     rules: {},
     tsConfig: {},
   });
-  const { isDarkTheme } = useColorMode();
+  const { colorMode } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
   const [tsAst, setTsAST] = useState<SourceFile | string | null>();
   const [scope, setScope] = useState<Record<string, unknown> | string | null>();
+  const [markers, setMarkers] = useState<Monaco.editor.IMarker[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -70,12 +72,7 @@ function Playground(): JSX.Element {
         />
       </div>
       <div className={styles.codeBlocks}>
-        <div
-          className={clsx(
-            styles.sourceCode,
-            state.showAST ? '' : styles.sourceCodeStandalone,
-          )}
-        >
+        <div className={clsx(styles.sourceCode)}>
           {isLoading && <Loader />}
           <EditorEmbed />
           <LoadingEditor
@@ -83,13 +80,14 @@ function Playground(): JSX.Element {
             jsx={state.jsx}
             code={state.code}
             tsConfig={state.tsConfig}
-            darkTheme={isDarkTheme}
+            darkTheme={colorMode === 'dark'}
             sourceType={state.sourceType}
             rules={state.rules}
             showAST={state.showAST}
             onEsASTChange={setEsAst}
             onTsASTChange={setTsAST}
             onScopeChange={setScope}
+            onMarkersChange={setMarkers}
             decoration={selectedRange}
             onChange={(code): void => setState({ code: code })}
             onLoaded={(ruleNames, tsVersions): void => {
@@ -100,31 +98,29 @@ function Playground(): JSX.Element {
             onSelect={setPosition}
           />
         </div>
-        {state.showAST && (
-          <div className={styles.astViewer}>
-            {(tsAst && state.showAST === 'ts' && (
-              <ASTViewerTS
-                value={tsAst}
+        <div className={styles.astViewer}>
+          {(tsAst && state.showAST === 'ts' && (
+            <ASTViewerTS
+              value={tsAst}
+              position={position}
+              onSelectNode={setSelectedRange}
+            />
+          )) ||
+            (state.showAST === 'scope' && scope && (
+              <ASTViewerScope
+                value={scope}
                 position={position}
                 onSelectNode={setSelectedRange}
               />
             )) ||
-              (state.showAST === 'scope' && scope && (
-                <ASTViewerScope
-                  value={scope}
-                  position={position}
-                  onSelectNode={setSelectedRange}
-                />
-              )) ||
-              (esAst && (
-                <ASTViewerESTree
-                  value={esAst}
-                  position={position}
-                  onSelectNode={setSelectedRange}
-                />
-              ))}
-          </div>
-        )}
+            (state.showAST === 'es' && esAst && (
+              <ASTViewerESTree
+                value={esAst}
+                position={position}
+                onSelectNode={setSelectedRange}
+              />
+            )) || <ErrorsViewer value={markers} />}
+        </div>
       </div>
     </div>
   );

@@ -19,8 +19,11 @@ const contributorsApiUrl = `https://api.github.com/repos/typescript-eslint/types
 
 interface Contributor {
   contributions: number;
-  login: string;
-  url: string;
+  type: string;
+  login?: string;
+  url?: string;
+  avatar_url?: string;
+  html_url?: string;
 }
 interface User {
   login: string;
@@ -28,23 +31,25 @@ interface User {
   avatar_url: string;
   html_url: string;
 }
-interface AllContributorsUser {
-  login: string;
-  name: string;
-  avatar_url: string;
-  profile: string;
-  contributions: string[];
+
+async function getData<T>(url: string): Promise<T> {
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+      // Authorization: 'token ghp_*', // if needed, replace this with your token
+    },
+  });
+
+  return (await response.json()) as Promise<T>;
 }
 
 async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
   let lastLength = 0;
   do {
-    const response = await fetch(`${contributorsApiUrl}&page=${page}`, {
-      method: 'GET',
-    });
-    const contributors = (await response.json()) as
-      | Contributor[]
-      | { message: string };
+    const contributors = await getData<Contributor[] | { message: string }>(
+      `${contributorsApiUrl}&page=${page}`,
+    );
 
     if (!Array.isArray(contributors)) {
       throw new Error(contributors.message);
@@ -68,6 +73,56 @@ async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
   );
 }
 
+function writeTable(contributors: User[], perLine = 5): void {
+  const columns = contributors.length > perLine ? perLine : contributors.length;
+
+  const lines = [
+    '# Contributors',
+    '',
+    'Thanks goes to these wonderful people:',
+    '',
+    '<!-- prettier-ignore-start -->',
+    '<!-- markdownlint-disable -->',
+    '<table>',
+  ];
+
+  let i = 0;
+  for (const usr of contributors) {
+    if (i % columns === 0) {
+      if (i !== 0) {
+        lines.push('  </tr>');
+      }
+      lines.push('  <tr>');
+    }
+
+    const image = `<img src="${usr.avatar_url}&size=100" width="100px;" alt=""/>`;
+    const name = `<sub><b>${usr.name || usr.login}</b></sub>`;
+
+    lines.push(
+      `    <td align="center"><a href="${usr.html_url}">${image}<br />${name}</a></td>`,
+    );
+    ++i;
+  }
+  if (i % columns !== 0) {
+    lines.push('  </tr>');
+  }
+
+  lines.push('</table>');
+  lines.push('');
+  lines.push('<!-- markdownlint-restore -->');
+  lines.push('<!-- prettier-ignore-end -->');
+  lines.push('');
+  lines.push(
+    `<sup>This list is auto-generated using \`yarn generate-contributors\`. It shows the top ${PAGE_LIMIT} contributors with > ${COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT} contributions.</sup>`,
+  );
+  lines.push('');
+
+  fs.writeFileSync(
+    path.join(__dirname, '../CONTRIBUTORS.md'),
+    lines.join('\n'),
+  );
+}
+
 async function main(): Promise<void> {
   const githubContributors: Contributor[] = [];
 
@@ -78,40 +133,19 @@ async function main(): Promise<void> {
 
   // fetch the user info
   const users = await Promise.all(
-    githubContributors.map(async c => {
-      const response = await fetch(c.url, { method: 'GET' });
-      return (await response.json()) as User;
-    }),
+    githubContributors
+      // remove ignored users and bots
+      .filter(
+        usr => usr.login && usr.type !== 'Bot' && !IGNORED_USERS.has(usr.login),
+      )
+      // fetch the in-depth information for each user
+      .map(c => getData<User>(c.url)),
   );
 
-  const contributors = users
-    // remove ignored users
-    .filter(u => !IGNORED_USERS.has(u.login))
-    // fetch the in-depth information for each user
-    .map<AllContributorsUser>(usr => {
-      return {
-        login: usr.login,
-        name: usr.name || usr.login,
-        avatar_url: usr.avatar_url,
-        profile: usr.html_url,
-        contributions: [],
-      };
-    });
-
-  // build + write the .all-contributorsrc
-  const allContributorsConfig = {
-    projectName: 'typescript-eslint',
-    projectOwner: 'typescript-eslint',
-    repoType: 'github',
-    repoHost: 'https://github.com',
-    files: ['CONTRIBUTORS.md'],
-    imageSize: 100,
-    commit: false,
-    contributors,
-    contributorsPerLine: 5,
-  };
-  const rcPath = path.resolve(__dirname, '../.all-contributorsrc');
-  fs.writeFileSync(rcPath, JSON.stringify(allContributorsConfig, null, 2));
+  writeTable(
+    users.filter(c => c.login),
+    5,
+  );
 }
 
 main().catch(error => {

@@ -11,9 +11,9 @@ jobs:
       - uses: dessant/lock-threads@v3
         with:
           github-token: ${{ github.token }}
-          issue-lock-inactive-days: "30"
+          issue-inactive-days: "30"
           issue-lock-reason: "resolved"
-          issue-lock-comment: ""
-          pr-lock-inactive-days: "30"
+          issue-comment: ""
+          pr-inactive-days: "30"
           pr-lock-reason: "resolved"
-          pr-lock-comment: ""
+          pr-comment: ""
