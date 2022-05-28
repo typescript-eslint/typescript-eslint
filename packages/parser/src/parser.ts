@@ -98,7 +98,6 @@ function parseForESLint(
 
   const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
-    useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
     jsx: validateBoolean(options.ecmaFeatures.jsx),
   });
   const analyzeOptions: AnalyzeOptions = {
