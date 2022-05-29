@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow the use of type aliases',
+      description: 'Disallow type aliases',
       // too opinionated to be recommended
       recommended: false,
     },
@@ -133,6 +133,7 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSLiteralType,
       AST_NODE_TYPES.TSTypeQuery,
       AST_NODE_TYPES.TSIndexedAccessType,
+      AST_NODE_TYPES.TSTemplateLiteralType,
     ]);
 
     /**

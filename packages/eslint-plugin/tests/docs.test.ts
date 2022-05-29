@@ -10,8 +10,10 @@ import { titleCase } from 'title-case';
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
 
-function createRuleLink(ruleName: string): string {
-  return `[\`@typescript-eslint/${ruleName}\`](./docs/rules/${ruleName}.md)`;
+function createRuleLink(ruleName: string, readmePath: string): string {
+  return `[\`@typescript-eslint/${ruleName}\`](${
+    readmePath.includes('docs/rules') ? '.' : './docs/rules'
+  }/${ruleName}.md)`;
 }
 
 function parseMarkdownFile(filePath: string): marked.TokensList {
@@ -23,11 +25,11 @@ function parseMarkdownFile(filePath: string): marked.TokensList {
   });
 }
 
-function parseReadme(): {
+function parseReadme(readmePath: string): {
   base: marked.Tokens.Table;
   extension: marked.Tokens.Table;
 } {
-  const readme = parseMarkdownFile(path.resolve(__dirname, '../README.md'));
+  const readme = parseMarkdownFile(readmePath);
 
   // find the table
   const rulesTables = readme.filter(
@@ -113,7 +115,10 @@ describe('Validating rule docs', () => {
         // Rule title does not match the rule metadata.
         expect(tokens[1]).toMatchObject({
           type: 'paragraph',
-          text: `${rule.meta.docs?.description}.`,
+          text: `${rule.meta.docs?.description.replace(
+            /(?<!`)(require|enforce|disallow)/gi,
+            '$1s',
+          )}.`,
         });
       });
 
@@ -236,8 +241,11 @@ describe('Validating rule metadata', () => {
   }
 });
 
-describe('Validating README.md', () => {
-  const rulesTables = parseReadme();
+describe.each([
+  path.join(__dirname, '../README.md'),
+  path.join(__dirname, '../docs/rules/README.md'),
+])('%s', readmePath => {
+  const rulesTables = parseReadme(readmePath);
   const notDeprecated = rulesData.filter(([, rule]) => !rule.meta.deprecated);
   const baseRules = notDeprecated.filter(
     ([, rule]) => !rule.meta.docs?.extendsBaseRule,
@@ -250,7 +258,7 @@ describe('Validating README.md', () => {
     const baseRuleNames = baseRules
       .map(([ruleName]) => ruleName)
       .sort()
-      .map(createRuleLink);
+      .map(ruleName => createRuleLink(ruleName, readmePath));
 
     expect(rulesTables.base.rows.map(row => row[0].text)).toStrictEqual(
       baseRuleNames,
@@ -260,7 +268,7 @@ describe('Validating README.md', () => {
     const extensionRuleNames = extensionRules
       .map(([ruleName]) => ruleName)
       .sort()
-      .map(createRuleLink);
+      .map(ruleName => createRuleLink(ruleName, readmePath));
 
     expect(rulesTables.extension.rows.map(row => row[0].text)).toStrictEqual(
       extensionRuleNames,
@@ -283,7 +291,7 @@ describe('Validating README.md', () => {
       }
 
       it('Link column should be correct', () => {
-        expect(ruleRow[0]).toBe(createRuleLink(ruleName));
+        expect(ruleRow[0]).toBe(createRuleLink(ruleName, readmePath));
       });
 
       it('Description column should be correct', () => {

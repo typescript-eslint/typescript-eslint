@@ -20,7 +20,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Sets preference level for triple slash directives versus ES6-style import declarations',
+        'Disallow certain triple slash directives in favor of ES6-style import declarations',
       recommended: 'error',
     },
     messages: {

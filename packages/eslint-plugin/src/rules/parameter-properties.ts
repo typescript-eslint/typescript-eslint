@@ -27,7 +27,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Require or disallow the use of parameter properties in class constructors',
+        'Require or disallow parameter properties in class constructors',
       recommended: false,
     },
     messages: {

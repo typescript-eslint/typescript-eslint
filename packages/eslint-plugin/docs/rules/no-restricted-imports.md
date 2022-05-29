@@ -1,6 +1,6 @@
 # `no-restricted-imports`
 
-Disallow specified modules when loaded by `import`.
+Disallows specified modules when loaded by `import`.
 
 ## Rule Details
 

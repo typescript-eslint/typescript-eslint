@@ -1,6 +1,6 @@
 # `no-unsafe-argument`
 
-Disallows calling a function with an any type value.
+Disallows calling a function with a value with type `any`.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Call a function with `any` typed argument are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.

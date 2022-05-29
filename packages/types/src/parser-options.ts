@@ -56,7 +56,6 @@ interface ParserOptions {
   sourceType?: SourceType;
   tokens?: boolean;
   tsconfigRootDir?: string;
-  useJSXTextNode?: boolean;
   warnOnUnsupportedTypeScriptVersion?: boolean;
   moduleResolver?: string;
 }

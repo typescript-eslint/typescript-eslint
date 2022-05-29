@@ -6,7 +6,7 @@ export default util.createRule({
   name: 'await-thenable',
   meta: {
     docs: {
-      description: 'Disallows awaiting a value that is not a Thenable',
+      description: 'Disallow awaiting a value that is not a Thenable',
       recommended: 'error',
       requiresTypeChecking: true,
     },

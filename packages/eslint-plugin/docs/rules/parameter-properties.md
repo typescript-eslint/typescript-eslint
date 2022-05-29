@@ -1,6 +1,6 @@
 # `parameter-properties`
 
-Require or disallow the use of parameter properties in class constructors.
+Requires or disallows parameter properties in class constructors.
 
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.
