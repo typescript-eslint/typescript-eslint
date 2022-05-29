@@ -11,14 +11,15 @@ export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
   readonly value: TSESTree.BaseNode;
 }
 
-const astSerializer = createESTreeSerializer();
-
 export default function ASTViewerESTree({
   value,
   position,
   onSelectNode,
 }: ASTESTreeViewerProps): JSX.Element {
-  const model = useMemo(() => serialize(value, astSerializer), [value]);
+  const model = useMemo(
+    () => serialize(value, createESTreeSerializer()),
+    [value],
+  );
 
   return (
     <ASTViewer value={model} position={position} onSelectNode={onSelectNode} />

@@ -10,13 +10,14 @@ export interface ASTScopeViewerProps extends ASTViewerBaseProps {
   readonly value: Record<string, unknown>;
 }
 
-const scopeSerializer = createScopeSerializer();
-
 export default function ASTViewerScope({
   value,
   onSelectNode,
 }: ASTScopeViewerProps): JSX.Element {
-  const model = useMemo(() => serialize(value, scopeSerializer), [value]);
+  const model = useMemo(
+    () => serialize(value, createScopeSerializer()),
+    [value],
+  );
 
   return <ASTViewer value={model} onSelectNode={onSelectNode} />;
 }
