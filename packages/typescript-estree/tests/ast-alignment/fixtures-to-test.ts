@@ -455,8 +455,8 @@ tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
   ignore: [
     /**
-     * Produced AST is different
-     * TODO: investigate in more details
+     * Babel produces incorrect structure for TSInstantiationExpression and optional ChainExpression
+     * @see https://github.com/babel/babel/issues/14613
      */
     'instantiation-expression',
   ],

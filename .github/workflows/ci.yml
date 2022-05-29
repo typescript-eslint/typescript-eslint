@@ -193,6 +193,9 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
+      - name: Install Cypress
+        run: yarn cypress install
+
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
