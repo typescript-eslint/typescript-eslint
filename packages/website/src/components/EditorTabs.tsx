@@ -18,12 +18,14 @@ export default function EditorTabs({
 }: FileTabsProps): JSX.Element {
   return (
     <div className={styles.tabContainer}>
-      <div>
+      <div role="tablist">
         {tabs.map(item => {
           return (
             <button
+              role="tab"
               className={styles.tabStyle}
               key={item}
+              aria-selected={activeTab === item}
               disabled={activeTab === item}
               onClick={(): void => change(item)}
             >
