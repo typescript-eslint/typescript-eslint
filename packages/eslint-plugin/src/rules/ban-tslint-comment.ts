@@ -19,8 +19,8 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans `// tslint:<rule-flag>` comments from being used',
-      recommended: false,
+      description: 'Disallow `// tslint:<rule-flag>` comments',
+      recommended: 'strict',
     },
     messages: {
       commentDetected: 'tslint comment detected: "{{ text }}"',

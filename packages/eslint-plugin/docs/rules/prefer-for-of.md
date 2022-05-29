@@ -1,6 +1,6 @@
 # `prefer-for-of`
 
-Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated.
+Enforces the use of `for-of` loop over the standard `for` loop where possible.
 
 This rule recommends a for-of loop when the loop index is only used to read from an array that is being iterated.
 
@@ -38,6 +38,19 @@ for (let i = 0; i < arr.length; i++) {
 }
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-for-of": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you transpile for browsers that do not support for-of loops, you may wish to use traditional for loops that produce more compact code.
@@ -48,6 +61,8 @@ If you transpile for browsers that do not support for-of loops, you may wish to 
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

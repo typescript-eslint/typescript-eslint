@@ -16,8 +16,8 @@ export default util.createRule({
   meta: {
     docs: {
       description:
-        'Use function types instead of interfaces with call signatures',
-      recommended: false,
+        'Enforce using function types instead of interfaces with call signatures',
+      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

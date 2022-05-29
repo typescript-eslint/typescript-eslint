@@ -1,6 +1,6 @@
 # `member-delimiter-style`
 
-Require a specific member delimiter style for interfaces and type literals.
+Requires a specific member delimiter style for interfaces and type literals.
 
 Enforces a consistent member delimiter style in interfaces and type literals. There are three member delimiter styles primarily used in TypeScript:
 
@@ -211,6 +211,8 @@ If you don't care about enforcing a consistent member delimiter in interfaces an
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

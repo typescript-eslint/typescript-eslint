@@ -113,6 +113,7 @@ export enum AST_NODE_TYPES {
   TSExportKeyword = 'TSExportKeyword',
   TSExternalModuleReference = 'TSExternalModuleReference',
   TSFunctionType = 'TSFunctionType',
+  TSInstantiationExpression = 'TSInstantiationExpression',
   TSImportEqualsDeclaration = 'TSImportEqualsDeclaration',
   TSImportType = 'TSImportType',
   TSIndexedAccessType = 'TSIndexedAccessType',

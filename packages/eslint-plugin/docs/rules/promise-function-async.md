@@ -2,7 +2,6 @@
 
 Requires any function or method that returns a Promise to be marked async.
 
-Requires any function or method that returns a Promise to be marked async.
 Ensures that each function is only capable of:
 
 - returning a rejected promise, or
@@ -73,6 +72,8 @@ In addition, each of the following properties may be provided, and default to `t
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

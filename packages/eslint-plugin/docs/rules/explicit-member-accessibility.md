@@ -1,6 +1,6 @@
 # `explicit-member-accessibility`
 
-Require explicit accessibility modifiers on class properties and methods.
+Requires explicit accessibility modifiers on class properties and methods.
 
 Leaving off accessibility modifier and making everything public can make
 your interface hard to use by others.
@@ -39,7 +39,7 @@ const defaultOptions: Options = {
 
 ### Configuring in a mixed JS/TS codebase
 
-If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.jsx` files.
+If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.mjs`/`.cjs`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.mts`/`.cts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.mjs`/`.cjs`/`.jsx` files.
 
 ```jsonc
 {
@@ -50,7 +50,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
-      "files": ["*.ts", "*.tsx"],
+      "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
         "@typescript-eslint/explicit-member-accessibility": ["error"]
       }
@@ -351,6 +351,8 @@ If you think defaulting to public is a good default, then you should consider us
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

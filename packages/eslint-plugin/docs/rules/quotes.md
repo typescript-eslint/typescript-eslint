@@ -1,6 +1,6 @@
 # `quotes`
 
-Enforce the consistent use of either backticks, double, or single quotes.
+Enforces the consistent use of either backticks, double, or single quotes.
 
 ## Rule Details
 
@@ -29,6 +29,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

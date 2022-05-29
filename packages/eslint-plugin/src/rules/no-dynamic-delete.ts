@@ -6,8 +6,9 @@ export default util.createRule({
   name: 'no-dynamic-delete',
   meta: {
     docs: {
-      description: 'Disallow the delete operator with computed key expressions',
-      recommended: false,
+      description:
+        'Disallow using the `delete` operator on computed key expressions',
+      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

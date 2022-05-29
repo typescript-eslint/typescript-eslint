@@ -1,6 +1,6 @@
 # `comma-dangle`
 
-Require or disallow trailing comma.
+Requires or disallows trailing commas.
 
 ## Rule Details
 
@@ -41,6 +41,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

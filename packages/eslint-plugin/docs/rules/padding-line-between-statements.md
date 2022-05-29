@@ -1,6 +1,6 @@
 # `padding-line-between-statements`
 
-require or disallow padding lines between statements.
+Requires or disallows padding lines between statements.
 
 ## Rule Details
 
@@ -57,6 +57,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

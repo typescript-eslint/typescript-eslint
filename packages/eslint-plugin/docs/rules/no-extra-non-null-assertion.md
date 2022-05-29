@@ -1,6 +1,6 @@
 # `no-extra-non-null-assertion`
 
-Disallow extra non-null assertion.
+Disallows extra non-null assertion.
 
 ## Rule Details
 
@@ -61,6 +61,8 @@ This rule is not configurable.
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -15,7 +15,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Exhaustiveness checking in switch with union type',
+      description:
+        'Require switch-case statements to be exhaustive with union type',
       recommended: false,
       suggestion: true,
       requiresTypeChecking: true,

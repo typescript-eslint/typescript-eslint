@@ -1,6 +1,6 @@
 # `prefer-string-starts-ends-with`
 
-Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings.
+Enforces using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings.
 
 There are multiple ways to verify if a string starts or ends with a specific string, such as `foo.indexOf('bar') === 0`.
 
@@ -47,13 +47,16 @@ foo.endsWith('bar');
 
 ## Options
 
-There are no options.
-
-```json
+```jsonc
+// .eslintrc.json
 {
-  "@typescript-eslint/prefer-string-starts-ends-with": "error"
+  "rules": {
+    "@typescript-eslint/prefer-string-starts-ends-with": "warn"
+  }
 }
 ```
+
+This rule is not configurable.
 
 ## When Not To Use It
 
@@ -61,6 +64,8 @@ If you don't mind that style, you can turn this rule off safely.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

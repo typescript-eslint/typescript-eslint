@@ -1,6 +1,6 @@
 # `no-unnecessary-condition`
 
-Prevents conditionals where the type is always truthy or always falsy.
+Disallows conditionals where the type is always truthy or always falsy.
 
 Any expression being used as a condition must be able to evaluate as truthy or falsy in order to be considered "necessary". Conversely, any expression that always evaluates to truthy or always evaluates to falsy, as determined by the type of the expression, is considered unnecessary and will be flagged by this rule.
 
@@ -115,6 +115,8 @@ The main downside to using this rule is the need for type information.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

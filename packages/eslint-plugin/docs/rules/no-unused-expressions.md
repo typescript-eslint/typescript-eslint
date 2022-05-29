@@ -1,6 +1,6 @@
 # `no-unused-expressions`
 
-Disallow unused expressions.
+Disallows unused expressions.
 
 ## Rule Details
 
@@ -29,6 +29,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

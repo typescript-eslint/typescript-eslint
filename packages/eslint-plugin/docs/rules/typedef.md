@@ -1,6 +1,6 @@
 # `typedef`
 
-Requires type annotations to exist.
+Requires type annotations in certain places.
 
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.
@@ -343,6 +343,8 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `no-unsafe-return`
 
-Disallows returning any from a function.
+Disallows returning a value with type `any` from a function.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Returned `any` typed values are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -111,6 +111,8 @@ This rule is not configurable.
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

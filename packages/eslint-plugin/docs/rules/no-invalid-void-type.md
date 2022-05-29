@@ -1,6 +1,6 @@
 # `no-invalid-void-type`
 
-Disallows usage of `void` type outside of generic or return types.
+Disallows `void` type outside of generic or return types.
 
 Disallows usage of `void` type outside of return types or generic type arguments.
 If `void` is used as return type, it shouldn’t be a part of intersection/union type with most other types.
@@ -133,6 +133,8 @@ or in invalid places, then you don't need this rule.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

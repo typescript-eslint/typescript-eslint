@@ -1,6 +1,6 @@
 # `no-array-constructor`
 
-Disallow generic `Array` constructors.
+Disallows generic `Array` constructors.
 
 ## Rule Details
 
@@ -52,6 +52,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

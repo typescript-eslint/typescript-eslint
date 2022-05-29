@@ -1,6 +1,6 @@
 # `dot-notation`
 
-enforce dot notation whenever possible.
+Enforces dot notation whenever possible.
 
 ## Rule Details
 
@@ -90,6 +90,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

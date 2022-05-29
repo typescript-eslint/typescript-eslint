@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { RuleDetails } from '../types';
+import type { RuleDetails, RulesRecord, RuleEntry } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
 
 export interface ModalEslintProps {

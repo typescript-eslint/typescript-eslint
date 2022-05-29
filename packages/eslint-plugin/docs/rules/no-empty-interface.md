@@ -1,6 +1,6 @@
 # `no-empty-interface`
 
-Disallow the declaration of empty interfaces.
+Disallows the declaration of empty interfaces.
 
 An empty interface is equivalent to its supertype. If the interface does not implement a supertype, then
 the interface is equivalent to an empty object (`{}`). In both cases it can be omitted.
@@ -71,6 +71,8 @@ If you don't care about having empty/meaningless interfaces, then you will not n
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

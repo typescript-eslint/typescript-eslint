@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-one AST Alignment - Token 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'interface',
+
+      range: [0, 9],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 9, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'F',
+
+      range: [10, 11],
+      loc: {
+        start: { column: 10, line: 1 },
+        end: { column: 11, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '<',
+
+      range: [11, 12],
+      loc: {
+        start: { column: 11, line: 1 },
+        end: { column: 12, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'T',
+
+      range: [12, 13],
+      loc: {
+        start: { column: 12, line: 1 },
+        end: { column: 13, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '>',
+
+      range: [13, 14],
+      loc: {
+        start: { column: 13, line: 1 },
+        end: { column: 14, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [15, 16],
+      loc: {
+        start: { column: 15, line: 1 },
+        end: { column: 16, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [16, 17],
+      loc: {
+        start: { column: 16, line: 1 },
+        end: { column: 17, line: 1 },
+      },
+    },
+  ]"
+`;

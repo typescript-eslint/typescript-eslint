@@ -55,6 +55,7 @@ Object {
             Object {
               "constraint": undefined,
               "default": undefined,
+              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -83,6 +84,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
+              "out": false,
               "range": Array [
                 21,
                 22,
@@ -92,6 +94,7 @@ Object {
             Object {
               "constraint": undefined,
               "default": undefined,
+              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 25,
@@ -120,6 +123,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
+              "out": false,
               "range": Array [
                 24,
                 25,

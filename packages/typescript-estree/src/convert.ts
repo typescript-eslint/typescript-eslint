@@ -142,7 +142,11 @@ export class Converter {
    * @param result result
    * @returns the ESTreeNode with fixed exports
    */
-  private fixExports<T extends TSESTree.ExportDeclaration>(
+  private fixExports<
+    T extends
+      | TSESTree.DefaultExportDeclarations
+      | TSESTree.NamedExportDeclarations,
+  >(
     node:
       | ts.FunctionDeclaration
       | ts.VariableStatement
@@ -184,9 +188,10 @@ export class Converter {
         const isType =
           result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
           result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
-        const isDeclare = result.declare === true;
+        const isDeclare = 'declare' in result && result.declare === true;
         return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
           type: AST_NODE_TYPES.ExportNamedDeclaration,
+          // @ts-expect-error - TODO, narrow the types here
           declaration: result,
           specifiers: [],
           source: null,
@@ -745,10 +750,19 @@ export class Converter {
 
   private assertModuleSpecifier(
     node: ts.ExportDeclaration | ts.ImportDeclaration,
+    allowNull: boolean,
   ): void {
+    if (!allowNull && node.moduleSpecifier == null) {
+      throw createError(
+        this.ast,
+        node.pos,
+        'Module specifier must be a string literal.',
+      );
+    }
+
     if (
       node.moduleSpecifier &&
-      node.moduleSpecifier.kind !== SyntaxKind.StringLiteral
+      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
     ) {
       throw createError(
         this.ast,
@@ -964,16 +978,16 @@ export class Converter {
           result.returnType = this.convertTypeAnnotation(node.type, node);
         }
 
-        if (isDeclare) {
-          result.declare = true;
-        }
-
         // Process typeParameters
         if (node.typeParameters) {
           result.typeParameters =
             this.convertTSTypeParametersToTypeParametersDeclaration(
               node.typeParameters,
             );
+        }
+
+        if (isDeclare) {
+          result.declare = true;
         }
 
         // check for exports
@@ -1737,7 +1751,7 @@ export class Converter {
         });
 
       case SyntaxKind.ImportDeclaration: {
-        this.assertModuleSpecifier(node);
+        this.assertModuleSpecifier(node, false);
 
         const result = this.createNode<TSESTree.ImportDeclaration>(node, {
           type: AST_NODE_TYPES.ImportDeclaration,
@@ -1804,8 +1818,8 @@ export class Converter {
       }
 
       case SyntaxKind.ExportDeclaration: {
-        this.assertModuleSpecifier(node);
         if (node.exportClause?.kind === SyntaxKind.NamedExports) {
+          this.assertModuleSpecifier(node, true);
           return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
             source: this.convertChild(node.moduleSpecifier),
@@ -1817,6 +1831,7 @@ export class Converter {
             assertions: this.convertAssertClasue(node.assertClause),
           });
         } else {
+          this.assertModuleSpecifier(node, false);
           return this.createNode<TSESTree.ExportAllDeclaration>(node, {
             type: AST_NODE_TYPES.ExportAllDeclaration,
             source: this.convertChild(node.moduleSpecifier),
@@ -2342,6 +2357,8 @@ export class Converter {
             ? this.convertType(node.constraint)
             : undefined,
           default: node.default ? this.convertType(node.default) : undefined,
+          in: hasModifier(SyntaxKind.InKeyword, node),
+          out: hasModifier(SyntaxKind.OutKeyword, node),
         });
       }
 
@@ -2412,6 +2429,9 @@ export class Converter {
         return this.createNode<TSESTree.TSTypeQuery>(node, {
           type: AST_NODE_TYPES.TSTypeQuery,
           exprName: this.convertType(node.exprName),
+          typeParameters:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameters(node.typeArguments, node),
         });
       }
 
@@ -2574,13 +2594,19 @@ export class Converter {
       }
 
       case SyntaxKind.ExpressionWithTypeArguments: {
+        const parentKind = parent.kind;
+        const type =
+          parentKind === SyntaxKind.InterfaceDeclaration
+            ? AST_NODE_TYPES.TSInterfaceHeritage
+            : parentKind === SyntaxKind.HeritageClause
+            ? AST_NODE_TYPES.TSClassImplements
+            : AST_NODE_TYPES.TSInstantiationExpression;
         const result = this.createNode<
-          TSESTree.TSInterfaceHeritage | TSESTree.TSClassImplements
+          | TSESTree.TSInterfaceHeritage
+          | TSESTree.TSClassImplements
+          | TSESTree.TSInstantiationExpression
         >(node, {
-          type:
-            parent && parent.kind === SyntaxKind.InterfaceDeclaration
-              ? AST_NODE_TYPES.TSInterfaceHeritage
-              : AST_NODE_TYPES.TSClassImplements,
+          type,
           expression: this.convertChild(node.expression),
         });
 

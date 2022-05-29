@@ -1,6 +1,10 @@
 # `no-duplicate-imports`
 
-Disallow duplicate imports.
+Disallows duplicate imports.
+
+## DEPRECATED
+
+This rule has been deprecated in favour of the [`import/no-duplicates`](https://github.com/import-js/eslint-plugin-import/blob/HEAD/docs/rules/no-duplicates.md) rule.
 
 ## Rule Details
 
@@ -29,6 +33,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

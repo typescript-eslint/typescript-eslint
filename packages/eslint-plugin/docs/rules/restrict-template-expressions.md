@@ -1,6 +1,6 @@
 # `restrict-template-expressions`
 
-Enforce template literal expressions to be of string type.
+Enforces template literal expressions to be of `string` type.
 
 ## Rule Details
 
@@ -111,6 +111,8 @@ const msg1 = `arg = ${arg}`;
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

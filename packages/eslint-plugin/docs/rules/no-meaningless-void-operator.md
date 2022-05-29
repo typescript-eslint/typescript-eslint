@@ -1,8 +1,8 @@
 # `no-meaningless-void-operator`
 
-Disallow the `void` operator except when used to discard a value.
+Disallows the `void` operator except when used to discard a value.
 
-Disallow the `void` operator when its argument is already of type `void` or `undefined`.
+Disallows the `void` operator when its argument is already of type `void` or `undefined`.
 
 ## Rule Details
 
@@ -57,6 +57,8 @@ This rule accepts a single object option with the following default configuratio
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

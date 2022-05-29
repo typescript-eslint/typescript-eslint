@@ -1,6 +1,6 @@
 # `no-magic-numbers`
 
-Disallow magic numbers.
+Disallows magic numbers.
 
 ## Rule Details
 
@@ -150,6 +150,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

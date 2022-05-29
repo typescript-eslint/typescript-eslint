@@ -1,6 +1,6 @@
 # `unified-signatures`
 
-Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter.
+Disallows two overloads that could be unified into one with a union or an optional/rest parameter.
 
 ## Rule Details
 
@@ -82,6 +82,8 @@ function f(...a: string[]): void;
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -143,6 +143,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 23,
@@ -171,6 +172,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               22,
               23,
@@ -360,6 +362,7 @@ Object {
               ],
               "type": "TSLiteralType",
             },
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 38,
@@ -388,6 +391,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               98,
               113,
@@ -561,6 +565,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -589,6 +594,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               191,
               192,
@@ -797,6 +803,7 @@ Object {
               ],
               "type": "TSLiteralType",
             },
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 42,
@@ -825,6 +832,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               272,
               287,

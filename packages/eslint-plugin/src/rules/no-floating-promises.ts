@@ -18,7 +18,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description:
-        'Requires Promise-like statements to be handled appropriately',
+        'Require Promise-like statements to be handled appropriately',
       recommended: 'error',
       suggestion: true,
       requiresTypeChecking: true,

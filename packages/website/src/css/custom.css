@@ -24,6 +24,7 @@ html:root {
   --code-editor-bg: #ffffff;
 
   --docsearch-muted-color: #666;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 html[data-theme='dark']:root {
@@ -60,17 +61,7 @@ html[data-theme='dark']:root {
   scrollbar-color: #454a4d #202324;
 
   --docsearch-muted-color: #aaa;
-}
-
-.docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0 calc(-1 * var(--ifm-pre-padding));
-  padding: 0 var(--ifm-pre-padding);
-}
-
-html[data-theme='dark'] .docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.3);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
 .header-github-link:hover {

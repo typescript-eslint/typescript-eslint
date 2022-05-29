@@ -1,6 +1,6 @@
 # `restrict-plus-operands`
 
-When adding two variables, operands must both be of type number or of type string.
+Requires both operands of addition to have type `number` or `string`.
 
 ## Rule Details
 
@@ -107,6 +107,8 @@ var fn = (a: any, b: number) => a + b;
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

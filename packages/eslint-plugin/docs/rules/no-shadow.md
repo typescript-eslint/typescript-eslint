@@ -1,6 +1,6 @@
 # `no-shadow`
 
-Disallow variable declarations from shadowing variables declared in the outer scope.
+Disallows variable declarations from shadowing variables declared in the outer scope.
 
 ## Rule Details
 
@@ -94,6 +94,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

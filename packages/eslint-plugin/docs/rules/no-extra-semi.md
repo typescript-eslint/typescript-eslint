@@ -1,6 +1,6 @@
 # `no-extra-semi`
 
-Disallow unnecessary semicolons.
+Disallows unnecessary semicolons.
 
 ## Rule Details
 
@@ -29,6 +29,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information

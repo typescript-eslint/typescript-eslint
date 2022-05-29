@@ -1,6 +1,6 @@
 # `no-loop-func`
 
-Disallow function declarations that contain unsafe references inside loop statements.
+Disallows function declarations that contain unsafe references inside loop statements.
 
 ## Rule Details
 
@@ -29,6 +29,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `no-non-null-asserted-optional-chain`
 
-Disallows using a non-null assertion after an optional chain expression.
+Disallows non-null assertions after an optional chain expression.
 
 ## Rule Details
 
@@ -68,6 +68,8 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

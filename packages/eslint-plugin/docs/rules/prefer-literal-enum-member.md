@@ -1,6 +1,6 @@
 # `prefer-literal-enum-member`
 
-Require that all enum members be literal values to prevent unintended enum member name shadow issues.
+Requires all enum members to be literal values.
 
 TypeScript allows the value of an enum member to be many different kinds of valid JavaScript expressions. However, because enums create their own scope whereby each enum member becomes a variable in that scope, unexpected values could be used at runtime. Example:
 
@@ -99,6 +99,8 @@ If you want use anything other than simple literals as an enum value.
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

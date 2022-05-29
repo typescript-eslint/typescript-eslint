@@ -4,9 +4,11 @@
 // npx nx generate-lib @typescript-eslint/scope-manager
 
 import { ImplicitLibVariableOptions } from '../variable';
+import { es2020_intl } from './es2020.intl';
 import { TYPE, TYPE_VALUE } from './base-config';
 
 export const esnext_bigint = {
+  ...es2020_intl,
   BigIntToLocaleStringOptions: TYPE,
   BigInt: TYPE_VALUE,
   BigIntConstructor: TYPE,

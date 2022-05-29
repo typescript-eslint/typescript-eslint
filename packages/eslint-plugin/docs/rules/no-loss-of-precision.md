@@ -1,6 +1,6 @@
 # `no-loss-of-precision`
 
-Disallow literal numbers that lose precision.
+Disallows literal numbers that lose precision.
 
 ## Rule Details
 
@@ -26,6 +26,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

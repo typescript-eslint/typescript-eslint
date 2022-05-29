@@ -8,7 +8,8 @@ export default util.createRule<[], MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Prefer initializing each enums member value',
+      description:
+        'Require each enum member value to be explicitly initialized',
       recommended: false,
       suggestion: true,
     },

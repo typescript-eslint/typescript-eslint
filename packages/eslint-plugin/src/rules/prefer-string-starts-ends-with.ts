@@ -22,8 +22,8 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings',
-      recommended: false,
+        'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

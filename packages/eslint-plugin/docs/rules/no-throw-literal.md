@@ -1,6 +1,6 @@
 # `no-throw-literal`
 
-Disallow throwing literals as exceptions.
+Disallows throwing literals as exceptions.
 
 It is considered good practice to only `throw` the `Error` object itself or an object using the `Error` object as base objects for user-defined exceptions.
 The fundamental benefit of `Error` objects is that they automatically keep track of where they were built and originated.
@@ -119,6 +119,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [x] 💭 Requires type information

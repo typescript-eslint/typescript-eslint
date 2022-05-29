@@ -1,6 +1,6 @@
 # `no-useless-constructor`
 
-Disallow unnecessary constructors.
+Disallows unnecessary constructors.
 
 ## Rule Details
 
@@ -38,6 +38,8 @@ See [discussion on this rule's lack of type information](https://github.com/type
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

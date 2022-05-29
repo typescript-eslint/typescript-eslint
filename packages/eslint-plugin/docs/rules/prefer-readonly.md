@@ -1,6 +1,6 @@
 # `prefer-readonly`
 
-Requires that private members are marked as `readonly` if they're never modified outside of the constructor.
+Requires private members to be marked as `readonly` if they're never modified outside of the constructor.
 
 This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.
 
@@ -92,6 +92,8 @@ class Container {
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [x] 🔧 Fixable
 - [x] 💭 Requires type information

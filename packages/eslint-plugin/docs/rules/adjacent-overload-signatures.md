@@ -1,6 +1,6 @@
 # `adjacent-overload-signatures`
 
-Require that member overloads be consecutive.
+Requires that member overloads be consecutive.
 
 Grouping overloaded members together can improve readability of the code.
 
@@ -107,6 +107,8 @@ If you don't care about the general structure of the code, then you will not nee
 
 ## Attributes
 
-- [x] ✅ Recommended
+- Configs:
+  - [x] ✅ Recommended
+  - [x] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information

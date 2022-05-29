@@ -1,6 +1,6 @@
 # `no-use-before-define`
 
-Disallow the use of variables before they are defined.
+Disallows the use of variables before they are defined.
 
 ## Rule Details
 
@@ -115,6 +115,8 @@ Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [ ] 🔒 Strict
 - [ ] 🔧 Fixable
 - [ ] 💭 Requires type information
