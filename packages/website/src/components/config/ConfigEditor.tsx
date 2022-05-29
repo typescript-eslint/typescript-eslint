@@ -26,7 +26,6 @@ export interface ConfigEditorProps {
   readonly values: ConfigEditorValues;
   readonly isOpen: boolean;
   readonly header: string;
-  readonly jsonField: string;
   readonly onClose: (config: ConfigEditorValues) => void;
 }
 
@@ -80,7 +79,7 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
 
   const onClose = useCallback(() => {
     props.onClose(config);
-  }, [props.onClose, props.jsonField, config]);
+  }, [props.onClose, config]);
 
   useEffect(() => {
     setConfig({ type: 'init', config: props.values });

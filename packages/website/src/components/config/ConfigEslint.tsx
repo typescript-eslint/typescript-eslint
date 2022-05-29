@@ -91,7 +91,6 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
       header="Eslint Config"
       options={options}
       values={configObject ?? {}}
-      jsonField="rules"
       isOpen={props.isOpen}
       onClose={onClose}
     />

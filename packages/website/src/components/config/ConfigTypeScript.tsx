@@ -68,7 +68,6 @@ function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
       header="TypeScript Config"
       options={tsConfigOptions}
       values={configObject ?? {}}
-      jsonField="compilerOptions"
       isOpen={props.isOpen}
       onClose={onClose}
     />
