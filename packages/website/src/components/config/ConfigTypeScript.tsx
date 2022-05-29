@@ -5,7 +5,7 @@ import type { CompilerFlags, ConfigModel } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
 import { getTypescriptOptions, parseTSConfig, toJsonConfig } from './utils';
 
-interface ModalTypeScriptProps {
+interface ConfigTypeScriptProps {
   readonly isOpen: boolean;
   readonly onClose: (config?: Partial<ConfigModel>) => void;
   readonly config?: string;
@@ -15,7 +15,7 @@ function checkOptions(item: [string, unknown]): item is [string, boolean] {
   return typeof item[1] === 'boolean';
 }
 
-function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
+function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
   const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
   const [configObject, updateConfigObject] = useState<CompilerFlags>({});
 

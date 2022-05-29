@@ -58,7 +58,7 @@
   border: none;
   border-right: 1px solid var(--playground-secondary-color);
   background: var(--playground-main-color);
-  color: var(--ifm-color-emphasis-600);
+  color: var(--ifm-color-emphasis-700);
   padding: 0.5rem 1rem;
   cursor: pointer;
 }

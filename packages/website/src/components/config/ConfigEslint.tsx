@@ -10,7 +10,7 @@ import type {
 import { shallowEqual } from '../lib/shallowEqual';
 import { parseESLintRC, toJsonConfig } from '@site/src/components/config/utils';
 
-export interface ModalEslintProps {
+export interface ConfigEslintProps {
   readonly isOpen: boolean;
   readonly onClose: (value?: Partial<ConfigModel>) => void;
   readonly ruleOptions: RuleDetails[];
@@ -31,7 +31,7 @@ function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
   return checkSeverity(rule[1]);
 }
 
-function ConfigEslint(props: ModalEslintProps): JSX.Element {
+function ConfigEslint(props: ConfigEslintProps): JSX.Element {
   const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
   const [configObject, updateConfigObject] = useState<RulesRecord>({});
 
