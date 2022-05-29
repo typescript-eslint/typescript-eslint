@@ -1,6 +1,6 @@
 # `restrict-template-expressions`
 
-Enforce template literal expressions to be of string type.
+Enforces template literal expressions to be of `string` type.
 
 ## Rule Details
 

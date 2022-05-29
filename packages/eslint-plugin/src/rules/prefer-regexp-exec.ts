@@ -25,7 +25,7 @@ export default createRule({
     fixable: 'code',
     docs: {
       description:
-        'Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided',
+        'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
       recommended: false,
       requiresTypeChecking: true,
     },

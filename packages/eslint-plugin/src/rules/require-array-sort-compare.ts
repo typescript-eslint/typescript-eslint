@@ -20,7 +20,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Requires `Array#sort` calls to always provide a `compareFunction`',
+        'Require `Array#sort` calls to always provide a `compareFunction`',
       recommended: false,
       requiresTypeChecking: true,
     },

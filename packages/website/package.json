@@ -14,11 +14,11 @@
     "test:open": "cypress open"
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.2",
-    "@docusaurus/core": "2.0.0-beta.20",
-    "@docusaurus/preset-classic": "2.0.0-beta.20",
-    "@docusaurus/remark-plugin-npm2yarn": "2.0.0-beta.20",
-    "@docusaurus/theme-common": "2.0.0-beta.20",
+    "@babel/runtime": "^7.18.3",
+    "@docusaurus/core": "2.0.0-beta.21",
+    "@docusaurus/preset-classic": "2.0.0-beta.21",
+    "@docusaurus/remark-plugin-npm2yarn": "2.0.0-beta.21",
+    "@docusaurus/theme-common": "2.0.0-beta.21",
     "@mdx-js/react": "1.6.22",
     "@typescript-eslint/website-eslint": "5.26.0",
     "clsx": "^1.1.1",
@@ -32,11 +32,11 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.0.0-beta.18",
+    "@docusaurus/module-type-aliases": "^2.0.0-beta.21",
     "@types/react": "^18.0.9",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
-    "copy-webpack-plugin": "^10.2.4",
+    "copy-webpack-plugin": "^11.0.0",
     "cypress": "8.3.0",
     "cypress-axe": "^0.14.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",

@@ -28,7 +28,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description:
-        'Prefer using type parameter when calling `Array#reduce` instead of casting',
+        'Enforce using type parameter when calling `Array#reduce` instead of casting',
       recommended: 'strict',
       requiresTypeChecking: true,
     },

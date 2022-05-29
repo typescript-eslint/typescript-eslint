@@ -1,6 +1,6 @@
 # `prefer-function-type`
 
-Use function types instead of interfaces with call signatures.
+Enforces using function types instead of interfaces with call signatures.
 
 ## Rule Details
 

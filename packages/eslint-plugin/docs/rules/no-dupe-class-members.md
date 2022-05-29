@@ -1,6 +1,6 @@
 # `no-dupe-class-members`
 
-Disallow duplicate class members.
+Disallows duplicate class members.
 
 ## Rule Details
 

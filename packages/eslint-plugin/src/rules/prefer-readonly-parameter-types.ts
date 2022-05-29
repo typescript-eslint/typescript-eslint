@@ -15,7 +15,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Requires that function parameters are typed as readonly to prevent accidental mutation of inputs',
+        'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
       recommended: false,
       requiresTypeChecking: true,
     },

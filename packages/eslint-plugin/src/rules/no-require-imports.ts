@@ -6,7 +6,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows invocation of `require()`',
+      description: 'Disallow invocation of `require()`',
       recommended: false,
     },
     schema: [],
