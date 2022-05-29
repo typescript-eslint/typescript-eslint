@@ -41,7 +41,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'Require or disallow trailing comma',
+      description: 'Require or disallow trailing commas',
       recommended: false,
       extendsBaseRule: true,
     },

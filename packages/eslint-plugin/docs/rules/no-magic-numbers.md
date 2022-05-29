@@ -1,6 +1,6 @@
 # `no-magic-numbers`
 
-Disallow magic numbers.
+Disallows magic numbers.
 
 ## Rule Details
 

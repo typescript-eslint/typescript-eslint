@@ -1,6 +1,6 @@
 # `no-type-alias`
 
-Disallow the use of type aliases.
+Disallows type aliases.
 
 In TypeScript, type aliases serve three purposes:
 

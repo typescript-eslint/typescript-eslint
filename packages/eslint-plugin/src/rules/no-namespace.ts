@@ -14,8 +14,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Disallow the use of custom TypeScript modules and namespaces',
+      description: 'Disallow custom TypeScript modules and namespaces',
       recommended: 'error',
     },
     messages: {

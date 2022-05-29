@@ -9,8 +9,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Disallows the use of require statements except in import statements',
+      description: 'Disallow `require` statements except in import statements',
       recommended: 'error',
     },
     messages: {
