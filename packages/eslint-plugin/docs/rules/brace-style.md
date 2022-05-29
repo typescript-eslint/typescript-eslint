@@ -1,6 +1,6 @@
 # `brace-style`
 
-Enforce consistent brace style for blocks.
+Enforces consistent brace style for blocks.
 
 ## Rule Details
 

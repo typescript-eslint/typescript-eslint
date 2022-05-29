@@ -21,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'When adding two variables, operands must both be of type number or of type string',
+        'Require both operands of addition to have type `number` or `string`',
       recommended: 'error',
       requiresTypeChecking: true,
     },

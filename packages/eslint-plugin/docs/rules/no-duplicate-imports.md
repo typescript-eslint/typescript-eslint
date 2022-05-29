@@ -1,6 +1,6 @@
 # `no-duplicate-imports`
 
-Disallow duplicate imports.
+Disallows duplicate imports.
 
 ## DEPRECATED
 

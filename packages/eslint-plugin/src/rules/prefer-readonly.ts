@@ -23,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        "Requires that private members are marked as `readonly` if they're never modified outside of the constructor",
+        "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
       recommended: false,
       requiresTypeChecking: true,
     },

@@ -1,6 +1,6 @@
 # `no-parameter-properties`
 
-Disallow the use of parameter properties in class constructors.
+Disallows the use of parameter properties in class constructors.
 
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.
