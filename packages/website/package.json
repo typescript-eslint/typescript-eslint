@@ -26,6 +26,8 @@
     "json5": "^2.2.1",
     "konamimojisplosion": "^0.5.1",
     "lzstring.ts": "^2.0.2",
+    "mdx-mermaid": "^1.2.3",
+    "mermaid": "^9.1.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "remark-docusaurus-tabs": "^0.2.0",

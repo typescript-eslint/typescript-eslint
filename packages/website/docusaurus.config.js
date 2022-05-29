@@ -3,6 +3,7 @@
 
 const remarkPlugins = [
   [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
+  [require('mdx-mermaid'), {}],
 ];
 
 const beforeDefaultRemarkPlugins = [[require('remark-docusaurus-tabs'), {}]];

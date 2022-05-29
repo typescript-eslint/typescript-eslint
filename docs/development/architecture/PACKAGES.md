@@ -7,12 +7,61 @@ sidebar_label: Packages
 This page describes the top-level packages exported by the [typescript-eslint monorepo](https://github.com/typescript-eslint/typescript-eslint).
 Each of these are published as npm packages under the `@typescript-eslint` organization.
 
-## `@typescript-eslint/eslint-plugin`
+```mermaid
+  graph TD
+    eslint-plugin[["@typescript-eslint/eslint-plugin"]]
+    eslint-plugin-tslint[["@typescript-eslint/eslint-plugin-tslint"]]
+    parser[["@typescript-eslint/parser"]]
+    typescript-estree["@typescript-eslint/typescript-estree"]
+    scope-manager["@typescript-eslint/scope-manager"]
+    utils["@typescript-eslint/utils"]
+    type-utils["@typescript-eslint/type-utils"]
+    visitor-keys["@typescript-eslint/visitor-keys"]
+    types["@typescript-eslint/types"]
+
+    click eslint-plugin "#typescript-eslinteslint-plugin"
+    click eslint-plugin-tslint "#typescript-eslinteslint-plugin-tslint"
+    click parser "#typescript-eslintparser"
+    click typescript-estree "#typescript-eslinttypescript-estree"
+    click scope-manager "#typescript-eslintscope-manager"
+    click utils "#typescript-eslintutils"
+    click type-utils "#typescript-eslinttype-utils"
+    click visitor-keys "#typescript-eslintvisitor-keys"
+    %% click types "#typescript-eslinttypes"
+
+    eslint{"ESLint"}
+
+    parser -.-> eslint-plugin
+    scope-manager -.-> eslint-plugin
+    utils --> eslint-plugin
+    type-utils --> eslint-plugin
+
+    typescript-estree --> parser
+    types -.-> parser
+    scope-manager --> parser
+
+    scope-manager --> utils
+    types -.-> utils
+
+    visitor-keys --> scope-manager
+    types -.-> scope-manager
+
+    types -.-> visitor-keys
+    types -.-> typescript-estree
+    types -.-> type-utils
+
+    eslint-plugin-tslint <--> eslint
+    parser --> eslint
+
+    eslint-plugin <--> eslint
+```
+
+## @typescript-eslint/eslint-plugin
 
 [`@typescript-eslint/eslint-plugin`] is the core [ESLint plugin](https://eslint.org/docs/user-guide/configuring/plugins) used by consumers to load in custom rules and rule configurations lists from typescript-eslint.
 Those rules rely on ESLint using the `@typescript-eslint/parser` package described below, and are generally built using the other packages on this page.
 
-## `@typescript-eslint/parser`
+## @typescript-eslint/parser
 
 [`@typescript-eslint/parser`] takes in ESLint configuration settings, reads in TypeScript source text, and produces an ESTree AST.
 This is necessary because TypeScript produces a different, incompatible AST format to the one that ESLint requires to work.
@@ -35,7 +84,7 @@ See more on configuring custom parsers with ESLint on [ESLint's User Guide > Con
 You can select `@typescript-eslint/parser` on the [TypeScript ESLint playground](https://typescript-eslint.io/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
 :::
 
-## `@typescript-eslint/typescript-estree`
+## @typescript-eslint/typescript-estree
 
 [`@typescript-eslint/typescript-estree`] is used by `@typescript-eslint/parser` to take TypeScript source code and produce the equivalent ESTree AST.
 It works by:
@@ -48,20 +97,28 @@ It works by:
 > requirements to ESLint.
 > It is therefore also used to power the amazing opinionated code formatter [Prettier](https://prettier.io)'s TypeScript support.
 
-## `@typescript-eslint/scope-manager`
+## @typescript-eslint/scope-manager
 
 [`@typescript-eslint/scope-manager`] is a fork of [`eslint-scope`](https://github.com/eslint/eslint-scope), enhanced to support TypeScript functionality.
 
 A "scope analyser" traverses an AST and builds a model of how variables (and in our case, types) are defined and consumed by the source code.
 This form of static analysis allows you to understand and trace variables throughout the program, allowing you to access powerful information about a program without needing to drop into the much, much heavier type information.
 
-## `@typescript-eslint/utils`
+## @typescript-eslint/visitor-keys
+
+[`@typescript-eslint/visitor-keys`] contains visitor keys used to help traverse the TypeScript-ESTree AST
+
+## @typescript-eslint/utils
 
 [`@typescript-eslint/utils`] contains public utilities for writing custom rules and plugins in TypeScript.
 Rules declared in `@typescript-eslint/eslint-plugin` are created using its utility functions.
 Any custom rules you write generally will be as well.
 
-## `@typescript-eslint/eslint-plugin-tslint`
+## @typescript-eslint/type-utils
+
+[`@typescript-eslint/type-utils`] contains public utilities for TypeScript AST.
+
+## @typescript-eslint/eslint-plugin-tslint
 
 [`@typescript-eslint/eslint-plugin-tslint`] is a separate ESLint plugin that allows running TSLint rules within ESLint to help you migrate from TSLint to ESLint.
 
@@ -72,7 +129,8 @@ Any custom rules you write generally will be as well.
 [`@typescript-eslint/eslint-plugin-tslint`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin-tslint
 [`@typescript-eslint/eslint-plugin`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin
 [`@typescript-eslint/utils`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/utils
+[`@typescript-eslint/type-utils`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/type-utils
 [`@typescript-eslint/parser`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser
 [`@typescript-eslint/scope-manager`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/scope-manager
 [`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree
-[`@typescript-eslint/typescript-estree`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree
+[`@typescript-eslint/visitor-keys`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/visitor-keys
