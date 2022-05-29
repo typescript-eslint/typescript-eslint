@@ -29,7 +29,6 @@
     "check-format": "prettier --list-different \"./**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "clean": "lerna clean && lerna run clean",
-    "cz": "git-cz",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\"",
     "generate-contributors": "yarn ts-node --transpile-only ./tools/generate-contributors.ts",
     "generate-sponsors": "yarn ts-node --transpile-only ./tools/generate-sponsors.ts",
