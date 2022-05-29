@@ -365,7 +365,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * babel hard fails on computed string enum members, but TS doesn't
-     * https://github.com/babel/babel/issues/12683
+     * @see https://github.com/babel/babel/issues/12683
      */
     'export-named-enum-computed-string',
     /**
@@ -455,8 +455,8 @@ tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
   ignore: [
     /**
-     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
-     * Babel doesn't support TS 4.7 new features yet.
+     * Babel produces incorrect structure for TSInstantiationExpression and optional ChainExpression
+     * @see https://github.com/babel/babel/issues/14613
      */
     'instantiation-expression',
   ],
@@ -492,13 +492,8 @@ tester.addFixturePatternConfig('typescript/types', {
     'template-literal-type-3',
     'template-literal-type-4',
     /**
-     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
-     * Babel doesn't support TS 4.7 new feature yet.
-     */
-    'conditional-infer-with-constraint',
-    /**
-     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
-     * Babel doesn't support TS 4.7 new features yet.
+     * Reported range differs between ts-estree and Babel
+     * @see https://github.com/babel/babel/issues/14589
      */
     'optional-variance-in',
     'optional-variance-out',
