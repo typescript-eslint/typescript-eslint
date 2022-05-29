@@ -132,66 +132,6 @@ ruleTester.run('no-type-alias', rule, {
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
-      code: 'type Foo = `a-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}`;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}`;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
       code: 'type Foo = true;',
       options: [{ allowAliases: 'always' }],
     },
@@ -541,6 +481,66 @@ type KeyNames = keyof typeof SCALARS;
     {
       code: 'type Foo = Record<string, number>;',
       options: [{ allowGenerics: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}`;',
+      options: [{ allowTemplateLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowTemplateLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowTemplateLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
+      options: [{ allowTemplateLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
+      options: [{ allowTemplateLiterals: 'in-unions-and-intersections' }],
     },
   ],
   invalid: [
@@ -3406,7 +3406,7 @@ type Foo<T> = {
         {
           messageId: 'noTypeAlias',
           data: {
-            alias: 'aliases',
+            alias: 'template literals',
           },
           line: 1,
           column: 12,
@@ -3415,12 +3415,12 @@ type Foo<T> = {
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}`;',
-      options: [{ allowAliases: 'never' }],
+      options: [{ allowTemplateLiterals: 'never' }],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
-            typeName: 'Aliases',
+            typeName: 'Template literals',
             compositionType: 'union',
           },
           line: 1,
@@ -3429,7 +3429,7 @@ type Foo<T> = {
         {
           messageId: 'noCompositionAlias',
           data: {
-            typeName: 'Aliases',
+            typeName: 'Template literals',
             compositionType: 'union',
           },
           line: 1,
@@ -3439,12 +3439,12 @@ type Foo<T> = {
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}`;',
-      options: [{ allowAliases: 'never' }],
+      options: [{ allowTemplateLiterals: 'never' }],
       errors: [
         {
           messageId: 'noCompositionAlias',
           data: {
-            typeName: 'Aliases',
+            typeName: 'Template literals',
             compositionType: 'intersection',
           },
           line: 1,
@@ -3453,7 +3453,7 @@ type Foo<T> = {
         {
           messageId: 'noCompositionAlias',
           data: {
-            typeName: 'Aliases',
+            typeName: 'Template literals',
             compositionType: 'intersection',
           },
           line: 1,

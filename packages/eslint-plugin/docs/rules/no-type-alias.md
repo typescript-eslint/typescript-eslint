@@ -92,6 +92,7 @@ or more of the following you may pass an object with the options set as follows:
 - `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
 - `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
 - `allowGenerics` set to `"always"` will allow you to use type aliases with generics (Defaults to `"never"`)
+- `allowTemplateLiterals` set to `"always"` will allow you to use type aliases with template literals (Defaults to `"never"`)
 
 ### `allowAliases`
 
@@ -598,6 +599,61 @@ type Foo = Readonly<Bar>;
 type Foo = Partial<Bar>;
 
 type Foo = Omit<Bar, 'a' | 'b'>;
+```
+
+### `allowTemplateLiterals`
+
+This applies to template literals.
+
+The setting accepts the following values:
+
+- `"always"` or `"never"` to active or deactivate the feature.
+- `"in-unions"`
+- `"in-intersections"`
+- `"in-unions-and-intersections"`
+
+Examples of **correct** code for the `{ "allowTemplateLiterals": "always" }` options:
+
+```ts
+type Foo = `foo-${number}`;
+```
+
+Examples of **incorrect** code for the `{ "allowTemplateLiterals": "in-unions" }` option:
+
+```ts
+type Foo = `foo-${number}`;
+```
+
+Examples of **correct** code for the `{ "allowTemplateLiterals": "in-unions" }` option:
+
+```ts
+type Foo = `a-${number}` | `b-${number}`;
+```
+
+Examples of **incorrect** code for the `{ "allowTemplateLiterals": "in-intersections" }` option:
+
+```ts
+type Foo = `a-${number}` | `b-${number}`;
+```
+
+Examples of **correct** code for the `{ "allowTemplateLiterals": "in-intersections" }` option:
+
+```ts
+type Foo = `a-${number}` & `b-${number}`;
+```
+
+Examples of **incorrect** code for the `{ "allowTemplateLiterals": "in-unions-and-intersections" }` option:
+
+```ts
+type Foo = `foo-${number}`;
+```
+
+Examples of **correct** code for the `{ "allowTemplateLiterals": "in-unions-and-intersections" }` option:
+
+```ts
+type Foo = `a-${number}` & `b-${number}`;
+
+type Foo = `a-${number}` | `b-${number}`;
 ```
 
 ## When Not To Use It

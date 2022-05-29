@@ -29,6 +29,7 @@ type Options = [
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
     allowGenerics?: 'always' | 'never';
+    allowTemplateLiterals?: Values;
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -83,6 +84,9 @@ export default util.createRule<Options, MessageIds>({
           allowGenerics: {
             enum: ['always', 'never'],
           },
+          allowTemplateLiterals: {
+            enum: enumValues,
+          },
         },
         additionalProperties: false,
       },
@@ -98,6 +102,7 @@ export default util.createRule<Options, MessageIds>({
       allowMappedTypes: 'never',
       allowTupleTypes: 'never',
       allowGenerics: 'never',
+      allowTemplateLiterals: 'never',
     },
   ],
   create(
@@ -112,6 +117,7 @@ export default util.createRule<Options, MessageIds>({
         allowMappedTypes,
         allowTupleTypes,
         allowGenerics,
+        allowTemplateLiterals,
       },
     ],
   ) {
@@ -271,6 +277,13 @@ export default util.createRule<Options, MessageIds>({
       } else if (type.node.type === AST_NODE_TYPES.TSMappedType) {
         // mapped type
         checkAndReport(allowMappedTypes!, isTopLevel, type, 'Mapped types');
+      } else if (type.node.type === AST_NODE_TYPES.TSTemplateLiteralType) {
+        checkAndReport(
+          allowTemplateLiterals!,
+          isTopLevel,
+          type,
+          'Template literals',
+        );
       } else if (isValidTupleType(type)) {
         // tuple types
         checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
