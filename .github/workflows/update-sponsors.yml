@@ -4,23 +4,55 @@ on:
   schedule:
     - cron: "0 0 * * 1"
 
+env:
+  PRIMARY_NODE_VERSION: 16
+
 jobs:
   build:
     name: Commit if needed
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Codecademy/run-on-yarn@v1
+
+      - name: Use Node.js ${{ env.PRIMARY_NODE_VERSION }}
+        uses: actions/setup-node@v3
         with:
-          command: generate-sponsors
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Get yarn cache directory path and node version for cache key
+        id: yarn-cache-dir-path
+        run: |
+          echo "::set-output name=dir::$(yarn cache dir)"
+          echo "::set-output name=node_version::$(node --version)"
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ steps.yarn-cache-dir-path.outputs.node_version }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.yarn-cache-dir-path.outputs.node_version }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --ignore-engines --frozen-lockfile --ignore-scripts
+
+      - name: Get typescript-eslint Github app token
+        id: get_token
+        uses: getsentry/action-github-app-token@38a3ce582e170ddfe8789f509597c6944f2292a9
+        with:
+          private_key: ${{ secrets.GH_APP_PEM }}
+          app_id: ${{ secrets.GH_APP_ID }}
+
+      - name: Generate sponsors
+        run: yarn generate-sponsors
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          # The standard GITHUB_TOKEN cannot be used as it will not trigger status checks on
-          # the PR that gets created (this behavior is not specific to this action).
-          # https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs
-          token: ${{ secrets.JAMES_HENRY_GH_TOKEN }}
+          token: ${{ steps.get_token.outputs.token }}
           commit-message: "chore: update sponsors"
           title: "chore: update sponsors"
           body: "💸"
           branch: auto-update-sponsors
+          committer: typescript-eslint[bot] <typescript-eslint[bot]@users.noreply.github.com>
+          author: typescript-eslint[bot] <typescript-eslint[bot]@users.noreply.github.com>

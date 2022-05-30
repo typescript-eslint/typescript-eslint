@@ -1,6 +1,6 @@
 # `no-loss-of-precision`
 
-Disallow literal numbers that lose precision.
+Disallows literal numbers that lose precision.
 
 ## Rule Details
 

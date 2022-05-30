@@ -35,7 +35,7 @@ const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.8.0';
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
  * List them all separately here, so we can automatically create the full string
  */
-const SUPPORTED_PRERELEASE_RANGES: string[] = ['4.7.0-beta', '4.7.1-rc'];
+const SUPPORTED_PRERELEASE_RANGES: string[] = [];
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
@@ -237,8 +237,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Enable JSX - note the applicable file extension is still required
    */
-  if (typeof options.jsx === 'boolean' && options.jsx) {
-    extra.jsx = true;
+  if (typeof options.jsx !== 'boolean') {
+    extra.jsx = false;
+  } else {
+    extra.jsx = options.jsx;
   }
 
   /**

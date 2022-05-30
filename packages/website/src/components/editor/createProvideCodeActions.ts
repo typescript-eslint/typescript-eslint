@@ -1,9 +1,9 @@
 import type Monaco from 'monaco-editor';
-import { createURI } from './utils';
-import type { LintCodeAction } from './lintCode';
+import type { LintCodeAction } from '../linter/lintCode';
+import { createURI } from '../linter/utils';
 
 export function createProvideCodeActions(
-  fixes: Map<string, LintCodeAction>,
+  fixes: Map<string, LintCodeAction[]>,
 ): Monaco.languages.CodeActionProvider {
   return {
     provideCodeActions(
@@ -22,8 +22,8 @@ export function createProvideCodeActions(
       }
       const actions: Monaco.languages.CodeAction[] = [];
       for (const marker of context.markers) {
-        const message = fixes.get(createURI(marker));
-        if (message) {
+        const messages = fixes.get(createURI(marker)) ?? [];
+        for (const message of messages) {
           const start = model.getPositionAt(message.fix.range[0]);
           const end = model.getPositionAt(message.fix.range[1]);
           actions.push({

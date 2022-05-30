@@ -21,6 +21,7 @@ export * from './SequenceExpression/spec';
 export * from './Super/spec';
 export * from './TSAsExpression/spec';
 export * from './TSEmptyBodyFunctionExpression/spec';
+export * from './TSInstantiationExpression/spec';
 export * from './TSNonNullExpression/spec';
 export * from './TSTypeAssertion/spec';
 export * from './TaggedTemplateExpression/spec';

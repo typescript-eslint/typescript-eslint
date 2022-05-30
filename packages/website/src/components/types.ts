@@ -1,13 +1,11 @@
-import type {
-  ParserOptions,
-  RulesRecord,
-} from '@typescript-eslint/website-eslint';
+import type { TSESLint } from '@typescript-eslint/utils';
 
 export type CompilerFlags = Record<string, unknown>;
 
-export type SourceType = ParserOptions['sourceType'];
+export type SourceType = TSESLint.SourceType;
 
-export type { RulesRecord } from '@typescript-eslint/website-eslint';
+export type RulesRecord = TSESLint.Linter.RulesRecord;
+export type RuleEntry = TSESLint.Linter.RuleEntry;
 
 export interface RuleDetails {
   name: string;
@@ -32,4 +30,13 @@ export interface SelectedPosition {
 export interface SelectedRange {
   start: SelectedPosition;
   end: SelectedPosition;
+}
+
+export interface ErrorItem {
+  group: string;
+  message: string;
+  location: string;
+  severity: number;
+  hasFixers: boolean;
+  fixers: { message: string; fix(): void }[];
 }

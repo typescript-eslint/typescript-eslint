@@ -587,7 +587,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'require or disallow padding lines between statements',
+      description: 'Require or disallow padding lines between statements',
       recommended: false,
       extendsBaseRule: true,
     },

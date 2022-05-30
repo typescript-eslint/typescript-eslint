@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
 import type Monaco from 'monaco-editor';
 import { useEffect, useRef, useState } from 'react';
-import type { WebLinter } from '@typescript-eslint/website-eslint';
 import type { SandboxInstance } from './useSandboxServices';
 import type { CommonEditorProps } from './types';
+import type { WebLinter } from '../linter/WebLinter';
 
 import { debounce } from '../lib/debounce';
-import { lintCode, LintCodeAction } from './lintCode';
+import { lintCode, LintCodeAction } from '../linter/lintCode';
 import { createProvideCodeActions } from './createProvideCodeActions';
+import { createCompilerOptions } from '@site/src/components/editor/config';
+import { parseMarkers } from '../linter/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -24,6 +26,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
+  onMarkersChange,
   onChange,
   onSelect,
   rules,
@@ -34,16 +37,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   webLinter,
 }) => {
   const [decorations, setDecorations] = useState<string[]>([]);
-  const fixes = useRef(new Map<string, LintCodeAction>()).current;
+  const fixes = useRef(new Map<string, LintCodeAction[]>()).current;
 
   useEffect(() => {
-    const config = {
-      noResolve: true,
-      target: main.languages.typescript.ScriptTarget.ESNext,
-      module: main.languages.typescript.ModuleKind.ESNext,
-      ...tsConfig,
-      jsx: jsx ? main.languages.typescript.JsxEmit.React : undefined,
-    };
+    const config = createCompilerOptions(jsx, tsConfig);
 
     webLinter.updateOptions(config);
     sandboxInstance.setCompilerSettings(config);
@@ -83,9 +80,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         );
       }
 
-      onEsASTChange(fatalMessage ?? webLinter.getAst());
-      onTsASTChange(fatalMessage ?? webLinter.getTsAst());
-      onScopeChange(fatalMessage ?? webLinter.getScope());
+      onEsASTChange(fatalMessage ?? webLinter.storedAST ?? '');
+      onTsASTChange(fatalMessage ?? webLinter.storedTsAST ?? '');
+      onScopeChange(fatalMessage ?? webLinter.storedScope ?? '');
       onSelect(sandboxInstance.editor.getPosition());
     }, 500),
     [code, jsx, sandboxInstance, rules, sourceType, tsConfig, webLinter],
@@ -112,6 +109,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           onChange(sandboxInstance.getModel().getValue());
         }, 500),
       ),
+      sandboxInstance.monaco.editor.onDidChangeMarkers(() => {
+        const markers = sandboxInstance.monaco.editor.getModelMarkers({});
+        onMarkersChange(parseMarkers(markers, fixes, sandboxInstance.editor));
+      }),
     ];
 
     return (): void => {

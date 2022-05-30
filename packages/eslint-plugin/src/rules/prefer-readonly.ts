@@ -23,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        "Requires that private members are marked as `readonly` if they're never modified outside of the constructor",
+        "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -270,8 +270,12 @@ class ClassScope {
     classNode: ts.ClassLikeDeclaration,
     private readonly onlyInlineLambdas?: boolean,
   ) {
-    this.checker = checker;
-    this.classType = checker.getTypeAtLocation(classNode);
+    const classType = checker.getTypeAtLocation(classNode);
+    if (tsutils.isIntersectionType(classType)) {
+      this.classType = classType.types[0];
+    } else {
+      this.classType = classType;
+    }
 
     for (const member of classNode.members) {
       if (ts.isPropertyDeclaration(member)) {

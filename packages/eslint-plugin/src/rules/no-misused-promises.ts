@@ -8,6 +8,7 @@ type Options = [
   {
     checksConditionals?: boolean;
     checksVoidReturn?: boolean | ChecksVoidReturnOptions;
+    checksSpreads?: boolean;
   },
 ];
 
@@ -25,7 +26,8 @@ type MessageId =
   | 'voidReturnVariable'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
-  | 'voidReturnAttribute';
+  | 'voidReturnAttribute'
+  | 'spread';
 
 function parseChecksVoidReturn(
   checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
@@ -59,7 +61,7 @@ export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
   meta: {
     docs: {
-      description: 'Avoid using Promises in places not designed to handle them',
+      description: 'Disallow Promises in places not designed to handle them',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -75,6 +77,7 @@ export default util.createRule<Options, MessageId>({
       voidReturnAttribute:
         'Promise-returning function provided to attribute where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
+      spread: 'Expected a non-Promise value to be spreaded in an object.',
     },
     schema: [
       {
@@ -99,6 +102,9 @@ export default util.createRule<Options, MessageId>({
               },
             ],
           },
+          checksSpreads: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -108,10 +114,11 @@ export default util.createRule<Options, MessageId>({
     {
       checksConditionals: true,
       checksVoidReturn: true,
+      checksSpreads: true,
     },
   ],
 
-  create(context, [{ checksConditionals, checksVoidReturn }]) {
+  create(context, [{ checksConditionals, checksVoidReturn, checksSpreads }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
@@ -152,6 +159,10 @@ export default util.createRule<Options, MessageId>({
           }),
         }
       : {};
+
+    const spreadChecks: TSESLint.RuleListener = {
+      SpreadElement: checkSpread,
+    };
 
     function checkTestConditional(node: {
       test: TSESTree.Expression | null;
@@ -376,12 +387,36 @@ export default util.createRule<Options, MessageId>({
       }
     }
 
+    function checkSpread(node: TSESTree.SpreadElement): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+
+      if (isSometimesThenable(checker, tsNode.expression)) {
+        context.report({
+          messageId: 'spread',
+          node: node.argument,
+        });
+      }
+    }
+
     return {
       ...(checksConditionals ? conditionalChecks : {}),
       ...(checksVoidReturn ? voidReturnChecks : {}),
+      ...(checksSpreads ? spreadChecks : {}),
     };
   },
 });
+
+function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
+  const type = checker.getTypeAtLocation(node);
+
+  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+    if (tsutils.isThenableType(checker, node, subType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 // Variation on the thenable check which requires all forms of the type (read:
 // alternates in a union) to be thenable. Otherwise, you might be trying to

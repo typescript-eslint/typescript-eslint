@@ -19,7 +19,7 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans `// tslint:<rule-flag>` comments from being used',
+      description: 'Disallow `// tslint:<rule-flag>` comments',
       recommended: 'strict',
     },
     messages: {

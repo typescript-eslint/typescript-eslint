@@ -4,6 +4,10 @@ inputs:
   node-version:
     description: "The node version to setup"
     required: true
+  registry-url:
+    description: "Define registry-url"
+    required: false
+
 # outputs: - no outputs
 
 runs:
@@ -17,6 +21,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
 
     - name: Get yarn cache directory path
       shell: bash
@@ -26,7 +31,9 @@ runs:
     - uses: actions/cache@v3
       id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          ~/.cache/Cypress
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-

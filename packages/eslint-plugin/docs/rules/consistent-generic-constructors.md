@@ -1,6 +1,6 @@
 # `consistent-generic-constructors`
 
-Enforce specifying generic type arguments on type annotation or constructor name of a constructor call.
+Enforces specifying generic type arguments on type annotation or constructor name of a constructor call.
 
 When constructing a generic class, you can specify the type arguments on either the left-hand side (as a type annotation) or the right-hand side (as part of the constructor call):
 

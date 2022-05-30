@@ -1,6 +1,6 @@
 # `ban-types`
 
-Bans specific types from being used.
+Disallows certain types.
 
 Some builtin types have aliases, some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.
@@ -27,17 +27,27 @@ type Options = {
 };
 ```
 
-The rule accepts a single object as options, with the following keys:
+The rule accepts a single object as options.
 
-- `types` - An object whose keys are the types you want to ban, and the values are error messages.
-  - The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), the empty object literal (`{}`), or the empty tuple type (`[]`).
-  - The values can be a string, which is the error message to be reported, `false` to specifically disable this type
-    or it can be an object with the following properties:
-    - `message: string` - the message to display when the type is matched.
-    - `fixWith?: string` - a string to replace the banned type with when the fixer is run. If this is omitted, no fix will be done.
-- `extendDefaults` - if you're specifying custom `types`, you can set this to `true` to extend the default `types` configuration.
-  - This is a convenience option to save you copying across the defaults when adding another type.
-  - If this is `false`, the rule will _only_ use the types defined in your configuration.
+### `types`
+
+An object whose keys are the types you want to ban, and the values are error messages.
+
+The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), the empty object literal (`{}`), or the empty tuple type (`[]`).
+
+The values can be:
+
+- A string, which is the error message to be reported; or
+- `false` to specifically un-ban this type (useful when you are using `extendDefaults`); or
+- An object with the following properties:
+  - `message: string` - the message to display when the type is matched.
+  - `fixWith?: string` - a string to replace the banned type with when the fixer is run. If this is omitted, no fix will be done.
+
+### `extendDefaults`
+
+If you're specifying custom `types`, you can set this to `true` to extend the default `types` configuration. This is a convenience option to save you copying across the defaults when adding another type.
+
+If this is `false`, the rule will _only_ use the types defined in your configuration.
 
 Example configuration:
 
@@ -51,16 +61,15 @@ Example configuration:
         "Foo": "Don't use Foo because it is unsafe",
 
         // add a custom message, AND tell the plugin how to fix it
-        "String": {
-          "message": "Use string instead",
-          "fixWith": "string"
+        "OldAPI": {
+          "message": "Use NewAPI instead",
+          "fixWith": "NewAPI"
         },
 
-        "{}": {
-          "message": "Use object instead",
-          "fixWith": "object"
-        }
-      }
+        // un-ban a type that's banned by default
+        "{}": false
+      },
+      "extendDefaults": true
     }
   ]
 }

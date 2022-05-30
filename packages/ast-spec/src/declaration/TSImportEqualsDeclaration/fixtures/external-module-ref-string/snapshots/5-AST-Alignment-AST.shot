@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-string AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSImportEqualsDeclaration {
+        type: 'TSImportEqualsDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'F',
+
+          range: [7, 8],
+          loc: {
+            start: { column: 7, line: 1 },
+            end: { column: 8, line: 1 },
+          },
+        },
+        importKind: 'value',
+        isExport: false,
+        moduleReference: TSExternalModuleReference {
+          type: 'TSExternalModuleReference',
+          expression: Literal {
+            type: 'Literal',
+            raw: '\\\\'mod\\\\'',
+            value: 'mod',
+
+            range: [19, 24],
+            loc: {
+              start: { column: 19, line: 1 },
+              end: { column: 24, line: 1 },
+            },
+          },
+
+          range: [11, 25],
+          loc: {
+            start: { column: 11, line: 1 },
+            end: { column: 25, line: 1 },
+          },
+        },
+
+        range: [0, 26],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 26, line: 1 },
+        },
+      },
+    ],
+-   sourceType: 'module',
++   sourceType: 'script',
+
+    range: [0, 27],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
+`;

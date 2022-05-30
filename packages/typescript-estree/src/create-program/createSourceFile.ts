@@ -1,7 +1,7 @@
 import debug from 'debug';
 import * as ts from 'typescript';
 import { Extra } from '../parser-options';
-import { getScriptKind } from './shared';
+import { getScriptKind } from './getScriptKind';
 
 const log = debug('typescript-eslint:typescript-estree:createSourceFile');
 
@@ -17,7 +17,7 @@ function createSourceFile(code: string, extra: Extra): ts.SourceFile {
     code,
     ts.ScriptTarget.Latest,
     /* setParentNodes */ true,
-    getScriptKind(extra),
+    getScriptKind(extra.filePath, extra.jsx),
   );
 }
 

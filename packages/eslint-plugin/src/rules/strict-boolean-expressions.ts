@@ -51,7 +51,7 @@ export default util.createRule<Options, MessageId>({
     fixable: 'code',
     hasSuggestions: true,
     docs: {
-      description: 'Restricts the types allowed in boolean expressions',
+      description: 'Disallow certain types in boolean expressions',
       recommended: false,
       requiresTypeChecking: true,
     },

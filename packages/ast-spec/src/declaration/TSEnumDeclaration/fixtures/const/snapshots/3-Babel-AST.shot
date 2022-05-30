@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSEnumDeclaration const Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSEnumDeclaration {
+      type: "TSEnumDeclaration",
+      const: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [11, 14],
+        loc: {
+          start: { column: 11, line: 1 },
+          end: { column: 14, line: 1 },
+        },
+      },
+      members: Array [],
+
+      range: [0, 17],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 17, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 18],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;
