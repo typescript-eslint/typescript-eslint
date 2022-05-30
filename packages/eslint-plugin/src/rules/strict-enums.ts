@@ -17,7 +17,7 @@ enum EnumKind {
 }
 
 /** These operators are always considered to be safe. */
-const ALLOWED_ENUM_OPERATORS = new Set(['in', '|', '&', '|=', '&=']);
+const ALLOWED_ENUM_OPERATORS = new Set(['in', '|', '&', '^', '|=', '&=', '^=']);
 
 /**
  * See the comment for `EnumKind`.
