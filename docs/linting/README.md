@@ -136,19 +136,18 @@ If you use [`prettier`](https://www.npmjs.com/package/prettier), there is also a
 
 Using this config by adding it to the end of your `extends`:
 
-```diff title=".eslintrc.js"
-  module.exports = {
-    root: true,
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint',
-    ],
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
-+     'prettier',
-    ],
-  };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // highlight-next-line
+    'prettier',
+  ],
+};
 ```
 
 ### Community Configs
@@ -196,20 +195,22 @@ Below are just a few examples:
 Every plugin that is out there includes documentation on the various configurations and rules they offer.
 A typical plugin might be used like:
 
-```diff title=".eslintrc.js"
-  module.exports = {
-    root: true,
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint',
-+     'jest',
-    ],
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
-+     'plugin:jest/recommended',
-    ],
-  };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint',
+    // highlight-next-line
+    'jest',
+  ],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // highlight-next-line
+    'plugin:jest/recommended',
+  ],
+};
 ```
 
 <!-- markdownlint-disable MD044 -->

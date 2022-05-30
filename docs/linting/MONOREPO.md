@@ -18,22 +18,22 @@ Earlier in our docs on [typed linting](./TYPED_LINTING.md), we showed you how to
 
 For example, this is how we specify all of our `tsconfig.json` within this repo.
 
-```diff title=".eslintrc.js"
- module.exports = {
-   root: true,
-   parser: '@typescript-eslint/parser',
-   parserOptions: {
-     tsconfigRootDir: __dirname,
--    project: ['./tsconfig.json'],
-+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
-   },
-   plugins: ['@typescript-eslint'],
-   extends: [
-     'eslint:recommended',
-     'plugin:@typescript-eslint/recommended',
-     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-   ],
- };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    // highlight-next-line
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+  },
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+};
 ```
 
 If you're looking for an example of what the `.eslintrc.js`, and referenced `tsconfig.json` might look like in a real example, look no further than this very repo. We're a multi-package monorepo that uses one `tsconfig.json` per package, that also uses typed linting.
