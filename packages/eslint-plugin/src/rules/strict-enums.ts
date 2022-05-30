@@ -752,8 +752,7 @@ export default util.createRule<Options, MessageIds>({
       },
 
       /** When a new variable is created. */
-      VariableDeclaration(node): void {
-        for (const declaration of node.declarations) {
+      VariableDeclarator(node): void {
           const leftTSNode =
             parserServices.esTreeNodeToTSNodeMap.get(declaration);
 
