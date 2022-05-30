@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.26.0...v5.27.0) (2022-05-30)
+
+
+### Bug Fixes
+
+* **types:** remove leftovers from removal of useJSXTextNode ([#5091](https://github.com/typescript-eslint/typescript-eslint/issues/5091)) ([f9c3647](https://github.com/typescript-eslint/typescript-eslint/commit/f9c3647cb637c8d1ee461b471da9d817ccbde77c))
+
+
+### Features
+
+* [4.7] support new extensions ([#5027](https://github.com/typescript-eslint/typescript-eslint/issues/5027)) ([efc147b](https://github.com/typescript-eslint/typescript-eslint/commit/efc147b04dce52ab17415b6a4ae4076b944b9036))
+
+
+
+
+
 # [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
 
 **Note:** Version bump only for package @typescript-eslint/parser

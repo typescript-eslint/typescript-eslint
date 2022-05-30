@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.26.0...v5.27.0) (2022-05-30)
+
+
+### Features
+
+* [4.7] support new extensions ([#5027](https://github.com/typescript-eslint/typescript-eslint/issues/5027)) ([efc147b](https://github.com/typescript-eslint/typescript-eslint/commit/efc147b04dce52ab17415b6a4ae4076b944b9036))
+* [TS4.7] support type parameters for `typeof` ([#5067](https://github.com/typescript-eslint/typescript-eslint/issues/5067)) ([836de79](https://github.com/typescript-eslint/typescript-eslint/commit/836de79e8d1bff43149168cc913a4c2b60e79bf6))
+
+
+
+
+
 # [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
 
 
