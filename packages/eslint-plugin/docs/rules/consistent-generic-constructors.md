@@ -83,6 +83,8 @@ You can turn this rule off if you don't want to enforce one kind of generic cons
 
 ## Attributes
 
-- [ ] ✅ Recommended
+- Configs:
+  - [ ] ✅ Recommended
+  - [x] 🔒 Strict
 - [x] 🔧 Fixable
 - [ ] 💭 Requires type information
