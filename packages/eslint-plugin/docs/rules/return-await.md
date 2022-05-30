@@ -220,11 +220,3 @@ async function validNever3() {
   return 'value';
 }
 ```
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

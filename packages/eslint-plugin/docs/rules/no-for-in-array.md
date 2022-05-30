@@ -61,11 +61,3 @@ If you want to iterate through a loop using the indices in an array as strings, 
 ## Related To
 
 - TSLint: ['no-for-in-array'](https://palantir.github.io/tslint/rules/no-for-in-array/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

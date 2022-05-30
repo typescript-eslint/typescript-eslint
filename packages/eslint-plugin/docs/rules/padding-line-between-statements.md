@@ -54,11 +54,3 @@ In addition to options provided by ESLint, `interface` and `type` can be used as
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/padding-line-between-statements.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -104,11 +104,3 @@ type T2 = {
 ## When Not To Use It
 
 If you don't want to enforce a particular style for object/interface function types, and/or if you don't use `strictFunctionTypes`, then you don't need this rule.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

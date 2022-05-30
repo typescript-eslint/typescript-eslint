@@ -62,11 +62,3 @@ See [`eslint/default-param-last` options](https://eslint.org/docs/rules/default-
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/default-param-last.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

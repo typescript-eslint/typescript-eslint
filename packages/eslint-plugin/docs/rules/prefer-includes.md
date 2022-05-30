@@ -86,11 +86,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't want to suggest `includes`, you can safely turn this rule off.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information
