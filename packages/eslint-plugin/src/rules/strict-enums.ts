@@ -724,17 +724,10 @@ export default util.createRule<Options, MessageIds>({
         }
       },
 
-      /** When a function is invoked. */
-      CallExpression(node): void {
-        checkCallExpression(node);
-      },
-
-      /** When something is instantiated with the "new" keyword. */
-      NewExpression(node): void {
-        /**
-         * We need to perform the exact same checks on a class constructor
-         * invocation as we do on a normal function invocation.
-         */
+      /** When a function is invoked, or class is instantiated. */
+      'CallExpression, NewExpression'(
+        node: TSESTree.CallExpression | TSESTree.NewExpression,
+      ): void {
         checkCallExpression(node);
       },
 
