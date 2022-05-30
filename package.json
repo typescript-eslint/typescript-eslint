@@ -59,7 +59,7 @@
     "@babel/eslint-parser": "^7.18.2",
     "@babel/parser": "^7.18.0",
     "@babel/types": "^7.18.2",
-    "@commitlint/cli": "^16.2.4",
+    "@commitlint/cli": "^17.0.1",
     "@commitlint/config-conventional": "^16.2.4",
     "@nrwl/cli": "14.1.4",
     "@nrwl/nx-cloud": "14.0.3",
