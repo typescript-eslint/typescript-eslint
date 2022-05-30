@@ -26,6 +26,7 @@ import {
 import {
   defaultEslintConfig,
   defaultTsConfig,
+  tryParseEslintModule,
   parseESLintRC,
   parseTSConfig,
 } from '../config/utils';
@@ -87,13 +88,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, []);
 
   useEffect(() => {
-    const config = createCompilerOptions(jsx, parseTSConfig(tsconfig));
+    const config = createCompilerOptions(
+      jsx,
+      parseTSConfig(tsconfig).compilerOptions,
+    );
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
   }, [jsx, tsconfig]);
 
   useEffect(() => {
-    webLinter.updateRules(parseESLintRC(eslintrc));
+    webLinter.updateRules(parseESLintRC(eslintrc).rules);
   }, [eslintrc]);
 
   useEffect(() => {
@@ -154,9 +158,18 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         'typescript',
         createProvideCodeActions(codeActions),
       ),
+      sandboxInstance.editor.onDidPaste(() => {
+        if (tabs.eslintrc.isAttachedToEditor()) {
+          const value = tabs.eslintrc.getValue();
+          const newValue = tryParseEslintModule(value);
+          if (newValue !== value) {
+            tabs.eslintrc.setValue(newValue);
+          }
+        }
+      }),
       sandboxInstance.editor.onDidChangeCursorPosition(
         debounce(() => {
-          if (sandboxInstance.editor.getModel() === tabs.code) {
+          if (tabs.code.isAttachedToEditor()) {
             const position = sandboxInstance.editor.getPosition();
             if (position) {
               // eslint-disable-next-line no-console
