@@ -1,6 +1,6 @@
 # `switch-exhaustiveness-check`
 
-Exhaustiveness checking in switch with union type.
+Requires switch-case statements to be exhaustive with union type.
 
 Union type may have a lot of parts. It's easy to forget to consider all cases in switch. This rule reminds which parts are missing. If domain of the problem requires to have only a partial switch, developer may _explicitly_ add a default clause.
 

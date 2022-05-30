@@ -1,6 +1,6 @@
 # `object-curly-spacing`
 
-Enforce consistent spacing inside braces.
+Enforces consistent spacing inside braces.
 
 ## Rule Details
 

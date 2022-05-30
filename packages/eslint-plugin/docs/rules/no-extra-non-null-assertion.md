@@ -1,6 +1,6 @@
 # `no-extra-non-null-assertion`
 
-Disallow extra non-null assertion.
+Disallows extra non-null assertion.
 
 ## Rule Details
 

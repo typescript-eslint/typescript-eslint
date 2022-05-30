@@ -1,27 +1,21 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 
-import ConfigEslint from './config/ConfigEslint';
-import ConfigTypeScript from './config/ConfigTypeScript';
 import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
 import Checkbox from './inputs/Checkbox';
 import Tooltip from './inputs/Tooltip';
-import EditIcon from '@site/src/icons/edit.svg';
 import CopyIcon from '@site/src/icons/copy.svg';
 
 import useDebouncedToggle from './hooks/useDebouncedToggle';
 
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
 
-import type { RuleDetails } from './types';
-
 import styles from './OptionsSelector.module.css';
 
-import type { CompilerFlags, ConfigModel, RulesRecord } from './types';
+import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {
-  readonly ruleOptions: RuleDetails[];
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
@@ -36,40 +30,17 @@ const ASTOptions = [
 ] as const;
 
 function OptionsSelector({
-  ruleOptions,
   state,
   setState,
   tsVersions,
   isLoading,
 }: OptionsSelectorParams): JSX.Element {
-  const [eslintModal, setEslintModal] = useState<boolean>(false);
-  const [typeScriptModal, setTypeScriptModal] = useState<boolean>(false);
   const [copyLink, setCopyLink] = useDebouncedToggle<boolean>(false);
   const [copyMarkdown, setCopyMarkdown] = useDebouncedToggle<boolean>(false);
 
   const updateTS = useCallback(
     (version: string) => {
       setState({ ts: version });
-    },
-    [setState],
-  );
-
-  const updateRules = useCallback(
-    (rules?: RulesRecord) => {
-      if (rules) {
-        setState({ rules: rules });
-      }
-      setEslintModal(false);
-    },
-    [setState],
-  );
-
-  const updateTsConfig = useCallback(
-    (config?: CompilerFlags) => {
-      if (config) {
-        setState({ tsConfig: config });
-      }
-      setTypeScriptModal(false);
     },
     [setState],
   );
@@ -107,19 +78,6 @@ function OptionsSelector({
 
   return (
     <>
-      {state.rules && ruleOptions.length > 0 && (
-        <ConfigEslint
-          isOpen={eslintModal}
-          ruleOptions={ruleOptions}
-          rules={state.rules}
-          onClose={updateRules}
-        />
-      )}
-      <ConfigTypeScript
-        isOpen={typeScriptModal}
-        config={state.tsConfig}
-        onClose={updateTsConfig}
-      />
       <Expander label="Info">
         <label className={styles.optionLabel}>
           TypeScript
@@ -170,20 +128,6 @@ function OptionsSelector({
             options={['script', 'module']}
           />
         </label>
-        <button
-          className={styles.optionLabel}
-          onClick={(): void => setEslintModal(true)}
-        >
-          Eslint Config
-          <EditIcon />
-        </button>
-        <button
-          className={styles.optionLabel}
-          onClick={(): void => setTypeScriptModal(true)}
-        >
-          TypeScript Config
-          <EditIcon />
-        </button>
       </Expander>
       <Expander label="Actions">
         <button className={styles.optionLabel} onClick={copyLinkToClipboard}>

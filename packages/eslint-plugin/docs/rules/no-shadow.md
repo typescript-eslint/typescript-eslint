@@ -1,6 +1,6 @@
 # `no-shadow`
 
-Disallow variable declarations from shadowing variables declared in the outer scope.
+Disallows variable declarations from shadowing variables declared in the outer scope.
 
 ## Rule Details
 

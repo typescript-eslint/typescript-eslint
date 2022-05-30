@@ -1,6 +1,6 @@
 # `consistent-type-definitions`
 
-Consistent with type definition either `interface` or `type`.
+Enforces type definitions to consistently use either `interface` or `type`.
 
 There are two ways to define a type.
 

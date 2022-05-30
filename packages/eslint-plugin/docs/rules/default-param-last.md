@@ -1,6 +1,6 @@
 # `default-param-last`
 
-Enforce default parameters to be last.
+Enforces default parameters to be last.
 
 ## Rule Details
 

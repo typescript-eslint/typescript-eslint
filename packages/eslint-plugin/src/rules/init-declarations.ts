@@ -17,7 +17,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'require or disallow initialization in variable declarations',
+        'Require or disallow initialization in variable declarations',
       recommended: false,
       extendsBaseRule: true,
     },

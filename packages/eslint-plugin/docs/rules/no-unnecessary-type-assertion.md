@@ -1,6 +1,6 @@
 # `no-unnecessary-type-assertion`
 
-Warns if a type assertion does not change the type of an expression.
+Disallows type assertions that do not change the type of an expression.
 
 This rule prohibits using a type assertion that does not change the type of an expression.
 

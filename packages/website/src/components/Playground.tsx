@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import clsx from 'clsx';
 import { useColorMode } from '@docusaurus/theme-common';
@@ -15,12 +15,25 @@ import { shallowEqual } from './lib/shallowEqual';
 import ASTViewerESTree from './ASTViewerESTree';
 import ASTViewerTS from './ASTViewerTS';
 
-import type { RuleDetails, SelectedRange } from './types';
+import type {
+  RuleDetails,
+  SelectedRange,
+  ErrorItem,
+  TabType,
+  ConfigModel,
+} from './types';
 
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceFile } from 'typescript';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 import ErrorsViewer from '@site/src/components/ErrorsViewer';
+import EditorTabs from '@site/src/components/EditorTabs';
+import ConfigEslint from '@site/src/components/config/ConfigEslint';
+import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
+import {
+  defaultEslintConfig,
+  defaultTsConfig,
+} from '@site/src/components/config/utils';
 
 function rangeReducer<T extends SelectedRange | null>(
   prevState: T,
@@ -46,50 +59,83 @@ function Playground(): JSX.Element {
     sourceType: 'module',
     code: '',
     ts: process.env.TS_VERSION!,
-    rules: {},
-    tsConfig: {},
+    tsconfig: defaultTsConfig,
+    eslintrc: defaultEslintConfig,
   });
   const { colorMode } = useColorMode();
-  const [esAst, setEsAst] = useState<TSESTree.Program | string | null>();
-  const [tsAst, setTsAST] = useState<SourceFile | string | null>();
-  const [scope, setScope] = useState<Record<string, unknown> | string | null>();
-  const [markers, setMarkers] = useState<Monaco.editor.IMarker[]>();
+  const [esAst, setEsAst] = useState<TSESTree.Program | null>();
+  const [tsAst, setTsAST] = useState<SourceFile | null>();
+  const [scope, setScope] = useState<Record<string, unknown> | null>();
+  const [markers, setMarkers] = useState<ErrorItem[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedRange, setSelectedRange] = useReducer(rangeReducer, null);
   const [position, setPosition] = useState<Monaco.Position | null>(null);
+  const [activeTab, setTab] = useState<TabType>('code');
+  const [showModal, setShowModal] = useState<TabType | false>(false);
+
+  const updateModal = useCallback(
+    (config?: Partial<ConfigModel>) => {
+      if (config) {
+        setState(config);
+      }
+      setShowModal(false);
+    },
+    [setState],
+  );
 
   return (
     <div className={styles.codeContainer}>
+      {ruleNames.length > 0 && (
+        <ConfigEslint
+          isOpen={showModal === 'eslintrc'}
+          ruleOptions={ruleNames}
+          config={state.eslintrc}
+          onClose={updateModal}
+        />
+      )}
+      <ConfigTypeScript
+        isOpen={showModal === 'tsconfig'}
+        config={state.tsconfig}
+        onClose={updateModal}
+      />
       <div className={clsx(styles.options, 'thin-scrollbar')}>
         <OptionsSelector
           isLoading={isLoading}
           state={state}
           tsVersions={tsVersions}
           setState={setState}
-          ruleOptions={ruleNames}
         />
       </div>
       <div className={styles.codeBlocks}>
         <div className={clsx(styles.sourceCode)}>
           {isLoading && <Loader />}
-          <EditorEmbed />
+          <EditorTabs
+            tabs={['code', 'tsconfig', 'eslintrc']}
+            activeTab={activeTab}
+            change={setTab}
+            showModal={(): void => setShowModal(activeTab)}
+          />
+          <div className={styles.tabCode}>
+            <EditorEmbed />
+          </div>
           <LoadingEditor
             ts={state.ts}
             jsx={state.jsx}
+            activeTab={activeTab}
             code={state.code}
-            tsConfig={state.tsConfig}
+            tsconfig={state.tsconfig}
+            eslintrc={state.eslintrc}
             darkTheme={colorMode === 'dark'}
             sourceType={state.sourceType}
-            rules={state.rules}
             showAST={state.showAST}
             onEsASTChange={setEsAst}
             onTsASTChange={setTsAST}
             onScopeChange={setScope}
             onMarkersChange={setMarkers}
             decoration={selectedRange}
-            onChange={(code): void => setState({ code: code })}
+            onChange={setState}
             onLoaded={(ruleNames, tsVersions): void => {
               setRuleNames(ruleNames);
               setTSVersion(tsVersions);
@@ -99,7 +145,7 @@ function Playground(): JSX.Element {
           />
         </div>
         <div className={styles.astViewer}>
-          {(tsAst && state.showAST === 'ts' && (
+          {(state.showAST === 'ts' && tsAst && (
             <ASTViewerTS
               value={tsAst}
               position={position}

@@ -1,6 +1,6 @@
 # `no-use-before-define`
 
-Disallow the use of variables before they are defined.
+Disallows the use of variables before they are defined.
 
 ## Rule Details
 

@@ -1,52 +1,36 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { CompilerFlags } from '../types';
+import type { CompilerFlags, ConfigModel } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
+import { getTypescriptOptions, parseTSConfig, toJsonConfig } from './utils';
 
-interface ModalTypeScriptProps {
+interface ConfigTypeScriptProps {
   readonly isOpen: boolean;
-  readonly onClose: (config?: CompilerFlags) => void;
-  readonly config?: CompilerFlags;
-}
-
-interface OptionDeclarations {
-  name: string;
-  type?: unknown;
-  category?: { message: string };
-  description?: { message: string };
+  readonly onClose: (config?: Partial<ConfigModel>) => void;
+  readonly config?: string;
 }
 
 function checkOptions(item: [string, unknown]): item is [string, boolean] {
   return typeof item[1] === 'boolean';
 }
 
-function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
+function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
   const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
+  const [configObject, updateConfigObject] = useState<CompilerFlags>({});
+
+  useEffect(() => {
+    if (props.isOpen) {
+      updateConfigObject(props.config ? parseTSConfig(props.config) : {});
+    }
+  }, [props.isOpen, props.config]);
 
   useEffect(() => {
     if (window.ts) {
       updateOptions(
         Object.values(
-          // @ts-expect-error: definition is not fully correct
-          (window.ts.optionDeclarations as OptionDeclarations[])
-            .filter(
-              item =>
-                item.type === 'boolean' &&
-                item.description &&
-                item.category &&
-                ![
-                  'Command-line Options',
-                  'Modules',
-                  'Projects',
-                  'Compiler Diagnostics',
-                  'Editor Support',
-                  'Output Formatting',
-                  'Watch and Build Modes',
-                  'Source Map Options',
-                ].includes(item.category.message),
-            )
-            .reduce<Record<string, ConfigOptionsType>>((group, item) => {
+          getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
+            (group, item) => {
               const category = item.category!.message;
               group[category] = group[category] ?? {
                 heading: category,
@@ -57,7 +41,9 @@ function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
                 label: item.description!.message,
               });
               return group;
-            }, {}),
+            },
+            {},
+          ),
         ),
       );
     }
@@ -68,21 +54,20 @@ function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
       const cfg = Object.fromEntries(
         Object.entries(newConfig).filter(checkOptions),
       );
-      if (!shallowEqual(cfg, props.config)) {
-        props.onClose(cfg);
+      if (!shallowEqual(cfg, configObject)) {
+        props.onClose({ tsconfig: toJsonConfig(cfg, 'compilerOptions') });
       } else {
         props.onClose();
       }
     },
-    [props.onClose, props.config],
+    [props.onClose, configObject],
   );
 
   return (
     <ConfigEditor
       header="TypeScript Config"
       options={tsConfigOptions}
-      values={props.config ?? {}}
-      jsonField="compilerOptions"
+      values={configObject ?? {}}
       isOpen={props.isOpen}
       onClose={onClose}
     />

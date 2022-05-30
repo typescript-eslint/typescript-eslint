@@ -1,14 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { RuleDetails, RulesRecord, RuleEntry } from '../types';
+import type {
+  RulesRecord,
+  RuleDetails,
+  RuleEntry,
+  ConfigModel,
+} from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
+import { parseESLintRC, toJsonConfig } from '@site/src/components/config/utils';
 
-export interface ModalEslintProps {
+export interface ConfigEslintProps {
   readonly isOpen: boolean;
-  readonly onClose: (value?: RulesRecord) => void;
+  readonly onClose: (value?: Partial<ConfigModel>) => void;
   readonly ruleOptions: RuleDetails[];
-  readonly rules: RulesRecord;
+  readonly config?: string;
 }
 
 function checkSeverity(value: unknown): boolean {
@@ -25,8 +31,15 @@ function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
   return checkSeverity(rule[1]);
 }
 
-function ConfigEslint(props: ModalEslintProps): JSX.Element {
+function ConfigEslint(props: ConfigEslintProps): JSX.Element {
   const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
+  const [configObject, updateConfigObject] = useState<RulesRecord>({});
+
+  useEffect(() => {
+    if (props.isOpen) {
+      updateConfigObject(props.config ? parseESLintRC(props.config) : {});
+    }
+  }, [props.isOpen, props.config]);
 
   useEffect(() => {
     updateOptions([
@@ -64,21 +77,20 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
           )
           .filter(checkOptions),
       );
-      if (!shallowEqual(cfg, props.rules)) {
-        props.onClose(cfg);
+      if (!shallowEqual(cfg, configObject)) {
+        props.onClose({ eslintrc: toJsonConfig(cfg, 'rules') });
       } else {
         props.onClose();
       }
     },
-    [props.onClose, props.rules],
+    [props.onClose, configObject],
   );
 
   return (
     <ConfigEditor
       header="Eslint Config"
       options={options}
-      values={props.rules ?? {}}
-      jsonField="rules"
+      values={configObject ?? {}}
       isOpen={props.isOpen}
       onClose={onClose}
     />

@@ -12,7 +12,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'Enforces consistent spacing before blocks',
+      description: 'Enforce consistent spacing before blocks',
       recommended: false,
       extendsBaseRule: true,
     },

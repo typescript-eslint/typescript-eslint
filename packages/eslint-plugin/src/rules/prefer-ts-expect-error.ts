@@ -9,7 +9,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Recommends using `@ts-expect-error` over `@ts-ignore`',
+      description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
       recommended: 'strict',
     },
     fixable: 'code',

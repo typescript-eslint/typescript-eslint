@@ -19,7 +19,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'enforce dot notation whenever possible',
+      description: 'Enforce dot notation whenever possible',
       recommended: 'strict',
       extendsBaseRule: true,
       requiresTypeChecking: true,

@@ -1,6 +1,6 @@
 # `no-redundant-type-constituents`
 
-Disallow members of unions and intersections that do nothing or override type information.
+Disallows members of unions and intersections that do nothing or override type information.
 
 ## Rule Details
 

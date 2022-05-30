@@ -7,7 +7,7 @@ import { serialize } from './ast/serializer/serializer';
 import { createTsSerializer } from './ast/serializer/serializerTS';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
-  readonly value: SourceFile | string;
+  readonly value: SourceFile;
 }
 
 function extractEnum(
@@ -41,22 +41,18 @@ export default function ASTViewerTS({
   const [typeFlags] = useState(() => extractEnum(window.ts.TypeFlags));
 
   useEffect(() => {
-    if (typeof value === 'string') {
-      setModel(value);
-    } else {
-      const scopeSerializer = createTsSerializer(
-        value,
-        syntaxKind,
-        ['NodeFlags', nodeFlags],
-        ['TokenFlags', tokenFlags],
-        ['ModifierFlags', modifierFlags],
-        ['ObjectFlags', objectFlags],
-        ['SymbolFlags', symbolFlags],
-        ['FlowFlags', flowFlags],
-        ['TypeFlags', typeFlags],
-      );
-      setModel(serialize(value, scopeSerializer));
-    }
+    const scopeSerializer = createTsSerializer(
+      value,
+      syntaxKind,
+      ['NodeFlags', nodeFlags],
+      ['TokenFlags', tokenFlags],
+      ['ModifierFlags', modifierFlags],
+      ['ObjectFlags', objectFlags],
+      ['SymbolFlags', symbolFlags],
+      ['FlowFlags', flowFlags],
+      ['TypeFlags', typeFlags],
+    );
+    setModel(serialize(value, scopeSerializer));
   }, [value, syntaxKind]);
 
   return (

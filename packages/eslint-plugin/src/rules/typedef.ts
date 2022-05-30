@@ -20,7 +20,7 @@ export default util.createRule<[Options], MessageIds>({
   name: 'typedef',
   meta: {
     docs: {
-      description: 'Requires type annotations to exist',
+      description: 'Require type annotations in certain places',
       recommended: false,
     },
     messages: {

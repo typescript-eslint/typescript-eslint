@@ -1,6 +1,6 @@
 # `no-for-in-array`
 
-Disallow iterating over an array with a for-in loop.
+Disallows iterating over an array with a for-in loop.
 
 This rule prohibits iterating over an array with a for-in loop.
 
