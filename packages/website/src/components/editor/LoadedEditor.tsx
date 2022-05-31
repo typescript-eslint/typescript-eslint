@@ -24,8 +24,6 @@ import {
   LintCodeAction,
 } from '../linter/utils';
 import {
-  defaultEslintConfig,
-  defaultTsConfig,
   tryParseEslintModule,
   parseESLintRC,
   parseTSConfig,
@@ -63,12 +61,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const tabsDefault = {
       code: sandboxInstance.editor.getModel()!,
       tsconfig: sandboxInstance.monaco.editor.createModel(
-        defaultTsConfig,
+        tsconfig,
         'json',
         sandboxInstance.monaco.Uri.file('./tsconfig.json'),
       ),
       eslintrc: sandboxInstance.monaco.editor.createModel(
-        defaultEslintConfig,
+        eslintrc,
         'json',
         sandboxInstance.monaco.Uri.file('./.eslintrc'),
       ),
