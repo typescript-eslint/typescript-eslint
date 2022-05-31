@@ -208,10 +208,7 @@ describe('Validating rule metadata', () => {
   }
 });
 
-describe.each([
-  path.join(__dirname, '../README.md'),
-  path.join(__dirname, '../docs/rules/README.md'),
-])('%s', readmePath => {
+describe.each([path.join(__dirname, '../README.md')])('%s', readmePath => {
   const rulesTables = parseReadme(readmePath);
   const notDeprecated = rulesData.filter(([, rule]) => !rule.meta.deprecated);
   const baseRules = notDeprecated.filter(
