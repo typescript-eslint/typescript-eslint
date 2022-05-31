@@ -25,6 +25,8 @@ html:root {
 
   --docsearch-muted-color: #666;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  --site-color-checkbox-checked-bg: rgba(148, 197, 225, 0.25);
 }
 
 html[data-theme='dark']:root {
@@ -62,6 +64,8 @@ html[data-theme='dark']:root {
 
   --docsearch-muted-color: #aaa;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  --site-color-checkbox-checked-bg: rgba(39, 58, 80, 0.477);
 }
 
 .header-github-link:hover {
@@ -94,6 +98,18 @@ html[data-theme='dark'] .header-github-link:before {
 .theme-doc-sidebar-item-link-level-3 > a,
 .theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > a {
   font-size: 0.8em;
+}
+
+.screen-reader-only {
+  clip: rect(0 0 0 0);
+  border: 0;
+  clip-path: polygon(0 0, 0 0, 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
 
 h1,

@@ -11,8 +11,6 @@ See [Configs](/docs/linting/configs) for how to enable recommended rules using c
 
 ## Supported Rules
 
-**Key**: :white_check_mark: = recommended, :lock: = strict, :wrench: = fixable, 🛠 = has suggestions, :thought_balloon: = requires type information
-
 import RulesTable from "@site/src/components/RulesTable";
 
 <RulesTable />
@@ -21,7 +19,5 @@ import RulesTable from "@site/src/components/RulesTable";
 
 In some cases, ESLint provides a rule itself, but it doesn't support TypeScript syntax; either it crashes, or it ignores the syntax, or it falsely reports against it.
 In these cases, we create what we call an extension rule; a rule within our plugin that has the same functionality, but also supports TypeScript.
-
-**Key**: :white_check_mark: = recommended, :lock: = strict, :wrench: = fixable, 🛠 = has suggestions, :thought_balloon: = requires type information
 
 <RulesTable extensionRules />
