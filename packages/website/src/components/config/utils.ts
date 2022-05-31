@@ -57,7 +57,6 @@ export function toJsonConfig(cfg: unknown, prop: string): string {
 export function getTypescriptOptions(): OptionDeclarations[] {
   const allowedCategories = [
     'Command-line Options',
-    'Modules',
     'Projects',
     'Compiler Diagnostics',
     'Editor Support',
@@ -66,13 +65,23 @@ export function getTypescriptOptions(): OptionDeclarations[] {
     'Source Map Options',
   ];
 
+  const filteredNames = [
+    'moduleResolution',
+    'moduleDetection',
+    'lib',
+    'plugins',
+    'typeRoots',
+    'jsx',
+  ];
+
   // @ts-expect-error: definition is not fully correct
   return (window.ts.optionDeclarations as OptionDeclarations[]).filter(
     item =>
-      item.type === 'boolean' &&
+      (item.type === 'boolean' || item.type instanceof Map) &&
       item.description &&
       item.category &&
-      !allowedCategories.includes(item.category.message),
+      !allowedCategories.includes(item.category.message) &&
+      !filteredNames.includes(item.name),
   );
 }
 

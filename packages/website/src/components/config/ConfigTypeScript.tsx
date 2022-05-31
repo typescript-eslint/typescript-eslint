@@ -11,10 +11,6 @@ interface ConfigTypeScriptProps {
   readonly config?: string;
 }
 
-function checkOptions(item: [string, unknown]): item is [string, boolean] {
-  return typeof item[1] === 'boolean';
-}
-
 function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
   const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
   const [configObject, updateConfigObject] = useState<CompilerFlags>({});
@@ -36,10 +32,20 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
                 heading: category,
                 fields: [],
               };
-              group[category].fields.push({
-                key: item.name,
-                label: item.description!.message,
-              });
+              if (item.type === 'boolean') {
+                group[category].fields.push({
+                  key: item.name,
+                  type: 'boolean',
+                  label: item.description!.message,
+                });
+              } else if (item.type instanceof Map) {
+                group[category].fields.push({
+                  key: item.name,
+                  type: 'string',
+                  label: item.description!.message,
+                  enum: Array.from(item.type.keys()),
+                });
+              }
               return group;
             },
             {},
@@ -51,9 +57,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
 
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const cfg = Object.fromEntries(
-        Object.entries(newConfig).filter(checkOptions),
-      );
+      const cfg = { ...newConfig };
       if (!shallowEqual(cfg, configObject)) {
         props.onClose({ tsconfig: toJsonConfig(cfg, 'compilerOptions') });
       } else {

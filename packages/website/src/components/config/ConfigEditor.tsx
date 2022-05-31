@@ -7,11 +7,14 @@ import Text from '../inputs/Text';
 import Checkbox from '../inputs/Checkbox';
 import useFocus from '../hooks/useFocus';
 import Modal from '@site/src/components/modals/Modal';
+import Dropdown from '@site/src/components/inputs/Dropdown';
 
 export interface ConfigOptionsField {
   key: string;
+  type: 'boolean' | 'string';
   label?: string;
   defaults?: unknown[];
+  enum?: string[];
 }
 
 export interface ConfigOptionsType {
@@ -34,6 +37,11 @@ function reducerObject(
   action:
     | { type: 'init'; config?: ConfigEditorValues }
     | {
+        type: 'set';
+        name: string;
+        value: unknown;
+      }
+    | {
         type: 'toggle';
         checked: boolean;
         default: unknown[] | undefined;
@@ -43,6 +51,11 @@ function reducerObject(
   switch (action.type) {
     case 'init': {
       return action.config ?? {};
+    }
+    case 'set': {
+      const newState = { ...state };
+      newState[action.name] = action.value;
+      return newState;
     }
     case 'toggle': {
       const newState = { ...state };
@@ -110,28 +123,44 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
             <div>
               {group.fields.map(item => (
                 <label className={styles.searchResult} key={item.key}>
-                  <span>
+                  <span className={styles.searchResultDescription}>
                     <span className={styles.searchResultName}>{item.key}</span>
                     {item.label && <br />}
                     {item.label && <span>{item.label}</span>}
                   </span>
-                  <Checkbox
-                    name={`config_${item.key}`}
-                    value={item.key}
-                    indeterminate={
-                      Boolean(config[item.key]) &&
-                      !isDefault(config[item.key], item.defaults)
-                    }
-                    checked={Boolean(config[item.key])}
-                    onChange={(checked, name): void =>
-                      setConfig({
-                        type: 'toggle',
-                        checked,
-                        default: item.defaults,
-                        name,
-                      })
-                    }
-                  />
+                  {item.type === 'boolean' && (
+                    <Checkbox
+                      name={`config_${item.key}`}
+                      value={item.key}
+                      indeterminate={
+                        Boolean(config[item.key]) &&
+                        !isDefault(config[item.key], item.defaults)
+                      }
+                      checked={Boolean(config[item.key])}
+                      onChange={(checked, name): void =>
+                        setConfig({
+                          type: 'toggle',
+                          checked,
+                          default: item.defaults,
+                          name,
+                        })
+                      }
+                    />
+                  )}
+                  {item.type === 'string' && item.enum && (
+                    <Dropdown
+                      name={`config_${item.key}`}
+                      value={String(config[item.key])}
+                      options={item.enum}
+                      onChange={(value): void => {
+                        setConfig({
+                          type: 'set',
+                          value,
+                          name: item.key,
+                        });
+                      }}
+                    />
+                  )}
                 </label>
               ))}
             </div>

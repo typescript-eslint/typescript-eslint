@@ -13,6 +13,13 @@ export function createCompilerOptions(
     module: window.ts.ModuleKind.ESNext as number,
     ...tsConfig,
     jsx: jsx ? window.ts.JsxEmit.Preserve : window.ts.JsxEmit.None,
+    moduleResolution: undefined,
+    lib: undefined,
+    plugins: undefined,
+    typeRoots: undefined,
+    paths: undefined,
+    moduleDetection: undefined,
+    baseUrl: undefined,
   };
 }
 
@@ -58,10 +65,18 @@ export function getEslintSchema(
 
 export function getTsConfigSchema(): JSONSchema4 {
   const properties = getTypescriptOptions().reduce((options, item) => {
-    options[item.name] = {
-      type: item.type,
-      description: item.description!.message,
-    };
+    if (item.type === 'boolean') {
+      options[item.name] = {
+        type: 'boolean',
+        description: item.description!.message,
+      };
+    } else if (item.type instanceof Map) {
+      options[item.name] = {
+        type: 'string',
+        description: item.description!.message,
+        enum: Array.from(item.type.keys()),
+      };
+    }
     return options;
   }, {});
 
