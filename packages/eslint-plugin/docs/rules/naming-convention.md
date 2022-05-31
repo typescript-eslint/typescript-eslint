@@ -700,11 +700,3 @@ You can use the `destructured` modifier to match these names, and explicitly set
 ## When Not To Use It
 
 If you do not want to enforce naming conventions for anything.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

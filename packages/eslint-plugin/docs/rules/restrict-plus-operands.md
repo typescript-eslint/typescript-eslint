@@ -104,11 +104,3 @@ var fn = (a: any, b: number) => a + b;
 ## Related To
 
 - TSLint: [restrict-plus-operands](https://palantir.github.io/tslint/rules/restrict-plus-operands/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

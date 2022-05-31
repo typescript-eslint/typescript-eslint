@@ -88,11 +88,3 @@ This rule is not configurable.
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

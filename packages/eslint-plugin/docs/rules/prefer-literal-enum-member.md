@@ -96,11 +96,3 @@ enum Foo {
 ## When Not To Use It
 
 If you want use anything other than simple literals as an enum value.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

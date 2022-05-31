@@ -77,11 +77,3 @@ class foo {
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/lines-between-class-members.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

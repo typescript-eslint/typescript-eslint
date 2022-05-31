@@ -108,3 +108,8 @@ h6 {
 .myLineDecoration {
   background-color: var(--code-line-decoration);
 }
+
+/* indent the nested checklist for the rule doc attributes */
+ul.contains-task-list > li > ul.contains-task-list {
+  padding-left: 24px;
+}

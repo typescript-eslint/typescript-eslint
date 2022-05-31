@@ -54,11 +54,3 @@ enum E {
 ```
 
 This rule is not configurable.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

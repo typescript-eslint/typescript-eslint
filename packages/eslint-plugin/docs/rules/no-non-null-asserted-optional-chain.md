@@ -65,11 +65,3 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Optional Chaining Proposal](https://github.com/tc39/proposal-optional-chaining/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

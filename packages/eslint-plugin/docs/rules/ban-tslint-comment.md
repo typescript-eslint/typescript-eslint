@@ -46,11 +46,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you are still using TSLint.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information
