@@ -73,6 +73,7 @@
     "linebreaks",
     "lzstring",
     "markdownlint",
+    "metastring",
     "necroing",
     "nocheck",
     "nullish",

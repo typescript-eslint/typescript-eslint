@@ -80,7 +80,6 @@ export default function CodeBlockString({
             getTokenProps,
           }): JSX.Element => (
             <pre
-              /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */
               tabIndex={0}
               ref={wordWrap.codeBlockRef}
               className={clsx(className, styles.codeBlock, 'thin-scrollbar')}
