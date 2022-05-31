@@ -152,11 +152,3 @@ TypeScript [Inference](https://www.typescriptlang.org/docs/handbook/type-inferen
 ## Related To
 
 TSLint: [no-inferrable-types](https://palantir.github.io/tslint/rules/no-inferrable-types/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -30,11 +30,3 @@ See [`eslint/semi` options](https://eslint.org/docs/rules/semi#options).
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/semi.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

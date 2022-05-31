@@ -35,11 +35,3 @@ This rule is not configurable.
 ## Related To
 
 - TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

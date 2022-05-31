@@ -340,11 +340,3 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 ## Related To
 
 - TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
