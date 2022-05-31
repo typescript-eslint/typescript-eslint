@@ -1,4 +1,4 @@
-import React, { useState, useId } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
@@ -43,45 +43,51 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
   );
 }
 
+const filterModes = ['include', 'neutral', 'exclude'];
+type FilterMode = typeof filterModes[number];
+
 function RuleFilterCheckBox({
   label,
-  onToggle,
-  selected,
+  setMode,
+  mode,
 }: {
   label: string;
-  onToggle: () => void;
-  selected: boolean;
+  setMode: (mode: FilterMode) => void;
+  mode: FilterMode;
 }): JSX.Element {
-  const id = useId();
+  const toNextMode = (): void =>
+    setMode(filterModes[(filterModes.indexOf(mode) + 1) % filterModes.length]);
   return (
     <li className={styles.checkboxListItem}>
-      <input
-        id={id}
-        type="checkbox"
-        className="screen-reader-only"
+      <button
+        type="button"
+        className={clsx(
+          styles.checkboxLabel,
+          mode === 'include' && styles.checkboxLabelActivated,
+          mode === 'exclude' && styles.checkboxLabelDeactivated,
+        )}
         onKeyDown={(e): void => {
           if (e.key === 'Enter') {
-            onToggle();
+            toNextMode();
           }
         }}
-        onFocus={(e): void => {
-          if (e.relatedTarget) {
-            e.target.nextElementSibling?.dispatchEvent(
-              new KeyboardEvent('focus'),
-            );
-          }
-        }}
-        onBlur={(e): void => {
-          e.target.nextElementSibling?.dispatchEvent(new KeyboardEvent('blur'));
-        }}
-        onChange={onToggle}
-        checked={selected}
-      />
-      <label htmlFor={id} className={styles.checkboxLabel}>
+        onClick={toNextMode}
+        aria-label={`Toggle the filter mode. Current: ${mode}`}
+      >
         {label}
-      </label>
+      </button>
     </li>
   );
+}
+
+function match(mode: FilterMode, value: boolean): boolean | undefined {
+  if (mode === 'exclude') {
+    return !value;
+  }
+  if (mode === 'include') {
+    return value;
+  }
+  return undefined;
 }
 
 export default function RulesTable({
@@ -91,47 +97,51 @@ export default function RulesTable({
 }): JSX.Element {
   const rules = useDocusaurusContext().siteConfig.customFields!
     .rules as RulesMeta;
-  const [showRecommended, setShowRecommended] = useState(true);
-  const [showStrict, setShowStrict] = useState(true);
-  const [showFixable, setShowFixable] = useState(true);
-  const [showHasSuggestions, setShowHasSuggestion] = useState(true);
-  const [showTypeCheck, setShowTypeCheck] = useState(true);
+  const [showRecommended, setShowRecommended] = useState<FilterMode>('neutral');
+  const [showStrict, setShowStrict] = useState<FilterMode>('neutral');
+  const [showFixable, setShowFixable] = useState<FilterMode>('neutral');
+  const [showHasSuggestions, setShowHasSuggestion] =
+    useState<FilterMode>('neutral');
+  const [showTypeCheck, setShowTypeCheck] = useState<FilterMode>('neutral');
   const relevantRules = rules.filter(
     r =>
       !!extensionRules === !!r.docs?.extendsBaseRule &&
-      ((showRecommended &&
-        (r.docs?.recommended === 'error' || r.docs?.recommended === 'warn')) ||
-        (showStrict && r.docs?.recommended === 'strict') ||
-        (showFixable && !!r.fixable) ||
-        (showHasSuggestions && r.hasSuggestions) ||
-        (showTypeCheck && !!r.docs?.requiresTypeChecking)),
+      (match(
+        showRecommended,
+        r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
+      ) ??
+        match(showStrict, r.docs?.recommended === 'strict') ??
+        match(showFixable, !!r.fixable) ??
+        match(showHasSuggestions, !!r.hasSuggestions) ??
+        match(showTypeCheck, !!r.docs?.requiresTypeChecking) ??
+        true),
   );
   return (
     <>
       <ul className={clsx('clean-list', styles.checkboxList)}>
         <RuleFilterCheckBox
-          selected={showRecommended}
-          onToggle={(): void => setShowRecommended(v => !v)}
+          mode={showRecommended}
+          setMode={setShowRecommended}
           label="✅ recommended"
         />
         <RuleFilterCheckBox
-          selected={showStrict}
-          onToggle={(): void => setShowStrict(v => !v)}
+          mode={showStrict}
+          setMode={setShowStrict}
           label="🔒 strict"
         />
         <RuleFilterCheckBox
-          selected={showFixable}
-          onToggle={(): void => setShowFixable(v => !v)}
+          mode={showFixable}
+          setMode={setShowFixable}
           label="🔧 fixable"
         />
         <RuleFilterCheckBox
-          selected={showHasSuggestions}
-          onToggle={(): void => setShowHasSuggestion(v => !v)}
+          mode={showHasSuggestions}
+          setMode={setShowHasSuggestion}
           label="🛠 has suggestions"
         />
         <RuleFilterCheckBox
-          selected={showTypeCheck}
-          onToggle={(): void => setShowTypeCheck(v => !v)}
+          mode={showTypeCheck}
+          setMode={setShowTypeCheck}
           label="💭 requires type information"
         />
       </ul>
