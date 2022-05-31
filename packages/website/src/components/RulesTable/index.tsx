@@ -24,8 +24,9 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
         <Link to={new URL(rule.docs.url).pathname}>
           <code>@typescript-eslint/{rule.name}</code>
         </Link>
+        <br />
+        {interpolateCode(rule.docs.description)}
       </td>
-      <td>{interpolateCode(rule.docs.description)}</td>
       <td>
         {rule.docs.recommended === 'strict'
           ? '🔒'
@@ -137,8 +138,7 @@ export default function RulesTable({
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
+            <th>Rule</th>
             <th>✅🔒</th>
             <th>🔧🛠</th>
             <th>💭</th>
