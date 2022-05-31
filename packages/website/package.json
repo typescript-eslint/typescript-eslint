@@ -26,6 +26,7 @@
     "json5": "^2.2.1",
     "konamimojisplosion": "^0.5.1",
     "lzstring.ts": "^2.0.2",
+    "prism-react-renderer": "^1.3.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "remark-docusaurus-tabs": "^0.2.0",
