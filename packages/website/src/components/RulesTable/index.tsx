@@ -15,13 +15,13 @@ function interpolateCode(text: string): (JSX.Element | string)[] | string {
 }
 
 function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
-  if (!rule.docs) {
+  if (!rule.docs || !rule.docs.url) {
     return null;
   }
   return (
     <tr>
       <td>
-        <Link to={rule.docs.url}>
+        <Link to={new URL(rule.docs.url).pathname}>
           <code>@typescript-eslint/{rule.name}</code>
         </Link>
       </td>
