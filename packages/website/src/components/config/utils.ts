@@ -46,7 +46,7 @@ export function parseTSConfig(code?: string): TSConfig {
   return { compilerOptions: {} };
 }
 
-const moduleRegexp = /^\s*(module\.exports\s*=)?\s*(\{[\s\S]*})\s*$/g;
+const moduleRegexp = /^\s*(module\.exports\s*=)?\s*(\{[\s\S]*})\s*;?\s*$/g;
 
 export function tryParseEslintModule(value: string): string {
   try {
