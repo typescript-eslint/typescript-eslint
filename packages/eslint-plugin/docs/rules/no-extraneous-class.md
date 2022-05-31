@@ -9,10 +9,10 @@ This rule warns when a class has no non-static members, such as for a class used
 Users who come from a [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) paradigm may wrap their utility functions in an extra class, instead of putting them at the top level of an ECMAScript module.
 Doing so is generally unnecessary in JavaScript and TypeScript projects.
 
-- Wrapper classes add extra runtime bloat and cognitive complexity to code without adding any structural improvements
+- Wrapper classes add extra cognitive complexity to code without adding any structural improvements
   - Whatever would be put on them, such as utility functions, are already organized by virtue of being in a module.
   - As an alternative, you can always `import * as ...` the module to get all of them in a single object.
-- IDEs can't provide as good suggestions when you start typing the names of the helpers, since they're on a class instead of freely available to import
+- IDEs can't provide as good suggestions for static class or namespace imported properties when you start typing property names
 - It's more difficult to statically analyze code for unused variables, etc. when they're all on the class (see: [Finding dead code (and dead types) in TypeScript](https://effectivetypescript.com/2020/10/20/tsprune)).
 
 This rule also flags classes that have only a constructor and no fields.
@@ -51,6 +51,142 @@ export function isProduction() {
 
 function logHelloWorld() {
   console.log('Hello, world!');
+}
+```
+
+## Alternatives
+
+### Individual Exports (Recommended)
+
+Instead of using a static utility class we recommend you individually export the utilities from your module.
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+export class Utilities {
+  static util1() {
+    return Utilities.util3();
+  }
+
+  static util2() {
+    /* ... */
+  }
+
+  static util3() {
+    /* ... */
+  }
+}
+```
+
+#### ✅ Correct
+
+```ts
+export function util1() {
+  return util3();
+}
+
+export function util2() {
+  /* ... */
+}
+
+export function util3() {
+  /* ... */
+}
+```
+
+### Namespace Imports (Not Recommended)
+
+If you strongly prefer to have all constructs from a module available as properties of a single object, you can `import * as` the module.
+This is known as a "namespace import".
+Namespace imports are sometimes preferable because they keep all properties nested and don't need to be changed as you start or stop using various properties from the module.
+
+However, namespace imports are impacted by XYZ downsides:
+
+- They also don't play as well with tree shaking in modern bundlers
+- They require a name prefix before each property's usage
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+// utilities.ts
+export class Utilities {
+  static sayHello() {
+    console.log('Hello, world!');
+  }
+}
+
+// consumers.ts
+import { Utilities } from './utilities';
+
+utilities.sayHello();
+```
+
+#### ⚠️ Namespace Imports
+
+```ts
+// utilities.ts
+export function sayHello() {
+  console.log('Hello, world!');
+}
+
+// consumers.ts
+import * as utilities from './utilities';
+
+sayHello();
+```
+
+#### ✅ Standalone Imports
+
+```ts
+// utilities.ts
+export function sayHello() {
+  console.log('Hello, world!');
+}
+
+// consumers.ts
+import { sayHello } from './utilities';
+
+sayHello();
+```
+
+### Notes on Mutating Variables
+
+One case you need to be careful of is exporting mutable variables.
+While class properties can be mutated externally, exported variables are always constant.
+This means that importers can only ever read the first value they are assigned and cannot write to the variables.
+
+Needing to write to an exported variable is very rare and is generally considered a code smell.
+If you do need it you can accomplish it using getter and setter functions:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+export class Utilities {
+  static mutableCount = 1;
+
+  static incrementCount() {
+    Utilities.mutableCount += 1;
+  }
+}
+```
+
+#### ✅ Correct
+
+```ts
+let mutableCount = 1;
+
+export function getMutableCount() {
+  return mutableField;
+}
+
+export function incrementCount() {
+  mutableField += 1;
 }
 ```
 
