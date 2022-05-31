@@ -1,6 +1,6 @@
 # `non-nullable-type-assertion-style`
 
-Prefers a non-null assertion over explicit type cast when possible.
+Enforces non-null assertions over explicit type casts.
 
 This rule detects when an `as` cast is doing the same job as a `!` would, and suggests fixing the code to be an `!`.
 
@@ -44,11 +44,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't mind having unnecessarily verbose type casts, you can avoid this rule.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

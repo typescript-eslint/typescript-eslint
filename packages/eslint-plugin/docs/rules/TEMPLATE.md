@@ -51,11 +51,3 @@ const defaultOptions: Options = {
 
 To fill out: why wouldn't you want to use this rule?
 For example if this rule requires a feature released in a certain TS version.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `strict-boolean-expressions`
 
-Restricts the types allowed in boolean expressions.
+Disallows certain types in boolean expressions.
 
 Forbids usage of non-boolean types in expressions where a boolean is expected.
 `boolean` and `never` types are always allowed.
@@ -197,11 +197,3 @@ This rule provides following fixes and suggestions for particular types in boole
 
 - TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
 - [no-unnecessary-condition](./no-unnecessary-condition.md) - Similar rule which reports always-truthy and always-falsy values in conditions
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

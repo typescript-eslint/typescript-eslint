@@ -1,6 +1,6 @@
 # `member-ordering`
 
-Require a consistent member declaration order.
+Requires a consistent member declaration order.
 
 A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate, and edit.
 
@@ -1163,11 +1163,3 @@ If you don't care about the general order of your members, then you will not nee
 ## Related To
 
 - TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

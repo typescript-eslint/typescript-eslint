@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.26.0...v5.27.0) (2022-05-30)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-type-alias] handle Template Literal Types ([#5092](https://github.com/typescript-eslint/typescript-eslint/issues/5092)) ([8febf11](https://github.com/typescript-eslint/typescript-eslint/commit/8febf11a9296d1c0d7ccdf91ef9ab92ec8dfc39c))
+
+
+### Features
+
+* [4.7] support new extensions ([#5027](https://github.com/typescript-eslint/typescript-eslint/issues/5027)) ([efc147b](https://github.com/typescript-eslint/typescript-eslint/commit/efc147b04dce52ab17415b6a4ae4076b944b9036))
+* **eslint-plugin:** [ban-ts-comment] add descriptionFormat option ([#5026](https://github.com/typescript-eslint/typescript-eslint/issues/5026)) ([1fb31a4](https://github.com/typescript-eslint/typescript-eslint/commit/1fb31a4b3e05734f801ade0450fea33494e4d5e6))
+* **eslint-plugin:** [no-misused-promises] warn when spreading promises ([#5053](https://github.com/typescript-eslint/typescript-eslint/issues/5053)) ([61ffa9e](https://github.com/typescript-eslint/typescript-eslint/commit/61ffa9ed70e3cac6eca50a6c3cc5a0f1e7dec11c))
+* **eslint-plugin:** [space-infix-ops] missing error report for conditional types ([#5041](https://github.com/typescript-eslint/typescript-eslint/issues/5041)) ([0bfab6c](https://github.com/typescript-eslint/typescript-eslint/commit/0bfab6c9f5c5e243268200cf9368acf39ea099f8))
+
+
+
+
+
 # [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
 
 

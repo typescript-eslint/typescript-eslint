@@ -1,6 +1,6 @@
 # `no-explicit-any`
 
-Disallow usage of the `any` type.
+Disallows the `any` type.
 
 Using the `any` type defeats the purpose of using TypeScript.
 When `any` is used, all compiler type checks around that value are ignored.
@@ -183,11 +183,3 @@ and you want to be able to specify `any`.
 ## Related To
 
 - TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

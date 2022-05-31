@@ -1,6 +1,6 @@
 # `sort-type-union-intersection-members`
 
-Enforces that members of a type union/intersection are sorted alphabetically.
+Enforces members of a type union/intersection to be sorted alphabetically.
 
 Sorting union (`|`) and intersection (`&`) types can help:
 
@@ -151,11 +151,3 @@ The ordering of groups is determined by this option.
 - `tuple` - Tuple types (`[A, B, C]`)
 - `union` - Union types (`A | B`)
 - `nullish` - `null` and `undefined`
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

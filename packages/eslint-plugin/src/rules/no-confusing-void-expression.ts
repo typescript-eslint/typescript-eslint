@@ -25,7 +25,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description:
-        'Requires expressions of type void to appear in statement position',
+        'Require expressions of type void to appear in statement position',
       recommended: false,
       requiresTypeChecking: true,
     },

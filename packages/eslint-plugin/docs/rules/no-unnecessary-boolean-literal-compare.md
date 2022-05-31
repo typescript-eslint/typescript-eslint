@@ -1,6 +1,6 @@
 # `no-unnecessary-boolean-literal-compare`
 
-Flags unnecessary equality comparisons against boolean literals.
+Disallows unnecessary equality comparisons against boolean literals.
 
 Comparing boolean values to boolean literals is unnecessary, those comparisons result in the same booleans. Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
 
@@ -150,11 +150,3 @@ if (!(someNullCondition ?? true)) {
 ## Related To
 
 - TSLint: [no-boolean-literal-compare](https://palantir.github.io/tslint/rules/no-boolean-literal-compare)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

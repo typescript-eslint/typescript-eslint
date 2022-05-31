@@ -1,6 +1,6 @@
 # `no-unnecessary-qualifier`
 
-Warns when a namespace qualifier is unnecessary.
+Disallows unnecessary namespace qualifiers.
 
 ## Rule Details
 
@@ -96,11 +96,3 @@ If you don't care about having unneeded namespace or enum qualifiers, then you d
 ## Related To
 
 - TSLint: [no-unnecessary-qualifier](https://palantir.github.io/tslint/rules/no-unnecessary-qualifier/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

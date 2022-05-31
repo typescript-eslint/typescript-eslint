@@ -1,6 +1,6 @@
 # `no-unnecessary-type-arguments`
 
-Enforces that type arguments will not be used if not required.
+Disallows type arguments that are equal to the default.
 
 Warns if an explicitly specified type argument is the default for that type parameter.
 
@@ -70,11 +70,3 @@ This rule is not configurable.
 ## Related To
 
 - TSLint: [use-default-type-parameter](https://palantir.github.io/tslint/rules/use-default-type-parameter)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `no-duplicate-enum-values`
 
-Disallow duplicate enum member values.
+Disallows duplicate enum member values.
 
 Although TypeScript supports duplicate enum member values, people usually expect members to have unique values within the same enum. Duplicate values can lead to bugs that are hard to track down.
 
@@ -54,11 +54,3 @@ enum E {
 ```
 
 This rule is not configurable.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

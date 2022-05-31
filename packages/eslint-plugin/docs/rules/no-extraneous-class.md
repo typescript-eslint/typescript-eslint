@@ -1,6 +1,6 @@
 # `no-extraneous-class`
 
-Forbids the use of classes as namespaces.
+Disallows classes used as namespaces.
 
 This rule warns when a class has no non-static members, such as for a class used exclusively as a static namespace.
 
@@ -315,12 +315,4 @@ You can disable this rule if you are unable -or unwilling- to switch off using c
 
 ## Related To
 
-[`no-unnecessary-class`](https://palantir.github.io/tslint/rules/no-unnecessary-class) from TSLint
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+[`no-unnecessary-class`](https://palantir.github.io/tslint/rules/no-unnecessary-class/) from TSLint

@@ -1,6 +1,6 @@
 # `no-non-null-asserted-nullish-coalescing`
 
-Disallows using a non-null assertion in the left operand of the nullish coalescing operator.
+Disallows non-null assertions in the left operand of a nullish coalescing operator.
 
 ## Rule Details
 
@@ -66,11 +66,3 @@ If you are not using TypeScript 3.7 (or greater), then you will not need to use 
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Nullish Coalescing Proposal](https://github.com/tc39/proposal-nullish-coalescing)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

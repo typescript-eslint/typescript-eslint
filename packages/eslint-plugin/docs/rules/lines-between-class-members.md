@@ -1,6 +1,6 @@
 # `lines-between-class-members`
 
-Require or disallow an empty line between class members.
+Requires or disallows an empty line between class members.
 
 This rule improves readability by enforcing lines between class members. It will not check empty lines before the first member and after the last member. This rule require or disallow an empty line between class members.
 
@@ -77,11 +77,3 @@ class foo {
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/lines-between-class-members.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

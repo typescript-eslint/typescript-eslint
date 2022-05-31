@@ -52,7 +52,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Enforces naming conventions for everything across a codebase',
+        'Enforce naming conventions for everything across a codebase',
       recommended: false,
       // technically only requires type checking if the user uses "type" modifiers
       requiresTypeChecking: true,

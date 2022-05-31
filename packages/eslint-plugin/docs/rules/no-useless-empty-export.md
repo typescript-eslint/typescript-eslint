@@ -1,6 +1,6 @@
 # `no-useless-empty-export`
 
-Disallow empty exports that don't change anything in a module file.
+Disallows empty exports that don't change anything in a module file.
 
 ## Rule Details
 
@@ -50,11 +50,3 @@ import 'some-other-module';
 ```
 
 This rule is not configurable.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

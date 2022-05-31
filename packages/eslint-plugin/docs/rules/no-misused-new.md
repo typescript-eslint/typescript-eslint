@@ -1,6 +1,6 @@
 # `no-misused-new`
 
-Enforce valid definition of `new` and `constructor`.
+Enforces valid definition of `new` and `constructor`.
 
 Warns on apparent attempts to define constructors for interfaces or `new` for classes.
 
@@ -50,11 +50,3 @@ This rule is not configurable.
 ## Related To
 
 - TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

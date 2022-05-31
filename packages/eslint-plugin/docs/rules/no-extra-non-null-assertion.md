@@ -1,6 +1,6 @@
 # `no-extra-non-null-assertion`
 
-Disallow extra non-null assertion.
+Disallows extra non-null assertion.
 
 ## Rule Details
 
@@ -58,11 +58,3 @@ function foo(bar?: { n: number }) {
 ```
 
 This rule is not configurable.
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

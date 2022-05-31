@@ -9,7 +9,7 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Disallows non-null assertions using the `!` postfix operator',
+        'Disallow non-null assertions using the `!` postfix operator',
       recommended: 'warn',
       suggestion: true,
     },

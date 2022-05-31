@@ -14,8 +14,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description:
-        'This rule is aimed at ensuring there are spaces around infix operators.',
+      description: 'Require spacing around infix operators',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -125,8 +124,8 @@ export default util.createRule<Options, MessageIds>({
     function checkForPropertyDefinitionAssignmentSpace(
       node: TSESTree.PropertyDefinition,
     ): void {
-      const leftNode = sourceCode.getTokenByRangeStart(
-        node.typeAnnotation?.range[0] ?? node.range[0],
+      const leftNode = sourceCode.getLastToken(
+        node.typeAnnotation ?? node.key,
       )!;
       const rightNode = node.value
         ? sourceCode.getTokenByRangeStart(node.value.range[0])

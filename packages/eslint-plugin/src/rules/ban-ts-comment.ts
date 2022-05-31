@@ -45,7 +45,7 @@ export default util.createRule<[Options], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Bans `@ts-<directive>` comments from being used or requires descriptions after directive',
+        'Disallow `@ts-<directive>` comments or require descriptions after directive',
       recommended: 'error',
     },
     messages: {
