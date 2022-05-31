@@ -80,11 +80,3 @@ const set: Set<string> = new Set<string>();
 ## When Not To Use It
 
 You can turn this rule off if you don't want to enforce one kind of generic constructor style over the other.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information
