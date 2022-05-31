@@ -12,17 +12,17 @@ To tap into TypeScript's additional powers, there are two small changes you need
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  // highlight-start
+  // Added lines start
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
-  // highlight-end
+  // Added lines end
   plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    // highlight-next-line
+    // Add this line
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
 };

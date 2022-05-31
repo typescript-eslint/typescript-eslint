@@ -47,7 +47,7 @@ module.exports = {
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
-    // highlight-next-line
+    // Add this line
     extraFileExtensions: ['.vue'],
   },
 };

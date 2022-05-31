@@ -108,3 +108,36 @@ h6 {
 .myLineDecoration {
   background-color: var(--code-line-decoration);
 }
+
+.code-block-removed-line::before {
+  content: '-';
+  display: inline-block;
+  width: 0px;
+  color: red;
+}
+
+.code-block-removed-line {
+  background-color: #ff000020;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+  user-select: none;
+}
+
+.code-block-added-line::before {
+  content: '+';
+  display: inline-block;
+  width: 0px;
+  color: rgb(2, 164, 113);
+}
+
+.code-block-added-line {
+  background-color: #00ff9540;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+[data-theme='dark'] .code-block-added-line {
+  background-color: #00ff9510;
+}

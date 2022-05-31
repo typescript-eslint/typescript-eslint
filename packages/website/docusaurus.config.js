@@ -158,6 +158,23 @@ const config = {
           styles: [],
         },
         additionalLanguages: ['ignore'],
+        magicComments: [
+          {
+            className: 'theme-code-block-highlighted-line',
+            line: 'highlight-next-line',
+            block: { start: 'highlight-start', end: 'highlight-end' },
+          },
+          {
+            className: 'code-block-removed-line',
+            line: 'Remove this line',
+            block: { start: 'Removed lines start', end: 'Removed lines end' },
+          },
+          {
+            className: 'code-block-added-line',
+            line: 'Add this line',
+            block: { start: 'Added lines start', end: 'Added lines end' },
+          },
+        ],
       },
       tableOfContents: {
         maxHeadingLevel: 4,

@@ -144,7 +144,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    // highlight-next-line
+    // Add this line
     'prettier',
   ],
 };
@@ -162,19 +162,20 @@ A few popular all-in-one configs are:
 To use one of these complete config packages, you would replace the `extends` with the package name.
 For example:
 
-```diff title=".eslintrc.js"
-  module.exports = {
-    root: true,
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint',
-    ],
-    extends: [
--     'eslint:recommended',
--     'plugin:@typescript-eslint/recommended',
-+     'airbnb-typescript',
-    ],
-  };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    // Removed lines start
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Removed lines end
+    // Add this line
+    'airbnb-typescript',
+  ],
+};
 ```
 
 <!-- markdownlint-disable MD044 -->
@@ -201,13 +202,13 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: [
     '@typescript-eslint',
-    // highlight-next-line
+    // Add this line
     'jest',
   ],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    // highlight-next-line
+    // Add this line
     'plugin:jest/recommended',
   ],
 };
