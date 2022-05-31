@@ -28,9 +28,9 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['constructor'],
   create(context, [mode]) {
+    const sourceCode = context.getSourceCode();
     return {
       VariableDeclarator(node): void {
-        const sourceCode = context.getSourceCode();
         const lhs = node.id.typeAnnotation?.typeAnnotation;
         const rhs = node.init;
         if (
@@ -48,54 +48,55 @@ export default createRule<Options, MessageIds>({
         ) {
           return;
         }
-        if (mode === 'type-annotation' && !lhs && rhs.typeParameters) {
-          const { typeParameters, callee } = rhs;
-          const typeAnnotation =
-            sourceCode.getText(callee) + sourceCode.getText(typeParameters);
-          context.report({
-            node,
-            messageId: 'preferTypeAnnotation',
-            fix(fixer) {
-              return [
-                fixer.remove(typeParameters),
-                fixer.insertTextAfter(node.id, ': ' + typeAnnotation),
-              ];
-            },
-          });
+        if (mode === 'type-annotation') {
+          if (!lhs && rhs.typeParameters) {
+            const { typeParameters, callee } = rhs;
+            const typeAnnotation =
+              sourceCode.getText(callee) + sourceCode.getText(typeParameters);
+            context.report({
+              node,
+              messageId: 'preferTypeAnnotation',
+              fix(fixer) {
+                return [
+                  fixer.remove(typeParameters),
+                  fixer.insertTextAfter(node.id, ': ' + typeAnnotation),
+                ];
+              },
+            });
+          }
+          return;
         }
-        if (
-          mode === 'constructor' &&
-          lhs?.typeParameters &&
-          !rhs.typeParameters
-        ) {
-          const hasParens = sourceCode.getTokenAfter(rhs.callee)?.value === '(';
-          const extraComments = new Set(
-            sourceCode.getCommentsInside(lhs.parent!),
-          );
-          sourceCode
-            .getCommentsInside(lhs.typeParameters)
-            .forEach(c => extraComments.delete(c));
-          context.report({
-            node,
-            messageId: 'preferConstructor',
-            *fix(fixer) {
-              yield fixer.remove(lhs.parent!);
-              for (const comment of extraComments) {
+        if (mode === 'constructor') {
+          if (lhs?.typeParameters && !rhs.typeParameters) {
+            const hasParens =
+              sourceCode.getTokenAfter(rhs.callee)?.value === '(';
+            const extraComments = new Set(
+              sourceCode.getCommentsInside(lhs.parent!),
+            );
+            sourceCode
+              .getCommentsInside(lhs.typeParameters)
+              .forEach(c => extraComments.delete(c));
+            context.report({
+              node,
+              messageId: 'preferConstructor',
+              *fix(fixer) {
+                yield fixer.remove(lhs.parent!);
+                for (const comment of extraComments) {
+                  yield fixer.insertTextAfter(
+                    rhs.callee,
+                    sourceCode.getText(comment),
+                  );
+                }
                 yield fixer.insertTextAfter(
                   rhs.callee,
-                  // @ts-expect-error: `sourceCode.getText` should accept `TSESTree.Comment`
-                  sourceCode.getText(comment),
+                  sourceCode.getText(lhs.typeParameters),
                 );
-              }
-              yield fixer.insertTextAfter(
-                rhs.callee,
-                sourceCode.getText(lhs.typeParameters),
-              );
-              if (!hasParens) {
-                yield fixer.insertTextAfter(rhs.callee, '()');
-              }
-            },
-          });
+                if (!hasParens) {
+                  yield fixer.insertTextAfter(rhs.callee, '()');
+                }
+              },
+            });
+          }
         }
       },
     };
