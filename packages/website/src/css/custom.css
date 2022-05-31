@@ -113,6 +113,8 @@ h6 {
   content: '-';
   display: inline-block;
   width: 0px;
+  position: relative;
+  left: -0.7em;
   color: red;
 }
 
@@ -128,6 +130,8 @@ h6 {
   content: '+';
   display: inline-block;
   width: 0px;
+  position: relative;
+  left: -0.7em;
   color: rgb(2, 164, 113);
 }
 
