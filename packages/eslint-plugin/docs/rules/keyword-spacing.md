@@ -26,11 +26,3 @@ See [`eslint/keyword-spacing` options](https://eslint.org/docs/rules/keyword-spa
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/keyword-spacing.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

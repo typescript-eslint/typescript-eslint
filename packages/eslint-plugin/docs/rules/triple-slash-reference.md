@@ -72,11 +72,3 @@ If you want to use all flavors of triple slash reference directives.
 
 - TSLint: [no-reference](http://palantir.github.io/tslint/rules/no-reference/)
 - TSLint: [no-reference-import](https://palantir.github.io/tslint/rules/no-reference-import/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

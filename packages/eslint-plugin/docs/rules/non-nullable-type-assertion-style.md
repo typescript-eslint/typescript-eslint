@@ -44,11 +44,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't mind having unnecessarily verbose type casts, you can avoid this rule.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

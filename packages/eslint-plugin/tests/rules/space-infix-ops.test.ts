@@ -153,6 +153,20 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          value:{prop:string}[] = [];
+        }
+      `,
+    },
+    {
+      code: `
         type Test =
         | string
         | boolean;
@@ -469,6 +483,44 @@ ruleTester.run('space-infix-ops', rule, {
         {
           messageId: 'missingSpace',
           column: 33,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: { prop: string }[]= [];
+        }
+      `,
+      output: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 36,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: { prop: string }[] =[];
+        }
+      `,
+      output: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 37,
           line: 3,
         },
       ],

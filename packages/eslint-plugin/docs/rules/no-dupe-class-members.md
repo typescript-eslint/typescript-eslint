@@ -26,11 +26,3 @@ See [`eslint/no-dupe-class-members` options](https://eslint.org/docs/rules/no-du
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-dupe-class-members.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

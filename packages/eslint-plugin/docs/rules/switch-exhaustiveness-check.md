@@ -122,11 +122,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If program doesn't have union types with many parts. Downside of this rule is the need for type information, so it's slower than regular rules.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

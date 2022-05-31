@@ -50,11 +50,3 @@ This is generally not preferred, but can sometimes be useful for visual consiste
 ## Related To
 
 - TSLint: ['await-promise'](https://palantir.github.io/tslint/rules/await-promise)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

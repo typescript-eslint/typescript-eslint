@@ -26,11 +26,3 @@ See [`eslint/space-before-function-paren` options](https://eslint.org/docs/rules
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/space-before-function-paren.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

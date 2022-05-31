@@ -124,8 +124,8 @@ export default util.createRule<Options, MessageIds>({
     function checkForPropertyDefinitionAssignmentSpace(
       node: TSESTree.PropertyDefinition,
     ): void {
-      const leftNode = sourceCode.getTokenByRangeStart(
-        node.typeAnnotation?.range[0] ?? node.range[0],
+      const leftNode = sourceCode.getLastToken(
+        node.typeAnnotation ?? node.key,
       )!;
       const rightNode = node.value
         ? sourceCode.getTokenByRangeStart(node.value.range[0])
