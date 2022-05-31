@@ -69,7 +69,7 @@ Example configuration:
         // un-ban a type that's banned by default
         "{}": false
       },
-      "extendsDefaults": true
+      "extendDefaults": true
     }
   ]
 }

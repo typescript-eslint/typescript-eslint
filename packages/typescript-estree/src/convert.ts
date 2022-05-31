@@ -2429,6 +2429,9 @@ export class Converter {
         return this.createNode<TSESTree.TSTypeQuery>(node, {
           type: AST_NODE_TYPES.TSTypeQuery,
           exprName: this.convertType(node.exprName),
+          typeParameters:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameters(node.typeArguments, node),
         });
       }
 

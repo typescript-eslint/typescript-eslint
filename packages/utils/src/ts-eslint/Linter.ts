@@ -76,7 +76,7 @@ declare class LinterBase {
 
   /**
    * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
-   * @param text The source text to apply fixes to.
+   * @param code The source text to apply fixes to.
    * @param config The ESLint config object to use.
    * @param options The ESLint options object to use.
    * @returns The result of the fix operation as returned from the SourceCodeFixer.
@@ -316,7 +316,7 @@ namespace Linter {
 
   export interface ESLintParseResult {
     ast: TSESTree.Program;
-    parserServices?: ParserServices;
+    services?: ParserServices;
     scopeManager?: Scope.ScopeManager;
     visitorKeys?: SourceCode.VisitorKeys;
   }
