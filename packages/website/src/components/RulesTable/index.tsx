@@ -43,7 +43,7 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
   );
 }
 
-const filterModes = ['include', 'neutral', 'exclude'];
+const filterModes = ['neutral', 'include', 'exclude'];
 type FilterMode = typeof filterModes[number];
 
 function RuleFilterCheckBox({
