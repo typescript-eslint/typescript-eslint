@@ -39,14 +39,14 @@
 
 .arrow {
   margin: 0 0.5rem 0 0;
-  transform: rotateZ(-90deg);
+  transform: rotateZ(0deg);
   transition: transform 250ms ease-in-out;
   width: 1rem;
   height: 1rem;
 }
 
 .expandedArrow {
-  transform: rotateZ(0deg);
+  transform: rotateZ(90deg);
 }
 
 .children {
