@@ -51,7 +51,7 @@ body:
       description: |
         A ***minimal*** ESLint config for reproducing the issue.
         Please do not just paste your entire ESLint config - it just makes it harder for us to investigate.
-        If this is more than around 30 lines - you probably haven't isolated the repro.
+        If this is more than around 30 lines and/or contains lint rule settings unrelated to your bug report, you probably haven't isolated the repro.
         ***Help us to help you!***
       render: javascript
       value: |
