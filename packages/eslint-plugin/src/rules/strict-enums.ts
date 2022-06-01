@@ -728,8 +728,8 @@ export default util.createRule<Options, MessageIds>({
         }
       },
 
-      /** When a function is invoked, or class is instantiated. */
-      'CallExpression, NewExpression'(
+      /** When a function is invoked or a class is instantiated. */
+      'CallExpression, NewExpression': function callExpressionOrNewExpression(
         node: TSESTree.CallExpression | TSESTree.NewExpression,
       ): void {
         checkCallExpression(node);
