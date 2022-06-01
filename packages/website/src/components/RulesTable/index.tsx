@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
+import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import type { RulesMeta } from '@site/rulesMeta';
 
 import styles from './styles.module.css';
@@ -95,27 +95,31 @@ export default function RulesTable({
 }: {
   extensionRules?: boolean;
 }): JSX.Element {
-  const rules = useDocusaurusContext().siteConfig.customFields!
-    .rules as RulesMeta;
+  const rules = useRulesMeta();
   const [showRecommended, setShowRecommended] = useState<FilterMode>('neutral');
   const [showStrict, setShowStrict] = useState<FilterMode>('neutral');
   const [showFixable, setShowFixable] = useState<FilterMode>('neutral');
   const [showHasSuggestions, setShowHasSuggestion] =
     useState<FilterMode>('neutral');
   const [showTypeCheck, setShowTypeCheck] = useState<FilterMode>('neutral');
-  const relevantRules = rules.filter(
-    r =>
-      !!extensionRules === !!r.docs?.extendsBaseRule &&
-      (match(
-        showRecommended,
-        r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
-      ) ??
-        match(showStrict, r.docs?.recommended === 'strict') ??
-        match(showFixable, !!r.fixable) ??
-        match(showHasSuggestions, !!r.hasSuggestions) ??
-        match(showTypeCheck, !!r.docs?.requiresTypeChecking) ??
-        true),
-  );
+  const relevantRules = rules
+    .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
+    .filter(r => {
+      const opinions = [
+        match(
+          showRecommended,
+          r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
+        ),
+        match(showStrict, r.docs?.recommended === 'strict'),
+        match(showFixable, !!r.fixable),
+        match(showHasSuggestions, !!r.hasSuggestions),
+        match(showTypeCheck, !!r.docs?.requiresTypeChecking),
+      ].filter((o): o is boolean => o !== undefined);
+      if (opinions.every(o => o)) {
+        return true;
+      }
+      return false;
+    });
   return (
     <>
       <ul className={clsx('clean-list', styles.checkboxList)}>

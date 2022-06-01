@@ -1,12 +1,10 @@
 import React from 'react';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import type { RulesMeta } from '@site/rulesMeta';
+import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 
 import styles from './RuleAttributes.module.css';
 
 export function RuleAttributes({ name }: { name: string }): JSX.Element | null {
-  const rules = useDocusaurusContext().siteConfig.customFields!
-    .rules as RulesMeta;
+  const rules = useRulesMeta();
   const rule = rules.find(rule => rule.name === name);
   if (!rule) {
     return null;
