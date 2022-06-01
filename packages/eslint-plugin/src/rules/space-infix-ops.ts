@@ -183,18 +183,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
-      const extendsTypeNode = sourceCode.getTokenByRangeStart(
-        node.extendsType.range[0],
-      )!;
-      const trueTypeNode = sourceCode.getTokenByRangeStart(
-        node.trueType.range[0],
-      )!;
-      const falseTypeNode = sourceCode.getTokenByRangeStart(
-        node.falseType.range[0],
-      );
+      const extendsLastToken = sourceCode.getLastToken(node.extendsType)!;
+      const trueFirstToken = sourceCode.getFirstToken(node.trueType)!;
+      const trueLastToken = sourceCode.getLastToken(node.trueType)!;
+      const falseFirstToken = sourceCode.getFirstToken(node.falseType)!;
 
-      checkAndReportAssignmentSpace(node, extendsTypeNode, trueTypeNode);
-      checkAndReportAssignmentSpace(node, trueTypeNode, falseTypeNode);
+      checkAndReportAssignmentSpace(node, extendsLastToken, trueFirstToken);
+      checkAndReportAssignmentSpace(node, trueLastToken, falseFirstToken);
     }
 
     return {

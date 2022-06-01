@@ -236,6 +236,15 @@ ruleTester.run('space-infix-ops', rule, {
       `,
     },
     {
+      code: 'type Baz<T> = T extends (bar: string) => void ? string : number',
+    },
+    {
+      code: 'type Foo<T> = T extends { bar: string } ? string : number',
+    },
+    {
+      code: 'type Baz<T> = T extends (bar: string) => void ? { x: string } : { y: string }',
+    },
+    {
       code: `
         interface Test {
           prop:
