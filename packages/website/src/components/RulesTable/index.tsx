@@ -158,13 +158,13 @@ export default function RulesTable({
           label="💭 requires type information"
         />
       </ul>
-      <table>
+      <table style={{width: '100%'}}>
         <thead>
           <tr>
-            <th>Rule</th>
-            <th>✅🔒</th>
-            <th>🔧🛠</th>
-            <th>💭</th>
+            <th style={{width: '100%'}}>Rule</th>
+            <th style={{minWidth: 70}}>✅🔒</th>
+            <th style={{minWidth: 70}}>🔧🛠</th>
+            <th style={{minWidth: 50}}>💭</th>
           </tr>
         </thead>
         <tbody>
