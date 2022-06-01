@@ -80,3 +80,16 @@
 [data-theme='dark'] .checkboxLabelDeactivated:hover {
   box-shadow: 0 0 2px 1px #eb6c6c;
 }
+
+.rulesTable,
+.ruleCol {
+  width: 100%;
+}
+
+.attrDblCol {
+  min-width: 4em;
+}
+
+.attrCol {
+  min-width: 2.5em;
+}

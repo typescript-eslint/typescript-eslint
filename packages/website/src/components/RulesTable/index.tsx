@@ -158,13 +158,13 @@ export default function RulesTable({
           label="💭 requires type information"
         />
       </ul>
-      <table style={{width: '100%'}}>
+      <table className={styles.rulesTable}>
         <thead>
           <tr>
-            <th style={{width: '100%'}}>Rule</th>
-            <th style={{minWidth: 70}}>✅🔒</th>
-            <th style={{minWidth: 70}}>🔧🛠</th>
-            <th style={{minWidth: 50}}>💭</th>
+            <th className={styles.ruleCol}>Rule</th>
+            <th className={styles.attrDblCol}>✅🔒</th>
+            <th className={styles.attrDblCol}>🔧🛠</th>
+            <th className={styles.attrCol}>💭</th>
           </tr>
         </thead>
         <tbody>
