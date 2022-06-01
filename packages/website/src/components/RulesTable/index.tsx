@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
@@ -102,24 +102,33 @@ export default function RulesTable({
   const [showHasSuggestions, setShowHasSuggestion] =
     useState<FilterMode>('neutral');
   const [showTypeCheck, setShowTypeCheck] = useState<FilterMode>('neutral');
-  const relevantRules = rules
-    .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
-    .filter(r => {
-      const opinions = [
-        match(
-          showRecommended,
-          r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
-        ),
-        match(showStrict, r.docs?.recommended === 'strict'),
-        match(showFixable, !!r.fixable),
-        match(showHasSuggestions, !!r.hasSuggestions),
-        match(showTypeCheck, !!r.docs?.requiresTypeChecking),
-      ].filter((o): o is boolean => o !== undefined);
-      if (opinions.every(o => o)) {
-        return true;
-      }
-      return false;
-    });
+  const relevantRules = useMemo(
+    () =>
+      rules
+        .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
+        .filter(r => {
+          const opinions = [
+            match(
+              showRecommended,
+              r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
+            ),
+            match(showStrict, r.docs?.recommended === 'strict'),
+            match(showFixable, !!r.fixable),
+            match(showHasSuggestions, !!r.hasSuggestions),
+            match(showTypeCheck, !!r.docs?.requiresTypeChecking),
+          ].filter((o): o is boolean => o !== undefined);
+          return opinions.every(o => o);
+        }),
+    [
+      rules,
+      extensionRules,
+      showRecommended,
+      showStrict,
+      showFixable,
+      showHasSuggestions,
+      showTypeCheck,
+    ],
+  );
   return (
     <>
       <ul className={clsx('clean-list', styles.checkboxList)}>
