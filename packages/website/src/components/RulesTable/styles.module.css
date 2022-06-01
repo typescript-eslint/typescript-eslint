@@ -86,10 +86,7 @@
   width: 100%;
 }
 
-.attrDblCol {
-  min-width: 4em;
-}
-
 .attrCol {
   min-width: 2.5em;
+  text-align: center;
 }

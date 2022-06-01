@@ -27,18 +27,20 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
-      <td>
+      <td className={styles.attrCol}>
         {rule.docs.recommended === 'strict'
           ? '🔒'
           : rule.docs.recommended
           ? '✅'
           : ''}
       </td>
-      <td>
-        {rule.fixable ? '🔧' : ''}
+      <td className={styles.attrCol}>
+        {rule.fixable ? '🔧\n' : '\n'}
         {rule.hasSuggestions ? '🛠' : ''}
       </td>
-      <td>{rule.docs.requiresTypeChecking ? '💭' : ''}</td>
+      <td className={styles.attrCol}>
+        {rule.docs.requiresTypeChecking ? '💭' : ''}
+      </td>
     </tr>
   );
 }
@@ -162,8 +164,8 @@ export default function RulesTable({
         <thead>
           <tr>
             <th className={styles.ruleCol}>Rule</th>
-            <th className={styles.attrDblCol}>✅🔒</th>
-            <th className={styles.attrDblCol}>🔧🛠</th>
+            <th className={styles.attrCol}>✅{'\n'}🔒</th>
+            <th className={styles.attrCol}>🔧{'\n'}🛠</th>
             <th className={styles.attrCol}>💭</th>
           </tr>
         </thead>
