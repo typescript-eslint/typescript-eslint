@@ -24,13 +24,8 @@ function Expander(props: ExpanderProps): JSX.Element {
         />
         <span className={styles.headerLabel}>{props.label}</span>
       </button>
-      <Collapsible
-        lazy={false}
-        as="div"
-        className={styles.children}
-        collapsed={collapsed}
-      >
-        <div className={styles.childrenContent}>{props.children}</div>
+      <Collapsible lazy={false} as="div" collapsed={collapsed}>
+        <div className={styles.children}>{props.children}</div>
       </Collapsible>
     </div>
   );
