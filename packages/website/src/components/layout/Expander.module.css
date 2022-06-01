@@ -45,12 +45,15 @@
   height: 1rem;
 }
 
-.expandedArrow {
+.arrow.expandedArrow {
   transform: rotateZ(90deg);
 }
 
 .children {
   display: flex;
   flex-direction: column;
-  padding: 0 0.5rem 0.5rem;
+}
+
+.childrenContent {
+  margin: 0 0.5rem 0.5rem;
 }

@@ -30,7 +30,7 @@ function Expander(props: ExpanderProps): JSX.Element {
         className={styles.children}
         collapsed={collapsed}
       >
-        {props.children}
+        <div className={styles.childrenContent}>{props.children}</div>
       </Collapsible>
     </div>
   );
