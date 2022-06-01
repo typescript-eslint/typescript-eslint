@@ -1,6 +1,8 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
+
 const replace = require('./rollup-plugin/replace');
 
 module.exports = {
@@ -9,10 +11,12 @@ module.exports = {
     format: 'amd',
     interop: 'auto',
     freeze: false,
+    sourcemap: true,
     file: 'dist/index.js',
   },
   external: ['vs/language/typescript/tsWorker'],
   plugins: [
+    terser(),
     replace({
       // verbose: true,
       alias: [
