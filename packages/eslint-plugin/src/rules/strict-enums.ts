@@ -323,6 +323,10 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      if (!ts.isCallLikeExpression(tsNode)) {
+        return;
+      }
+
       const signature = typeChecker.getResolvedSignature(tsNode);
       if (signature === undefined) {
         return;
@@ -753,44 +757,45 @@ export default util.createRule<Options, MessageIds>({
 
       /** When a new variable is created. */
       VariableDeclarator(node): void {
-          const leftTSNode =
-            parserServices.esTreeNodeToTSNodeMap.get(declaration);
+        const leftTSNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+        if (!ts.isVariableDeclaration(leftTSNode)) {
+          return;
+        }
 
-          /**
-           * Allow enum declarations without an initializer, like the following:
-           *
-           * ```ts
-           * let fruit: Fruit;
-           * if (something()) {
-           *   fruit = Fruit.Apple;
-           * } else {
-           *   fruit = Fruit.Banana;
-           * }
-           * ```
-           */
-          if (leftTSNode.initializer === undefined) {
-            continue;
-          }
+        /**
+         * Allow enum declarations without an initializer, like the following:
+         *
+         * ```ts
+         * let fruit: Fruit;
+         * if (something()) {
+         *   fruit = Fruit.Apple;
+         * } else {
+         *   fruit = Fruit.Banana;
+         * }
+         * ```
+         */
+        if (leftTSNode.initializer === undefined) {
+          return;
+        }
 
-          /**
-           * We have to use `leftTSNode.name` instead of `leftTSNode` to avoid
-           * runtime errors because the `typeChecker.getTypeAtLocation` method
-           * expects a `ts.BindingName` instead of a`ts.VariableDeclaration`.
-           * https://github.com/microsoft/TypeScript/issues/48878
-           */
-          const leftType = getTypeFromTSNode(leftTSNode.name);
-          const rightType = getTypeFromTSNode(leftTSNode.initializer);
+        /**
+         * We have to use `leftTSNode.name` instead of `leftTSNode` to avoid
+         * runtime errors because the `typeChecker.getTypeAtLocation` method
+         * expects a `ts.BindingName` instead of a`ts.VariableDeclaration`.
+         * https://github.com/microsoft/TypeScript/issues/48878
+         */
+        const leftType = getTypeFromTSNode(leftTSNode.name);
+        const rightType = getTypeFromTSNode(leftTSNode.initializer);
 
-          if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
-            context.report({
-              node,
-              messageId: 'mismatchedAssignment',
-              data: {
-                assignmentType: getTypeName(rightType),
-                declaredType: getTypeName(leftType),
-              },
-            });
-          }
+        if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
+          context.report({
+            node,
+            messageId: 'mismatchedAssignment',
+            data: {
+              assignmentType: getTypeName(rightType),
+              declaredType: getTypeName(leftType),
+            },
+          });
         }
       },
     };
