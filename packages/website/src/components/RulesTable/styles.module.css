@@ -16,11 +16,6 @@
   margin-right: 0;
 }
 
-.checkboxLabel:hover {
-  opacity: 1;
-  box-shadow: 0 0 2px 1px var(--ifm-color-secondary-darkest);
-}
-
 .checkboxLabel {
   display: flex;
   align-items: center;
@@ -30,12 +25,21 @@
   padding: 0.275rem 0.8rem;
   opacity: 0.85;
   transition: opacity 200ms ease-out;
-  border: 2px solid var(--ifm-color-secondary-darkest);
+  border: 2px solid var(--ifm-color-secondary-dark);
   background-color: var(--ifm-background-color);
 }
 
 [data-theme='dark'] .checkboxLabel {
   border: 2px solid #666666;
+}
+
+.checkboxLabel:hover {
+  opacity: 1;
+  box-shadow: 0 0 2px 1px var(--ifm-color-secondary-dark);
+}
+
+[data-theme='dark'] .checkboxLabel:hover {
+  box-shadow: 0 0 2px 0 var(--ifm-color-secondary);
 }
 
 .checkboxLabel:focus-visible {
@@ -44,11 +48,12 @@
 
 .checkboxLabelActivated {
   opacity: 0.9;
-  background-color: var(--site-color-checkbox-checked-bg);
+  background-color: rgba(148, 197, 225, 0.25);
   border: 2px solid var(--ifm-color-primary-lighter);
 }
 
 [data-theme='dark'] .checkboxLabelActivated {
+  background-color: rgba(35, 78, 128, 0.5);
   border: 2px solid var(--ifm-color-primary-dark);
 }
 
