@@ -54,7 +54,11 @@ function reducerObject(
     }
     case 'set': {
       const newState = { ...state };
-      newState[action.name] = action.value;
+      if (action.value === '') {
+        delete newState[action.name];
+      } else {
+        newState[action.name] = action.value;
+      }
       return newState;
     }
     case 'toggle': {

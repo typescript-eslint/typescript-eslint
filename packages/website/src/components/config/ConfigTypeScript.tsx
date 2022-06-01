@@ -43,7 +43,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
                   key: item.name,
                   type: 'string',
                   label: item.description!.message,
-                  enum: Array.from(item.type.keys()),
+                  enum: ['', ...Array.from<string>(item.type.keys())],
                 });
               }
               return group;
