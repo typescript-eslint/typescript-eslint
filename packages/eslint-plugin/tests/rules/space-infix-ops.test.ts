@@ -245,6 +245,9 @@ ruleTester.run('space-infix-ops', rule, {
       code: 'type Baz<T> = T extends (bar: string) => void ? { x: string } : { y: string }',
     },
     {
+      code: 'type Foo<T extends (...args: any[]) => any> = T;',
+    },
+    {
       code: `
         interface Test {
           prop:

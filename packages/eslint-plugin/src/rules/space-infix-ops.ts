@@ -174,10 +174,8 @@ export default util.createRule<Options, MessageIds>({
     function checkForTypeAliasAssignment(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
-      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
-      const rightNode = sourceCode.getTokenByRangeStart(
-        node.typeAnnotation.range[0],
-      );
+      const leftNode = sourceCode.getLastToken(node.typeParameters ?? node.id)!;
+      const rightNode = sourceCode.getFirstToken(node.typeAnnotation);
 
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
     }
