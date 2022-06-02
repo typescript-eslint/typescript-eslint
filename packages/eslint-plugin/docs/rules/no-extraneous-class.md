@@ -102,7 +102,7 @@ If you strongly prefer to have all constructs from a module available as propert
 This is known as a "namespace import".
 Namespace imports are sometimes preferable because they keep all properties nested and don't need to be changed as you start or stop using various properties from the module.
 
-However, namespace imports are impacted by XYZ downsides:
+However, namespace imports are impacted by these downsides:
 
 - They also don't play as well with tree shaking in modern bundlers
 - They require a name prefix before each property's usage
