@@ -122,7 +122,7 @@ export class Utilities {
 // consumers.ts
 import { Utilities } from './utilities';
 
-utilities.sayHello();
+Utilities.sayHello();
 ```
 
 #### ⚠️ Namespace Imports
@@ -136,7 +136,7 @@ export function sayHello() {
 // consumers.ts
 import * as utilities from './utilities';
 
-sayHello();
+utilities.sayHello();
 ```
 
 #### ✅ Standalone Imports
