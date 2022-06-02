@@ -32,6 +32,7 @@ body:
 
         ***Please do not use this template.*** Instead, select the
         ["Report a complex bug you encountered by providing an isolated reproduction repository" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=7-bug-report-complex.yaml).
+        ***Help us to help you!***
       placeholder: https://typescript-eslint.io/play/...
     validations:
       required: true
@@ -47,7 +48,11 @@ body:
     id: eslint-config
     attributes:
       label: ESLint Config
-      description: A ***minimal*** ESLint config for reproducing the issue
+      description: |
+        A ***minimal*** ESLint config for reproducing the issue.
+        Please do not just paste your entire ESLint config - it just makes it harder for us to investigate.
+        If this is more than around 30 lines and/or contains lint rule settings unrelated to your bug report, you probably haven't isolated the repro.
+        ***Help us to help you!***
       render: javascript
       value: |
         module.exports = {
@@ -90,7 +95,9 @@ body:
     id: additional
     attributes:
       label: Additional Info
-      description: Any additional info you'd like to provide. If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. e.g. `eslint --ext ".ts,.js" src --debug`
+      description: |
+        Any additional info you'd like to provide.
+        If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. e.g. `eslint path/to/broken/file.ts --debug`
   - type: textarea
     id: versions
     attributes:

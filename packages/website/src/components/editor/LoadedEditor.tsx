@@ -87,6 +87,21 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, []);
 
   useEffect(() => {
+    const newPath = jsx ? '/input.tsx' : '/input.ts';
+    if (tabs.code.uri.path !== newPath) {
+      const newModel = sandboxInstance.monaco.editor.createModel(
+        tabs.code.getValue(),
+        'typescript',
+        sandboxInstance.monaco.Uri.file(newPath),
+      );
+      newModel.updateOptions({ tabSize: 2, insertSpaces: true });
+      sandboxInstance.editor.setModel(newModel);
+      tabs.code.dispose();
+      tabs.code = newModel;
+    }
+  }, [jsx]);
+
+  useEffect(() => {
     const config = createCompilerOptions(jsx, parseTSConfig(tsconfig));
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
