@@ -16,7 +16,9 @@ module.exports = {
   },
   external: ['vs/language/typescript/tsWorker'],
   plugins: [
-    terser(),
+    terser({
+      keep_classnames: true,
+    }),
     replace({
       // verbose: true,
       alias: [
