@@ -3461,5 +3461,242 @@ type Foo<T> = {
         },
       ],
     },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [{ allowTemplateLiterals: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions-and-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [{ allowAliases: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [
+        { allowAliases: 'in-intersections', allowTemplateLiterals: 'never' },
+      ],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [
+        {
+          allowAliases: 'in-intersections',
+          allowTemplateLiterals: 'in-unions',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [
+        {
+          allowAliases: 'in-intersections',
+          allowTemplateLiterals: 'in-intersections',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      options: [
+        {
+          allowAliases: 'in-unions',
+          allowTemplateLiterals: 'in-unions-and-intersections',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'template literals',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-intersections' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'intersection',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'intersection',
+          },
+          line: 1,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowTemplateLiterals: 'in-unions' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'intersection',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Template literals',
+            compositionType: 'intersection',
+          },
+          line: 1,
+          column: 28,
+        },
+      ],
+    },
   ],
 });
