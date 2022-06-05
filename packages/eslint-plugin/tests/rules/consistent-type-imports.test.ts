@@ -1990,6 +1990,29 @@ const b = B;
     },
     {
       code: `
+        import A, { B, C } from 'foo';
+        type T = B;
+        type U = C;
+        type V = A;
+      `,
+      output: `
+        import type { B, C } from 'foo';
+import type A from 'foo';
+        type T = B;
+        type U = C;
+        type V = A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }], // fixStyle doesn't apply but just add to check
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
         import { /* comment */ A, B } from 'foo';
         type T = A;
       `,

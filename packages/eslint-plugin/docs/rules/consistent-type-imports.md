@@ -36,6 +36,49 @@ type T = Foo;
 const x: Bar = 1;
 ```
 
+### `fixStyle`
+
+This option defines the expected type modifier to be added when an import is detected as used only in the type position. Valid values for `fixStyle` are:
+
+- `separate-type-imports` will add the type keyword after the import `import type { A } from '...'`. It is default.
+- `inline-type-imports` will inline the type keyword. `import { type A } from '...'`.
+
+Examples of the fixer `{fixStyle: 'separate-type-imports'}`.
+
+```ts
+import { Foo } from 'Foo';
+import Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+```
+
+will fix to
+
+```ts
+import type { Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+```
+
+Examples of the fixer `{fixStyle: 'inline-type-imports'}`.
+
+```ts
+import { Foo } from 'Foo';
+import Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+```
+
+will fix to
+
+```ts
+import { type Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+```
+
 ### `disallowTypeAnnotations`
 
 If `true`, type imports in type annotations (`import()`) are not allowed.
