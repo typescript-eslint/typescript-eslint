@@ -261,20 +261,6 @@ export default util.createRule<Options, MessageIds>({
                   unusedSpecifiers,
                   inlineTypeSpecifiers,
                 });
-              } else if (
-                fixStyle === 'inline-type-imports' &&
-                node.importKind === 'type' &&
-                node.specifiers.some(
-                  spec => spec.type === AST_NODE_TYPES.ImportSpecifier,
-                )
-              ) {
-                sourceImports.reportValueImports.push({
-                  node,
-                  typeSpecifiers,
-                  valueSpecifiers,
-                  unusedSpecifiers,
-                  inlineTypeSpecifiers,
-                });
               }
             },
             'Program:exit'(): void {
@@ -289,18 +275,38 @@ export default util.createRule<Options, MessageIds>({
                     report.unusedSpecifiers.length === 0 &&
                     report.node.importKind !== 'type'
                   ) {
-                    // import is all type-only, convert the entire import to `import type`
-                    context.report({
-                      node: report.node,
-                      messageId: 'typeOverValue',
-                      *fix(fixer) {
-                        yield* fixToTypeImportDeclaration(
-                          fixer,
-                          report,
-                          sourceImports,
-                        );
-                      },
-                    });
+                    const { defaultSpecifier, namespaceSpecifier } =
+                      classifySpecifier(report.node);
+                    // import is all type-only, convert the entire import to `import type` to each import to inline `import { type }`
+                    if (
+                      !defaultSpecifier &&
+                      !namespaceSpecifier &&
+                      fixStyle === 'inline-type-imports'
+                    ) {
+                      context.report({
+                        node: report.node,
+                        messageId: 'inlineTypes',
+                        *fix(fixer) {
+                          yield* fixInlineTypeImportDeclaration(
+                            fixer,
+                            report,
+                            sourceImports,
+                          );
+                        },
+                      });
+                    } else {
+                      context.report({
+                        node: report.node,
+                        messageId: 'typeOverValue',
+                        *fix(fixer) {
+                          yield* fixToTypeImportDeclaration(
+                            fixer,
+                            report,
+                            sourceImports,
+                          );
+                        },
+                      });
+                    }
                   } else if (fixStyle === 'separate-type-imports') {
                     const isTypeImport = report.node.importKind === 'type';
 
@@ -370,9 +376,6 @@ export default util.createRule<Options, MessageIds>({
                     // grab type imports and add to existing import if present. Unsure what imports we will fix so no imports in message
                     // import ValueImport, { type AType } from 'foo'
                     //                       ^^^^ add
-                    // import ValueImport from 'foo'
-                    // import type { type AType } from 'foo'
-                    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ remove and add to value import above -> import ValueImport, { type AType } from 'foo'
                     if (sourceImports.valueImport) {
                       context.report({
                         node: report.node,
@@ -612,42 +615,37 @@ export default util.createRule<Options, MessageIds>({
      * e.g.
      * import ADefault, { Already, type Type1, type Type2 } from 'foo'
      *                             ^^^^ insert
-     * or
-     * import { Already, type Type1, type Type2 } from 'foo'
-     *                               ^^^^^^^^^^ insert
      */
     function* fixInsertTypeKeywordInNamedSpecifierList(
       fixer: TSESLint.RuleFixer,
       target: TSESTree.ImportDeclaration,
       typeSpecifiers: TSESTree.ImportSpecifier[],
     ): IterableIterator<TSESLint.RuleFix> {
-      const existingSpecifiers = target.specifiers.map(spec => spec.local.name);
-      for (const [i, spec] of typeSpecifiers.entries()) {
+      // const existingSpecifiers = target.specifiers.map(spec => spec.local.name);
+      for (const spec of typeSpecifiers) {
         const insertText = sourceCode.text.slice(...spec.range);
-        if (existingSpecifiers.includes(spec.local.name)) {
-          yield fixer.replaceTextRange(spec.range, `type ${insertText}`);
-        } else {
-          const closingBraceToken = util.nullThrows(
-            sourceCode.getFirstTokenBetween(
-              sourceCode.getFirstToken(target)!,
-              target.source,
-              util.isClosingBraceToken,
-            ),
-            util.NullThrowsReasons.MissingToken('}', target.type),
-          );
-          const before = sourceCode.getTokenBefore(closingBraceToken)!;
-          // imports might be on a new line or one one line.
-          // To insert multiple type imports, we need to take into account the index of specifiers as well
-          if (
-            i > 0 ||
-            (!util.isCommaToken(before) && !util.isOpeningBraceToken(before))
-          ) {
-            // import may not have a trailing comma.
-            yield fixer.insertTextAfter(before, `, type ${insertText}`);
-          } else {
-            yield fixer.insertTextAfter(before, `type ${insertText}`);
-          }
-        }
+        yield fixer.replaceTextRange(spec.range, `type ${insertText}`);
+        // } else {
+        //   const closingBraceToken = util.nullThrows(
+        //     sourceCode.getFirstTokenBetween(
+        //       sourceCode.getFirstToken(target)!,
+        //       target.source,
+        //       util.isClosingBraceToken,
+        //     ),
+        //     util.NullThrowsReasons.MissingToken('}', target.type),
+        //   );
+        //   const before = sourceCode.getTokenBefore(closingBraceToken)!;
+        //   // imports might be on a new line or one one line.
+        //   // To insert multiple type imports, we need to take into account the index of specifiers as well
+        //   if (
+        //     i > 0 ||
+        //     (!util.isCommaToken(before) && !util.isOpeningBraceToken(before))
+        //   ) {
+        //     // import may not have a trailing comma.
+        //     yield fixer.insertTextAfter(before, `, type ${insertText}`);
+        //   } else {
+        //     yield fixer.insertTextAfter(before, `type ${insertText}`);
+        //   }
       }
     }
 
@@ -664,7 +662,7 @@ export default util.createRule<Options, MessageIds>({
       );
 
       if (sourceImports.valueImport) {
-        // move import named type specifiers to its value import
+        // add import named type specifiers to its value import
         // import { type A }
         //          ^^^^^^ insert
         // or
@@ -684,36 +682,36 @@ export default util.createRule<Options, MessageIds>({
             sourceImports.valueImport,
             typeNamedSpecifiers,
           );
-        } else {
-          const defaultSpecifier = sourceCode.getTokenAfter(
-            sourceCode.getFirstToken(sourceImports.valueImport)!,
-          );
-          if (defaultSpecifier && !util.isCommaToken(defaultSpecifier)) {
-            const insertText = typeNamedSpecifiers
-              .map(spec => {
-                const insertText = sourceCode.text.slice(...spec.range);
-                return `type ${insertText}`;
-              })
-              .join(', ');
+          // } else {
+          //   const defaultSpecifier = sourceCode.getTokenAfter(
+          //     sourceCode.getFirstToken(sourceImports.valueImport)!,
+          //   );
+          //   if (defaultSpecifier && !util.isCommaToken(defaultSpecifier)) {
+          //     const insertText = typeNamedSpecifiers
+          //       .map(spec => {
+          //         const insertText = sourceCode.text.slice(...spec.range);
+          //         return `type ${insertText}`;
+          //       })
+          //       .join(', ');
 
-            yield fixer.insertTextAfter(
-              defaultSpecifier,
-              `, { ${insertText} }`,
-            );
-          }
+          //     yield fixer.insertTextAfter(
+          //       defaultSpecifier,
+          //       `, { ${insertText} }`,
+          //     );
+          //   }
         }
 
-        if (node.importKind === 'type') {
-          // remove line + space leftover
-          yield fixer.remove(node);
-          const lastToken = sourceCode.getLastToken(node);
-          if (lastToken) {
-            yield fixer.replaceTextRange(
-              [lastToken.range[1], lastToken.range[1] + 1],
-              '',
-            );
-          }
-        }
+        // if (node.importKind === 'type') {
+        //   // remove line + space leftover
+        //   yield fixer.remove(node);
+        //   const lastToken = sourceCode.getLastToken(node);
+        //   if (lastToken) {
+        //     yield fixer.replaceTextRange(
+        //       [lastToken.range[1], lastToken.range[1] + 1],
+        //       '',
+        //     );
+        //   }
+        // }
       }
     }
 

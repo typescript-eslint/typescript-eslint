@@ -165,6 +165,15 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
     },
+    {
+      code: `
+        import { B } from 'foo';
+        import type { A } from 'foo';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+    },
     // exports
     `
       import Type from 'foo';
@@ -1902,14 +1911,14 @@ const b = B;
         let bar: B;
       `,
       output: `
-        import type { A, B } from 'foo';
+        import { type A, type B } from 'foo';
         let foo: A;
         let bar: B;
       `,
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'typeOverValue',
+          messageId: 'inlineTypes',
           line: 2,
           column: 9,
         },
@@ -2033,298 +2042,6 @@ import type { D } from 'deez';
 const foo: A = B();
 let bar: C;
 let baz: D;
-      `,
-      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import { B } from 'foo';
-import type { A } from 'foo';
-const foo: A = B();
-      `,
-      output: `
-import { B, type A } from 'foo';
-const foo: A = B();
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import B, { C } from 'foo';
-import type { A } from 'foo';
-
-C();
-const foo: A = B();
-      `,
-      output: `
-import B, { C, type A } from 'foo';
-
-C();
-const foo: A = B();
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import B from 'foo';
-import type { A } from 'foo';
-
-const foo: A = B();
-      `,
-      output: `
-import B, { type A } from 'foo';
-
-const foo: A = B();
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import B, { Cat } from 'foo';
-import type { A } from 'foo';
-
-Cat();
-const foo: A = B();
-      `,
-      output: `
-import B, { Cat, type A } from 'foo';
-
-Cat();
-const foo: A = B();
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: noFormat`
-import B from 'foo';
-import type { A, C } from 'foo';
-
-type IG = C;
-const foo: A = B();
-      `,
-      output: noFormat`
-import B, { type A, type C } from 'foo';
-
-type IG = C;
-const foo: A = B();
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import { B } from 'foo';
-import type { A, C } from 'foo';
-
-const foo: A = B();
-let bar: C;
-      `,
-      output: `
-import { B, type A, type C } from 'foo';
-
-const foo: A = B();
-let bar: C;
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import { B, type A } from 'foo';
-import type { C } from 'foo';
-const foo: A = B();
-let bar: C;
-      `,
-      output: `
-import { B, type A, type C } from 'foo';
-const foo: A = B();
-let bar: C;
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import { B } from 'foo';
-import type { C as A } from 'foo';
-
-let bar: A;
-let baz = B();
-      `,
-      output: `
-import { B, type C as A } from 'foo';
-
-let bar: A;
-let baz = B();
-      `,
-      options: [{ fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: noFormat`
-import type { C, Deez } from 'foo';
-import {
-  B,
-  A
-} from 'foo';
-
-let bar: C;
-let baz: Deez = B();
-A();
-      `,
-      output: noFormat`
-import {
-  B,
-  A, type C, type Deez
-} from 'foo';
-
-let bar: C;
-let baz: Deez = B();
-A();
-      `,
-      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: noFormat`
-import type { C, Deez } from 'foo';
-import {
-  B,
-  A,
-} from 'foo';
-
-let bar: C;
-let baz: Deez = B();
-A();
-      `,
-      output: noFormat`
-import {
-  B,
-  A,type C, type Deez
-} from 'foo';
-
-let bar: C;
-let baz: Deez = B();
-A();
-      `,
-      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import type Deez from 'foo';
-import type { C } from 'foo';
-import { B, A } from 'foo';
-
-type Beez = C;
-let baz: Deez = B();
-A();
-      `,
-      output: `
-import type Deez from 'foo';
-import { B, A, type C } from 'foo';
-
-type Beez = C;
-let baz: Deez = B();
-A();
-      `,
-      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
-      errors: [
-        {
-          messageId: 'inlineTypes',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-import type { C } from 'foo';
-import type Deez from 'foo';
-import { B, A } from 'foo';
-
-type Beez = C;
-let baz: Deez = B();
-A();
-      `,
-      output: `
-import type Deez from 'foo';
-import { B, A, type C } from 'foo';
-
-type Beez = C;
-let baz: Deez = B();
-A();
       `,
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
