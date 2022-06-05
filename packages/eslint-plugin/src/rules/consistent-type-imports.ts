@@ -275,12 +275,9 @@ export default util.createRule<Options, MessageIds>({
                     report.unusedSpecifiers.length === 0 &&
                     report.node.importKind !== 'type'
                   ) {
-                    const { defaultSpecifier, namespaceSpecifier } =
-                      classifySpecifier(report.node);
-                    // import is all type-only, convert the entire import to `import type` to each import to inline `import { type }`
+                    // import is all type-only, convert the entire import to `import type` or inline `import { type }`
                     if (
-                      !defaultSpecifier &&
-                      !namespaceSpecifier &&
+                      sourceImports.valueOnlyNamedImport &&
                       fixStyle === 'inline-type-imports'
                     ) {
                       context.report({
@@ -373,22 +370,21 @@ export default util.createRule<Options, MessageIds>({
                       },
                     });
                   } else if (fixStyle === 'inline-type-imports') {
-                    // grab type imports and add to existing import if present. Unsure what imports we will fix so no imports in message
+                    // We may fix some specifiers or all specifiers to types
+                    // grab type imports and add to existing import if present.
                     // import ValueImport, { type AType } from 'foo'
                     //                       ^^^^ add
-                    if (sourceImports.valueImport) {
-                      context.report({
-                        node: report.node,
-                        messageId: 'inlineTypes',
-                        *fix(fixer) {
-                          yield* fixInlineTypeImportDeclaration(
-                            fixer,
-                            report,
-                            sourceImports,
-                          );
-                        },
-                      });
-                    }
+                    context.report({
+                      node: report.node,
+                      messageId: 'inlineTypes',
+                      *fix(fixer) {
+                        yield* fixInlineTypeImportDeclaration(
+                          fixer,
+                          report,
+                          sourceImports,
+                        );
+                      },
+                    });
                   }
                 }
               }
@@ -634,7 +630,7 @@ export default util.createRule<Options, MessageIds>({
       sourceImports: SourceImports,
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
-      // cannot mix default and named import types. Only care about named specifiers
+      // For a value import, will only add an inline type to named specifiers
       const { namedSpecifiers } = classifySpecifier(node);
       const typeNamedSpecifiers = namedSpecifiers.filter(specifier =>
         report.typeSpecifiers.includes(specifier),
@@ -642,8 +638,8 @@ export default util.createRule<Options, MessageIds>({
 
       if (sourceImports.valueImport) {
         // add import named type specifiers to its value import
-        // import { type A }
-        //          ^^^^^^ insert
+        // import ValueA, { type A }
+        //                  ^^^^ insert
         const { namedSpecifiers: valueImportNamedSpecifiers } =
           classifySpecifier(sourceImports.valueImport);
         if (

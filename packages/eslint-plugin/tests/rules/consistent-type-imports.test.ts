@@ -157,6 +157,15 @@ ruleTester.run('consistent-type-imports', rule, {
     },
     {
       code: `
+        import { type B } from 'foo';
+        import type { A } from 'foo';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ fixStyle: 'inline-type-imports' }],
+    },
+    {
+      code: `
         import { B, type C } from 'foo';
         import type A from 'baz';
         type T = A;
@@ -173,6 +182,15 @@ ruleTester.run('consistent-type-imports', rule, {
         const b = B;
       `,
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+    },
+    {
+      code: `
+        import { B } from 'foo';
+        import { A } from 'foo';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ prefer: 'no-type-imports', fixStyle: 'inline-type-imports' }],
     },
     // exports
     `
