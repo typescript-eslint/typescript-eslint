@@ -1968,6 +1968,28 @@ const b = B;
     },
     {
       code: `
+        import A, { B, C } from 'foo';
+        type T = B;
+        type U = C;
+        A();
+      `,
+      output: `
+        import A, { type B, type C } from 'foo';
+        type T = B;
+        type U = C;
+        A();
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'inlineTypes',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
         import { /* comment */ A, B } from 'foo';
         type T = A;
       `,
