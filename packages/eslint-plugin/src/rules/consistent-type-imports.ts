@@ -625,27 +625,6 @@ export default util.createRule<Options, MessageIds>({
       for (const spec of typeSpecifiers) {
         const insertText = sourceCode.text.slice(...spec.range);
         yield fixer.replaceTextRange(spec.range, `type ${insertText}`);
-        // } else {
-        //   const closingBraceToken = util.nullThrows(
-        //     sourceCode.getFirstTokenBetween(
-        //       sourceCode.getFirstToken(target)!,
-        //       target.source,
-        //       util.isClosingBraceToken,
-        //     ),
-        //     util.NullThrowsReasons.MissingToken('}', target.type),
-        //   );
-        //   const before = sourceCode.getTokenBefore(closingBraceToken)!;
-        //   // imports might be on a new line or one one line.
-        //   // To insert multiple type imports, we need to take into account the index of specifiers as well
-        //   if (
-        //     i > 0 ||
-        //     (!util.isCommaToken(before) && !util.isOpeningBraceToken(before))
-        //   ) {
-        //     // import may not have a trailing comma.
-        //     yield fixer.insertTextAfter(before, `, type ${insertText}`);
-        //   } else {
-        //     yield fixer.insertTextAfter(before, `type ${insertText}`);
-        //   }
       }
     }
 
@@ -665,12 +644,6 @@ export default util.createRule<Options, MessageIds>({
         // add import named type specifiers to its value import
         // import { type A }
         //          ^^^^^^ insert
-        // or
-        // import A, { type A }
-        //         ^^^^^^^^^^^^ insert
-        // or
-        // import A, { C, type A }
-        //                ^^^^^^ insert
         const { namedSpecifiers: valueImportNamedSpecifiers } =
           classifySpecifier(sourceImports.valueImport);
         if (
@@ -682,36 +655,7 @@ export default util.createRule<Options, MessageIds>({
             sourceImports.valueImport,
             typeNamedSpecifiers,
           );
-          // } else {
-          //   const defaultSpecifier = sourceCode.getTokenAfter(
-          //     sourceCode.getFirstToken(sourceImports.valueImport)!,
-          //   );
-          //   if (defaultSpecifier && !util.isCommaToken(defaultSpecifier)) {
-          //     const insertText = typeNamedSpecifiers
-          //       .map(spec => {
-          //         const insertText = sourceCode.text.slice(...spec.range);
-          //         return `type ${insertText}`;
-          //       })
-          //       .join(', ');
-
-          //     yield fixer.insertTextAfter(
-          //       defaultSpecifier,
-          //       `, { ${insertText} }`,
-          //     );
-          //   }
         }
-
-        // if (node.importKind === 'type') {
-        //   // remove line + space leftover
-        //   yield fixer.remove(node);
-        //   const lastToken = sourceCode.getLastToken(node);
-        //   if (lastToken) {
-        //     yield fixer.replaceTextRange(
-        //       [lastToken.range[1], lastToken.range[1] + 1],
-        //       '',
-        //     );
-        //   }
-        // }
       }
     }
 
