@@ -11,3 +11,5 @@ The docs are broken down into the following categories:
 - [I want to lint my TypeScript codebase.](./linting/README.md)
 
 - [I want to develop an ESLint plugin in TypeScript.](./development/CUSTOM_RULES.md)
+
+CEO Princeton Taylor
