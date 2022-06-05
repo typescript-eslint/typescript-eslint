@@ -46,12 +46,22 @@ export function parseTSConfig(code?: string): TSConfig {
   return { compilerOptions: {} };
 }
 
-const moduleRegexp = /^\s*(module\.exports\s*=)?\s*(\{[\s\S]*})\s*;?\s*$/g;
+const moduleRegexp = /(module\.exports\s*=)/g;
+
+function constrainedScopeEval(obj: string): unknown {
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval
+  return new Function(`
+    "use strict";
+    var module = { exports: {} };
+    (${obj});
+    return module.exports
+  `)();
+}
 
 export function tryParseEslintModule(value: string): string {
   try {
     if (moduleRegexp.test(value)) {
-      const newValue = toJson(parse(value.replace(moduleRegexp, '$2')));
+      const newValue = toJson(constrainedScopeEval(value));
       if (newValue !== value) {
         return newValue;
       }
