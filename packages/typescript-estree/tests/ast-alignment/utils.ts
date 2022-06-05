@@ -295,8 +295,12 @@ export function preprocessBabylonAST(ast: File): any {
           delete node.loc.start.index;
         }
       },
-      TSTypeQuery(node: TSTypeQuery) {
-        const { exprName } = node;
+      /**
+       * ts-estree: `this` in `typeof this` has been converted from `Identifier` to `ThisExpression`
+       * @see https://github.com/typescript-eslint/typescript-eslint/pull/4382
+       */
+      TSTypeQuery(node: any) {
+        const { exprName } = node as TSTypeQuery;
         const processIdentifier = (identifier: Identifier) => {
           if (identifier.name === 'this') {
             (identifier.type as string) = 'ThisExpression';
