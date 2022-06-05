@@ -301,23 +301,22 @@ export function preprocessBabylonAST(ast: File): any {
        */
       TSTypeQuery(node: any) {
         const { exprName } = node as TSTypeQuery;
-        const processIdentifier = (identifier: Identifier) => {
-          if (identifier.name === 'this') {
-            (identifier.type as string) = 'ThisExpression';
-            delete (identifier as { name?: string }).name;
+        let identifier: Identifier;
+        if (exprName.type === AST_NODE_TYPES.TSImportType) {
+          return;
+        } else if (exprName.type === AST_NODE_TYPES.TSQualifiedName) {
+          let iter = exprName;
+          while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
+            iter = iter.left;
           }
-        };
-        if (exprName.type === 'Identifier') {
-          processIdentifier(exprName);
-        } else if (exprName.type === 'TSQualifiedName') {
-          let qualifiedName = exprName;
-          while (true) {
-            if (qualifiedName.left.type === 'Identifier') {
-              processIdentifier(qualifiedName.left);
-              return;
-            }
-            qualifiedName = qualifiedName.left;
-          }
+          identifier = iter.left;
+        } else {
+          identifier = exprName;
+        }
+
+        if (identifier.name === 'this') {
+          (identifier.type as string) = AST_NODE_TYPES.ThisExpression;
+          delete (identifier as { name?: string }).name;
         }
       },
     },
