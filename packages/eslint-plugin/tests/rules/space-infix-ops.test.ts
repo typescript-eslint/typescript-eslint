@@ -153,6 +153,20 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          value:{prop:string}[] = [];
+        }
+      `,
+    },
+    {
+      code: `
         type Test =
         | string
         | boolean;
@@ -220,6 +234,18 @@ ruleTester.run('space-infix-ops', rule, {
         & (((() => boolean)))
         & (((() => void)));
       `,
+    },
+    {
+      code: 'type Baz<T> = T extends (bar: string) => void ? string : number',
+    },
+    {
+      code: 'type Foo<T> = T extends { bar: string } ? string : number',
+    },
+    {
+      code: 'type Baz<T> = T extends (bar: string) => void ? { x: string } : { y: string }',
+    },
+    {
+      code: 'type Foo<T extends (...args: any[]) => any> = T;',
     },
     {
       code: `
@@ -469,6 +495,44 @@ ruleTester.run('space-infix-ops', rule, {
         {
           messageId: 'missingSpace',
           column: 33,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: { prop: string }[]= [];
+        }
+      `,
+      output: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 36,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: { prop: string }[] =[];
+        }
+      `,
+      output: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 37,
           line: 3,
         },
       ],

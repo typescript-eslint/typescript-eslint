@@ -1,6 +1,6 @@
 # `ban-tslint-comment`
 
-Bans `// tslint:<rule-flag>` comments from being used.
+Disallows `// tslint:<rule-flag>` comments.
 
 Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this rule helps locate TSLint annotations (e.g. `// tslint:disable`).
 
@@ -46,11 +46,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you are still using TSLint.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `prefer-for-of`
 
-Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated.
+Enforces the use of `for-of` loop over the standard `for` loop where possible.
 
 This rule recommends a for-of loop when the loop index is only used to read from an array that is being iterated.
 
@@ -58,11 +58,3 @@ If you transpile for browsers that do not support for-of loops, you may wish to 
 ## Related To
 
 - TSLint: ['prefer-for-of'](https://palantir.github.io/tslint/rules/prefer-for-of/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `init-declarations`
 
-require or disallow initialization in variable declarations.
+Requires or disallows initialization in variable declarations.
 
 ## Rule Details
 
@@ -26,11 +26,3 @@ See [`eslint/init-declarations` options](https://eslint.org/docs/rules/init-decl
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/init-declarations.md)
 
 </sup>
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

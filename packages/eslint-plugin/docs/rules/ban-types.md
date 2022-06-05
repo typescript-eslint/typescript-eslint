@@ -1,6 +1,6 @@
 # `ban-types`
 
-Bans specific types from being used.
+Disallows certain types.
 
 Some builtin types have aliases, some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.
@@ -201,11 +201,3 @@ const curly2: Record<'a', string> = { a: 'string' };
 ## Related To
 
 - TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

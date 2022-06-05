@@ -21,8 +21,7 @@ export default util.createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
   meta: {
     docs: {
-      description:
-        'Enforces that type arguments will not be used if not required',
+      description: 'Disallow type arguments that are equal to the default',
       recommended: 'strict',
       requiresTypeChecking: true,
     },

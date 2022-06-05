@@ -6,7 +6,7 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Prefer usage of `as const` over literal type',
+      description: 'Enforce the use of `as const` over literal type',
       recommended: 'error',
       suggestion: true,
     },

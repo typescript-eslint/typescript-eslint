@@ -1,6 +1,6 @@
 # `triple-slash-reference`
 
-Sets preference level for triple slash directives versus ES6-style import declarations.
+Disallows certain triple slash directives in favor of ES6-style import declarations.
 
 Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
 
@@ -72,11 +72,3 @@ If you want to use all flavors of triple slash reference directives.
 
 - TSLint: [no-reference](http://palantir.github.io/tslint/rules/no-reference/)
 - TSLint: [no-reference-import](https://palantir.github.io/tslint/rules/no-reference-import/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

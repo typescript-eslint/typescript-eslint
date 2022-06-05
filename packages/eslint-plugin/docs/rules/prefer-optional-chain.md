@@ -1,6 +1,6 @@
 # `prefer-optional-chain`
 
-Prefer using concise optional chain expressions instead of chained logical ands.
+Enforces using concise optional chain expressions instead of chained logical ands.
 
 TypeScript 3.7 added support for the optional chain operator.
 This operator allows you to safely access properties and methods on objects when they are potentially `null` or `undefined`.
@@ -106,11 +106,3 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Optional Chaining Proposal](https://github.com/tc39/proposal-optional-chaining/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -19,7 +19,7 @@ function severityClass(severity: Monaco.MarkerSeverity): string {
     case 8:
       return 'danger';
     case 4:
-      return 'caution';
+      return 'warning';
     case 2:
       return 'note';
   }

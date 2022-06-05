@@ -1,6 +1,6 @@
 # `prefer-function-type`
 
-Use function types instead of interfaces with call signatures.
+Enforces using function types instead of interfaces with call signatures.
 
 ## Rule Details
 
@@ -98,11 +98,3 @@ If you specifically want to use an interface or type literal with a single call 
 ## Further Reading
 
 - TSLint: [`callable-types`](https://palantir.github.io/tslint/rules/callable-types/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

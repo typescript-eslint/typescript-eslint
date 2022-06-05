@@ -1,6 +1,6 @@
 # `no-type-alias`
 
-Disallow the use of type aliases.
+Disallows type aliases.
 
 In TypeScript, type aliases serve three purposes:
 
@@ -118,6 +118,8 @@ type Foo = string | string[];
 
 type Foo = string & string[];
 
+type Foo = `foo-${number}`;
+
 // reference types
 interface Bar {}
 class Baz implements Bar {}
@@ -139,6 +141,8 @@ type Foo = string;
 
 type Foo = string & string[];
 
+type Foo = `foo-${number}`;
+
 // reference types
 interface Bar {}
 class Baz implements Bar {}
@@ -155,6 +159,8 @@ Examples of **correct** code for the `{ "allowAliases": "in-unions" }` option:
 type Foo = 'a' | 'b';
 
 type Foo = string | string[];
+
+type Foo = `a-${number}` | `b-${number}`;
 
 // reference types
 interface Bar {}
@@ -175,6 +181,8 @@ type Foo = string;
 
 type Foo = string | string[];
 
+type Foo = `a-${number}` | `b-${number}`;
+
 // reference types
 interface Bar {}
 class Baz implements Bar {}
@@ -190,6 +198,8 @@ Examples of **correct** code for the `{ "allowAliases": "in-intersections" }` op
 // primitives
 type Foo = string & string[];
 
+type Foo = `a-${number}` & `b-${number}`;
+
 // reference types
 interface Bar {}
 class Baz implements Bar {}
@@ -204,6 +214,8 @@ Examples of **incorrect** code for the `{ "allowAliases": "in-unions-and-interse
 type Foo = 'a';
 
 type Foo = string;
+
+type Foo = `foo-${number}`;
 
 // reference types
 interface Bar {}
@@ -221,6 +233,10 @@ type Foo = 'a' | 'b';
 type Foo = string | string[];
 
 type Foo = string & string[];
+
+type Foo = `a-${number}` & `b-${number}`;
+
+type Foo = `a-${number}` | `b-${number}`;
 
 // reference types
 interface Bar {}
@@ -596,11 +612,3 @@ callback, etc. that would cause the code to be unreadable or impractical.
 ## Related To
 
 - TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

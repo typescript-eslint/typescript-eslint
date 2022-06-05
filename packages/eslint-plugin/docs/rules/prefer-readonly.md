@@ -1,6 +1,6 @@
 # `prefer-readonly`
 
-Requires that private members are marked as `readonly` if they're never modified outside of the constructor.
+Requires private members to be marked as `readonly` if they're never modified outside of the constructor.
 
 This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.
 
@@ -89,11 +89,3 @@ class Container {
 ## Related To
 
 - TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

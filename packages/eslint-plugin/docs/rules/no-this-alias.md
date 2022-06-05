@@ -1,6 +1,6 @@
 # `no-this-alias`
 
-Disallow aliasing `this`.
+Disallows aliasing `this`.
 
 This rule prohibits assigning variables to `this`.
 
@@ -60,11 +60,3 @@ If you need to assign `this` to variables, you shouldn’t use this rule.
 ## Related To
 
 - TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

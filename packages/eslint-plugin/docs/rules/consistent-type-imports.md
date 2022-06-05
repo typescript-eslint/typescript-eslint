@@ -64,11 +64,3 @@ const x: import('Bar') = 1;
 
 - If you are not using TypeScript 3.8 (or greater), then you will not be able to use this rule, as type-only imports are not allowed.
 - If you specifically want to use both import kinds for stylistic reasons, you can disable this rule.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

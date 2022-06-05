@@ -14,17 +14,12 @@ export function createSummary(
 }
 
 function createSummaryJson(
-  obj: ConfigModel['rules'] | ConfigModel['tsConfig'],
+  obj: ConfigModel['tsconfig'] | ConfigModel['eslintrc'],
   field: string,
   title: string,
 ): string {
   if (obj && Object.keys(obj).length > 0) {
-    return createSummary(
-      JSON.stringify({ [field]: obj }, null, 2),
-      title,
-      'json',
-      10,
-    );
+    return createSummary(obj, title, 'json', 10);
   }
   return '';
 }
@@ -45,8 +40,8 @@ export function createMarkdown(state: ConfigModel): string {
   return [
     `[Playground](${document.location.toString()})`,
     createSummary(state.code, 'Code', 'ts', 30),
-    createSummaryJson(state.rules, 'rules', 'Eslint config'),
-    createSummaryJson(state.tsConfig, 'compilerOptions', 'TypeScript config'),
+    createSummaryJson(state.eslintrc, 'rules', 'Eslint config'),
+    createSummaryJson(state.tsconfig, 'compilerOptions', 'TypeScript config'),
     genVersions(state),
   ]
     .filter(Boolean)
@@ -55,22 +50,13 @@ export function createMarkdown(state: ConfigModel): string {
 
 export function createMarkdownParams(state: ConfigModel): string {
   const params = {
+    labels: 'bug,package: eslint-plugin,triage',
     template: '1-bug-report-plugin.yaml',
     title: 'Bug: [rule name here] <short description of the issue>',
     'playground-link': document.location.toString(),
     'repro-code': state.code,
-    'eslint-config':
-      `module.exports = ` +
-      JSON.stringify(
-        { parser: '@typescript-eslint/parser', rules: state.rules },
-        null,
-        2,
-      ),
-    'typescript-config': JSON.stringify(
-      { compilerOptions: state.tsConfig },
-      null,
-      2,
-    ),
+    'eslint-config': `module.exports = ${state.eslintrc ?? '{}'}`,
+    'typescript-config': state.tsconfig ?? '{}',
     versions: genVersions(state),
   };
 

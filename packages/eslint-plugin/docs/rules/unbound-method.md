@@ -118,11 +118,3 @@ If you're wanting to use `toBeCalled` and similar matches in `jest` tests, you c
 ## Related To
 
 - TSLint: [no-unbound-method](https://palantir.github.io/tslint/rules/no-unbound-method/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

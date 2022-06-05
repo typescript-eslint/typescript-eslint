@@ -1,6 +1,6 @@
 # `no-confusing-non-null-assertion`
 
-Disallow non-null assertion in locations that may be confusing.
+Disallows non-null assertion in locations that may be confusing.
 
 ## Rule Details
 
@@ -61,11 +61,3 @@ If you don't care about this confusion, then you will not need this rule.
 ## Further Reading
 
 - [`Issue: Easy misunderstanding: "! ==="`](https://github.com/microsoft/TypeScript/issues/37837) in [TypeScript repo](https://github.com/microsoft/TypeScript)
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

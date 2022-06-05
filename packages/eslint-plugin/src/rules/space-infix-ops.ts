@@ -14,8 +14,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description:
-        'This rule is aimed at ensuring there are spaces around infix operators.',
+      description: 'Require spacing around infix operators',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -125,8 +124,8 @@ export default util.createRule<Options, MessageIds>({
     function checkForPropertyDefinitionAssignmentSpace(
       node: TSESTree.PropertyDefinition,
     ): void {
-      const leftNode = sourceCode.getTokenByRangeStart(
-        node.typeAnnotation?.range[0] ?? node.range[0],
+      const leftNode = sourceCode.getLastToken(
+        node.typeAnnotation ?? node.key,
       )!;
       const rightNode = node.value
         ? sourceCode.getTokenByRangeStart(node.value.range[0])
@@ -175,27 +174,20 @@ export default util.createRule<Options, MessageIds>({
     function checkForTypeAliasAssignment(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
-      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
-      const rightNode = sourceCode.getTokenByRangeStart(
-        node.typeAnnotation.range[0],
-      );
+      const leftNode = sourceCode.getLastToken(node.typeParameters ?? node.id)!;
+      const rightNode = sourceCode.getFirstToken(node.typeAnnotation);
 
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
     }
 
     function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
-      const extendsTypeNode = sourceCode.getTokenByRangeStart(
-        node.extendsType.range[0],
-      )!;
-      const trueTypeNode = sourceCode.getTokenByRangeStart(
-        node.trueType.range[0],
-      )!;
-      const falseTypeNode = sourceCode.getTokenByRangeStart(
-        node.falseType.range[0],
-      );
+      const extendsLastToken = sourceCode.getLastToken(node.extendsType)!;
+      const trueFirstToken = sourceCode.getFirstToken(node.trueType)!;
+      const trueLastToken = sourceCode.getLastToken(node.trueType)!;
+      const falseFirstToken = sourceCode.getFirstToken(node.falseType)!;
 
-      checkAndReportAssignmentSpace(node, extendsTypeNode, trueTypeNode);
-      checkAndReportAssignmentSpace(node, trueTypeNode, falseTypeNode);
+      checkAndReportAssignmentSpace(node, extendsLastToken, trueFirstToken);
+      checkAndReportAssignmentSpace(node, trueLastToken, falseFirstToken);
     }
 
     return {

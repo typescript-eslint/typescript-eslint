@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = function (/*context, options*/) {
@@ -24,8 +25,10 @@ module.exports = function (/*context, options*/) {
           new CopyPlugin({
             patterns: [
               {
-                from: require.resolve('@typescript-eslint/website-eslint'),
-                to: './sandbox/index.js',
+                from: path.dirname(
+                  require.resolve('@typescript-eslint/website-eslint'),
+                ),
+                to: './sandbox/',
               },
             ],
           }),

@@ -1,6 +1,6 @@
 # `no-unsafe-member-access`
 
-Disallows member access on any typed variables.
+Disallows member access on a value with type `any`.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Member access on `any` typed variables is not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -71,11 +71,3 @@ This rule is not configurable.
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
-
-## Attributes
-
-- Configs:
-  - [x] ✅ Recommended
-  - [x] 🔒 Strict
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

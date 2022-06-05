@@ -1,6 +1,6 @@
 # `prefer-regexp-exec`
 
-Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided.
+Enforces `RegExp#exec` over `String#match` if no global flag is provided.
 
 As `String#match` is defined to be the same as `RegExp#exec` when the regular expression does not include the `g` flag, prefer a consistent usage.
 
@@ -58,11 +58,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you prefer consistent use of `String#match` for both, with `g` flag and without it, you can turn this rule off.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

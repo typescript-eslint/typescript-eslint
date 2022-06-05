@@ -1,15 +1,34 @@
-import React, { useMemo } from 'react';
+import React, {
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import type Monaco from 'monaco-editor';
-import { useEffect, useRef, useState } from 'react';
 import type { SandboxInstance } from './useSandboxServices';
 import type { CommonEditorProps } from './types';
+import type { TabType } from '../types';
 import type { WebLinter } from '../linter/WebLinter';
 
 import { debounce } from '../lib/debounce';
-import { lintCode, LintCodeAction } from '../linter/lintCode';
 import { createProvideCodeActions } from './createProvideCodeActions';
-import { createCompilerOptions } from '@site/src/components/editor/config';
-import { parseMarkers } from '../linter/utils';
+import {
+  createCompilerOptions,
+  getEslintSchema,
+  getTsConfigSchema,
+} from './config';
+import {
+  parseMarkers,
+  parseLintResults,
+  LintCodeAction,
+} from '../linter/utils';
+import {
+  defaultEslintConfig,
+  defaultTsConfig,
+  parseESLintRC,
+  parseTSConfig,
+} from '../config/utils';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -19,6 +38,8 @@ export interface LoadedEditorProps extends CommonEditorProps {
 
 export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
+  tsconfig,
+  eslintrc,
   darkTheme,
   decoration,
   jsx,
@@ -29,95 +50,163 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   onMarkersChange,
   onChange,
   onSelect,
-  rules,
   sandboxInstance,
   showAST,
   sourceType,
-  tsConfig,
   webLinter,
+  activeTab,
 }) => {
   const [decorations, setDecorations] = useState<string[]>([]);
-  const fixes = useRef(new Map<string, LintCodeAction[]>()).current;
+  const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
+  const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
+    const tabsDefault = {
+      code: sandboxInstance.editor.getModel()!,
+      tsconfig: sandboxInstance.monaco.editor.createModel(
+        defaultTsConfig,
+        'json',
+        sandboxInstance.monaco.Uri.file('./tsconfig.json'),
+      ),
+      eslintrc: sandboxInstance.monaco.editor.createModel(
+        defaultEslintConfig,
+        'json',
+        sandboxInstance.monaco.Uri.file('./.eslintrc'),
+      ),
+    };
+    tabsDefault.code.updateOptions({ tabSize: 2, insertSpaces: true });
+    tabsDefault.eslintrc.updateOptions({ tabSize: 2, insertSpaces: true });
+    tabsDefault.tsconfig.updateOptions({ tabSize: 2, insertSpaces: true });
+    return tabsDefault;
+  });
+
+  const updateMarkers = useCallback(() => {
+    const model = sandboxInstance.editor.getModel()!;
+    const markers = sandboxInstance.monaco.editor.getModelMarkers({
+      resource: model.uri,
+    });
+    onMarkersChange(parseMarkers(markers, codeActions, model));
+  }, []);
 
   useEffect(() => {
-    const config = createCompilerOptions(jsx, tsConfig);
+    const newPath = jsx ? '/input.tsx' : '/input.ts';
+    if (tabs.code.uri.path !== newPath) {
+      const newModel = sandboxInstance.monaco.editor.createModel(
+        tabs.code.getValue(),
+        'typescript',
+        sandboxInstance.monaco.Uri.file(newPath),
+      );
+      newModel.updateOptions({ tabSize: 2, insertSpaces: true });
+      sandboxInstance.editor.setModel(newModel);
+      tabs.code.dispose();
+      tabs.code = newModel;
+    }
+  }, [jsx]);
 
-    webLinter.updateOptions(config);
+  useEffect(() => {
+    const config = createCompilerOptions(jsx, parseTSConfig(tsconfig));
+    webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
-  }, [
-    jsx,
-    sandboxInstance,
-    webLinter,
-    JSON.stringify(tsConfig) /* todo: better way? */,
-  ]);
+  }, [jsx, tsconfig]);
+
+  useEffect(() => {
+    webLinter.updateRules(parseESLintRC(eslintrc));
+  }, [eslintrc]);
+
+  useEffect(() => {
+    sandboxInstance.editor.setModel(tabs[activeTab]);
+    updateMarkers();
+  }, [activeTab]);
 
   useEffect(
     debounce(() => {
       // eslint-disable-next-line no-console
       console.info('[Editor] linting triggered');
 
-      const [markers, fatalMessage, codeActions] = lintCode(
-        webLinter,
-        code,
-        rules,
-        jsx,
-        sourceType,
-      );
-      fixes.clear();
-      for (const codeAction of codeActions) {
-        fixes.set(codeAction[0], codeAction[1]);
-      }
+      webLinter.updateParserOptions(jsx, sourceType);
+
+      const messages = webLinter.lint(code);
+
+      const markers = parseLintResults(messages, codeActions);
 
       sandboxInstance.monaco.editor.setModelMarkers(
-        sandboxInstance.editor.getModel()!,
-        sandboxInstance.editor.getId(),
+        tabs.code,
+        'eslint',
         markers,
       );
 
-      if (fatalMessage) {
-        setDecorations(
-          sandboxInstance.editor.deltaDecorations(decorations, []),
-        );
+      // fallback when event is not preset, ts < 4.0.5
+      if (!sandboxInstance.monaco.editor.onDidChangeMarkers) {
+        updateMarkers();
       }
 
-      onEsASTChange(fatalMessage ?? webLinter.storedAST ?? '');
-      onTsASTChange(fatalMessage ?? webLinter.storedTsAST ?? '');
-      onScopeChange(fatalMessage ?? webLinter.storedScope ?? '');
+      onEsASTChange(webLinter.storedAST);
+      onTsASTChange(webLinter.storedTsAST);
+      onScopeChange(webLinter.storedScope);
       onSelect(sandboxInstance.editor.getPosition());
     }, 500),
-    [code, jsx, sandboxInstance, rules, sourceType, tsConfig, webLinter],
+    [code, jsx, tsconfig, eslintrc, sourceType, webLinter],
   );
 
   useEffect(() => {
+    // configure the JSON language support with schemas and schema associations
+    sandboxInstance.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      validate: true,
+      schemas: [
+        {
+          uri: 'eslint-schema.json', // id of the first schema
+          fileMatch: [tabs.eslintrc.uri.toString()], // associate with our model
+          schema: getEslintSchema(webLinter.ruleNames),
+        },
+        {
+          uri: 'ts-schema.json', // id of the first schema
+          fileMatch: [tabs.tsconfig.uri.toString()], // associate with our model
+          schema: getTsConfigSchema(),
+        },
+      ],
+    });
+
     const subscriptions = [
       main.languages.registerCodeActionProvider(
         'typescript',
-        createProvideCodeActions(fixes),
+        createProvideCodeActions(codeActions),
       ),
       sandboxInstance.editor.onDidChangeCursorPosition(
         debounce(() => {
-          const position = sandboxInstance.editor.getPosition();
-          if (position) {
-            // eslint-disable-next-line no-console
-            console.info('[Editor] updating cursor', position);
-            onSelect(position);
+          if (sandboxInstance.editor.getModel() === tabs.code) {
+            const position = sandboxInstance.editor.getPosition();
+            if (position) {
+              // eslint-disable-next-line no-console
+              console.info('[Editor] updating cursor', position);
+              onSelect(position);
+            }
           }
         }, 150),
       ),
-      sandboxInstance.editor.onDidChangeModelContent(
+      tabs.eslintrc.onDidChangeContent(
         debounce(() => {
-          onChange(sandboxInstance.getModel().getValue());
+          onChange({ eslintrc: tabs.eslintrc.getValue() });
         }, 500),
       ),
-      sandboxInstance.monaco.editor.onDidChangeMarkers(() => {
-        const markers = sandboxInstance.monaco.editor.getModelMarkers({});
-        onMarkersChange(parseMarkers(markers, fixes, sandboxInstance.editor));
+      tabs.tsconfig.onDidChangeContent(
+        debounce(() => {
+          onChange({ tsconfig: tabs.tsconfig.getValue() });
+        }, 500),
+      ),
+      tabs.code.onDidChangeContent(
+        debounce(() => {
+          onChange({ code: tabs.code.getValue() });
+        }, 500),
+      ),
+      // may not be defined in ts < 4.0.5
+      sandboxInstance.monaco.editor.onDidChangeMarkers?.(() => {
+        updateMarkers();
       }),
     ];
 
     return (): void => {
       for (const subscription of subscriptions) {
-        subscription.dispose();
+        if (subscription) {
+          subscription.dispose();
+        }
       }
     };
   }, []);
@@ -138,47 +227,66 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   });
 
   useEffect(() => {
-    const model = sandboxInstance.editor.getModel()!;
-    const modelValue = model.getValue();
-    if (modelValue === code) {
-      return;
+    if (code !== tabs.code.getValue()) {
+      tabs.code.applyEdits([
+        {
+          range: tabs.code.getFullModelRange(),
+          text: code,
+        },
+      ]);
     }
-    // eslint-disable-next-line no-console
-    console.info('[Editor] updating editor model');
-    sandboxInstance.editor.executeEdits(modelValue, [
-      {
-        range: model.getFullModelRange(),
-        text: code,
-      },
-    ]);
-  }, [code, sandboxInstance]);
+  }, [code]);
+
+  useEffect(() => {
+    if (tsconfig !== tabs.tsconfig.getValue()) {
+      tabs.tsconfig.applyEdits([
+        {
+          range: tabs.tsconfig.getFullModelRange(),
+          text: tsconfig,
+        },
+      ]);
+    }
+  }, [tsconfig]);
+
+  useEffect(() => {
+    if (eslintrc !== tabs.eslintrc.getValue()) {
+      tabs.eslintrc.applyEdits([
+        {
+          range: tabs.eslintrc.getFullModelRange(),
+          text: eslintrc,
+        },
+      ]);
+    }
+  }, [eslintrc]);
 
   useEffect(() => {
     sandboxInstance.monaco.editor.setTheme(darkTheme ? 'vs-dark' : 'vs-light');
   }, [darkTheme, sandboxInstance]);
 
   useEffect(() => {
-    setDecorations(
-      sandboxInstance.editor.deltaDecorations(
-        decorations,
-        decoration && showAST
-          ? [
-              {
-                range: new sandboxInstance.monaco.Range(
-                  decoration.start.line,
-                  decoration.start.column + 1,
-                  decoration.end.line,
-                  decoration.end.column + 1,
-                ),
-                options: {
-                  inlineClassName: 'myLineDecoration',
-                  stickiness: 1,
+    if (sandboxInstance.editor.getModel() === tabs.code) {
+      setDecorations(
+        sandboxInstance.editor.deltaDecorations(
+          decorations,
+          decoration && showAST
+            ? [
+                {
+                  range: new sandboxInstance.monaco.Range(
+                    decoration.start.line,
+                    decoration.start.column + 1,
+                    decoration.end.line,
+                    decoration.end.column + 1,
+                  ),
+                  options: {
+                    inlineClassName: 'myLineDecoration',
+                    stickiness: 1,
+                  },
                 },
-              },
-            ]
-          : [],
-      ),
-    );
+              ]
+            : [],
+        ),
+      );
+    }
   }, [decoration, sandboxInstance, showAST]);
 
   return null;

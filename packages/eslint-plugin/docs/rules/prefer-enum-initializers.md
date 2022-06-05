@@ -1,6 +1,6 @@
 # `prefer-enum-initializers`
 
-Prefer initializing each enums member value.
+Requires each enum member value to be explicitly initialized.
 
 This rule recommends having each `enum`s member value explicitly initialized.
 
@@ -87,11 +87,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about `enum`s having implicit values you can safely disable this rule.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [ ] 🔒 Strict
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
