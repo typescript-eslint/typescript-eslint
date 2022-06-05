@@ -304,7 +304,7 @@ export default util.createRule<Options, MessageIds>({
                         },
                       });
                     }
-                  } else if (fixStyle === 'separate-type-imports') {
+                  } else {
                     const isTypeImport = report.node.importKind === 'type';
 
                     // we have a mixed type/value import or just value imports, so we need to split them out into multiple imports if separate-type-imports is configured
@@ -369,23 +369,24 @@ export default util.createRule<Options, MessageIds>({
                         }
                       },
                     });
-                  } else if (fixStyle === 'inline-type-imports') {
-                    // We may fix some specifiers or all specifiers to types
-                    // grab type imports and add to existing import if present.
-                    // import ValueImport, { type AType } from 'foo'
-                    //                       ^^^^ add
-                    context.report({
-                      node: report.node,
-                      messageId: 'inlineTypes',
-                      *fix(fixer) {
-                        yield* fixInlineTypeImportDeclaration(
-                          fixer,
-                          report,
-                          sourceImports,
-                        );
-                      },
-                    });
                   }
+                  // else if (fixStyle === 'inline-type-imports') {
+                  //   // We may fix some specifiers or all specifiers to types
+                  //   // grab type imports and add to existing import if present.
+                  //   // import ValueImport, { type AType } from 'foo'
+                  //   //                       ^^^^ add
+                  //   context.report({
+                  //     node: report.node,
+                  //     messageId: 'inlineTypes',
+                  //     *fix(fixer) {
+                  //       yield* fixInlineTypeImportDeclaration(
+                  //         fixer,
+                  //         report,
+                  //         sourceImports,
+                  //       );
+                  //     },
+                  //   });
+                  // }
                 }
               }
             },
@@ -679,12 +680,19 @@ export default util.createRule<Options, MessageIds>({
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, true);
           return;
         }
-      } else {
+      } else if (!namespaceSpecifier) {
         if (
+          fixStyle === 'inline-type-imports' &&
+          namedSpecifiers.some(specifier =>
+            report.typeSpecifiers.includes(specifier),
+          )
+        ) {
+          yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
+          return;
+        } else if (
           namedSpecifiers.every(specifier =>
             report.typeSpecifiers.includes(specifier),
-          ) &&
-          !namespaceSpecifier
+          )
         ) {
           // import {Type1, Type2} from 'foo'
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);

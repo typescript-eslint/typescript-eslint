@@ -1958,7 +1958,7 @@ const b = B;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'aImportIsOnlyTypes',
           line: 2,
           column: 9,
         },
@@ -1978,7 +1978,7 @@ const b = B;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'aImportIsOnlyTypes',
           line: 2,
           column: 9,
         },
@@ -2000,7 +2000,7 @@ const b = B;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'someImportsAreOnlyTypes',
           line: 2,
           column: 9,
         },
@@ -2041,7 +2041,7 @@ const b = B;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'aImportIsOnlyTypes',
           line: 2,
           column: 9,
         },
@@ -2059,7 +2059,7 @@ const b = B;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'aImportIsOnlyTypes',
           line: 2,
           column: 9,
         },
@@ -2085,7 +2085,7 @@ let baz: D;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'someImportsAreOnlyTypes',
           line: 2,
           column: 1,
         },
@@ -2109,7 +2109,7 @@ let baz: D;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'aImportIsOnlyTypes',
           line: 2,
           column: 1,
         },
