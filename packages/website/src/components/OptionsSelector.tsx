@@ -1,6 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useCallback } from 'react';
 
+import {
+  NavbarSecondaryMenuFiller,
+  useWindowSize,
+} from '@docusaurus/theme-common';
+
 import Expander from './layout/Expander';
 import Dropdown from './inputs/Dropdown';
 import Checkbox from './inputs/Checkbox';
@@ -29,7 +34,7 @@ const ASTOptions = [
   { value: 'scope', label: 'Scope' },
 ] as const;
 
-function OptionsSelector({
+function OptionsSelectorContent({
   state,
   setState,
   tsVersions,
@@ -152,6 +157,19 @@ function OptionsSelector({
       </Expander>
     </>
   );
+}
+
+function OptionsSelector(props: OptionsSelectorParams): JSX.Element {
+  const windowSize = useWindowSize();
+  if (windowSize === 'mobile') {
+    return (
+      <NavbarSecondaryMenuFiller
+        component={OptionsSelectorContent}
+        props={props}
+      />
+    );
+  }
+  return <OptionsSelectorContent {...props} />;
 }
 
 export default OptionsSelector;
