@@ -167,6 +167,20 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        class Test {
+           value: string & number;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          optional? = false;
+        }
+      `,
+    },
+    {
+      code: `
         type Test =
         | string
         | boolean;
@@ -377,13 +391,6 @@ ruleTester.run('space-infix-ops', rule, {
     {
       code: `
         const x: string & (((() => void)));
-      `,
-    },
-    {
-      code: `
-        class Test {
-           value: string & number;
-        }
       `,
     },
     {
@@ -1857,6 +1864,25 @@ ruleTester.run('space-infix-ops', rule, {
         {
           messageId: 'missingSpace',
           column: 24,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          optional?= false;
+        }
+      `,
+      output: `
+        class Test {
+          optional? = false;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 20,
           line: 3,
         },
       ],

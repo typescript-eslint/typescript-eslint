@@ -69,17 +69,16 @@ export default util.createRule<Options, MessageIds>({
 
     function isSpaceChar(token: TSESTree.Token): boolean {
       return (
-        token.type === AST_TOKEN_TYPES.Punctuator &&
-        /^[=|?|:]$/.test(token.value)
+        token.type === AST_TOKEN_TYPES.Punctuator && /^[=?:]$/.test(token.value)
       );
     }
 
     function checkAndReportAssignmentSpace(
       node: TSESTree.Node,
-      leftNode: TSESTree.Token,
+      leftNode: TSESTree.Token | null,
       rightNode?: TSESTree.Token | null,
     ): void {
-      if (!rightNode) {
+      if (!rightNode || !leftNode) {
         return;
       }
 
@@ -109,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
+      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0]);
       const rightNode = sourceCode.getTokenByRangeStart(
         node.initializer.range[0],
       )!;
@@ -124,9 +123,11 @@ export default util.createRule<Options, MessageIds>({
     function checkForPropertyDefinitionAssignmentSpace(
       node: TSESTree.PropertyDefinition,
     ): void {
-      const leftNode = sourceCode.getLastToken(
-        node.typeAnnotation ?? node.key,
-      )!;
+      const leftNode =
+        node.optional && !node.typeAnnotation
+          ? sourceCode.getTokenAfter(node.key)
+          : sourceCode.getLastToken(node.typeAnnotation ?? node.key);
+
       const rightNode = node.value
         ? sourceCode.getTokenByRangeStart(node.value.range[0])
         : undefined;
@@ -174,7 +175,7 @@ export default util.createRule<Options, MessageIds>({
     function checkForTypeAliasAssignment(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
-      const leftNode = sourceCode.getLastToken(node.typeParameters ?? node.id)!;
+      const leftNode = sourceCode.getLastToken(node.typeParameters ?? node.id);
       const rightNode = sourceCode.getFirstToken(node.typeAnnotation);
 
       checkAndReportAssignmentSpace(node, leftNode, rightNode);
@@ -182,8 +183,8 @@ export default util.createRule<Options, MessageIds>({
 
     function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
       const extendsLastToken = sourceCode.getLastToken(node.extendsType)!;
-      const trueFirstToken = sourceCode.getFirstToken(node.trueType)!;
-      const trueLastToken = sourceCode.getLastToken(node.trueType)!;
+      const trueFirstToken = sourceCode.getFirstToken(node.trueType);
+      const trueLastToken = sourceCode.getLastToken(node.trueType);
       const falseFirstToken = sourceCode.getFirstToken(node.falseType)!;
 
       checkAndReportAssignmentSpace(node, extendsLastToken, trueFirstToken);
