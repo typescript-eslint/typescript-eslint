@@ -75,8 +75,8 @@ export default util.createRule<Options, MessageIds>({
 
     function checkAndReportAssignmentSpace(
       node: TSESTree.Node,
-      leftNode: TSESTree.Token | null,
-      rightNode?: TSESTree.Token | null,
+      leftNode: TSESTree.Token | TSESTree.Node | null,
+      rightNode?: TSESTree.Token | TSESTree.Node | null,
     ): void {
       if (!rightNode || !leftNode) {
         return;
@@ -86,16 +86,16 @@ export default util.createRule<Options, MessageIds>({
         leftNode,
         rightNode,
         isSpaceChar,
-      );
+      )!;
 
-      const prev = sourceCode.getTokenBefore(operator!);
-      const next = sourceCode.getTokenAfter(operator!);
+      const prev = sourceCode.getTokenBefore(operator)!;
+      const next = sourceCode.getTokenAfter(operator)!;
 
       if (
-        !sourceCode.isSpaceBetween!(prev!, operator!) ||
-        !sourceCode.isSpaceBetween!(operator!, next!)
+        !sourceCode.isSpaceBetween!(prev, operator) ||
+        !sourceCode.isSpaceBetween!(operator, next)
       ) {
-        report(node, operator!);
+        report(node, operator);
       }
     }
 
@@ -104,16 +104,7 @@ export default util.createRule<Options, MessageIds>({
      * @param node The node to report
      */
     function checkForEnumAssignmentSpace(node: TSESTree.TSEnumMember): void {
-      if (!node.initializer) {
-        return;
-      }
-
-      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0]);
-      const rightNode = sourceCode.getTokenByRangeStart(
-        node.initializer.range[0],
-      )!;
-
-      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+      checkAndReportAssignmentSpace(node, node.id, node.initializer);
     }
 
     /**
@@ -126,13 +117,9 @@ export default util.createRule<Options, MessageIds>({
       const leftNode =
         node.optional && !node.typeAnnotation
           ? sourceCode.getTokenAfter(node.key)
-          : sourceCode.getLastToken(node.typeAnnotation ?? node.key);
+          : node.typeAnnotation ?? node.key;
 
-      const rightNode = node.value
-        ? sourceCode.getTokenByRangeStart(node.value.range[0])
-        : undefined;
-
-      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+      checkAndReportAssignmentSpace(node, leftNode, node.value);
     }
 
     /**
@@ -175,20 +162,16 @@ export default util.createRule<Options, MessageIds>({
     function checkForTypeAliasAssignment(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
-      const leftNode = sourceCode.getLastToken(node.typeParameters ?? node.id);
-      const rightNode = sourceCode.getFirstToken(node.typeAnnotation);
-
-      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+      checkAndReportAssignmentSpace(
+        node,
+        node.typeParameters ?? node.id,
+        node.typeAnnotation,
+      );
     }
 
     function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
-      const extendsLastToken = sourceCode.getLastToken(node.extendsType)!;
-      const trueFirstToken = sourceCode.getFirstToken(node.trueType);
-      const trueLastToken = sourceCode.getLastToken(node.trueType);
-      const falseFirstToken = sourceCode.getFirstToken(node.falseType)!;
-
-      checkAndReportAssignmentSpace(node, extendsLastToken, trueFirstToken);
-      checkAndReportAssignmentSpace(node, trueLastToken, falseFirstToken);
+      checkAndReportAssignmentSpace(node, node.extendsType, node.trueType);
+      checkAndReportAssignmentSpace(node, node.trueType, node.falseType);
     }
 
     return {

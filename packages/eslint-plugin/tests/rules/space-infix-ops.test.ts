@@ -993,6 +993,61 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        type Test = |string|(((() => void)))|string;
+      `,
+      output: `
+        type Test = | string | (((() => void))) | string;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 21,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 28,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 45,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test=(string&number)|string|(((() => void)));
+      `,
+      output: `
+        type Test = (string & number) | string | (((() => void)));
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 26,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 34,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
         type Test =
         &string
         & number;
