@@ -1986,6 +1986,60 @@ const b = B;
     },
     {
       code: `
+        import { A } from 'foo';
+        import { B } from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      output: `
+        import { type A } from 'foo';
+        import { type B } from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+        import { A } from 'foo';
+        import B from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      output: `
+        import { type A } from 'foo';
+        import type B from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
 import A, { B, C } from 'foo';
 type T = B;
 type U = C;
