@@ -1936,7 +1936,7 @@ const b = B;
       options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
       errors: [
         {
-          messageId: 'inlineTypes',
+          messageId: 'typeOverValue',
           line: 2,
           column: 9,
         },

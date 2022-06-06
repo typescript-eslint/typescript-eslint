@@ -275,35 +275,17 @@ export default util.createRule<Options, MessageIds>({
                     report.unusedSpecifiers.length === 0 &&
                     report.node.importKind !== 'type'
                   ) {
-                    // import is all type-only, convert the entire import to `import type` or inline `import { type }`
-                    if (
-                      sourceImports.valueOnlyNamedImport &&
-                      fixStyle === 'inline-type-imports'
-                    ) {
-                      context.report({
-                        node: report.node,
-                        messageId: 'inlineTypes',
-                        *fix(fixer) {
-                          yield* fixInlineTypeImportDeclaration(
-                            fixer,
-                            report,
-                            sourceImports,
-                          );
-                        },
-                      });
-                    } else {
-                      context.report({
-                        node: report.node,
-                        messageId: 'typeOverValue',
-                        *fix(fixer) {
-                          yield* fixToTypeImportDeclaration(
-                            fixer,
-                            report,
-                            sourceImports,
-                          );
-                        },
-                      });
-                    }
+                    context.report({
+                      node: report.node,
+                      messageId: 'typeOverValue',
+                      *fix(fixer) {
+                        yield* fixToTypeImportDeclaration(
+                          fixer,
+                          report,
+                          sourceImports,
+                        );
+                      },
+                    });
                   } else {
                     const isTypeImport = report.node.importKind === 'type';
 
