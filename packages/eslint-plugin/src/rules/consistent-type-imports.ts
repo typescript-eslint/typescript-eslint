@@ -677,6 +677,15 @@ export default util.createRule<Options, MessageIds>({
           // import Type from 'foo'
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, true);
           return;
+        } else if (
+          fixStyle === 'inline-type-imports' &&
+          !report.typeSpecifiers.includes(defaultSpecifier) &&
+          namedSpecifiers.length > 0 &&
+          !namespaceSpecifier
+        ) {
+          // import {AValue, Type1, Type2} from 'foo'
+          yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
+          return;
         }
       } else if (!namespaceSpecifier) {
         if (
