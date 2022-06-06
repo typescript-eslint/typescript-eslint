@@ -36,13 +36,9 @@ export default util.createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const sourceCode = context.getSourceCode();
 
-    const report = (
-      node: TSESTree.Node | TSESTree.Token,
-      operator: TSESTree.Token,
-    ): void => {
+    function report(operator: TSESTree.Token): void {
       context.report({
-        node: node,
-        loc: operator.loc,
+        node: operator,
         messageId: 'missingSpace',
         data: {
           operator: operator.value,
@@ -65,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
           return fixer.replaceText(operator, fixString);
         },
       });
-    };
+    }
 
     function isSpaceChar(token: TSESTree.Token): boolean {
       return (
@@ -74,7 +70,6 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkAndReportAssignmentSpace(
-      node: TSESTree.Node,
       leftNode: TSESTree.Token | TSESTree.Node | null,
       rightNode?: TSESTree.Token | TSESTree.Node | null,
     ): void {
@@ -95,7 +90,7 @@ export default util.createRule<Options, MessageIds>({
         !sourceCode.isSpaceBetween!(prev, operator) ||
         !sourceCode.isSpaceBetween!(operator, next)
       ) {
-        report(node, operator);
+        report(operator);
       }
     }
 
@@ -104,7 +99,7 @@ export default util.createRule<Options, MessageIds>({
      * @param node The node to report
      */
     function checkForEnumAssignmentSpace(node: TSESTree.TSEnumMember): void {
-      checkAndReportAssignmentSpace(node, node.id, node.initializer);
+      checkAndReportAssignmentSpace(node.id, node.initializer);
     }
 
     /**
@@ -119,7 +114,7 @@ export default util.createRule<Options, MessageIds>({
           ? sourceCode.getTokenAfter(node.key)
           : node.typeAnnotation ?? node.key;
 
-      checkAndReportAssignmentSpace(node, leftNode, node.value);
+      checkAndReportAssignmentSpace(leftNode, node.value);
     }
 
     /**
@@ -149,7 +144,7 @@ export default util.createRule<Options, MessageIds>({
             !sourceCode.isSpaceBetween!(prev!, operator) ||
             !sourceCode.isSpaceBetween!(operator, next!)
           ) {
-            report(typeAnnotation, operator);
+            report(operator);
           }
         }
       });
@@ -163,15 +158,14 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
       checkAndReportAssignmentSpace(
-        node,
         node.typeParameters ?? node.id,
         node.typeAnnotation,
       );
     }
 
     function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
-      checkAndReportAssignmentSpace(node, node.extendsType, node.trueType);
-      checkAndReportAssignmentSpace(node, node.trueType, node.falseType);
+      checkAndReportAssignmentSpace(node.extendsType, node.trueType);
+      checkAndReportAssignmentSpace(node.trueType, node.falseType);
     }
 
     return {

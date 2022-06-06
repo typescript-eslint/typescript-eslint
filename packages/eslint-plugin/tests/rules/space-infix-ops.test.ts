@@ -1018,6 +1018,36 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        type Test=|string|(((() => void)))|string;
+      `,
+      output: `
+        type Test = | string | (((() => void))) | string;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 19,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 26,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 43,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
         type Test=(string&number)|string|(((() => void)));
       `,
       output: `
