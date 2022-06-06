@@ -1021,7 +1021,7 @@ ruleTester.run('space-infix-ops', rule, {
         type Test=|string|(((() => void)))|string;
       `,
       output: `
-        type Test = | string | (((() => void))) | string;
+        type Test = |string | (((() => void))) | string;
       `,
       errors: [
         {
