@@ -615,7 +615,6 @@ export default util.createRule<Options, MessageIds>({
      */
     function* fixInsertTypeKeywordInNamedSpecifierList(
       fixer: TSESLint.RuleFixer,
-      target: TSESTree.ImportDeclaration,
       typeSpecifiers: TSESTree.ImportSpecifier[],
     ): IterableIterator<TSESLint.RuleFix> {
       // const existingSpecifiers = target.specifiers.map(spec => spec.local.name);
@@ -649,7 +648,6 @@ export default util.createRule<Options, MessageIds>({
         ) {
           yield* fixInsertTypeKeywordInNamedSpecifierList(
             fixer,
-            sourceImports.valueImport,
             typeNamedSpecifiers,
           );
         }
@@ -687,6 +685,7 @@ export default util.createRule<Options, MessageIds>({
             report.typeSpecifiers.includes(specifier),
           )
         ) {
+          // import {AValue, Type1, Type2} from 'foo'
           yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
           return;
         } else if (
@@ -727,12 +726,21 @@ export default util.createRule<Options, MessageIds>({
             afterFixes.push(insertTypeNamedSpecifiers);
           }
         } else {
-          yield fixer.insertTextBefore(
-            node,
-            `import type {${
-              fixesNamedSpecifiers.typeNamedSpecifiersText
-            }} from ${sourceCode.getText(node.source)};\n`,
-          );
+          if (fixStyle === 'inline-type-imports') {
+            yield fixer.insertTextBefore(
+              node,
+              `import {${typeNamedSpecifiers
+                .map(spec => `type ${spec.local.name}`)
+                .join(', ')}} from ${sourceCode.getText(node.source)};\n`,
+            );
+          } else {
+            yield fixer.insertTextBefore(
+              node,
+              `import type {${
+                fixesNamedSpecifiers.typeNamedSpecifiersText
+              }} from ${sourceCode.getText(node.source)};\n`,
+            );
+          }
         }
       }
 
@@ -805,6 +813,7 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
+      // we don't want to remove named specifiers if they can be inlined with a type modifier
       yield* fixesNamedSpecifiers.removeTypeNamedSpecifiers;
       yield* fixesRemoveTypeNamespaceSpecifier;
 
@@ -857,8 +866,6 @@ export default util.createRule<Options, MessageIds>({
             closingBraceToken.range[1],
           );
           if (node.specifiers.length > 1) {
-            // import type Foo from 'foo'
-            // import type {...} from 'foo' // <- insert
             yield fixer.insertTextAfter(
               node,
               `\nimport type${specifiersText} from ${sourceCode.getText(
