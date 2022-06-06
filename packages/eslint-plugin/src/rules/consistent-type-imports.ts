@@ -739,7 +739,10 @@ export default util.createRule<Options, MessageIds>({
             yield fixer.insertTextBefore(
               node,
               `import {${typeNamedSpecifiers
-                .map(spec => `type ${spec.local.name}`)
+                .map(spec => {
+                  const insertText = sourceCode.text.slice(...spec.range);
+                  return `type ${insertText}`;
+                })
                 .join(', ')}} from ${sourceCode.getText(node.source)};\n`,
             );
           } else {

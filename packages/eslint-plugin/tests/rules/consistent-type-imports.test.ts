@@ -2031,6 +2031,29 @@ type V = A;
     },
     {
       code: `
+import A, { B, C as D } from 'foo';
+type T = B;
+type U = D;
+type V = A;
+      `,
+      output: noFormat`
+import {type B, type C as D} from 'foo';
+import type A from 'foo';
+type T = B;
+type U = D;
+type V = A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
         import { /* comment */ A, B } from 'foo';
         type T = A;
       `,
