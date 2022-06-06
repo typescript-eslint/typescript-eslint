@@ -582,7 +582,6 @@ export default util.createRule<Options, MessageIds>({
       fixer: TSESLint.RuleFixer,
       typeSpecifiers: TSESTree.ImportSpecifier[],
     ): IterableIterator<TSESLint.RuleFix> {
-      // const existingSpecifiers = target.specifiers.map(spec => spec.local.name);
       for (const spec of typeSpecifiers) {
         const insertText = sourceCode.text.slice(...spec.range);
         yield fixer.replaceTextRange(spec.range, `type ${insertText}`);
@@ -687,7 +686,6 @@ export default util.createRule<Options, MessageIds>({
       const afterFixes: TSESLint.RuleFix[] = [];
       if (typeNamedSpecifiers.length) {
         if (sourceImports.typeOnlyNamedImport) {
-          // TODO: is this ever the case? Seems like this isn't called when the source import is import type ...
           const insertTypeNamedSpecifiers =
             fixInsertNamedSpecifiersInNamedSpecifierList(
               fixer,
@@ -792,7 +790,6 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
-      // we don't want to remove named specifiers if they can be inlined with a type modifier
       yield* fixesNamedSpecifiers.removeTypeNamedSpecifiers;
       yield* fixesRemoveTypeNamespaceSpecifier;
 
@@ -917,7 +914,6 @@ export default util.createRule<Options, MessageIds>({
       const afterFixes: TSESLint.RuleFix[] = [];
       if (valueNamedSpecifiers.length) {
         if (sourceImports.valueOnlyNamedImport) {
-          // TODO: The only use we have of this is for `isTypeImport` block.  Do we need this?
           const insertTypeNamedSpecifiers =
             fixInsertNamedSpecifiersInNamedSpecifierList(
               fixer,
