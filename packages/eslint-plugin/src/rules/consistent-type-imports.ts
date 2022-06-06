@@ -352,23 +352,6 @@ export default util.createRule<Options, MessageIds>({
                       },
                     });
                   }
-                  // else if (fixStyle === 'inline-type-imports') {
-                  //   // We may fix some specifiers or all specifiers to types
-                  //   // grab type imports and add to existing import if present.
-                  //   // import ValueImport, { type AType } from 'foo'
-                  //   //                       ^^^^ add
-                  //   context.report({
-                  //     node: report.node,
-                  //     messageId: 'inlineTypes',
-                  //     *fix(fixer) {
-                  //       yield* fixInlineTypeImportDeclaration(
-                  //         fixer,
-                  //         report,
-                  //         sourceImports,
-                  //       );
-                  //     },
-                  //   });
-                  // }
                 }
               }
             },
@@ -665,7 +648,8 @@ export default util.createRule<Options, MessageIds>({
           namedSpecifiers.length > 0 &&
           !namespaceSpecifier
         ) {
-          // import {AValue, Type1, Type2} from 'foo'
+          // if there is a default specifier but it isn't a type specifier, then just add the inline type modifier to the named specifiers
+          // import AValue, {BValue, Type1, Type2} from 'foo'
           yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
           return;
         }
@@ -717,6 +701,7 @@ export default util.createRule<Options, MessageIds>({
             afterFixes.push(insertTypeNamedSpecifiers);
           }
         } else {
+          // The import is both default and named.  Insert named on new line because can't mix default type import and named type imports
           if (fixStyle === 'inline-type-imports') {
             yield fixer.insertTextBefore(
               node,
