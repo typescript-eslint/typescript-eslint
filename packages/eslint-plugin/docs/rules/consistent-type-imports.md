@@ -15,7 +15,7 @@ This allows transpilers to drop imports without knowing the types of the depende
 
 This option defines the expected import kind for type-only imports. Valid values for `prefer` are:
 
-- `type-imports` will enforce that you always use `import type Foo from '...'` except referenced by metadata of decorators. It is default.
+- `type-imports` will enforce that you always use `import type Foo from '...'` except referenced by metadata of decorators. It is the default.
 - `no-type-imports` will enforce that you always use `import Foo from '...'`.
 
 Examples of **correct** code with `{prefer: 'type-imports'}`, and **incorrect** code with `{prefer: 'no-type-imports'}`.
@@ -40,8 +40,8 @@ const x: Bar = 1;
 
 This option defines the expected type modifier to be added when an import is detected as used only in the type position. Valid values for `fixStyle` are:
 
-- `separate-type-imports` will add the type keyword after the import `import type { A } from '...'`. It is default.
-- `inline-type-imports` will inline the type keyword. `import { type A } from '...'`.
+- `separate-type-imports` will add the type keyword after the import keyword `import type { A } from '...'`. It is the default.
+- `inline-type-imports` will inline the type keyword `import { type A } from '...'` and is only available in Typescript 4.5 and onwards. See [documentation](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names) here.
 
 Examples of the fixer `{fixStyle: 'separate-type-imports'}`.
 
