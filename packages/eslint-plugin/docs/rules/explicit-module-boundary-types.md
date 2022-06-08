@@ -161,7 +161,7 @@ export const func = (value: number) => ({ type: 'X', value });
 export const foo = () =>
   ({
     bar: true,
-  } as const);
+  });
 export const bar = () => 1;
 ```
 
