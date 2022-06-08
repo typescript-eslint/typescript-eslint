@@ -2,17 +2,30 @@ import type Monaco from 'monaco-editor';
 import type { JSONSchema4 } from '@typescript-eslint/utils/dist/json-schema';
 import { getTypescriptOptions } from '../config/utils';
 
+type StringMap = Map<string, string>;
+declare module 'typescript' {
+  /**
+   * Map of available libraries
+   *
+   * The key is the key used in compilerOptions.lib
+   * The value is the file name
+   */
+  const libMap: StringMap;
+}
+
 export function createCompilerOptions(
   jsx = false,
   tsConfig: Record<string, unknown> = {},
 ): Monaco.languages.typescript.CompilerOptions {
+  const libs = Array.isArray(tsConfig.lib) ? tsConfig.lib : ['es6', 'dom'];
+
   return {
-    lib: ['es6', 'dom'],
     // ts and monaco has different type as monaco types are not changing base on ts version
     target: window.ts.ScriptTarget.ESNext as number,
     module: window.ts.ModuleKind.ESNext as number,
     ...tsConfig,
     jsx: jsx ? window.ts.JsxEmit.Preserve : window.ts.JsxEmit.None,
+    lib: libs.map(item => window.ts.libMap.get(String(item)) ?? String(item)),
   };
 }
 
