@@ -64,12 +64,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       tsconfig: sandboxInstance.monaco.editor.createModel(
         defaultTsConfig,
         'json',
-        sandboxInstance.monaco.Uri.file('./tsconfig.json'),
+        sandboxInstance.monaco.Uri.file('/tsconfig.json'),
       ),
       eslintrc: sandboxInstance.monaco.editor.createModel(
         defaultEslintConfig,
         'json',
-        sandboxInstance.monaco.Uri.file('./.eslintrc'),
+        sandboxInstance.monaco.Uri.file('/.eslintrc'),
       ),
     };
     tabsDefault.code.updateOptions({ tabSize: 2, insertSpaces: true });

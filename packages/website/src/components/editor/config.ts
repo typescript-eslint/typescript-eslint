@@ -7,7 +7,7 @@ export function createCompilerOptions(
   tsConfig: Record<string, unknown> = {},
 ): Monaco.languages.typescript.CompilerOptions {
   return {
-    noResolve: true,
+    lib: ['lib'],
     // ts and monaco has different type as monaco types are not changing base on ts version
     target: window.ts.ScriptTarget.ESNext as number,
     module: window.ts.ModuleKind.ESNext as number,

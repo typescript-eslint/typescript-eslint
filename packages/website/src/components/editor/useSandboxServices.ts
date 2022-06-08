@@ -64,6 +64,7 @@ export const useSandboxServices = (
             formatOnType: true,
             wrappingIndent: 'same',
           },
+          acquireTypes: false,
           compilerOptions: compilerOptions,
           domID: editorEmbedId,
         };
@@ -78,7 +79,7 @@ export const useSandboxServices = (
         );
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-        const libs = ((window.ts as any).libs as string[]) ?? ['esnext'];
+        const libs = ((window.ts as any).libs as string[]) ?? ['lib', 'esnext'];
 
         const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
           {
@@ -89,6 +90,14 @@ export const useSandboxServices = (
           true,
           window.ts,
         );
+
+        libMap.forEach((value, path) => {
+          sandboxInstance!.monaco.languages.typescript.typescriptDefaults.addExtraLib(
+            value,
+            path,
+          );
+        });
+
         const system = sandboxInstance.tsvfs.createSystem(libMap);
 
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
