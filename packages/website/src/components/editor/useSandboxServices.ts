@@ -82,7 +82,7 @@ export const useSandboxServices = (
         const worker = await sandboxInstance.getWorkerProcess();
         if (worker.getLibFiles) {
           libEntries = new Map(
-            Object.entries((await worker.getLibFiles?.()) ?? {}),
+            Object.entries((await worker.getLibFiles()) ?? {}),
           );
         } else {
           // for some older version of playground we do not have definitions available
