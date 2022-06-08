@@ -79,7 +79,11 @@ export const useSandboxServices = (
         );
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-        const libs = ((window.ts as any).libs as string[]) ?? ['lib', 'esnext'];
+        const libs = ((window.ts as any).libs as string[]) ?? [
+          'es6',
+          'dom',
+          'esnext',
+        ];
 
         const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
           {
