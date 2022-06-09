@@ -17,16 +17,23 @@ export function createCompilerOptions(
   jsx = false,
   tsConfig: Record<string, unknown> = {},
 ): Monaco.languages.typescript.CompilerOptions {
-  const libs = Array.isArray(tsConfig.lib) ? tsConfig.lib : ['es6', 'dom'];
-
-  return {
+  const config: Monaco.languages.typescript.CompilerOptions = {
     // ts and monaco has different type as monaco types are not changing base on ts version
     target: window.ts.ScriptTarget.ESNext as number,
     module: window.ts.ModuleKind.ESNext as number,
     ...tsConfig,
     jsx: jsx ? window.ts.JsxEmit.Preserve : window.ts.JsxEmit.None,
-    lib: libs.map(item => window.ts.libMap.get(String(item)) ?? String(item)),
   };
+
+  const libs = Array.isArray(tsConfig.lib)
+    ? tsConfig.lib
+    : ['/' + window.ts.getDefaultLibFileName(config)];
+
+  config.lib = libs.map(
+    item => window.ts.libMap.get(String(item)) ?? String(item),
+  );
+
+  return config;
 }
 
 export function getEslintSchema(

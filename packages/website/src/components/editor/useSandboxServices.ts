@@ -82,15 +82,18 @@ export const useSandboxServices = (
         const worker = await sandboxInstance.getWorkerProcess();
         if (worker.getLibFiles) {
           libEntries = new Map(
-            Object.entries((await worker.getLibFiles()) ?? {}),
+            Object.entries((await worker.getLibFiles()) ?? {}).map(item => [
+              '/' + item[0],
+              item[1],
+            ]),
           );
         } else {
           // for some older version of playground we do not have definitions available
           libEntries = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
             {
-              lib: ['es6', 'dom'],
+              lib: Array.from(window.ts.libMap.keys()),
             },
-            props.ts,
+            window.ts.version,
             true,
             window.ts,
           );
@@ -102,7 +105,7 @@ export const useSandboxServices = (
           });
         }
 
-        const system = sandboxInstance.tsvfs.createSystem(new Map(libEntries));
+        const system = sandboxInstance.tsvfs.createSystem(libEntries);
 
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
