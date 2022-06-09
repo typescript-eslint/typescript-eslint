@@ -741,14 +741,12 @@ export function foo() {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5152
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: `
+      code: noFormat`
 function foo<T>(value: T): T {
   return { value };
 }
 export type Foo<T> = typeof foo<T>;
       `,
-      only: true,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2331
     {
