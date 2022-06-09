@@ -13,7 +13,9 @@ const ONLY = [].join(path.sep);
 const FIXTURES_DIR = path.resolve(__dirname, 'fixtures');
 
 const fixtures = glob
-  .sync(`${FIXTURES_DIR}/**/*.{js,ts,jsx,tsx}`, {
+  .sync('**/*.{js,ts,jsx,tsx}', {
+    cwd: FIXTURES_DIR,
+    absolute: true,
     ignore: ['fixtures.test.ts'],
   })
   .map(absolute => {
