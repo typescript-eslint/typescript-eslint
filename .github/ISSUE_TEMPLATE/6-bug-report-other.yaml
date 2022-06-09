@@ -26,6 +26,7 @@ body:
         ### Note For Complex Issues
         If your issue requires some complex reproduction - such as multiple files or a specific folder structure - please do not use this template.
         Instead, select the ["Report a Complex Bug With a Reproduction Repository" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=7-bug-report-complex.yaml).
+        ***Help us to help you!***
   - type: dropdown
     id: package
     attributes:
@@ -59,7 +60,11 @@ body:
     id: eslint-config
     attributes:
       label: ESLint Config
-      description: (Optional) A ***minimal*** ESLint config for reproducing the issue
+      description: |
+        (Optional) A ***minimal*** ESLint config for reproducing the issue.
+        Please do not just paste your entire ESLint config - it just makes it harder for us to investigate.
+        If this is more than around 30 lines - you probably haven't isolated the repro.
+        ***Help us to help you!***
       render: javascript
       value: |
         module.exports = {
@@ -100,7 +105,9 @@ body:
     id: additional
     attributes:
       label: Additional Info
-      description: Any additional info you'd like to provide. If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. i.e. `eslint --ext ".ts,.js" src --debug`
+      description: |
+        Any additional info you'd like to provide.
+        If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. e.g. `eslint path/to/broken/file.ts --debug`
   - type: textarea
     id: versions
     attributes:

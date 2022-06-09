@@ -36,13 +36,9 @@ export default util.createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const sourceCode = context.getSourceCode();
 
-    const report = (
-      node: TSESTree.Node | TSESTree.Token,
-      operator: TSESTree.Token,
-    ): void => {
+    function report(operator: TSESTree.Token): void {
       context.report({
-        node: node,
-        loc: operator.loc,
+        node: operator,
         messageId: 'missingSpace',
         data: {
           operator: operator.value,
@@ -65,21 +61,19 @@ export default util.createRule<Options, MessageIds>({
           return fixer.replaceText(operator, fixString);
         },
       });
-    };
+    }
 
     function isSpaceChar(token: TSESTree.Token): boolean {
       return (
-        token.type === AST_TOKEN_TYPES.Punctuator &&
-        /^[=|?|:]$/.test(token.value)
+        token.type === AST_TOKEN_TYPES.Punctuator && /^[=?:]$/.test(token.value)
       );
     }
 
     function checkAndReportAssignmentSpace(
-      node: TSESTree.Node,
-      leftNode: TSESTree.Token,
-      rightNode?: TSESTree.Token | null,
+      leftNode: TSESTree.Token | TSESTree.Node | null,
+      rightNode?: TSESTree.Token | TSESTree.Node | null,
     ): void {
-      if (!rightNode) {
+      if (!rightNode || !leftNode) {
         return;
       }
 
@@ -87,16 +81,16 @@ export default util.createRule<Options, MessageIds>({
         leftNode,
         rightNode,
         isSpaceChar,
-      );
+      )!;
 
-      const prev = sourceCode.getTokenBefore(operator!);
-      const next = sourceCode.getTokenAfter(operator!);
+      const prev = sourceCode.getTokenBefore(operator)!;
+      const next = sourceCode.getTokenAfter(operator)!;
 
       if (
-        !sourceCode.isSpaceBetween!(prev!, operator!) ||
-        !sourceCode.isSpaceBetween!(operator!, next!)
+        !sourceCode.isSpaceBetween!(prev, operator) ||
+        !sourceCode.isSpaceBetween!(operator, next)
       ) {
-        report(node, operator!);
+        report(operator);
       }
     }
 
@@ -105,16 +99,7 @@ export default util.createRule<Options, MessageIds>({
      * @param node The node to report
      */
     function checkForEnumAssignmentSpace(node: TSESTree.TSEnumMember): void {
-      if (!node.initializer) {
-        return;
-      }
-
-      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
-      const rightNode = sourceCode.getTokenByRangeStart(
-        node.initializer.range[0],
-      )!;
-
-      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+      checkAndReportAssignmentSpace(node.id, node.initializer);
     }
 
     /**
@@ -124,14 +109,12 @@ export default util.createRule<Options, MessageIds>({
     function checkForPropertyDefinitionAssignmentSpace(
       node: TSESTree.PropertyDefinition,
     ): void {
-      const leftNode = sourceCode.getLastToken(
-        node.typeAnnotation ?? node.key,
-      )!;
-      const rightNode = node.value
-        ? sourceCode.getTokenByRangeStart(node.value.range[0])
-        : undefined;
+      const leftNode =
+        node.optional && !node.typeAnnotation
+          ? sourceCode.getTokenAfter(node.key)
+          : node.typeAnnotation ?? node.key;
 
-      checkAndReportAssignmentSpace(node, leftNode, rightNode);
+      checkAndReportAssignmentSpace(leftNode, node.value);
     }
 
     /**
@@ -161,7 +144,7 @@ export default util.createRule<Options, MessageIds>({
             !sourceCode.isSpaceBetween!(prev!, operator) ||
             !sourceCode.isSpaceBetween!(operator, next!)
           ) {
-            report(typeAnnotation, operator);
+            report(operator);
           }
         }
       });
@@ -174,27 +157,15 @@ export default util.createRule<Options, MessageIds>({
     function checkForTypeAliasAssignment(
       node: TSESTree.TSTypeAliasDeclaration,
     ): void {
-      const leftNode = sourceCode.getTokenByRangeStart(node.id.range[0])!;
-      const rightNode = sourceCode.getTokenByRangeStart(
-        node.typeAnnotation.range[0],
+      checkAndReportAssignmentSpace(
+        node.typeParameters ?? node.id,
+        node.typeAnnotation,
       );
-
-      checkAndReportAssignmentSpace(node, leftNode, rightNode);
     }
 
     function checkForTypeConditional(node: TSESTree.TSConditionalType): void {
-      const extendsTypeNode = sourceCode.getTokenByRangeStart(
-        node.extendsType.range[0],
-      )!;
-      const trueTypeNode = sourceCode.getTokenByRangeStart(
-        node.trueType.range[0],
-      )!;
-      const falseTypeNode = sourceCode.getTokenByRangeStart(
-        node.falseType.range[0],
-      );
-
-      checkAndReportAssignmentSpace(node, extendsTypeNode, trueTypeNode);
-      checkAndReportAssignmentSpace(node, trueTypeNode, falseTypeNode);
+      checkAndReportAssignmentSpace(node.extendsType, node.trueType);
+      checkAndReportAssignmentSpace(node.trueType, node.falseType);
     }
 
     return {

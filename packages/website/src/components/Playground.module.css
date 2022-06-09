@@ -88,7 +88,7 @@
   }
 
   .options {
-    width: 100%;
+    display: none;
   }
 
   .tabCode {

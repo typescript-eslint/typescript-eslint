@@ -23,11 +23,11 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://github.com/nzakas"><img src="https://avatars.githubusercontent.com/u/38546?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Nicholas C. Zakas</b></sub></a></td>
     <td align="center"><a href="https://github.com/j-f1"><img src="https://avatars.githubusercontent.com/u/25517624?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Jed Fox</b></sub></a></td>
     <td align="center"><a href="https://github.com/yeonjuan"><img src="https://avatars.githubusercontent.com/u/41323220?v=4&size=100" width="100px;" alt=""/><br /><sub><b>YeonJuan</b></sub></a></td>
+    <td align="center"><a href="https://github.com/Josh-Cena"><img src="https://avatars.githubusercontent.com/u/55398995?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Joshua Chen</b></sub></a></td>
     <td align="center"><a href="https://github.com/rafaelss95"><img src="https://avatars.githubusercontent.com/u/11965907?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Rafael Santana</b></sub></a></td>
-    <td align="center"><a href="https://github.com/uniqueiniquity"><img src="https://avatars.githubusercontent.com/u/9092011?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Ben Lichtman</b></sub></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/Josh-Cena"><img src="https://avatars.githubusercontent.com/u/55398995?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Joshua Chen</b></sub></a></td>
+    <td align="center"><a href="https://github.com/uniqueiniquity"><img src="https://avatars.githubusercontent.com/u/9092011?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Ben Lichtman</b></sub></a></td>
     <td align="center"><a href="https://github.com/lonyele"><img src="https://avatars.githubusercontent.com/u/15892571?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Taeheon Kim</b></sub></a></td>
     <td align="center"><a href="https://github.com/phaux"><img src="https://avatars.githubusercontent.com/u/1270987?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Nikita</b></sub></a></td>
     <td align="center"><a href="https://github.com/scottohara"><img src="https://avatars.githubusercontent.com/u/289327?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Scott O'Hara</b></sub></a></td>
@@ -87,19 +87,6 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://github.com/jonathanrdelgado"><img src="https://avatars.githubusercontent.com/u/1841149?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Jonathan Delgado</b></sub></a></td>
     <td align="center"><a href="https://github.com/flying-sheep"><img src="https://avatars.githubusercontent.com/u/291575?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Philipp A.</b></sub></a></td>
     <td align="center"><a href="https://github.com/g-plane"><img src="https://avatars.githubusercontent.com/u/17216317?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Pig Fang</b></sub></a></td>
-    <td align="center"><a href="https://github.com/tadhgmister"><img src="https://avatars.githubusercontent.com/u/18615763?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Tadhg McDonald-Jensen</b></sub></a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/ThomasdenH"><img src="https://avatars.githubusercontent.com/u/3889750?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Thomas den Hollander</b></sub></a></td>
-    <td align="center"><a href="https://github.com/timkraut"><img src="https://avatars.githubusercontent.com/u/509669?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Tim Kraut</b></sub></a></td>
-    <td align="center"><a href="https://github.com/yasarsid"><img src="https://avatars.githubusercontent.com/u/16225376?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Yasar Siddiqui</b></sub></a></td>
-    <td align="center"><a href="https://github.com/magurotuna"><img src="https://avatars.githubusercontent.com/u/23649474?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Yusuke Tanaka</b></sub></a></td>
-    <td align="center"><a href="https://github.com/madbence"><img src="https://avatars.githubusercontent.com/u/296735?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Bence Dányi</b></sub></a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/fa93hws"><img src="https://avatars.githubusercontent.com/u/10626756?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Eric Wang</b></sub></a></td>
-    <td align="center"><a href="https://github.com/juank1809"><img src="https://avatars.githubusercontent.com/u/82288753?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Juan García</b></sub></a></td>
-    <td align="center"><a href="https://github.com/soobing"><img src="https://avatars.githubusercontent.com/u/16860535?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Soobin Bak</b></sub></a></td>
   </tr>
 </table>
 
