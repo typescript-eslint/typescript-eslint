@@ -93,7 +93,7 @@ export const useSandboxServices = (
             {
               lib: Array.from(window.ts.libMap.keys()),
             },
-            window.ts.version,
+            props.ts,
             true,
             window.ts,
           );
