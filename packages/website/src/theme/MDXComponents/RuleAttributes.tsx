@@ -1,4 +1,5 @@
 import React from 'react';
+import type { TSESLint } from '@typescript-eslint/utils';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 
 import styles from './RuleAttributes.module.css';
@@ -21,9 +22,12 @@ export function RuleAttributes({ name }: { name: string }): JSX.Element | null {
               <input
                 type="checkbox"
                 disabled
-                checked={(['error', 'warn'] as unknown[]).includes(
-                  rule.docs?.recommended,
-                )}
+                checked={(
+                  ['error', 'warn'] as (
+                    | TSESLint.RuleRecommendation
+                    | undefined
+                  )[]
+                ).includes(rule.docs?.recommended)}
               />
               ✅ Recommended
             </li>

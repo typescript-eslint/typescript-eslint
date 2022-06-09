@@ -65,8 +65,8 @@ function RuleFilterCheckBox({
         type="button"
         className={clsx(
           styles.checkboxLabel,
-          mode === 'include' && styles.checkboxLabelActivated,
-          mode === 'exclude' && styles.checkboxLabelDeactivated,
+          mode === 'include' && styles.activated,
+          mode === 'exclude' && styles.deactivated,
         )}
         onKeyDown={(e): void => {
           if (e.key === 'Enter') {
