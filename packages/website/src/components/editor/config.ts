@@ -69,6 +69,15 @@ export function getTsConfigSchema(): JSONSchema4 {
         type: 'boolean',
         description: item.description!.message,
       };
+    } else if (item.type === 'list' && item.element?.type instanceof Map) {
+      options[item.name] = {
+        type: 'array',
+        items: {
+          type: 'string',
+          enum: Array.from(item.element.type.keys()),
+        },
+        description: item.description!.message,
+      };
     } else if (item.type instanceof Map) {
       options[item.name] = {
         type: 'string',

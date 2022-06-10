@@ -8,6 +8,9 @@ export interface OptionDeclarations {
   type?: unknown;
   category?: { message: string };
   description?: { message: string };
+  element?: {
+    type: unknown;
+  };
 }
 
 export function parseESLintRC(code?: string): EslintRC {
@@ -95,7 +98,6 @@ export function getTypescriptOptions(): OptionDeclarations[] {
   const filteredNames = [
     'moduleResolution',
     'moduleDetection',
-    'lib',
     'plugins',
     'typeRoots',
     'jsx',
@@ -104,7 +106,9 @@ export function getTypescriptOptions(): OptionDeclarations[] {
   // @ts-expect-error: definition is not fully correct
   return (window.ts.optionDeclarations as OptionDeclarations[]).filter(
     item =>
-      (item.type === 'boolean' || item.type instanceof Map) &&
+      (item.type === 'boolean' ||
+        item.type === 'list' ||
+        item.type instanceof Map) &&
       item.description &&
       item.category &&
       !allowedCategories.includes(item.category.message) &&
