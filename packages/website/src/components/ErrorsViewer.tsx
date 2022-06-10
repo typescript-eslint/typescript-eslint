@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import clsx from 'clsx';
 
