@@ -1,9 +1,11 @@
 import type Monaco from 'monaco-editor';
-import type { ErrorItem } from '../types';
+import type { ErrorGroup } from '../types';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 export interface LintCodeAction {
   message: string;
+  code?: string | null;
+  isPreferred: boolean;
   fix: {
     range: Readonly<[number, number]>;
     text: string;
@@ -45,48 +47,76 @@ export function createEditOperation(
   };
 }
 
+function normalizeCode(code: Monaco.editor.IMarker['code']): {
+  value: string;
+  target?: string;
+} {
+  if (!code) {
+    return { value: '' };
+  }
+  if (typeof code === 'string') {
+    return { value: code };
+  }
+  return {
+    value: code.value,
+    target: code.target.toString(),
+  };
+}
+
 export function parseMarkers(
   markers: Monaco.editor.IMarker[],
   fixes: Map<string, LintCodeAction[]>,
   editor: Monaco.editor.IStandaloneCodeEditor,
-): ErrorItem[] {
-  return markers.map(marker => {
-    const code =
-      typeof marker.code === 'string' ? marker.code : marker.code?.value ?? '';
+): ErrorGroup[] {
+  const result: Record<string, ErrorGroup> = {};
+  for (const marker of markers) {
+    const code = normalizeCode(marker.code);
     const uri = createURI(marker);
 
     const fixers =
-      fixes.get(uri)?.map(item => {
-        return {
-          message: item.message,
-          fix(): void {
-            editor.executeEdits('eslint', [
-              createEditOperation(editor.getModel()!, item),
-            ]);
-          },
-        };
-      }) ?? [];
+      fixes.get(uri)?.map(item => ({
+        message: item.message,
+        isPreferred: item.isPreferred,
+        fix(): void {
+          editor.executeEdits('eslint', [
+            createEditOperation(editor.getModel()!, item),
+          ]);
+        },
+      })) ?? [];
 
-    return {
-      group:
-        marker.owner === 'eslint'
-          ? code
-          : marker.owner === 'typescript'
-          ? 'TypeScript'
-          : marker.owner,
+    const group =
+      marker.owner === 'eslint'
+        ? code.value
+        : marker.owner === 'typescript'
+        ? 'TypeScript'
+        : marker.owner;
+
+    if (!result[group]) {
+      result[group] = {
+        group: group,
+        uri: code.target,
+        items: [],
+      };
+    }
+
+    result[group].items.push({
       message:
-        (marker.owner !== 'eslint' && code ? `${code}: ` : '') + marker.message,
+        (marker.owner !== 'eslint' && code ? `${code.value}: ` : '') +
+        marker.message,
       location: `${marker.startLineNumber}:${marker.startColumn} - ${marker.endLineNumber}:${marker.endColumn}`,
       severity: marker.severity,
-      hasFixers: fixers.length > 0,
-      fixers: fixers,
-    };
-  });
+      fixer: fixers.find(item => item.isPreferred),
+      suggestions: fixers.filter(item => !item.isPreferred),
+    });
+  }
+
+  return Object.values(result).sort((a, b) => a.group.localeCompare(b.group));
 }
 
 export function parseLintResults(
   messages: TSESLint.Linter.LintMessage[],
   codeActions: Map<string, LintCodeAction[]>,
+  ruleUri: (ruleId: string) => Monaco.Uri,
 ): Monaco.editor.IMarkerData[] {
   const markers: Monaco.editor.IMarkerData[] = [];
 
@@ -99,7 +129,12 @@ export function parseLintResults(
     const endColumn = ensurePositiveInt(message.endColumn, startColumn + 1);
 
     const marker: Monaco.editor.IMarkerData = {
-      code: message.ruleId ?? 'FATAL',
+      code: message.ruleId
+        ? {
+            value: message.ruleId,
+            target: ruleUri(message.ruleId),
+          }
+        : 'FATAL',
       severity:
         message.severity === 2
           ? 8 // MarkerSeverity.Error
@@ -118,13 +153,16 @@ export function parseLintResults(
       fixes.push({
         message: `Fix this ${message.ruleId ?? 'unknown'} problem`,
         fix: message.fix,
+        isPreferred: true,
       });
     }
     if (message.suggestions) {
       for (const suggestion of message.suggestions) {
         fixes.push({
-          message: `${suggestion.desc} (${message.ruleId ?? 'unknown'})`,
+          message: suggestion.desc,
+          code: message.ruleId,
           fix: suggestion.fix,
+          isPreferred: false,
         });
       }
     }
