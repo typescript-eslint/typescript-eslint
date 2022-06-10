@@ -24,8 +24,7 @@ import {
   LintCodeAction,
 } from '../linter/utils';
 import {
-  defaultEslintConfig,
-  defaultTsConfig,
+  tryParseEslintModule,
   parseESLintRC,
   parseTSConfig,
 } from '../config/utils';
@@ -62,12 +61,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const tabsDefault = {
       code: sandboxInstance.editor.getModel()!,
       tsconfig: sandboxInstance.monaco.editor.createModel(
-        defaultTsConfig,
+        tsconfig,
         'json',
         sandboxInstance.monaco.Uri.file('./tsconfig.json'),
       ),
       eslintrc: sandboxInstance.monaco.editor.createModel(
-        defaultEslintConfig,
+        eslintrc,
         'json',
         sandboxInstance.monaco.Uri.file('./.eslintrc'),
       ),
@@ -83,7 +82,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const markers = sandboxInstance.monaco.editor.getModelMarkers({
       resource: model.uri,
     });
-    onMarkersChange(parseMarkers(markers, codeActions, model));
+    onMarkersChange(parseMarkers(markers, codeActions, sandboxInstance.editor));
   }, []);
 
   useEffect(() => {
@@ -95,20 +94,25 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         sandboxInstance.monaco.Uri.file(newPath),
       );
       newModel.updateOptions({ tabSize: 2, insertSpaces: true });
-      sandboxInstance.editor.setModel(newModel);
+      if (tabs.code.isAttachedToEditor()) {
+        sandboxInstance.editor.setModel(newModel);
+      }
       tabs.code.dispose();
       tabs.code = newModel;
     }
   }, [jsx]);
 
   useEffect(() => {
-    const config = createCompilerOptions(jsx, parseTSConfig(tsconfig));
+    const config = createCompilerOptions(
+      jsx,
+      parseTSConfig(tsconfig).compilerOptions,
+    );
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
   }, [jsx, tsconfig]);
 
   useEffect(() => {
-    webLinter.updateRules(parseESLintRC(eslintrc));
+    webLinter.updateRules(parseESLintRC(eslintrc).rules);
   }, [eslintrc]);
 
   useEffect(() => {
@@ -169,9 +173,18 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         'typescript',
         createProvideCodeActions(codeActions),
       ),
+      sandboxInstance.editor.onDidPaste(() => {
+        if (tabs.eslintrc.isAttachedToEditor()) {
+          const value = tabs.eslintrc.getValue();
+          const newValue = tryParseEslintModule(value);
+          if (newValue !== value) {
+            tabs.eslintrc.setValue(newValue);
+          }
+        }
+      }),
       sandboxInstance.editor.onDidChangeCursorPosition(
         debounce(() => {
-          if (sandboxInstance.editor.getModel() === tabs.code) {
+          if (tabs.code.isAttachedToEditor()) {
             const position = sandboxInstance.editor.getPosition();
             if (position) {
               // eslint-disable-next-line no-console
