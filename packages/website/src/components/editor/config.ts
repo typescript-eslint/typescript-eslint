@@ -14,9 +14,7 @@ export function createCompilerOptions(
     jsx: jsx ? window.ts.JsxEmit.Preserve : window.ts.JsxEmit.None,
   };
 
-  const libs = Array.isArray(tsConfig.lib)
-    ? tsConfig.lib
-    : ['/' + window.ts.getDefaultLibFileName(config)];
+  const libs = Array.isArray(tsConfig.lib) ? tsConfig.lib : ['es6', 'dom'];
 
   config.lib = libs.map(
     item => window.ts.libMap.get(String(item)) ?? String(item),
