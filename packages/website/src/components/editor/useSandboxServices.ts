@@ -97,12 +97,12 @@ export const useSandboxServices = (
             true,
             window.ts,
           );
-          libEntries.forEach((value, path) => {
-            sandboxInstance!.monaco.languages.typescript.typescriptDefaults.addExtraLib(
-              value,
-              path,
+          for (const pair of libEntries) {
+            sandboxInstance.languageServiceDefaults.addExtraLib(
+              pair[1],
+              'ts:' + pair[0],
             );
-          });
+          }
         }
 
         const system = sandboxInstance.tsvfs.createSystem(libEntries);

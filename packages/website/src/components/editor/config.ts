@@ -6,27 +6,31 @@ export function createCompilerOptions(
   jsx = false,
   tsConfig: Record<string, unknown> = {},
 ): Monaco.languages.typescript.CompilerOptions {
-  const config: Monaco.languages.typescript.CompilerOptions = {
-    // ts and monaco has different type as monaco types are not changing base on ts version
-    target: window.ts.ScriptTarget.ESNext as number,
-    module: window.ts.ModuleKind.ESNext as number,
-    ...tsConfig,
-    jsx: jsx ? window.ts.JsxEmit.Preserve : window.ts.JsxEmit.None,
-    moduleResolution: undefined,
-    plugins: undefined,
-    typeRoots: undefined,
-    paths: undefined,
-    moduleDetection: undefined,
-    baseUrl: undefined,
-  };
-
-  const libs = Array.isArray(tsConfig.lib) ? tsConfig.lib : ['es6', 'dom'];
-
-  config.lib = libs.map(
-    item => window.ts.libMap.get(String(item)) ?? String(item),
+  const config = window.ts.convertCompilerOptionsFromJson(
+    {
+      // ts and monaco has different type as monaco types are not changing base on ts version
+      target: 'esnext',
+      module: 'esnext',
+      ...tsConfig,
+      jsx: jsx ? 'preserve' : undefined,
+      lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
+      moduleResolution: undefined,
+      plugins: undefined,
+      typeRoots: undefined,
+      paths: undefined,
+      moduleDetection: undefined,
+      baseUrl: undefined,
+    },
+    '/tsconfig.json',
   );
 
-  return config;
+  const options = config.options as Monaco.languages.typescript.CompilerOptions;
+
+  if (!options.lib) {
+    options.lib = [window.ts.getDefaultLibFileName(options)];
+  }
+
+  return options;
 }
 
 export function getEslintSchema(
