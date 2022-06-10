@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.27.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.0...v5.27.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [space-infix-ops] correct PropertyDefinition with typeAnnotation ([#5113](https://github.com/typescript-eslint/typescript-eslint/issues/5113)) ([d320174](https://github.com/typescript-eslint/typescript-eslint/commit/d320174f40a74b34e6b6e4c88128ef6e736311d8))
+* **eslint-plugin:** [space-infix-ops] regression fix for conditional types ([#5135](https://github.com/typescript-eslint/typescript-eslint/issues/5135)) ([e5238c8](https://github.com/typescript-eslint/typescript-eslint/commit/e5238c84e56e7c34174b2c6f1e3ea59456797c2f))
+* **eslint-plugin:** [space-infix-ops] regression fix for type aliases ([#5138](https://github.com/typescript-eslint/typescript-eslint/issues/5138)) ([4e13deb](https://github.com/typescript-eslint/typescript-eslint/commit/4e13deb05fbd8724996156b15b65f6a66794a7cc))
+
+
+
+
+
 # [5.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.26.0...v5.27.0) (2022-05-30)
 
 

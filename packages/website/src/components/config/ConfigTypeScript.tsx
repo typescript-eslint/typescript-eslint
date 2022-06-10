@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { CompilerFlags, ConfigModel } from '../types';
+import type { ConfigModel, TSConfig } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
-import { getTypescriptOptions, parseTSConfig, toJsonConfig } from './utils';
+import { getTypescriptOptions, parseTSConfig, toJson } from './utils';
 
 interface ConfigTypeScriptProps {
   readonly isOpen: boolean;
@@ -13,11 +13,11 @@ interface ConfigTypeScriptProps {
 
 function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
   const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
-  const [configObject, updateConfigObject] = useState<CompilerFlags>({});
+  const [configObject, updateConfigObject] = useState<TSConfig>();
 
   useEffect(() => {
     if (props.isOpen) {
-      updateConfigObject(props.config ? parseTSConfig(props.config) : {});
+      updateConfigObject(parseTSConfig(props.config));
     }
   }, [props.isOpen, props.config]);
 
@@ -58,8 +58,10 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
       const cfg = { ...newConfig };
-      if (!shallowEqual(cfg, configObject)) {
-        props.onClose({ tsconfig: toJsonConfig(cfg, 'compilerOptions') });
+      if (!shallowEqual(cfg, configObject?.compilerOptions)) {
+        props.onClose({
+          tsconfig: toJson({ ...(configObject ?? {}), compilerOptions: cfg }),
+        });
       } else {
         props.onClose();
       }
@@ -71,7 +73,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
     <ConfigEditor
       header="TypeScript Config"
       options={tsConfigOptions}
-      values={configObject ?? {}}
+      values={configObject?.compilerOptions ?? {}}
       isOpen={props.isOpen}
       onClose={onClose}
     />

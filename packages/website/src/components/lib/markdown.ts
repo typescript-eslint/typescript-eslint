@@ -50,6 +50,7 @@ export function createMarkdown(state: ConfigModel): string {
 
 export function createMarkdownParams(state: ConfigModel): string {
   const params = {
+    labels: 'bug,package: eslint-plugin,triage',
     template: '1-bug-report-plugin.yaml',
     title: 'Bug: [rule name here] <short description of the issue>',
     'playground-link': document.location.toString(),

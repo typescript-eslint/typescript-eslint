@@ -14,7 +14,6 @@ export function createCompilerOptions(
     ...tsConfig,
     jsx: jsx ? window.ts.JsxEmit.Preserve : window.ts.JsxEmit.None,
     moduleResolution: undefined,
-    lib: undefined,
     plugins: undefined,
     typeRoots: undefined,
     paths: undefined,
