@@ -45,6 +45,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
           .map(item => ({
             key: item.name,
             label: item.description,
+            type: 'boolean',
             defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
           })),
       },
@@ -55,6 +56,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
           .map(item => ({
             key: item.name,
             label: item.description,
+            type: 'boolean',
             defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
           })),
       },

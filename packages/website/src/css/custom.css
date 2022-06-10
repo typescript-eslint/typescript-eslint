@@ -109,7 +109,39 @@ h6 {
   background-color: var(--code-line-decoration);
 }
 
-/* indent the nested checklist for the rule doc attributes */
-ul.contains-task-list > li > ul.contains-task-list {
-  padding-left: 24px;
+.code-block-removed-line::before {
+  content: '-';
+  display: inline-block;
+  width: 0px;
+  position: relative;
+  left: -0.7em;
+  color: red;
+}
+
+.code-block-removed-line {
+  background-color: #ff000020;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+  user-select: none;
+}
+
+.code-block-added-line::before {
+  content: '+';
+  display: inline-block;
+  width: 0px;
+  position: relative;
+  left: -0.7em;
+  color: rgb(2, 164, 113);
+}
+
+.code-block-added-line {
+  background-color: #00ff9540;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+[data-theme='dark'] .code-block-added-line {
+  background-color: #00ff9510;
 }
