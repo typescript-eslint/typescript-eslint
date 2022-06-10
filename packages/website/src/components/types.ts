@@ -42,3 +42,8 @@ export interface ErrorItem {
   hasFixers: boolean;
   fixers: { message: string; fix(): void }[];
 }
+
+export type EslintRC = Record<string, unknown> & { rules: RulesRecord };
+export type TSConfig = Record<string, unknown> & {
+  compilerOptions: CompilerFlags;
+};

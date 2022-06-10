@@ -48,7 +48,7 @@ export function createEditOperation(
 export function parseMarkers(
   markers: Monaco.editor.IMarker[],
   fixes: Map<string, LintCodeAction[]>,
-  model: Monaco.editor.ITextModel,
+  editor: Monaco.editor.IStandaloneCodeEditor,
 ): ErrorItem[] {
   return markers.map(marker => {
     const code =
@@ -60,7 +60,9 @@ export function parseMarkers(
         return {
           message: item.message,
           fix(): void {
-            model.applyEdits([createEditOperation(model, item)]);
+            editor.executeEdits('eslint', [
+              createEditOperation(editor.getModel()!, item),
+            ]);
           },
         };
       }) ?? [];

@@ -18,6 +18,7 @@ export = {
     '@typescript-eslint/comma-dangle': 'error',
     'comma-spacing': 'off',
     '@typescript-eslint/comma-spacing': 'error',
+    '@typescript-eslint/consistent-generic-constructors': 'error',
     '@typescript-eslint/consistent-indexed-object-style': 'error',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',

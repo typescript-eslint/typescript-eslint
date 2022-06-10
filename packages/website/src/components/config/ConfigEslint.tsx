@@ -1,14 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type {
-  RulesRecord,
-  RuleDetails,
-  RuleEntry,
-  ConfigModel,
-} from '../types';
+import type { RuleDetails, RuleEntry, ConfigModel, EslintRC } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
-import { parseESLintRC, toJsonConfig } from '@site/src/components/config/utils';
+import { parseESLintRC, toJson } from './utils';
 
 export interface ConfigEslintProps {
   readonly isOpen: boolean;
@@ -33,11 +28,11 @@ function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
 
 function ConfigEslint(props: ConfigEslintProps): JSX.Element {
   const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
-  const [configObject, updateConfigObject] = useState<RulesRecord>({});
+  const [configObject, updateConfigObject] = useState<EslintRC>();
 
   useEffect(() => {
     if (props.isOpen) {
-      updateConfigObject(props.config ? parseESLintRC(props.config) : {});
+      updateConfigObject(parseESLintRC(props.config));
     }
   }, [props.isOpen, props.config]);
 
@@ -77,8 +72,10 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
           )
           .filter(checkOptions),
       );
-      if (!shallowEqual(cfg, configObject)) {
-        props.onClose({ eslintrc: toJsonConfig(cfg, 'rules') });
+      if (!shallowEqual(cfg, configObject?.rules)) {
+        props.onClose({
+          eslintrc: toJson({ ...(configObject ?? {}), rules: cfg }),
+        });
       } else {
         props.onClose();
       }
@@ -90,7 +87,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
     <ConfigEditor
       header="Eslint Config"
       options={options}
-      values={configObject ?? {}}
+      values={configObject?.rules ?? {}}
       isOpen={props.isOpen}
       onClose={onClose}
     />
