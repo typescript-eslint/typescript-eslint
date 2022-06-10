@@ -9,6 +9,7 @@ export = {
     '@typescript-eslint/ban-tslint-comment': 'warn',
     '@typescript-eslint/class-literal-property-style': 'warn',
     '@typescript-eslint/consistent-indexed-object-style': 'warn',
+    '@typescript-eslint/consistent-generic-constructors': 'warn',
     '@typescript-eslint/consistent-type-assertions': 'warn',
     '@typescript-eslint/consistent-type-definitions': 'warn',
     'dot-notation': 'off',
