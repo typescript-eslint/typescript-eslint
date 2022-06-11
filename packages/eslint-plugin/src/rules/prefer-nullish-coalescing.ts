@@ -97,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
         let hasUndefinedCheck = false;
         let hasNullCheck = false;
 
-        // we check that the test only contains null, undefined and the identifier
+        // we check that the test only contain null, undefined and the identifier
         for (const n of getNodes(node.test)) {
           if (util.isNullLiteral(n)) {
             hasNullCheck = true;
@@ -128,7 +128,7 @@ export default util.createRule<Options, MessageIds>({
             return true;
           }
 
-          // it is fixable if we loosly check for eihter null or undefined
+          // it is fixable if we loosely check for either null or undefined
           if (
             (operator === '==' || operator === '!=') &&
             (hasUndefinedCheck || hasNullCheck)
@@ -191,10 +191,8 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullLiteralish = util.isNullableType(type, {
-          allowUndefined: true,
-        });
-        if (!isNullLiteralish) {
+        const isNullish = util.isNullableType(type, { allowUndefined: true });
+        if (!isNullish) {
           return;
         }
 
