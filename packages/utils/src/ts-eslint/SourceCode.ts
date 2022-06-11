@@ -276,7 +276,7 @@ declare class SourceCodeBase extends TokenStore {
    * @returns The text representing the AST node.
    */
   getText(
-    node?: TSESTree.Node,
+    node?: TSESTree.Node | TSESTree.Token,
     beforeCount?: number,
     afterCount?: number,
   ): string;

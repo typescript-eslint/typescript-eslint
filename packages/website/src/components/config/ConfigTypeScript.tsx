@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { CompilerFlags, ConfigModel } from '../types';
+import type { ConfigModel, TSConfig } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
-import { getTypescriptOptions, parseTSConfig, toJsonConfig } from './utils';
+import { getTypescriptOptions, parseTSConfig, toJson } from './utils';
 
 interface ConfigTypeScriptProps {
   readonly isOpen: boolean;
@@ -11,17 +11,13 @@ interface ConfigTypeScriptProps {
   readonly config?: string;
 }
 
-function checkOptions(item: [string, unknown]): item is [string, boolean] {
-  return typeof item[1] === 'boolean';
-}
-
 function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
   const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
-  const [configObject, updateConfigObject] = useState<CompilerFlags>({});
+  const [configObject, updateConfigObject] = useState<TSConfig>();
 
   useEffect(() => {
     if (props.isOpen) {
-      updateConfigObject(props.config ? parseTSConfig(props.config) : {});
+      updateConfigObject(parseTSConfig(props.config));
     }
   }, [props.isOpen, props.config]);
 
@@ -36,10 +32,20 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
                 heading: category,
                 fields: [],
               };
-              group[category].fields.push({
-                key: item.name,
-                label: item.description!.message,
-              });
+              if (item.type === 'boolean') {
+                group[category].fields.push({
+                  key: item.name,
+                  type: 'boolean',
+                  label: item.description!.message,
+                });
+              } else if (item.type instanceof Map) {
+                group[category].fields.push({
+                  key: item.name,
+                  type: 'string',
+                  label: item.description!.message,
+                  enum: ['', ...Array.from<string>(item.type.keys())],
+                });
+              }
               return group;
             },
             {},
@@ -51,11 +57,11 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
 
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const cfg = Object.fromEntries(
-        Object.entries(newConfig).filter(checkOptions),
-      );
-      if (!shallowEqual(cfg, configObject)) {
-        props.onClose({ tsconfig: toJsonConfig(cfg, 'compilerOptions') });
+      const cfg = { ...newConfig };
+      if (!shallowEqual(cfg, configObject?.compilerOptions)) {
+        props.onClose({
+          tsconfig: toJson({ ...(configObject ?? {}), compilerOptions: cfg }),
+        });
       } else {
         props.onClose();
       }
@@ -67,7 +73,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
     <ConfigEditor
       header="TypeScript Config"
       options={tsConfigOptions}
-      values={configObject ?? {}}
+      values={configObject?.compilerOptions ?? {}}
       isOpen={props.isOpen}
       onClose={onClose}
     />

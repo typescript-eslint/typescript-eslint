@@ -8,21 +8,24 @@ Under the hood, the typescript-eslint parser uses TypeScript's compiler APIs to 
 
 To tap into TypeScript's additional powers, there are two small changes you need to make to your config file:
 
-```diff title=".eslintrc.js"
- module.exports = {
-   root: true,
-   parser: '@typescript-eslint/parser',
-+  parserOptions: {
-+    tsconfigRootDir: __dirname,
-+    project: ['./tsconfig.json'],
-+  },
-   plugins: ['@typescript-eslint'],
-   extends: [
-     'eslint:recommended',
-     'plugin:@typescript-eslint/recommended',
-+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-   ],
- };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  // Added lines start
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
+  },
+  // Added lines end
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Add this line
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+};
 ```
 
 In more detail:
