@@ -87,52 +87,77 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        let identifier: TSESTree.Identifier | TSESTree.MemberExpression;
-        let alternate: TSESTree.Expression;
-        let requiredOperator: '!==' | '===';
-        if (
-          (node.consequent.type === AST_NODE_TYPES.Identifier ||
-            node.consequent.type === AST_NODE_TYPES.MemberExpression) &&
-          ((node.test.type === AST_NODE_TYPES.BinaryExpression &&
-            (node.test.operator === '!==' || node.test.operator === '!=')) ||
-            (node.test.type === AST_NODE_TYPES.LogicalExpression &&
-              node.test.left.type === AST_NODE_TYPES.BinaryExpression &&
-              (node.test.left.operator === '!==' ||
-                node.test.left.operator === '!=')))
-        ) {
-          identifier = node.consequent;
-          alternate = node.alternate;
-          requiredOperator = '!==';
-        } else if (
-          node.alternate.type === AST_NODE_TYPES.Identifier ||
-          node.alternate.type === AST_NODE_TYPES.MemberExpression
-        ) {
-          identifier = node.alternate;
-          alternate = node.consequent;
-          requiredOperator = '===';
-        } else {
+        const operator = getOperator(node.test);
+
+        if (!operator) {
           return;
         }
 
-        if (
-          isFixableLooseTernary({
-            requiredOperator,
-            identifier,
-            node,
-          }) ||
-          isFixableExplicitTernary({
-            requiredOperator,
-            identifier,
-            node,
-          }) ||
-          isFixableImplicitTernary({
-            parserServices,
-            checker,
-            requiredOperator,
-            identifier,
-            node,
-          })
-        ) {
+        let identifier: TSESTree.Node | undefined;
+        let hasUndefinedCheck = false;
+        let hasNullCheck = false;
+
+        // we check that the test only contains null, undefined and the identifier
+        for (const n of getNodes(node.test)) {
+          if (util.isNullLiteral(n)) {
+            hasNullCheck = true;
+          } else if (util.isUndefinedIdentifier(n)) {
+            hasUndefinedCheck = true;
+          } else if (
+            (operator === '!==' || operator === '!=') &&
+            util.isNodeEqual(n, node.consequent)
+          ) {
+            identifier = n;
+          } else if (
+            (operator === '===' || operator === '==') &&
+            util.isNodeEqual(n, node.alternate)
+          ) {
+            identifier = n;
+          } else {
+            return;
+          }
+        }
+
+        if (!identifier) {
+          return;
+        }
+
+        const isFixable = ((): boolean => {
+          // it is fixable if we check for both null and undefined
+          if (hasUndefinedCheck && hasNullCheck) {
+            return true;
+          }
+
+          // it is fixable if we loosly check for eihter null or undefined
+          if (
+            (operator === '==' || operator === '!=') &&
+            (hasUndefinedCheck || hasNullCheck)
+          ) {
+            return true;
+          }
+
+          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(identifier);
+          const type = checker.getTypeAtLocation(tsNode);
+          const flags = util.getTypeFlags(type);
+
+          if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+            return false;
+          }
+
+          const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
+
+          // it is fixable if we check for undefined and the type is not nullable
+          if (hasUndefinedCheck && !hasNullType) {
+            return true;
+          }
+
+          const hasUndefinedType = (flags & ts.TypeFlags.Undefined) !== 0;
+
+          // it is fixable if we check for null and the type can't be undefined
+          return hasNullCheck && !hasUndefinedType;
+        })();
+
+        if (isFixable) {
           context.report({
             node,
             messageId: 'preferNullishOverTernary',
@@ -140,14 +165,18 @@ export default util.createRule<Options, MessageIds>({
               {
                 messageId: 'suggestNullish',
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                  const [left, right] =
+                    operator === '===' || operator === '=='
+                      ? [node.alternate, node.consequent]
+                      : [node.consequent, node.alternate];
                   return fixer.replaceText(
                     node,
                     `${sourceCode.text.slice(
-                      identifier.range[0],
-                      identifier.range[1],
+                      left.range[0],
+                      left.range[1],
                     )} ?? ${sourceCode.text.slice(
-                      alternate.range[0],
-                      alternate.range[1],
+                      right.range[0],
+                      right.range[1],
                     )}`,
                   );
                 },
@@ -280,174 +309,51 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
   return false;
 }
 
-/**
- * This is for ternary expressions where we check both undefined and null.
- * example: foo === undefined && foo === null ? 'a string' : foo
- * output: foo ?? 'a string'
- */
-function isFixableExplicitTernary({
-  requiredOperator,
-  identifier,
-  node,
-}: {
-  requiredOperator: '!==' | '===';
-  identifier: TSESTree.Identifier | TSESTree.MemberExpression;
-  node: TSESTree.ConditionalExpression;
-}): boolean {
-  if (node.test.type !== AST_NODE_TYPES.LogicalExpression) {
-    return false;
-  }
-  if (requiredOperator === '===' && node.test.operator === '&&') {
-    return false;
-  }
-  const { left, right } = node.test;
-  if (
-    left.type !== AST_NODE_TYPES.BinaryExpression ||
-    right.type !== AST_NODE_TYPES.BinaryExpression
+function getOperator(
+  node: TSESTree.Expression,
+): '==' | '!=' | '===' | '!==' | undefined {
+  if (node.type === AST_NODE_TYPES.BinaryExpression) {
+    if (
+      node.operator === '==' ||
+      node.operator === '!=' ||
+      node.operator === '===' ||
+      node.operator === '!=='
+    ) {
+      return node.operator;
+    }
+  } else if (
+    node.type === AST_NODE_TYPES.LogicalExpression &&
+    node.left.type === AST_NODE_TYPES.BinaryExpression &&
+    node.right.type === AST_NODE_TYPES.BinaryExpression
   ) {
-    return false;
+    if (node.operator === '||') {
+      if (node.left.operator === '===' && node.right.operator === '===') {
+        return '===';
+      } else if (
+        (node.left.operator === '===' || node.right.operator === '===') &&
+        (node.left.operator === '==' || node.right.operator === '==')
+      ) {
+        return '==';
+      }
+    } else if (node.operator === '&&') {
+      if (node.left.operator === '!==' && node.right.operator === '!==') {
+        return '!==';
+      } else if (
+        (node.left.operator === '!==' || node.right.operator === '!==') &&
+        (node.left.operator === '!=' || node.right.operator === '!=')
+      ) {
+        return '!=';
+      }
+    }
   }
-
-  if (
-    left.operator !== requiredOperator ||
-    right.operator !== requiredOperator
-  ) {
-    return false;
-  }
-
-  const hasUndefinedCheck =
-    (util.isNodeEqual(identifier, left.left) &&
-      util.isUndefinedIdentifier(left.right)) ||
-    (util.isNodeEqual(identifier, left.right) &&
-      util.isUndefinedIdentifier(left.left)) ||
-    (util.isNodeEqual(identifier, right.left) &&
-      util.isUndefinedIdentifier(right.right)) ||
-    (util.isNodeEqual(identifier, right.right) &&
-      util.isUndefinedIdentifier(right.left));
-
-  if (!hasUndefinedCheck) {
-    return false;
-  }
-
-  const hasNullCheck =
-    (util.isNodeEqual(identifier, left.left) &&
-      util.isNullLiteral(left.right)) ||
-    (util.isNodeEqual(identifier, left.right) &&
-      util.isNullLiteral(left.left)) ||
-    (util.isNodeEqual(identifier, right.left) &&
-      util.isNullLiteral(right.right)) ||
-    (util.isNodeEqual(identifier, right.right) &&
-      util.isNullLiteral(right.left));
-
-  return hasNullCheck;
+  return;
 }
 
-/*
- * this is for ternary expressions where == or != is used.
- * example: foo == null ? 'a string' : a
- * example: foo != undefined ? a : 'a string'
- */
-function isFixableLooseTernary({
-  node,
-  identifier,
-  requiredOperator,
-}: {
-  requiredOperator: '!==' | '===';
-  identifier: TSESTree.Identifier | TSESTree.MemberExpression;
-  node: TSESTree.ConditionalExpression;
-}): boolean {
-  if (node.test.type !== AST_NODE_TYPES.BinaryExpression) {
-    return false;
+function getNodes(node: TSESTree.Node): TSESTree.Node[] {
+  if (node.type === AST_NODE_TYPES.BinaryExpression) {
+    return [node.left, node.right];
+  } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
+    return [...getNodes(node.left), ...getNodes(node.right)];
   }
-
-  const { left, right, operator } = node.test;
-  if (requiredOperator === '===' && operator !== '==') {
-    return false;
-  }
-  if (requiredOperator === '!==' && operator !== '!=') {
-    return false;
-  }
-
-  if (
-    util.isNodeEqual(identifier, right) &&
-    (util.isNullLiteral(left) || util.isUndefinedIdentifier(left))
-  ) {
-    return true;
-  }
-
-  if (
-    util.isNodeEqual(identifier, left) &&
-    (util.isNullLiteral(right) || util.isUndefinedIdentifier(right))
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * This is for ternary expressions where we check only undefined or null and
- * need to type information to ensure that our checks are still correct.
- * example: const foo:? string = 'bar';
- *          foo !== undefined ? foo : 'a string';
- * output: foo ?? 'a string'
- */
-function isFixableImplicitTernary({
-  parserServices,
-  checker,
-  requiredOperator,
-  identifier,
-  node,
-}: {
-  parserServices: ReturnType<typeof util.getParserServices>;
-  checker: ts.TypeChecker;
-  requiredOperator: '!==' | '===';
-  identifier: TSESTree.Identifier | TSESTree.MemberExpression;
-  node: TSESTree.ConditionalExpression;
-}): boolean {
-  if (node.test.type !== AST_NODE_TYPES.BinaryExpression) {
-    return false;
-  }
-  const { left, right, operator } = node.test;
-  if (operator !== requiredOperator) {
-    return false;
-  }
-
-  const i = util.isNodeEqual(identifier, left)
-    ? left
-    : util.isNodeEqual(identifier, right)
-    ? right
-    : null;
-  if (!i) {
-    return false;
-  }
-
-  const tsNode = parserServices.esTreeNodeToTSNodeMap.get(i);
-  const type = checker.getTypeAtLocation(tsNode);
-  const flags = util.getTypeFlags(type);
-
-  if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-    return false;
-  }
-
-  const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
-  const hasUndefinedType = (flags & ts.TypeFlags.Undefined) !== 0;
-
-  if (
-    hasNullType &&
-    !hasUndefinedType &&
-    (util.isNullLiteral(right) || util.isNullLiteral(left))
-  ) {
-    return true;
-  }
-
-  if (
-    hasUndefinedType &&
-    !hasNullType &&
-    (util.isUndefinedIdentifier(right) || util.isUndefinedIdentifier(left))
-  ) {
-    return true;
-  }
-
-  return false;
+  return [node];
 }
