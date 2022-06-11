@@ -162,8 +162,10 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullish = util.isNullableType(type, { allowUndefined: true });
-        if (!isNullish) {
+        const isNullLiteralish = util.isNullableType(type, {
+          allowUndefined: true,
+        });
+        if (!isNullLiteralish) {
           return;
         }
 
@@ -314,21 +316,28 @@ function isFixableExplicitTernary({
   }
 
   const hasUndefinedCheck =
-    (util.isNodeEqual(identifier, left.left) && util.isUndefined(left.right)) ||
-    (util.isNodeEqual(identifier, left.right) && util.isUndefined(left.left)) ||
+    (util.isNodeEqual(identifier, left.left) &&
+      util.isUndefinedIdentifier(left.right)) ||
+    (util.isNodeEqual(identifier, left.right) &&
+      util.isUndefinedIdentifier(left.left)) ||
     (util.isNodeEqual(identifier, right.left) &&
-      util.isUndefined(right.right)) ||
-    (util.isNodeEqual(identifier, right.right) && util.isUndefined(right.left));
+      util.isUndefinedIdentifier(right.right)) ||
+    (util.isNodeEqual(identifier, right.right) &&
+      util.isUndefinedIdentifier(right.left));
 
   if (!hasUndefinedCheck) {
     return false;
   }
 
   const hasNullCheck =
-    (util.isNodeEqual(identifier, left.left) && util.isNull(left.right)) ||
-    (util.isNodeEqual(identifier, left.right) && util.isNull(left.left)) ||
-    (util.isNodeEqual(identifier, right.left) && util.isNull(right.right)) ||
-    (util.isNodeEqual(identifier, right.right) && util.isNull(right.left));
+    (util.isNodeEqual(identifier, left.left) &&
+      util.isNullLiteral(left.right)) ||
+    (util.isNodeEqual(identifier, left.right) &&
+      util.isNullLiteral(left.left)) ||
+    (util.isNodeEqual(identifier, right.left) &&
+      util.isNullLiteral(right.right)) ||
+    (util.isNodeEqual(identifier, right.right) &&
+      util.isNullLiteral(right.left));
 
   return hasNullCheck;
 }
@@ -361,14 +370,14 @@ function isFixableLooseTernary({
 
   if (
     util.isNodeEqual(identifier, right) &&
-    (util.isNull(left) || util.isUndefined(left))
+    (util.isNullLiteral(left) || util.isUndefinedIdentifier(left))
   ) {
     return true;
   }
 
   if (
     util.isNodeEqual(identifier, left) &&
-    (util.isNull(right) || util.isUndefined(right))
+    (util.isNullLiteral(right) || util.isUndefinedIdentifier(right))
   ) {
     return true;
   }
@@ -427,7 +436,7 @@ function isFixableImplicitTernary({
   if (
     hasNullType &&
     !hasUndefinedType &&
-    (util.isNull(right) || util.isNull(left))
+    (util.isNullLiteral(right) || util.isNullLiteral(left))
   ) {
     return true;
   }
@@ -435,7 +444,7 @@ function isFixableImplicitTernary({
   if (
     hasUndefinedType &&
     !hasNullType &&
-    (util.isUndefined(right) || util.isUndefined(left))
+    (util.isUndefinedIdentifier(right) || util.isUndefinedIdentifier(left))
   ) {
     return true;
   }
