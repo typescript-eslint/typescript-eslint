@@ -90,6 +90,7 @@ x ?? 'foo';
       'x === null || x === null ? y : x;',
       'x === undefined || x === undefined ? y : x;',
       'x == null ? x : y;',
+      'undefined == null ? x : y;',
       'undefined != z ? x : y;',
       'x == undefined ? x : y;',
       'x != null ? y : x;',
