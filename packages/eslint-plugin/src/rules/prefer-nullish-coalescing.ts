@@ -330,11 +330,7 @@ function isFixableExplicitTernary({
     (util.isNodeEqual(identifier, right.left) && util.isNull(right.right)) ||
     (util.isNodeEqual(identifier, right.right) && util.isNull(right.left));
 
-  if (!hasNullCheck) {
-    return false;
-  }
-
-  return true;
+  return hasNullCheck;
 }
 
 /*
