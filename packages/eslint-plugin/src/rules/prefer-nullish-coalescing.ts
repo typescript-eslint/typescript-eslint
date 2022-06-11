@@ -330,8 +330,9 @@ function getOperator(
       if (node.left.operator === '===' && node.right.operator === '===') {
         return '===';
       } else if (
-        (node.left.operator === '===' || node.right.operator === '===') &&
-        (node.left.operator === '==' || node.right.operator === '==')
+        ((node.left.operator === '===' || node.right.operator === '===') &&
+          (node.left.operator === '==' || node.right.operator === '==')) ||
+        (node.left.operator === '==' && node.right.operator === '==')
       ) {
         return '==';
       }
@@ -339,8 +340,9 @@ function getOperator(
       if (node.left.operator === '!==' && node.right.operator === '!==') {
         return '!==';
       } else if (
-        (node.left.operator === '!==' || node.right.operator === '!==') &&
-        (node.left.operator === '!=' || node.right.operator === '!=')
+        ((node.left.operator === '!==' || node.right.operator === '!==') &&
+          (node.left.operator === '!=' || node.right.operator === '!=')) ||
+        (node.left.operator === '!=' && node.right.operator === '!=')
       ) {
         return '!=';
       }
