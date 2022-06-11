@@ -130,7 +130,7 @@ declare const x: string | undefined;
 x === null ? x : y;
       `,
     ].map(code => ({
-      code: code.trim(),
+      code,
       options: [{ ignoreTernaryTests: false }] as const,
     })),
 
