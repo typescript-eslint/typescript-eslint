@@ -3,7 +3,7 @@ import type Monaco from 'monaco-editor';
 import clsx from 'clsx';
 
 import type { ErrorItem, ErrorGroup } from './types';
-import LinkIcon from '@site/src/icons/link.svg';
+import IconExternalLink from '@theme/IconExternalLink';
 import styles from './ErrorsViewer.module.css';
 
 export interface ErrorsViewerProps {
@@ -16,6 +16,12 @@ export interface ErrorBlockProps {
   readonly isLocked: boolean;
 }
 
+export interface FixButtonProps {
+  readonly fix: () => void;
+  readonly setIsLocked: (value: boolean) => void;
+  readonly disabled: boolean;
+}
+
 function severityClass(severity: Monaco.MarkerSeverity): string {
   switch (severity) {
     case 8:
@@ -26,6 +32,21 @@ function severityClass(severity: Monaco.MarkerSeverity): string {
       return 'note';
   }
   return 'info';
+}
+
+function FixButton(props: FixButtonProps): JSX.Element {
+  return (
+    <button
+      className="button button--primary button--sm"
+      disabled={props.disabled}
+      onClick={(): void => {
+        props.fix();
+        props.setIsLocked(true);
+      }}
+    >
+      fix
+    </button>
+  );
 }
 
 function ErrorBlock({
@@ -41,16 +62,11 @@ function ErrorBlock({
             {item.message} {item.location}
           </div>
           {item.fixer && (
-            <button
-              className="button button--primary button--sm"
+            <FixButton
               disabled={isLocked}
-              onClick={(): void => {
-                item.fixer!.fix();
-                setIsLocked(true);
-              }}
-            >
-              fix
-            </button>
+              fix={item.fixer.fix}
+              setIsLocked={setIsLocked}
+            />
           )}
         </div>
         {item.suggestions.length > 0 && (
@@ -61,16 +77,11 @@ function ErrorBlock({
                 className={clsx(styles.fixerContainer, styles.fixer)}
               >
                 <span>&gt; {fixer.message}</span>
-                <button
-                  className="button button--primary button--sm"
+                <FixButton
                   disabled={isLocked}
-                  onClick={(): void => {
-                    fixer.fix();
-                    setIsLocked(true);
-                  }}
-                >
-                  fix
-                </button>
+                  fix={fixer.fix}
+                  setIsLocked={setIsLocked}
+                />
               </div>
             ))}
           </div>
@@ -100,7 +111,7 @@ export default function ErrorsViewer({
                 <>
                   {' - '}
                   <a href={uri} target="_blank">
-                    details <LinkIcon width={13.5} height={13.5} />
+                    docs <IconExternalLink width={13.5} height={13.5} />
                   </a>
                 </>
               )}
