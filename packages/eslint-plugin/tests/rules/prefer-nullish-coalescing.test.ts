@@ -211,7 +211,7 @@ x || 'foo';
       output: null,
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 3,
           endLine: 3,
@@ -386,7 +386,7 @@ x || 'foo' ? null : null;
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 3,
           endLine: 3,
@@ -412,7 +412,7 @@ if (x || 'foo') {}
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 7,
           endLine: 3,
@@ -438,7 +438,7 @@ do {} while (x || 'foo')
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 16,
           endLine: 3,
@@ -464,7 +464,7 @@ for (;x || 'foo';) {}
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 9,
           endLine: 3,
@@ -490,7 +490,7 @@ while (x || 'foo') {}
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 10,
           endLine: 3,
@@ -519,7 +519,7 @@ a || b && c;
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 5,
           column: 3,
           endLine: 5,
@@ -549,7 +549,7 @@ a || b || c && d;
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 3,
           endLine: 6,
@@ -568,7 +568,7 @@ declare const d: ${type} | ${nullish};
           ],
         },
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 8,
           endLine: 6,
@@ -599,7 +599,7 @@ a && b || c || d;
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 8,
           endLine: 6,
@@ -618,7 +618,7 @@ a && (b ?? c) || d;
           ],
         },
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 13,
           endLine: 6,
@@ -649,7 +649,7 @@ if (() => x || 'foo') {}
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 13,
           endLine: 3,
@@ -675,7 +675,7 @@ if (function werid() { return x || 'foo' }) {}
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 33,
           endLine: 3,
@@ -703,7 +703,7 @@ a || b || c;
       output: null,
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 5,
           column: 3,
           endLine: 5,

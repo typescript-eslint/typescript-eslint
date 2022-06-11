@@ -16,7 +16,7 @@ export type Options = [
 ];
 
 export type MessageIds =
-  | 'preferNullish'
+  | 'preferNullishOverOr'
   | 'preferNullishOverTernary'
   | 'suggestNullish';
 
@@ -33,7 +33,7 @@ export default util.createRule<Options, MessageIds>({
     },
     hasSuggestions: true,
     messages: {
-      preferNullish:
+      preferNullishOverOr:
         'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
       preferNullishOverTernary:
         'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
@@ -237,7 +237,7 @@ export default util.createRule<Options, MessageIds>({
 
         context.report({
           node: barBarOperator,
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           suggest: [
             {
               messageId: 'suggestNullish',
