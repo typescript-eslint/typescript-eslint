@@ -2,36 +2,6 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 /*
  * Supported:
  *   Identifier Literal MemberExpression ThisExpression
- * Currently not supported:
- *   ArrayExpression ArrayPattern ArrowFunctionExpression AssignmentExpression
- *   AssignmentPattern AwaitExpression BinaryExpression BlockStatement
- *   BreakStatement CallExpression CatchClause ChainExpression ClassBody
- *   ClassDeclaration ClassExpression ConditionalExpression ContinueStatement
- *   DebuggerStatement Decorator DoWhileStatement EmptyStatement
- *   ExportAllDeclaration ExportDefaultDeclaration ExportNamedDeclaration
- *   ExportSpecifier ExpressionStatement ForInStatement ForOfStatement
- *   ForStatement FunctionDeclaration FunctionExpression IfStatement
- *   ImportAttribute ImportDeclaration ImportDefaultSpecifier ImportExpression
- *   ImportNamespaceSpecifier ImportSpecifier JSXAttribute JSXClosingElement
- *   JSXClosingFragment JSXElement JSXEmptyExpression JSXExpressionContainer
- *   JSXFragment JSXIdentifier JSXMemberExpression JSXNamespacedName
- *   JSXOpeningElement JSXOpeningFragment JSXSpreadAttribute JSXSpreadChild
- *   JSXText LabeledStatement LogicalExpression MetaProperty MethodDefinition
- *   NewExpression ObjectExpression ObjectPattern PrivateIdentifier Program
- *   Property PropertyDefinition RestElement ReturnStatement SequenceExpression
- *   SpreadElement StaticBlock Super SwitchCase SwitchStatement
- *   TaggedTemplateExpression TemplateElement TemplateLiteral ThrowStatement
- *   TryStatement TSAbstractKeyword TSAbstractMethodDefinition
- *   TSAbstractPropertyDefinition TSAnyKeyword TSArrayType TSAsExpression
- *   TSAsyncKeyword TSBigIntKeyword TSBooleanKeyword TSCallSignatureDeclaration
- *   TSClassImplements TSConditionalType TSConstructorType
- *   TSConstructSignatureDeclaration TSDeclareFunction TSDeclareKeyword
- *   TSEmptyBodyFunctionExpression TSEnumDeclaration TSEnumMember
- *   TSExportAssignment TSExportKeyword TSExternalModuleReference
- *   TSFunctionType TSImportEqualsDeclaration TSImportType TSIndexedAccessType
- *   TSIndexSignature TSInferType TSInterfaceBody TSInterfaceDeclaration
- *   TSInterfaceHeritage TSIntersectionType TSIntrinsicKeyword TSLiteralType
- *   TSMappedType TSMethodSignature TSModuleBlock TSModuleDeclaration
  *   TSNamedTupleMember TSNamespaceExportDeclaration TSNeverKeyword
  *   TSNonNullExpression TSNullKeyword TSNumberKeyword TSObjectKeyword
  *   TSOptionalType TSParameterProperty TSPrivateKeyword TSPropertySignature
