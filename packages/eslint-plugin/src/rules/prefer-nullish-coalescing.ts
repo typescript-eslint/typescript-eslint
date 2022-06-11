@@ -97,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
         let hasUndefinedCheck = false;
         let hasNullCheck = false;
 
-        // we check that the test only contain null, undefined and the identifier
+        // we check that the test only contains null, undefined and the identifier
         for (const n of getNodes(node.test)) {
           if (util.isNullLiteral(n)) {
             hasNullCheck = true;
