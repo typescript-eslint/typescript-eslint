@@ -298,6 +298,27 @@ x ?? 'foo';
       },
     ]),
 
+    {
+      code: 'this != undefined ? this : y;',
+      output: null,
+      options: [{ ignoreTernaryTests: false }] as const,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary' as const,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 29,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: 'this ?? y;',
+            },
+          ],
+        },
+      ],
+    },
+
     ...[
       `
 declare const x: string | undefined;
