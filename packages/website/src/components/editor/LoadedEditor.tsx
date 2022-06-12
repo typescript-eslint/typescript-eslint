@@ -129,7 +129,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
       const messages = webLinter.lint(code);
 
-      const markers = parseLintResults(messages, codeActions);
+      const markers = parseLintResults(messages, codeActions, ruleId =>
+        sandboxInstance.monaco.Uri.parse(webLinter.rulesUrl.get(ruleId) ?? ''),
+      );
 
       sandboxInstance.monaco.editor.setModelMarkers(
         tabs.code,
