@@ -21,36 +21,38 @@ export const isNodeOfTypes =
 
 export const isNodeOfTypeWithConditions = <
   NodeType extends AST_NODE_TYPES,
-  Conditions extends Partial<Extract<TSESTree.Node, { type: NodeType }>>,
+  ExtractedNode extends Extract<TSESTree.Node, { type: NodeType }>,
+  Conditions extends Partial<ExtractedNode>,
 >(
   nodeType: NodeType,
   conditions: Conditions,
 ): ((
   node: TSESTree.Node | null | undefined,
-) => node is Extract<TSESTree.Node, { type: NodeType }> & Conditions) => {
+) => node is ExtractedNode & Conditions) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Node>;
 
   return (
     node: TSESTree.Node | null | undefined,
-  ): node is Extract<TSESTree.Node, { type: NodeType }> & Conditions =>
+  ): node is ExtractedNode & Conditions =>
     node?.type === nodeType &&
     entries.every(([key, value]) => node[key as keyof TSESTree.Node] === value);
 };
 
 export const isTokenOfTypeWithConditions = <
   TokenType extends AST_TOKEN_TYPES,
+  ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
   Conditions extends Partial<TSESTree.Token & { type: TokenType }>,
 >(
   tokenType: TokenType,
   conditions: Conditions,
 ): ((
   token: TSESTree.Token | null | undefined,
-) => token is Extract<TSESTree.Token, { type: TokenType }> & Conditions) => {
+) => token is ExtractedToken & Conditions) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Token>;
 
   return (
     token: TSESTree.Token | null | undefined,
-  ): token is Extract<TSESTree.Token, { type: TokenType }> & Conditions =>
+  ): token is ExtractedToken & Conditions =>
     token?.type === tokenType &&
     entries.every(
       ([key, value]) => token[key as keyof TSESTree.Token] === value,
@@ -60,20 +62,13 @@ export const isTokenOfTypeWithConditions = <
 export const isNotTokenOfTypeWithConditions =
   <
     TokenType extends AST_TOKEN_TYPES,
-    Conditions extends Partial<Extract<TSESTree.Token, { type: TokenType }>>,
+    ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
+    Conditions extends Partial<ExtractedToken>,
   >(
     tokenType: TokenType,
     conditions: Conditions,
   ): ((
     token: TSESTree.Token | null | undefined,
-  ) => token is Exclude<
-    TSESTree.Token,
-    Extract<TSESTree.Token, { type: TokenType }> & Conditions
-  >) =>
-  (
-    token,
-  ): token is Exclude<
-    TSESTree.Token,
-    Extract<TSESTree.Token, { type: TokenType }> & Conditions
-  > =>
+  ) => token is Exclude<TSESTree.Token, ExtractedToken & Conditions>) =>
+  (token): token is Exclude<TSESTree.Token, ExtractedToken & Conditions> =>
     !isTokenOfTypeWithConditions(tokenType, conditions)(token);
