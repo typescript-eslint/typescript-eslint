@@ -61,8 +61,8 @@ foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
-(((foo || {}).a || {}).b {}).c;
-(((foo || {})['a'] || {}).b {}).c;
+(((foo || {}).a || {}).b || {}).c;
+(((foo || {})['a'] || {}).b || {}).c;
 
 // this rule also supports converting chained strict nullish checks:
 foo &&

@@ -28,9 +28,10 @@ export function createProvideCodeActions(
         const messages = fixes.get(createURI(marker)) ?? [];
         for (const message of messages) {
           actions.push({
-            title: message.message,
+            title: message.message + (message.code ? ` (${message.code})` : ''),
             diagnostics: [marker],
             kind: 'quickfix',
+            isPreferred: message.isPreferred,
             edit: {
               edits: [
                 {

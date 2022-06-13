@@ -1,17 +1,25 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type Monaco from 'monaco-editor';
-import type { ErrorItem } from './types';
+import clsx from 'clsx';
 
+import type { ErrorItem, ErrorGroup } from './types';
+import IconExternalLink from '@theme/IconExternalLink';
 import styles from './ErrorsViewer.module.css';
 
 export interface ErrorsViewerProps {
-  readonly value?: ErrorItem[];
+  readonly value?: ErrorGroup[];
 }
 
 export interface ErrorBlockProps {
   readonly item: ErrorItem;
   readonly setIsLocked: (value: boolean) => void;
   readonly isLocked: boolean;
+}
+
+export interface FixButtonProps {
+  readonly fix: () => void;
+  readonly setIsLocked: (value: boolean) => void;
+  readonly disabled: boolean;
 }
 
 function severityClass(severity: Monaco.MarkerSeverity): string {
@@ -26,16 +34,19 @@ function severityClass(severity: Monaco.MarkerSeverity): string {
   return 'info';
 }
 
-function groupErrorItems(items: ErrorItem[]): [string, ErrorItem[]][] {
-  return Object.entries(
-    items.reduce<Record<string, ErrorItem[]>>((acc, obj) => {
-      if (!acc[obj.group]) {
-        acc[obj.group] = [];
-      }
-      acc[obj.group].push(obj);
-      return acc;
-    }, {}),
-  ).sort(([a], [b]) => a.localeCompare(b));
+function FixButton(props: FixButtonProps): JSX.Element {
+  return (
+    <button
+      className="button button--primary button--sm"
+      disabled={props.disabled}
+      onClick={(): void => {
+        props.fix();
+        props.setIsLocked(true);
+      }}
+    >
+      fix
+    </button>
+  );
 }
 
 function ErrorBlock({
@@ -46,30 +57,35 @@ function ErrorBlock({
   return (
     <div className={`admonition alert alert--${severityClass(item.severity)}`}>
       <div className="admonition-content">
-        <div className="row row--no-gutters">
-          <div className="col col--12">
+        <div className={clsx(!!item.fixer && styles.fixerContainer)}>
+          <div>
             {item.message} {item.location}
           </div>
-          {item.hasFixers && (
-            <div className="col col--12">
-              {item.fixers.map((fixer, index) => (
-                <div key={index} className={styles.fixer}>
-                  <span>&gt; {fixer.message}</span>
-                  <button
-                    className="button button--primary button--sm"
-                    disabled={isLocked}
-                    onClick={(): void => {
-                      fixer.fix();
-                      setIsLocked(true);
-                    }}
-                  >
-                    fix
-                  </button>
-                </div>
-              ))}
-            </div>
+          {item.fixer && (
+            <FixButton
+              disabled={isLocked}
+              fix={item.fixer.fix}
+              setIsLocked={setIsLocked}
+            />
           )}
         </div>
+        {item.suggestions.length > 0 && (
+          <div>
+            {item.suggestions.map((fixer, index) => (
+              <div
+                key={index}
+                className={clsx(styles.fixerContainer, styles.fixer)}
+              >
+                <span>&gt; {fixer.message}</span>
+                <FixButton
+                  disabled={isLocked}
+                  fix={fixer.fix}
+                  setIsLocked={setIsLocked}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -78,11 +94,6 @@ function ErrorBlock({
 export default function ErrorsViewer({
   value,
 }: ErrorsViewerProps): JSX.Element {
-  const model = useMemo(
-    () => (value ? groupErrorItems(value) : undefined),
-    [value],
-  );
-
   const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
@@ -91,11 +102,21 @@ export default function ErrorsViewer({
 
   return (
     <div className={styles.list}>
-      {model?.map(([group, data]) => {
+      {value?.map(({ group, uri, items }) => {
         return (
           <div className="margin-top--sm" key={group}>
-            <h4>{group}</h4>
-            {data.map((item, index) => (
+            <h4>
+              {group}
+              {uri && (
+                <>
+                  {' - '}
+                  <a href={uri} target="_blank">
+                    docs <IconExternalLink width={13.5} height={13.5} />
+                  </a>
+                </>
+              )}
+            </h4>
+            {items.map((item, index) => (
               <ErrorBlock
                 isLocked={isLocked}
                 setIsLocked={setIsLocked}
