@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.1...v5.28.0) (2022-06-13)
+
+
+### Features
+
+* **eslint-plugin:** [consistent-generic-constructors] add rule ([#4924](https://github.com/typescript-eslint/typescript-eslint/issues/4924)) ([921cdf1](https://github.com/typescript-eslint/typescript-eslint/commit/921cdf17e548845311d0591249616ec844503926))
+
+
+
+
+
 ## [5.27.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.0...v5.27.1) (2022-06-06)
 
 **Note:** Version bump only for package @typescript-eslint/utils
