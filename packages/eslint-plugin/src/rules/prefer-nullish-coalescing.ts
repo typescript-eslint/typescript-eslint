@@ -184,11 +184,13 @@ export default util.createRule<Options, MessageIds>({
             return true;
           }
 
+          // it is not fixable if it has neither a null nor undefined check
+          if (!hasUndefinedCheck && !hasNullCheck) {
+            return false;
+          }
+
           // it is fixable if we loosely check for either null or undefined
-          if (
-            (operator === '==' || operator === '!=') &&
-            (hasUndefinedCheck || hasNullCheck)
-          ) {
+          if (operator === '==' || operator === '!=') {
             return true;
           }
 
