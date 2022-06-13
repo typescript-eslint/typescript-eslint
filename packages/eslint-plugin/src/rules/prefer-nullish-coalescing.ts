@@ -87,7 +87,63 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const operator = getOperator(node.test);
+        let operator: '==' | '!=' | '===' | '!==' | undefined;
+        let nodesInsideTestExpression: TSESTree.Node[] = [];
+        if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
+          nodesInsideTestExpression = [node.test.left, node.test.right];
+          if (
+            node.test.operator === '==' ||
+            node.test.operator === '!=' ||
+            node.test.operator === '===' ||
+            node.test.operator === '!=='
+          ) {
+            operator = node.test.operator;
+          }
+        } else if (
+          node.test.type === AST_NODE_TYPES.LogicalExpression &&
+          node.test.left.type === AST_NODE_TYPES.BinaryExpression &&
+          node.test.right.type === AST_NODE_TYPES.BinaryExpression
+        ) {
+          nodesInsideTestExpression = [
+            node.test.left.left,
+            node.test.left.right,
+            node.test.right.left,
+            node.test.right.right,
+          ];
+          if (node.test.operator === '||') {
+            if (
+              node.test.left.operator === '===' &&
+              node.test.right.operator === '==='
+            ) {
+              operator = '===';
+            } else if (
+              ((node.test.left.operator === '===' ||
+                node.test.right.operator === '===') &&
+                (node.test.left.operator === '==' ||
+                  node.test.right.operator === '==')) ||
+              (node.test.left.operator === '==' &&
+                node.test.right.operator === '==')
+            ) {
+              operator = '==';
+            }
+          } else if (node.test.operator === '&&') {
+            if (
+              node.test.left.operator === '!==' &&
+              node.test.right.operator === '!=='
+            ) {
+              operator = '!==';
+            } else if (
+              ((node.test.left.operator === '!==' ||
+                node.test.right.operator === '!==') &&
+                (node.test.left.operator === '!=' ||
+                  node.test.right.operator === '!=')) ||
+              (node.test.left.operator === '!=' &&
+                node.test.right.operator === '!=')
+            ) {
+              operator = '!=';
+            }
+          }
+        }
 
         if (!operator) {
           return;
@@ -98,21 +154,21 @@ export default util.createRule<Options, MessageIds>({
         let hasNullCheck = false;
 
         // we check that the test only contains null, undefined and the identifier
-        for (const n of getNodes(node.test)) {
-          if (util.isNullLiteral(n)) {
+        for (const testNode of nodesInsideTestExpression) {
+          if (util.isNullLiteral(testNode)) {
             hasNullCheck = true;
-          } else if (util.isUndefinedIdentifier(n)) {
+          } else if (util.isUndefinedIdentifier(testNode)) {
             hasUndefinedCheck = true;
           } else if (
             (operator === '!==' || operator === '!=') &&
-            util.isNodeEqual(n, node.consequent)
+            util.isNodeEqual(testNode, node.consequent)
           ) {
-            identifier = n;
+            identifier = testNode;
           } else if (
             (operator === '===' || operator === '==') &&
-            util.isNodeEqual(n, node.alternate)
+            util.isNodeEqual(testNode, node.alternate)
           ) {
-            identifier = n;
+            identifier = testNode;
           } else {
             return;
           }
@@ -305,55 +361,4 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
   }
 
   return false;
-}
-
-function getOperator(
-  node: TSESTree.Expression,
-): '==' | '!=' | '===' | '!==' | undefined {
-  if (node.type === AST_NODE_TYPES.BinaryExpression) {
-    if (
-      node.operator === '==' ||
-      node.operator === '!=' ||
-      node.operator === '===' ||
-      node.operator === '!=='
-    ) {
-      return node.operator;
-    }
-  } else if (
-    node.type === AST_NODE_TYPES.LogicalExpression &&
-    node.left.type === AST_NODE_TYPES.BinaryExpression &&
-    node.right.type === AST_NODE_TYPES.BinaryExpression
-  ) {
-    if (node.operator === '||') {
-      if (node.left.operator === '===' && node.right.operator === '===') {
-        return '===';
-      } else if (
-        ((node.left.operator === '===' || node.right.operator === '===') &&
-          (node.left.operator === '==' || node.right.operator === '==')) ||
-        (node.left.operator === '==' && node.right.operator === '==')
-      ) {
-        return '==';
-      }
-    } else if (node.operator === '&&') {
-      if (node.left.operator === '!==' && node.right.operator === '!==') {
-        return '!==';
-      } else if (
-        ((node.left.operator === '!==' || node.right.operator === '!==') &&
-          (node.left.operator === '!=' || node.right.operator === '!=')) ||
-        (node.left.operator === '!=' && node.right.operator === '!=')
-      ) {
-        return '!=';
-      }
-    }
-  }
-  return;
-}
-
-function getNodes(node: TSESTree.Node): TSESTree.Node[] {
-  if (node.type === AST_NODE_TYPES.BinaryExpression) {
-    return [node.left, node.right];
-  } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
-    return [...getNodes(node.left), ...getNodes(node.right)];
-  }
-  return [node];
 }
