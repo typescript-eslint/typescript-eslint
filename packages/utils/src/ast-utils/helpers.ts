@@ -34,7 +34,7 @@ export const isNodeOfTypeWithConditions = <
     node: TSESTree.Node | null | undefined,
   ): node is Extract<TSESTree.Node, { type: NodeType }> & Conditions =>
     node?.type === nodeType &&
-    entries.every(([key, value]) => key in node && node[key] === value);
+    entries.every(([key, value]) => node[key as keyof TSESTree.Node] === value);
 };
 
 export const isTokenOfTypeWithConditions = <
@@ -52,7 +52,9 @@ export const isTokenOfTypeWithConditions = <
     token: TSESTree.Token | null | undefined,
   ): token is Extract<TSESTree.Token, { type: TokenType }> & Conditions =>
     token?.type === tokenType &&
-    entries.every(([key, value]) => key in token && token[key] === value);
+    entries.every(
+      ([key, value]) => token[key as keyof TSESTree.Token] === value,
+    );
 };
 
 export const isNotTokenOfTypeWithConditions =
