@@ -46,7 +46,3 @@ This rule is not configurable.
 
 If you want to allow code to `await` non-Promise values.
 This is generally not preferred, but can sometimes be useful for visual consistency.
-
-## Related To
-
-- TSLint: ['await-promise'](https://palantir.github.io/tslint/rules/await-promise)
