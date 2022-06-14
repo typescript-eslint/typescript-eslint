@@ -9,7 +9,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces using a particular method signature syntax.',
+      description: 'Enforce using a particular method signature syntax',
       recommended: false,
     },
     fixable: 'code',

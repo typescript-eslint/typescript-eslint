@@ -1,6 +1,6 @@
 # `no-namespace`
 
-Disallow the use of custom TypeScript modules and namespaces.
+Disallows custom TypeScript modules and namespaces.
 
 Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
 ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).
@@ -135,9 +135,3 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 ## Related To
 
 - TSLint: [no-namespace](https://palantir.github.io/tslint/rules/no-namespace/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `semi`
 
-Require or disallow semicolons instead of ASI.
+Requires or disallows semicolons instead of ASI.
 
 This rule enforces consistent use of semicolons after statements.
 
@@ -30,9 +30,3 @@ See [`eslint/semi` options](https://eslint.org/docs/rules/semi#options).
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/semi.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

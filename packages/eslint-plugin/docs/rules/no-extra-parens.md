@@ -1,6 +1,6 @@
 # `no-extra-parens`
 
-Disallow unnecessary parentheses.
+Disallows unnecessary parentheses.
 
 ## Rule Details
 
@@ -26,9 +26,3 @@ See [`eslint/no-extra-parens` options](https://eslint.org/docs/rules/no-extra-pa
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-extra-parens.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

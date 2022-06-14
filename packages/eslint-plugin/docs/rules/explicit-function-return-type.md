@@ -1,6 +1,6 @@
 # `explicit-function-return-type`
 
-Require explicit return types on functions and class methods.
+Requires explicit return types on functions and class methods.
 
 Explicit types for function return values makes it clear to any calling code what type is returned.
 This ensures that the return value is assigned to a variable of the correct type; or in the case
@@ -95,7 +95,7 @@ const defaults = {
 
 ### Configuring in a mixed JS/TS codebase
 
-If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.jsx` files.
+If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.mjs`/`.cjs`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.mts`/`.cts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.mjs`/`.cjs`/`.jsx` files.
 
 ```jsonc
 {
@@ -106,7 +106,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
-      "files": ["*.ts", "*.tsx"],
+      "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
         "@typescript-eslint/explicit-function-return-type": ["error"]
       }
@@ -290,9 +290,3 @@ you will not need this rule.
 ## Further Reading
 
 - TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

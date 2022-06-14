@@ -13,7 +13,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows member access on any typed variables',
+      description: 'Disallow member access on a value with type `any`',
       recommended: 'error',
       requiresTypeChecking: true,
     },

@@ -1,6 +1,6 @@
 # `no-unnecessary-condition`
 
-Prevents conditionals where the type is always truthy or always falsy.
+Disallows conditionals where the type is always truthy or always falsy.
 
 Any expression being used as a condition must be able to evaluate as truthy or falsy in order to be considered "necessary". Conversely, any expression that always evaluates to truthy or always evaluates to falsy, as determined by the type of the expression, is considered unnecessary and will be flagged by this rule.
 
@@ -112,9 +112,3 @@ The main downside to using this rule is the need for type information.
 
 - ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - `no-unnecessary-condition` is essentially a stronger version of `no-constant-condition`, but requires type information.
 - [strict-boolean-expressions](./strict-boolean-expressions.md) - a more opinionated version of `no-unnecessary-condition`. `strict-boolean-expressions` enforces a specific code style, while `no-unnecessary-condition` is about correctness.
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

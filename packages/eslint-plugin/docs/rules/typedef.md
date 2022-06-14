@@ -1,6 +1,6 @@
 # `typedef`
 
-Requires type annotations to exist.
+Requires type annotations in certain places.
 
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.
@@ -340,9 +340,3 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 ## Related To
 
 - TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

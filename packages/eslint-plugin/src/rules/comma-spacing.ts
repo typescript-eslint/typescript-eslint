@@ -19,7 +19,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces consistent spacing before and after commas',
+      description: 'Enforce consistent spacing before and after commas',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -177,7 +177,7 @@ export default createRule<Options, MessageIds>({
             isCommaToken(prevToken) || ignoredTokens.has(token)
               ? null
               : prevToken,
-            isCommaToken(nextToken) || ignoredTokens.has(token)
+            (nextToken && isCommaToken(nextToken)) || ignoredTokens.has(token)
               ? null
               : nextToken,
           );

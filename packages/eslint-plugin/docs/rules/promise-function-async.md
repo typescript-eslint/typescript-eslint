@@ -2,7 +2,6 @@
 
 Requires any function or method that returns a Promise to be marked async.
 
-Requires any function or method that returns a Promise to be marked async.
 Ensures that each function is only capable of:
 
 - returning a rejected promise, or
@@ -70,9 +69,3 @@ In addition, each of the following properties may be provided, and default to `t
 ## Related To
 
 - TSLint: [promise-function-async](https://palantir.github.io/tslint/rules/promise-function-async)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

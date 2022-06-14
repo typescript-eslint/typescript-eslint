@@ -1,8 +1,8 @@
-import type { ClassDeclaration } from '../declaration/ClassDeclaration/spec';
+import type { ClassDeclarationWithName } from '../declaration/ClassDeclaration/spec';
 import type { ExportAllDeclaration } from '../declaration/ExportAllDeclaration/spec';
 import type { ExportDefaultDeclaration } from '../declaration/ExportDefaultDeclaration/spec';
 import type { ExportNamedDeclaration } from '../declaration/ExportNamedDeclaration/spec';
-import type { FunctionDeclaration } from '../declaration/FunctionDeclaration/spec';
+import type { FunctionDeclarationWithName } from '../declaration/FunctionDeclaration/spec';
 import type { ImportDeclaration } from '../declaration/ImportDeclaration/spec';
 import type { TSDeclareFunction } from '../declaration/TSDeclareFunction/spec';
 import type { TSEnumDeclaration } from '../declaration/TSEnumDeclaration/spec';
@@ -34,7 +34,7 @@ import type { WithStatement } from '../statement/WithStatement/spec';
 export type Statement =
   | BlockStatement
   | BreakStatement
-  | ClassDeclaration
+  | ClassDeclarationWithName
   | ContinueStatement
   | DebuggerStatement
   | DoWhileStatement
@@ -45,7 +45,7 @@ export type Statement =
   | ForInStatement
   | ForOfStatement
   | ForStatement
-  | FunctionDeclaration
+  | FunctionDeclarationWithName
   | IfStatement
   | ImportDeclaration
   | LabeledStatement
@@ -75,4 +75,4 @@ export type ProgramStatement =
   | TSImportEqualsDeclaration
   | TSNamespaceExportDeclaration;
 
-// TODO - once we have syntax errors, the types in ProgramStatement should not be in Statement
+// TODO(#1852) - the types in ProgramStatement should not be in Statement

@@ -1,6 +1,6 @@
 # `no-unnecessary-qualifier`
 
-Warns when a namespace qualifier is unnecessary.
+Disallows unnecessary namespace qualifiers.
 
 ## Rule Details
 
@@ -76,6 +76,19 @@ namespace X {
 }
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-unnecessary-qualifier": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you don't care about having unneeded namespace or enum qualifiers, then you don't need to use this rule.
@@ -83,9 +96,3 @@ If you don't care about having unneeded namespace or enum qualifiers, then you d
 ## Related To
 
 - TSLint: [no-unnecessary-qualifier](https://palantir.github.io/tslint/rules/no-unnecessary-qualifier/)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

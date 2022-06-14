@@ -1,6 +1,6 @@
 # `no-unsafe-assignment`
 
-Disallows assigning any to variables and properties.
+Disallows assigning a value with type `any` to variables and properties.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Assigning an `any` typed value to a variable can be hard to pick up on, particularly if it leaks in from an external library. Operations on the variable will not be checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -91,9 +91,3 @@ This rule is not configurable.
 
 - [`no-explicit-any`](./no-explicit-any.md)
 - TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

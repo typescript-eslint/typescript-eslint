@@ -8,9 +8,8 @@ export default util.createRule({
   name: 'non-nullable-type-assertion-style',
   meta: {
     docs: {
-      description:
-        'Prefers a non-null assertion over explicit type cast when possible',
-      recommended: false,
+      description: 'Enforce non-null assertions over explicit type casts',
+      recommended: 'strict',
       requiresTypeChecking: true,
       suggestion: true,
     },

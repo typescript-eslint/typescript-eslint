@@ -51,6 +51,7 @@ import type { TemplateLiteral } from '../expression/TemplateLiteral/spec';
 import type { ThisExpression } from '../expression/ThisExpression/spec';
 import type { TSAsExpression } from '../expression/TSAsExpression/spec';
 import type { TSEmptyBodyFunctionExpression } from '../expression/TSEmptyBodyFunctionExpression/spec';
+import type { TSInstantiationExpression } from '../expression/TSInstantiationExpression/spec';
 import type { TSNonNullExpression } from '../expression/TSNonNullExpression/spec';
 import type { TSTypeAssertion } from '../expression/TSTypeAssertion/spec';
 import type { UnaryExpression } from '../expression/UnaryExpression/spec';
@@ -277,6 +278,7 @@ export type Node =
   | TSIndexedAccessType
   | TSIndexSignature
   | TSInferType
+  | TSInstantiationExpression
   | TSInterfaceBody
   | TSInterfaceDeclaration
   | TSInterfaceHeritage

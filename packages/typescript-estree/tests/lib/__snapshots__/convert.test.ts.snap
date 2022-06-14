@@ -49,7 +49,7 @@ Object {
       "line": 1,
     },
   },
-  "nodeCount": 7,
+  "nodeCount": 8,
   "parseDiagnostics": Array [],
   "pragmas": Map {},
   "range": Array [
@@ -58,6 +58,7 @@ Object {
   ],
   "referencedFiles": Array [],
   "scriptKind": 4,
+  "setExternalModuleIndicator": [Function],
   "statements": Array [
     Object {
       "expression": Object {
@@ -474,6 +475,7 @@ Object {
       Object {
         "constraint": undefined,
         "default": undefined,
+        "in": false,
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -502,6 +504,7 @@ Object {
           ],
           "type": "Identifier",
         },
+        "out": false,
         "range": Array [
           10,
           11,

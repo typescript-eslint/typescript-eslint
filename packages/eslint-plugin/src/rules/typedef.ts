@@ -20,7 +20,7 @@ export default util.createRule<[Options], MessageIds>({
   name: 'typedef',
   meta: {
     docs: {
-      description: 'Requires type annotations to exist',
+      description: 'Require type annotations in certain places',
       recommended: false,
     },
     messages: {
@@ -178,7 +178,11 @@ export default util.createRule<[Options], MessageIds>({
             return;
           }
 
-          if (!node.typeAnnotation && !isForOfStatementContext(node)) {
+          if (
+            !node.typeAnnotation &&
+            !isForOfStatementContext(node) &&
+            node.parent?.type !== AST_NODE_TYPES.AssignmentExpression
+          ) {
             report(node);
           }
         },

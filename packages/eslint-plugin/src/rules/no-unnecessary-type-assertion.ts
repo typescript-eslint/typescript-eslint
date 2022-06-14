@@ -21,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Warns if a type assertion does not change the type of an expression',
+        'Disallow type assertions that do not change the type of an expression',
       recommended: 'error',
       requiresTypeChecking: true,
     },

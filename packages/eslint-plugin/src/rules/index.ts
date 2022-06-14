@@ -8,6 +8,7 @@ import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
+import consistentGenericConstructors from './consistent-generic-constructors';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
@@ -32,6 +33,7 @@ import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
 import noDupeClassMembers from './no-dupe-class-members';
+import noDuplicateEnumValues from './no-duplicate-enum-values';
 import noDuplicateImports from './no-duplicate-imports';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
@@ -87,6 +89,7 @@ import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
 import paddingLineBetweenStatements from './padding-line-between-statements';
+import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
@@ -134,6 +137,7 @@ export default {
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,
   'comma-spacing': commaSpacing,
+  'consistent-generic-constructors': consistentGenericConstructors,
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
@@ -158,6 +162,7 @@ export default {
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
   'no-dupe-class-members': noDupeClassMembers,
+  'no-duplicate-enum-values': noDuplicateEnumValues,
   'no-duplicate-imports': noDuplicateImports,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
@@ -213,6 +218,7 @@ export default {
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
   'padding-line-between-statements': paddingLineBetweenStatements,
+  'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,

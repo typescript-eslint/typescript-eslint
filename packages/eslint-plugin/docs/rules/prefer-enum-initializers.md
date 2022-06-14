@@ -1,6 +1,6 @@
 # `prefer-enum-initializers`
 
-Prefer initializing each enums member value.
+Requires each enum member value to be explicitly initialized.
 
 This rule recommends having each `enum`s member value explicitly initialized.
 
@@ -71,12 +71,19 @@ enum Color {
 }
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-enum-initializers": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you don't care about `enum`s having implicit values you can safely disable this rule.
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -3,6 +3,94 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.1...v5.28.0) (2022-06-13)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+## [5.27.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.0...v5.27.1) (2022-06-06)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [5.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.26.0...v5.27.0) (2022-05-30)
+
+
+### Features
+
+* [TS4.7] support type parameters for `typeof` ([#5067](https://github.com/typescript-eslint/typescript-eslint/issues/5067)) ([836de79](https://github.com/typescript-eslint/typescript-eslint/commit/836de79e8d1bff43149168cc913a4c2b60e79bf6))
+
+
+
+
+
+# [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
+
+
+### Features
+
+* [4.7] support instantiation expressions ([#4938](https://github.com/typescript-eslint/typescript-eslint/issues/4938)) ([79fbc77](https://github.com/typescript-eslint/typescript-eslint/commit/79fbc7743ae5dce3190f8168776e0204755390ad))
+* [4.7] support optional variance annotation ([#4831](https://github.com/typescript-eslint/typescript-eslint/issues/4831)) ([7e7b24c](https://github.com/typescript-eslint/typescript-eslint/commit/7e7b24c196e6d968e48f97f46feae5e7027e22d2))
+* **typescript-estree:** `extends` constraints for `infer` ([#4830](https://github.com/typescript-eslint/typescript-eslint/issues/4830)) ([8cbbcc3](https://github.com/typescript-eslint/typescript-eslint/commit/8cbbcc3d317779e0dcba15d3835137f38383de34))
+
+
+
+
+
+# [5.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.24.0...v5.25.0) (2022-05-17)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [5.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.23.0...v5.24.0) (2022-05-16)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [5.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.22.0...v5.23.0) (2022-05-09)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [5.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.21.0...v5.22.0) (2022-05-02)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [5.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.20.0...v5.21.0) (2022-04-25)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
+# [5.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.19.0...v5.20.0) (2022-04-18)
+
+**Note:** Version bump only for package @typescript-eslint/shared-fixtures
+
+
+
+
+
 # [5.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.18.0...v5.19.0) (2022-04-11)
 
 **Note:** Version bump only for package @typescript-eslint/shared-fixtures

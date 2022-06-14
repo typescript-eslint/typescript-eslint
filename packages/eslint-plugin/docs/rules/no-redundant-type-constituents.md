@@ -1,6 +1,6 @@
 # `no-redundant-type-constituents`
 
-Disallow members of unions and intersections that do nothing or override type information.
+Disallows members of unions and intersections that do nothing or override type information.
 
 ## Rule Details
 
@@ -66,6 +66,19 @@ type IntersectionStringLiteral = 'foo';
 type ReturnUnionNever = () => string | never;
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-redundant-type-constituents": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## Limitations
 
 This rule plays it safe and only works with bottom types, top types, and comparing literal types to primitive types.
@@ -77,9 +90,3 @@ It also does not provide an auto-fixer just yet.
 - [Intersection Types](https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types)
 - [Bottom Types](https://en.wikipedia.org/wiki/Bottom_type)
 - [Top Types](https://en.wikipedia.org/wiki/Top_type)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

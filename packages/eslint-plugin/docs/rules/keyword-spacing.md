@@ -1,6 +1,6 @@
 # `keyword-spacing`
 
-Enforce consistent spacing before and after keywords.
+Enforces consistent spacing before and after keywords.
 
 ## Rule Details
 
@@ -26,9 +26,3 @@ See [`eslint/keyword-spacing` options](https://eslint.org/docs/rules/keyword-spa
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/keyword-spacing.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

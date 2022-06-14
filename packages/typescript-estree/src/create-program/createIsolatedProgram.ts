@@ -1,11 +1,8 @@
 import debug from 'debug';
 import * as ts from 'typescript';
 import { Extra } from '../parser-options';
-import {
-  ASTAndProgram,
-  createDefaultCompilerOptionsFromExtra,
-  getScriptKind,
-} from './shared';
+import { ASTAndProgram, createDefaultCompilerOptionsFromExtra } from './shared';
+import { getScriptKind } from './getScriptKind';
 
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
 
@@ -47,7 +44,7 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
         code,
         ts.ScriptTarget.Latest,
         /* setParentNodes */ true,
-        getScriptKind(extra, filename),
+        getScriptKind(extra.filePath, extra.jsx),
       );
     },
     readFile() {

@@ -1,6 +1,6 @@
 # `explicit-module-boundary-types`
 
-Require explicit return and argument types on exported functions' and classes' public class methods.
+Requires explicit return and argument types on exported functions' and classes' public class methods.
 
 Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.
 
@@ -110,7 +110,7 @@ const defaults = {
 
 ### Configuring in a mixed JS/TS codebase
 
-If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.jsx` files.
+If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.mjs`/`.cjs`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.mts`/`.cts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.mjs`/`.cjs`/`.jsx` files.
 
 ```jsonc
 {
@@ -121,7 +121,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
-      "files": ["*.ts", "*.tsx"],
+      "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
         "@typescript-eslint/explicit-module-boundary-types": ["error"]
       }
@@ -158,10 +158,9 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value });
-export const foo = () =>
-  ({
-    bar: true,
-  } as const);
+export const foo = () => ({
+  bar: true,
+});
 export const bar = () => 1;
 ```
 
@@ -285,9 +284,3 @@ If you wish to make sure all functions have explicit return types, as opposed to
 ## Further Reading
 
 - TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

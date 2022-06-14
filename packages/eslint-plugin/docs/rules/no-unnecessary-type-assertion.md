@@ -1,6 +1,6 @@
 # `no-unnecessary-type-assertion`
 
-Warns if a type assertion does not change the type of an expression.
+Disallows type assertions that do not change the type of an expression.
 
 This rule prohibits using a type assertion that does not change the type of an expression.
 
@@ -77,9 +77,3 @@ If you don't care about having no-op type assertions in your code, then you can 
 ## Related To
 
 - TSLint: [`no-unnecessary-type-assertion`](https://palantir.github.io/tslint/rules/no-unnecessary-type-assertion/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

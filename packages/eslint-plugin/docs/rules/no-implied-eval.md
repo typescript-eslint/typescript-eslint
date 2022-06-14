@@ -1,6 +1,6 @@
 # `no-implied-eval`
 
-Disallow the use of `eval()`-like methods.
+Disallows the use of `eval()`-like methods.
 
 It's considered a good practice to avoid using `eval()`. There are security and performance implications involved with doing so, which is why many linters recommend disallowing `eval()`. However, there are some other ways to pass a string and have it interpreted as JavaScript code that have similar concerns.
 
@@ -113,9 +113,3 @@ If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setIm
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-implied-eval.md)
 
 </sup>
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

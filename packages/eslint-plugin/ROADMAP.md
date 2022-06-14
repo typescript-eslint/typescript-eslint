@@ -169,7 +169,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-boolean-literal-compare`]      | ✅  | [`@typescript-eslint/no-unnecessary-boolean-literal-compare`]                       |
 | [`no-consecutive-blank-lines`]      | 🌟  | [`no-multiple-empty-lines`][no-multiple-empty-lines]                                |
 | [`no-irregular-whitespace`]         | 🌟  | [`no-irregular-whitespace`][no-irregular-whitespace] with `skipStrings: false`      |
-| [`no-parameter-properties`]         | ✅  | [`@typescript-eslint/no-parameter-properties`]                                      |
+| [`no-parameter-properties`]         | ✅  | [`@typescript-eslint/parameter-properties`]                                         |
 | [`no-redundant-jsdoc`]              | 🔌  | [`jsdoc/no-types`]                                                                  |
 | [`no-reference-import`]             | ✅  | [`@typescript-eslint/triple-slash-reference`]                                       |
 | [`no-trailing-whitespace`]          | 🌟  | [`no-trailing-spaces`][no-trailing-spaces]                                          |
@@ -633,7 +633,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/naming-convention`]: https://typescript-eslint.io/rules/naming-convention
 [`@typescript-eslint/interface-name-prefix`]: https://typescript-eslint.io/rules/interface-name-prefix
 [`@typescript-eslint/naming-convention`]: https://typescript-eslint.io/rules/naming-convention
-[`@typescript-eslint/no-parameter-properties`]: https://typescript-eslint.io/rules/no-parameter-properties
+[`@typescript-eslint/parameter-properties`]: https://typescript-eslint.io/rules/parameter-properties
 [`@typescript-eslint/member-delimiter-style`]: https://typescript-eslint.io/rules/member-delimiter-style
 [`@typescript-eslint/prefer-for-of`]: https://typescript-eslint.io/rules/prefer-for-of
 [`@typescript-eslint/no-array-constructor`]: https://typescript-eslint.io/rules/no-array-constructor

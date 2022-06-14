@@ -7,5 +7,5 @@ import { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const es2022_object = {
-  Object: TYPE,
+  ObjectConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

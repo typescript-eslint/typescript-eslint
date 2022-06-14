@@ -97,9 +97,3 @@ const three = '3';
 ## When Not To Use It
 
 If you understand the language specification enough, you can turn this rule off safely.
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

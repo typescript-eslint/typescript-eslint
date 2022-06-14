@@ -1,6 +1,6 @@
 # `ban-tslint-comment`
 
-Bans `// tslint:<rule-flag>` comments from being used.
+Disallows `// tslint:<rule-flag>` comments.
 
 Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this rule helps locate TSLint annotations (e.g. `// tslint:disable`).
 
@@ -30,12 +30,19 @@ someCode(); // tslint:disable-line
 someCode(); // This is a comment that just happens to mention tslint
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/ban-tslint-comment": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you are still using TSLint.
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

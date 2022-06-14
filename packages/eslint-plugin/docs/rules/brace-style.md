@@ -1,6 +1,6 @@
 # `brace-style`
 
-Enforce consistent brace style for blocks.
+Enforces consistent brace style for blocks.
 
 ## Rule Details
 
@@ -26,9 +26,3 @@ See [`eslint/brace-style` options](https://eslint.org/docs/rules/brace-style#opt
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/brace-style.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

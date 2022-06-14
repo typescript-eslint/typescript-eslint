@@ -1,6 +1,6 @@
 # `no-misused-promises`
 
-Avoid using Promises in places not designed to handle them.
+Disallows Promises in places not designed to handle them.
 
 This rule forbids providing Promises to logical locations such as if statements in places where the TypeScript compiler allows them but they are not handled properly.
 These situations can often arise due to a missing `await` keyword or just a misunderstanding of the way async
@@ -13,9 +13,9 @@ See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled 
 
 ## Rule Details
 
-This rule accepts a single option which is an object with `checksConditionals`
-and `checksVoidReturn` properties indicating which types of misuse to flag.
-Both are enabled by default.
+This rule accepts a single option which is an object with `checksConditionals`,
+`checksVoidReturn`, and `checksSpreads` properties indicating which types of
+misuse to flag. All are enabled by default.
 
 ## Options
 
@@ -24,6 +24,7 @@ type Options = [
   {
     checksConditionals?: boolean;
     checksVoidReturn?: boolean | ChecksVoidReturnOptions;
+    checksSpreads?: boolean;
   },
 ];
 
@@ -39,6 +40,7 @@ const defaultOptions: Options = [
   {
     checksConditionals: true,
     checksVoidReturn: true,
+    checksSpreads: true,
   },
 ];
 ```
@@ -96,6 +98,21 @@ For example, if you don't mind that passing a `() => Promise<void>` to a `() => 
         "arguments": false,
         "attributes": false
       }
+    }
+  ]
+}
+```
+
+### `"checksSpreads"`
+
+If you don't want to check object spreads, you can add this configuration:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksSpreads": false
     }
   ]
 }
@@ -212,6 +229,42 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
+### `checksSpreads: true`
+
+Examples of code for this rule with `checksSpreads: true`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...getData() };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...getData2() };
+```
+
+#### ✅ Correct
+
+```ts
+const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...(await getData()) };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...(await getData2()) };
+```
+
+<!--tabs-->
+
 ## When Not To Use It
 
 If you do not use Promises in your codebase or are not concerned with possible
@@ -224,9 +277,3 @@ misuses of them outside of what the TypeScript compiler will check.
 ## Related To
 
 - [`no-floating-promises`](./no-floating-promises.md)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

@@ -66,6 +66,10 @@ const defaultTypes: Types = {
     message: 'Use symbol instead',
     fixWith: 'symbol',
   },
+  BigInt: {
+    message: 'Use bigint instead',
+    fixWith: 'bigint',
+  },
 
   Function: {
     message: [
@@ -113,7 +117,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans specific types from being used',
+      description: 'Disallow certain types',
       recommended: 'error',
     },
     fixable: 'code',

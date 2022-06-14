@@ -180,6 +180,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSInterfaceBody]: ts.InterfaceDeclaration;
   [AST_NODE_TYPES.TSInterfaceHeritage]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSIntersectionType]: ts.IntersectionTypeNode;
+  [AST_NODE_TYPES.TSInstantiationExpression]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSLiteralType]: ts.LiteralTypeNode;
   [AST_NODE_TYPES.TSMappedType]: ts.MappedTypeNode;
   [AST_NODE_TYPES.TSMethodSignature]:
@@ -217,7 +218,8 @@ export interface EstreeToTsNodeTypes {
     | ts.JsxOpeningElement
     | ts.JsxSelfClosingElement
     | ts.NewExpression
-    | ts.CallExpression;
+    | ts.CallExpression
+    | ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypePredicate]: ts.TypePredicateNode;
   [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypeReference]: ts.TypeReferenceNode;

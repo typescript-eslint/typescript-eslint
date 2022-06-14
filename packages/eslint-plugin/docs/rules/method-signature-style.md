@@ -1,6 +1,6 @@
 # `method-signature-style`
 
-Enforces using a particular method signature syntax..
+Enforces using a particular method signature syntax.
 
 There are two ways to define an object/interface function property.
 
@@ -104,9 +104,3 @@ type T2 = {
 ## When Not To Use It
 
 If you don't want to enforce a particular style for object/interface function types, and/or if you don't use `strictFunctionTypes`, then you don't need this rule.
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportDefaultDeclaration interface TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportDefaultDeclaration {
+      type: "ExportDefaultDeclaration",
+      declaration: TSInterfaceDeclaration {
+        type: "TSInterfaceDeclaration",
+        body: TSInterfaceBody {
+          type: "TSInterfaceBody",
+          body: Array [],
+
+          range: [29, 31],
+          loc: {
+            start: { column: 29, line: 1 },
+            end: { column: 31, line: 1 },
+          },
+        },
+        id: Identifier {
+          type: "Identifier",
+          name: "Foo",
+
+          range: [25, 28],
+          loc: {
+            start: { column: 25, line: 1 },
+            end: { column: 28, line: 1 },
+          },
+        },
+
+        range: [15, 31],
+        loc: {
+          start: { column: 15, line: 1 },
+          end: { column: 31, line: 1 },
+        },
+      },
+      exportKind: "value",
+
+      range: [0, 31],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 31, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 32],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

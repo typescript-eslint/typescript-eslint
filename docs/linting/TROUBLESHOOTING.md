@@ -42,12 +42,15 @@ See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
 
-```diff
- parserOptions: {
-   tsconfigRootDir: __dirname,
-   project: ['./tsconfig.json'],
-+  extraFileExtensions: ['.vue'],
- },
+```js title=".eslintrc.js"
+module.exports = {
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
+    // Add this line
+    extraFileExtensions: ['.vue'],
+  },
+};
 ```
 
 ## One of my lint rules isn't working correctly on a pure JavaScript file
@@ -119,17 +122,20 @@ As of our v4.0.0 release, this also applies to types.
 If you use global types from a 3rd party package (i.e. anything from an `@types` package), then you will have to configure ESLint appropriately to define these global types.
 For example; the `JSX` namespace from `@types/react` is a global 3rd party type that you must define in your ESLint config.
 
-Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any role) can be turned off for TypeScript files alone by adding an `overrides` section to .eslintrc.json:
+Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any rule) can be turned off for TypeScript files alone by adding an `overrides` section to `.eslintrc.cjs`:
 
-```json
-    "overrides": [
-        {
-            "files": ["*.ts"],
-            "rules": {
-                "no-undef": "off"
-            }
-        }
-    ]
+```js title=".eslintrc.cjs"
+module.exports = {
+  // ... the rest of your config ...
+  overrides: [
+    {
+      files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+      rules: {
+        'no-undef': 'off',
+      },
+    },
+  ],
+};
 ```
 
 If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
@@ -206,7 +212,7 @@ Instead of using this plugin, we recommend using prettier's `--list-different` f
 For example, our CI is setup to run the following command automatically, which blocks PRs that have not been formatted:
 
 ```bash npm2yarn
-npm run prettier --list-different \"./**/*.{ts,js,json,md}\"
+npm run prettier --list-different \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\"
 ```
 
 ### `eslint-plugin-import`

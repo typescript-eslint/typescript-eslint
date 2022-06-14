@@ -3,6 +3,100 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.1...v5.28.0) (2022-06-13)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.27.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.0...v5.27.1) (2022-06-06)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.26.0...v5.27.0) (2022-05-30)
+
+
+### Bug Fixes
+
+* **types:** remove leftovers from removal of useJSXTextNode ([#5091](https://github.com/typescript-eslint/typescript-eslint/issues/5091)) ([f9c3647](https://github.com/typescript-eslint/typescript-eslint/commit/f9c3647cb637c8d1ee461b471da9d817ccbde77c))
+
+
+### Features
+
+* [4.7] support new extensions ([#5027](https://github.com/typescript-eslint/typescript-eslint/issues/5027)) ([efc147b](https://github.com/typescript-eslint/typescript-eslint/commit/efc147b04dce52ab17415b6a4ae4076b944b9036))
+
+
+
+
+
+# [5.26.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.25.0...v5.26.0) (2022-05-23)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.25.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.24.0...v5.25.0) (2022-05-17)
+
+
+### Features
+
+* update to TypeScript 4.7-rc ([#4829](https://github.com/typescript-eslint/typescript-eslint/issues/4829)) ([6fe783c](https://github.com/typescript-eslint/typescript-eslint/commit/6fe783c20aebe26ef42b526e4a59a9be84dd5643))
+
+
+
+
+
+# [5.24.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.23.0...v5.24.0) (2022-05-16)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.23.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.22.0...v5.23.0) (2022-05-09)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.22.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.21.0...v5.22.0) (2022-05-02)
+
+
+### Features
+
+* **ast-spec:** add fixture test framework and some initial fixtures ([#3258](https://github.com/typescript-eslint/typescript-eslint/issues/3258)) ([f3cf87b](https://github.com/typescript-eslint/typescript-eslint/commit/f3cf87bf20fd0542f92a96a318aa9ee5bf23c1f6))
+
+
+
+
+
+# [5.21.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.20.0...v5.21.0) (2022-04-25)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.20.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.19.0...v5.20.0) (2022-04-18)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
 # [5.19.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.18.0...v5.19.0) (2022-04-11)
 
 **Note:** Version bump only for package @typescript-eslint/types

@@ -134,7 +134,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows calling a function with an any type value',
+      description: 'Disallow calling a function with a value with type `any`',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -176,9 +176,7 @@ export default util.createRule<[], MessageIds>({
           return;
         }
 
-        for (let i = 0; i < node.arguments.length; i += 1) {
-          const argument = node.arguments[i];
-
+        for (const argument of node.arguments) {
           switch (argument.type) {
             // spreads consume
             case AST_NODE_TYPES.SpreadElement: {
@@ -204,8 +202,7 @@ export default util.createRule<[], MessageIds>({
                 // foo(...[tuple1, tuple2])
                 const spreadTypeArguments =
                   checker.getTypeArguments(spreadArgType);
-                for (let j = 0; j < spreadTypeArguments.length; j += 1) {
-                  const tupleType = spreadTypeArguments[j];
+                for (const tupleType of spreadTypeArguments) {
                   const parameterType = signature.getNextParameterType();
                   if (parameterType == null) {
                     continue;

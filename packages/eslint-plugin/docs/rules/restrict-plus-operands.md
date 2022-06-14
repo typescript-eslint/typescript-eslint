@@ -1,6 +1,6 @@
 # `restrict-plus-operands`
 
-When adding two variables, operands must both be of type number or of type string.
+Requires both operands of addition to have type `number` or `string`.
 
 ## Rule Details
 
@@ -104,9 +104,3 @@ var fn = (a: any, b: number) => a + b;
 ## Related To
 
 - TSLint: [restrict-plus-operands](https://palantir.github.io/tslint/rules/restrict-plus-operands/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

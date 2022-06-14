@@ -140,11 +140,11 @@ namespace ESLint {
      * If a predicate function is present, the methods pass each lint message to the function, then use only the
      * lint messages for which the function returned true.
      */
-    fix?: boolean | ((message: LintMessage) => boolean);
+    fix?: boolean | ((message: ESLint.LintMessage) => boolean);
     /**
      * The types of the rules that the eslint.lintFiles() and eslint.lintText() methods use for autofix.
      */
-    fixTypes?: string[];
+    fixTypes?: ('directive' | 'problem' | 'suggestion' | 'layout')[] | null;
     /**
      * If false is present, the eslint.lintFiles() method doesn't interpret glob patterns.
      */
@@ -217,6 +217,11 @@ namespace ESLint {
      */
     errorCount: number;
     /**
+     * The number of fatal errors.
+     * @since 7.32.0
+     */
+    fatalErrorCount?: number;
+    /**
      * The absolute path to the file of this result. This is the string "<text>" if the file path is unknown (when you
      * didn't pass the options.filePath option to the eslint.lintText() method).
      */
@@ -232,7 +237,7 @@ namespace ESLint {
     /**
      * The array of LintMessage objects.
      */
-    messages: Linter.LintMessage[];
+    messages: ESLint.LintMessage[];
     /**
      * The source code of the file that was linted, with as many fixes applied as possible.
      */
@@ -242,6 +247,12 @@ namespace ESLint {
      * property exists.
      */
     source?: string;
+    /**
+     * The array of SuppressedLintMessage objects.
+     *
+     * @since 8.8.0
+     */
+    suppressedMessages?: SuppressedLintMessage[];
     /**
      * The information about the deprecated rules that were used to check this file.
      */
@@ -271,7 +282,7 @@ namespace ESLint {
     /**
      * The 1-based column number of the begin point of this message.
      */
-    column: number;
+    column: number | undefined;
     /**
      * The 1-based column number of the end point of this message. This property is undefined if this message
      * is not a range.
@@ -283,13 +294,18 @@ namespace ESLint {
      */
     endLine: number | undefined;
     /**
+     * `true` if this is a fatal error unrelated to a rule, like a parsing error.
+     * @since 7.24.0
+     */
+    fatal?: boolean | undefined;
+    /**
      * The EditInfo object of autofix. This property is undefined if this message is not fixable.
      */
     fix: EditInfo | undefined;
     /**
      * The 1-based line number of the begin point of this message.
      */
-    line: number;
+    line: number | undefined;
     /**
      * The error message
      */
@@ -308,7 +324,31 @@ namespace ESLint {
      * users such as editor integrations can choose one of them to fix the problem of this message. This property is
      * undefined if this message doesn't have any suggestions.
      */
-    suggestions: { desc: string; fix: EditInfo }[] | undefined;
+    suggestions:
+      | {
+          desc: string;
+          fix: EditInfo;
+        }[]
+      | undefined;
+  }
+
+  /**
+   * The SuppressedLintMessage value is the information of each suppressed linting error.
+   */
+  export interface SuppressedLintMessage extends ESLint.LintMessage {
+    /**
+     * The list of suppressions.
+     */
+    suppressions?: {
+      /**
+       * Right now, this is always `directive`
+       */
+      kind: string;
+      /**
+       * The free text description added after the `--` in the comment
+       */
+      justification: string;
+    }[];
   }
 
   /**
@@ -335,9 +375,10 @@ namespace ESLint {
    */
   export interface Formatter {
     /**
-     * The method to convert the LintResult objects to text
+     * The method to convert the LintResult objects to text.
+     * Promise return supported since 8.4.0
      */
-    format(results: LintResult[]): string;
+    format(results: LintResult[]): string | Promise<string>;
   }
 }
 

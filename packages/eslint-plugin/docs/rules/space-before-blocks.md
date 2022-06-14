@@ -52,9 +52,3 @@ See [`eslint/space-before-blocks` options](https://eslint.org/docs/rules/space-b
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-blocks.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

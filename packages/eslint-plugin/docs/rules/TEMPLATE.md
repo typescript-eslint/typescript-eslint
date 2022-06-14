@@ -22,6 +22,8 @@ To fill out: tell us more about this rule.
 
 ## Options
 
+This rule is not configurable.
+
 ```jsonc
 // .eslintrc.json
 {
@@ -49,9 +51,3 @@ const defaultOptions: Options = {
 
 To fill out: why wouldn't you want to use this rule?
 For example if this rule requires a feature released in a certain TS version.
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

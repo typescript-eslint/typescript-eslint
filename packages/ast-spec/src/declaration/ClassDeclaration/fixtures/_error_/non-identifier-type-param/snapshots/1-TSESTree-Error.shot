@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration _error_ non-identifier-type-param TSESTree - Error 1`] = `[TSError: Type parameter declaration expected.]`;

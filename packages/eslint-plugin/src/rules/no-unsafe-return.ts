@@ -8,7 +8,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows returning any from a function',
+      description: 'Disallow returning a value with type `any` from a function',
       recommended: 'error',
       requiresTypeChecking: true,
     },

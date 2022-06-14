@@ -1,6 +1,6 @@
 # `object-curly-spacing`
 
-Enforce consistent spacing inside braces.
+Enforces consistent spacing inside braces.
 
 ## Rule Details
 
@@ -26,9 +26,3 @@ See [`eslint/object-curly-spacing` options](https://eslint.org/docs/rules/object
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/object-curly-spacing.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `prefer-nullish-coalescing`
 
-Enforce the usage of the nullish coalescing operator instead of logical chaining.
+Enforces using the nullish coalescing operator instead of logical chaining.
 
 TypeScript 3.7 added support for the nullish coalescing operator.
 This operator allows you to safely cascade a value when dealing with `null` or `undefined`.
@@ -141,9 +141,3 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Nullish Coalescing Operator Proposal](https://github.com/tc39/proposal-nullish-coalescing/)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

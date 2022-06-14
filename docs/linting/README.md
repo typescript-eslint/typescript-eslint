@@ -4,6 +4,9 @@ title: Linting your TypeScript Codebase
 sidebar_label: Linting your TypeScript Codebase
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
 
 ## Installation
@@ -16,10 +19,10 @@ npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-e
 
 ## Configuration
 
-Next, create a `.eslintrc.js` config file in the root of your project, and populate it with the following:
+Next, create a `.eslintrc.cjs` config file in the root of your project, and populate it with the following:
 
 <!-- prettier-ignore -->
-```js title=".eslintrc.js"
+```js title=".eslintrc.cjs"
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -34,6 +37,14 @@ module.exports = {
 ```
 
 This is about the smallest config file we recommend. There's a lot more you can add to this as you further onboard, but this will be enough to get you started.
+
+:::info
+
+The `.cjs` extension will explicitly set the file to a [CommonJS module](https://nodejs.org/dist/latest-v18.x/docs/api/modules.html), in case your project has `"type": "module"` in its package.json.
+
+If your project doesn't use ESM, naming the file as `.eslintrc.js` is fine. See [ESLint's Configuration Files docs](https://eslint.org/docs/user-guide/configuring/configuration-files) for more info.
+
+:::
 
 ### Details
 
@@ -68,13 +79,46 @@ dist
 
 ## Running ESLint
 
-With that configured, open a terminal to the root of your project, and run the following command
+With that configured, open a terminal to the root of your project, and run the following command:
 
-```bash npm2yarn
-npm run eslint . --ext .js,.jsx,.ts,.tsx
+<Tabs groupId="npm2yarn">
+<TabItem value="npm">
+
+```bash
+npx eslint .
 ```
 
-That's it - ESLint will lint all `.js`, `.jsx`, `.ts`, and `.tsx` files within the current folder, and will output the results to your terminal.
+</TabItem>
+<TabItem value="Yarn">
+
+```bash
+yarn eslint .
+```
+
+</TabItem>
+</Tabs>
+
+That's it - ESLint will lint all TypeScript compatible files within the current folder, and will output the results to your terminal.
+
+You are also recommended to add an npm script in your package.json, so you don't have to repeat the same command every time you run ESLint.
+
+```json title="package.json"
+{
+  "scripts": {
+    "lint": "eslint ."
+  }
+}
+```
+
+This way, you can invoke the `lint` script directly:
+
+```bash npm2yarn
+npm run lint
+```
+
+:::note
+If you use non-standard file extensions, you will need to explicitly tell ESLint to lint those extensions using the [`--ext` flag](https://eslint.org/docs/user-guide/command-line-interface#--ext)
+:::
 
 You can also get results in realtime inside most IDEs via a plugin - search your IDE's extension store.
 
@@ -92,19 +136,18 @@ If you use [`prettier`](https://www.npmjs.com/package/prettier), there is also a
 
 Using this config by adding it to the end of your `extends`:
 
-```diff title=".eslintrc.js"
-  module.exports = {
-    root: true,
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint',
-    ],
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
-+     'prettier',
-    ],
-  };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Add this line
+    'prettier',
+  ],
+};
 ```
 
 ### Community Configs
@@ -119,19 +162,20 @@ A few popular all-in-one configs are:
 To use one of these complete config packages, you would replace the `extends` with the package name.
 For example:
 
-```diff title=".eslintrc.js"
-  module.exports = {
-    root: true,
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint',
-    ],
-    extends: [
--     'eslint:recommended',
--     'plugin:@typescript-eslint/recommended',
-+     'airbnb-typescript',
-    ],
-  };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    // Removed lines start
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Removed lines end
+    // Add this line
+    'airbnb-typescript',
+  ],
+};
 ```
 
 <!-- markdownlint-disable MD044 -->
@@ -152,20 +196,22 @@ Below are just a few examples:
 Every plugin that is out there includes documentation on the various configurations and rules they offer.
 A typical plugin might be used like:
 
-```diff title=".eslintrc.js"
-  module.exports = {
-    root: true,
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint',
-+     'jest',
-    ],
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
-+     'plugin:jest/recommended',
-    ],
-  };
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint',
+    // Add this line
+    'jest',
+  ],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Add this line
+    'plugin:jest/recommended',
+  ],
+};
 ```
 
 <!-- markdownlint-disable MD044 -->

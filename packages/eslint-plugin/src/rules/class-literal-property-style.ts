@@ -40,8 +40,8 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Ensures that literals on classes are exposed in a consistent style',
-      recommended: false,
+        'Enforce that literals on classes are exposed in a consistent style',
+      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

@@ -1,6 +1,6 @@
 # `no-base-to-string`
 
-Requires that `.toString()` is only called on objects which provide useful information when stringified.
+Requires `.toString()` to only be called on objects which provide useful information when stringified.
 
 JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
 
@@ -89,9 +89,3 @@ let text = `${value}`;
 If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
 
 - [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

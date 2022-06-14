@@ -1,6 +1,6 @@
 # `dot-notation`
 
-enforce dot notation whenever possible.
+Enforces dot notation whenever possible.
 
 ## Rule Details
 
@@ -87,9 +87,3 @@ If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/dot-notation.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

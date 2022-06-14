@@ -1,6 +1,6 @@
 # `no-magic-numbers`
 
-Disallow magic numbers.
+Disallows magic numbers.
 
 ## Rule Details
 
@@ -147,9 +147,3 @@ type Baz = Parameters<Foo>[2];
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-magic-numbers.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `no-shadow`
 
-Disallow variable declarations from shadowing variables declared in the outer scope.
+Disallows variable declarations from shadowing variables declared in the outer scope.
 
 ## Rule Details
 
@@ -91,9 +91,3 @@ type Func = (test: string) => typeof test;
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-shadow.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

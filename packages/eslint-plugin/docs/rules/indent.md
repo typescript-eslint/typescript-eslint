@@ -1,6 +1,6 @@
 # `indent`
 
-Enforce consistent indentation.
+Enforces consistent indentation.
 
 ## Warning
 
@@ -30,9 +30,3 @@ See [`eslint/indent` options](https://eslint.org/docs/rules/indent#options).
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/indent.md)
 
 </sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

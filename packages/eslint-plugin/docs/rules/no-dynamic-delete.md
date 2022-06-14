@@ -1,6 +1,6 @@
 # `no-dynamic-delete`
 
-Disallow the delete operator with computed key expressions.
+Disallows using the `delete` operator on computed key expressions.
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 
@@ -40,6 +40,19 @@ delete container[7];
 delete container['-Infinity'];
 ```
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/no-dynamic-delete": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 When you know your keys are safe to delete, this rule can be unnecessary.
@@ -51,9 +64,3 @@ Even repeated minor performance slowdowns likely do not significantly affect you
 ## Related To
 
 - TSLint: [no-dynamic-delete](https://palantir.github.io/tslint/rules/no-dynamic-delete)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

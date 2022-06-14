@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
 import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { RuleDetails } from '../types';
+import type { RuleDetails, RuleEntry, ConfigModel, EslintRC } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
+import { parseESLintRC, toJson } from './utils';
 
-export interface ModalEslintProps {
+export interface ConfigEslintProps {
   readonly isOpen: boolean;
-  readonly onClose: (value?: RulesRecord) => void;
+  readonly onClose: (value?: Partial<ConfigModel>) => void;
   readonly ruleOptions: RuleDetails[];
-  readonly rules: RulesRecord;
+  readonly config?: string;
 }
 
 function checkSeverity(value: unknown): boolean {
@@ -26,8 +26,15 @@ function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
   return checkSeverity(rule[1]);
 }
 
-function ConfigEslint(props: ModalEslintProps): JSX.Element {
+function ConfigEslint(props: ConfigEslintProps): JSX.Element {
   const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
+  const [configObject, updateConfigObject] = useState<EslintRC>();
+
+  useEffect(() => {
+    if (props.isOpen) {
+      updateConfigObject(parseESLintRC(props.config));
+    }
+  }, [props.isOpen, props.config]);
 
   useEffect(() => {
     updateOptions([
@@ -38,6 +45,7 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
           .map(item => ({
             key: item.name,
             label: item.description,
+            type: 'boolean',
             defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
           })),
       },
@@ -48,6 +56,7 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
           .map(item => ({
             key: item.name,
             label: item.description,
+            type: 'boolean',
             defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
           })),
       },
@@ -65,21 +74,22 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
           )
           .filter(checkOptions),
       );
-      if (!shallowEqual(cfg, props.rules)) {
-        props.onClose(cfg);
+      if (!shallowEqual(cfg, configObject?.rules)) {
+        props.onClose({
+          eslintrc: toJson({ ...(configObject ?? {}), rules: cfg }),
+        });
       } else {
         props.onClose();
       }
     },
-    [props.onClose, props.rules],
+    [props.onClose, configObject],
   );
 
   return (
     <ConfigEditor
       header="Eslint Config"
       options={options}
-      values={props.rules ?? {}}
-      jsonField="rules"
+      values={configObject?.rules ?? {}}
       isOpen={props.isOpen}
       onClose={onClose}
     />

@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSDeclareFunction param-one Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [0, 7],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 7, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "function",
+
+    range: [8, 16],
+    loc: {
+      start: { column: 8, line: 1 },
+      end: { column: 16, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [17, 20],
+    loc: {
+      start: { column: 17, line: 1 },
+      end: { column: 20, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [20, 21],
+    loc: {
+      start: { column: 20, line: 1 },
+      end: { column: 21, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "a",
+
+    range: [21, 22],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 22, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [22, 23],
+    loc: {
+      start: { column: 22, line: 1 },
+      end: { column: 23, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [23, 24],
+    loc: {
+      start: { column: 23, line: 1 },
+      end: { column: 24, line: 1 },
+    },
+  },
+]
+`;

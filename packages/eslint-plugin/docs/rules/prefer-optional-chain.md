@@ -1,6 +1,6 @@
 # `prefer-optional-chain`
 
-Prefer using concise optional chain expressions instead of chained logical ands.
+Enforces using concise optional chain expressions instead of chained logical ands.
 
 TypeScript 3.7 added support for the optional chain operator.
 This operator allows you to safely access properties and methods on objects when they are potentially `null` or `undefined`.
@@ -61,8 +61,8 @@ foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
-(((foo || {}).a || {}).b {}).c;
-(((foo || {})['a'] || {}).b {}).c;
+(((foo || {}).a || {}).b || {}).c;
+(((foo || {})['a'] || {}).b || {}).c;
 
 // this rule also supports converting chained strict nullish checks:
 foo &&
@@ -85,6 +85,19 @@ foo?.a?.b?.c?.d?.e;
 
 **Note:** there are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
 
+## Options
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/prefer-optional-chain": "warn"
+  }
+}
+```
+
+This rule is not configurable.
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
@@ -93,9 +106,3 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Optional Chaining Proposal](https://github.com/tc39/proposal-optional-chaining/)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

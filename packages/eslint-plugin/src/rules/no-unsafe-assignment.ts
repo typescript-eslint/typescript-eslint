@@ -18,7 +18,8 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows assigning any to variables and properties',
+      description:
+        'Disallow assigning a value with type `any` to variables and properties',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -164,12 +165,7 @@ export default util.createRule({
       );
 
       let didReport = false;
-      for (
-        let receiverIndex = 0;
-        receiverIndex < receiverNode.properties.length;
-        receiverIndex += 1
-      ) {
-        const receiverProperty = receiverNode.properties[receiverIndex];
+      for (const receiverProperty of receiverNode.properties) {
         if (receiverProperty.type === AST_NODE_TYPES.RestElement) {
           // don't bother checking rest
           continue;

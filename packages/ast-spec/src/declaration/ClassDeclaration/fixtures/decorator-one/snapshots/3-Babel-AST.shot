@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration decorator-one Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [21, 23],
+        loc: {
+          start: { column: 10, line: 2 },
+          end: { column: 12, line: 2 },
+        },
+      },
+      decorators: Array [
+        Decorator {
+          type: "Decorator",
+          expression: Identifier {
+            type: "Identifier",
+            name: "decorator",
+
+            range: [1, 10],
+            loc: {
+              start: { column: 1, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+
+          range: [0, 10],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 10, line: 1 },
+          },
+        },
+      ],
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [17, 20],
+        loc: {
+          start: { column: 6, line: 2 },
+          end: { column: 9, line: 2 },
+        },
+      },
+      superClass: null,
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 12, line: 2 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 24],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 3 },
+  },
+}
+`;

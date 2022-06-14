@@ -1,12 +1,14 @@
 # `no-implicit-any-catch`
 
-Disallow usage of the implicit `any` type in catch clauses.
+Disallows usage of the implicit `any` type in catch clauses.
 
 TypeScript 4.0 added support for adding an explicit `any` or `unknown` type annotation on a catch clause variable.
 
 By default, TypeScript will type a catch clause variable as `any`, so explicitly annotating it as `unknown` can add a lot of safety to your codebase.
 
 The `noImplicitAny` flag in TypeScript does not cover this for backwards compatibility reasons, however you can use `useUnknownInCatchVariables` (part of `strict`) instead of this rule.
+
+## DEPRECATED
 
 ## Rule Details
 
@@ -80,9 +82,3 @@ If you are not using TypeScript 4.0 (or greater), then you will not be able to u
 ## Further Reading
 
 - [TypeScript 4.0 Release Notes](https://devblogs.microsoft.com/typescript/announcing-typescript-4-0/#unknown-on-catch)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -92,7 +92,10 @@ class FixturesTester {
     return this.fixtures
       .map(fixture =>
         glob
-          .sync(`${fixture.directory}/${fixture.pattern}`, {})
+          .sync(fixture.pattern, {
+            cwd: fixture.directory,
+            absolute: true,
+          })
           .map(filename => ({
             filename,
             ignoreSourceType: fixture.ignoreSourceType,
@@ -346,7 +349,6 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Not yet supported in Babel
      * Directive field is not added to module and namespace
-     * @see https://github.com/babel/babel/issues/9228
      */
     'directive-in-module',
     'directive-in-namespace',
@@ -363,7 +365,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * babel hard fails on computed string enum members, but TS doesn't
-     * https://github.com/babel/babel/issues/12683
+     * @see https://github.com/babel/babel/issues/12683
      */
     'export-named-enum-computed-string',
     /**
@@ -451,6 +453,13 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * Babel produces incorrect structure for TSInstantiationExpression and optional ChainExpression
+     * @see https://github.com/babel/babel/issues/14613
+     */
+    'instantiation-expression',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
@@ -482,6 +491,14 @@ tester.addFixturePatternConfig('typescript/types', {
     'template-literal-type-2',
     'template-literal-type-3',
     'template-literal-type-4',
+    /**
+     * Reported range differs between ts-estree and Babel
+     * @see https://github.com/babel/babel/issues/14589
+     */
+    'optional-variance-in',
+    'optional-variance-out',
+    'optional-variance-in-out',
+    'optional-variance-in-and-out',
   ],
 });
 

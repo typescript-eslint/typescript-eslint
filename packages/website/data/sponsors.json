@@ -4,7 +4,7 @@
     "image": "https://images.opencollective.com/nx/0efbe42/logo.png",
     "name": "Nx (by Nrwl)",
     "tier": "sponsor",
-    "totalDonations": 375000,
+    "totalDonations": 425000,
     "website": "https://nx.dev"
   },
   {
@@ -12,24 +12,32 @@
     "image": "https://images.opencollective.com/eslint/96b09dc/logo.png",
     "name": "ESLint",
     "tier": "sponsor",
-    "totalDonations": 110000,
+    "totalDonations": 140000,
     "website": "https://eslint.org/"
-  },
-  {
-    "id": "Airbnb",
-    "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
-    "name": "Airbnb",
-    "tier": "sponsor",
-    "totalDonations": 105800,
-    "website": "https://www.airbnb.com/"
   },
   {
     "id": "Coinbase",
     "image": "https://images.opencollective.com/coinbase/a202856/logo.png",
     "name": "Coinbase",
     "tier": "sponsor",
-    "totalDonations": 100000,
+    "totalDonations": 120000,
     "website": "https://blog.coinbase.com/engineering-and-security/home"
+  },
+  {
+    "id": "Airbnb",
+    "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
+    "name": "Airbnb",
+    "tier": "sponsor",
+    "totalDonations": 115800,
+    "website": "https://www.airbnb.com/"
+  },
+  {
+    "id": "n8n.io - n8n GmbH",
+    "image": "https://images.opencollective.com/n8n/dca2f0c/logo.png",
+    "name": "n8n.io - n8n GmbH",
+    "tier": "sponsor",
+    "totalDonations": 90000,
+    "website": "https://n8n.io"
   },
   {
     "id": "EY Doberman",
@@ -40,12 +48,12 @@
     "website": "https://doberman.co"
   },
   {
-    "id": "n8n.io - n8n GmbH",
-    "image": "https://images.opencollective.com/n8n/dca2f0c/logo.png",
-    "name": "n8n.io - n8n GmbH",
+    "id": "GitBook",
+    "image": "https://images.opencollective.com/gitbook/d35a8e7/logo.png",
+    "name": "GitBook",
     "tier": "sponsor",
-    "totalDonations": 80000,
-    "website": "https://n8n.io"
+    "totalDonations": 60000,
+    "website": "https://www.gitbook.com"
   },
   {
     "id": "Future Processing",
@@ -64,6 +72,14 @@
     "website": "https://sentry.io/welcome/"
   },
   {
+    "id": "Codecademy",
+    "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
+    "name": "Codecademy",
+    "tier": "sponsor",
+    "totalDonations": 50000,
+    "website": "https://codecademy.com"
+  },
+  {
     "id": "Whitebox",
     "image": "https://images.opencollective.com/whiteboxinc/ef0d11d/logo.png",
     "name": "Whitebox",
@@ -72,27 +88,11 @@
     "website": "https://whitebox.com"
   },
   {
-    "id": "GitBook",
-    "image": "https://images.opencollective.com/gitbook/d35a8e7/logo.png",
-    "name": "GitBook",
-    "tier": "sponsor",
-    "totalDonations": 40000,
-    "website": "https://www.gitbook.com"
-  },
-  {
-    "id": "Codecademy",
-    "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
-    "name": "Codecademy",
-    "tier": "sponsor",
-    "totalDonations": 30000,
-    "website": "https://codecademy.com"
-  },
-  {
     "id": "Monito",
     "image": "https://images.opencollective.com/monito/50fc878/logo.png",
     "name": "Monito",
     "tier": "supporter",
-    "totalDonations": 27500,
+    "totalDonations": 30000,
     "website": "https://www.monito.com"
   },
   {
@@ -116,7 +116,7 @@
     "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
     "name": "STORIS",
     "tier": "supporter",
-    "totalDonations": 16500,
+    "totalDonations": 19500,
     "website": "https://www.storis.com/"
   },
   {
@@ -124,7 +124,7 @@
     "image": "https://images.opencollective.com/michael-ranciglio/avatar.png",
     "name": "Michael Ranciglio",
     "tier": "supporter",
-    "totalDonations": 15000
+    "totalDonations": 16000
   },
   {
     "id": "Joe Alden",
@@ -138,8 +138,8 @@
     "id": "David Johnston",
     "image": "https://images.opencollective.com/blacksheepcode/976d69a/avatar.png",
     "name": "David Johnston",
-    "tier": "supporter",
-    "totalDonations": 11500,
+    "tier": "contributor",
+    "totalDonations": 12500,
     "website": "https://blacksheepcode.com"
   },
   {
@@ -162,32 +162,32 @@
     "id": "Tripwire, Inc.",
     "image": "https://images.opencollective.com/tripwire/7599e30/logo.png",
     "name": "Tripwire, Inc.",
-    "tier": "supporter",
-    "totalDonations": 7000,
+    "tier": "contributor",
+    "totalDonations": 8000,
     "website": "https://tripwire.com"
   },
   {
     "id": "Evil Martians",
     "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
     "name": "Evil Martians",
-    "tier": "supporter",
-    "totalDonations": 6500,
+    "tier": "contributor",
+    "totalDonations": 7500,
     "website": "https://evilmartians.com/"
   },
   {
     "id": "Balsa",
     "image": "https://images.opencollective.com/balsa/77de498/logo.png",
     "name": "Balsa",
-    "tier": "supporter",
-    "totalDonations": 6500,
+    "tier": "contributor",
+    "totalDonations": 7500,
     "website": "https://balsa.com"
   },
   {
     "id": "Jeffrey Rennie",
     "image": "https://images.opencollective.com/jeffrey-rennie/avatar.png",
     "name": "Jeffrey Rennie",
-    "tier": "supporter",
-    "totalDonations": 6000
+    "tier": "contributor",
+    "totalDonations": 7000
   },
   {
     "id": "Pete Gonzalez",
@@ -214,113 +214,19 @@
     "website": "https://Indeed.com"
   },
   {
-    "id": "Andrey Sitnik",
-    "image": "https://images.opencollective.com/andrey-sitnik/11aeb28/avatar.png",
-    "name": "Andrey Sitnik",
-    "tier": "contributor",
-    "totalDonations": 4500,
-    "website": "https://sitnik.ru"
-  },
-  {
     "id": "Corellium",
     "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
     "name": "Corellium",
-    "tier": "supporter",
-    "totalDonations": 3000,
+    "tier": "contributor",
+    "totalDonations": 4200,
     "website": "https://www.corellium.com"
   },
   {
-    "id": "Kamino Ryo",
-    "image": "https://images.opencollective.com/kaminoryo/d1d9ff5/avatar.png",
-    "name": "Kamino Ryo",
+    "id": "Alexey Berezin",
+    "image": "https://images.opencollective.com/beraliv/034d971/avatar.png",
+    "name": "Alexey Berezin",
     "tier": "contributor",
-    "totalDonations": 3000
-  },
-  {
-    "id": "Kevin Smith",
-    "image": "https://images.opencollective.com/kevin-smith1/a343791/avatar.png",
-    "name": "Kevin Smith",
-    "tier": "contributor",
-    "totalDonations": 2500
-  },
-  {
-    "id": "Dani Gellis",
-    "image": "https://images.opencollective.com/dani-gellis1/avatar.png",
-    "name": "Dani Gellis",
-    "tier": "contributor",
-    "totalDonations": 2500
-  },
-  {
-    "id": "38elements",
-    "image": "https://images.opencollective.com/38elements/5dfbefe/avatar.png",
-    "name": "38elements",
-    "tier": "contributor",
-    "totalDonations": 2200,
-    "website": "https://japanese-document.github.io/react-redux/connect.html"
-  },
-  {
-    "id": "Gaëtan Bloch",
-    "image": "https://images.opencollective.com/gaetan-bloch/c5cfcb2/avatar.png",
-    "name": "Gaëtan Bloch",
-    "tier": "contributor",
-    "totalDonations": 2100
-  },
-  {
-    "id": "Softwear, BV",
-    "image": "https://images.opencollective.com/softwear_dev/dc2d34e/logo.png",
-    "name": "Softwear, BV",
-    "tier": "contributor",
-    "totalDonations": 2000,
-    "website": "https://www.softwearconnect.com"
-  },
-  {
-    "id": "Sean Lindsay",
-    "image": "https://images.opencollective.com/sean-lindsay/avatar.png",
-    "name": "Sean Lindsay",
-    "tier": "contributor",
-    "totalDonations": 2000
-  },
-  {
-    "id": "Jane Doe",
-    "image": "https://images.opencollective.com/jane-doe/avatar.png",
-    "name": "Jane Doe",
-    "tier": "contributor",
-    "totalDonations": 2000
-  },
-  {
-    "id": "Philip Keiter",
-    "image": "https://images.opencollective.com/philip-keiter/1c359c0/avatar.png",
-    "name": "Philip Keiter",
-    "tier": "contributor",
-    "totalDonations": 1000
-  },
-  {
-    "id": "Toru Shimogaisho",
-    "image": "https://images.opencollective.com/gaishimo/f620536/avatar.png",
-    "name": "Toru Shimogaisho",
-    "tier": "contributor",
-    "totalDonations": 1000
-  },
-  {
-    "id": "Kazuhiro Kobayashi",
-    "image": "https://images.opencollective.com/kazuhiro-kobayashi/a1eeb73/avatar.png",
-    "name": "Kazuhiro Kobayashi",
-    "tier": "contributor",
-    "totalDonations": 1000
-  },
-  {
-    "id": "Masafumi Koba",
-    "image": "https://images.opencollective.com/ybiquitous/6a6913d/avatar.png",
-    "name": "Masafumi Koba",
-    "tier": "contributor",
-    "totalDonations": 1000
-  },
-  {
-    "id": "MySportsInjury",
-    "image": "https://images.opencollective.com/my-sports-injury-ltd/518c583/logo.png",
-    "name": "MySportsInjury",
-    "tier": "supporter",
     "totalDonations": 1000,
-    "website": "https://www.mysportsinjury.co.uk"
+    "website": "https://beraliv.dev"
   }
 ]

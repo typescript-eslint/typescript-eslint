@@ -1,6 +1,6 @@
 # `no-unused-vars`
 
-Disallow unused variables.
+Disallows unused variables.
 
 ## Rule Details
 
@@ -26,9 +26,3 @@ See [`eslint/no-unused-vars` options](https://eslint.org/docs/rules/no-unused-va
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-unused-vars.md)
 
 </sup>
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSDeclareFunction async TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSDeclareFunction {
+      type: "TSDeclareFunction",
+      async: true,
+      declare: true,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [23, 26],
+        loc: {
+          start: { column: 23, line: 1 },
+          end: { column: 26, line: 1 },
+        },
+      },
+      params: Array [],
+
+      range: [0, 29],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 29, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 30],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

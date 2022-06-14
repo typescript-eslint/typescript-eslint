@@ -1,6 +1,6 @@
 # `no-empty-function`
 
-Disallow empty functions.
+Disallows empty functions.
 
 ## Rule Details
 
@@ -28,7 +28,8 @@ This rule adds the following options:
 type AdditionalAllowOptionEntries =
   | 'private-constructors'
   | 'protected-constructors'
-  | 'decoratedFunctions';
+  | 'decoratedFunctions'
+  | 'overrideMethods';
 
 type AllowOptionEntries =
   | BaseNoEmptyFunctionAllowOptionEntries
@@ -77,6 +78,22 @@ class Foo {
 }
 ```
 
+### allow: `overrideMethods`
+
+Examples of correct code for the `{ "allow": ["overrideMethods"] }` option:
+
+```ts
+abstract class Base {
+  protected greet(): void {
+    console.log('Hello!');
+  }
+}
+
+class Foo extends Base {
+  protected override greet(): void {}
+}
+```
+
 ## How to Use
 
 ```jsonc
@@ -92,9 +109,3 @@ class Foo {
 Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-empty-function.md)
 
 </sup>
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,6 @@
 # `no-restricted-imports`
 
-Disallow specified modules when loaded by `import`.
+Disallows specified modules when loaded by `import`.
 
 ## Rule Details
 
@@ -68,9 +68,3 @@ export type { Foo } from 'import-foo';
 import type baz from 'import-baz';
 export type { Baz } from 'import-baz';
 ```
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

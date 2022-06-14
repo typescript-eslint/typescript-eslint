@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSInterfaceDeclaration extends-many TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: Array [],
+
+        range: [28, 30],
+        loc: {
+          start: { column: 28, line: 1 },
+          end: { column: 30, line: 1 },
+        },
+      },
+      extends: Array [
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
+          expression: Identifier {
+            type: "Identifier",
+            name: "A",
+
+            range: [20, 21],
+            loc: {
+              start: { column: 20, line: 1 },
+              end: { column: 21, line: 1 },
+            },
+          },
+
+          range: [20, 21],
+          loc: {
+            start: { column: 20, line: 1 },
+            end: { column: 21, line: 1 },
+          },
+        },
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
+          expression: Identifier {
+            type: "Identifier",
+            name: "B",
+
+            range: [23, 24],
+            loc: {
+              start: { column: 23, line: 1 },
+              end: { column: 24, line: 1 },
+            },
+          },
+
+          range: [23, 24],
+          loc: {
+            start: { column: 23, line: 1 },
+            end: { column: 24, line: 1 },
+          },
+        },
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
+          expression: Identifier {
+            type: "Identifier",
+            name: "C",
+
+            range: [26, 27],
+            loc: {
+              start: { column: 26, line: 1 },
+              end: { column: 27, line: 1 },
+            },
+          },
+
+          range: [26, 27],
+          loc: {
+            start: { column: 26, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+      ],
+      id: Identifier {
+        type: "Identifier",
+        name: "F",
+
+        range: [10, 11],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 11, line: 1 },
+        },
+      },
+
+      range: [0, 30],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 30, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 31],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

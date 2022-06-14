@@ -30,7 +30,7 @@ const log = debug('typescript-eslint:typescript-estree:parser');
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.7.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.8.0';
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
  * List them all separately here, so we can automatically create the full string
@@ -237,8 +237,10 @@ function applyParserOptionsToExtra(options: TSESTreeOptions): void {
   /**
    * Enable JSX - note the applicable file extension is still required
    */
-  if (typeof options.jsx === 'boolean' && options.jsx) {
-    extra.jsx = true;
+  if (typeof options.jsx !== 'boolean') {
+    extra.jsx = false;
+  } else {
+    extra.jsx = options.jsx;
   }
 
   /**

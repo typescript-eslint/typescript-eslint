@@ -151,9 +151,3 @@ Also, if you prefer concise coding style then also don't use it.
 ## Related To
 
 - TSLint: ['no-void-expression'](https://palantir.github.io/tslint/rules/no-void-expression/)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information
