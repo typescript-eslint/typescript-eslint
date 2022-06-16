@@ -63,6 +63,7 @@ export const useSandboxServices = (
             formatOnPaste: true,
             formatOnType: true,
             wrappingIndent: 'same',
+            hover: { above: false },
           },
           compilerOptions: compilerOptions,
           domID: editorEmbedId,
