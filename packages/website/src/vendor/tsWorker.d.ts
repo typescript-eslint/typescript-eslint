@@ -89,6 +89,10 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     formatOptions: ts.FormatCodeOptions,
   ): Promise<ReadonlyArray<ts.CodeFixAction>>;
   updateExtraLibs(extraLibs: IExtraLibs): void;
+  /**
+   * https://github.com/microsoft/TypeScript-Website/blob/246798df5013036bd9b4389932b642c20ab35deb/packages/playground-worker/types.d.ts#L48
+   */
+  getLibFiles(): Promise<Record<string, string>>;
 }
 export interface IExtraLib {
   content: string;

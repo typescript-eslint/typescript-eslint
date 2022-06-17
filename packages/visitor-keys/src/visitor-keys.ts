@@ -142,7 +142,7 @@ const additionalKeys: AdditionalKeys = {
   TSTypeParameterDeclaration: ['params'],
   TSTypeParameterInstantiation: ['params'],
   TSTypePredicate: ['typeAnnotation', 'parameterName'],
-  TSTypeQuery: ['exprName'],
+  TSTypeQuery: ['exprName', 'typeParameters'],
   TSTypeReference: ['typeName', 'typeParameters'],
   TSUndefinedKeyword: [],
   TSUnionType: ['types'],

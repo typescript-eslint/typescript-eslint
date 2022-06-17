@@ -14,6 +14,9 @@ packages/eslint-plugin/src/configs/*.json
 CONTRIBUTORS.md
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
 
+# Syntax not yet supported
+packages/scope-manager/tests/fixtures/type-declaration/type-query-with-parameters.ts
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 

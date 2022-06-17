@@ -167,6 +167,20 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        class Test {
+           value: string & number;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          optional? = false;
+        }
+      `,
+    },
+    {
+      code: `
         type Test =
         | string
         | boolean;
@@ -377,13 +391,6 @@ ruleTester.run('space-infix-ops', rule, {
     {
       code: `
         const x: string & (((() => void)));
-      `,
-    },
-    {
-      code: `
-        class Test {
-           value: string & number;
-        }
       `,
     },
     {
@@ -981,6 +988,91 @@ ruleTester.run('space-infix-ops', rule, {
           messageId: 'missingSpace',
           column: 9,
           line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test = |string|(((() => void)))|string;
+      `,
+      output: `
+        type Test = | string | (((() => void))) | string;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 21,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 28,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 45,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test=|string|(((() => void)))|string;
+      `,
+      output: `
+        type Test = |string | (((() => void))) | string;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 19,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 26,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 43,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test=(string&number)|string|(((() => void)));
+      `,
+      output: `
+        type Test = (string & number) | string | (((() => void)));
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 26,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 34,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
         },
       ],
     },
@@ -1857,6 +1949,25 @@ ruleTester.run('space-infix-ops', rule, {
         {
           messageId: 'missingSpace',
           column: 24,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          optional?= false;
+        }
+      `,
+      output: `
+        class Test {
+          optional? = false;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 20,
           line: 3,
         },
       ],

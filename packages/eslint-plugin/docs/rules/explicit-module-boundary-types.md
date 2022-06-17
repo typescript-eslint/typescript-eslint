@@ -158,10 +158,9 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 
 ```ts
 export const func = (value: number) => ({ type: 'X', value });
-export const foo = () =>
-  ({
-    bar: true,
-  } as const);
+export const foo = () => ({
+  bar: true,
+});
 export const bar = () => 1;
 ```
 

@@ -64,6 +64,7 @@ export const useSandboxServices = (
             formatOnType: true,
             wrappingIndent: 'same',
           },
+          acquireTypes: false,
           compilerOptions: compilerOptions,
           domID: editorEmbedId,
         };
@@ -77,19 +78,34 @@ export const useSandboxServices = (
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-        const libs = ((window.ts as any).libs as string[]) ?? ['esnext'];
+        let libEntries: Map<string, string> | undefined;
+        const worker = await sandboxInstance.getWorkerProcess();
+        if (worker.getLibFiles) {
+          libEntries = new Map(
+            Object.entries((await worker.getLibFiles()) ?? {}).map(item => [
+              '/' + item[0],
+              item[1],
+            ]),
+          );
+        } else {
+          // for some older version of playground we do not have definitions available
+          libEntries = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
+            {
+              lib: Array.from(window.ts.libMap.keys()),
+            },
+            props.ts,
+            true,
+            window.ts,
+          );
+          for (const pair of libEntries) {
+            sandboxInstance.languageServiceDefaults.addExtraLib(
+              pair[1],
+              'ts:' + pair[0],
+            );
+          }
+        }
 
-        const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
-          {
-            ...sandboxInstance.getCompilerOptions(),
-            lib: libs.filter(item => !item.includes('.')),
-          },
-          props.ts,
-          true,
-          window.ts,
-        );
-        const system = sandboxInstance.tsvfs.createSystem(libMap);
+        const system = sandboxInstance.tsvfs.createSystem(libEntries);
 
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 

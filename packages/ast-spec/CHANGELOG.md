@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.1...v5.28.0) (2022-06-13)
+
+
+### Features
+
+* **ast-spec:** extract `AssignmentOperatorToText` ([#3570](https://github.com/typescript-eslint/typescript-eslint/issues/3570)) ([45f75e6](https://github.com/typescript-eslint/typescript-eslint/commit/45f75e6b869f4160a45a6890d794aba004356ad7))
+
+
+
+
+
+## [5.27.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.0...v5.27.1) (2022-06-06)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
 # [5.27.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.26.0...v5.27.0) (2022-05-30)
 
 

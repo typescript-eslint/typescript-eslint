@@ -42,12 +42,15 @@ See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
 
-```diff
- parserOptions: {
-   tsconfigRootDir: __dirname,
-   project: ['./tsconfig.json'],
-+  extraFileExtensions: ['.vue'],
- },
+```js title=".eslintrc.js"
+module.exports = {
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
+    // Add this line
+    extraFileExtensions: ['.vue'],
+  },
+};
 ```
 
 ## One of my lint rules isn't working correctly on a pure JavaScript file

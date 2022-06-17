@@ -39,6 +39,10 @@
   margin: 0.2rem 0;
 }
 
+.searchResultDescription {
+  flex: 1 0 75%;
+}
+
 .searchResult:nth-child(even),
 .searchResultGroup:nth-child(even) {
   background: var(--ifm-color-emphasis-100);

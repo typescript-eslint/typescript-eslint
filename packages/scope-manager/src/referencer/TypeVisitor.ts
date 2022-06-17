@@ -267,11 +267,7 @@ class TypeVisitor extends Visitor {
       identifier = node.exprName;
     }
 
-    if (identifier.type === AST_NODE_TYPES.ThisExpression) {
-      return;
-    }
-
-    this.#referencer.currentScope().referenceValue(identifier);
+    this.visit(node.typeParameters);
   }
 
   protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
