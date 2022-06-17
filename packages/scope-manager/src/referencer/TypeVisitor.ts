@@ -266,6 +266,10 @@ class TypeVisitor extends Visitor {
     } else {
       identifier = node.exprName;
     }
+    if (identifier.type === AST_NODE_TYPES.ThisExpression) {
+      return;
+    }
+    this.#referencer.currentScope().referenceValue(identifier);
 
     this.visit(node.typeParameters);
   }
