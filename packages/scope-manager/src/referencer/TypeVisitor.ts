@@ -256,20 +256,19 @@ class TypeVisitor extends Visitor {
 
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
-    let identifier: TSESTree.Identifier | TSESTree.ThisExpression;
+    let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
     if (node.exprName.type === AST_NODE_TYPES.TSQualifiedName) {
       let iter = node.exprName;
       while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
         iter = iter.left;
       }
-      identifier = iter.left;
+      entityName = iter.left;
     } else {
-      identifier = node.exprName;
+      entityName = node.exprName;
     }
-    if (identifier.type === AST_NODE_TYPES.ThisExpression) {
-      return;
+    if (entityName.type === AST_NODE_TYPES.Identifier) {
+      this.#referencer.currentScope().referenceValue(entityName);
     }
-    this.#referencer.currentScope().referenceValue(identifier);
 
     this.visit(node.typeParameters);
   }
