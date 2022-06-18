@@ -293,7 +293,7 @@ class ClassVisitor extends Visitor {
       node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
       this.#emitDecoratorMetadata
     ) {
-      let identifier: TSESTree.Identifier | TSESTree.ThisExpression;
+      let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
       if (
         node.typeAnnotation.typeName.type === AST_NODE_TYPES.TSQualifiedName
       ) {
@@ -301,17 +301,15 @@ class ClassVisitor extends Visitor {
         while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
           iter = iter.left;
         }
-        identifier = iter.left;
+        entityName = iter.left;
       } else {
-        identifier = node.typeAnnotation.typeName;
-      }
-
-      if (identifier.type === AST_NODE_TYPES.ThisExpression) {
-        return;
+        entityName = node.typeAnnotation.typeName;
       }
 
       if (withDecorators) {
-        this.#referencer.currentScope().referenceDualValueType(identifier);
+        if (entityName.type === AST_NODE_TYPES.Identifier) {
+          this.#referencer.currentScope().referenceDualValueType(entityName);
+        }
 
         if (node.typeAnnotation.typeParameters) {
           this.visitType(node.typeAnnotation.typeParameters);
