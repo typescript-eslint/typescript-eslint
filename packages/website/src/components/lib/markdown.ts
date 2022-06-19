@@ -1,3 +1,4 @@
+import { parseESLintRC } from '../config/utils';
 import type { ConfigModel } from '../types';
 
 export function createSummary(
@@ -49,10 +50,18 @@ export function createMarkdown(state: ConfigModel): string {
 }
 
 export function createMarkdownParams(state: ConfigModel): string {
+  const { rules } = parseESLintRC(state.eslintrc);
+  const ruleKeys = Object.keys(rules);
+
+  const onlyRuleName =
+    ruleKeys.length === 1
+      ? ruleKeys[0].replace('@typescript-eslint/', '')
+      : 'rule name here';
+
   const params = {
     labels: 'bug,package: eslint-plugin,triage',
     template: '01-bug-report-plugin.yaml',
-    title: 'Bug: [rule name here] <short description of the issue>',
+    title: `Bug: [${onlyRuleName}] <short description of the issue>`,
     'playground-link': document.location.toString(),
     'repro-code': state.code,
     'eslint-config': `module.exports = ${state.eslintrc ?? '{}'}`,
