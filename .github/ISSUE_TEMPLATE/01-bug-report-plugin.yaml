@@ -31,7 +31,7 @@ body:
         - Your issue requires some complex setup - such as multiple files or a specific folder structure.
 
         ***Please do not use this template.*** Instead, select the
-        ["Report a complex bug you encountered by providing an isolated reproduction repository" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=7-bug-report-complex.yaml).
+        ["Report a complex bug you encountered by providing an isolated reproduction repository" template](https://github.com/typescript-eslint/typescript-eslint/issues/new?template=08-bug-report-complex.yaml).
         ***Help us to help you!***
       placeholder: https://typescript-eslint.io/play/...
     validations:
