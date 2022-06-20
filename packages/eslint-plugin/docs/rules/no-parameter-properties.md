@@ -395,7 +395,3 @@ class Foo {
 ## When Not To Use It
 
 If you don't care about the using parameter properties in constructors, then you will not need this rule.
-
-## Related To
-
-- TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)

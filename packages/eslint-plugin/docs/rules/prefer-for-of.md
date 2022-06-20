@@ -54,7 +54,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you transpile for browsers that do not support for-of loops, you may wish to use traditional for loops that produce more compact code.
-
-## Related To
-
-- TSLint: ['prefer-for-of'](https://palantir.github.io/tslint/rules/prefer-for-of/)

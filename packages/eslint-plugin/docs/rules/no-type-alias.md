@@ -608,7 +608,3 @@ callback, etc. that would cause the code to be unreadable or impractical.
 ## Further Reading
 
 - [Advanced Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
-
-## Related To
-
-- TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)

@@ -28,7 +28,7 @@ TypeScript is often better at inferring types than easily written type annotatio
 This rule can enforce type annotations in locations regardless of whether they're required.
 This is typically used to maintain consistency for element types that sometimes require them.
 
-> To enforce type definitions existing on call signatures as per TSLint's `arrow-call-signature` and `call-signature` options, use `explicit-function-return-type`, or `explicit-module-boundary-types`.
+> To enforce type definitions existing on call signatures, use `explicit-function-return-type`, or `explicit-module-boundary-types`.
 
 ## Options
 
@@ -336,7 +336,3 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
-
-## Related To
-
-- TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)

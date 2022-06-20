@@ -100,7 +100,3 @@ var fn = (a: any, b: number) => a + b;
   "@typescript-eslint/restrict-plus-operands": "error"
 }
 ```
-
-## Related To
-
-- TSLint: [restrict-plus-operands](https://palantir.github.io/tslint/rules/restrict-plus-operands/)
