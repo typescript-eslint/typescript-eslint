@@ -270,13 +270,13 @@ function createWatchProgram(
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
-  watchCompilerHost.realpath = (path: string) => {
+  watchCompilerHost.realpath = (path: string): string => {
     try {
       return fs.realpathSync(path);
     } catch {
       return path;
     }
-  }
+  };
 
   if (extra.moduleResolver) {
     watchCompilerHost.resolveModuleNames = getModuleResolver(
