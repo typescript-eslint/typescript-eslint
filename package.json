@@ -39,7 +39,6 @@
     "lint": "cross-env NODE_OPTIONS=\"--max-old-space-size=16384\" eslint .",
     "postinstall": "yarn husky install && yarn build",
     "pre-commit": "yarn lint-staged",
-    "pre-push": "yarn check-format",
     "start": "nx run website:start",
     "test": "nx run-many --target=test --all --parallel",
     "test-integration": "yarn jest -c ./tests/integration/jest.config.js",
