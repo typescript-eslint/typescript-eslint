@@ -1,9 +1,11 @@
 # `prefer-nullish-coalescing`
 
-Enforces using the nullish coalescing operator instead of logical chaining.
+Enforces using the nullish coalescing operator instead of logical assignments or chaining.
 
-TypeScript 3.7 added support for the nullish coalescing operator.
-This operator allows you to safely cascade a value when dealing with `null` or `undefined`.
+This operator allows you to safely cascade a value when dealing with `null` or `undefined` in:
+
+- Assignment expressions: `left ||= right`
+- Logical expressions: `left || right`
 
 ```ts
 function myFunc(foo: string | null) {
@@ -75,7 +77,10 @@ declare const b: string | null;
 
 if (a || b) {
 }
+if ((a ||= b)) {
+}
 while (a || b) {}
+while ((a ||= b)) {}
 do {} while (a || b);
 for (let i = 0; a || b; i += 1) {}
 a || b ? true : false;
@@ -89,7 +94,10 @@ declare const b: string | null;
 
 if (a ?? b) {
 }
+if ((a ??= b)) {
+}
 while (a ?? b) {}
+while ((a ??= b)) {}
 do {} while (a ?? b);
 for (let i = 0; a ?? b; i += 1) {}
 a ?? b ? true : false;
@@ -112,6 +120,7 @@ declare const c: string | null;
 declare const d: string | null;
 
 a || (b && c);
+a ||= b && c;
 (a && b) || c || d;
 a || (b && c) || d;
 a || (b && c && d);
@@ -126,6 +135,7 @@ declare const c: string | null;
 declare const d: string | null;
 
 a ?? (b && c);
+a ??= b && c;
 (a && b) ?? c ?? d;
 a ?? (b && c) ?? d;
 a ?? (b && c && d);
