@@ -312,7 +312,3 @@ class Constants {
 ## When Not To Use It
 
 You can disable this rule if you are unable -or unwilling- to switch off using classes as namespaces.
-
-## Related To
-
-[`no-unnecessary-class`](https://palantir.github.io/tslint/rules/no-unnecessary-class/) from TSLint

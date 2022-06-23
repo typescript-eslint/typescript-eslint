@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.28.0...v5.29.0) (2022-06-20)
+
+
+### Features
+
+* **website:** open issue with rule name if only one rule is enabled ([#5190](https://github.com/typescript-eslint/typescript-eslint/issues/5190)) ([b229ee4](https://github.com/typescript-eslint/typescript-eslint/commit/b229ee4ace1417d2d4f7d6cafa039f073e845c3a))
+
+
+
+
+
+# [5.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.1...v5.28.0) (2022-06-13)
+
+
+### Bug Fixes
+
+* [TS4.7] allow visiting of typeParameters in TSTypeQuery ([#5166](https://github.com/typescript-eslint/typescript-eslint/issues/5166)) ([dc1f930](https://github.com/typescript-eslint/typescript-eslint/commit/dc1f9309cf04aa7314e758980ac687558482f47f))
+* **eslint-plugin:** [space-infix-ops] support for optional property without type ([#5155](https://github.com/typescript-eslint/typescript-eslint/issues/5155)) ([1f25daf](https://github.com/typescript-eslint/typescript-eslint/commit/1f25daf74e5d45077199f9ee9fa9bf31107f4089))
+
+
+### Features
+
+* **ast-spec:** extract `AssignmentOperatorToText` ([#3570](https://github.com/typescript-eslint/typescript-eslint/issues/3570)) ([45f75e6](https://github.com/typescript-eslint/typescript-eslint/commit/45f75e6b869f4160a45a6890d794aba004356ad7))
+* **eslint-plugin:** [consistent-generic-constructors] add rule ([#4924](https://github.com/typescript-eslint/typescript-eslint/issues/4924)) ([921cdf1](https://github.com/typescript-eslint/typescript-eslint/commit/921cdf17e548845311d0591249616ec844503926))
+
+
+
+
+
 ## [5.27.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.0...v5.27.1) (2022-06-06)
 
 

@@ -13,9 +13,12 @@
   margin: 0;
 }
 
-.fixer {
-  margin: 0.5rem 1.5rem;
+.fixerContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.fixer {
+  margin: 0.5rem 0 0.5rem 1.5rem;
 }

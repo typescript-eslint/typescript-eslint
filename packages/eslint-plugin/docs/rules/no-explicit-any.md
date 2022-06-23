@@ -179,7 +179,3 @@ and you want to be able to specify `any`.
 ## Further Reading
 
 - TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
-
-## Related To
-
-- TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)

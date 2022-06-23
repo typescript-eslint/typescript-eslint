@@ -126,7 +126,3 @@ class Example {
 
 If you don't care about if `void` is used with other types,
 or in invalid places, then you don't need this rule.
-
-## Related To
-
-- TSLint: [invalid-void](https://palantir.github.io/tslint/rules/invalid-void/)

@@ -1159,7 +1159,3 @@ It is also possible to group different member types at the same rank.
 ## When Not To Use It
 
 If you don't care about the general order of your members, then you will not need this rule.
-
-## Related To
-
-- TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)

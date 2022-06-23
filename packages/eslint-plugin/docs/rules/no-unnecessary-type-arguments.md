@@ -66,7 +66,3 @@ class Impl implements I<string> {}
 ```
 
 This rule is not configurable.
-
-## Related To
-
-- TSLint: [use-default-type-parameter](https://palantir.github.io/tslint/rules/use-default-type-parameter)
