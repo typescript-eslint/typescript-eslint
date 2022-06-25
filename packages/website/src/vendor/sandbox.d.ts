@@ -105,7 +105,8 @@ export declare const createTypeScriptSandbox: (
   };
   /** A list of TypeScript versions you can use with the TypeScript sandbox */
   supportedVersions: readonly [
-    '4.6.2',
+    '4.7.3',
+    '4.6.4',
     '4.5.5',
     '4.4.4',
     '4.3.5',

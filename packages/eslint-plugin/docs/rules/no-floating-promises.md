@@ -118,4 +118,3 @@ If you do not use Promise-like values in your codebase, or want to allow them to
 ## Related To
 
 - [`no-misused-promises`](./no-misused-promises.md)
-- TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)

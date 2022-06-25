@@ -63,12 +63,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       tsconfig: sandboxInstance.monaco.editor.createModel(
         tsconfig,
         'json',
-        sandboxInstance.monaco.Uri.file('./tsconfig.json'),
+        sandboxInstance.monaco.Uri.file('/tsconfig.json'),
       ),
       eslintrc: sandboxInstance.monaco.editor.createModel(
         eslintrc,
         'json',
-        sandboxInstance.monaco.Uri.file('./.eslintrc'),
+        sandboxInstance.monaco.Uri.file('/.eslintrc'),
       ),
     };
     tabsDefault.code.updateOptions({ tabSize: 2, insertSpaces: true });
@@ -129,7 +129,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
       const messages = webLinter.lint(code);
 
-      const markers = parseLintResults(messages, codeActions);
+      const markers = parseLintResults(messages, codeActions, ruleId =>
+        sandboxInstance.monaco.Uri.parse(webLinter.rulesUrl.get(ruleId) ?? ''),
+      );
 
       sandboxInstance.monaco.editor.setModelMarkers(
         tabs.code,

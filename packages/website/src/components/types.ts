@@ -35,12 +35,17 @@ export interface SelectedRange {
 }
 
 export interface ErrorItem {
-  group: string;
   message: string;
   location: string;
   severity: number;
-  hasFixers: boolean;
-  fixers: { message: string; fix(): void }[];
+  suggestions: { message: string; fix(): void }[];
+  fixer?: { message: string; fix(): void };
+}
+
+export interface ErrorGroup {
+  group: string;
+  uri?: string;
+  items: ErrorItem[];
 }
 
 export type EslintRC = Record<string, unknown> & { rules: RulesRecord };

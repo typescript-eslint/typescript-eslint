@@ -47,7 +47,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about TypeScript module syntax, then you will not need this rule.
-
-## Related To
-
-- TSLint: [no-require-imports](https://palantir.github.io/tslint/rules/no-require-imports/)
