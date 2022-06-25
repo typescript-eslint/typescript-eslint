@@ -1,7 +1,3 @@
-# `explicit-member-accessibility`
-
-Requires explicit accessibility modifiers on class properties and methods.
-
 Leaving off accessibility modifier and making everything public can make
 your interface hard to use by others.
 If you make all internal pieces private or protected, your interface will

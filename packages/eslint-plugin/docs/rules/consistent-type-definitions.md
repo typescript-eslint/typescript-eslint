@@ -1,7 +1,3 @@
-# `consistent-type-definitions`
-
-Enforces type definitions to consistently use either `interface` or `type`.
-
 There are two ways to define a type.
 
 ```ts

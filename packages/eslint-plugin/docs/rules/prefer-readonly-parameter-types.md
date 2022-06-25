@@ -1,7 +1,3 @@
-# `prefer-readonly-parameter-types`
-
-Requires function parameters to be typed as `readonly` to prevent accidental mutation of inputs.
-
 Mutating function arguments can lead to confusing, hard to debug behavior.
 Whilst it's easy to implicitly remember to not modify function arguments, explicitly typing arguments as readonly provides clear contract to consumers.
 This contract makes it easier for a consumer to reason about if a function has side-effects.

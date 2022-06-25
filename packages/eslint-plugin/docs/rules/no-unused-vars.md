@@ -1,7 +1,3 @@
-# `no-unused-vars`
-
-Disallows unused variables.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars) rule.

@@ -1,7 +1,3 @@
-# `no-non-null-asserted-nullish-coalescing`
-
-Disallows non-null assertions in the left operand of a nullish coalescing operator.
-
 ## Rule Details
 
 The nullish coalescing operator is designed to provide a default value when dealing with `null` or `undefined`.

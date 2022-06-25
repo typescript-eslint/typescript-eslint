@@ -1,7 +1,3 @@
-# `no-namespace`
-
-Disallows custom TypeScript modules and namespaces.
-
 Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
 ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).
 

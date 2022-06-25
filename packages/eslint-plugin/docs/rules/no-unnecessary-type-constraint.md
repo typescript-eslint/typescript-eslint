@@ -1,7 +1,3 @@
-# `no-unnecessary-type-constraint`
-
-Disallows unnecessary constraints on generic types.
-
 ## Rule Details
 
 Type parameters (`<T>`) may be "constrained" with an `extends` keyword ([docs](https://www.typescriptlang.org/docs/handbook/generics.html#generic-constraints)).

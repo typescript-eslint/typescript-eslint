@@ -1,7 +1,3 @@
-# `comma-dangle`
-
-Requires or disallows trailing commas.
-
 ## Rule Details
 
 This rule extends the base [`eslint/comma-dangle`](https://eslint.org/docs/rules/comma-dangle) rule.

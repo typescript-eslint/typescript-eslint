@@ -1,7 +1,3 @@
-# `no-loss-of-precision`
-
-Disallows literal numbers that lose precision.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-loss-of-precision`](https://eslint.org/docs/rules/no-loss-of-precision) rule.

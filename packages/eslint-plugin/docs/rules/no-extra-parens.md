@@ -1,7 +1,3 @@
-# `no-extra-parens`
-
-Disallows unnecessary parentheses.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-extra-parens`](https://eslint.org/docs/rules/no-extra-parens) rule.

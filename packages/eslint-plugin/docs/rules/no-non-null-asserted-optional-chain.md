@@ -1,7 +1,3 @@
-# `no-non-null-asserted-optional-chain`
-
-Disallows non-null assertions after an optional chain expression.
-
 ## Rule Details
 
 Optional chain expressions are designed to return `undefined` if the optional property is nullish.

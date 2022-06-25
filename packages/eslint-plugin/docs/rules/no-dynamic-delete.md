@@ -1,7 +1,3 @@
-# `no-dynamic-delete`
-
-Disallows using the `delete` operator on computed key expressions.
-
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 
 ## Rule Details

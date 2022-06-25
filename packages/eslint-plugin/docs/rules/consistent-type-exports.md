@@ -1,7 +1,3 @@
-# `consistent-type-exports`
-
-Enforces consistent usage of type exports.
-
 TypeScript 3.8 added support for type-only exports.
 
 Type-only exports allow you to specify that 1 or more named exports are exported as type-only. This allows

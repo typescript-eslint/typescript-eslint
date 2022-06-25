@@ -1,7 +1,3 @@
-# `no-invalid-this`
-
-Disallows `this` keywords outside of classes or class-like objects.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-invalid-this`](https://eslint.org/docs/rules/no-invalid-this) rule.

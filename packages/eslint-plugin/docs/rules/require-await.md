@@ -1,7 +1,3 @@
-# `require-await`
-
-Disallows async functions which have no `await` expression.
-
 ## Rule Details
 
 This rule extends the base [`eslint/require-await`](https://eslint.org/docs/rules/require-await) rule.

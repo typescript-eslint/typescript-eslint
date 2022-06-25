@@ -1,7 +1,3 @@
-# `no-unused-expressions`
-
-Disallows unused expressions.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-unused-expressions`](https://eslint.org/docs/rules/no-unused-expressions) rule.

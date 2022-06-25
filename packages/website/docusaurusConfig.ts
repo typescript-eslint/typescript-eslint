@@ -8,7 +8,7 @@ import type { Config } from '@docusaurus/types';
 import { rulesMeta } from './rulesMeta';
 import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import tabsPlugin from 'remark-docusaurus-tabs';
-import { addRuleAttributesList } from './plugins/add-rule-attributes-list';
+import { generatedRuleDocs } from './plugins/generated-rule-docs';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
@@ -24,7 +24,7 @@ const presetClassicOptions: PresetClassicOptions = {
     routeBasePath: 'rules',
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     beforeDefaultRemarkPlugins,
-    remarkPlugins: [...remarkPlugins, [addRuleAttributesList, {}]],
+    remarkPlugins: [...remarkPlugins, [generatedRuleDocs, {}]],
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },

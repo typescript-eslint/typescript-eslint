@@ -1,7 +1,3 @@
-# `no-for-in-array`
-
-Disallows iterating over an array with a for-in loop.
-
 This rule prohibits iterating over an array with a for-in loop.
 
 ## Rule Details

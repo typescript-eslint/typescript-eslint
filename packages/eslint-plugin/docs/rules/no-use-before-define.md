@@ -1,7 +1,3 @@
-# `no-use-before-define`
-
-Disallows the use of variables before they are defined.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-use-before-define`](https://eslint.org/docs/rules/no-use-before-define) rule.

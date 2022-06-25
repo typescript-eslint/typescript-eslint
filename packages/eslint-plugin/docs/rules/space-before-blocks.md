@@ -1,7 +1,3 @@
-# `space-before-blocks`
-
-Enforces consistent spacing before blocks.
-
 ## Rule Details
 
 This rule extends the base [`eslint/space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks) rule.

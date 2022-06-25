@@ -1,7 +1,3 @@
-# `no-floating-promises`
-
-Requires Promise-like statements to be handled appropriately.
-
 A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
 
 Floating Promises can cause several issues, such as improperly sequenced operations, ignored Promise rejections, and more.

@@ -1,7 +1,3 @@
-# `no-unnecessary-boolean-literal-compare`
-
-Disallows unnecessary equality comparisons against boolean literals.
-
 Comparing boolean values to boolean literals is unnecessary, those comparisons result in the same booleans. Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
 
 ## Rule Details

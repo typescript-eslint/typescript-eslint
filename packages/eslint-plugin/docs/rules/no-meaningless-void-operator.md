@@ -1,7 +1,3 @@
-# `no-meaningless-void-operator`
-
-Disallows the `void` operator except when used to discard a value.
-
 Disallows the `void` operator when its argument is already of type `void` or `undefined`.
 
 ## Rule Details

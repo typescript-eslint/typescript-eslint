@@ -1,7 +1,3 @@
-# `semi`
-
-Requires or disallows semicolons instead of ASI.
-
 This rule enforces consistent use of semicolons after statements.
 
 ## Rule Details

@@ -1,7 +1,3 @@
-# `space-before-function-paren`
-
-Enforces consistent spacing before function parenthesis.
-
 ## Rule Details
 
 This rule extends the base [`eslint/space-before-function-paren`](https://eslint.org/docs/rules/space-before-function-paren) rule.

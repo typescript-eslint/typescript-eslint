@@ -1,7 +1,3 @@
-# `ban-types`
-
-Disallows certain types.
-
 Some builtin types have aliases, some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.
 

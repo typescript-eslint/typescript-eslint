@@ -1,7 +1,3 @@
-# `func-call-spacing`
-
-Requires or disallows spacing between function identifiers and their invocations.
-
 ## Rule Details
 
 This rule extends the base [`eslint/func-call-spacing`](https://eslint.org/docs/rules/func-call-spacing) rule.

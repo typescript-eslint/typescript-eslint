@@ -1,7 +1,3 @@
-# `non-nullable-type-assertion-style`
-
-Enforces non-null assertions over explicit type casts.
-
 This rule detects when an `as` cast is doing the same job as a `!` would, and suggests fixing the code to be an `!`.
 
 ## Rule Details

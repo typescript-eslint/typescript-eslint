@@ -1,7 +1,3 @@
-# `object-curly-spacing`
-
-Enforces consistent spacing inside braces.
-
 ## Rule Details
 
 This rule extends the base [`eslint/object-curly-spacing`](https://eslint.org/docs/rules/object-curly-spacing) rule.

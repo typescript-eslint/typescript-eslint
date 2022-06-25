@@ -1,7 +1,3 @@
-# `no-misused-promises`
-
-Disallows Promises in places not designed to handle them.
-
 This rule forbids providing Promises to logical locations such as if statements in places where the TypeScript compiler allows them but they are not handled properly.
 These situations can often arise due to a missing `await` keyword or just a misunderstanding of the way async
 functions are handled/awaited.

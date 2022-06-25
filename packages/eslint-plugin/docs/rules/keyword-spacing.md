@@ -1,7 +1,3 @@
-# `keyword-spacing`
-
-Enforces consistent spacing before and after keywords.
-
 ## Rule Details
 
 This rule extends the base [`eslint/keyword-spacing`](https://eslint.org/docs/rules/keyword-spacing) rule.

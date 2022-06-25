@@ -1,7 +1,3 @@
-# `default-param-last`
-
-Enforces default parameters to be last.
-
 ## Rule Details
 
 This rule extends the base [`eslint/default-param-last`](https://eslint.org/docs/rules/default-param-last) rule.

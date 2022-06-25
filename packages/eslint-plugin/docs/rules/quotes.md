@@ -1,7 +1,3 @@
-# `quotes`
-
-Enforces the consistent use of either backticks, double, or single quotes.
-
 ## Rule Details
 
 This rule extends the base [`eslint/quotes`](https://eslint.org/docs/rules/quotes) rule.

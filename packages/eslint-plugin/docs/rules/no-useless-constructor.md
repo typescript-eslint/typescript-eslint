@@ -1,7 +1,3 @@
-# `no-useless-constructor`
-
-Disallows unnecessary constructors.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-useless-constructor`](https://eslint.org/docs/rules/no-useless-constructor) rule.

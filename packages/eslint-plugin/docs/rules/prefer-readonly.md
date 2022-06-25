@@ -1,7 +1,3 @@
-# `prefer-readonly`
-
-Requires private members to be marked as `readonly` if they're never modified outside of the constructor.
-
 This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.
 
 ## Rule Details

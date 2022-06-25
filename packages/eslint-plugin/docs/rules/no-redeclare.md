@@ -1,7 +1,3 @@
-# `no-redeclare`
-
-Disallows variable redeclaration.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-redeclare`](https://eslint.org/docs/rules/no-redeclare) rule.

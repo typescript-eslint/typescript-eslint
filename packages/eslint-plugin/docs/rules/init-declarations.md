@@ -1,7 +1,3 @@
-# `init-declarations`
-
-Requires or disallows initialization in variable declarations.
-
 ## Rule Details
 
 This rule extends the base [`eslint/init-declarations`](https://eslint.org/docs/rules/init-declarations) rule.

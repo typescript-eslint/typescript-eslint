@@ -1,7 +1,3 @@
-# `comma-spacing`
-
-Enforces consistent spacing before and after commas.
-
 ## Rule Details
 
 This rule extends the base [`eslint/comma-spacing`](https://eslint.org/docs/rules/comma-spacing) rule.

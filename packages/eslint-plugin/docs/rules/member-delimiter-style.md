@@ -1,7 +1,3 @@
-# `member-delimiter-style`
-
-Requires a specific member delimiter style for interfaces and type literals.
-
 Enforces a consistent member delimiter style in interfaces and type literals. There are three member delimiter styles primarily used in TypeScript:
 
 - Semicolon style (default, preferred in TypeScript).

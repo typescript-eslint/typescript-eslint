@@ -1,7 +1,3 @@
-# `restrict-plus-operands`
-
-Requires both operands of addition to have type `number` or `string`.
-
 ## Rule Details
 
 Examples of code for this rule:

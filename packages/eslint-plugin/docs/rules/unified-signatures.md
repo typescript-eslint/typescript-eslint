@@ -1,7 +1,3 @@
-# `unified-signatures`
-
-Disallows two overloads that could be unified into one with a union or an optional/rest parameter.
-
 ## Rule Details
 
 This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.

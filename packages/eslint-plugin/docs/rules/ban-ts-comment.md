@@ -1,7 +1,3 @@
-# `ban-ts-comment`
-
-Disallows `@ts-<directive>` comments or requires descriptions after directive.
-
 TypeScript provides several directive comments that can be used to alter how it processes files.
 Using these to suppress TypeScript Compiler Errors reduces the effectiveness of TypeScript overall.
 

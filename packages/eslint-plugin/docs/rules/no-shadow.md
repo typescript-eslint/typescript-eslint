@@ -1,7 +1,3 @@
-# `no-shadow`
-
-Disallows variable declarations from shadowing variables declared in the outer scope.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-shadow`](https://eslint.org/docs/rules/no-shadow) rule.

@@ -1,7 +1,3 @@
-# `typedef`
-
-Requires type annotations in certain places.
-
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.
 

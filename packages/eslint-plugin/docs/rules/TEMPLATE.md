@@ -1,7 +1,3 @@
-# `your-rule-name`
-
-Your rule description here.
-
 ## Rule Details
 
 To fill out: tell us more about this rule.

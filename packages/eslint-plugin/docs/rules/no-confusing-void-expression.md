@@ -1,7 +1,3 @@
-# `no-confusing-void-expression`
-
-Requires expressions of type void to appear in statement position.
-
 Returning the results of an expression whose type is void can be misleading.
 Attempting to do so is likely a symptom of expecting a different return type from a function.
 Even if used correctly, it can be misleading for other developers,

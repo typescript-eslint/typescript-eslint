@@ -1,7 +1,3 @@
-# `indent`
-
-Enforces consistent indentation.
-
 ## Warning
 
 PLEASE READ THIS ISSUE BEFORE USING THIS RULE [#1824](https://github.com/typescript-eslint/typescript-eslint/issues/1824)

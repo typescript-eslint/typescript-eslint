@@ -1,7 +1,3 @@
-# `method-signature-style`
-
-Enforces using a particular method signature syntax.
-
 There are two ways to define an object/interface function property.
 
 ```ts

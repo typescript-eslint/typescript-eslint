@@ -1,7 +1,3 @@
-# `brace-style`
-
-Enforces consistent brace style for blocks.
-
 ## Rule Details
 
 This rule extends the base [`eslint/brace-style`](https://eslint.org/docs/rules/brace-style) rule.

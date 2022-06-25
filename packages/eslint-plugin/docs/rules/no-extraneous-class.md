@@ -1,7 +1,3 @@
-# `no-extraneous-class`
-
-Disallows classes used as namespaces.
-
 This rule warns when a class has no non-static members, such as for a class used exclusively as a static namespace.
 
 ## Rule Details

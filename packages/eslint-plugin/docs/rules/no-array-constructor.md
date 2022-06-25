@@ -1,7 +1,3 @@
-# `no-array-constructor`
-
-Disallows generic `Array` constructors.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-array-constructor`](https://eslint.org/docs/rules/no-array-constructor) rule.

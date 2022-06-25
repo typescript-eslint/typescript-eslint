@@ -1,7 +1,3 @@
-# `no-confusing-non-null-assertion`
-
-Disallows non-null assertion in locations that may be confusing.
-
 ## Rule Details
 
 Using a non-null assertion (`!`) next to an assign or equals check (`=` or `==` or `===`) creates code that is confusing as it looks similar to a not equals check (`!=` `!==`).

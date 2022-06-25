@@ -1,7 +1,3 @@
-# `no-unnecessary-qualifier`
-
-Disallows unnecessary namespace qualifiers.
-
 ## Rule Details
 
 This rule aims to let users know when a namespace or enum qualifier is unnecessary,

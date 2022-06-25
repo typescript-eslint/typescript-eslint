@@ -1,7 +1,3 @@
-# `prefer-function-type`
-
-Enforces using function types instead of interfaces with call signatures.
-
 ## Rule Details
 
 This rule suggests using a function type instead of an interface or object type literal with a single call signature.

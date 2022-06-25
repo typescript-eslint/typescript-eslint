@@ -1,7 +1,3 @@
-# `no-dupe-class-members`
-
-Disallows duplicate class members.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-dupe-class-members`](https://eslint.org/docs/rules/no-dupe-class-members) rule.

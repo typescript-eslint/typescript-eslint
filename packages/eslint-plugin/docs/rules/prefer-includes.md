@@ -1,7 +1,3 @@
-# `prefer-includes`
-
-Enforces `includes` method over `indexOf` method.
-
 Until ES5, we were using `String#indexOf` method to check whether a string contains an arbitrary substring or not.
 Until ES2015, we were using `Array#indexOf` method to check whether an array contains an arbitrary value or not.
 

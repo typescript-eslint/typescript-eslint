@@ -1,7 +1,3 @@
-# `sort-type-union-intersection-members`
-
-Enforces members of a type union/intersection to be sorted alphabetically.
-
 Sorting union (`|`) and intersection (`&`) types can help:
 
 - keep your codebase standardized

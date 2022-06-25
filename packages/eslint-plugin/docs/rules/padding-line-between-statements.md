@@ -1,7 +1,3 @@
-# `padding-line-between-statements`
-
-Requires or disallows padding lines between statements.
-
 ## Rule Details
 
 This rule extends the base [`eslint/padding-line-between-statements`](https://eslint.org/docs/rules/padding-line-between-statements) rule.

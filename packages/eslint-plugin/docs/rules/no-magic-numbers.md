@@ -1,7 +1,3 @@
-# `no-magic-numbers`
-
-Disallows magic numbers.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers) rule.

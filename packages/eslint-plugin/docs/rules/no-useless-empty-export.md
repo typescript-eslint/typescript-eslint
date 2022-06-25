@@ -1,7 +1,3 @@
-# `no-useless-empty-export`
-
-Disallows empty exports that don't change anything in a module file.
-
 ## Rule Details
 
 An empty `export {}` statement is sometimes useful in TypeScript code to turn a file that would otherwise be a script file into a module file.

@@ -1,7 +1,3 @@
-# `no-non-null-assertion`
-
-Disallows non-null assertions using the `!` postfix operator.
-
 ## Rule Details
 
 Using non-null assertions cancels the benefits of the strict null-checking mode.

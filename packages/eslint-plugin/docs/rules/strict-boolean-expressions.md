@@ -1,7 +1,3 @@
-# `strict-boolean-expressions`
-
-Disallows certain types in boolean expressions.
-
 Forbids usage of non-boolean types in expressions where a boolean is expected.
 `boolean` and `never` types are always allowed.
 Additional types which are considered safe in a boolean context can be configured via options.

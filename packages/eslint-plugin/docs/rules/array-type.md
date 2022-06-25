@@ -1,7 +1,3 @@
-# `array-type`
-
-Requires using either `T[]` or `Array<T>` for arrays.
-
 Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
 
 ## Rule Details

@@ -1,7 +1,3 @@
-# `consistent-type-assertions`
-
-Enforces consistent usage of type assertions.
-
 ## Rule Details
 
 This rule aims to standardize the use of type assertion style across the codebase.

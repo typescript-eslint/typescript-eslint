@@ -1,9 +1,4 @@
-# `require-array-sort-compare`
-
-Requires `Array#sort` calls to always provide a `compareFunction`.
-
 This rule prevents invoking the `Array#sort()` method without providing a `compare` argument.
-
 When called without a compare function, `Array#sort()` converts all non-undefined array elements into strings and then compares said strings based off their UTF-16 code units.
 
 The result is that elements are sorted alphabetically, regardless of their type.

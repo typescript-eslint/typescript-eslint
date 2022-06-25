@@ -1,7 +1,3 @@
-# `no-extra-non-null-assertion`
-
-Disallows extra non-null assertion.
-
 ## Rule Details
 
 Examples of code for this rule:

@@ -1,7 +1,3 @@
-# `no-empty-function`
-
-Disallows empty functions.
-
 ## Rule Details
 
 This rule extends the base [`eslint/no-empty-function`](https://eslint.org/docs/rules/no-empty-function) rule.

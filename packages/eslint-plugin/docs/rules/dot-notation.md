@@ -1,7 +1,3 @@
-# `dot-notation`
-
-Enforces dot notation whenever possible.
-
 ## Rule Details
 
 This rule extends the base [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation) rule.

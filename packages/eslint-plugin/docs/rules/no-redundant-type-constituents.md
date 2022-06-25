@@ -1,7 +1,3 @@
-# `no-redundant-type-constituents`
-
-Disallows members of unions and intersections that do nothing or override type information.
-
 ## Rule Details
 
 Some types can override some other types ("constituents") in a union or intersection and/or be overridden by some other types.
