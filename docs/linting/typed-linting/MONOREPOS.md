@@ -8,8 +8,8 @@ If you don't want to use typed linting, then you can stop here - you don't need 
 
 Configurations will look different based on which setup you use:
 
-1.  [One root `tsconfig.json`](#one-root-tsconfigjson)
-2.  [One `tsconfig.json` per package (and an optional one in the root)](#one-tsconfigjson-per-package-and-an-optional-one-in-the-root)
+1. [One root `tsconfig.json`](#one-root-tsconfigjson)
+2. [One `tsconfig.json` per package (and an optional one in the root)](#one-tsconfigjson-per-package-and-an-optional-one-in-the-root)
 
 ## One root `tsconfig.json`
 
