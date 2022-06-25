@@ -20,7 +20,10 @@ module.exports = {
             type: 'doc',
           },
           type: 'category',
-          items: ['linting/troubleshooting/tslint'],
+          items: [
+            'linting/troubleshooting/formatting',
+            'linting/troubleshooting/tslint',
+          ],
         },
       ],
       link: {
