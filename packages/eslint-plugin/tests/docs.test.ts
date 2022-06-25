@@ -41,10 +41,6 @@ function tokenIs<Type extends TokenType>(
   return token.type === type;
 }
 
-function tokenIsH1(token: marked.Token): token is marked.Tokens.Heading {
-  return tokenIs(token, 'heading') && token.depth === 1;
-}
-
 function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
   return tokenIs(token, 'heading') && token.depth === 2;
 }
@@ -70,29 +66,6 @@ describe('Validating rule docs', () => {
   for (const [ruleName, rule] of rulesData) {
     describe(ruleName, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
-
-      it(`First header in ${ruleName}.md must be the name of the rule`, () => {
-        const tokens = parseMarkdownFile(filePath);
-
-        const header = tokens.find(tokenIsH1)!;
-
-        expect(header.text).toBe(`\`${ruleName}\``);
-      });
-
-      it(`Description of ${ruleName}.md must match`, () => {
-        // validate if description of rule is same as in docs
-        const tokens = parseMarkdownFile(filePath);
-
-        // Rule title not found.
-        // Rule title does not match the rule metadata.
-        expect(tokens[1]).toMatchObject({
-          type: 'paragraph',
-          text: `${rule.meta.docs?.description.replace(
-            /(?<!`)(require|enforce|disallow)/gi,
-            '$1s',
-          )}.`,
-        });
-      });
 
       it(`Headers in ${ruleName}.md must be title-cased`, () => {
         const tokens = parseMarkdownFile(filePath);
