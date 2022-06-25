@@ -65,7 +65,7 @@ Rules in this configuration are similarly useful to those in `recommended`.
 
 :::tip
 We recommend all TypeScript projects extend from this configuration, with the caveat that rules using type information take longer to run.
-See [Linting with Type Information](/docs/linting/type-linting) for more details.
+See [Linting with Type Information](/docs/linting/typed-linting) for more details.
 :::
 
 ### `strict`
