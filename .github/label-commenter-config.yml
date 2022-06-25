@@ -9,8 +9,6 @@ labels:
         body: |
           I'm the ⚡ TypeScript ESLint Formatting Bot ⚡, and I'm popping in automatically to advertise that we **strongly recommend against using ESLint rules for formatting purposes**.
 
-          * [ESLint core has not accepted new stylistic rules for years](https://eslint.org/blog/2020/05/changes-to-rules-policies#what-are-the-changes)
-          * Formatting rules are inherently difficult to maintain and will not catch many edge cases _(todo: docs link pending #4907)_
-          * Dedicated formatting tools such as [Prettier](https://prettier.io) are much faster, more stable, and more comprehensive than ESLint can ever be for formatting.
+          See our **[What About Formatting? docs page](https://typescript-eslint.io/docs/linting/troubleshooting/formatting)** for more info.
 
           This message is automated and serves only as a reminder. We will still triage your issue and, as long as it only involves fixing existing formatting rules, do not plan on automatically closing it.
