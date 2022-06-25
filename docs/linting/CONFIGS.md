@@ -46,15 +46,12 @@ We strongly recommend all TypeScript projects extend from this configuration.
 
 ### `recommended-requiring-type-checking`
 
-Additional recommended rules that require type information.
-Rules in this configuration are similarly useful to those in `recommended`.
+Contains all of `recommended` along with additional recommended rules that require type information.
+Rules newly added in this configuration are similarly useful to those in `recommended`.
 
 ```json
 {
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
-  ]
+  "extends": ["plugin:@typescript-eslint/recommended-requiring-type-checking"]
 }
 ```
 
@@ -65,15 +62,12 @@ See [Linting with Type Information](/docs/linting/type-linting) for more details
 
 ### `strict`
 
-Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+Contains all of `recommended-requiring-type-checking` (and therefore `recommended`).
+Additionally includes strict rules that can also catch bugs but are more opinionated than recommended rules.
 
 ```json
 {
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:@typescript-eslint/strict"
-  ]
+  "extends": ["plugin:@typescript-eslint/strict"]
 }
 ```
 

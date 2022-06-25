@@ -3,7 +3,7 @@
 // YOU CAN REGENERATE IT USING yarn generate:configs
 
 export = {
-  extends: ['./configs/base', './configs/eslint-recommended'],
+  extends: ['./configs/recommended'],
   rules: {
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/no-floating-promises': 'error',

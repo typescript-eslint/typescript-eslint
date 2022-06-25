@@ -3,7 +3,7 @@
 // YOU CAN REGENERATE IT USING yarn generate:configs
 
 export = {
-  extends: ['./configs/base', './configs/eslint-recommended'],
+  extends: ['./configs/strict'],
   rules: {
     '@typescript-eslint/array-type': 'warn',
     '@typescript-eslint/ban-tslint-comment': 'warn',
