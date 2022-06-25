@@ -3,8 +3,8 @@ id: formatting
 title: What About Formatting?
 ---
 
-We strongly recommend you do not use ESLint for formatting.
-We strongly recommend you use [Prettier](https://prettier.io), [dprint](https://dprint.dev), or an equivalent.
+We strongly recommend against using ESLint for formatting.
+We strongly recommend using [Prettier](https://prettier.io), [dprint](https://dprint.dev), or an equivalent instead.
 
 ## Formatters vs. Linters
 
