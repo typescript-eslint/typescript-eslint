@@ -87,6 +87,27 @@
   box-shadow: 0 0 2px 1px var(--red-border-shadow);
 }
 
+.visual::after {
+  content: '✖';
+  display: inline-block;
+  margin-left: 0;
+  opacity: 0;
+  width: 0;
+  transition: margin-left var(--ifm-transition-fast),
+    opacity var(--ifm-transition-fast), width var(--ifm-transition-fast);
+}
+
+.visual.visual-exclude::after,
+.visual.visual-include::after {
+  margin-left: -0.5rem;
+  opacity: 1;
+  width: 1rem;
+}
+
+.visual.visual-include::after {
+  content: '✔';
+}
+
 .rulesTable,
 .ruleCol {
   width: 100%;

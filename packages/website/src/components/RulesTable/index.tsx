@@ -45,7 +45,7 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
   );
 }
 
-const filterModes = ['neutral', 'include', 'exclude'];
+const filterModes = ['neutral', 'include', 'exclude'] as const;
 type FilterMode = typeof filterModes[number];
 
 function RuleFilterCheckBox({
@@ -76,6 +76,10 @@ function RuleFilterCheckBox({
         onClick={toNextMode}
         aria-label={`Toggle the filter mode. Current: ${mode}`}
       >
+        <div
+          aria-hidden
+          className={clsx(styles.visual, styles[`visual-${mode}`])}
+        />
         {label}
       </button>
     </li>
@@ -136,12 +140,24 @@ export default function RulesTable({
       <ul className={clsx('clean-list', styles.checkboxList)}>
         <RuleFilterCheckBox
           mode={showRecommended}
-          setMode={setShowRecommended}
+          setMode={(newMode): void => {
+            setShowRecommended(newMode);
+
+            if (newMode === 'include' && showStrict === 'include') {
+              setShowStrict('exclude');
+            }
+          }}
           label="✅ recommended"
         />
         <RuleFilterCheckBox
           mode={showStrict}
-          setMode={setShowStrict}
+          setMode={(newMode): void => {
+            setShowStrict(newMode);
+
+            if (newMode === 'include' && showRecommended === 'include') {
+              setShowRecommended('exclude');
+            }
+          }}
           label="🔒 strict"
         />
         <RuleFilterCheckBox
