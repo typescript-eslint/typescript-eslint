@@ -1,6 +1,9 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:configs
+// SEE https://typescript-eslint.io/docs/linting/configs
+//
+// For developers working in the typescript-eslint monorepo:
+// You can regenerate it using `yarn generate:configs`
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
@@ -53,7 +56,6 @@ export = {
     'no-dupe-class-members': 'off',
     '@typescript-eslint/no-dupe-class-members': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
-    'no-duplicate-imports': 'off',
     '@typescript-eslint/no-dynamic-delete': 'error',
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
@@ -86,7 +88,6 @@ export = {
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
-    '@typescript-eslint/parameter-properties': 'error',
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     '@typescript-eslint/no-redundant-type-constituents': 'error',
@@ -125,6 +126,7 @@ export = {
     '@typescript-eslint/object-curly-spacing': 'error',
     'padding-line-between-statements': 'off',
     '@typescript-eslint/padding-line-between-statements': 'error',
+    '@typescript-eslint/parameter-properties': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-enum-initializers': 'error',
     '@typescript-eslint/prefer-for-of': 'error',

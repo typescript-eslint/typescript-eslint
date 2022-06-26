@@ -1,26 +1,56 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:configs
+// SEE https://typescript-eslint.io/docs/linting/configs
+//
+// For developers working in the typescript-eslint monorepo:
+// You can regenerate it using `yarn generate:configs`
 
 export = {
-  extends: ['./configs/recommended'],
+  extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
+    '@typescript-eslint/adjacent-overload-signatures': 'error',
     '@typescript-eslint/await-thenable': 'error',
+    '@typescript-eslint/ban-ts-comment': 'error',
+    '@typescript-eslint/ban-types': 'error',
+    'no-array-constructor': 'off',
+    '@typescript-eslint/no-array-constructor': 'error',
+    'no-empty-function': 'off',
+    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-empty-interface': 'error',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-extra-non-null-assertion': 'error',
+    'no-extra-semi': 'off',
+    '@typescript-eslint/no-extra-semi': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
+    '@typescript-eslint/no-inferrable-types': 'error',
+    'no-loss-of-precision': 'off',
+    '@typescript-eslint/no-loss-of-precision': 'error',
+    '@typescript-eslint/no-misused-new': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-namespace': 'error',
+    '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+    '@typescript-eslint/no-non-null-assertion': 'warn',
+    '@typescript-eslint/no-this-alias': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+    '@typescript-eslint/no-unnecessary-type-constraint': 'error',
     '@typescript-eslint/no-unsafe-argument': 'error',
     '@typescript-eslint/no-unsafe-assignment': 'error',
     '@typescript-eslint/no-unsafe-call': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-var-requires': 'error',
+    '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/prefer-namespace-keyword': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/restrict-plus-operands': 'error',
     '@typescript-eslint/restrict-template-expressions': 'error',
+    '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/unbound-method': 'error',
   },
 };
