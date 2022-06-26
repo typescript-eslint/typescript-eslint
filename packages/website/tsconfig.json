@@ -16,5 +16,11 @@
     },
     "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
   },
-  "include": ["src/", "plugins/", "typings", "./docusaurusConfig.ts"]
+  "include": [
+    "src/",
+    "plugins/",
+    "typings",
+    "./docusaurusConfig.ts",
+    "./rulesMeta.ts"
+  ]
 }
