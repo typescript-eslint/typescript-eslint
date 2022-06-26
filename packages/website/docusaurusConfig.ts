@@ -58,7 +58,9 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   metadata: [
     { name: 'msapplication-TileColor', content: '#443fd4' },
     { name: 'theme-color', content: '#443fd4' },
+    { name: 'twitter:image:alt', content: 'Typescript-eslint logo' },
   ],
+  image: 'img/logo-twitter-card.png',
   navbar: {
     title: 'TypeScript ESLint',
     // hideOnScroll: true,
