@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
+
 Leaving off accessibility modifier and making everything public can make
 your interface hard to use by others.
 If you make all internal pieces private or protected, your interface will

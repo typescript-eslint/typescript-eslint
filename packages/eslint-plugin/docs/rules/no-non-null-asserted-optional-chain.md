@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-non-null-asserted-optional-chain** for documentation.
+
 ## Rule Details
 
 Optional chain expressions are designed to return `undefined` if the optional property is nullish.

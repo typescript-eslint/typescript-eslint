@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/non-nullable-type-assertion-style** for documentation.
+
 This rule detects when an `as` cast is doing the same job as a `!` would, and suggests fixing the code to be an `!`.
 
 ## Rule Details

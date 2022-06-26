@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-invalid-void-type** for documentation.
+
 Disallows usage of `void` type outside of return types or generic type arguments.
 If `void` is used as return type, it shouldn’t be a part of intersection/union type with most other types.
 

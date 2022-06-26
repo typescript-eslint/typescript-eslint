@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/restrict-template-expressions** for documentation.
+
 ## Rule Details
 
 Examples of code for this rule:

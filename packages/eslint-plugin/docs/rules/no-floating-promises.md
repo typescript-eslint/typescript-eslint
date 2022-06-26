@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-floating-promises** for documentation.
+
 A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
 
 Floating Promises can cause several issues, such as improperly sequenced operations, ignored Promise rejections, and more.

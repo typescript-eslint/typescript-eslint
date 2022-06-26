@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redundant-type-constituents** for documentation.
+
 ## Rule Details
 
 Some types can override some other types ("constituents") in a union or intersection and/or be overridden by some other types.

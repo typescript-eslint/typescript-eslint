@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/quotes** for documentation.
+
 ## Rule Details
 
 This rule extends the base [`eslint/quotes`](https://eslint.org/docs/rules/quotes) rule.

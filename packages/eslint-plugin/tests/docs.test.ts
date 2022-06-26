@@ -67,6 +67,20 @@ describe('Validating rule docs', () => {
     describe(ruleName, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
 
+      test(`${ruleName}.md must start with blockquote directing to website`, () => {
+        const tokens = parseMarkdownFile(filePath);
+
+        expect(tokens[0]).toMatchObject({
+          text: [
+            `🛑 This file is source code, not the primary documentation location! 🛑`,
+            ``,
+            `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
+            ``,
+          ].join('\n'),
+          type: 'blockquote',
+        });
+      });
+
       it(`Headers in ${ruleName}.md must be title-cased`, () => {
         const tokens = parseMarkdownFile(filePath);
 

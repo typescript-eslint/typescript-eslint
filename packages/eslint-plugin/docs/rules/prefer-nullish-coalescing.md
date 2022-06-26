@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-nullish-coalescing** for documentation.
+
 TypeScript 3.7 added support for the nullish coalescing operator.
 This operator allows you to safely cascade a value when dealing with `null` or `undefined`.
 

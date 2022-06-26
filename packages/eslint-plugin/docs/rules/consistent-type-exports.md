@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-exports** for documentation.
+
 TypeScript 3.8 added support for type-only exports.
 
 Type-only exports allow you to specify that 1 or more named exports are exported as type-only. This allows

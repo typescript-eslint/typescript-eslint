@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-function-type** for documentation.
+
 ## Rule Details
 
 This rule suggests using a function type instead of an interface or object type literal with a single call signature.

@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-useless-empty-export** for documentation.
+
 ## Rule Details
 
 An empty `export {}` statement is sometimes useful in TypeScript code to turn a file that would otherwise be a script file into a module file.

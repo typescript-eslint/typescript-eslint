@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-type-assertion** for documentation.
+
 This rule prohibits using a type assertion that does not change the type of an expression.
 
 ## Rule Details

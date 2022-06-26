@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-inferrable-types** for documentation.
+
 Explicit types where they can be easily inferred may add unnecessary verbosity.
 
 ## Rule Details

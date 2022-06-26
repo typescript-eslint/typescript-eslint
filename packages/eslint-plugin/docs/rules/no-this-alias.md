@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-this-alias** for documentation.
+
 This rule prohibits assigning variables to `this`.
 
 ## Rule Details

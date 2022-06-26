@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-implied-eval** for documentation.
+
 It's considered a good practice to avoid using `eval()`. There are security and performance implications involved with doing so, which is why many linters recommend disallowing `eval()`. However, there are some other ways to pass a string and have it interpreted as JavaScript code that have similar concerns.
 
 The first is using `setTimeout()`, `setInterval()`, `setImmediate` or `execScript()` (Internet Explorer only), all of which can accept a string of code as their first argument

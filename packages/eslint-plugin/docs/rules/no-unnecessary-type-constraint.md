@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-type-constraint** for documentation.
+
 ## Rule Details
 
 Type parameters (`<T>`) may be "constrained" with an `extends` keyword ([docs](https://www.typescriptlang.org/docs/handbook/generics.html#generic-constraints)).

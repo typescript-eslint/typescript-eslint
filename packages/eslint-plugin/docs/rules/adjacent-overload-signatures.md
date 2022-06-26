@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/adjacent-overload-signatures** for documentation.
+
 Grouping overloaded members together can improve readability of the code.
 
 ## Rule Details

@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-dynamic-delete** for documentation.
+
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 
 ## Rule Details

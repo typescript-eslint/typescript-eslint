@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-qualifier** for documentation.
+
 ## Rule Details
 
 This rule aims to let users know when a namespace or enum qualifier is unnecessary,

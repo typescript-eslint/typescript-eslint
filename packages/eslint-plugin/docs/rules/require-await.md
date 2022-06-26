@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/require-await** for documentation.
+
 ## Rule Details
 
 This rule extends the base [`eslint/require-await`](https://eslint.org/docs/rules/require-await) rule.

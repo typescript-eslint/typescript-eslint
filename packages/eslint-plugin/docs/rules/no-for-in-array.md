@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-for-in-array** for documentation.
+
 This rule prohibits iterating over an array with a for-in loop.
 
 ## Rule Details

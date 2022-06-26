@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-type-alias** for documentation.
+
 In TypeScript, type aliases serve three purposes:
 
 - Aliasing other types so that we can refer to them using a simpler name.

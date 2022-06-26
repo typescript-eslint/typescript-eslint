@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-meaningless-void-operator** for documentation.
+
 Disallows the `void` operator when its argument is already of type `void` or `undefined`.
 
 ## Rule Details

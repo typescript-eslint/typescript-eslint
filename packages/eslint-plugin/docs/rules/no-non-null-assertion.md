@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-non-null-assertion** for documentation.
+
 ## Rule Details
 
 Using non-null assertions cancels the benefits of the strict null-checking mode.

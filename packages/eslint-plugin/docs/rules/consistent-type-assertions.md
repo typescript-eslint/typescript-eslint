@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-assertions** for documentation.
+
 ## Rule Details
 
 This rule aims to standardize the use of type assertion style across the codebase.

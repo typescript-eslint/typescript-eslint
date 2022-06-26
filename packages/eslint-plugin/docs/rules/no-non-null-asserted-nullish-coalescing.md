@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-non-null-asserted-nullish-coalescing** for documentation.
+
 ## Rule Details
 
 The nullish coalescing operator is designed to provide a default value when dealing with `null` or `undefined`.

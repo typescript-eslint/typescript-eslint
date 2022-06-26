@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/unified-signatures** for documentation.
+
 ## Rule Details
 
 This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
