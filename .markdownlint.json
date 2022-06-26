@@ -69,7 +69,8 @@
       "details",
       "summary",
       "Tabs",
-      "TabItem"
+      "TabItem",
+      "RulesTable"
     ]
   },
   // MD034/no-bare-urls - Bare URL used

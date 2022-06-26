@@ -5,6 +5,7 @@ import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-com
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
 
+import { rulesMeta } from './rulesMeta';
 import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import tabsPlugin from 'remark-docusaurus-tabs';
 import { addRuleAttributesList } from './plugins/add-rule-attributes-list';
@@ -177,6 +178,9 @@ const config: Config = {
   projectName: 'typescript-eslint',
   clientModules: [require.resolve('./src/clientModules.js')],
   presets: [['classic', presetClassicOptions]],
+  customFields: {
+    rules: rulesMeta,
+  },
   plugins: [
     require.resolve('./webpack.plugin'),
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],

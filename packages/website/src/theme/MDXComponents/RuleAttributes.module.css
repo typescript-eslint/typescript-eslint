@@ -1,0 +1,7 @@
+.taskList {
+  list-style: none;
+}
+
+:not(.taskList > li) > .taskList {
+  padding-left: 0;
+}
