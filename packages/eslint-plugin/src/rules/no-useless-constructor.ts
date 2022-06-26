@@ -17,7 +17,6 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
       return false;
     case 'public':
       if (
-        node.parent &&
         node.parent.type === AST_NODE_TYPES.ClassBody &&
         node.parent.parent &&
         'superClass' in node.parent.parent &&

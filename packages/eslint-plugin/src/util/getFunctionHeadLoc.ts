@@ -32,7 +32,7 @@ export function getFunctionHeadLoc(
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.SourceLocation {
   function getLocStart(): TSESTree.Position {
-    if (node.parent && node.parent.type === AST_NODE_TYPES.MethodDefinition) {
+    if (node.parent.type === AST_NODE_TYPES.MethodDefinition) {
       // return the start location for class method
 
       if (node.parent.decorators && node.parent.decorators.length > 0) {
@@ -45,11 +45,7 @@ export function getFunctionHeadLoc(
       return node.parent.loc.start;
     }
 
-    if (
-      node.parent &&
-      node.parent.type === AST_NODE_TYPES.Property &&
-      node.parent.method
-    ) {
+    if (node.parent.type === AST_NODE_TYPES.Property && node.parent.method) {
       // return the start location for object method shorthand
       return node.parent.loc.start;
     }

@@ -552,7 +552,6 @@ export default createRule<Options, MessageIds>({
         !!statement &&
         (statement.type === AST_NODE_TYPES.ExpressionStatement ||
           statement.type === AST_NODE_TYPES.VariableDeclaration) &&
-        !!statement.parent &&
         statement.parent.type === AST_NODE_TYPES.Program
       );
     }
@@ -933,18 +932,14 @@ export default createRule<Options, MessageIds>({
       ) {
         let blockIndentLevel;
 
-        if (node.parent && isOuterIIFE(node.parent)) {
+        if (isOuterIIFE(node.parent)) {
           blockIndentLevel = options.outerIIFEBody;
         } else if (
-          node.parent &&
-          (node.parent.type === AST_NODE_TYPES.FunctionExpression ||
-            node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression)
+          node.parent.type === AST_NODE_TYPES.FunctionExpression ||
+          node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
           blockIndentLevel = options.FunctionExpression.body;
-        } else if (
-          node.parent &&
-          node.parent.type === AST_NODE_TYPES.FunctionDeclaration
-        ) {
+        } else if (node.parent.type === AST_NODE_TYPES.FunctionDeclaration) {
           blockIndentLevel = options.FunctionDeclaration.body;
         } else {
           blockIndentLevel = 1;
@@ -954,7 +949,7 @@ export default createRule<Options, MessageIds>({
          * For blocks that aren't lone statements, ensure that the opening curly brace
          * is aligned with the parent.
          */
-        if (node.parent && !STATEMENT_LIST_PARENTS.has(node.parent.type)) {
+        if (!STATEMENT_LIST_PARENTS.has(node.parent.type)) {
           offsets.setDesiredOffset(
             sourceCode.getFirstToken(node)!,
             sourceCode.getFirstToken(node.parent),

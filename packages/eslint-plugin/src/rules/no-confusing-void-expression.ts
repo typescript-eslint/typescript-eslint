@@ -184,7 +184,7 @@ export default util.createRule<Options, MessageId>({
                 // put a semicolon at the beginning of the line
                 newReturnStmtText = `;${newReturnStmtText}`;
               }
-              if (returnStmt.parent?.type !== AST_NODE_TYPES.BlockStatement) {
+              if (returnStmt.parent.type !== AST_NODE_TYPES.BlockStatement) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;

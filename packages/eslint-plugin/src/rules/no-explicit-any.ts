@@ -79,7 +79,6 @@ export default util.createRule<Options, MessageIds>({
     function isNodeRestElementInFunction(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.RestElement &&
-        typeof node.parent !== 'undefined' &&
         isNodeValidFunction(node.parent)
       );
     }

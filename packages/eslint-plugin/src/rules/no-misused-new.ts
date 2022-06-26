@@ -91,10 +91,7 @@ export default util.createRule({
         node: TSESTree.MethodDefinition,
       ): void {
         if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
-          if (
-            node.parent &&
-            isMatchingParentType(node.parent.parent, node.value.returnType)
-          ) {
+          if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
             context.report({
               node,
               messageId: 'errorMessageClass',

@@ -177,10 +177,7 @@ export default util.createRule<Options, MessageIds>({
         checkExpression(memberExpr.object);
       },
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
-        if (
-          node.parent &&
-          node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression
-        ) {
+        if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
         }
         for (const expression of node.expressions) {
