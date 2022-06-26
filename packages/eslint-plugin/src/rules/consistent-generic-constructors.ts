@@ -71,7 +71,7 @@ export default createRule<Options, MessageIds>({
             const hasParens =
               sourceCode.getTokenAfter(rhs.callee)?.value === '(';
             const extraComments = new Set(
-              sourceCode.getCommentsInside(lhs.parent!),
+              sourceCode.getCommentsInside(lhs.parent),
             );
             sourceCode
               .getCommentsInside(lhs.typeParameters)
@@ -80,7 +80,7 @@ export default createRule<Options, MessageIds>({
               node,
               messageId: 'preferConstructor',
               *fix(fixer) {
-                yield fixer.remove(lhs.parent!);
+                yield fixer.remove(lhs.parent);
                 for (const comment of extraComments) {
                   yield fixer.insertTextAfter(
                     rhs.callee,

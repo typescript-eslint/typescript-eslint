@@ -68,7 +68,7 @@ export default util.createRule({
       ): void {
         if (
           isMatchingParentType(
-            node.parent!.parent as TSESTree.TSInterfaceDeclaration,
+            node.parent.parent as TSESTree.TSInterfaceDeclaration,
             node.returnType,
           )
         ) {

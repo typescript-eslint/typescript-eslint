@@ -140,7 +140,7 @@ function isMissingSemicolonBefore(
     const parent = node.parent!;
 
     if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
-      const block = parent.parent!;
+      const block = parent.parent;
       if (
         block.type === AST_NODE_TYPES.Program ||
         block.type === AST_NODE_TYPES.BlockStatement

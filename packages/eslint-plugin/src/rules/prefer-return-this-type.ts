@@ -149,7 +149,7 @@ export default createRule({
 
     return {
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
-        checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
+        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
       },
       'ClassBody > PropertyDefinition'(
         node: TSESTree.PropertyDefinition,
@@ -163,7 +163,7 @@ export default createRule({
           return;
         }
 
-        checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
+        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
       },
     };
   },
