@@ -620,25 +620,24 @@ export default util.createRule<Options, MessageIds>({
           !(options.hoist !== 'all' && isInTdz(variable, shadowed))
         ) {
           const location = getDeclaredLocation(shadowed);
-          const report = location.global
-            ? ({
-                messageId: 'noShadowGlobal',
-                data: {
-                  name: variable.name,
-                },
-              } as const)
-            : ({
-                messageId: 'noShadow',
-                data: {
-                  name: variable.name,
-                  shadowedLine: location.line,
-                  shadowedColumn: location.column,
-                },
-              } as const);
 
           context.report({
             node: variable.identifiers[0],
-            ...report,
+            ...(location.global
+              ? {
+                  messageId: 'noShadowGlobal',
+                  data: {
+                    name: variable.name,
+                  },
+                }
+              : {
+                  messageId: 'noShadow',
+                  data: {
+                    name: variable.name,
+                    shadowedLine: location.line,
+                    shadowedColumn: location.column,
+                  },
+                }),
           });
         }
       }
