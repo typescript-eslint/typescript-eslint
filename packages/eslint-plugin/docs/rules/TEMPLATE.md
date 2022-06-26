@@ -1,3 +1,7 @@
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/your-rule-name** for documentation.
+
 ## Rule Details
 
 To fill out: tell us more about this rule.
