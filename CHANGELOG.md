@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.28.0...v5.29.0) (2022-06-20)
+
+
+### Features
+
+* **website:** open issue with rule name if only one rule is enabled ([#5190](https://github.com/typescript-eslint/typescript-eslint/issues/5190)) ([b229ee4](https://github.com/typescript-eslint/typescript-eslint/commit/b229ee4ace1417d2d4f7d6cafa039f073e845c3a))
+
+
+
+
+
 # [5.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.1...v5.28.0) (2022-06-13)
 
 

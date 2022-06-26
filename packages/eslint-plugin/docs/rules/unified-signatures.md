@@ -75,7 +75,3 @@ function f(b: string): void;
 function f(...a: number[]): void;
 function f(...a: string[]): void;
 ```
-
-## Related To
-
-- TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)

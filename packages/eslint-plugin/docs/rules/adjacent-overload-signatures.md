@@ -100,7 +100,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about the general structure of the code, then you will not need this rule.
-
-## Related To
-
-- TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)
