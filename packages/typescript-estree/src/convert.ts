@@ -801,12 +801,11 @@ export class Converter {
 
       case SyntaxKind.Identifier: {
         if (isThisInTypeQuery(node)) {
-          return this.createNode<TSESTree.ThisExpression>(
-            node as unknown as ts.ThisExpression,
-            {
-              type: AST_NODE_TYPES.ThisExpression,
-            },
-          );
+          // special case for `typeof this.foo` - TS emits an Identifier for `this`
+          // but we want to treat it as a ThisExpression for consistency
+          return this.createNode<TSESTree.ThisExpression>(node, {
+            type: AST_NODE_TYPES.ThisExpression,
+          });
         }
         return this.createNode<TSESTree.Identifier>(node, {
           type: AST_NODE_TYPES.Identifier,
