@@ -2601,7 +2601,7 @@ myArray = myArray.filter(x => x == 1);
         {
           ...assignedError('myArray'),
           line: 3,
-          column: 11,
+          column: 1,
         },
       ],
     },

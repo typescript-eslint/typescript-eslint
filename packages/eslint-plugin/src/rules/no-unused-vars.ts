@@ -422,13 +422,13 @@ export default util.createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
+            const writeRef = unusedVar.references.filter(ref => ref.isWrite());
             context.report({
-              node: unusedVar.references.length
-                ? unusedVar.references[unusedVar.references.length - 1]
-                    .identifier
+              node: writeRef.length
+                ? writeRef[writeRef.length - 1].identifier
                 : unusedVar.identifiers[0],
               messageId: 'unusedVar',
-              data: unusedVar.references.some(ref => ref.isWrite())
+              data: writeRef.length
                 ? getAssignedMessageData(unusedVar)
                 : getDefinedMessageData(unusedVar),
             });
