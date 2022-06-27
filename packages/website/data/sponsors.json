@@ -1,5 +1,13 @@
 [
   {
+    "id": "Indeed",
+    "image": "https://images.opencollective.com/indeed/4b8725e/logo.png",
+    "name": "Indeed",
+    "tier": "sponsor",
+    "totalDonations": 1005000,
+    "website": "https://Indeed.com"
+  },
+  {
     "id": "Nx (by Nrwl)",
     "image": "https://images.opencollective.com/nx/0efbe42/logo.png",
     "name": "Nx (by Nrwl)",
@@ -54,6 +62,13 @@
     "tier": "sponsor",
     "totalDonations": 60000,
     "website": "https://www.gitbook.com"
+  },
+  {
+    "id": "GitHub",
+    "image": "https://images.opencollective.com/guest-f9980024/avatar.png",
+    "name": "GitHub",
+    "tier": "supporter",
+    "totalDonations": 56674
   },
   {
     "id": "Future Processing",
@@ -159,6 +174,13 @@
     "website": "https://www.theguardian.com/"
   },
   {
+    "id": "Yuta Fukazawa",
+    "image": "https://images.opencollective.com/yuta-fukazawa/a337601/avatar.png",
+    "name": "Yuta Fukazawa",
+    "tier": "contributor",
+    "totalDonations": 10000
+  },
+  {
     "id": "Tripwire, Inc.",
     "image": "https://images.opencollective.com/tripwire/7599e30/logo.png",
     "name": "Tripwire, Inc.",
@@ -204,14 +226,6 @@
     "tier": "contributor",
     "totalDonations": 5000,
     "website": "https://backscattering.de"
-  },
-  {
-    "id": "Indeed",
-    "image": "https://images.opencollective.com/indeed/4b8725e/logo.png",
-    "name": "Indeed",
-    "tier": "contributor",
-    "totalDonations": 5000,
-    "website": "https://Indeed.com"
   },
   {
     "id": "Corellium",
