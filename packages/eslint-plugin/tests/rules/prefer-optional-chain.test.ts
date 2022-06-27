@@ -122,6 +122,11 @@ const baseCases = [
     code: 'foo.bar && foo.bar?.() && foo.bar?.().baz',
     output: 'foo.bar?.()?.baz',
   },
+  // TODO: deepest left node already pre-optional chained
+  // {
+  //   code: 'foo?.bar && foo.bar?.() && foo.bar?.().baz',
+  //   output: 'foo?.bar?.()?.baz',
+  // },
 ].map(
   c =>
     ({
@@ -146,6 +151,13 @@ const baseCases = [
 
 ruleTester.run('prefer-optional-chain', rule, {
   valid: [
+    '!a || !b;',
+    '!a || a.b;',
+    '!a && a.b;',
+    '!a && !a.b;',
+    '!a.b || a.b?.();',
+    '!a.b || a.b();',
+
     'foo || {};',
     'foo || ({} as any);',
     '(foo || {})?.bar;',
@@ -1143,5 +1155,153 @@ foo?.bar(/* comment */a,
         },
       ],
     },
+    ...baseCases.map(c => ({
+      ...c,
+      code: c.code.replace(/foo/g, '!foo').replace(/&&/g, '||'),
+      errors: [
+        {
+          ...c.errors[0],
+          suggestions: [
+            {
+              ...c.errors[0].suggestions![0],
+              output: `!${c.errors[0].suggestions![0].output}`,
+            },
+          ],
+        },
+      ],
+    })),
+    {
+      code: '!a.b || !a.b();',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!a.b?.();',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!foo.bar || !foo.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo.bar?.baz;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!foo[bar] || !foo[bar]?.[baz];',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo[bar]?.[baz];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!foo || !foo?.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo?.bar.baz;',
+            },
+          ],
+        },
+      ],
+    },
+    // two  errors
+    {
+      code: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz || !baz.bar || !baz.bar.foo);`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`(!foo?.bar?.baz) && (!baz || !baz.bar || !baz.bar.foo);`,
+            },
+          ],
+        },
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz?.bar?.foo);`,
+            },
+          ],
+        },
+      ],
+    },
+    /* // Not sure if should support
+    {
+      code: '!(foo.bar != undefined) || !foo.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo.bar?.baz;',
+            },
+          ],
+        },
+      ],
+    }, */
+    /* // Not sure if should support
+    {
+      code: 'foo.bar == undefined || !foo.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo.bar?.baz;',
+            },
+          ],
+        },
+      ],
+    }, */
+    // TODO: deepest left node already pre-optional chained
+    // {
+    //   code: '!foo?.bar || !foo?.bar.baz;',
+    //   output: null,
+    //   errors: [
+    //     {
+    //       messageId: 'preferOptionalChain',
+    //       suggestions: [
+    //         {
+    //           messageId: 'optionalChainSuggest',
+    //           output: '!foo?.bar?.baz;',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   ],
 });

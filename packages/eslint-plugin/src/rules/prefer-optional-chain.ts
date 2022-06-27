@@ -34,7 +34,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce using concise optional chain expressions instead of chained logical ands',
+        'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
       recommended: 'strict',
       suggestion: true,
     },
@@ -110,6 +110,143 @@ export default util.createRule({
             },
           ],
         });
+      },
+      [[
+        'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > Identifier',
+        'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > MemberExpression',
+        'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > ChainExpression > MemberExpression',
+      ].join(',')](
+        initialIdentifierOrNotEqualsExpr:
+          | TSESTree.BinaryExpression
+          | TSESTree.Identifier
+          | TSESTree.MemberExpression,
+      ): void {
+        // selector guarantees this cast
+        const initialExpression = (
+          initialIdentifierOrNotEqualsExpr.parent?.type ===
+          AST_NODE_TYPES.ChainExpression
+            ? initialIdentifierOrNotEqualsExpr.parent.parent
+            : initialIdentifierOrNotEqualsExpr.parent
+        )?.parent as TSESTree.LogicalExpression;
+
+        if (
+          initialExpression.left.type !== AST_NODE_TYPES.UnaryExpression ||
+          initialExpression.left.argument !== initialIdentifierOrNotEqualsExpr
+        ) {
+          // the node(identifier or member expression) is not the deepest left node
+          return;
+        }
+        if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
+          return;
+        }
+
+        // walk up the tree to figure out how many logical expressions we can include
+        let previous: TSESTree.LogicalExpression = initialExpression;
+        let current: TSESTree.Node = initialExpression;
+        let previousLeftText = getText(initialIdentifierOrNotEqualsExpr);
+        let optionallyChainedCode = previousLeftText;
+        let expressionCount = 1;
+        while (current.type === AST_NODE_TYPES.LogicalExpression) {
+          if (
+            current.right.type !== AST_NODE_TYPES.UnaryExpression ||
+            !isValidChainTarget(
+              current.right.argument,
+              // only allow identifiers for the first chain - foo && foo()
+              expressionCount === 1,
+            )
+          ) {
+            break;
+          }
+
+          const leftText = previousLeftText;
+          const rightText = getText(current.right.argument);
+          // can't just use startsWith because of cases like foo && fooBar.baz;
+          const matchRegex = new RegExp(
+            `^${
+              // escape regex characters
+              leftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+            }[^a-zA-Z0-9_$]`,
+          );
+          if (
+            !matchRegex.test(rightText) &&
+            // handle redundant cases like foo.bar && foo.bar
+            leftText !== rightText
+          ) {
+            break;
+          }
+
+          // omit weird doubled up expression that make no sense like foo.bar && foo.bar
+          if (rightText !== leftText) {
+            expressionCount += 1;
+            previousLeftText = rightText;
+
+            /*
+            Diff the left and right text to construct the fix string
+            There are the following cases:
+
+            1)
+            rightText === 'foo.bar.baz.buzz'
+            leftText === 'foo.bar.baz'
+            diff === '.buzz'
+
+            2)
+            rightText === 'foo.bar.baz.buzz()'
+            leftText === 'foo.bar.baz'
+            diff === '.buzz()'
+
+            3)
+            rightText === 'foo.bar.baz.buzz()'
+            leftText === 'foo.bar.baz.buzz'
+            diff === '()'
+
+            4)
+            rightText === 'foo.bar.baz[buzz]'
+            leftText === 'foo.bar.baz'
+            diff === '[buzz]'
+
+            5)
+            rightText === 'foo.bar.baz?.buzz'
+            leftText === 'foo.bar.baz'
+            diff === '?.buzz'
+            */
+            const diff = rightText.replace(leftText, '');
+            if (diff.startsWith('?')) {
+              // item was "pre optional chained"
+              optionallyChainedCode += diff;
+            } else {
+              const needsDot = diff.startsWith('(') || diff.startsWith('[');
+              optionallyChainedCode += `?${needsDot ? '.' : ''}${diff}`;
+            }
+          }
+
+          previous = current;
+          current = util.nullThrows(
+            current.parent,
+            util.NullThrowsReasons.MissingParent,
+          );
+        }
+
+        if (expressionCount > 1) {
+          if (previous.right.type === AST_NODE_TYPES.BinaryExpression) {
+            // case like foo && foo.bar !== someValue
+            optionallyChainedCode += ` ${
+              previous.right.operator
+            } ${sourceCode.getText(previous.right.right)}`;
+          }
+
+          context.report({
+            node: previous,
+            messageId: 'preferOptionalChain',
+            suggest: [
+              {
+                messageId: 'optionalChainSuggest',
+                fix: (fixer): TSESLint.RuleFix[] => [
+                  fixer.replaceText(previous, `!${optionallyChainedCode}`),
+                ],
+              },
+            ],
+          });
+        }
       },
       [[
         'LogicalExpression[operator="&&"] > Identifier',
