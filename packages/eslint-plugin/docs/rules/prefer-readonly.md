@@ -85,7 +85,3 @@ class Container {
   private neverModifiedPrivate = 'unchanged';
 }
 ```
-
-## Related To
-
-- TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)

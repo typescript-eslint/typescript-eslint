@@ -197,7 +197,3 @@ const capitalObj2: { a: string } = { a: 'string' };
 const curly1: number = 1;
 const curly2: Record<'a', string> = { a: 'string' };
 ```
-
-## Related To
-
-- TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)

@@ -92,7 +92,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about having unneeded namespace or enum qualifiers, then you don't need to use this rule.
-
-## Related To
-
-- TSLint: [no-unnecessary-qualifier](https://palantir.github.io/tslint/rules/no-unnecessary-qualifier/)

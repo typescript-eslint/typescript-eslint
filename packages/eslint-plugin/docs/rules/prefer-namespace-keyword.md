@@ -31,7 +31,3 @@ This rule is not configurable.
 - [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
 - [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
 - [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
-
-## Related To
-
-- TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)
