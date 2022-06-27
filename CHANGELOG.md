@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.29.0...v5.30.0) (2022-06-27)
+
+
+### Features
+
+* **eslint-plugin:** [no-shadow] add shadowed variable location to the error message ([#5183](https://github.com/typescript-eslint/typescript-eslint/issues/5183)) ([8ca08e9](https://github.com/typescript-eslint/typescript-eslint/commit/8ca08e9f18d59b29715c667fbb7d237f6e9a96ba))
+* treat `this` in `typeof this` as a `ThisExpression` ([#4382](https://github.com/typescript-eslint/typescript-eslint/issues/4382)) ([b04b2ce](https://github.com/typescript-eslint/typescript-eslint/commit/b04b2ce1ba90d94718891f2562dd210a6d7b8609))
+
+
+
+
+
 # [5.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.28.0...v5.29.0) (2022-06-20)
 
 

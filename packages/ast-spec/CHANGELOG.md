@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.29.0...v5.30.0) (2022-06-27)
+
+
+### Features
+
+* treat `this` in `typeof this` as a `ThisExpression` ([#4382](https://github.com/typescript-eslint/typescript-eslint/issues/4382)) ([b04b2ce](https://github.com/typescript-eslint/typescript-eslint/commit/b04b2ce1ba90d94718891f2562dd210a6d7b8609))
+
+
+
+
+
 # [5.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.28.0...v5.29.0) (2022-06-20)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec
