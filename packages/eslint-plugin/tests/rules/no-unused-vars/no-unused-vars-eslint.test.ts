@@ -1753,8 +1753,8 @@ foo.forEach(item => {
         },
         {
           ...assignedError('b'),
-          line: 4,
-          column: 7,
+          line: 2,
+          column: 9,
         },
       ],
     },
@@ -2679,6 +2679,13 @@ const a = () => () => {
         },
       ],
     },
+
+    // https://github.com/eslint/eslint/issues/14324
+    {
+      code: 'let x = [];\nx = x.concat(x);',
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 2, column: 1 }],
+    },
     {
       code: `
 let a = 'a';
@@ -2693,16 +2700,38 @@ function foo() {
       parserOptions: { ecmaVersion: 2020 },
       errors: [
         {
+          ...assignedError('a'),
+          line: 3,
+          column: 1,
+        },
+        {
           ...definedError('foo'),
           line: 4,
           column: 10,
         },
-        {
-          ...assignedError('a'),
-          line: 7,
-          column: 5,
-        },
       ],
+    },
+    {
+      code: `
+let foo;
+init();
+foo = foo + 2;
+function init() {
+  foo = 1;
+}
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('foo'), line: 4, column: 1 }],
+    },
+    {
+      code: `
+function foo(n) {
+  if (n < 2) return 1;
+  return n * foo(n - 1);
+}
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...definedError('foo'), line: 2, column: 10 }],
     },
     {
       code: `
