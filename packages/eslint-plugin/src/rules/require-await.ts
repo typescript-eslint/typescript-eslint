@@ -104,7 +104,7 @@ export default util.createRule({
      * function and the delegate is `true`
      */
     function markAsHasDelegateGen(node: TSESTree.YieldExpression): void {
-      if (!scopeInfo || !scopeInfo.isGen || !node.argument) {
+      if (!scopeInfo?.isGen || !node.argument) {
         return;
       }
 

@@ -78,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
-      if (!options.allowedNames || !options.allowedNames.length) {
+      if (!options.allowedNames?.length) {
         return false;
       }
 

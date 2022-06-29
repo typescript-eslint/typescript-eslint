@@ -15,7 +15,7 @@ function interpolateCode(text: string): (JSX.Element | string)[] | string {
 }
 
 function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
-  if (!rule.docs || !rule.docs.url) {
+  if (!rule.docs?.url) {
     return null;
   }
   return (
