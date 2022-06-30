@@ -27,7 +27,7 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       baseToString:
-        "'{{name}} {{certainty}} evaluate to '[object Object]' when stringified.",
+        "'{{name}}' {{certainty}} evaluate to '[object Object]' when stringified.",
     },
     schema: [
       {
