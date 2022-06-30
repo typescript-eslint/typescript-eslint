@@ -11,7 +11,8 @@ type MessageIds =
   | 'invalidVoidNotReturnOrGeneric'
   | 'invalidVoidNotReturn'
   | 'invalidVoidNotReturnOrThisParam'
-  | 'invalidVoidNotReturnOrThisParamOrGeneric';
+  | 'invalidVoidNotReturnOrThisParamOrGeneric'
+  | 'InvalidVoidForUnion';
 
 export default util.createRule<[Options], MessageIds>({
   name: 'no-invalid-void-type',
@@ -25,12 +26,14 @@ export default util.createRule<[Options], MessageIds>({
       invalidVoidForGeneric:
         '{{ generic }} may not have void as a type variable.',
       invalidVoidNotReturnOrGeneric:
-        'void is valid as a return type in the case of a union or intersection type and generic type variable',
+        'void is only valid as a return type or generic type variable.',
       invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
         'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
         'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
+      InvalidVoidForUnion:
+        'void is void is valid as a return type in the case of a union or intersection type',
     },
     schema: [
       {
