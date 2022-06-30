@@ -25,7 +25,7 @@ export default util.createRule<[Options], MessageIds>({
       invalidVoidForGeneric:
         '{{ generic }} may not have void as a type variable.',
       invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type variable.',
+        'void is valid as a return type in the case of a union or intersection type and generic type variable',
       invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
         'void is only valid as return type or type of `this` parameter.',
