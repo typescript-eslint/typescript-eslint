@@ -7,7 +7,7 @@ sidebar_label: Linting your TypeScript Codebase
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Whether you're adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint), the steps aren't a whole lot different.
+Whether you are adding linting to a new TypeScript codebase, adding TypeScript to an old codebase, or migrating from the deprecated [TSLint](https://www.npmjs.com/package/tslint) tool, the steps to follow are similar.
 
 ## Installation
 
