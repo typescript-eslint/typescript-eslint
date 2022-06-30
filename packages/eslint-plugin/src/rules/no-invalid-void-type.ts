@@ -33,7 +33,7 @@ export default util.createRule<[Options], MessageIds>({
       invalidVoidNotReturnOrThisParamOrGeneric:
         'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
       InvalidVoidForUnion:
-        'void is void is valid as a return type in the case of a union or intersection type',
+        'void is void is valid as a return type in the case of a union',
     },
     schema: [
       {
