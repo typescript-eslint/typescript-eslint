@@ -132,7 +132,7 @@ export default createRule<Options, MessageIds>({
 
           if ((node.typeParameters?.params ?? []).length > 0) {
             genericTypes = `<${node.typeParameters?.params
-              .map(p => p.name.name)
+              .map(p => sourceCode.getText(p))
               .join(', ')}>`;
           }
 
