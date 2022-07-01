@@ -11,9 +11,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## 5.30.1 (2022-07-01)
+## [5.30.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.0...v5.30.1) (2022-06-06)
 
-**Note:** Version bump only for package @typescript-eslint/typescript-eslint
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-base-to-string] add missing apostrophe to message ([#5270](https://github.com/typescript-eslint/typescript-eslint/issues/5270)) ([d320174](https://github.com/typescript-eslint/typescript-eslint/commit/58034e343a167ca7751b54d2b2a0e7d3852aabec))
 
 
 
