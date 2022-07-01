@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.30.1 (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
 # [5.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.29.0...v5.30.0) (2022-06-27)
 
 
