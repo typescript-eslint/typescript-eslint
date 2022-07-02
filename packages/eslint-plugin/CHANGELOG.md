@@ -19,7 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [5.30.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.0...v5.30.1) (2022-06-06)
+## [5.30.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.0...v5.30.1) (2022-07-01)
 
 
 ### Bug Fixes
