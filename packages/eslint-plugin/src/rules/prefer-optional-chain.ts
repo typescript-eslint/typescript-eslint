@@ -136,9 +136,9 @@ export default util.createRule({
           // the node(identifier or member expression) is not the deepest left node
           return;
         }
-        if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
-          return;
-        }
+        // if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
+        //   return;
+        // }
 
         // walk up the tree to figure out how many logical expressions we can include
         let previous: TSESTree.LogicalExpression = initialExpression;
