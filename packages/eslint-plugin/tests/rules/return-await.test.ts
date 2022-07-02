@@ -15,6 +15,7 @@ const ruleTester = new RuleTester({
 // default rule is in-try-catch
 ruleTester.run('return-await', rule, {
   valid: [
+    'return;', // No function in scope, so behave like return in a commonjs module
     `
       function test() {
         return;
