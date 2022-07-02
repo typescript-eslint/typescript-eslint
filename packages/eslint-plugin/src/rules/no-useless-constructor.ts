@@ -34,7 +34,7 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
  * Check if method is not unless due to typescript parameter properties
  */
 function checkParams(node: TSESTree.MethodDefinition): boolean {
-  return !node.value.params?.some(
+  return !node.value.params.some(
     param => param.type === AST_NODE_TYPES.TSParameterProperty,
   );
 }
