@@ -133,10 +133,11 @@ h6 {
   position: relative;
   left: -0.7em;
   color: rgb(2, 164, 113);
+  font-weight: 700;
 }
 
 .code-block-added-line {
-  background-color: #00ff9540;
+  background-color: #00ff9520;
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
