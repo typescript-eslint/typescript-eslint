@@ -175,78 +175,31 @@ export default util.createRule({
             break;
           }
 
-          // omit weird doubled up expression that make no sense like foo.bar && foo.bar
-          if (rightText !== leftText) {
-            expressionCount += 1;
-            previousLeftText = rightText;
-
-            /*
-            Diff the left and right text to construct the fix string
-            There are the following cases:
-
-            1)
-            rightText === 'foo.bar.baz.buzz'
-            leftText === 'foo.bar.baz'
-            diff === '.buzz'
-
-            2)
-            rightText === 'foo.bar.baz.buzz()'
-            leftText === 'foo.bar.baz'
-            diff === '.buzz()'
-
-            3)
-            rightText === 'foo.bar.baz.buzz()'
-            leftText === 'foo.bar.baz.buzz'
-            diff === '()'
-
-            4)
-            rightText === 'foo.bar.baz[buzz]'
-            leftText === 'foo.bar.baz'
-            diff === '[buzz]'
-
-            5)
-            rightText === 'foo.bar.baz?.buzz'
-            leftText === 'foo.bar.baz'
-            diff === '?.buzz'
-            */
-            const diff = rightText.replace(leftText, '');
-            if (diff.startsWith('?')) {
-              // item was "pre optional chained"
-              optionallyChainedCode += diff;
-            } else {
-              const needsDot = diff.startsWith('(') || diff.startsWith('[');
-              optionallyChainedCode += `?${needsDot ? '.' : ''}${diff}`;
-            }
-          }
-
-          previous = current;
-          current = util.nullThrows(
-            current.parent,
-            util.NullThrowsReasons.MissingParent,
-          );
+          ({
+            expressionCount,
+            previousLeftText,
+            optionallyChainedCode,
+            previous,
+            current,
+          } = normalizeRepeatingPatterns(
+            rightText,
+            leftText,
+            expressionCount,
+            previousLeftText,
+            optionallyChainedCode,
+            previous,
+            current,
+          ));
         }
 
-        if (expressionCount > 1) {
-          if (previous.right.type === AST_NODE_TYPES.BinaryExpression) {
-            // case like foo && foo.bar !== someValue
-            optionallyChainedCode += ` ${
-              previous.right.operator
-            } ${sourceCode.getText(previous.right.right)}`;
-          }
-
-          context.report({
-            node: previous,
-            messageId: 'preferOptionalChain',
-            suggest: [
-              {
-                messageId: 'optionalChainSuggest',
-                fix: (fixer): TSESLint.RuleFix[] => [
-                  fixer.replaceText(previous, `!${optionallyChainedCode}`),
-                ],
-              },
-            ],
-          });
-        }
+        reportIfMoreThanOne({
+          expressionCount,
+          previous,
+          optionallyChainedCode,
+          sourceCode,
+          context,
+          shouldHandleChainedAnds: false,
+        });
       },
       [[
         'LogicalExpression[operator="&&"] > Identifier',
@@ -310,78 +263,31 @@ export default util.createRule({
             break;
           }
 
-          // omit weird doubled up expression that make no sense like foo.bar && foo.bar
-          if (rightText !== leftText) {
-            expressionCount += 1;
-            previousLeftText = rightText;
-
-            /*
-            Diff the left and right text to construct the fix string
-            There are the following cases:
-
-            1)
-            rightText === 'foo.bar.baz.buzz'
-            leftText === 'foo.bar.baz'
-            diff === '.buzz'
-
-            2)
-            rightText === 'foo.bar.baz.buzz()'
-            leftText === 'foo.bar.baz'
-            diff === '.buzz()'
-
-            3)
-            rightText === 'foo.bar.baz.buzz()'
-            leftText === 'foo.bar.baz.buzz'
-            diff === '()'
-
-            4)
-            rightText === 'foo.bar.baz[buzz]'
-            leftText === 'foo.bar.baz'
-            diff === '[buzz]'
-
-            5)
-            rightText === 'foo.bar.baz?.buzz'
-            leftText === 'foo.bar.baz'
-            diff === '?.buzz'
-            */
-            const diff = rightText.replace(leftText, '');
-            if (diff.startsWith('?')) {
-              // item was "pre optional chained"
-              optionallyChainedCode += diff;
-            } else {
-              const needsDot = diff.startsWith('(') || diff.startsWith('[');
-              optionallyChainedCode += `?${needsDot ? '.' : ''}${diff}`;
-            }
-          }
-
-          previous = current;
-          current = util.nullThrows(
-            current.parent,
-            util.NullThrowsReasons.MissingParent,
-          );
+          ({
+            expressionCount,
+            previousLeftText,
+            optionallyChainedCode,
+            previous,
+            current,
+          } = normalizeRepeatingPatterns(
+            rightText,
+            leftText,
+            expressionCount,
+            previousLeftText,
+            optionallyChainedCode,
+            previous,
+            current,
+          ));
         }
 
-        if (expressionCount > 1) {
-          if (previous.right.type === AST_NODE_TYPES.BinaryExpression) {
-            // case like foo && foo.bar !== someValue
-            optionallyChainedCode += ` ${
-              previous.right.operator
-            } ${sourceCode.getText(previous.right.right)}`;
-          }
-
-          context.report({
-            node: previous,
-            messageId: 'preferOptionalChain',
-            suggest: [
-              {
-                messageId: 'optionalChainSuggest',
-                fix: (fixer): TSESLint.RuleFix[] => [
-                  fixer.replaceText(previous, optionallyChainedCode),
-                ],
-              },
-            ],
-          });
-        }
+        reportIfMoreThanOne({
+          expressionCount,
+          previous,
+          optionallyChainedCode,
+          sourceCode,
+          context,
+          shouldHandleChainedAnds: true,
+        });
       },
     };
 
@@ -530,6 +436,132 @@ const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
 const ALLOWED_NON_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
 ]);
+
+interface ReportIfMoreThanOneOptions {
+  expressionCount: number;
+  previous: TSESTree.LogicalExpression;
+  optionallyChainedCode: string;
+  sourceCode: Readonly<TSESLint.SourceCode>;
+  context: Readonly<
+    TSESLint.RuleContext<
+      'preferOptionalChain' | 'optionalChainSuggest',
+      never[]
+    >
+  >;
+  shouldHandleChainedAnds: boolean;
+}
+
+function reportIfMoreThanOne({
+  expressionCount,
+  previous,
+  optionallyChainedCode,
+  sourceCode,
+  context,
+  shouldHandleChainedAnds,
+}: ReportIfMoreThanOneOptions): void {
+  if (expressionCount > 1) {
+    if (
+      shouldHandleChainedAnds &&
+      previous.right.type === AST_NODE_TYPES.BinaryExpression
+    ) {
+      // case like foo && foo.bar !== someValue
+      optionallyChainedCode += ` ${
+        previous.right.operator
+      } ${sourceCode.getText(previous.right.right)}`;
+    }
+
+    context.report({
+      node: previous,
+      messageId: 'preferOptionalChain',
+      suggest: [
+        {
+          messageId: 'optionalChainSuggest',
+          fix: (fixer): TSESLint.RuleFix[] => [
+            fixer.replaceText(
+              previous,
+              `${shouldHandleChainedAnds ? '' : '!'}${optionallyChainedCode}`,
+            ),
+          ],
+        },
+      ],
+    });
+  }
+}
+
+interface NormalizedPattern {
+  expressionCount: number;
+  previousLeftText: string;
+  optionallyChainedCode: string;
+  previous: TSESTree.LogicalExpression;
+  current: TSESTree.Node;
+}
+
+function normalizeRepeatingPatterns(
+  rightText: string,
+  leftText: string,
+  expressionCount: number,
+  previousLeftText: string,
+  optionallyChainedCode: string,
+  previous: TSESTree.Node,
+  current: TSESTree.Node,
+): NormalizedPattern {
+  // omit weird doubled up expression that make no sense like foo.bar && foo.bar
+  if (rightText !== leftText) {
+    expressionCount += 1;
+    previousLeftText = rightText;
+
+    /*
+    Diff the left and right text to construct the fix string
+    There are the following cases:
+
+    1)
+    rightText === 'foo.bar.baz.buzz'
+    leftText === 'foo.bar.baz'
+    diff === '.buzz'
+
+    2)
+    rightText === 'foo.bar.baz.buzz()'
+    leftText === 'foo.bar.baz'
+    diff === '.buzz()'
+
+    3)
+    rightText === 'foo.bar.baz.buzz()'
+    leftText === 'foo.bar.baz.buzz'
+    diff === '()'
+
+    4)
+    rightText === 'foo.bar.baz[buzz]'
+    leftText === 'foo.bar.baz'
+    diff === '[buzz]'
+
+    5)
+    rightText === 'foo.bar.baz?.buzz'
+    leftText === 'foo.bar.baz'
+    diff === '?.buzz'
+    */
+    const diff = rightText.replace(leftText, '');
+    if (diff.startsWith('?')) {
+      // item was "pre optional chained"
+      optionallyChainedCode += diff;
+    } else {
+      const needsDot = diff.startsWith('(') || diff.startsWith('[');
+      optionallyChainedCode += `?${needsDot ? '.' : ''}${diff}`;
+    }
+  }
+
+  previous = current as TSESTree.LogicalExpression;
+  current = util.nullThrows(
+    current.parent,
+    util.NullThrowsReasons.MissingParent,
+  );
+  return {
+    expressionCount,
+    previousLeftText,
+    optionallyChainedCode,
+    previous,
+    current,
+  };
+}
 
 function isValidChainTarget(
   node: TSESTree.Node,
