@@ -296,5 +296,23 @@ class Foo {
 }
       `,
     },
+    {
+      code: `
+class Foo {
+  [a + b] = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  [a + b]: Foo<string> = new Foo();
+}
+      `,
+    },
   ],
 });
