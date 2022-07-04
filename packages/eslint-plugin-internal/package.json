@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
-  "version": "5.30.4",
+  "version": "5.30.5",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@types/prettier": "*",
-    "@typescript-eslint/scope-manager": "5.30.4",
-    "@typescript-eslint/utils": "5.30.4",
+    "@typescript-eslint/scope-manager": "5.30.5",
+    "@typescript-eslint/utils": "5.30.5",
     "prettier": "*"
   }
 }
