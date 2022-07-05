@@ -33,6 +33,20 @@
   margin: 1rem 1rem;
 }
 
+.button_primary {
+  background-color: var(--ifm-color-warning-dark);
+  color: var(--ifm-color-secondary-contrast-foreground);
+}
+
+.button_primary:hover {
+  background-color: var(--ifm-color-warning);
+  color: var(--ifm-color-emphasis-900);
+}
+
+[data-theme='dark'] .button_primary {
+  color: var(--ifm-color-secondary-contrast-background);
+}
+
 .lightBackground {
   background: var(--ifm-color-emphasis-100);
 }
