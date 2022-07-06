@@ -110,7 +110,7 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
       <h2 className="text--center">{title}</h2>
       {description}
       <div className={styles.buttons}>
-        <Link className="button button--primary" to={useBaseUrl('docs/')}>
+        <Link className="button button--primary button--outline button--box-shadow" to={useBaseUrl('docs/')}>
           Get Started
         </Link>
       </div>
@@ -131,7 +131,7 @@ function Home(): JSX.Element {
               Get Started
             </Link>
             <Link
-              className="button button--secondary button--outline"
+              className="button button--secondary button--outline button--outline button--box-shadow"
               to={useBaseUrl('play/')}
             >
               Playground
