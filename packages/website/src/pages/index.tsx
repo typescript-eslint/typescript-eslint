@@ -127,11 +127,11 @@ function Home(): JSX.Element {
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
-            <Link className="button button--primary" to={useBaseUrl('docs/')}>
+            <Link className="button button--primary button--outline button--box-shadow" to={useBaseUrl('docs/')}>
               Get Started
             </Link>
             <Link
-              className="button button--secondary button--outline button--outline button--box-shadow"
+              className="button button--secondary button--outline"
               to={useBaseUrl('play/')}
             >
               Playground
