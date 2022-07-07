@@ -128,7 +128,7 @@ function Home(): JSX.Element {
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
-              className={clsx('button button--primary', styles.button_primary)}
+              className={clsx('button button--primary', styles.buttonPrimary)}
               to={useBaseUrl('docs/')}
             >
               Get Started
