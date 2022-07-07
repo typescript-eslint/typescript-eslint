@@ -37,6 +37,7 @@ export default util.createRule({
         'Enforce using concise optional chain expressions instead of chained logical ands',
       recommended: 'strict',
       suggestion: true,
+      requiresTypeChecking: true,
     },
     hasSuggestions: true,
     messages: {
