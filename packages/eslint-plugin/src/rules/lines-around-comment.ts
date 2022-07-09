@@ -107,6 +107,12 @@ export default util.createRule<Options, MessageIds>({
             allowInterfaceEnd: {
               type: 'boolean',
             },
+            allowTypeStart: {
+              type: 'boolean',
+            },
+            allowTypeEnd: {
+              type: 'boolean',
+            },
             ignorePattern: {
               type: 'string',
             },
@@ -355,6 +361,20 @@ export default util.createRule<Options, MessageIds>({
       return isCommentAtParentEnd(token, AST_NODE_TYPES.TSInterfaceBody);
     }
 
+    /**
+     * Returns whether or not comments are at the type start or not.
+     */
+    function isCommentAtTypeStart(token: TSESTree.Token): boolean {
+      return isCommentAtParentStart(token, AST_NODE_TYPES.TSTypeLiteral);
+    }
+
+    /**
+     * Returns whether or not comments are at the type end or not.
+     */
+    function isCommentAtTypeEnd(token: TSESTree.Token): boolean {
+      return isCommentAtParentEnd(token, AST_NODE_TYPES.TSTypeLiteral);
+    }
+
     function checkForEmptyLine(
       token: TSESTree.Comment,
       opts: { before?: boolean; after?: boolean },
@@ -405,20 +425,26 @@ export default util.createRule<Options, MessageIds>({
           Boolean(options.allowInterfaceStart) &&
           isCommentAtInterfaceStart(token),
         interfaceEndAllowed =
-          Boolean(options.allowInterfaceEnd) && isCommentAtInterfaceEnd(token);
+          Boolean(options.allowInterfaceEnd) && isCommentAtInterfaceEnd(token),
+        typeStartAllowed =
+          Boolean(options.allowTypeStart) && isCommentAtTypeStart(token),
+        typeEndAllowed =
+          Boolean(options.allowTypeEnd) && isCommentAtTypeEnd(token);
 
       const exceptionStartAllowed =
         blockStartAllowed ||
         classStartAllowed ||
         objectStartAllowed ||
         arrayStartAllowed ||
-        interfaceStartAllowed;
+        interfaceStartAllowed ||
+        typeStartAllowed;
       const exceptionEndAllowed =
         blockEndAllowed ||
         classEndAllowed ||
         objectEndAllowed ||
         arrayEndAllowed ||
-        interfaceEndAllowed;
+        interfaceEndAllowed ||
+        typeEndAllowed;
 
       // ignore top of the file and bottom of the file
       if (prevLineNum < 1) {

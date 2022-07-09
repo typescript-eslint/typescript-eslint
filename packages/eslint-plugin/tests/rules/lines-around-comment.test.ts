@@ -1318,7 +1318,66 @@ interface A {
         },
       ],
     },
-    // Type object
+    // Type
+    {
+      code: unIndent`
+type A = {
+  // line
+  a: string;
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowTypeStart: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+type A = {
+  /* block
+     comment */
+  a: string;
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowTypeStart: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+type A = {
+  a: string;
+  // line
+}
+`,
+      options: [
+        {
+          afterLineComment: true,
+          allowTypeEnd: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+type A = {
+  a: string;
+  /* block
+     comment */
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterBlockComment: true,
+          allowTypeEnd: true,
+        },
+      ],
+    },
 
     // ignorePattern
     {
@@ -2833,6 +2892,147 @@ interface A {
 `,
       output: unIndent`
 interface A {
+  a: string;
+  /* block
+     comment */
+
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterBlockComment: true,
+          allowInterfaceEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
+
+    // type
+    {
+      code: unIndent`
+type A = {
+  a: string;
+  // line
+}
+`,
+      output: unIndent`
+type A = {
+  a: string;
+
+  // line
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowInterfaceStart: true,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Line, line: 3 }],
+    },
+    {
+      code: unIndent`
+type A = {
+  a: string;
+  /* block
+     comment */
+}
+`,
+      output: unIndent`
+type A = {
+  a: string;
+
+  /* block
+     comment */
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowInterfaceStart: true,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
+    {
+      code: unIndent`
+type A = {
+  // line
+  a: string;
+}
+`,
+      output: unIndent`
+type A = {
+
+  // line
+  a: string;
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowInterfaceStart: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Line, line: 2 }],
+    },
+    {
+      code: unIndent`
+type A = {
+  /* block
+     comment */
+  a: string;
+}
+`,
+      output: unIndent`
+type A = {
+
+  /* block
+     comment */
+  a: string;
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowInterfaceStart: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 2 }],
+    },
+    {
+      code: unIndent`
+type A = {
+  a: string;
+  // line
+}
+`,
+      output: unIndent`
+type A = {
+  a: string;
+  // line
+
+}
+`,
+      options: [
+        {
+          afterLineComment: true,
+          allowInterfaceEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Line, line: 3 }],
+    },
+    {
+      code: unIndent`
+type A = {
+  a: string;
+  /* block
+     comment */
+}
+`,
+      output: unIndent`
+type A = {
   a: string;
   /* block
      comment */
