@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`type-declaration type-constrain 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        TypeDefinition$1 {
+          name: Identifier<"X">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "X",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"X">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        TypeDefinition$2 {
+          name: Identifier<"Id">,
+          node: TSTypeAliasDeclaration$2,
+        },
+      ],
+      name: "Id",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$3,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$5 {
+      defs: Array [
+        TypeDefinition$4 {
+          name: Identifier<"Id">,
+          node: TSTypeParameter$4,
+        },
+      ],
+      name: "Id",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"Id">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$5,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "X" => Variable$2,
+        "Id" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+    TypeScope$2 {
+      block: TSTypeAliasDeclaration$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "T" => Variable$4,
+      },
+      type: "type",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$4,
+      ],
+    },
+    ConditionalTypeScope$3 {
+      block: TSConditionalType$6,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {
+        "Id" => Variable$5,
+      },
+      type: "conditionalType",
+      upper: TypeScope$2,
+      variables: Array [
+        Variable$5,
+      ],
+    },
+  ],
+}
+`;
