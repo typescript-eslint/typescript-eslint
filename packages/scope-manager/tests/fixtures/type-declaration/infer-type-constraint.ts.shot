@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration type-constrain 1`] = `
+exports[`type-declaration infer-type-constraint 1`] = `
 ScopeManager {
   variables: Array [
     ImplicitGlobalConstTypeVariable,
