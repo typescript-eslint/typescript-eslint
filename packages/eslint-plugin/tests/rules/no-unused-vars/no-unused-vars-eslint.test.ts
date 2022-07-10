@@ -2628,8 +2628,8 @@ var a = function () {
       errors: [
         {
           ...assignedError('a'),
-          line: 3,
-          column: 3,
+          line: 2,
+          column: 5,
         },
       ],
     },
@@ -2644,7 +2644,7 @@ var a = function () {
       errors: [
         {
           ...assignedError('a'),
-          line: 4,
+          line: 2,
           column: 5,
         },
       ],
@@ -2659,8 +2659,8 @@ const a = () => {
       errors: [
         {
           ...assignedError('a'),
-          line: 3,
-          column: 3,
+          line: 2,
+          column: 7,
         },
       ],
     },
@@ -2674,8 +2674,8 @@ const a = () => () => {
       errors: [
         {
           ...assignedError('a'),
-          line: 3,
-          column: 3,
+          line: 2,
+          column: 7,
         },
       ],
     },
