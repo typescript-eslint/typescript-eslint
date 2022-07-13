@@ -156,7 +156,26 @@ class Foo {
 
   invalid: [
     ...invalidTestCases,
-
+    {
+      // This is invalid TS semantic, but it's trivial to make valid anyway
+      code: 'const fn = (a?: number = 5) => {};',
+      output: 'const fn = (a = 5) => {};',
+      options: [
+        {
+          ignoreParameters: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          column: 13,
+        },
+      ],
+    },
     {
       code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
       output: "const fn = (a = 5, b = true, c = 'foo') => {};",
