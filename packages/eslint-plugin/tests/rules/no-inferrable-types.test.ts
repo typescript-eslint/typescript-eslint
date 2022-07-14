@@ -177,6 +177,34 @@ class Foo {
       ],
     },
     {
+      // This is invalid TS semantic, but it's trivial to make valid anyway
+      code: `
+class A {
+  a!: number = 1;
+}
+      `,
+      output: `
+class A {
+  a = 1;
+}
+      `,
+      options: [
+        {
+          ignoreProperties: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number',
+          },
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
+    {
       code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
       output: "const fn = (a = 5, b = true, c = 'foo') => {};",
       options: [
