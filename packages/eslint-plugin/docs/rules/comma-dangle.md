@@ -9,7 +9,7 @@ It adds support for TypeScript syntax.
 
 See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for more details on the `comma-dangle` rule.
 
-## Rule Changes
+## How to Use
 
 ```jsonc
 {
