@@ -167,6 +167,8 @@ class TypeVisitor extends Visitor {
       typeParameter.name,
       new TypeDefinition(typeParameter.name, typeParameter),
     );
+
+    this.visit(typeParameter.constraint);
   }
 
   protected TSInterfaceDeclaration(
