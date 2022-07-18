@@ -12,6 +12,7 @@
   },
   "files": [
     "dist",
+    "_ts3.4",
     "package.json",
     "README.md",
     "LICENSE"
