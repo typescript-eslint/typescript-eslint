@@ -922,6 +922,17 @@ export declare namespace Foo {
   }
 }
     `,
+    `
+class Foo<T> {
+  value: T
+}
+
+class Bar<T> {
+  foo = Foo<T>
+}
+
+new Bar()
+    `,
     {
       code: `
 declare namespace A {
