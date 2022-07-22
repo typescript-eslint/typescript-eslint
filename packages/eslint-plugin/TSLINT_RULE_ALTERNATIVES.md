@@ -3,7 +3,7 @@
 This document serves as a guide to help you migrate from TSLint.
 It lists all TSLint rules along side rules from the ESLint ecosystem that are the same or similar.
 
-> For a tool that migrates a TSLint config to the closest possible ESLint config, see [tslint-to-eslint-config](https://github.com/typescript-eslint/tslint-to-eslint-config).
+> For a tool that migrates a TSLint config to the closest possible ESLint config, see [`tslint-to-eslint-config`](https://github.com/typescript-eslint/tslint-to-eslint-config).
 
 ## TSLint rules
 
