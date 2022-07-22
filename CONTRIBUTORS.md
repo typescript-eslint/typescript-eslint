@@ -79,14 +79,14 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://github.com/djcsdy"><img src="https://avatars.githubusercontent.com/u/310800?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Daniel Cassidy</b></sub></a></td>
     <td align="center"><a href="https://github.com/danielnixon"><img src="https://avatars.githubusercontent.com/u/6418489?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Daniel Nixon</b></sub></a></td>
     <td align="center"><a href="https://github.com/webschik"><img src="https://avatars.githubusercontent.com/u/1665314?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Denys Kniazevych</b></sub></a></td>
+    <td align="center"><a href="https://github.com/dimitropoulos"><img src="https://avatars.githubusercontent.com/u/15232461?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Dimitri Mitropoulos</b></sub></a></td>
     <td align="center"><a href="https://github.com/nevir"><img src="https://avatars.githubusercontent.com/u/41373?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Ian MacLeod</b></sub></a></td>
-    <td align="center"><a href="https://github.com/43081j"><img src="https://avatars.githubusercontent.com/u/5677153?v=4&size=100" width="100px;" alt=""/><br /><sub><b>James Garbutt</b></sub></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/g-plane"><img src="https://avatars.githubusercontent.com/u/17216317?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Pig Fang</b></sub></a></td>
-    <td align="center"><a href="https://github.com/timkraut"><img src="https://avatars.githubusercontent.com/u/509669?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Tim Kraut</b></sub></a></td>
+    <td align="center"><a href="https://github.com/43081j"><img src="https://avatars.githubusercontent.com/u/5677153?v=4&size=100" width="100px;" alt=""/><br /><sub><b>James Garbutt</b></sub></a></td>
+    <td align="center"><a href="https://github.com/holazz"><img src="https://avatars.githubusercontent.com/u/23100055?v=4&size=100" width="100px;" alt=""/><br /><sub><b>zz</b></sub></a></td>
+    <td align="center"><a href="https://github.com/madbence"><img src="https://avatars.githubusercontent.com/u/296735?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Bence Dányi</b></sub></a></td>
     <td align="center"><a href="https://github.com/fa93hws"><img src="https://avatars.githubusercontent.com/u/10626756?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Eric Wang</b></sub></a></td>
-    <td align="center"><a href="https://github.com/juank1809"><img src="https://avatars.githubusercontent.com/u/82288753?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Juan García</b></sub></a></td>
   </tr>
 </table>
 

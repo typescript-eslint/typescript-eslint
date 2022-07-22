@@ -1,11 +1,12 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "5.30.3",
+  "version": "5.30.7",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
+    "_ts3.4",
     "README.md",
     "LICENSE"
   ],
@@ -41,8 +42,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.30.3",
-    "@typescript-eslint/visitor-keys": "5.30.3",
+    "@typescript-eslint/types": "5.30.7",
+    "@typescript-eslint/visitor-keys": "5.30.7",
     "debug": "^4.3.4",
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",
@@ -58,7 +59,7 @@
     "@types/is-glob": "*",
     "@types/semver": "*",
     "@types/tmp": "*",
-    "@typescript-eslint/shared-fixtures": "5.30.3",
+    "@typescript-eslint/shared-fixtures": "5.30.7",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
