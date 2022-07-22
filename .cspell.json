@@ -8,7 +8,7 @@
     "**/*.{json,snap}",
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
-    "**/**/ROADMAP.md",
+    "**/**/TSLINT_RULE_ALTERNATIVES.md",
     "**/coverage/**",
     "**/dist/**",
     "**/fixtures/**",

@@ -13,7 +13,7 @@ TSLint was a linter equivalent to ESLint that was written specifically to work d
 The standard tool to convert a TSLint configuration to the equivalent ESLint configuration is [`tslint-to-eslint-config`](https://github.com/typescript-eslint/tslint-to-eslint-config).
 If you are still using TSLint, we strongly recommend you use this tool to switch.
 
-You can look at [the `@typescript-eslint/eslint-plugin` `ROADMAP.md`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/ROADMAP.md) for an up to date overview of how TSLint rules compare to the ones in this package.
+You can look at [the alternatives list](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/TSLINT_RULE_ALTERNATIVES.md) for an up to date overview of how TSLint rules compare to the ones in this package.
 
 There is also the ultimate fallback option of using both linters together for a while during your transition if you
 absolutely have to by using TSLint _within_ ESLint.
