@@ -1,6 +1,6 @@
-# `your-rule-name`
-
-Your rule description here.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/your-rule-name** for documentation.
 
 ## Rule Details
 

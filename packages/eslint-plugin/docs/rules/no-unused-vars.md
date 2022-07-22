@@ -1,6 +1,6 @@
-# `no-unused-vars`
-
-Disallows unused variables.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unused-vars** for documentation.
 
 ## Rule Details
 

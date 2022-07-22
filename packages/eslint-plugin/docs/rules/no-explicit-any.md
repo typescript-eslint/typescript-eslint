@@ -1,6 +1,6 @@
-# `no-explicit-any`
-
-Disallows the `any` type.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.
 
 Using the `any` type defeats the purpose of using TypeScript.
 When `any` is used, all compiler type checks around that value are ignored.

@@ -1,6 +1,6 @@
-# `restrict-plus-operands`
-
-Requires both operands of addition to have type `number` or `string`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/restrict-plus-operands** for documentation.
 
 ## Rule Details
 
