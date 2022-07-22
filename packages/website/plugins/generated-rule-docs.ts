@@ -17,7 +17,10 @@ const generatedRuleDocs: Plugin = () => {
 
     const parent = root as unist.Parent;
 
-    // 1. Add a description of the rule at the top of the file
+    // 1. Remove the " 🛑 This file is source code, not the primary documentation location! 🛑"
+    parent.children.splice(3, 1);
+
+    // 2. Add a description of the rule at the top of the file
     parent.children.unshift({
       children: [
         {
@@ -33,7 +36,7 @@ const generatedRuleDocs: Plugin = () => {
       type: 'blockquote',
     } as mdast.Blockquote);
 
-    // 2. Add a rule attributes list...
+    // 3. Add a rule attributes list...
     const h2Idx =
       // ...or the first h2, if it exists...
       parent.children.findIndex(
