@@ -46,6 +46,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
+    const sourceCode = context.getSourceCode();
+
     function isFunctionCall(
       init: TSESTree.Expression,
       callName: string,
@@ -215,7 +217,16 @@ export default util.createRule<Options, MessageIds>({
         data: {
           type,
         },
-        fix: fixer => fixer.remove(typeNode),
+        *fix(fixer) {
+          if (
+            (node.type === AST_NODE_TYPES.AssignmentPattern &&
+              node.left.optional) ||
+            (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
+          ) {
+            yield fixer.remove(sourceCode.getTokenBefore(typeNode)!);
+          }
+          yield fixer.remove(typeNode);
+        },
       });
     }
 

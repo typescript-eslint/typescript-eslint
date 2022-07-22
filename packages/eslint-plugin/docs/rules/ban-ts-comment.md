@@ -22,11 +22,16 @@ By default, only `@ts-check` is allowed, as it enables rather than suppresses er
 The configuration looks like this:
 
 ```ts
+type DirectiveConfig =
+  | boolean
+  | 'allow-with-description'
+  | { descriptionFormat: string };
+
 interface Options {
-  'ts-expect-error'?: boolean | 'allow-with-description';
-  'ts-ignore'?: boolean | 'allow-with-description';
-  'ts-nocheck'?: boolean | 'allow-with-description';
-  'ts-check'?: boolean | 'allow-with-description';
+  'ts-expect-error'?: DirectiveConfig;
+  'ts-ignore'?: DirectiveConfig;
+  'ts-nocheck'?: DirectiveConfig;
+  'ts-check'?: DirectiveConfig;
   minimumDescriptionLength?: number;
 }
 
@@ -103,6 +108,28 @@ if (false) {
   */
   console.log('hello');
 }
+```
+
+### `descriptionFormat`
+
+For each directive type, you can specify a custom format in the form of a regular expression. Only description that matches the pattern will be allowed.
+
+For example, with `{ 'ts-expect-error': { descriptionFormat: '^: TS\\d+ because .+$' } }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+// @ts-expect-error: the library definition is wrong
+const a = doSomething('hello');
+```
+
+#### ✅ Correct
+
+```ts
+// @ts-expect-error: TS1234 because the library definition is wrong
+const a = doSomething('hello');
 ```
 
 ### `minimumDescriptionLength`
