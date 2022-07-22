@@ -29,8 +29,6 @@ Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2
 > Stylistic rules are frozen - we won't be adding any more options to stylistic rules.
 > We've learned that there's no way to satisfy everyone's personal preferences, and most of the rules already have a lot of difficult-to-understand options.
 > Stylistic rules are those related to spacing, conventions, and generally anything that does not highlight an error or a better way to do something.
->
-> Update 2021-01-29: We clarified in the README that we will still support newly-added ECMAScript features.
 
 We support the ESLint team's decision and backing logic to move away from stylistic rules.
 With the exception of bug fixes, no new formatting-related pull requests will be accepted into typescript-eslint.
