@@ -59,6 +59,7 @@
     "declarators",
     "destructure",
     "destructured",
+    "dprint",
     "errored",
     "erroring",
     "ESLint",
