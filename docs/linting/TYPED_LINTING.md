@@ -44,7 +44,7 @@ Typed rules come with a catch.
 By including `parserOptions.project` in your config, you incur the performance penalty of asking TypeScript to do a build of your project before ESLint can do its linting.
 For small projects this takes a negligible amount of time (a few seconds or less); for large projects, it can take longer.
 
-Most of our users do not mind this cost, as it is negligibly small, or failing that worth the power of the more powerful type-aware static analysis rules.
+Most of our users do not mind this cost as the power and safety of type-aware static analysis rules is worth the tradeoff.
 Additionally, most users primarily consume lint errors via IDE plugins which, through caching, do not suffer the same penalties.
 This means that generally they usually only run a complete lint before a push, or via their CI, where the extra time often doesn't matter.
 
