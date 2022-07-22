@@ -1,18 +1,34 @@
 module.exports = {
   docs: [
-    'README',
     {
-      type: 'category',
-      label: 'Linting',
       collapsed: false,
       items: [
-        'linting/linting',
-        'linting/type-linting',
+        {
+          label: 'Linting with Type Information',
+          items: ['linting/typed-linting/monorepos'],
+          link: {
+            id: 'linting/typed-linting',
+            type: 'doc',
+          },
+          type: 'category',
+        },
         'linting/configs',
-        'linting/monorepo',
-        'linting/troubleshooting',
-        'linting/tslint',
+        {
+          label: 'Troubleshooting & FAQs',
+          link: {
+            id: 'linting/troubleshooting',
+            type: 'doc',
+          },
+          type: 'category',
+          items: ['linting/troubleshooting/tslint'],
+        },
       ],
+      link: {
+        id: 'getting-started',
+        type: 'doc',
+      },
+      label: 'Getting Started',
+      type: 'category',
     },
     {
       type: 'category',

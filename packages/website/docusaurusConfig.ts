@@ -172,7 +172,7 @@ const config: Config = {
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn', // If Markdown link resolution fails, it will result in a broken link anyways
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
