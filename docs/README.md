@@ -20,17 +20,11 @@ npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugi
 
 Next, create a `.eslintrc.cjs` config file in the root of your project, and populate it with the following:
 
-<!-- prettier-ignore -->
 ```js title=".eslintrc.cjs"
 module.exports = {
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-  ],
+  plugins: ['@typescript-eslint'],
   root: true,
 };
 ```
