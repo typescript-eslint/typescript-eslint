@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.30.7](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.6...v5.30.7) (2022-07-18)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-inferrable] fix optional param to valid code ([#5342](https://github.com/typescript-eslint/typescript-eslint/issues/5342)) ([98f6d5e](https://github.com/typescript-eslint/typescript-eslint/commit/98f6d5e6d08d1eb9789da52a15f337f5f53438bd))
+* **eslint-plugin:** [no-unused-vars] highlight last write reference ([#5267](https://github.com/typescript-eslint/typescript-eslint/issues/5267)) ([c3f199a](https://github.com/typescript-eslint/typescript-eslint/commit/c3f199a65a16aa72f5bb83e81a1ce0ffb5f69772))
+* expose types supporting old versions of typescript ([#5339](https://github.com/typescript-eslint/typescript-eslint/issues/5339)) ([4ba9bdb](https://github.com/typescript-eslint/typescript-eslint/commit/4ba9bdb93f87e6bc370f13aa1de48f435abe3f88))
+* **scope-manager:** allow visiting of constraint in infer type ([#5331](https://github.com/typescript-eslint/typescript-eslint/issues/5331)) ([b2846a1](https://github.com/typescript-eslint/typescript-eslint/commit/b2846a16777a3aea7b1e6ac9d81b9b6dce0bb874))
+
+
+
+
+
+## [5.30.6](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.5...v5.30.6) (2022-07-11)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-eslint
+
+
+
+
+
 ## [5.30.5](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.4...v5.30.5) (2022-07-04)
 
 

@@ -1458,8 +1458,8 @@ namespace Foo {
             action: 'defined',
             additional: '',
           },
-          line: 4,
-          column: 15,
+          line: 2,
+          column: 11,
         },
       ],
     },
@@ -1490,8 +1490,8 @@ namespace Foo {
             action: 'defined',
             additional: '',
           },
-          line: 5,
-          column: 17,
+          line: 3,
+          column: 13,
         },
       ],
     },
@@ -1506,7 +1506,8 @@ interface Foo {
       errors: [
         {
           messageId: 'unusedVar',
-          line: 4,
+          line: 2,
+          column: 11,
           data: {
             varName: 'Foo',
             action: 'defined',
@@ -1523,6 +1524,7 @@ type Foo = Array<Foo>;
         {
           messageId: 'unusedVar',
           line: 2,
+          column: 6,
           data: {
             varName: 'Foo',
             action: 'defined',
@@ -1550,6 +1552,7 @@ export const ComponentFoo = () => {
         {
           messageId: 'unusedVar',
           line: 3,
+          column: 10,
           data: {
             varName: 'Fragment',
             action: 'defined',
@@ -1577,6 +1580,7 @@ export const ComponentFoo = () => {
         {
           messageId: 'unusedVar',
           line: 2,
+          column: 8,
           data: {
             varName: 'React',
             action: 'defined',
@@ -1604,6 +1608,7 @@ export const ComponentFoo = () => {
         {
           messageId: 'unusedVar',
           line: 2,
+          column: 8,
           data: {
             varName: 'React',
             action: 'defined',
@@ -1624,6 +1629,7 @@ declare module 'foo' {
         {
           messageId: 'unusedVar',
           line: 3,
+          column: 8,
           data: {
             varName: 'Test',
             action: 'defined',
@@ -1649,6 +1655,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 4,
+          column: 13,
           data: {
             varName: 'Bar',
             action: 'defined',
@@ -1658,6 +1665,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 5,
+          column: 15,
           data: {
             varName: 'Baz',
             action: 'defined',
@@ -1667,6 +1675,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 6,
+          column: 17,
           data: {
             varName: 'Bam',
             action: 'defined',
@@ -1676,6 +1685,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 7,
+          column: 15,
           data: {
             varName: 'x',
             action: 'assigned a value',
@@ -1696,10 +1706,29 @@ interface Foo {
       errors: [
         {
           messageId: 'unusedVar',
-          line: 6,
+          line: 2,
+          column: 11,
           data: {
             varName: 'Foo',
             action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+let x = null;
+x = foo(x);
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          column: 1,
+          data: {
+            varName: 'x',
+            action: 'assigned a value',
             additional: '',
           },
         },
