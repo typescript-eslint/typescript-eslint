@@ -71,6 +71,32 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
+      code: 'const [[a]]: number[][] = [[1]];',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const foo = ([{ bar }]: { bar: string }[]) => {};',
+      options: [
+        {
+          arrayDestructuring: true,
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const foo = ([{ bar }]: [{ bar: string }]) => {};',
+      options: [
+        {
+          arrayDestructuring: true,
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
       code: 'const [a] = [1];',
       options: [
         {
