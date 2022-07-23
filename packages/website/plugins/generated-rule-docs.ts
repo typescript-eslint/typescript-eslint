@@ -27,10 +27,12 @@ const generatedRuleDocs: Plugin = () => {
     parent.children.unshift({
       children: [
         {
-          children: docs.description.split(/`(.+?)`/).map((v, i) => ({
-            type: i % 2 === 0 ? 'text' : 'inlineCode',
-            value: v,
-          })),
+          children: docs.description
+            .split(/`(.+?)`/)
+            .map((value, index, array) => ({
+              type: index % 2 === 0 ? 'text' : 'inlineCode',
+              value: index === array.length - 1 ? `${value}.` : value,
+            })),
           type: 'paragraph',
         },
       ],
