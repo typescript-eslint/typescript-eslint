@@ -1,6 +1,6 @@
-# `prefer-namespace-keyword`
-
-Requires using `namespace` keyword over `module` keyword to declare custom TypeScript modules.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-namespace-keyword** for documentation.
 
 In an effort to prevent further confusion between custom TypeScript modules and the new ES2015 modules, starting
 with TypeScript `v1.5` the keyword `namespace` is now the preferred way to declare custom TypeScript modules.
@@ -31,7 +31,3 @@ This rule is not configurable.
 - [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
 - [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
 - [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
-
-## Related To
-
-- TSLint: [no-internal-module](https://palantir.github.io/tslint/rules/no-internal-module/)

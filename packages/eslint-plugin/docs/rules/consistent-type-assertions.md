@@ -1,6 +1,6 @@
-# `consistent-type-assertions`
-
-Enforces consistent usage of type assertions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-assertions** for documentation.
 
 ## Rule Details
 
@@ -111,8 +111,3 @@ const foo = <Foo props={{ ... } as Bar}/>;
 ## When Not To Use It
 
 If you do not want to enforce consistent type assertions.
-
-## Related To
-
-- TSLint: [no-angle-bracket-type-assertion](https://palantir.github.io/tslint/rules/no-angle-bracket-type-assertion/)
-- TSLint: [no-object-literal-type-assertion](https://palantir.github.io/tslint/rules/no-object-literal-type-assertion/)

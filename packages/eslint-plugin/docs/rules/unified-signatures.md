@@ -1,6 +1,6 @@
-# `unified-signatures`
-
-Disallows two overloads that could be unified into one with a union or an optional/rest parameter.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/unified-signatures** for documentation.
 
 ## Rule Details
 
@@ -75,7 +75,3 @@ function f(b: string): void;
 function f(...a: number[]): void;
 function f(...a: string[]): void;
 ```
-
-## Related To
-
-- TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)

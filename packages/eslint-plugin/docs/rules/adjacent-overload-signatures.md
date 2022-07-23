@@ -1,6 +1,6 @@
-# `adjacent-overload-signatures`
-
-Requires that member overloads be consecutive.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/adjacent-overload-signatures** for documentation.
 
 Grouping overloaded members together can improve readability of the code.
 
@@ -100,7 +100,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about the general structure of the code, then you will not need this rule.
-
-## Related To
-
-- TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)

@@ -1,6 +1,6 @@
-# `no-redeclare`
-
-Disallows variable redeclaration.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redeclare** for documentation.
 
 ## Rule Details
 

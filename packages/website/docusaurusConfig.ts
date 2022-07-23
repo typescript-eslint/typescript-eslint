@@ -5,9 +5,10 @@ import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-com
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
 
+import { rulesMeta } from './rulesMeta';
 import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import tabsPlugin from 'remark-docusaurus-tabs';
-import { addRuleAttributesList } from './plugins/add-rule-attributes-list';
+import { generatedRuleDocs } from './plugins/generated-rule-docs';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
@@ -23,7 +24,7 @@ const presetClassicOptions: PresetClassicOptions = {
     routeBasePath: 'rules',
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     beforeDefaultRemarkPlugins,
-    remarkPlugins: [...remarkPlugins, [addRuleAttributesList, {}]],
+    remarkPlugins: [...remarkPlugins, [generatedRuleDocs, {}]],
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },
@@ -58,7 +59,9 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   metadata: [
     { name: 'msapplication-TileColor', content: '#443fd4' },
     { name: 'theme-color', content: '#443fd4' },
+    { name: 'twitter:image:alt', content: 'Typescript-eslint logo' },
   ],
+  image: 'img/logo-twitter-card.png',
   navbar: {
     title: 'TypeScript ESLint',
     // hideOnScroll: true,
@@ -169,12 +172,15 @@ const config: Config = {
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn', // If Markdown link resolution fails, it will result in a broken link anyways
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'typescript-eslint',
   projectName: 'typescript-eslint',
   clientModules: [require.resolve('./src/clientModules.js')],
   presets: [['classic', presetClassicOptions]],
+  customFields: {
+    rules: rulesMeta,
+  },
   plugins: [
     require.resolve('./webpack.plugin'),
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],

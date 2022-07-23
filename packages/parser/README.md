@@ -256,7 +256,7 @@ Note that if you pass custom programs via `options.programs` this option will no
 
 Default `undefined`.
 
-This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](https://typescript-eslint.io/docs/linting/type-linting). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
+This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](https://typescript-eslint.io/docs/linting/typed-linting). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ## Utilities
 

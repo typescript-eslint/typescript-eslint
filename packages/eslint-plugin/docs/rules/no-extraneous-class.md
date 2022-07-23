@@ -1,6 +1,6 @@
-# `no-extraneous-class`
-
-Disallows classes used as namespaces.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-extraneous-class** for documentation.
 
 This rule warns when a class has no non-static members, such as for a class used exclusively as a static namespace.
 
@@ -312,7 +312,3 @@ class Constants {
 ## When Not To Use It
 
 You can disable this rule if you are unable -or unwilling- to switch off using classes as namespaces.
-
-## Related To
-
-[`no-unnecessary-class`](https://palantir.github.io/tslint/rules/no-unnecessary-class/) from TSLint

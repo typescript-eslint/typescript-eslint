@@ -9,12 +9,6 @@ import { titleCase } from 'title-case';
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
 
-function createRuleLink(ruleName: string, readmePath: string): string {
-  return `[\`@typescript-eslint/${ruleName}\`](${
-    readmePath.includes('docs/rules') ? '.' : './docs/rules'
-  }/${ruleName}.md)`;
-}
-
 function parseMarkdownFile(filePath: string): marked.TokensList {
   const file = fs.readFileSync(filePath, 'utf-8');
 
@@ -22,27 +16,6 @@ function parseMarkdownFile(filePath: string): marked.TokensList {
     gfm: true,
     silent: false,
   });
-}
-
-function parseReadme(readmePath: string): {
-  base: marked.Tokens.Table;
-  extension: marked.Tokens.Table;
-} {
-  const readme = parseMarkdownFile(readmePath);
-
-  // find the table
-  const rulesTables = readme.filter(
-    (token): token is marked.Tokens.Table =>
-      'type' in token && token.type === 'table',
-  );
-  if (rulesTables.length !== 2) {
-    throw Error('Could not find both rules tables in README.md');
-  }
-
-  return {
-    base: rulesTables[0],
-    extension: rulesTables[1],
-  };
 }
 
 function isEmptySchema(schema: JSONSchema4 | JSONSchema4[]): boolean {
@@ -66,10 +39,6 @@ function tokenIs<Type extends TokenType>(
   type: Type,
 ): token is marked.Token & { type: Type } {
   return token.type === type;
-}
-
-function tokenIsH1(token: marked.Token): token is marked.Tokens.Heading {
-  return tokenIs(token, 'heading') && token.depth === 1;
 }
 
 function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
@@ -98,26 +67,17 @@ describe('Validating rule docs', () => {
     describe(ruleName, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
 
-      it(`First header in ${ruleName}.md must be the name of the rule`, () => {
+      test(`${ruleName}.md must start with blockquote directing to website`, () => {
         const tokens = parseMarkdownFile(filePath);
 
-        const header = tokens.find(tokenIsH1)!;
-
-        expect(header.text).toBe(`\`${ruleName}\``);
-      });
-
-      it(`Description of ${ruleName}.md must match`, () => {
-        // validate if description of rule is same as in docs
-        const tokens = parseMarkdownFile(filePath);
-
-        // Rule title not found.
-        // Rule title does not match the rule metadata.
-        expect(tokens[1]).toMatchObject({
-          type: 'paragraph',
-          text: `${rule.meta.docs?.description.replace(
-            /(?<!`)(require|enforce|disallow)/gi,
-            '$1s',
-          )}.`,
+        expect(tokens[0]).toMatchObject({
+          text: [
+            `🛑 This file is source code, not the primary documentation location! 🛑`,
+            ``,
+            `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
+            ``,
+          ].join('\n'),
+          type: 'blockquote',
         });
       });
 
@@ -202,90 +162,6 @@ describe('Validating rule metadata', () => {
 
         expect(requiresFullTypeInformation(ruleFileContents)).toEqual(
           rule.meta.docs?.requiresTypeChecking ?? false,
-        );
-      });
-    });
-  }
-});
-
-describe.each([
-  path.join(__dirname, '../README.md'),
-  path.join(__dirname, '../docs/rules/README.md'),
-])('%s', readmePath => {
-  const rulesTables = parseReadme(readmePath);
-  const notDeprecated = rulesData.filter(([, rule]) => !rule.meta.deprecated);
-  const baseRules = notDeprecated.filter(
-    ([, rule]) => !rule.meta.docs?.extendsBaseRule,
-  );
-  const extensionRules = notDeprecated.filter(
-    ([, rule]) => rule.meta.docs?.extendsBaseRule,
-  );
-
-  it('All non-deprecated base rules should have a row in the base rules table, and the table should be ordered alphabetically', () => {
-    const baseRuleNames = baseRules
-      .map(([ruleName]) => ruleName)
-      .sort()
-      .map(ruleName => createRuleLink(ruleName, readmePath));
-
-    expect(rulesTables.base.rows.map(row => row[0].text)).toStrictEqual(
-      baseRuleNames,
-    );
-  });
-  it('All non-deprecated extension rules should have a row in the base rules table, and the table should be ordered alphabetically', () => {
-    const extensionRuleNames = extensionRules
-      .map(([ruleName]) => ruleName)
-      .sort()
-      .map(ruleName => createRuleLink(ruleName, readmePath));
-
-    expect(rulesTables.extension.rows.map(row => row[0].text)).toStrictEqual(
-      extensionRuleNames,
-    );
-  });
-
-  for (const [ruleName, rule] of notDeprecated) {
-    describe(`Checking rule ${ruleName}`, () => {
-      const ruleRow: string[] | undefined = (
-        rule.meta.docs?.extendsBaseRule
-          ? rulesTables.extension.rows
-          : rulesTables.base.rows
-      )
-        .find(row => row[0].text.includes(`/${ruleName}.md`))
-        ?.map(cell => cell.text);
-      if (!ruleRow) {
-        // rule is in the wrong table, the first two tests will catch this, so no point in creating noise;
-        // these tests will ofc fail in that case
-        return;
-      }
-
-      it('Link column should be correct', () => {
-        expect(ruleRow[0]).toBe(createRuleLink(ruleName, readmePath));
-      });
-
-      it('Description column should be correct', () => {
-        expect(ruleRow[1]).toBe(rule.meta.docs?.description);
-      });
-
-      it('Recommended column should be correct', () => {
-        expect(ruleRow[2]).toBe(
-          rule.meta.docs?.recommended === 'strict'
-            ? ':lock:'
-            : rule.meta.docs?.recommended
-            ? ':white_check_mark:'
-            : '',
-        );
-      });
-
-      it('Fixable column should be correct', () => {
-        expect(ruleRow[3]).toBe(
-          rule.meta.fixable !== undefined ? ':wrench:' : '',
-        );
-      });
-
-      it('Requiring type information column should be correct', () => {
-        expect(ruleRow[4]).toBe(
-          rule.meta.docs?.requiresTypeChecking === true
-            ? ':thought_balloon:'
-            : '',
         );
       });
     });

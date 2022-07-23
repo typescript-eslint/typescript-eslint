@@ -1,6 +1,6 @@
-# `explicit-member-accessibility`
-
-Requires explicit accessibility modifiers on class properties and methods.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
 
 Leaving off accessibility modifier and making everything public can make
 your interface hard to use by others.
@@ -344,7 +344,3 @@ If you think defaulting to public is a good default, then you should consider us
 ## Further Reading
 
 - TypeScript [Accessibility Modifiers](https://www.typescriptlang.org/docs/handbook/classes.html#public-private-and-protected-modifiers)
-
-## Related To
-
-- TSLint: [member-access](http://palantir.github.io/tslint/rules/member-access/)

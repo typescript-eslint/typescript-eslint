@@ -1,6 +1,6 @@
-# `no-require-imports`
-
-Disallows invocation of `require()`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-require-imports** for documentation.
 
 Prefer the newer ES6-style imports over `require()`.
 
@@ -47,7 +47,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about TypeScript module syntax, then you will not need this rule.
-
-## Related To
-
-- TSLint: [no-require-imports](https://palantir.github.io/tslint/rules/no-require-imports/)

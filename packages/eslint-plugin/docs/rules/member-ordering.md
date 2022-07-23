@@ -1,6 +1,6 @@
-# `member-ordering`
-
-Requires a consistent member declaration order.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/member-ordering** for documentation.
 
 A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate, and edit.
 
@@ -1159,7 +1159,3 @@ It is also possible to group different member types at the same rank.
 ## When Not To Use It
 
 If you don't care about the general order of your members, then you will not need this rule.
-
-## Related To
-
-- TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)

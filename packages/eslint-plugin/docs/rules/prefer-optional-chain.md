@@ -1,6 +1,6 @@
-# `prefer-optional-chain`
-
-Enforces using concise optional chain expressions instead of chained logical ands.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-optional-chain** for documentation.
 
 TypeScript 3.7 added support for the optional chain operator.
 This operator allows you to safely access properties and methods on objects when they are potentially `null` or `undefined`.
@@ -61,8 +61,8 @@ foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
-(((foo || {}).a || {}).b {}).c;
-(((foo || {})['a'] || {}).b {}).c;
+(((foo || {}).a || {}).b || {}).c;
+(((foo || {})['a'] || {}).b || {}).c;
 
 // this rule also supports converting chained strict nullish checks:
 foo &&

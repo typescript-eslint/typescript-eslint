@@ -1,12 +1,10 @@
-# `no-for-in-array`
-
-Disallows iterating over an array with a for-in loop.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-for-in-array** for documentation.
 
 This rule prohibits iterating over an array with a for-in loop.
 
 ## Rule Details
-
-Rationale from TSLint:
 
 A for-in loop (`for (var k in o)`) iterates over the properties of an Object.
 While it is legal to use for-in loops with array types, it is not common.
@@ -57,7 +55,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you want to iterate through a loop using the indices in an array as strings, you can turn off this rule.
-
-## Related To
-
-- TSLint: ['no-for-in-array'](https://palantir.github.io/tslint/rules/no-for-in-array/)

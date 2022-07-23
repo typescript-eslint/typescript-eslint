@@ -1,6 +1,6 @@
-# `promise-function-async`
-
-Requires any function or method that returns a Promise to be marked async.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/promise-function-async** for documentation.
 
 Ensures that each function is only capable of:
 
@@ -65,7 +65,3 @@ In addition, each of the following properties may be provided, and default to `t
   ]
 }
 ```
-
-## Related To
-
-- TSLint: [promise-function-async](https://palantir.github.io/tslint/rules/promise-function-async)

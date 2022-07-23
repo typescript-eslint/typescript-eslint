@@ -34,12 +34,16 @@ export function parseESLintRC(code?: string): EslintRC {
 export function parseTSConfig(code?: string): TSConfig {
   if (code) {
     try {
-      const parsed: unknown = parse(code);
-      if (isRecord(parsed)) {
-        if ('compilerOptions' in parsed && isRecord(parsed.compilerOptions)) {
-          return parsed as TSConfig;
-        }
-        return { ...parsed, compilerOptions: {} };
+      const parsed = window.ts.parseConfigFileTextToJson(
+        '/tsconfig.json',
+        code,
+      );
+      if (parsed.error) {
+        // eslint-disable-next-line no-console
+        console.error(parsed.error);
+      }
+      if (isRecord(parsed.config)) {
+        return parsed.config as TSConfig;
       }
     } catch (e) {
       // eslint-disable-next-line no-console

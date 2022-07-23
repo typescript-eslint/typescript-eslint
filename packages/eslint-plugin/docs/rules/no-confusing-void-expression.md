@@ -1,6 +1,6 @@
-# `no-confusing-void-expression`
-
-Requires expressions of type void to appear in statement position.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-confusing-void-expression** for documentation.
 
 Returning the results of an expression whose type is void can be misleading.
 Attempting to do so is likely a symptom of expecting a different return type from a function.
@@ -147,7 +147,3 @@ console.log(void alert('Hello, world!'));
 The return type of a function can be inspected by going to its definition or hovering over it in an IDE.
 If you don't care about being explicit about the void type in actual code then don't use this rule.
 Also, if you prefer concise coding style then also don't use it.
-
-## Related To
-
-- TSLint: ['no-void-expression'](https://palantir.github.io/tslint/rules/no-void-expression/)

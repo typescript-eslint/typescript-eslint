@@ -1,6 +1,6 @@
-# `no-floating-promises`
-
-Requires Promise-like statements to be handled appropriately.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-floating-promises** for documentation.
 
 A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
 
@@ -118,4 +118,3 @@ If you do not use Promise-like values in your codebase, or want to allow them to
 ## Related To
 
 - [`no-misused-promises`](./no-misused-promises.md)
-- TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)

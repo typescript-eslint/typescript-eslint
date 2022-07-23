@@ -1,6 +1,6 @@
-# `ban-types`
-
-Disallows certain types.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/ban-types** for documentation.
 
 Some builtin types have aliases, some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.
@@ -197,7 +197,3 @@ const capitalObj2: { a: string } = { a: 'string' };
 const curly1: number = 1;
 const curly2: Record<'a', string> = { a: 'string' };
 ```
-
-## Related To
-
-- TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)

@@ -1,8 +1,9 @@
 ---
 id: configs
-sidebar_label: Configurations
 title: Configurations
 ---
+
+[ESLint shareable configurations](https://eslint.org/docs/latest/developer-guide/shareable-configs) exist to provide a comprehensive base config for you, with the intention that you add the config and it gives you an opinionated setup.
 
 ## Built-In Configurations
 
@@ -10,6 +11,10 @@ title: Configurations
 
 With the exception of `strict`, all configurations are considered "stable".
 Rule additions and removals are treated as breaking changes and will only be done in major version bumps.
+
+:::note
+We recommend most packages extend from [`recommended-requiring-type-checking`](#recommended-requiring-type-checking) (which requires [typed linting](./TYPED_LINTING.md)).
+:::
 
 ### `eslint-recommended`
 
@@ -60,7 +65,7 @@ Rules in this configuration are similarly useful to those in `recommended`.
 
 :::tip
 We recommend all TypeScript projects extend from this configuration, with the caveat that rules using type information take longer to run.
-See [Linting with Type Information](/docs/linting/type-linting) for more details.
+See [Linting with Type Information](/docs/linting/typed-linting) for more details.
 :::
 
 ### `strict`
@@ -89,4 +94,29 @@ See [ESLint's Configuring Rules docs](https://eslint.org/docs/user-guide/configu
 
 ### Suggesting Configuration Changes
 
-If you feel strongly that a specific rule should (or should not) be one of these configurations, please feel free to [file an issue](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose) along with a **detailed** argument explaining your reasoning.
+If you feel strongly that a specific rule should (or should not) be one of these configurations, please [file an issue](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=package%3A+eslint-plugin%2Cpreset+config+change%2Ctriage&template=09-config-change.yaml&title=Configs%3A+%3Ca+short+description+of+my+proposal%3E) along with a **detailed** argument explaining your reasoning.
+
+## Prettier
+
+If you use [`prettier`](https://www.npmjs.com/package/prettier), there is also a helpful config to help ensure ESLint doesn't report on formatting issues that prettier will fix: [`eslint-config-prettier`](https://www.npmjs.com/package/eslint-config-prettier).
+
+Using this config by adding it to the end of your `extends`:
+
+```js title=".eslintrc.js"
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Add this line
+    'prettier',
+  ],
+};
+```
+
+:::warning
+**We strongly recommend you use Prettier or an equivalent**, not ESLint formatting rules.
+See [this issue](https://github.com/typescript-eslint/typescript-eslint/issues/4907 'Issue: Docs: Add our opinion on delegating stylistic issues to a tool such as Prettier #4907') for more information.
+:::

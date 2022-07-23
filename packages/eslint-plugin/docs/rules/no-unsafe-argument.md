@@ -1,6 +1,6 @@
-# `no-unsafe-argument`
-
-Disallows calling a function with a value with type `any`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-argument** for documentation.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Call a function with `any` typed argument are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
@@ -87,4 +87,3 @@ This rule is not configurable.
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
-- TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)

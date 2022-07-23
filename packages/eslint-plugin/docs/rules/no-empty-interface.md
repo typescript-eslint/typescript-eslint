@@ -1,6 +1,6 @@
-# `no-empty-interface`
-
-Disallows the declaration of empty interfaces.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-empty-interface** for documentation.
 
 An empty interface is equivalent to its supertype. If the interface does not implement a supertype, then
 the interface is equivalent to an empty object (`{}`). In both cases it can be omitted.
@@ -64,7 +64,3 @@ This rule accepts a single object option with the following default configuratio
 ## When Not To Use It
 
 If you don't care about having empty/meaningless interfaces, then you will not need this rule.
-
-## Related To
-
-- TSLint: [no-empty-interface](https://palantir.github.io/tslint/rules/no-empty-interface/)

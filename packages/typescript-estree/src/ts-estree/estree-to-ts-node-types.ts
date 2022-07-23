@@ -149,7 +149,10 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TemplateLiteral]:
     | ts.NoSubstitutionTemplateLiteral
     | ts.TemplateExpression;
-  [AST_NODE_TYPES.ThisExpression]: ts.ThisExpression | ts.KeywordTypeNode;
+  [AST_NODE_TYPES.ThisExpression]:
+    | ts.ThisExpression
+    | ts.KeywordTypeNode
+    | ts.Identifier;
   [AST_NODE_TYPES.ThrowStatement]: ts.ThrowStatement;
   [AST_NODE_TYPES.TryStatement]: ts.TryStatement;
   [AST_NODE_TYPES.TSAbstractPropertyDefinition]: ts.PropertyDeclaration;

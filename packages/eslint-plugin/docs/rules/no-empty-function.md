@@ -1,6 +1,6 @@
-# `no-empty-function`
-
-Disallows empty functions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-empty-function** for documentation.
 
 ## Rule Details
 

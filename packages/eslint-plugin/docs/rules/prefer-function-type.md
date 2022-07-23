@@ -1,6 +1,6 @@
-# `prefer-function-type`
-
-Enforces using function types instead of interfaces with call signatures.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-function-type** for documentation.
 
 ## Rule Details
 
@@ -94,7 +94,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you specifically want to use an interface or type literal with a single call signature for stylistic reasons, you can disable this rule.
-
-## Further Reading
-
-- TSLint: [`callable-types`](https://palantir.github.io/tslint/rules/callable-types/)

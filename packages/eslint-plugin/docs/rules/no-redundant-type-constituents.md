@@ -1,6 +1,6 @@
-# `no-redundant-type-constituents`
-
-Disallows members of unions and intersections that do nothing or override type information.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redundant-type-constituents** for documentation.
 
 ## Rule Details
 

@@ -3,6 +3,109 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.30.7](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.6...v5.30.7) (2022-07-18)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-inferrable] fix optional param to valid code ([#5342](https://github.com/typescript-eslint/typescript-eslint/issues/5342)) ([98f6d5e](https://github.com/typescript-eslint/typescript-eslint/commit/98f6d5e6d08d1eb9789da52a15f337f5f53438bd))
+* **eslint-plugin:** [no-unused-vars] highlight last write reference ([#5267](https://github.com/typescript-eslint/typescript-eslint/issues/5267)) ([c3f199a](https://github.com/typescript-eslint/typescript-eslint/commit/c3f199a65a16aa72f5bb83e81a1ce0ffb5f69772))
+
+
+
+
+
+## [5.30.6](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.5...v5.30.6) (2022-07-11)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
+## [5.30.5](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.4...v5.30.5) (2022-07-04)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-indexed-object-style] fix record mode fixer for generics with a default value ([#5280](https://github.com/typescript-eslint/typescript-eslint/issues/5280)) ([57f032c](https://github.com/typescript-eslint/typescript-eslint/commit/57f032c2e6a822c049177713778d0077ee138d9a))
+
+
+
+
+
+## [5.30.4](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.3...v5.30.4) (2022-07-03)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
+## [5.30.3](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.2...v5.30.3) (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
+## [5.30.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.1...v5.30.2) (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
+## [5.30.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.0...v5.30.1) (2022-07-01)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-base-to-string] add missing apostrophe to message ([#5270](https://github.com/typescript-eslint/typescript-eslint/issues/5270)) ([d320174](https://github.com/typescript-eslint/typescript-eslint/commit/58034e343a167ca7751b54d2b2a0e7d3852aabec))
+
+
+
+
+
+# [5.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.29.0...v5.30.0) (2022-06-27)
+
+
+### Features
+
+* **eslint-plugin:** [no-shadow] add shadowed variable location to the error message ([#5183](https://github.com/typescript-eslint/typescript-eslint/issues/5183)) ([8ca08e9](https://github.com/typescript-eslint/typescript-eslint/commit/8ca08e9f18d59b29715c667fbb7d237f6e9a96ba))
+* treat `this` in `typeof this` as a `ThisExpression` ([#4382](https://github.com/typescript-eslint/typescript-eslint/issues/4382)) ([b04b2ce](https://github.com/typescript-eslint/typescript-eslint/commit/b04b2ce1ba90d94718891f2562dd210a6d7b8609))
+
+
+
+
+
+# [5.29.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.28.0...v5.29.0) (2022-06-20)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+
+
+
+
+# [5.28.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.1...v5.28.0) (2022-06-13)
+
+
+### Bug Fixes
+
+* [TS4.7] allow visiting of typeParameters in TSTypeQuery ([#5166](https://github.com/typescript-eslint/typescript-eslint/issues/5166)) ([dc1f930](https://github.com/typescript-eslint/typescript-eslint/commit/dc1f9309cf04aa7314e758980ac687558482f47f))
+* **eslint-plugin:** [space-infix-ops] support for optional property without type ([#5155](https://github.com/typescript-eslint/typescript-eslint/issues/5155)) ([1f25daf](https://github.com/typescript-eslint/typescript-eslint/commit/1f25daf74e5d45077199f9ee9fa9bf31107f4089))
+
+
+### Features
+
+* **eslint-plugin:** [consistent-generic-constructors] add rule ([#4924](https://github.com/typescript-eslint/typescript-eslint/issues/4924)) ([921cdf1](https://github.com/typescript-eslint/typescript-eslint/commit/921cdf17e548845311d0591249616ec844503926))
+
+
+
+
+
 ## [5.27.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.27.0...v5.27.1) (2022-06-06)
 
 

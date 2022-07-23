@@ -1,6 +1,6 @@
-# `no-invalid-void-type`
-
-Disallows `void` type outside of generic or return types.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-invalid-void-type** for documentation.
 
 Disallows usage of `void` type outside of return types or generic type arguments.
 If `void` is used as return type, it shouldn’t be a part of intersection/union type with most other types.
@@ -126,7 +126,3 @@ class Example {
 
 If you don't care about if `void` is used with other types,
 or in invalid places, then you don't need this rule.
-
-## Related To
-
-- TSLint: [invalid-void](https://palantir.github.io/tslint/rules/invalid-void/)

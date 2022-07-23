@@ -1,6 +1,6 @@
-# `consistent-type-definitions`
-
-Enforces type definitions to consistently use either `interface` or `type`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-definitions** for documentation.
 
 There are two ways to define a type.
 
@@ -80,7 +80,3 @@ type T = { x: number };
 ## When Not To Use It
 
 If you specifically want to use an interface or type literal for stylistic reasons, you can disable this rule.
-
-## Related To
-
-- TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)

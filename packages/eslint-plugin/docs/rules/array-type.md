@@ -1,6 +1,6 @@
-# `array-type`
-
-Requires using either `T[]` or `Array<T>` for arrays.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/array-type** for documentation.
 
 Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
 
@@ -118,7 +118,3 @@ This matrix lists all possible option combinations and their expected results fo
 | `generic`      | `array`        | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `readonly (Foo & Bar)[]`            |
 | `generic`      | `array-simple` | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
 | `generic`      | `generic`      | `Array<number>`        | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
-
-## Related To
-
-- TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)

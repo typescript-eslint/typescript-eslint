@@ -1,6 +1,6 @@
-# `no-inferrable-types`
-
-Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-inferrable-types** for documentation.
 
 Explicit types where they can be easily inferred may add unnecessary verbosity.
 
@@ -148,7 +148,3 @@ If you do not want to enforce inferred types.
 ## Further Reading
 
 TypeScript [Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
-
-## Related To
-
-TSLint: [no-inferrable-types](https://palantir.github.io/tslint/rules/no-inferrable-types/)

@@ -1,6 +1,6 @@
-# `no-type-alias`
-
-Disallows type aliases.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-type-alias** for documentation.
 
 In TypeScript, type aliases serve three purposes:
 
@@ -608,7 +608,3 @@ callback, etc. that would cause the code to be unreadable or impractical.
 ## Further Reading
 
 - [Advanced Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
-
-## Related To
-
-- TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)

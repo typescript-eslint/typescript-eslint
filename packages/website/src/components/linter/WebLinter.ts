@@ -35,7 +35,8 @@ export class WebLinter {
   private lintUtils: LintUtils;
   private rules: TSESLint.Linter.RulesRecord = {};
 
-  public ruleNames: { name: string; description?: string }[];
+  public readonly ruleNames: { name: string; description?: string }[] = [];
+  public readonly rulesUrl = new Map<string, string | undefined>();
 
   constructor(
     system: System,
@@ -54,11 +55,12 @@ export class WebLinter {
       },
     });
 
-    this.ruleNames = Array.from(this.linter.getRules()).map(value => {
-      return {
-        name: value[0],
-        description: value[1]?.meta?.docs?.description,
-      };
+    this.linter.getRules().forEach((item, name) => {
+      this.ruleNames.push({
+        name: name,
+        description: item.meta?.docs?.description,
+      });
+      this.rulesUrl.set(name, item.meta?.docs?.url);
     });
   }
 

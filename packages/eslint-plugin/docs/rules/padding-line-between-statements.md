@@ -1,6 +1,6 @@
-# `padding-line-between-statements`
-
-Requires or disallows padding lines between statements.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/padding-line-between-statements** for documentation.
 
 ## Rule Details
 

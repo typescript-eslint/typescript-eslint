@@ -1,6 +1,6 @@
-# `no-dynamic-delete`
-
-Disallows using the `delete` operator on computed key expressions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-dynamic-delete** for documentation.
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 
@@ -60,7 +60,3 @@ Some environments such as older browsers might not support `Map` and `Set`.
 
 Do not consider this rule as performance advice before profiling your code's bottlenecks.
 Even repeated minor performance slowdowns likely do not significantly affect your application's general perceived speed.
-
-## Related To
-
-- TSLint: [no-dynamic-delete](https://palantir.github.io/tslint/rules/no-dynamic-delete)

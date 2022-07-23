@@ -1,6 +1,6 @@
-# `prefer-readonly`
-
-Requires private members to be marked as `readonly` if they're never modified outside of the constructor.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-readonly** for documentation.
 
 This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.
 
@@ -85,7 +85,3 @@ class Container {
   private neverModifiedPrivate = 'unchanged';
 }
 ```
-
-## Related To
-
-- TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)

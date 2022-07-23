@@ -1,6 +1,6 @@
-# `no-unnecessary-qualifier`
-
-Disallows unnecessary namespace qualifiers.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-qualifier** for documentation.
 
 ## Rule Details
 
@@ -92,7 +92,3 @@ This rule is not configurable.
 ## When Not To Use It
 
 If you don't care about having unneeded namespace or enum qualifiers, then you don't need to use this rule.
-
-## Related To
-
-- TSLint: [no-unnecessary-qualifier](https://palantir.github.io/tslint/rules/no-unnecessary-qualifier/)
