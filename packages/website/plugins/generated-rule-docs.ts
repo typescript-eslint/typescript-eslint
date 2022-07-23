@@ -18,18 +18,19 @@ const generatedRuleDocs: Plugin = () => {
     const parent = root as unist.Parent;
 
     // 1. Remove the " 🛑 This file is source code, not the primary documentation location! 🛑"
-    parent.children.splice(3, 1);
+    parent.children.splice(
+      parent.children.findIndex(v => v.type === 'blockquote'),
+      1,
+    );
 
     // 2. Add a description of the rule at the top of the file
     parent.children.unshift({
       children: [
         {
-          children: [
-            {
-              type: 'text',
-              value: `${docs.description}.`,
-            },
-          ],
+          children: docs.description.split(/`(.+?)`/).map((v, i) => ({
+            type: i % 2 === 0 ? 'text' : 'inlineCode',
+            value: v,
+          })),
           type: 'paragraph',
         },
       ],
