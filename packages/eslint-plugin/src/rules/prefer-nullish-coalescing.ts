@@ -179,14 +179,9 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const isFixable = ((): boolean => {
-          // it is fixable if we check for both null and undefined
-          if (hasUndefinedCheck && hasNullCheck) {
-            return true;
-          }
-
-          // it is not fixable if it has neither a null nor undefined check
-          if (!hasUndefinedCheck && !hasNullCheck) {
-            return false;
+          // it is fixable if we check for both null and undefined, or not if neither
+          if (hasUndefinedCheck === hasNullCheck) {
+            return hasUndefinedCheck;
           }
 
           // it is fixable if we loosely check for either null or undefined

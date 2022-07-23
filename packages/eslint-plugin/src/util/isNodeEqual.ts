@@ -1,20 +1,4 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-/*
- * Supported:
- *   Identifier Literal MemberExpression ThisExpression
- *   TSNamedTupleMember TSNamespaceExportDeclaration TSNeverKeyword
- *   TSNonNullExpression TSNullKeyword TSNumberKeyword TSObjectKeyword
- *   TSOptionalType TSParameterProperty TSPrivateKeyword TSPropertySignature
- *   TSProtectedKeyword TSPublicKeyword TSQualifiedName TSReadonlyKeyword
- *   TSRestType TSStaticKeyword TSStringKeyword TSSymbolKeyword
- *   TSTemplateLiteralType TSThisType TSTupleType TSTypeAliasDeclaration
- *   TSTypeAnnotation TSTypeAssertion TSTypeLiteral TSTypeOperator
- *   TSTypeParameter TSTypeParameterDeclaration TSTypeParameterInstantiation
- *   TSTypePredicate TSTypeQuery TSTypeReference TSUndefinedKeyword TSUnionType
- *   TSUnknownKeyword TSVoidKeyword UnaryExpression UpdateExpression
- *   VariableDeclaration VariableDeclarator WhileStatement WithStatement
- *   YieldExpression
- */
 
 export function isNodeEqual(a: TSESTree.Node, b: TSESTree.Node): boolean {
   if (a.type !== b.type) {
