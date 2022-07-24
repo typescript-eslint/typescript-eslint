@@ -8,7 +8,9 @@ import {
   SharedConfigurationSettings,
 } from './Rule';
 
-interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
+interface ValidTestCase<
+  TOptions extends Readonly<unknown[]> = Readonly<unknown[]>,
+> {
   /**
    * Name for the test case.
    * @since 8.1.0
@@ -47,6 +49,10 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
    */
   readonly settings?: Readonly<SharedConfigurationSettings>;
   /**
+   * Semver of TypeScript version(s) to run against (by default, all versions).
+   */
+  readonly tsVersion?: string;
+  /**
    * Run this case exclusively for debugging in supported test frameworks.
    * @since 7.29.0
    */
@@ -73,8 +79,8 @@ interface SuggestionOutput<TMessageIds extends string> {
 }
 
 interface InvalidTestCase<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
+  TMessageIds extends string = string,
+  TOptions extends Readonly<unknown[]> = Readonly<unknown[]>,
 > extends ValidTestCase<TOptions> {
   /**
    * Expected errors.

@@ -7,6 +7,9 @@ inputs:
   registry-url:
     description: "Define registry-url"
     required: false
+  typescript-version:
+    description: "A modified TypeScript version to setup"
+    required: false
 
 # outputs: - no outputs
 
@@ -16,6 +19,11 @@ runs:
     - name: echo github.ref
       shell: bash
       run: echo ${{ github.ref }}
+
+    - if: ${{ inputs.typescript-version != null }}
+      run: cat package.json | awk '{sub(/typescript\":\ \"[0-9.]+/,"typescript\": \"${{ inputs.typescript-version }}")}1' > wat.json
+      shell: bash
+      name: Set TypeScript resolution to ${{ inputs.typescript-version }}
 
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v3
@@ -34,7 +42,7 @@ runs:
         path: |
           ${{ steps.yarn-cache-dir-path.outputs.dir }}
           ~/.cache/Cypress
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-typescript-version-${{ inputs.typescript-version }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 

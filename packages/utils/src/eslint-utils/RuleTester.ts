@@ -1,5 +1,8 @@
 import * as path from 'path';
+import * as semver from 'semver';
+import * as ts from 'typescript';
 import * as TSESLint from '../ts-eslint';
+import { ValidTestCase } from '../ts-eslint';
 
 const parser = '@typescript-eslint/parser';
 
@@ -73,31 +76,32 @@ class RuleTester extends TSESLint.RuleTester {
 
     const tests = { ...testsReadonly };
 
-    // standardize the valid tests as objects
-    tests.valid = tests.valid.map(test => {
-      if (typeof test === 'string') {
-        return {
-          code: test,
-        };
-      }
-      return test;
-    });
-
-    tests.valid = tests.valid.map(test => {
-      if (typeof test !== 'string') {
-        if (test.parser === parser) {
-          throw new Error(errorMessage);
-        }
-        if (!test.filename) {
+    tests.valid = tests.valid
+      // standardize the valid tests as objects
+      .map(test => {
+        if (typeof test === 'string') {
           return {
-            ...test,
-            filename: this.getFilename(test.parserOptions),
+            code: test,
           };
         }
-      }
-      return test;
-    });
-    tests.invalid = tests.invalid.map(test => {
+        return test;
+      })
+      .filter(isValidTsVersion)
+      .map(test => {
+        if (typeof test !== 'string') {
+          if (test.parser === parser) {
+            throw new Error(errorMessage);
+          }
+          if (!test.filename) {
+            return {
+              ...test,
+              filename: this.getFilename(test.parserOptions),
+            };
+          }
+        }
+        return test;
+      });
+    tests.invalid = tests.invalid.filter(isValidTsVersion).map(test => {
       if (test.parser === parser) {
         throw new Error(errorMessage);
       }
@@ -112,6 +116,15 @@ class RuleTester extends TSESLint.RuleTester {
 
     super.run(name, rule, tests);
   }
+}
+
+function isValidTsVersion(testCase: ValidTestCase): boolean {
+  return (
+    !testCase.tsVersion ||
+    semver.satisfies(ts.version, `>= ${testCase.tsVersion}`, {
+      includePrerelease: true,
+    })
+  );
 }
 
 /**
