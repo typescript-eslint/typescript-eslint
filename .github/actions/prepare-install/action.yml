@@ -44,7 +44,7 @@ runs:
         path: |
           ${{ steps.yarn-cache-dir-path.outputs.dir }}
           ~/.cache/Cypress
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-hashFiles-${{ package.json }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('package.json') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
