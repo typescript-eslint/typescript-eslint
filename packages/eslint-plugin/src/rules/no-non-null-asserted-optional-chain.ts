@@ -104,12 +104,13 @@ export default util.createRule({
         const node = child.parent as TSESTree.TSNonNullExpression;
 
         let current = child;
-        while (current) {
+        let isRight = true;
+        while (current && isRight) {
           switch (current.type) {
             case AST_NODE_TYPES.MemberExpression:
               if (current.optional) {
                 // found an optional chain! stop traversing
-                break;
+                isRight = false;
               }
 
               current = current.object;
@@ -118,7 +119,7 @@ export default util.createRule({
             case AST_NODE_TYPES.CallExpression:
               if (current.optional) {
                 // found an optional chain! stop traversing
-                break;
+                isRight = false;
               }
 
               current = current.callee;
