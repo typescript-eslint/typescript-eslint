@@ -41,10 +41,6 @@ function tokenIs<Type extends TokenType>(
   return token.type === type;
 }
 
-function tokenIsH1(token: marked.Token): token is marked.Tokens.Heading {
-  return tokenIs(token, 'heading') && token.depth === 1;
-}
-
 function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
   return tokenIs(token, 'heading') && token.depth === 2;
 }
@@ -71,26 +67,17 @@ describe('Validating rule docs', () => {
     describe(ruleName, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
 
-      it(`First header in ${ruleName}.md must be the name of the rule`, () => {
+      test(`${ruleName}.md must start with blockquote directing to website`, () => {
         const tokens = parseMarkdownFile(filePath);
 
-        const header = tokens.find(tokenIsH1)!;
-
-        expect(header.text).toBe(`\`${ruleName}\``);
-      });
-
-      it(`Description of ${ruleName}.md must match`, () => {
-        // validate if description of rule is same as in docs
-        const tokens = parseMarkdownFile(filePath);
-
-        // Rule title not found.
-        // Rule title does not match the rule metadata.
-        expect(tokens[1]).toMatchObject({
-          type: 'paragraph',
-          text: `${rule.meta.docs?.description.replace(
-            /(?<!`)(require|enforce|disallow)/gi,
-            '$1s',
-          )}.`,
+        expect(tokens[0]).toMatchObject({
+          text: [
+            `🛑 This file is source code, not the primary documentation location! 🛑`,
+            ``,
+            `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
+            ``,
+          ].join('\n'),
+          type: 'blockquote',
         });
       });
 

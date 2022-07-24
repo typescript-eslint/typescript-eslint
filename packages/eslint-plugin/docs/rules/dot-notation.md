@@ -1,6 +1,6 @@
-# `dot-notation`
-
-Enforces dot notation whenever possible.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/dot-notation** for documentation.
 
 ## Rule Details
 

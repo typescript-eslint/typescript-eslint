@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "5.30.5",
+  "version": "5.30.7",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -39,12 +39,12 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "5.30.5",
+    "@typescript-eslint/utils": "5.30.7",
     "debug": "^4.3.4",
     "tsutils": "^3.21.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "5.30.5",
+    "@typescript-eslint/parser": "5.30.7",
     "typescript": "*"
   },
   "peerDependencies": {

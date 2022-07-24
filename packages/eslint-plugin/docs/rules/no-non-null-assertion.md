@@ -1,6 +1,6 @@
-# `no-non-null-assertion`
-
-Disallows non-null assertions using the `!` postfix operator.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-non-null-assertion** for documentation.
 
 ## Rule Details
 

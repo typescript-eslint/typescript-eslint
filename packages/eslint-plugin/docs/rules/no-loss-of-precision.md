@@ -1,6 +1,6 @@
-# `no-loss-of-precision`
-
-Disallows literal numbers that lose precision.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-loss-of-precision** for documentation.
 
 ## Rule Details
 

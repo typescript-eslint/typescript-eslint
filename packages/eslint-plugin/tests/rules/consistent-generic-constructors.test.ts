@@ -19,6 +19,11 @@ ruleTester.run('consistent-generic-constructors', rule, {
     'const a: Foo<string> = Foo<string>();',
     'const a: Foo<string> = Foo();',
     'const a: Foo = Foo<string>();',
+    `
+class Foo {
+  a = new Foo<string>();
+}
+    `,
     // type-annotation
     {
       code: 'const a = new Foo();',
@@ -58,6 +63,14 @@ ruleTester.run('consistent-generic-constructors', rule, {
     },
     {
       code: 'const a = new (class C<T> {})<string>();',
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+class Foo {
+  a: Foo<string> = new Foo();
+}
+      `,
       options: ['type-annotation'],
     },
   ],
@@ -144,6 +157,40 @@ ruleTester.run('consistent-generic-constructors', rule, {
       output: noFormat`const a = new \n Foo<string> \n ();`,
     },
     {
+      code: `
+class Foo {
+  a: Foo<string> = new Foo();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Foo {
+  a = new Foo<string>();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  [a]: Foo<string> = new Foo();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Foo {
+  [a] = new Foo<string>();
+}
+      `,
+    },
+    {
       code: 'const a = new Foo<string>();',
       options: ['type-annotation'],
       errors: [
@@ -212,6 +259,60 @@ ruleTester.run('consistent-generic-constructors', rule, {
         },
       ],
       output: noFormat`const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
+    },
+    {
+      code: `
+class Foo {
+  a = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  a: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  [a] = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  [a]: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  [a + b] = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  [a + b]: Foo<string> = new Foo();
+}
+      `,
     },
   ],
 });

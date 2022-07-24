@@ -1,6 +1,6 @@
-# `no-unnecessary-qualifier`
-
-Disallows unnecessary namespace qualifiers.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-qualifier** for documentation.
 
 ## Rule Details
 

@@ -1,6 +1,6 @@
-# `no-magic-numbers`
-
-Disallows magic numbers.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-magic-numbers** for documentation.
 
 ## Rule Details
 

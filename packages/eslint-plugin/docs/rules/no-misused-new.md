@@ -1,6 +1,6 @@
-# `no-misused-new`
-
-Enforces valid definition of `new` and `constructor`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misused-new** for documentation.
 
 Warns on apparent attempts to define constructors for interfaces or `new` for classes.
 

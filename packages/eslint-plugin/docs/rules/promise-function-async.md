@@ -1,6 +1,6 @@
-# `promise-function-async`
-
-Requires any function or method that returns a Promise to be marked async.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/promise-function-async** for documentation.
 
 Ensures that each function is only capable of:
 

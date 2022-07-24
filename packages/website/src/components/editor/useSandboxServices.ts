@@ -110,7 +110,14 @@ export const useSandboxServices = (
 
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
-        props.onLoaded(webLinter.ruleNames, sandboxInstance.supportedVersions);
+        props.onLoaded(
+          webLinter.ruleNames,
+          Array.from(
+            new Set([...sandboxInstance.supportedVersions, window.ts.version]),
+          )
+            .filter(item => parseFloat(item) >= 3.3)
+            .sort((a, b) => b.localeCompare(a)),
+        );
 
         setServices({
           main,

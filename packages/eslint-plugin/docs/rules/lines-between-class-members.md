@@ -1,6 +1,6 @@
-# `lines-between-class-members`
-
-Requires or disallows an empty line between class members.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/lines-between-class-members** for documentation.
 
 This rule improves readability by enforcing lines between class members. It will not check empty lines before the first member and after the last member. This rule require or disallow an empty line between class members.
 

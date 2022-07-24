@@ -71,6 +71,71 @@ x ?? 'foo';
       `,
     ),
 
+    {
+      code: 'x !== undefined && x !== null ? x : y;',
+      options: [{ ignoreTernaryTests: true }],
+    },
+
+    ...[
+      'x !== undefined && x !== null ? "foo" : "bar";',
+      'x !== null && x !== undefined && x !== 5 ? x : y',
+      'x === null || x === undefined || x === 5 ? x : y',
+      'x === undefined && x !== null ? x : y;',
+      'x === undefined && x === null ? x : y;',
+      'x !== undefined && x === null ? x : y;',
+      'x === undefined || x !== null ? x : y;',
+      'x === undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? y : x;',
+      'x === null || x === null ? y : x;',
+      'x === undefined || x === undefined ? y : x;',
+      'x == null ? x : y;',
+      'undefined == null ? x : y;',
+      'undefined != z ? x : y;',
+      'x == undefined ? x : y;',
+      'x != null ? y : x;',
+      'x != undefined ? y : x;',
+      'null == x ? x : y;',
+      'undefined == x ? x : y;',
+      'null != x ? y : x;',
+      'undefined != x ? y : x;',
+      `
+declare const x: string;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | undefined;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | null;
+x === undefined ? x : y;
+      `,
+      `
+declare const x: string | undefined | null;
+x !== undefined ? x : y;
+      `,
+      `
+declare const x: string | undefined | null;
+x !== null ? x : y;
+      `,
+      `
+declare const x: string | null | any;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | null | unknown;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | undefined;
+x === null ? x : y;
+      `,
+    ].map(code => ({
+      code,
+      options: [{ ignoreTernaryTests: false }] as const,
+    })),
+
     // ignoreConditionalTests
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
@@ -148,7 +213,7 @@ x || 'foo';
       output: null,
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 3,
           endLine: 3,
@@ -166,6 +231,158 @@ x ?? 'foo';
       ],
     })),
 
+    ...[
+      'x !== undefined && x !== null ? x : y;',
+      'x !== null && x !== undefined ? x : y;',
+      'x === undefined || x === null ? y : x;',
+      'x === null || x === undefined ? y : x;',
+      'undefined !== x && x !== null ? x : y;',
+      'null !== x && x !== undefined ? x : y;',
+      'undefined === x || x === null ? y : x;',
+      'null === x || x === undefined ? y : x;',
+      'x !== undefined && null !== x ? x : y;',
+      'x !== null && undefined !== x ? x : y;',
+      'x === undefined || null === x ? y : x;',
+      'x === null || undefined === x ? y : x;',
+      'undefined !== x && null !== x ? x : y;',
+      'null !== x && undefined !== x ? x : y;',
+      'undefined === x || null === x ? y : x;',
+      'null === x || undefined === x ? y : x;',
+      'x != undefined && x != null ? x : y;',
+      'x == undefined || x == null ? y : x;',
+      'x != undefined && x !== null ? x : y;',
+      'x == undefined || x === null ? y : x;',
+      'x !== undefined && x != null ? x : y;',
+      'undefined != x ? x : y;',
+      'null != x ? x : y;',
+      'undefined == x ? y : x;',
+      'null == x ? y : x;',
+      'x != undefined ? x : y;',
+      'x != null ? x : y;',
+      'x == undefined  ? y : x;',
+      'x == null ? y : x;',
+    ].flatMap(code => [
+      {
+        code,
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x ?? y;',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]'),
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]')
+              .length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x.z[1][this[this.o]]["3"][a.b.c] ?? y;',
+              },
+            ],
+          },
+        ],
+      },
+    ]),
+
+    {
+      code: 'this != undefined ? this : y;',
+      output: null,
+      options: [{ ignoreTernaryTests: false }] as const,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary' as const,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 29,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: 'this ?? y;',
+            },
+          ],
+        },
+      ],
+    },
+
+    ...[
+      `
+declare const x: string | undefined;
+x !== undefined ? x : y;
+      `.trim(),
+      `
+declare const x: string | undefined;
+undefined !== x ? x : y;
+      `.trim(),
+      `
+declare const x: string | undefined;
+undefined === x ? y : x;
+      `.trim(),
+      `
+declare const x: string | undefined;
+undefined === x ? y : x;
+      `.trim(),
+      `
+declare const x: string | null;
+x !== null ? x : y;
+      `.trim(),
+      `
+declare const x: string | null;
+null !== x ? x : y;
+      `.trim(),
+      `
+declare const x: string | null;
+null === x ? y : x;
+      `.trim(),
+      `
+declare const x: string | null;
+null === x ? y : x;
+      `.trim(),
+    ].map(code => ({
+      code,
+      output: null,
+      options: [{ ignoreTernaryTests: false }] as const,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary' as const,
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: code.split('\n')[1].length,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[0]}
+x ?? y;
+              `.trim(),
+            },
+          ],
+        },
+      ],
+    })),
+
     // ignoreConditionalTests
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
@@ -176,7 +393,7 @@ x || 'foo' ? null : null;
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 3,
           endLine: 3,
@@ -202,7 +419,7 @@ if (x || 'foo') {}
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 7,
           endLine: 3,
@@ -228,7 +445,7 @@ do {} while (x || 'foo')
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 16,
           endLine: 3,
@@ -254,7 +471,7 @@ for (;x || 'foo';) {}
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 9,
           endLine: 3,
@@ -280,7 +497,7 @@ while (x || 'foo') {}
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 10,
           endLine: 3,
@@ -309,7 +526,7 @@ a || b && c;
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 5,
           column: 3,
           endLine: 5,
@@ -339,7 +556,7 @@ a || b || c && d;
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 3,
           endLine: 6,
@@ -358,7 +575,7 @@ declare const d: ${type} | ${nullish};
           ],
         },
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 8,
           endLine: 6,
@@ -389,7 +606,7 @@ a && b || c || d;
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 8,
           endLine: 6,
@@ -408,7 +625,7 @@ a && (b ?? c) || d;
           ],
         },
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 13,
           endLine: 6,
@@ -439,7 +656,7 @@ if (() => x || 'foo') {}
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 13,
           endLine: 3,
@@ -465,7 +682,7 @@ if (function werid() { return x || 'foo' }) {}
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 33,
           endLine: 3,
@@ -482,7 +699,6 @@ if (function werid() { return x ?? 'foo' }) {}
         },
       ],
     })),
-
     // https://github.com/typescript-eslint/typescript-eslint/issues/1290
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
@@ -494,7 +710,7 @@ a || b || c;
       output: null,
       errors: [
         {
-          messageId: 'preferNullish',
+          messageId: 'preferNullishOverOr',
           line: 5,
           column: 3,
           endLine: 5,

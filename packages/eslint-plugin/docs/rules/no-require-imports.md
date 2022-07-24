@@ -1,6 +1,6 @@
-# `no-require-imports`
-
-Disallows invocation of `require()`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-require-imports** for documentation.
 
 Prefer the newer ES6-style imports over `require()`.
 

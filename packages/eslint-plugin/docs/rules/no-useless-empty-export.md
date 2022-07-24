@@ -1,6 +1,6 @@
-# `no-useless-empty-export`
-
-Disallows empty exports that don't change anything in a module file.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-useless-empty-export** for documentation.
 
 ## Rule Details
 
