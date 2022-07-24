@@ -122,7 +122,7 @@ jobs:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [12, 18]
-        typescript-version: [3.3.1, null]
+        typescript-version: [3.3.1, 4.0.0]
         package: [
           "ast-spec",
           "eslint-plugin",
@@ -137,7 +137,7 @@ jobs:
         ]
     env:
       # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
-      NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
+      NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} TS ${{ matrix.typescript-version }}-'
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
