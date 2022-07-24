@@ -48,9 +48,17 @@ runs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    # if the cache was hit - this will run in <1s
-    - name: Install dependencies
+    # if the cache was hit - these will run in <1s
+
+    - if: ${{ inputs.typescript-version == null }}
+      name: Install dependencies (frozen)
+      shell: bash
+      run: |
+        yarn --ignore-engines --frozen-lockfile --ignore-scripts
+        yarn check-clean-workspace-after-install
+
+    - if: ${{ inputs.typescript-version != null }}
+      name: Install dependencies
       shell: bash
       run: |
         yarn --ignore-engines --ignore-scripts
-        yarn check-clean-workspace-after-install
