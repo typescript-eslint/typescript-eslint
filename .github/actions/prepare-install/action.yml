@@ -52,5 +52,5 @@ runs:
     - name: Install dependencies
       shell: bash
       run: |
-        yarn --ignore-engines --frozen-lockfile --ignore-scripts
+        yarn --ignore-engines --ignore-scripts
         yarn check-clean-workspace-after-install
