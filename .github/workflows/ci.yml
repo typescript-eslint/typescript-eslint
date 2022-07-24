@@ -122,7 +122,7 @@ jobs:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [12, 18]
-        typescript-version: [3.3.1, 4.0.0]
+        typescript-version: [3.3.1, null]
         package: [
           "ast-spec",
           "eslint-plugin",
