@@ -4,6 +4,7 @@ import * as util from '../util';
 interface Options {
   allowInGenericTypeArguments?: boolean | string[];
   allowAsThisParameter?: boolean;
+  allowUnionType?: boolean | string[];
 }
 
 type MessageIds =
@@ -33,7 +34,7 @@ export default util.createRule<[Options], MessageIds>({
       invalidVoidNotReturnOrThisParamOrGeneric:
         'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
       InvalidVoidForUnion:
-        'Void is valid when any types used together only as part of a union type.',
+        'void is not valid as a type constituent in a return type.',
     },
     schema: [
       {
