@@ -21,7 +21,9 @@ runs:
       run: echo ${{ github.ref }}
 
     - if: ${{ inputs.typescript-version != null }}
-      run: cat package.json | awk '{sub(/typescript\":\ \"[0-9.]+/,"typescript\": \"${{ inputs.typescript-version }}")}1' > wat.json
+      run: |
+        cat package.json | awk '{sub(/typescript\":\ \"[0-9.]+/,"typescript\": \"${{ inputs.typescript-version }}")}1' > package.tmp.json
+        cp package.tmp.json package.json
       shell: bash
       name: Set TypeScript resolution to ${{ inputs.typescript-version }}
 
@@ -42,7 +44,7 @@ runs:
         path: |
           ${{ steps.yarn-cache-dir-path.outputs.dir }}
           ~/.cache/Cypress
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-typescript-version-${{ inputs.typescript-version }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-hashFiles-${{ package.json }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
