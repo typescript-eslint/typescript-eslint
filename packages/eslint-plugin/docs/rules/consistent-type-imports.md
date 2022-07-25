@@ -61,7 +61,7 @@ type T = Foo;
 const x: Bar = 1;
 ```
 
-Examples of the fixer `{fixStyle: 'inline-type-imports'}`.
+Examples of the fixer with `{ fixStyle: 'inline-type-imports' }`:
 
 ```ts
 import { Foo } from 'Foo';
