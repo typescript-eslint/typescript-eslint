@@ -53,7 +53,7 @@ thing.declarations.map(decl => {});
 import ts from 'typescript';
 declare const thing: ts.Symbol;
 thing.getDeclarations().map(decl => {});
-              `,
+      `,
             },
           ],
         },
@@ -85,7 +85,7 @@ thing.symbol;
 import ts from 'typescript';
 declare const thing: ts.Type;
 thing.getSymbol();
-              `,
+      `,
             },
           ],
         },
@@ -117,7 +117,7 @@ thing?.symbol;
 import ts from 'typescript';
 declare const thing: ts.Type;
 thing?.getSymbol();
-              `,
+      `,
             },
           ],
         },
