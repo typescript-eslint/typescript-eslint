@@ -365,33 +365,12 @@ ${PARENT_INDENT}\``,
       code: wrap`\`
 ${CODE_INDENT}const a=\\\`\\\${a}\\\`;
 ${PARENT_INDENT}\``,
-      // make sure it escapes backticks
       output: wrap`\`
 ${CODE_INDENT}const a = \\\`\\\${a}\\\`;
 ${PARENT_INDENT}\``,
       errors: [
         {
           messageId: 'invalidFormatting',
-        },
-      ],
-    },
-
-    // sanity check that it runs on both output and code properties
-    {
-      code: wrapWithOutput`\`
-${CODE_INDENT}const a="1";
-${CODE_INDENT}          const b    =   "2";
-${PARENT_INDENT}\``,
-      output: wrapWithOutput`\`
-${CODE_INDENT}const a = '1';
-${CODE_INDENT}const b = '2';
-${PARENT_INDENT}\``,
-      errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-        {
-          messageId: 'invalidFormattingErrorTest',
         },
       ],
     },
@@ -431,7 +410,7 @@ ruleTester.run({
           suggestions: [
             {
               messageId: 'bar',
-              output: 'const x = 1;',
+              output: 'const x=1;',
             },
           ],
         },
@@ -441,9 +420,6 @@ ruleTester.run({
 });
       `,
       errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
         {
           messageId: 'invalidFormattingErrorTest',
         },
