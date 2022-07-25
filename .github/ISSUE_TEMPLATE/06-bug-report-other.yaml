@@ -1,6 +1,6 @@
-name: "🐛 Report a Bug With Another Package"
-description: "Report a bug you encountered with another one of our packages (parser, util, scope-manager, etc)"
-title: "Bug: <short description of the issue>"
+name: '🐛 Report a Bug With Another Package'
+description: 'Report a bug you encountered with another one of our packages (parser, util, scope-manager, etc)'
+title: 'Bug: <short description of the issue>'
 labels:
   - bug
   - triage
