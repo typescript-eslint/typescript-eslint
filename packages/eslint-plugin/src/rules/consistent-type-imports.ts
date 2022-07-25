@@ -51,8 +51,7 @@ type MessageIds =
   | 'valueOverType'
   | 'noImportTypeAnnotations'
   | 'someImportsInDecoMeta'
-  | 'aImportInDecoMeta'
-  | 'inlineTypes';
+  | 'aImportInDecoMeta';
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
