@@ -25,26 +25,6 @@ ruleTester.run({
 });
   `;
 }
-function wrapWithOutput(
-  strings: TemplateStringsArray,
-  ...keys: string[]
-): string {
-  const lastIndex = strings.length - 1;
-  const code =
-    strings.slice(0, lastIndex).reduce((p, s, i) => p + s + keys[i], '') +
-    strings[lastIndex];
-  return `
-ruleTester.run({
-  invalid: [
-    {
-      code: ${code},
-      output: ${code},
-    },
-  ],
-});
-  `;
-}
-
 ruleTester.run('plugin-test-formatting', rule, {
   valid: [
     // sanity check for valid tests non-object style
