@@ -3,7 +3,7 @@ import type Monaco from 'monaco-editor';
 import clsx from 'clsx';
 
 import type { ErrorItem, ErrorGroup } from './types';
-import IconExternalLink from '@theme/IconExternalLink';
+import IconExternalLink from '@theme/Icon/ExternalLink';
 import styles from './ErrorsViewer.module.css';
 
 export interface ErrorsViewerProps {
