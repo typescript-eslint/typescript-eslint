@@ -43,7 +43,7 @@ This option defines the expected type modifier to be added when an import is det
 - `separate-type-imports` will add the type keyword after the import keyword `import type { A } from '...'`. It is the default.
 - `inline-type-imports` will inline the type keyword `import { type A } from '...'` and is only available in TypeScript 4.5 and onwards. See [documentation here](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names "TypeScript 4.5 release notes").
 
-Examples of the fixer `{fixStyle: 'separate-type-imports'}`.
+Examples of the fixer with `{ fixStyle: 'separate-type-imports' }`:
 
 ```ts
 import { Foo } from 'Foo';
