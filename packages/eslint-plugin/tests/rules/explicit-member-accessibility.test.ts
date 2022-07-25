@@ -892,7 +892,7 @@ class Test {
           column: 3,
         },
       ],
-      output: noFormat`
+      output: `
 class Test {
   @public
   /*public*/constructor(private foo: string) {}
@@ -1132,7 +1132,7 @@ class Test {
           column: 3,
         },
       ],
-      output: noFormat`
+      output: `
 class Test {
   'foo' = 1;
   'foo foo' = 2;

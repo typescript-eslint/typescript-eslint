@@ -87,7 +87,7 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'suggestRemovingNonNull',
-              output: noFormat`(foo?.bar).baz`,
+              output: `(foo?.bar).baz`,
             },
           ],
         },
@@ -101,7 +101,7 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'suggestRemovingNonNull',
-              output: noFormat`(foo?.bar)().baz`,
+              output: `(foo?.bar)().baz`,
             },
           ],
         },
@@ -115,7 +115,7 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'suggestRemovingNonNull',
-              output: noFormat`(foo?.bar)`,
+              output: `(foo?.bar)`,
             },
           ],
         },
@@ -129,7 +129,7 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'suggestRemovingNonNull',
-              output: noFormat`(foo?.bar)()`,
+              output: `(foo?.bar)()`,
             },
           ],
         },
@@ -143,7 +143,7 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'suggestRemovingNonNull',
-              output: noFormat`(foo?.bar)`,
+              output: `(foo?.bar)`,
             },
           ],
         },
@@ -157,7 +157,7 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'suggestRemovingNonNull',
-              output: noFormat`(foo?.bar)()`,
+              output: `(foo?.bar)()`,
             },
           ],
         },

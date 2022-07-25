@@ -550,28 +550,5 @@ foo
         },
       ],
     },
-
-    // checks tests with .trimRight calls
-    {
-      code: wrap`'const a=1;'.trimRight()`,
-      output: wrap`'const a = 1;'.trimRight()`,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    {
-      code: wrap`\`const a = "1";
-${CODE_INDENT}\`.trimRight()`,
-      output: wrap`\`
-const a = "1";
-${CODE_INDENT}\`.trimRight()`,
-      errors: [
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-      ],
-    },
   ],
 });

@@ -111,7 +111,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
-              output: noFormat`const data = <T,>() => {};`,
+              output: `const data = <T,>() => {};`,
             },
           ],
         },
@@ -130,7 +130,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
-              output: noFormat`const data = <T,>() => {};`,
+              output: `const data = <T,>() => {};`,
             },
           ],
         },
@@ -149,7 +149,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
-              output: noFormat`const data = <T, >() => {};`,
+              output: `const data = <T, >() => {};`,
             },
           ],
         },
@@ -168,7 +168,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
-              output: noFormat`const data = <T ,>() => {};`,
+              output: `const data = <T ,>() => {};`,
             },
           ],
         },
@@ -187,7 +187,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
-              output: noFormat`const data = <T , >() => {};`,
+              output: `const data = <T , >() => {};`,
             },
           ],
         },
@@ -225,7 +225,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
-              output: noFormat`const data = <T, U extends any>() => {};`,
+              output: `const data = <T, U extends any>() => {};`,
             },
           ],
         },
@@ -238,7 +238,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
-              output: noFormat`const data = <T extends any, U>() => {};`,
+              output: `const data = <T extends any, U>() => {};`,
             },
           ],
         },
@@ -340,7 +340,7 @@ function data<T extends TODO>() {}
 class Data {
   member<T extends unknown>() {}
 }
-      `.trimEnd(),
+      `,
       errors: [
         {
           data: { constraint: 'unknown', name: 'T' },
@@ -355,7 +355,7 @@ class Data {
 class Data {
   member<T>() {}
 }
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -366,7 +366,7 @@ class Data {
 const Data = class {
   member<T extends unknown>() {}
 };
-      `.trimEnd(),
+      `,
       errors: [
         {
           data: { constraint: 'unknown', name: 'T' },
@@ -381,7 +381,7 @@ const Data = class {
 const Data = class {
   member<T>() {}
 };
-              `.trimEnd(),
+      `,
             },
           ],
         },
