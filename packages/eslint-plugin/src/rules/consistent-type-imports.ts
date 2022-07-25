@@ -72,7 +72,6 @@ export default util.createRule<Options, MessageIds>({
         'Type import {{typeImports}} is used by decorator metadata.',
       valueOverType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
-      inlineTypes: 'Type imports can be inlined.',
     },
     schema: [
       {
