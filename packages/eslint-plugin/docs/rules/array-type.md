@@ -10,18 +10,6 @@ This rule aims to standardize usage of array types within your codebase.
 
 ## Options
 
-```ts
-type ArrayOption = 'array' | 'generic' | 'array-simple';
-type Options = {
-  default: ArrayOption;
-  readonly?: ArrayOption;
-};
-
-const defaultOptions: Options = {
-  default: 'array',
-};
-```
-
 The rule accepts an options object with the following properties:
 
 - `default` - sets the array type expected for mutable cases.
