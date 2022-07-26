@@ -15,6 +15,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
   let variables = true;
   let typedefs = true;
   let ignoreTypeReferences = true;
+  let allowNamedExports = false;
 
   if (typeof options === 'string') {
     functions = options !== 'nofunc';
@@ -25,6 +26,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
     variables = options.variables !== false;
     typedefs = options.typedefs !== false;
     ignoreTypeReferences = options.ignoreTypeReferences !== false;
+    allowNamedExports = options.allowNamedExports !== true;
   }
 
   return {
@@ -34,6 +36,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
     variables,
     typedefs,
     ignoreTypeReferences,
+    allowNamedExports,
   };
 }
 
@@ -87,6 +90,17 @@ function isOuterVariable(
   return (
     variable.defs[0].type === DefinitionType.Variable &&
     variable.scope.variableScope !== reference.from.variableScope
+  );
+}
+
+/**
+ * Checks whether or not a given reference is a export reference.
+ */
+function isAllowNamedExports(reference: TSESLint.Scope.Reference): boolean {
+  const { identifier } = reference;
+  return (
+    identifier.parent?.type === 'ExportSpecifier' &&
+    identifier.parent?.local === identifier
   );
 }
 
@@ -218,6 +232,7 @@ interface Config {
   variables?: boolean;
   typedefs?: boolean;
   ignoreTypeReferences?: boolean;
+  allowNamedExports?: boolean;
 }
 type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
@@ -279,6 +294,9 @@ export default util.createRule<Options, MessageIds>({
       reference: TSESLint.Scope.Reference,
     ): boolean {
       if (options.ignoreTypeReferences && isTypeReference(reference)) {
+        return false;
+      }
+      if (options.allowNamedExports && isAllowNamedExports(reference)) {
         return false;
       }
       if (isFunction(variable)) {
