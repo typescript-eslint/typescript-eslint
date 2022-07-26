@@ -55,7 +55,7 @@ export function isUnsafeAssignment(
       senderNode.callee.type === AST_NODE_TYPES.Identifier &&
       senderNode.callee.name === 'Map' &&
       senderNode.arguments.length === 0 &&
-      senderNode.typeParameters == null
+      senderNode.typeArguments == null
     ) {
       // special case to handle `new Map()`
       // unfortunately Map's default empty constructor is typed to return `Map<any, any>` :(
