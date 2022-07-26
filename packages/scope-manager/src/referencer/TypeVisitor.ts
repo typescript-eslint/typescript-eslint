@@ -272,7 +272,7 @@ class TypeVisitor extends Visitor {
       this.#referencer.currentScope().referenceValue(entityName);
     }
 
-    this.visit(node.typeParameters);
+    this.visit(node.typeArguments);
   }
 
   protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {

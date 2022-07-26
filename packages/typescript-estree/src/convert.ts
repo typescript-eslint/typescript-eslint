@@ -361,7 +361,7 @@ export class Converter {
    * @param node parent used to create this node
    * @returns TypeParameterInstantiation node
    */
-  private convertTypeArgumentsToTypeParameters(
+  private convertTypeArgumentsToTypeParameterInstantiation(
     typeArguments: ts.NodeArray<ts.TypeNode>,
     node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
   ): TSESTree.TSTypeParameterInstantiation {
@@ -496,9 +496,12 @@ export class Converter {
           : null;
     }
     if ('typeArguments' in node) {
-      result.typeParameters =
+      result.typeArguments =
         node.typeArguments && 'pos' in node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameters(node.typeArguments, node)
+          ? this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            )
           : null;
     }
     if ('typeParameters' in node) {
@@ -1558,7 +1561,7 @@ export class Converter {
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(
+            ? this.convertTypeArgumentsToTypeParameterInstantiation(
                 node.typeArguments,
                 node,
               )
@@ -1706,7 +1709,7 @@ export class Converter {
 
           if (superClass.types[0]?.typeArguments) {
             result.superTypeParameters =
-              this.convertTypeArgumentsToTypeParameters(
+              this.convertTypeArgumentsToTypeParameterInstantiation(
                 superClass.types[0].typeArguments,
                 superClass.types[0],
               );
@@ -2051,10 +2054,11 @@ export class Converter {
         });
 
         if (node.typeArguments) {
-          result.typeParameters = this.convertTypeArgumentsToTypeParameters(
-            node.typeArguments,
-            node,
-          );
+          result.typeArguments =
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            );
         }
 
         return this.convertChainExpression(result, node);
@@ -2070,10 +2074,11 @@ export class Converter {
             : [],
         });
         if (node.typeArguments) {
-          result.typeParameters = this.convertTypeArgumentsToTypeParameters(
-            node.typeArguments,
-            node,
-          );
+          result.typeArguments =
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            );
         }
         return result;
       }
@@ -2237,7 +2242,7 @@ export class Converter {
           openingElement: this.createNode<TSESTree.JSXOpeningElement>(node, {
             type: AST_NODE_TYPES.JSXOpeningElement,
             typeParameters: node.typeArguments
-              ? this.convertTypeArgumentsToTypeParameters(
+              ? this.convertTypeArgumentsToTypeParameterInstantiation(
                   node.typeArguments,
                   node,
                 )
@@ -2258,7 +2263,7 @@ export class Converter {
         return this.createNode<TSESTree.JSXOpeningElement>(node, {
           type: AST_NODE_TYPES.JSXOpeningElement,
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(
+            ? this.convertTypeArgumentsToTypeParameterInstantiation(
                 node.typeArguments,
                 node,
               )
@@ -2348,8 +2353,8 @@ export class Converter {
         return this.createNode<TSESTree.TSTypeReference>(node, {
           type: AST_NODE_TYPES.TSTypeReference,
           typeName: this.convertType(node.typeName),
-          typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(
+          typeArguments: node.typeArguments
+            ? this.convertTypeArgumentsToTypeParameterInstantiation(
                 node.typeArguments,
                 node,
               )
@@ -2437,9 +2442,12 @@ export class Converter {
         return this.createNode<TSESTree.TSTypeQuery>(node, {
           type: AST_NODE_TYPES.TSTypeQuery,
           exprName: this.convertType(node.exprName),
-          typeParameters:
+          typeArguments:
             node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameters(node.typeArguments, node),
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
         });
       }
 
@@ -2619,10 +2627,11 @@ export class Converter {
         });
 
         if (node.typeArguments) {
-          result.typeParameters = this.convertTypeArgumentsToTypeParameters(
-            node.typeArguments,
-            node,
-          );
+          result.typeParameters =
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            );
         }
         return result;
       }
@@ -2711,7 +2720,7 @@ export class Converter {
           parameter: this.convertChild(node.argument),
           qualifier: this.convertChild(node.qualifier),
           typeParameters: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameters(
+            ? this.convertTypeArgumentsToTypeParameterInstantiation(
                 node.typeArguments,
                 node,
               )

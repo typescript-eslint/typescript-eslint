@@ -106,7 +106,7 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const params = node.typeParameters?.params;
+          const params = node.typeArguments?.params;
           if (params?.length !== 2) {
             return;
           }

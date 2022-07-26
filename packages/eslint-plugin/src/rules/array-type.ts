@@ -30,14 +30,14 @@ function isSimpleType(node: TSESTree.Node): boolean {
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'Array'
       ) {
-        if (!node.typeParameters) {
+        if (!node.typeArguments) {
           return true;
         }
-        if (node.typeParameters.params.length === 1) {
-          return isSimpleType(node.typeParameters.params[0]);
+        if (node.typeArguments.params.length === 1) {
+          return isSimpleType(node.typeArguments.params[0]);
         }
       } else {
-        if (node.typeParameters) {
+        if (node.typeArguments) {
           return false;
         }
         return isSimpleType(node.typeName);
@@ -204,7 +204,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const readonlyPrefix = isReadonlyArrayType ? 'readonly ' : '';
-        const typeParams = node.typeParameters?.params;
+        const typeParams = node.typeArguments?.params;
         const messageId =
           currentOption === 'array'
             ? 'errorStringArray'

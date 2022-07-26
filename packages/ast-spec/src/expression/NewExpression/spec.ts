@@ -8,5 +8,5 @@ export interface NewExpression extends BaseNode {
   type: AST_NODE_TYPES.NewExpression;
   callee: LeftHandSideExpression;
   arguments: Expression[];
-  typeParameters?: TSTypeParameterInstantiation;
+  typeArguments?: TSTypeParameterInstantiation;
 }

@@ -136,9 +136,9 @@ export default util.createRule<[Options], MessageIds>({
           validUnionMembers.includes(member.type) ||
           // allows any T<..., void, ...> here, checked by checkGenericTypeArgument
           (member.type === AST_NODE_TYPES.TSTypeReference &&
-            member.typeParameters?.type ===
+            member.typeArguments?.type ===
               AST_NODE_TYPES.TSTypeParameterInstantiation &&
-            member.typeParameters?.params
+            member.typeArguments?.params
               .map(param => param.type)
               .includes(AST_NODE_TYPES.TSVoidKeyword)),
       );

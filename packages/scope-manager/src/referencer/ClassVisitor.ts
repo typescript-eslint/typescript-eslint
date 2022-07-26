@@ -311,8 +311,8 @@ class ClassVisitor extends Visitor {
           this.#referencer.currentScope().referenceDualValueType(entityName);
         }
 
-        if (node.typeAnnotation.typeParameters) {
-          this.visitType(node.typeAnnotation.typeParameters);
+        if (node.typeAnnotation.typeArguments) {
+          this.visitType(node.typeAnnotation.typeArguments);
         }
 
         // everything is handled now

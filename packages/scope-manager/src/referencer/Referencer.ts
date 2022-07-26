@@ -381,8 +381,8 @@ class Referencer extends Visitor {
   }
 
   protected CallExpression(node: TSESTree.CallExpression): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected CatchClause(node: TSESTree.CatchClause): void {
@@ -557,8 +557,8 @@ class Referencer extends Visitor {
   }
 
   protected NewExpression(node: TSESTree.NewExpression): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected PrivateIdentifier(): void {
