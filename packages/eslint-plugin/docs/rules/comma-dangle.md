@@ -1,6 +1,6 @@
-# `comma-dangle`
-
-Requires or disallows trailing commas.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/comma-dangle** for documentation.
 
 ## Rule Details
 
@@ -9,7 +9,7 @@ It adds support for TypeScript syntax.
 
 See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for more details on the `comma-dangle` rule.
 
-## Rule Changes
+## How to Use
 
 ```jsonc
 {

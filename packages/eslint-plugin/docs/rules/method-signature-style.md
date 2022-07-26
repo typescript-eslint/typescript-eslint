@@ -1,6 +1,6 @@
-# `method-signature-style`
-
-Enforces using a particular method signature syntax.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/method-signature-style** for documentation.
 
 There are two ways to define an object/interface function property.
 

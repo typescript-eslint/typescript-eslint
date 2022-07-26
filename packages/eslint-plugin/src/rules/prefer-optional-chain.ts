@@ -606,24 +606,10 @@ function isValidChainTarget(
   - foo !== undefined
   - foo != undefined
   */
-  if (
+  return (
     node.type === AST_NODE_TYPES.BinaryExpression &&
     ['!==', '!='].includes(node.operator) &&
-    isValidChainTarget(node.left, allowIdentifier)
-  ) {
-    if (
-      node.right.type === AST_NODE_TYPES.Identifier &&
-      node.right.name === 'undefined'
-    ) {
-      return true;
-    }
-    if (
-      node.right.type === AST_NODE_TYPES.Literal &&
-      node.right.value === null
-    ) {
-      return true;
-    }
-  }
-
-  return false;
+    isValidChainTarget(node.left, allowIdentifier) &&
+    (util.isUndefinedIdentifier(node.right) || util.isNullLiteral(node.right))
+  );
 }

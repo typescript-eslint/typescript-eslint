@@ -1,6 +1,6 @@
-# `ban-ts-comment`
-
-Disallows `@ts-<directive>` comments or requires descriptions after directive.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/ban-ts-comment** for documentation.
 
 TypeScript provides several directive comments that can be used to alter how it processes files.
 Using these to suppress TypeScript Compiler Errors reduces the effectiveness of TypeScript overall.

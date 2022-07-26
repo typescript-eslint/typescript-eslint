@@ -1,6 +1,6 @@
-# `no-extra-parens`
-
-Disallows unnecessary parentheses.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-extra-parens** for documentation.
 
 ## Rule Details
 

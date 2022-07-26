@@ -150,13 +150,14 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     function isAncestorHasTypeAnnotation(
-      node: TSESTree.ObjectPattern,
+      node: TSESTree.ObjectPattern | TSESTree.ArrayPattern,
     ): boolean {
       let ancestor = node.parent;
 
       while (ancestor) {
         if (
-          ancestor.type === AST_NODE_TYPES.ObjectPattern &&
+          (ancestor.type === AST_NODE_TYPES.ObjectPattern ||
+            ancestor.type === AST_NODE_TYPES.ArrayPattern) &&
           ancestor.typeAnnotation
         ) {
           return true;
@@ -181,6 +182,7 @@ export default util.createRule<[Options], MessageIds>({
           if (
             !node.typeAnnotation &&
             !isForOfStatementContext(node) &&
+            !isAncestorHasTypeAnnotation(node) &&
             node.parent?.type !== AST_NODE_TYPES.AssignmentExpression
           ) {
             report(node);

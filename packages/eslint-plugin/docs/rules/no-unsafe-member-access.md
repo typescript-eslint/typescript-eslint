@@ -1,6 +1,6 @@
-# `no-unsafe-member-access`
-
-Disallows member access on a value with type `any`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-member-access** for documentation.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Member access on `any` typed variables is not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.

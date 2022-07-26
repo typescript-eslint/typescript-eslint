@@ -1,6 +1,6 @@
-# `no-extra-non-null-assertion`
-
-Disallows extra non-null assertion.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-extra-non-null-assertion** for documentation.
 
 ## Rule Details
 

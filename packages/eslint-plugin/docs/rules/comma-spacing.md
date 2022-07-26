@@ -1,6 +1,6 @@
-# `comma-spacing`
-
-Enforces consistent spacing before and after commas.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/comma-spacing** for documentation.
 
 ## Rule Details
 

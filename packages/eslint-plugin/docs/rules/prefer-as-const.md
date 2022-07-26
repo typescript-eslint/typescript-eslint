@@ -1,6 +1,6 @@
-# `prefer-as-const`
-
-Enforces the use of `as const` over literal type.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-as-const** for documentation.
 
 This rule recommends usage of `const` assertion when type primitive value is equal to type.
 

@@ -1,6 +1,6 @@
-# `prefer-for-of`
-
-Enforces the use of `for-of` loop over the standard `for` loop where possible.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-for-of** for documentation.
 
 This rule recommends a for-of loop when the loop index is only used to read from an array that is being iterated.
 
