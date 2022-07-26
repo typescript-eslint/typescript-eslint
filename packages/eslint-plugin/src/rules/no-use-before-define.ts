@@ -26,7 +26,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
     variables = options.variables !== false;
     typedefs = options.typedefs !== false;
     ignoreTypeReferences = options.ignoreTypeReferences !== false;
-    allowNamedExports = options.allowNamedExports !== true;
+    allowNamedExports = options.allowNamedExports !== false;
   }
 
   return {
@@ -99,7 +99,8 @@ function isOuterVariable(
 function isAllowNamedExports(reference: TSESLint.Scope.Reference): boolean {
   const { identifier } = reference;
   return (
-    identifier.parent?.type === 'ExportSpecifier' &&
+    (identifier.parent?.type === AST_NODE_TYPES.ExportSpecifier ||
+      identifier.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration) &&
     identifier.parent?.local === identifier
   );
 }
@@ -264,6 +265,7 @@ export default util.createRule<Options, MessageIds>({
               variables: { type: 'boolean' },
               typedefs: { type: 'boolean' },
               ignoreTypeReferences: { type: 'boolean' },
+              allowNamedExports: { type: 'boolean' },
             },
             additionalProperties: false,
           },
@@ -279,6 +281,7 @@ export default util.createRule<Options, MessageIds>({
       variables: true,
       typedefs: true,
       ignoreTypeReferences: true,
+      allowNamedExports: false,
     },
   ],
   create(context, optionsWithDefault) {
@@ -294,9 +297,6 @@ export default util.createRule<Options, MessageIds>({
       reference: TSESLint.Scope.Reference,
     ): boolean {
       if (options.ignoreTypeReferences && isTypeReference(reference)) {
-        return false;
-      }
-      if (options.allowNamedExports && isAllowNamedExports(reference)) {
         return false;
       }
       if (isFunction(variable)) {
@@ -325,6 +325,22 @@ export default util.createRule<Options, MessageIds>({
       scope.references.forEach(reference => {
         const variable = reference.resolved;
 
+        const report = (): void =>
+          context.report({
+            node: reference.identifier,
+            messageId: 'noUseBeforeDefine',
+            data: {
+              name: reference.identifier.name,
+            },
+          });
+
+        // If "allowNamedExports" is false, check it first to avoid variable is null
+
+        if (!options.allowNamedExports && isAllowNamedExports(reference)) {
+          report();
+          return;
+        }
+
         // Skips when the reference is:
         // - initializations.
         // - referring to an undefined variable.
@@ -341,17 +357,23 @@ export default util.createRule<Options, MessageIds>({
           isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
         ) {
+          console.log([
+            reference.init,
+            !variable,
+            reference.identifier.parent?.type,
+            // variable.identifiers.length === 0,
+            // (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
+            //   !isInInitializer(variable, reference)),
+            // !isForbidden(variable, reference),
+            // isClassRefInClassDecorator(variable, reference),
+            // reference.from.type === TSESLint.Scope.ScopeType.functionType
+          ]);
+
           return;
         }
 
         // Reports.
-        context.report({
-          node: reference.identifier,
-          messageId: 'noUseBeforeDefine',
-          data: {
-            name: reference.identifier.name,
-          },
-        });
+        report();
       });
 
       scope.childScopes.forEach(findVariablesInScope);
