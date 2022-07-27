@@ -1,6 +1,6 @@
-# `no-use-before-define`
-
-Disallows the use of variables before they are defined.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-use-before-define** for documentation.
 
 ## Rule Details
 

@@ -1,6 +1,6 @@
-# `no-restricted-imports`
-
-Disallows specified modules when loaded by `import`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-restricted-imports** for documentation.
 
 ## Rule Details
 

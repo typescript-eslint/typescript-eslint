@@ -1,6 +1,6 @@
-# `return-await`
-
-Enforces consistent returning of awaited values.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/return-await** for documentation.
 
 Returning an awaited promise can make sense for better stack trace information as well as for consistent error handling (returned promises will not be caught in an async function try/catch).
 

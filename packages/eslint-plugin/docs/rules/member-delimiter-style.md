@@ -1,6 +1,6 @@
-# `member-delimiter-style`
-
-Requires a specific member delimiter style for interfaces and type literals.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/member-delimiter-style** for documentation.
 
 Enforces a consistent member delimiter style in interfaces and type literals. There are three member delimiter styles primarily used in TypeScript:
 

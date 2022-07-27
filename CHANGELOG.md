@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.7...v5.31.0) (2022-07-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [typedef] Support nested array destructuring with type annotation ([#5311](https://github.com/typescript-eslint/typescript-eslint/issues/5311)) ([6d19efe](https://github.com/typescript-eslint/typescript-eslint/commit/6d19efed16d1cf0357ad363b6373d2021c49a8c8))
+* **scope-manager:** handle typeParameters of TSInstantiationExpression ([#5355](https://github.com/typescript-eslint/typescript-eslint/issues/5355)) ([2595ccf](https://github.com/typescript-eslint/typescript-eslint/commit/2595ccf67cd5158edbd6bebd9ac2dbd8bbd8b99c))
+
+
+### Features
+
+* **eslint-plugin:** [consistent-generic-ctors] check class field declaration ([#5288](https://github.com/typescript-eslint/typescript-eslint/issues/5288)) ([48f996e](https://github.com/typescript-eslint/typescript-eslint/commit/48f996e8dda79c9c865e8ca6552069902836648b))
+* **eslint-plugin:** [prefer-nullish-coalescing] add ignoreTernaryTests option ([#4965](https://github.com/typescript-eslint/typescript-eslint/issues/4965)) ([f82727f](https://github.com/typescript-eslint/typescript-eslint/commit/f82727ffeb97475c07773ca1d1e5b9609fcc5e68))
+
+
+
+
+
+## [5.30.7](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.6...v5.30.7) (2022-07-18)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-inferrable] fix optional param to valid code ([#5342](https://github.com/typescript-eslint/typescript-eslint/issues/5342)) ([98f6d5e](https://github.com/typescript-eslint/typescript-eslint/commit/98f6d5e6d08d1eb9789da52a15f337f5f53438bd))
+* **eslint-plugin:** [no-unused-vars] highlight last write reference ([#5267](https://github.com/typescript-eslint/typescript-eslint/issues/5267)) ([c3f199a](https://github.com/typescript-eslint/typescript-eslint/commit/c3f199a65a16aa72f5bb83e81a1ce0ffb5f69772))
+* expose types supporting old versions of typescript ([#5339](https://github.com/typescript-eslint/typescript-eslint/issues/5339)) ([4ba9bdb](https://github.com/typescript-eslint/typescript-eslint/commit/4ba9bdb93f87e6bc370f13aa1de48f435abe3f88))
+* **scope-manager:** allow visiting of constraint in infer type ([#5331](https://github.com/typescript-eslint/typescript-eslint/issues/5331)) ([b2846a1](https://github.com/typescript-eslint/typescript-eslint/commit/b2846a16777a3aea7b1e6ac9d81b9b6dce0bb874))
+
+
+
+
+
+## [5.30.6](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.5...v5.30.6) (2022-07-11)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-eslint
+
+
+
+
+
 ## [5.30.5](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.4...v5.30.5) (2022-07-04)
 
 
