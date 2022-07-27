@@ -205,7 +205,7 @@ const a = 1;
 export default a;
 const a = 1;
       `,
-      options: [{ allowNamedExports: true }],
+      options: [{ allowNamedExports: true, ignoreTypeReferences: false }],
       parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
       errors: [
         {

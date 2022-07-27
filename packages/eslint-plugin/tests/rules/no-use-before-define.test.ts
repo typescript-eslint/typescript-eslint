@@ -1286,20 +1286,6 @@ const a = 1;
     },
     {
       code: `
-export default a;
-const a = 1;
-      `,
-      options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
 export function foo() {
   return a;
 }

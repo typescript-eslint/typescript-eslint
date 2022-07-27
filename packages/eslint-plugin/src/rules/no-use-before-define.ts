@@ -96,11 +96,10 @@ function isOuterVariable(
 /**
  * Checks whether or not a given reference is a export reference.
  */
-function isAllowNamedExports(reference: TSESLint.Scope.Reference): boolean {
+function isNamedExports(reference: TSESLint.Scope.Reference): boolean {
   const { identifier } = reference;
   return (
-    (identifier.parent?.type === AST_NODE_TYPES.ExportSpecifier ||
-      identifier.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration) &&
+    identifier.parent?.type === AST_NODE_TYPES.ExportSpecifier &&
     identifier.parent?.local === identifier
   );
 }
@@ -297,23 +296,30 @@ export default util.createRule<Options, MessageIds>({
       reference: TSESLint.Scope.Reference,
     ): boolean {
       if (options.ignoreTypeReferences && isTypeReference(reference)) {
+        // console.log(1);
         return false;
       }
       if (isFunction(variable)) {
+        // console.log(2);
         return options.functions;
       }
       if (isOuterClass(variable, reference)) {
+        // console.log(3);
         return options.classes;
       }
       if (isOuterVariable(variable, reference)) {
+        // console.log(4);
         return options.variables;
       }
       if (isOuterEnum(variable, reference)) {
+        // console.log(5);
         return options.enums;
       }
       if (isTypedef(variable)) {
+        // console.log(6);
         return options.typedefs;
       }
+      // console.log(7);
 
       return true;
     }
@@ -334,22 +340,24 @@ export default util.createRule<Options, MessageIds>({
             },
           });
 
-        // If "allowNamedExports" is false, check it first to avoid variable is null
-
-        if (!options.allowNamedExports && isAllowNamedExports(reference)) {
-          report();
-          return;
-        }
-
         // Skips when the reference is:
         // - initializations.
         // - referring to an undefined variable.
         // - referring to a global environment variable (there're no identifiers).
         // - located preceded by the variable (except in initializers).
         // - allowed by options.
+        if (reference.init) {
+          return;
+        }
+        // If "allowNamedExports" is false, check it first to avoid variable is null
+        if (!options.allowNamedExports && isNamedExports(reference)) {
+          report();
+          return;
+        }
+        if (!variable) {
+          return;
+        }
         if (
-          reference.init ||
-          !variable ||
           variable.identifiers.length === 0 ||
           (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
             !isInInitializer(variable, reference)) ||
@@ -357,17 +365,26 @@ export default util.createRule<Options, MessageIds>({
           isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
         ) {
-          console.log([
-            reference.init,
-            !variable,
-            reference.identifier.parent?.type,
-            // variable.identifiers.length === 0,
-            // (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-            //   !isInInitializer(variable, reference)),
-            // !isForbidden(variable, reference),
-            // isClassRefInClassDecorator(variable, reference),
-            // reference.from.type === TSESLint.Scope.ScopeType.functionType
-          ]);
+          // console.log([
+          //   !isForbidden(variable, reference),
+          //   reference.init,
+          //   !variable || variable.identifiers.length === 0 || (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
+          //     !isInInitializer(variable, reference)),
+          //     !variable ||
+          //     variable.identifiers.length === 0 ||
+          //     (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
+          //       !isInInitializer(variable, reference)) ||
+          //     !isForbidden(variable, reference) ||
+          //     isClassRefInClassDecorator(variable, reference) ||
+          //     reference.from.type === TSESLint.Scope.ScopeType.functionType,
+          //   reference.identifier.parent?.type,
+          //   // variable.identifiers.length === 0,
+          //   // (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
+          //   //   !isInInitializer(variable, reference)),
+          //   // !isForbidden(variable, reference),
+          //   // isClassRefInClassDecorator(variable, reference),
+          //   // reference.from.type === TSESLint.Scope.ScopeType.functionType
+          // ]);
 
           return;
         }
