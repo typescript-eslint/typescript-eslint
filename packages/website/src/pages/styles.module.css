@@ -34,17 +34,15 @@
 }
 
 .buttonPrimary {
-  background-color: var(--ifm-color-warning-dark);
-  color: var(--ifm-color-secondary-contrast-foreground);
+  border: var(--ifm-button-border-width) solid var(--ifm-button-color);
 }
 
 .buttonPrimary:hover {
-  background-color: var(--ifm-color-warning);
-  color: var(--ifm-color-emphasis-900);
+  box-shadow: 0 2px 8px var(--ifm-button-color);
 }
 
 [data-theme='dark'] .buttonPrimary {
-  color: var(--ifm-color-secondary-contrast-background);
+  border: var(--ifm-button-border-width) solid var(--ifm-button-color);
 }
 
 .lightBackground {
