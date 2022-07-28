@@ -74,12 +74,12 @@ const generatedRuleDocs: Plugin = () => {
         {
           lang: 'jsonc',
           type: 'code',
-          meta: 'title=".eslintrc.json"',
-          value: `{
+          meta: 'title=".eslintrc.cjs"',
+          value: `module.exports = {
   // note you must disable the base rule as it can report incorrect errors
   "${file.stem}": "off",
   "@typescript-eslint/${file.stem}": "${optionLevel}"
-}`,
+};`,
         } as mdast.Code,
         {
           children: [
@@ -153,12 +153,12 @@ const generatedRuleDocs: Plugin = () => {
           {
             lang: 'jsonc',
             type: 'code',
-            meta: 'title=".eslintrc.json"',
-            value: `{
+            meta: 'title=".eslintrc.cjs"',
+            value: `module.exports = {
   "rules": {
     "@typescript-eslint/${file.stem}": "${optionLevel}"
   }
-}`,
+};`,
           } as mdast.Code,
           {
             children: [
@@ -202,35 +202,11 @@ const generatedRuleDocs: Plugin = () => {
 
     // 5. Add a notice about coming from ESLint core for extension rules
     if (meta.docs.extendsBaseRule) {
-      parent.children.push(
-        {
-          type: 'html',
-          value: '<sup>',
-        } as mdast.HTML,
-        {
-          children: [
-            {
-              type: 'text',
-              value: 'Taken with ❤️ ',
-            },
-            {
-              children: [
-                {
-                  type: 'text',
-                  value: 'from ESLint core',
-                },
-              ],
-              type: 'link',
-              url: 'https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md',
-            },
-          ],
-          type: 'paragraph',
-        } as mdast.Paragraph,
-        {
-          type: 'html',
-          value: '</sup>',
-        } as mdast.HTML,
-      );
+      parent.children.push({
+        type: 'jsx',
+        value:
+          '<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md)</sup>',
+      } as unist.Node);
     }
 
     // TODO: find & use library that converts text to markdown ast
