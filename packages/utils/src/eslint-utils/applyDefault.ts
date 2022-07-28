@@ -22,6 +22,7 @@ function applyDefault<TUser extends readonly unknown[], TDefault extends TUser>(
 
   // For avoiding the type error
   //   `This expression is not callable. Type 'unknown' has no call signatures.ts(2349)`
+  // @ts-ignore
   (options as unknown[]).forEach((opt: unknown, i: number) => {
     if (userOptions[i] !== undefined) {
       const userOpt = userOptions[i];

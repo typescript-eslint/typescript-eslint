@@ -83,8 +83,6 @@ type MessageIds =
   | 'errorStringArraySimple'
   | 'errorStringGenericSimple';
 
-const arrayOption = { enum: ['array', 'generic', 'array-simple'] };
-
 export default util.createRule<Options, MessageIds>({
   name: 'array-type',
   meta: {
@@ -106,11 +104,24 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
-        properties: {
-          default: arrayOption,
-          readonly: arrayOption,
+        $definitions: {
+          arrayOption: {
+            enum: ['array', 'generic', 'array-simple'],
+            tsType: 'ArrayOption',
+          },
         },
+        properties: {
+          default: {
+            $ref: '#/$definitions/arrayOption',
+            description: 'The array type expected for mutable cases.',
+          },
+          readonly: {
+            $ref: '#/$definitions/arrayOption',
+            description:
+              'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
+          },
+        },
+        type: 'object',
       },
     ],
   },

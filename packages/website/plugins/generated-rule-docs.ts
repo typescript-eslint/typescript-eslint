@@ -2,7 +2,6 @@ import type * as unist from 'unist';
 import * as mdast from 'mdast';
 import { format } from 'prettier';
 import type { Plugin } from 'unified';
-import { JSONSchema4Object } from 'json-schema';
 import { compile } from 'json-schema-to-typescript';
 
 import * as tseslintParser from '@typescript-eslint/parser';
@@ -146,57 +145,78 @@ const generatedRuleDocs: Plugin = () => {
         } as mdast.Heading);
       }
 
-      if (meta.schema.length === 0) {
-        parent.children.splice(
-          optionsH2Index + 1,
-          0,
-          {
-            lang: 'jsonc',
-            type: 'code',
-            meta: 'title=".eslintrc.cjs"',
-            value: `module.exports = {
+      parent.children.splice(optionsH2Index + 1, 0, {
+        lang: 'jsonc',
+        type: 'code',
+        meta: 'title=".eslintrc.cjs"',
+        value: `module.exports = {
   "rules": {
     "@typescript-eslint/${file.stem}": "${optionLevel}"
   }
 };`,
-          } as mdast.Code,
+      } as mdast.Code);
+
+      if (meta.schema.length === 0) {
+        parent.children.splice(optionsH2Index + 2, 0, {
+          children: [
+            {
+              type: 'text',
+              value: 'This rule is not configurable.',
+            },
+          ],
+          type: 'paragraph',
+        } as mdast.Paragraph);
+      } else {
+        const optionsSchema =
+          meta.schema instanceof Array ? meta.schema[0] : meta.schema;
+
+        parent.children.splice(
+          optionsH2Index + 2,
+          0,
           {
             children: [
               {
                 type: 'text',
-                value: 'This rule is not configurable.',
-              },
+                value: `This rule accepts an options ${
+                  'enum' in optionsSchema
+                    ? 'string of the following possible values'
+                    : 'object with the following properties'
+                }:`,
+              } as mdast.Text,
             ],
             type: 'paragraph',
           } as mdast.Paragraph,
-        );
-      } else {
-        const optionsInterface = await compile(
           {
-            title: `Options`,
-            ...(meta.schema[0] as JSONSchema4Object),
-          },
-          file.stem,
-          { additionalProperties: false, bannerComment: '' },
+            lang: 'ts',
+            type: 'code',
+            value: [
+              (
+                await compile(
+                  {
+                    title: `Options`,
+                    ...optionsSchema,
+                  },
+                  file.stem,
+                  {
+                    additionalProperties: false,
+                    bannerComment: '',
+                    declareExternallyReferenced: true,
+                  },
+                )
+              ).replace(/^export /g, ''),
+              format(
+                `const defaultOptions: Options = ${JSON.stringify(
+                  rule.defaultOptions,
+                )};`,
+                {
+                  parser: tseslintParser.parse,
+                },
+              ),
+            ]
+              .join(EOL)
+              .trim(),
+          } as mdast.Code,
         );
-
-        parent.children.splice(optionsH2Index + 1, 0, {
-          lang: 'ts',
-          type: 'code',
-          value: [
-            optionsInterface.replace(/^export /g, ''),
-            format(
-              `const defaultOptions: Options = ${JSON.stringify(
-                rule.defaultOptions,
-              )};`,
-              {
-                parser: tseslintParser.parse,
-              },
-            ),
-          ]
-            .join(EOL)
-            .trim(),
-        } as mdast.Code);
       }
     }
 
