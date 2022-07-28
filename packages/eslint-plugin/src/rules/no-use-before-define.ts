@@ -296,30 +296,23 @@ export default util.createRule<Options, MessageIds>({
       reference: TSESLint.Scope.Reference,
     ): boolean {
       if (options.ignoreTypeReferences && isTypeReference(reference)) {
-        // console.log(1);
         return false;
       }
       if (isFunction(variable)) {
-        // console.log(2);
         return options.functions;
       }
       if (isOuterClass(variable, reference)) {
-        // console.log(3);
         return options.classes;
       }
       if (isOuterVariable(variable, reference)) {
-        // console.log(4);
         return options.variables;
       }
       if (isOuterEnum(variable, reference)) {
-        // console.log(5);
         return options.enums;
       }
       if (isTypedef(variable)) {
-        // console.log(6);
         return options.typedefs;
       }
-      // console.log(7);
 
       return true;
     }
@@ -349,14 +342,22 @@ export default util.createRule<Options, MessageIds>({
         if (reference.init) {
           return;
         }
-        // If "allowNamedExports" is false, check it first to avoid variable is null
+
         if (!options.allowNamedExports && isNamedExports(reference)) {
-          report();
-          return;
+          if (
+            !variable ||
+            variable.identifiers[0].range[1] > reference.identifier.range[1] ||
+            isInInitializer(variable, reference)
+          ) {
+            report();
+            return;
+          }
         }
+
         if (!variable) {
           return;
         }
+
         if (
           variable.identifiers.length === 0 ||
           (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
@@ -365,27 +366,6 @@ export default util.createRule<Options, MessageIds>({
           isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
         ) {
-          // console.log([
-          //   !isForbidden(variable, reference),
-          //   reference.init,
-          //   !variable || variable.identifiers.length === 0 || (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-          //     !isInInitializer(variable, reference)),
-          //     !variable ||
-          //     variable.identifiers.length === 0 ||
-          //     (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-          //       !isInInitializer(variable, reference)) ||
-          //     !isForbidden(variable, reference) ||
-          //     isClassRefInClassDecorator(variable, reference) ||
-          //     reference.from.type === TSESLint.Scope.ScopeType.functionType,
-          //   reference.identifier.parent?.type,
-          //   // variable.identifiers.length === 0,
-          //   // (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-          //   //   !isInInitializer(variable, reference)),
-          //   // !isForbidden(variable, reference),
-          //   // isClassRefInClassDecorator(variable, reference),
-          //   // reference.from.type === TSESLint.Scope.ScopeType.functionType
-          // ]);
-
           return;
         }
 

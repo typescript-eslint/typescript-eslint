@@ -334,7 +334,7 @@ export { a };
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
     },
     {
       code: `
@@ -342,7 +342,7 @@ export { a as b };
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
     },
     {
       code: `
@@ -350,7 +350,7 @@ export { a, b };
 let a, b;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
     },
     {
       code: `
@@ -358,7 +358,7 @@ export { a };
 var a;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
     },
     {
       code: `
@@ -366,7 +366,7 @@ export { f };
 function f() {}
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
     },
     {
       code: `
@@ -374,9 +374,44 @@ export { C };
 class C {}
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
     },
+    {
+      code: `
+export { Foo };
 
+enum Foo {
+  BAR,
+}
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { Foo };
+
+namespace Foo {
+  export let bar = () => console.log('bar');
+}
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { Foo, baz };
+
+enum Foo {
+  BAR,
+}
+
+let baz: Enum;
+enum Enum {}
+      `,
+      options: [{ ignoreTypeReferences: true, allowNamedExports: true }],
+      parserOptions,
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2502
     {
       code: `
@@ -1145,13 +1180,14 @@ enum Foo {
         },
       ],
     },
-    // "allowNamedExports" option
+    // "allowNamedExports"
     {
       code: `
 export { a };
 const a = 1;
       `,
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1165,7 +1201,8 @@ export { a };
 const a = 1;
       `,
       options: [{}],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1179,7 +1216,8 @@ export { a };
 const a = 1;
       `,
       options: [{ allowNamedExports: false }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1193,7 +1231,8 @@ export { a };
 const a = 1;
       `,
       options: ['nofunc'],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1206,7 +1245,8 @@ const a = 1;
 export { a as b };
 const a = 1;
       `,
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1219,7 +1259,8 @@ const a = 1;
 export { a, b };
 let a, b;
       `,
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1236,7 +1277,8 @@ let a, b;
 export { a };
 var a;
       `,
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1249,7 +1291,8 @@ var a;
 export { f };
 function f() {}
       `,
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1262,7 +1305,8 @@ function f() {}
 export { C };
 class C {}
       `,
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1276,7 +1320,8 @@ export const foo = a;
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1292,7 +1337,8 @@ export function foo() {
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1310,11 +1356,68 @@ export class C {
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+      parserOptions,
+
       errors: [
         {
           messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { Foo };
+
+enum Foo {
+  BAR,
+}
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+        },
+      ],
+    },
+    {
+      code: `
+export { Foo };
+
+namespace Foo {
+  export let bar = () => console.log('bar');
+}
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+        },
+      ],
+    },
+    {
+      code: `
+export { Foo, baz };
+
+enum Foo {
+  BAR,
+}
+
+let baz: Enum;
+enum Enum {}
+      `,
+      options: [{ ignoreTypeReferences: true, allowNamedExports: false }],
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+        },
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'baz' },
         },
       ],
     },
