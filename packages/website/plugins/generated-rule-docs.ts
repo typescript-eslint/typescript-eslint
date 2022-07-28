@@ -74,8 +74,8 @@ const generatedRuleDocs: Plugin = () => {
         {
           lang: 'jsonc',
           type: 'code',
-          value: `// .eslintrc.json
-{
+          meta: 'title=".eslintrc.json"',
+          value: `{
   // note you must disable the base rule as it can report incorrect errors
   "${file.stem}": "off",
   "@typescript-eslint/${file.stem}": "${optionLevel}"
@@ -153,8 +153,8 @@ const generatedRuleDocs: Plugin = () => {
           {
             lang: 'jsonc',
             type: 'code',
-            value: `// .eslintrc.json
-{
+            meta: 'title=".eslintrc.json"',
+            value: `{
   "rules": {
     "@typescript-eslint/${file.stem}": "${optionLevel}"
   }
