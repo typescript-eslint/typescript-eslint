@@ -18,7 +18,6 @@ type Options = [
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
-    shouldTrackReferences?: boolean;
   },
 ];
 type MessageIds =
@@ -65,10 +64,6 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
           },
           allowTypedFunctionExpressions: {
-            type: 'boolean',
-          },
-          // DEPRECATED - To be removed in next major
-          shouldTrackReferences: {
             type: 'boolean',
           },
         },
