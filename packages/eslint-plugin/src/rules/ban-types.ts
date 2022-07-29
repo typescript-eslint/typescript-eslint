@@ -154,12 +154,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [
-    {
-      extendDefaults: true,
-      types: defaultTypes,
-    },
-  ],
+  defaultOptions: [{}],
   create(context, [options]) {
     const extendDefaults = options.extendDefaults ?? true;
     const customTypes = options.types ?? {};
