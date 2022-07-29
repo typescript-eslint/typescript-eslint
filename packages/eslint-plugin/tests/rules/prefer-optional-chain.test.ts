@@ -1316,38 +1316,6 @@ foo?.bar(/* comment */a,
         },
       ],
     },
-    /* // Not sure if should support
-    {
-      code: '!(foo.bar != undefined) || !foo.bar.baz;',
-      output: null,
-      errors: [
-        {
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: '!foo.bar?.baz;',
-            },
-          ],
-        },
-      ],
-    }, */
-    /* // Not sure if should support
-    {
-      code: 'foo.bar == undefined || !foo.bar.baz;',
-      output: null,
-      errors: [
-        {
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: '!foo.bar?.baz;',
-            },
-          ],
-        },
-      ],
-    }, */
     // TODO: deepest left node already pre-optional chained
     // {
     //   code: '!foo?.bar || !foo?.bar.baz;',
