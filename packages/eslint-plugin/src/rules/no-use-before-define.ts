@@ -100,7 +100,7 @@ function isNamedExports(reference: TSESLint.Scope.Reference): boolean {
   const { identifier } = reference;
   return (
     identifier.parent?.type === AST_NODE_TYPES.ExportSpecifier &&
-    identifier.parent?.local === identifier
+    identifier.parent.local === identifier
   );
 }
 
