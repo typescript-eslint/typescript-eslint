@@ -117,17 +117,16 @@ export default util.createRule({
         'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > ChainExpression > MemberExpression',
       ].join(',')](
         initialIdentifierOrNotEqualsExpr:
-          | TSESTree.BinaryExpression
           | TSESTree.Identifier
           | TSESTree.MemberExpression,
       ): void {
         // selector guarantees this cast
         const initialExpression = (
-          initialIdentifierOrNotEqualsExpr.parent?.type ===
+          initialIdentifierOrNotEqualsExpr.parent!.type ===
           AST_NODE_TYPES.ChainExpression
             ? initialIdentifierOrNotEqualsExpr.parent.parent
             : initialIdentifierOrNotEqualsExpr.parent
-        )?.parent as TSESTree.LogicalExpression;
+        )!.parent as TSESTree.LogicalExpression;
 
         if (
           initialExpression.left.type !== AST_NODE_TYPES.UnaryExpression ||
@@ -136,9 +135,6 @@ export default util.createRule({
           // the node(identifier or member expression) is not the deepest left node
           return;
         }
-        // if (!isValidChainTarget(initialIdentifierOrNotEqualsExpr, true)) {
-        //   return;
-        // }
 
         // walk up the tree to figure out how many logical expressions we can include
         let previous: TSESTree.LogicalExpression = initialExpression;
