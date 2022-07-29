@@ -7,19 +7,8 @@
 This rule extends the base [`eslint/no-shadow`](https://eslint.org/docs/rules/no-shadow) rule.
 It adds support for TypeScript's `this` parameters and global augmentation, and adds options for TypeScript features.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-shadow": "off",
-  "@typescript-eslint/no-shadow": "error"
-}
-```
-
 ## Options
 
-See [`eslint/no-shadow` options](https://eslint.org/docs/rules/no-shadow#options).
 This rule adds the following options:
 
 ```ts
@@ -85,9 +74,3 @@ Examples of **correct** code with `{ ignoreFunctionTypeParameterNameValueShadow:
 const test = 1;
 type Func = (test: string) => typeof test;
 ```
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-shadow.md)
-
-</sup>

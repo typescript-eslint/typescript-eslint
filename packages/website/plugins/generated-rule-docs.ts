@@ -76,10 +76,20 @@ export const generatedRuleDocs: Plugin = () => {
 
       if (meta.docs.extendsBaseRule) {
         if (howToUseH2Index === -1) {
-          howToUseH2Index =
-            whenNotToUseItH2Index === -1
-              ? parent.children.length
-              : ++whenNotToUseItH2Index;
+          if (optionsH2Index !== -1) {
+            howToUseH2Index = optionsH2Index;
+            optionsH2Index += 1;
+
+            if (whenNotToUseItH2Index !== -1) {
+              whenNotToUseItH2Index += 1;
+            }
+          } else {
+            howToUseH2Index =
+              whenNotToUseItH2Index === -1
+                ? parent.children.length
+                : ++whenNotToUseItH2Index;
+          }
+
           parent.children.splice(howToUseH2Index, 0, {
             children: [
               {
@@ -150,7 +160,7 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
-  // note you must disable the base rule as it can report incorrect errors
+  // Note: you must disable the base rule as it can report incorrect errors
   "${file.stem}": "off",
   "@typescript-eslint/${file.stem}": "${optionLevel}"
 };`,
