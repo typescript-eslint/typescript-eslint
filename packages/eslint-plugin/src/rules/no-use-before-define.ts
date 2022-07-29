@@ -317,6 +317,16 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
+    function isDefinedBeforeUse(
+      variable: TSESLint.Scope.Variable,
+      reference: TSESLint.Scope.Reference,
+    ): boolean {
+      return (
+        variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
+        !isInInitializer(variable, reference)
+      );
+    }
+
     /**
      * Finds and validates all variables in a given scope.
      */
@@ -324,7 +334,7 @@ export default util.createRule<Options, MessageIds>({
       scope.references.forEach(reference => {
         const variable = reference.resolved;
 
-        const report = (): void =>
+        function report(): void {
           context.report({
             node: reference.identifier,
             messageId: 'noUseBeforeDefine',
@@ -332,6 +342,7 @@ export default util.createRule<Options, MessageIds>({
               name: reference.identifier.name,
             },
           });
+        }
 
         // Skips when the reference is:
         // - initializations.
@@ -344,14 +355,10 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (!options.allowNamedExports && isNamedExports(reference)) {
-          if (
-            !variable ||
-            variable.identifiers[0].range[1] > reference.identifier.range[1] ||
-            isInInitializer(variable, reference)
-          ) {
+          if (!variable || !isDefinedBeforeUse(variable, reference)) {
             report();
-            return;
           }
+          return;
         }
 
         if (!variable) {
@@ -360,8 +367,7 @@ export default util.createRule<Options, MessageIds>({
 
         if (
           variable.identifiers.length === 0 ||
-          (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-            !isInInitializer(variable, reference)) ||
+          isDefinedBeforeUse(variable, reference) ||
           !isForbidden(variable, reference) ||
           isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
