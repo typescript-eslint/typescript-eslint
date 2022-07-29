@@ -143,16 +143,20 @@ export default util.createRule({
         let optionallyChainedCode = previousLeftText;
         let expressionCount = 1;
         while (current.type === AST_NODE_TYPES.LogicalExpression) {
-          const rightNode = (current.right as TSESTree.UnaryExpression)
-            .argument;
-          const isUnary = current.right.type !== AST_NODE_TYPES.UnaryExpression;
-          const { leftText, rightText, shouldBreak } =
-            breakIfRedundantOrInvalid({
-              expressionCount,
-              previousLeftText,
-              rightNode,
-              isUnary,
-            });
+          if (
+            current.right.type !== AST_NODE_TYPES.UnaryExpression ||
+            !isValidChainTarget(
+              current.right.argument,
+              // only allow unary '!' with identifiers for the first chain - !foo || !foo()
+              expressionCount === 1,
+            )
+          ) {
+            break;
+          }
+          const { rightText, shouldBreak } = breakIfInvalid({
+            rightNode: current.right.argument,
+            previousLeftText,
+          });
           if (shouldBreak) {
             break;
           }
@@ -165,7 +169,6 @@ export default util.createRule({
             current,
           } = normalizeRepeatingPatterns(
             rightText,
-            leftText,
             expressionCount,
             previousLeftText,
             optionallyChainedCode,
@@ -218,15 +221,19 @@ export default util.createRule({
         let optionallyChainedCode = previousLeftText;
         let expressionCount = 1;
         while (current.type === AST_NODE_TYPES.LogicalExpression) {
-          const rightNode = current.right;
-          const isUnary = false;
-          const { leftText, rightText, shouldBreak } =
-            breakIfRedundantOrInvalid({
-              expressionCount,
-              previousLeftText,
-              rightNode,
-              isUnary,
-            });
+          if (
+            !isValidChainTarget(
+              current.right,
+              // only allow identifiers for the first chain - foo && foo()
+              expressionCount === 1,
+            )
+          ) {
+            break;
+          }
+          const { rightText, shouldBreak } = breakIfInvalid({
+            rightNode: current.right as ValidChainTarget,
+            previousLeftText,
+          });
           if (shouldBreak) {
             break;
           }
@@ -239,7 +246,6 @@ export default util.createRule({
             current,
           } = normalizeRepeatingPatterns(
             rightText,
-            leftText,
             expressionCount,
             previousLeftText,
             optionallyChainedCode,
@@ -259,53 +265,39 @@ export default util.createRule({
       },
     };
 
-    interface BreakIfRedundantOrInvalidResult {
+    interface BreakIfInvalidResult {
       leftText: string;
       rightText: string;
       shouldBreak: boolean;
     }
 
-    function breakIfRedundantOrInvalid({
-      expressionCount,
+    interface BreakIfInvalidOptions {
+      previousLeftText: string;
+      rightNode: ValidChainTarget;
+    }
+
+    function breakIfInvalid({
       previousLeftText,
       rightNode,
-      isUnary,
-    }: {
-      expressionCount: number;
-      previousLeftText: string;
-      rightNode: TSESTree.Expression;
-      isUnary: boolean;
-    }): BreakIfRedundantOrInvalidResult {
+    }: BreakIfInvalidOptions): BreakIfInvalidResult {
       let shouldBreak = false;
-      if (
-        isUnary ||
-        !isValidChainTarget(
-          rightNode,
-          // only allow identifiers for the first chain - foo && foo()
-          expressionCount === 1,
-        )
-      ) {
-        shouldBreak = true;
-        return { shouldBreak, leftText: '', rightText: '' };
-      }
 
-      const leftText = previousLeftText;
       const rightText = getText(rightNode);
       // can't just use startsWith because of cases like foo && fooBar.baz;
       const matchRegex = new RegExp(
         `^${
           // escape regex characters
-          leftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          previousLeftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
         }[^a-zA-Z0-9_$]`,
       );
       if (
         !matchRegex.test(rightText) &&
         // handle redundant cases like foo.bar && foo.bar
-        leftText !== rightText
+        previousLeftText !== rightText
       ) {
         shouldBreak = true;
       }
-      return { shouldBreak, leftText, rightText };
+      return { shouldBreak, leftText: previousLeftText, rightText };
     }
 
     function getText(node: ValidChainTarget): string {
@@ -515,15 +507,15 @@ interface NormalizedPattern {
 
 function normalizeRepeatingPatterns(
   rightText: string,
-  leftText: string,
   expressionCount: number,
   previousLeftText: string,
   optionallyChainedCode: string,
   previous: TSESTree.Node,
   current: TSESTree.Node,
 ): NormalizedPattern {
+  const leftText = previousLeftText;
   // omit weird doubled up expression that make no sense like foo.bar && foo.bar
-  if (rightText !== leftText) {
+  if (rightText !== previousLeftText) {
     expressionCount += 1;
     previousLeftText = rightText;
 
