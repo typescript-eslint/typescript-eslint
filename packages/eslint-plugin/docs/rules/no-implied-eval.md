@@ -100,7 +100,7 @@ setTimeout(Foo.fn, 100);
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-implied-eval": "off",
-  "@typescript-eslint/no-implied-eval": ["error"]
+  "@typescript-eslint/no-implied-eval": "error"
 }
 ```
 

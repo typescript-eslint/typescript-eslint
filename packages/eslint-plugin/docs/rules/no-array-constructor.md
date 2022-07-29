@@ -36,7 +36,7 @@ new Array(someOtherArray.length);
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-array-constructor": "off",
-  "@typescript-eslint/no-array-constructor": ["error"]
+  "@typescript-eslint/no-array-constructor": "error"
 }
 ```
 

@@ -8,7 +8,7 @@ import * as tseslintParser from '@typescript-eslint/parser';
 import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
 import { EOL } from 'os';
 
-const generatedRuleDocs: Plugin = () => {
+export const generatedRuleDocs: Plugin = () => {
   return async (root, file) => {
     if (file.stem == null) {
       return;
@@ -62,25 +62,70 @@ const generatedRuleDocs: Plugin = () => {
 
     // 4. Add a description of how to use / options for the rule
     const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
+    let optionsH2Index = parent.children.findIndex(
+      createH2TextFilter('Options'),
+    );
     if (meta.docs.extendsBaseRule) {
-      const howToUseH2Index = parent.children.findIndex(
+      let howToUseH2Index = parent.children.findIndex(
         createH2TextFilter('How to Use'),
       );
 
-      parent.children.splice(
-        howToUseH2Index + 1,
-        0,
-        {
-          lang: 'jsonc',
-          type: 'code',
-          meta: 'title=".eslintrc.cjs"',
-          value: `module.exports = {
+      if (howToUseH2Index === -1) {
+        parent.children.splice(optionsH2Index, 0, {
+          children: [
+            {
+              type: 'text',
+              value: 'How to Use',
+            },
+          ],
+          depth: 2,
+          type: 'heading',
+        } as mdast.Heading);
+        howToUseH2Index = optionsH2Index;
+        optionsH2Index += 1;
+      }
+
+      parent.children.splice(howToUseH2Index + 1, 0, {
+        lang: 'jsonc',
+        type: 'code',
+        meta: 'title=".eslintrc.cjs"',
+        value: `module.exports = {
   // note you must disable the base rule as it can report incorrect errors
   "${file.stem}": "off",
   "@typescript-eslint/${file.stem}": "${optionLevel}"
 };`,
-        } as mdast.Code,
-        {
+      } as mdast.Code);
+
+      const optionsParagraph = {
+        children: [
+          {
+            value: 'See ',
+            type: 'text',
+          },
+          {
+            children: [
+              {
+                type: 'inlineCode',
+                value: `eslint/${file.stem}`,
+              },
+              {
+                type: 'text',
+                value: ' options',
+              },
+            ],
+            type: 'link',
+            url: `https://eslint.org/docs/rules/${file.stem}#options`,
+          },
+          {
+            type: 'text',
+            value: '.',
+          },
+        ],
+        type: 'paragraph',
+      } as mdast.Paragraph;
+
+      if (optionsH2Index === -1) {
+        parent.children.splice(howToUseH2Index + 2, 0, {
           children: [
             {
               type: 'text',
@@ -89,41 +134,12 @@ const generatedRuleDocs: Plugin = () => {
           ],
           depth: 2,
           type: 'heading',
-        } as mdast.Heading,
-        {
-          children: [
-            {
-              value: 'See ',
-              type: 'text',
-            },
-            {
-              children: [
-                {
-                  type: 'inlineCode',
-                  value: `eslint/${file.stem}`,
-                },
-                {
-                  type: 'text',
-                  value: ' options',
-                },
-              ],
-              type: 'link',
-              url: `https://eslint.org/docs/rules/${file.stem}#options`,
-            },
-            {
-              type: 'text',
-              value: '.',
-            },
-          ],
-          type: 'paragraph',
-        } as mdast.Paragraph,
-        // todo: add more?
-      );
+          optionsParagraph,
+        } as mdast.Heading);
+      } else {
+        parent.children.splice(optionsH2Index + 2, 0, optionsParagraph);
+      }
     } else {
-      let optionsH2Index = parent.children.findIndex(
-        createH2TextFilter('Options'),
-      );
-
       if (optionsH2Index === -1) {
         const whenNotToUseItH2Index = parent.children.findIndex(
           createH2TextFilter('When Not To Use It'),
@@ -203,7 +219,7 @@ const generatedRuleDocs: Plugin = () => {
                     declareExternallyReferenced: true,
                   },
                 )
-              ).replace(/^export /g, ''),
+              ).replace(/^export /gm, ''),
               format(
                 `const defaultOptions: Options = ${JSON.stringify(
                   rule.defaultOptions,
@@ -228,9 +244,6 @@ const generatedRuleDocs: Plugin = () => {
           '<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md)</sup>',
       } as unist.Node);
     }
-
-    // TODO: find & use library that converts text to markdown ast
-    // (that'll fix the <sup> not applying issue)
   };
 };
 
@@ -248,5 +261,3 @@ function createH2TextFilter(
     node.children[0].type === 'text' &&
     node.children[0].value === text;
 }
-
-export { generatedRuleDocs };

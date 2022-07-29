@@ -12,7 +12,7 @@ This rule extends the base [`eslint/no-restricted-imports`](https://eslint.org/d
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-restricted-imports": "off",
-  "@typescript-eslint/no-restricted-imports": ["error"]
+  "@typescript-eslint/no-restricted-imports": "error"
 }
 ```
 

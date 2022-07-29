@@ -104,19 +104,18 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        $definitions: {
+        definitions: {
           arrayOption: {
             enum: ['array', 'generic', 'array-simple'],
-            tsType: 'ArrayOption',
           },
         },
         properties: {
           default: {
-            $ref: '#/$definitions/arrayOption',
-            description: 'The array type expected for mutable cases.',
+            $ref: '#/definitions/arrayOption',
+            description: 'The array type expected for mutable cases...',
           },
           readonly: {
-            $ref: '#/$definitions/arrayOption',
+            $ref: '#/definitions/arrayOption',
             description:
               'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
           },

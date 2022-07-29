@@ -13,7 +13,7 @@ It adds support for generic type parameters on function calls.
 {
   // note you must disable the base rule as it can report incorrect errors
   "space-before-function-paren": "off",
-  "@typescript-eslint/space-before-function-paren": ["error"]
+  "@typescript-eslint/space-before-function-paren": "error"
 }
 ```
 

@@ -15,7 +15,7 @@ One example of valid TypeScript specific code that would otherwise trigger the `
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-empty-function": "off",
-  "@typescript-eslint/no-empty-function": ["error"]
+  "@typescript-eslint/no-empty-function": "error"
 }
 ```
 
@@ -100,7 +100,7 @@ class Foo extends Base {
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-empty-function": "off",
-  "@typescript-eslint/no-empty-function": ["error"]
+  "@typescript-eslint/no-empty-function": "error"
 }
 ```
 

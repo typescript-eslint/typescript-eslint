@@ -13,16 +13,6 @@ It adds support for `enum`, `interface`, `namespace` and `module` declarations.
 {
   // note you must disable the base rule as it can report incorrect errors
   "brace-style": "off",
-  "@typescript-eslint/brace-style": ["error"]
+  "@typescript-eslint/brace-style": "error"
 }
 ```
-
-## Options
-
-See [`eslint/brace-style` options](https://eslint.org/docs/rules/brace-style#options).
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/brace-style.md)
-
-</sup>

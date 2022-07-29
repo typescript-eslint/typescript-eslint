@@ -13,7 +13,7 @@ It adds support for TypeScript function overloads, and declaration merging.
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-redeclare": "off",
-  "@typescript-eslint/no-redeclare": ["error"]
+  "@typescript-eslint/no-redeclare": "error"
 }
 ```
 

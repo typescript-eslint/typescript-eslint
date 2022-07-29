@@ -39,7 +39,7 @@ In case a more specific options object is passed these blocks will follow `class
 {
   // note you must disable the base rule as it can report incorrect errors
   "space-before-blocks": "off",
-  "@typescript-eslint/space-before-blocks": ["error"]
+  "@typescript-eslint/space-before-blocks": "error"
 }
 ```
 

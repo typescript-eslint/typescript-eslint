@@ -108,7 +108,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": ["error"]
+        "@typescript-eslint/explicit-function-return-type": "error"
       }
     }
   ]

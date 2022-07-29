@@ -13,7 +13,7 @@ It adds support for generic type parameters on function calls.
 {
   // note you must disable the base rule as it can report incorrect errors
   "func-call-spacing": "off",
-  "@typescript-eslint/func-call-spacing": ["error"]
+  "@typescript-eslint/func-call-spacing": "error"
 }
 ```
 

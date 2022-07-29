@@ -17,7 +17,7 @@ It adds support for TypeScript nodes.
 {
   // note you must disable the base rule as it can report incorrect errors
   "indent": "off",
-  "@typescript-eslint/indent": ["error"]
+  "@typescript-eslint/indent": "error"
 }
 ```
 

@@ -13,7 +13,7 @@ This version adds support for generic type parameters on function calls.
 {
   // note you must disable the base rule as it can report incorrect errors
   "keyword-spacing": "off",
-  "@typescript-eslint/keyword-spacing": ["error"]
+  "@typescript-eslint/keyword-spacing": "error"
 }
 ```
 

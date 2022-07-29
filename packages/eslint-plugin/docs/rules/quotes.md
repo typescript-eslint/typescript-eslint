@@ -13,7 +13,7 @@ It adds support for TypeScript features which allow quoted names, but not backti
 {
   // note you must disable the base rule as it can report incorrect errors
   "quotes": "off",
-  "@typescript-eslint/quotes": ["error"]
+  "@typescript-eslint/quotes": "error"
 }
 ```
 

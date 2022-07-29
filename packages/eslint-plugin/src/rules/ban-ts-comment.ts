@@ -40,7 +40,7 @@ export default util.createRule<[Options], MessageIds>({
     },
     schema: [
       {
-        $definitions: {
+        definitions: {
           directiveConfigSchema: {
             oneOf: [
               {
@@ -62,11 +62,11 @@ export default util.createRule<[Options], MessageIds>({
         type: 'object',
         properties: {
           'ts-expect-error': {
-            $ref: '#/$definitions/directiveConfigSchema',
+            $ref: '#/definitions/directiveConfigSchema',
           },
-          'ts-ignore': { $ref: '#/$definitions/directiveConfigSchema' },
-          'ts-nocheck': { $ref: '#/$definitions/directiveConfigSchema' },
-          'ts-check': { $ref: '#/$definitions/directiveConfigSchema' },
+          'ts-ignore': { $ref: '#/definitions/directiveConfigSchema' },
+          'ts-nocheck': { $ref: '#/definitions/directiveConfigSchema' },
+          'ts-check': { $ref: '#/definitions/directiveConfigSchema' },
           minimumDescriptionLength: {
             type: 'number',
             default: defaultMinimumDescriptionLength,

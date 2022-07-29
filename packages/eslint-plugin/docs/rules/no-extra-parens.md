@@ -13,7 +13,7 @@ It adds support for TypeScript type assertions.
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-extra-parens": "off",
-  "@typescript-eslint/no-extra-parens": ["error"]
+  "@typescript-eslint/no-extra-parens": "error"
 }
 ```
 

@@ -17,7 +17,7 @@ This version adds support for type-only import and export.
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-duplicate-imports": "off",
-  "@typescript-eslint/no-duplicate-imports": ["error"]
+  "@typescript-eslint/no-duplicate-imports": "error"
 }
 ```
 

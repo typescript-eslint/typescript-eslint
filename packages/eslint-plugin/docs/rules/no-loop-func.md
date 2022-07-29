@@ -13,7 +13,7 @@ It adds support for TypeScript types.
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-loop-func": "off",
-  "@typescript-eslint/no-loop-func": ["error"]
+  "@typescript-eslint/no-loop-func": "error"
 }
 ```
 

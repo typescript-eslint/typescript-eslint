@@ -14,7 +14,7 @@ Note that this rule requires ESLint v7.
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-loss-of-precision": "off",
-  "@typescript-eslint/no-loss-of-precision": ["error"]
+  "@typescript-eslint/no-loss-of-precision": "error"
 }
 ```
 

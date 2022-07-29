@@ -13,7 +13,7 @@ It adds support for TypeScript's method overload definitions.
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-dupe-class-members": "off",
-  "@typescript-eslint/no-dupe-class-members": ["error"]
+  "@typescript-eslint/no-dupe-class-members": "error"
 }
 ```
 

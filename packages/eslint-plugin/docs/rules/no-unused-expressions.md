@@ -13,7 +13,7 @@ It adds support for optional call expressions `x?.()`, and directive in module d
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-unused-expressions": "off",
-  "@typescript-eslint/no-unused-expressions": ["error"]
+  "@typescript-eslint/no-unused-expressions": "error"
 }
 ```
 

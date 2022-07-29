@@ -13,7 +13,7 @@ It adds support for TypeScript's `this` parameters.
 {
   // note you must disable the base rule as it can report incorrect errors
   "no-invalid-this": "off",
-  "@typescript-eslint/no-invalid-this": ["error"]
+  "@typescript-eslint/no-invalid-this": "error"
 }
 ```
 

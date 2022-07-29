@@ -17,7 +17,7 @@ See the [ESLint documentation](https://eslint.org/docs/rules/lines-between-class
 {
   // note you must disable the base rule as it can report incorrect errors
   "lines-between-class-members": "off",
-  "@typescript-eslint/lines-between-class-members": ["error"]
+  "@typescript-eslint/lines-between-class-members": "error"
 }
 ```
 

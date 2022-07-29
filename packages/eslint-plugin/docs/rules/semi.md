@@ -17,7 +17,7 @@ See also the [`@typescript-eslint/member-delimiter-style`](member-delimiter-styl
 {
   // note you must disable the base rule as it can report incorrect errors
   "semi": "off",
-  "@typescript-eslint/semi": ["error"]
+  "@typescript-eslint/semi": "error"
 }
 ```
 
