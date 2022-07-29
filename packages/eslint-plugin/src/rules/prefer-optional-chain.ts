@@ -143,31 +143,17 @@ export default util.createRule({
         let optionallyChainedCode = previousLeftText;
         let expressionCount = 1;
         while (current.type === AST_NODE_TYPES.LogicalExpression) {
-          if (
-            current.right.type !== AST_NODE_TYPES.UnaryExpression ||
-            !isValidChainTarget(
-              current.right.argument,
-              // only allow identifiers for the first chain - foo && foo()
-              expressionCount === 1,
-            )
-          ) {
-            break;
-          }
-
-          const leftText = previousLeftText;
-          const rightText = getText(current.right.argument);
-          // can't just use startsWith because of cases like foo && fooBar.baz;
-          const matchRegex = new RegExp(
-            `^${
-              // escape regex characters
-              leftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-            }[^a-zA-Z0-9_$]`,
-          );
-          if (
-            !matchRegex.test(rightText) &&
-            // handle redundant cases like foo.bar && foo.bar
-            leftText !== rightText
-          ) {
+          const rightNode = (current.right as TSESTree.UnaryExpression)
+            .argument;
+          const isUnary = current.right.type !== AST_NODE_TYPES.UnaryExpression;
+          const { leftText, rightText, shouldBreak } =
+            breakIfRedundantOrInvalid({
+              expressionCount,
+              previousLeftText,
+              rightNode,
+              isUnary,
+            });
+          if (shouldBreak) {
             break;
           }
 
@@ -232,30 +218,16 @@ export default util.createRule({
         let optionallyChainedCode = previousLeftText;
         let expressionCount = 1;
         while (current.type === AST_NODE_TYPES.LogicalExpression) {
-          if (
-            !isValidChainTarget(
-              current.right,
-              // only allow identifiers for the first chain - foo && foo()
-              expressionCount === 1,
-            )
-          ) {
-            break;
-          }
-
-          const leftText = previousLeftText;
-          const rightText = getText(current.right);
-          // can't just use startsWith because of cases like foo && fooBar.baz;
-          const matchRegex = new RegExp(
-            `^${
-              // escape regex characters
-              leftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-            }[^a-zA-Z0-9_$]`,
-          );
-          if (
-            !matchRegex.test(rightText) &&
-            // handle redundant cases like foo.bar && foo.bar
-            leftText !== rightText
-          ) {
+          const rightNode = current.right;
+          const isUnary = false;
+          const { leftText, rightText, shouldBreak } =
+            breakIfRedundantOrInvalid({
+              expressionCount,
+              previousLeftText,
+              rightNode,
+              isUnary,
+            });
+          if (shouldBreak) {
             break;
           }
 
@@ -286,6 +258,55 @@ export default util.createRule({
         });
       },
     };
+
+    interface BreakIfRedundantOrInvalidResult {
+      leftText: string;
+      rightText: string;
+      shouldBreak: boolean;
+    }
+
+    function breakIfRedundantOrInvalid({
+      expressionCount,
+      previousLeftText,
+      rightNode,
+      isUnary,
+    }: {
+      expressionCount: number;
+      previousLeftText: string;
+      rightNode: TSESTree.Expression;
+      isUnary: boolean;
+    }): BreakIfRedundantOrInvalidResult {
+      let shouldBreak = false;
+      if (
+        isUnary ||
+        !isValidChainTarget(
+          rightNode,
+          // only allow identifiers for the first chain - foo && foo()
+          expressionCount === 1,
+        )
+      ) {
+        shouldBreak = true;
+        return { shouldBreak, leftText: '', rightText: '' };
+      }
+
+      const leftText = previousLeftText;
+      const rightText = getText(rightNode);
+      // can't just use startsWith because of cases like foo && fooBar.baz;
+      const matchRegex = new RegExp(
+        `^${
+          // escape regex characters
+          leftText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        }[^a-zA-Z0-9_$]`,
+      );
+      if (
+        !matchRegex.test(rightText) &&
+        // handle redundant cases like foo.bar && foo.bar
+        leftText !== rightText
+      ) {
+        shouldBreak = true;
+      }
+      return { shouldBreak, leftText, rightText };
+    }
 
     function getText(node: ValidChainTarget): string {
       if (node.type === AST_NODE_TYPES.BinaryExpression) {
