@@ -409,7 +409,7 @@ enum Foo {
 let baz: Enum;
 enum Enum {}
       `,
-      options: [{ ignoreTypeReferences: true, allowNamedExports: true }],
+      options: [{ allowNamedExports: true }],
       parserOptions,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2502
@@ -1180,14 +1180,13 @@ enum Foo {
         },
       ],
     },
-    // "allowNamedExports"
+    // "allowNamedExports" option
     {
       code: `
 export { a };
 const a = 1;
       `,
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1202,7 +1201,6 @@ const a = 1;
       `,
       options: [{}],
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1217,7 +1215,6 @@ const a = 1;
       `,
       options: [{ allowNamedExports: false }],
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1232,7 +1229,6 @@ const a = 1;
       `,
       options: ['nofunc'],
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1246,7 +1242,6 @@ export { a as b };
 const a = 1;
       `,
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1260,7 +1255,6 @@ export { a, b };
 let a, b;
       `,
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1278,7 +1272,6 @@ export { a };
 var a;
       `,
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1292,7 +1285,6 @@ export { f };
 function f() {}
       `,
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1306,7 +1298,6 @@ export { C };
 class C {}
       `,
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1321,7 +1312,6 @@ const a = 1;
       `,
       options: [{ allowNamedExports: true }],
       parserOptions,
-
       errors: [
         {
           messageId: 'noUseBeforeDefine',
