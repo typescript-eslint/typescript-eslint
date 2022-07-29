@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import type * as unist from 'unist';
 import * as mdast from 'mdast';
 import { format } from 'prettier';
@@ -60,43 +61,63 @@ export const generatedRuleDocs: Plugin = () => {
     };
     parent.children.splice(attributesH2Index, 0, attributesNode);
 
-    // 4. Add a description of how to use / options for the rule
-    const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
-    let optionsH2Index = parent.children.findIndex(
-      createH2TextFilter('Options'),
-    );
-    if (meta.docs.extendsBaseRule) {
+    // 4. Make sure the appropriate headers exist to place content under
+    const { howToUseH2Index, optionsH2Index } = (() => {
       let howToUseH2Index = parent.children.findIndex(
         createH2TextFilter('How to Use'),
       );
+      let optionsH2Index = parent.children.findIndex(
+        createH2TextFilter('Options'),
+      );
 
-      if (howToUseH2Index === -1) {
+      let whenNotToUseItH2Index = parent.children.findIndex(
+        createH2TextFilter('When Not To Use It'),
+      );
+
+      if (meta.docs.extendsBaseRule) {
+        if (howToUseH2Index === -1) {
+          howToUseH2Index =
+            whenNotToUseItH2Index === -1
+              ? parent.children.length
+              : ++whenNotToUseItH2Index;
+          parent.children.splice(howToUseH2Index, 0, {
+            children: [
+              {
+                type: 'text',
+                value: 'How to Use',
+              },
+            ],
+            depth: 2,
+            type: 'heading',
+          } as mdast.Heading);
+        }
+      }
+
+      if (optionsH2Index === -1) {
+        optionsH2Index =
+          whenNotToUseItH2Index === -1
+            ? parent.children.length
+            : ++whenNotToUseItH2Index;
         parent.children.splice(optionsH2Index, 0, {
           children: [
             {
               type: 'text',
-              value: 'How to Use',
+              value: 'Options',
             },
           ],
           depth: 2,
           type: 'heading',
         } as mdast.Heading);
-        howToUseH2Index = optionsH2Index;
-        optionsH2Index += 1;
       }
 
-      parent.children.splice(howToUseH2Index + 1, 0, {
-        lang: 'jsonc',
-        type: 'code',
-        meta: 'title=".eslintrc.cjs"',
-        value: `module.exports = {
-  // note you must disable the base rule as it can report incorrect errors
-  "${file.stem}": "off",
-  "@typescript-eslint/${file.stem}": "${optionLevel}"
-};`,
-      } as mdast.Code);
+      return { howToUseH2Index, optionsH2Index };
+    })();
 
-      const optionsParagraph = {
+    // 5. Add a description of how to use / options for the rule
+    const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
+
+    if (meta.docs.extendsBaseRule) {
+      parent.children.splice(optionsH2Index + 1, 0, {
         children: [
           {
             value: 'See ',
@@ -122,46 +143,20 @@ export const generatedRuleDocs: Plugin = () => {
           },
         ],
         type: 'paragraph',
-      } as mdast.Paragraph;
+      } as mdast.Paragraph);
 
-      if (optionsH2Index === -1) {
-        parent.children.splice(howToUseH2Index + 2, 0, {
-          children: [
-            {
-              type: 'text',
-              value: 'Options',
-            },
-          ],
-          depth: 2,
-          type: 'heading',
-          optionsParagraph,
-        } as mdast.Heading);
-      } else {
-        parent.children.splice(optionsH2Index + 2, 0, optionsParagraph);
-      }
+      parent.children.splice(howToUseH2Index + 1, 0, {
+        lang: 'jsonc',
+        type: 'code',
+        meta: 'title=".eslintrc.cjs"',
+        value: `module.exports = {
+  // note you must disable the base rule as it can report incorrect errors
+  "${file.stem}": "off",
+  "@typescript-eslint/${file.stem}": "${optionLevel}"
+};`,
+      } as mdast.Code);
     } else {
-      if (optionsH2Index === -1) {
-        const whenNotToUseItH2Index = parent.children.findIndex(
-          createH2TextFilter('When Not To Use It'),
-        );
-        optionsH2Index =
-          whenNotToUseItH2Index === -1
-            ? parent.children.length - 1
-            : whenNotToUseItH2Index;
-
-        parent.children.splice(optionsH2Index, 0, {
-          children: [
-            {
-              type: 'text',
-              value: 'Options',
-            },
-          ],
-          depth: 2,
-          type: 'heading',
-        } as mdast.Heading);
-      }
-
-      parent.children.splice(optionsH2Index + 1, 0, {
+      parent.children.splice(optionsH2Index, 0, {
         lang: 'jsonc',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
@@ -173,7 +168,7 @@ export const generatedRuleDocs: Plugin = () => {
       } as mdast.Code);
 
       if (meta.schema.length === 0) {
-        parent.children.splice(optionsH2Index + 2, 0, {
+        parent.children.splice(optionsH2Index + 1, 0, {
           children: [
             {
               type: 'text',
@@ -236,7 +231,7 @@ export const generatedRuleDocs: Plugin = () => {
       }
     }
 
-    // 5. Add a notice about coming from ESLint core for extension rules
+    // 6. Add a notice about coming from ESLint core for extension rules
     if (meta.docs.extendsBaseRule) {
       parent.children.push({
         type: 'jsx',
