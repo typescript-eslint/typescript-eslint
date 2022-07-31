@@ -25,12 +25,12 @@ ruleTester.run('prefer-as-const', rule, {
     "let foo = 'bar';",
     `
       class foo {
-        bar: 'baz' = 'baz';
+        bar = 'baz';
       }
     `,
     `
       class foo {
-        bar = 'baz';
+        bar: 'baz';
       }
     `,
     "let foo: 'bar';",
@@ -157,6 +157,35 @@ ruleTester.run('prefer-as-const', rule, {
           messageId: 'preferConstAssertion',
           line: 1,
           column: 16,
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  bar: 'baz' = 'baz';
+}
+      `.trimRight(),
+      output: `
+class foo {
+  bar: 'baz' = 'baz';
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'variableConstAssertion',
+          line: 3,
+          column: 8,
+          suggestions: [
+            {
+              messageId: 'variableSuggest',
+              output: `
+class foo {
+  bar = 'baz' as const;
+}
+              `.trimRight(),
+            },
+          ],
         },
       ],
     },
