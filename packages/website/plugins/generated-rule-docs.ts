@@ -117,7 +117,7 @@ export const generatedRuleDocs: Plugin = () => {
         optionsH2Index =
           whenNotToUseItH2Index === -1
             ? parent.children.length
-            : ++whenNotToUseItH2Index;
+            : whenNotToUseItH2Index++;
         parent.children.splice(optionsH2Index, 0, {
           children: [
             {
@@ -128,6 +128,8 @@ export const generatedRuleDocs: Plugin = () => {
           depth: 2,
           type: 'heading',
         } as mdast.Heading);
+
+        optionsH2Index += 1;
       }
 
       return [howToUseH2Index, optionsH2Index];
