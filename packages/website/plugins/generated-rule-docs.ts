@@ -156,7 +156,7 @@ export const generatedRuleDocs: Plugin = () => {
       } as mdast.Paragraph);
 
       parent.children.splice(howToUseH2Index + 1, 0, {
-        lang: 'jsonc',
+        lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
@@ -167,7 +167,7 @@ export const generatedRuleDocs: Plugin = () => {
       } as mdast.Code);
     } else {
       parent.children.splice(optionsH2Index, 0, {
-        lang: 'jsonc',
+        lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
@@ -244,10 +244,15 @@ export const generatedRuleDocs: Plugin = () => {
     // 6. Add a notice about coming from ESLint core for extension rules
     if (meta.docs.extendsBaseRule) {
       parent.children.push({
-        type: 'jsx',
-        value:
-          '<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md)</sup>',
-      } as unist.Node);
+        children: [
+          {
+            type: 'text',
+            value:
+              '<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md)</sup>',
+          },
+        ],
+        type: 'paragraph',
+      } as mdast.Paragraph);
     }
   };
 };
