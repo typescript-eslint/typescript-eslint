@@ -15,6 +15,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
   let variables = true;
   let typedefs = true;
   let ignoreTypeReferences = true;
+  let allowNamedExports = false;
 
   if (typeof options === 'string') {
     functions = options !== 'nofunc';
@@ -25,6 +26,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
     variables = options.variables !== false;
     typedefs = options.typedefs !== false;
     ignoreTypeReferences = options.ignoreTypeReferences !== false;
+    allowNamedExports = options.allowNamedExports !== false;
   }
 
   return {
@@ -34,6 +36,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
     variables,
     typedefs,
     ignoreTypeReferences,
+    allowNamedExports,
   };
 }
 
@@ -87,6 +90,17 @@ function isOuterVariable(
   return (
     variable.defs[0].type === DefinitionType.Variable &&
     variable.scope.variableScope !== reference.from.variableScope
+  );
+}
+
+/**
+ * Checks whether or not a given reference is a export reference.
+ */
+function isNamedExports(reference: TSESLint.Scope.Reference): boolean {
+  const { identifier } = reference;
+  return (
+    identifier.parent?.type === AST_NODE_TYPES.ExportSpecifier &&
+    identifier.parent.local === identifier
   );
 }
 
@@ -218,6 +232,7 @@ interface Config {
   variables?: boolean;
   typedefs?: boolean;
   ignoreTypeReferences?: boolean;
+  allowNamedExports?: boolean;
 }
 type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
@@ -249,6 +264,7 @@ export default util.createRule<Options, MessageIds>({
               variables: { type: 'boolean' },
               typedefs: { type: 'boolean' },
               ignoreTypeReferences: { type: 'boolean' },
+              allowNamedExports: { type: 'boolean' },
             },
             additionalProperties: false,
           },
@@ -264,6 +280,7 @@ export default util.createRule<Options, MessageIds>({
       variables: true,
       typedefs: true,
       ignoreTypeReferences: true,
+      allowNamedExports: false,
     },
   ],
   create(context, optionsWithDefault) {
@@ -300,6 +317,16 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
+    function isDefinedBeforeUse(
+      variable: TSESLint.Scope.Variable,
+      reference: TSESLint.Scope.Reference,
+    ): boolean {
+      return (
+        variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
+        !isInInitializer(variable, reference)
+      );
+    }
+
     /**
      * Finds and validates all variables in a given scope.
      */
@@ -307,18 +334,40 @@ export default util.createRule<Options, MessageIds>({
       scope.references.forEach(reference => {
         const variable = reference.resolved;
 
+        function report(): void {
+          context.report({
+            node: reference.identifier,
+            messageId: 'noUseBeforeDefine',
+            data: {
+              name: reference.identifier.name,
+            },
+          });
+        }
+
         // Skips when the reference is:
         // - initializations.
         // - referring to an undefined variable.
         // - referring to a global environment variable (there're no identifiers).
         // - located preceded by the variable (except in initializers).
         // - allowed by options.
+        if (reference.init) {
+          return;
+        }
+
+        if (!options.allowNamedExports && isNamedExports(reference)) {
+          if (!variable || !isDefinedBeforeUse(variable, reference)) {
+            report();
+          }
+          return;
+        }
+
+        if (!variable) {
+          return;
+        }
+
         if (
-          reference.init ||
-          !variable ||
           variable.identifiers.length === 0 ||
-          (variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-            !isInInitializer(variable, reference)) ||
+          isDefinedBeforeUse(variable, reference) ||
           !isForbidden(variable, reference) ||
           isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
@@ -327,13 +376,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         // Reports.
-        context.report({
-          node: reference.identifier,
-          messageId: 'noUseBeforeDefine',
-          data: {
-            name: reference.identifier.name,
-          },
-        });
+        report();
       });
 
       scope.childScopes.forEach(findVariablesInScope);

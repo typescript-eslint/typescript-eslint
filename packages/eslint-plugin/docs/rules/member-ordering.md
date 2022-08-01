@@ -40,7 +40,7 @@ You can configure `OrderConfig` options for:
 
 The `OrderConfig` settings for each kind of construct may configure sorting on one or both two levels:
 
-- **`memberType`**: organizing on member type groups such as methods vs. properties
+- **`memberTypes`**: organizing on member type groups such as methods vs. properties
 - **`order`**: organizing based on member names, such as alphabetically
 
 ### Groups
