@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import type * as unist from 'unist';
 import * as mdast from 'mdast';
 import { format } from 'prettier';
@@ -70,7 +69,7 @@ export const generatedRuleDocs: Plugin = () => {
     parent.children.splice(attributesH2Index, 0, attributesNode);
 
     // 4. Make sure the appropriate headers exist to place content under
-    const { howToUseH2Index, optionsH2Index } = (() => {
+    const [howToUseH2Index, optionsH2Index] = ((): [number, number] => {
       let howToUseH2Index = parent.children.findIndex(
         createH2TextFilter('How to Use'),
       );
@@ -128,7 +127,7 @@ export const generatedRuleDocs: Plugin = () => {
         } as mdast.Heading);
       }
 
-      return { howToUseH2Index, optionsH2Index };
+      return [howToUseH2Index, optionsH2Index];
     })();
 
     // 5. Add a description of how to use / options for the rule
