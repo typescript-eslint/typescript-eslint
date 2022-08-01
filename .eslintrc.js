@@ -15,6 +15,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
@@ -194,7 +195,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
-        'eslint-plugin/no-identical-tests': 'error',
+        'eslint-plugin/consistent-output': 'off',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
         'jest/no-alias-methods': 'error',

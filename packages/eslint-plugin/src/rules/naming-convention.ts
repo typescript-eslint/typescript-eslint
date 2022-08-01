@@ -1,3 +1,7 @@
+/* eslint-disable eslint-comments/no-use */
+/* eslint eslint-plugin/no-unused-message-ids:"off" -- rule has false positives due to our usage of an external helper function */
+/* eslint-enable eslint-comments/no-use */
+
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { ScriptTarget } from 'typescript';

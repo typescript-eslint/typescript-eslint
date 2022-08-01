@@ -8,7 +8,6 @@ export default util.createRule({
     docs: {
       description: 'Enforce the use of `as const` over literal type',
       recommended: 'error',
-      suggestion: true,
     },
     fixable: 'code',
     hasSuggestions: true,

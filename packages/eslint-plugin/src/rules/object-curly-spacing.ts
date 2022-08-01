@@ -20,6 +20,7 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
   name: 'object-curly-spacing',
+  // eslint-disable-next-line eslint-plugin/prefer-message-ids,eslint-plugin/require-meta-type,eslint-plugin/require-meta-schema,eslint-plugin/require-meta-fixable -- all in base rule
   meta: {
     ...baseRule.meta,
     docs: {
