@@ -9,6 +9,14 @@ import * as tseslintParser from '@typescript-eslint/parser';
 import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
 import { EOL } from 'os';
 
+/**
+ * Rules whose options schema generate annoyingly complex schemas.
+ *
+ * @remarks These need to be typed in manually in their .md docs file.
+ * @todo Get these schemas printing nicely in their .md docs files!
+ */
+const COMPLICATED_RULE_OPTIONS = new Set(['naming-convention']);
+
 export const generatedRuleDocs: Plugin = () => {
   return async (root, file) => {
     if (file.stem == null) {
@@ -187,7 +195,7 @@ export const generatedRuleDocs: Plugin = () => {
           ],
           type: 'paragraph',
         } as mdast.Paragraph);
-      } else {
+      } else if (!COMPLICATED_RULE_OPTIONS.has(file.stem)) {
         const optionsSchema =
           meta.schema instanceof Array ? meta.schema[0] : meta.schema;
 
