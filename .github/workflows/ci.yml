@@ -194,11 +194,11 @@ jobs:
       - name: Install Cypress
         run: yarn cypress install
 
-      - name: Cypress run
+      - env:
+          DEBUG: '@cypress/github-action'
+        name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          env:
-            DEBUG: '@cypress/github-action'
           project: ./packages/website
           start: yarn start
 

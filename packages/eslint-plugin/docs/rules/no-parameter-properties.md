@@ -2,6 +2,11 @@
 >
 > See **https://typescript-eslint.io/rules/no-parameter-properties** for documentation.
 
+:::danger Deprecated
+
+This rule has been deprecated in favour of the equivalent, better named [`parameter-properties`](./parameter-properties) rule.
+:::
+
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.
 
