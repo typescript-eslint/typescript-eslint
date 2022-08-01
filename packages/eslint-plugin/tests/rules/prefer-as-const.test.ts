@@ -23,6 +23,9 @@ ruleTester.run('prefer-as-const', rule, {
     'let foo: number = 1;',
     "let foo: 'bar' = baz;",
     "let foo = 'bar';",
+    "let foo: 'bar';",
+    'let foo = { bar };',
+    "let foo: 'baz' = 'baz' as const;",
     `
       class foo {
         bar = 'baz';
@@ -33,9 +36,58 @@ ruleTester.run('prefer-as-const', rule, {
         bar: 'baz';
       }
     `,
-    "let foo: 'bar';",
-    'let foo = { bar };',
-    "let foo: 'baz' = 'baz' as const;",
+    `
+      class foo {
+        bar;
+      }
+    `,
+    `
+      class foo {
+        bar = <baz>'baz';
+      }
+    `,
+    `
+      class foo {
+        bar: string = 'baz';
+      }
+    `,
+    `
+      class foo {
+        bar: number = 1;
+      }
+    `,
+    `
+      class foo {
+        bar = 'baz' as const;
+      }
+    `,
+    `
+      class foo {
+        bar = 2 as const;
+      }
+    `,
+    `
+      class foo {
+        get bar(): 'bar' {}
+        set bar(bar: 'bar') {}
+      }
+    `,
+    `
+      class foo {
+        bar = () => 'bar' as const;
+      }
+    `,
+    `
+      type BazFunction = () => 'baz';
+      class foo {
+        bar: BazFunction = () => 'bar';
+      }
+    `,
+    `
+      class foo {
+        bar(): void {}
+      }
+    `,
   ],
   invalid: [
     {
@@ -186,6 +238,92 @@ class foo {
               `.trimRight(),
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  bar: 2 = 2;
+}
+      `.trimRight(),
+      output: `
+class foo {
+  bar: 2 = 2;
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'variableConstAssertion',
+          line: 3,
+          column: 8,
+          suggestions: [
+            {
+              messageId: 'variableSuggest',
+              output: `
+class foo {
+  bar = 2 as const;
+}
+              `.trimRight(),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  foo = <'bar'>'bar';
+}
+      `.trimRight(),
+      output: `
+class foo {
+  foo = <const>'bar';
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'preferConstAssertion',
+          line: 3,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  foo = 'bar' as 'bar';
+}
+      `.trimRight(),
+      output: `
+class foo {
+  foo = 'bar' as const;
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'preferConstAssertion',
+          line: 3,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  foo = 5 as 5;
+}
+      `.trimRight(),
+      output: `
+class foo {
+  foo = 5 as const;
+}
+      `.trimRight(),
+      errors: [
+        {
+          messageId: 'preferConstAssertion',
+          line: 3,
+          column: 14,
         },
       ],
     },
