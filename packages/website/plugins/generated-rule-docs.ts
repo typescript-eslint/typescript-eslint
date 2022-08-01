@@ -79,7 +79,7 @@ export const generatedRuleDocs: Plugin = () => {
       let optionsH2Index = parent.children.findIndex(
         createH2TextFilter('Options'),
       );
-      let relatedToH2Index = parent.children.findIndex(
+      const relatedToH2Index = parent.children.findIndex(
         createH2TextFilter('Related To'),
       );
       let whenNotToUseItH2Index = parent.children.findIndex(
@@ -262,22 +262,27 @@ export const generatedRuleDocs: Plugin = () => {
       parent.children.push({
         children: [
           {
+            type: 'jsx',
+            value: '<sup>',
+          },
+          {
             type: 'text',
             value: 'Taken with ❤️ ',
           },
           {
+            type: 'link',
+            title: null,
+            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${file.stem}.md`,
             children: [
               {
                 type: 'text',
                 value: 'from ESLint core',
               },
             ],
-            type: 'link',
-            url: 'https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md',
           },
           {
-            type: 'text',
-            value: '.',
+            type: 'jsx',
+            value: '</sup>',
           },
         ],
         type: 'paragraph',
