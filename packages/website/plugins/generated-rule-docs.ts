@@ -248,7 +248,7 @@ export const generatedRuleDocs: Plugin = () => {
           {
             type: 'text',
             value:
-              '<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md)</sup>',
+              'Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md).',
           },
         ],
         type: 'paragraph',
