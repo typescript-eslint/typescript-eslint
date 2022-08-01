@@ -13,7 +13,7 @@ Examples of code with the default options:
 
 <!--tabs-->
 
-#### ❌ Incorrect
+### ❌ Incorrect
 
 ```ts
 const a: bigint = 10n;
@@ -54,7 +54,7 @@ class Foo {
 function fn(a: number = 5, b: boolean = true) {}
 ```
 
-#### ✅ Correct
+### ✅ Correct
 
 ```ts
 const a = 10n;
