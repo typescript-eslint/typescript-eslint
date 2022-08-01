@@ -79,7 +79,9 @@ export const generatedRuleDocs: Plugin = () => {
       let optionsH2Index = parent.children.findIndex(
         createH2TextFilter('Options'),
       );
-
+      let relatedToH2Index = parent.children.findIndex(
+        createH2TextFilter('Related To'),
+      );
       let whenNotToUseItH2Index = parent.children.findIndex(
         createH2TextFilter('When Not To Use It'),
       );
@@ -116,8 +118,10 @@ export const generatedRuleDocs: Plugin = () => {
       if (optionsH2Index === -1) {
         optionsH2Index =
           whenNotToUseItH2Index === -1
-            ? parent.children.length
-            : whenNotToUseItH2Index++;
+            ? relatedToH2Index === -1
+              ? parent.children.length
+              : relatedToH2Index
+            : whenNotToUseItH2Index;
         parent.children.splice(optionsH2Index, 0, {
           children: [
             {
