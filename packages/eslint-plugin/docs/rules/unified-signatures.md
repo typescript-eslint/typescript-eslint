@@ -32,6 +32,10 @@ function x(x: number | string): void;
 function y(...x: number[]): void;
 ```
 
+## Options
+
+### `ignoreDifferentlyNamedParameters`
+
 Examples of code for this rule with `ignoreDifferentlyNamedParameters`:
 
 <!--tabs-->

@@ -89,19 +89,6 @@ const { log } = OtherClass;
 log();
 ```
 
-## Example
-
-```json
-{
-  "@typescript-eslint/unbound-method": [
-    "error",
-    {
-      "ignoreStatic": true
-    }
-  ]
-}
-```
-
 ## When Not To Use It
 
 If your code intentionally waits to bind methods after use, such as by passing a `scope: this` along with the method, you can disable this rule.

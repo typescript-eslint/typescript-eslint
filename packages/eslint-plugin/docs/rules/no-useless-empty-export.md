@@ -37,16 +37,3 @@ export const value = 'Hello, world!';
 ```ts
 import 'some-other-module';
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-useless-empty-export": "warn"
-  }
-}
-```
-
-This rule is not configurable.

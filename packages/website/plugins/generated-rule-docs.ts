@@ -14,7 +14,10 @@ import { EOL } from 'os';
  * @remarks These need to be typed in manually in their .md docs file.
  * @todo Get these schemas printing nicely in their .md docs files!
  */
-const COMPLICATED_RULE_OPTIONS = new Set(['naming-convention']);
+const COMPLICATED_RULE_OPTIONS = new Set([
+  'member-ordering',
+  'naming-convention',
+]);
 
 export const generatedRuleDocs: Plugin = () => {
   return async (root, file) => {
@@ -254,8 +257,21 @@ export const generatedRuleDocs: Plugin = () => {
         children: [
           {
             type: 'text',
-            value:
-              'Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md).',
+            value: 'Taken with ❤️ ',
+          },
+          {
+            children: [
+              {
+                type: 'text',
+                value: 'from ESLint core',
+              },
+            ],
+            type: 'link',
+            url: 'https://github.com/eslint/eslint/blob/main/docs/rules/require-await.md',
+          },
+          {
+            type: 'text',
+            value: '.',
           },
         ],
         type: 'paragraph',

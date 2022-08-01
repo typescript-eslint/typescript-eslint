@@ -54,19 +54,6 @@ arr[idx];
 arr[idx++];
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-member-access": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
