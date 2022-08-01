@@ -31,7 +31,7 @@ export default util.createRule({
       suggestion: true,
     },
     fixable: 'code',
-    hasSuggestions: true,
+    hasSuggestions: false,
     messages: {
       uselessExport: 'Empty export does nothing and can be removed.',
     },

@@ -62,7 +62,7 @@ ruleTester.run('prefer-as-const', rule, {
     },
     {
       code: "let []: 'bar' = 'bar';",
-      output: "let []: 'bar' = 'bar';",
+      output: null,
       errors: [
         {
           messageId: 'variableConstAssertion',
@@ -73,7 +73,7 @@ ruleTester.run('prefer-as-const', rule, {
     },
     {
       code: "let foo: 'bar' = 'bar';",
-      output: "let foo: 'bar' = 'bar';",
+      output: null,
       errors: [
         {
           messageId: 'variableConstAssertion',
@@ -90,7 +90,7 @@ ruleTester.run('prefer-as-const', rule, {
     },
     {
       code: 'let foo: 2 = 2;',
-      output: 'let foo: 2 = 2;',
+      output: null,
       errors: [
         {
           messageId: 'variableConstAssertion',

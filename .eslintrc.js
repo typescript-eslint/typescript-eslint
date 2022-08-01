@@ -15,6 +15,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
@@ -194,6 +195,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
+        'eslint-plugin/consistent-output': 'off',
         'eslint-plugin/no-identical-tests': 'error',
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
@@ -243,6 +245,7 @@ module.exports = {
         'packages/eslint-plugin/src/rules/**/*.ts',
       ],
       rules: {
+        'eslint-plugin/require-meta-schema': 'off', // TODO: allow variable
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
       },

@@ -368,11 +368,7 @@ export class XXXX {
           line: 3,
         },
       ],
-      output: `
-export class XXXX {
-  public constructor(readonly value: string) {}
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -383,11 +379,7 @@ export class WithParameterProperty {
       `,
       options: [{ accessibility: 'explicit' }],
       errors: [{ messageId: 'missingAccessibility' }],
-      output: `
-export class WithParameterProperty {
-  public constructor(readonly value: string) {}
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -406,11 +398,7 @@ export class XXXX {
         },
       ],
       errors: [{ messageId: 'missingAccessibility' }],
-      output: `
-export class XXXX {
-  public constructor(readonly samosa: string) {}
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -426,11 +414,7 @@ class Test {
         },
       ],
       errors: [{ messageId: 'missingAccessibility' }],
-      output: `
-class Test {
-  public constructor(readonly foo: string) {}
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -453,14 +437,7 @@ class Test {
           column: 3,
         },
       ],
-      output: `
-class Test {
-  x: number;
-  public getX() {
-    return this.x;
-  }
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -483,14 +460,7 @@ class Test {
           column: 3,
         },
       ],
-      output: `
-class Test {
-  private x: number;
-  getX() {
-    return this.x;
-  }
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -522,14 +492,7 @@ class Test {
           column: 3,
         },
       ],
-      output: `
-class Test {
-  x?: number;
-  getX?() {
-    return this.x;
-  }
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -658,20 +621,7 @@ class Test {
         },
       ],
       options: [{ overrides: { constructors: 'no-public' } }],
-      output: `
-class Test {
-  private x: number;
-  constructor(x: number) {
-    this.x = x;
-  }
-  get internalValue() {
-    return this.x;
-  }
-  set internalValue(value: number) {
-    this.x = value;
-  }
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -706,20 +656,7 @@ class Test {
           column: 3,
         },
       ],
-      output: `
-class Test {
-  private x: number;
-  constructor(x: number) {
-    this.x = x;
-  }
-  get internalValue() {
-    return this.x;
-  }
-  set internalValue(value: number) {
-    this.x = value;
-  }
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -743,14 +680,7 @@ class Test {
           overrides: { parameterProperties: 'no-public' },
         },
       ],
-      output: `
-class Test {
-  constructor(public x: number) {}
-  public foo(): string {
-    return 'foo';
-  }
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -766,11 +696,7 @@ class Test {
           column: 3,
         },
       ],
-      output: `
-class Test {
-  constructor(public x: number) {}
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -818,11 +744,7 @@ class Test {
           column: 3,
         },
       ],
-      output: `
-class Test {
-  x = 2;
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',
@@ -866,11 +788,7 @@ class Test {
           column: 3,
         },
       ],
-      output: `
-class Test {
-  constructor(public ...x: any[]) {}
-}
-      `,
+      output: null,
     },
     {
       filename: 'test.ts',

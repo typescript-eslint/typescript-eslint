@@ -194,11 +194,7 @@ interface B extends A {
   [index: number]: unknown;
 }
       `,
-      output: `
-interface B extends A {
-  [index: number]: unknown;
-}
-      `,
+      output: null,
       errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
     // Readonly interface with generic parameter
