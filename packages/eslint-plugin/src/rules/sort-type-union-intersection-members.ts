@@ -121,12 +121,15 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           checkIntersections: {
+            description: 'Whether to check intersection types.',
             type: 'boolean',
           },
           checkUnions: {
+            description: 'Whether to check union types.',
             type: 'boolean',
           },
           groupOrder: {
+            description: 'Ordering of the groups.',
             type: 'array',
             items: {
               type: 'string',

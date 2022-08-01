@@ -50,25 +50,9 @@ try {
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if false, disallow specifying `: any` as the error type as well. See also `no-explicit-any`
-  allowExplicitAny: boolean;
-};
-
-const defaults = {
-  allowExplicitAny: false,
-};
-```
-
 ### `allowExplicitAny`
 
 The follow is is **_not_** considered a warning with `{ allowExplicitAny: true }`
-
-<!-- TODO: prettier currently removes the type annotations, re-enable this once prettier is updated -->
-<!-- prettier-ignore-start -->
 
 ```ts
 try {
@@ -77,8 +61,6 @@ try {
   // ...
 }
 ```
-
-<!-- prettier-ignore-end -->
 
 ## When Not To Use It
 

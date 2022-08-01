@@ -35,6 +35,8 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowExplicitAny: {
+            description:
+              'Whehter to disallow specifying `: any` as the error type as well. See also `no-explicit-any`.',
             type: 'boolean',
           },
         },
