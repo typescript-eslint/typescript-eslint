@@ -1,3 +1,7 @@
+---
+description: 'Require expressions of type void to appear in statement position.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-confusing-void-expression** for documentation.

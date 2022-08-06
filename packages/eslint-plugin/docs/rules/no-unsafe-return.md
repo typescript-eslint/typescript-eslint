@@ -1,3 +1,7 @@
+---
+description: 'Disallow returning a value with type `any` from a function.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-return** for documentation.

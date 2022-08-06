@@ -1,3 +1,7 @@
+---
+description: 'Require all enum members to be literal values.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-literal-enum-member** for documentation.

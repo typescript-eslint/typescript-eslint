@@ -1,3 +1,7 @@
+---
+description: 'Enforce `RegExp#exec` over `String#match` if no global flag is provided.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-regexp-exec** for documentation.

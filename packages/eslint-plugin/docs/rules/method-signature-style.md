@@ -1,3 +1,7 @@
+---
+description: 'Enforce using a particular method signature syntax.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/method-signature-style** for documentation.

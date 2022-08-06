@@ -1,3 +1,7 @@
+---
+description: 'Enforce that literals on classes are exposed in a consistent style.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/class-literal-property-style** for documentation.

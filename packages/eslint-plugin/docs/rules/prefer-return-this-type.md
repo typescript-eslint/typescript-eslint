@@ -1,3 +1,7 @@
+---
+description: 'Enforce that `this` is used when only `this` type is returned.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-return-this-type** for documentation.

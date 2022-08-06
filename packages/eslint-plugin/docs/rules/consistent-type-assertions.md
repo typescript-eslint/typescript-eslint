@@ -1,3 +1,7 @@
+---
+description: 'Enforce consistent usage of type assertions.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/consistent-type-assertions** for documentation.

@@ -1,3 +1,7 @@
+---
+description: 'Require a specific member delimiter style for interfaces and type literals.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/member-delimiter-style** for documentation.
