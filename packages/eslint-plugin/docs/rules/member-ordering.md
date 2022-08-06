@@ -95,7 +95,7 @@ The default configuration looks as follows:
     "field",
 
     // Static initialization
-    "static-iniatialization",
+    "static-initialization",
 
     // Constructors
     "public-constructor",
