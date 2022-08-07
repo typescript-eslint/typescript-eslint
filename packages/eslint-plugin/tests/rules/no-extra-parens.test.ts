@@ -19,6 +19,8 @@ ruleTester.run('no-extra-parens', rule, {
   valid: [
     ...batchedSingleLineTests({
       code: `
+async function f(arg: any) { await (arg as Promise<void>); }
+async function f(arg: Promise<any>) { await arg; }
 (0).toString();
 (function(){}) ? a() : b();
 (/^a$/).test(x);
@@ -238,6 +240,9 @@ for (a of (b));
 typeof (a);
 a<import('')>((1));
 new a<import('')>((1));
+a<(A)>((1));
+async function f(arg: Promise<any>) { await (arg); }
+async function f(arg: any) { await ((arg as Promise<void>)); }
       `,
       output: `
 a = b * c;
@@ -248,7 +253,9 @@ for (a of b);
 typeof a;
 a<import('')>(1);
 new a<import('')>(1);
-a<(A)>((1));
+a<(A)>(1);
+async function f(arg: Promise<any>) { await arg; }
+async function f(arg: any) { await (arg as Promise<void>); }
       `,
       errors: [
         {
@@ -295,6 +302,16 @@ a<(A)>((1));
           messageId: 'unexpected',
           line: 10,
           column: 8,
+        },
+        {
+          messageId: 'unexpected',
+          line: 11,
+          column: 45,
+        },
+        {
+          messageId: 'unexpected',
+          line: 12,
+          column: 37,
         },
       ],
     }),
