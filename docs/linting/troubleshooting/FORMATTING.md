@@ -24,7 +24,7 @@ Linters typically run on a rule-by-rule basis, typically resulting in many edge 
 
 ### Suggested Usage
 
-We recommend using [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
+We recommend using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
 You can then configure your formatter separately from ESLint.
 
 ## ESLint Core and Formatting
