@@ -1244,6 +1244,36 @@ class Foo {
             `,
       options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
     },
+    {
+      code: `
+class Foo {
+  static {}
+  m() {}
+  f = 1;
+}
+            `,
+      options: [{ default: ['static-initialization', 'method', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  m() {}
+  f = 1;
+  static {}
+}
+            `,
+      options: [{ default: ['method', 'field', 'static-initialization'] }],
+    },
+    {
+      code: `
+class Foo {
+  f = 1;
+  static {}
+  m() {}
+}
+            `,
+      options: [{ default: ['field', 'static-initialization', 'method'] }],
+    },
     `
 interface Foo {
     [Z: string]: any;
@@ -3976,6 +4006,133 @@ class Foo {
           },
           line: 7,
           column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+  m() {}
+  f = 1;
+}
+            `,
+      options: [{ default: ['method', 'field', 'static-initialization'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'm',
+            rank: 'static initialization',
+          },
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'f',
+            rank: 'static initialization',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  m() {}
+  f = 1;
+  static {}
+}
+            `,
+      options: [{ default: ['static-initialization', 'method', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'static block',
+            rank: 'method',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f = 1;
+  static {}
+  m() {}
+}
+            `,
+      options: [{ default: ['static-initialization', 'field', 'method'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'static block',
+            rank: 'field',
+          },
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+  f = 1;
+  m() {}
+}
+            `,
+      options: [{ default: ['field', 'static-initialization', 'method'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'f',
+            rank: 'static initialization',
+          },
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private mp() {}
+  static {}
+  public m() {}
+  @dec
+  md() {}
+}
+            `,
+      options: [
+        { default: ['decorated-method', 'static-initialization', 'method'] },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'static block',
+            rank: 'method',
+          },
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'md',
+            rank: 'method',
+          },
+          line: 6,
+          column: 3,
         },
       ],
     },
