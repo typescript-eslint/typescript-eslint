@@ -1,9 +1,9 @@
-name: "✨ Propose a New Rule Option or Additional Checks"
-description: "Propose a new lint rule option or propose that a lint rule checks more cases"
-title: "Enhancement: [rule-name] <a short description of my proposal>"
+name: '✨ Propose a New Rule Option or Additional Checks'
+description: 'Propose a new lint rule option or propose that a lint rule checks more cases'
+title: 'Enhancement: [rule-name] <a short description of my proposal>'
 labels:
-  - "enhancement: plugin rule option"
-  - "package: eslint-plugin"
+  - 'enhancement: plugin rule option'
+  - 'package: eslint-plugin'
   - triage
 body:
   - type: checkboxes

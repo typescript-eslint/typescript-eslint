@@ -1,3 +1,7 @@
+---
+description: 'Disallow `@ts-<directive>` comments or require descriptions after directive.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/ban-ts-comment** for documentation.

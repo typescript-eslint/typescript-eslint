@@ -1,3 +1,7 @@
+---
+description: 'Disallow `require` statements except in import statements.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-var-requires** for documentation.

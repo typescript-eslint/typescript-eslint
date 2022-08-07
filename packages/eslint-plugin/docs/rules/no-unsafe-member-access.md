@@ -1,3 +1,7 @@
+---
+description: 'Disallow member access on a value with type `any`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-member-access** for documentation.
