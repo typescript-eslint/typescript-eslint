@@ -15,7 +15,8 @@ type MemberKind =
   | 'get'
   | 'method'
   | 'set'
-  | 'signature';
+  | 'signature'
+  | 'static-initialization';
 
 type DecoratedMemberKind = 'field' | 'method' | 'get' | 'set';
 
@@ -25,7 +26,10 @@ type MemberScope = 'static' | 'instance' | 'abstract';
 
 type BaseMemberType =
   | MemberKind
-  | `${TSESTree.Accessibility}-${Exclude<MemberKind, 'signature'>}`
+  | `${TSESTree.Accessibility}-${Exclude<
+      MemberKind,
+      'signature' | 'static-initialization'
+    >}`
   | `${TSESTree.Accessibility}-decorated-${DecoratedMemberKind}`
   | `decorated-${DecoratedMemberKind}`
   | `${TSESTree.Accessibility}-${MemberScope}-${NonCallableMemberKind}`
@@ -125,6 +129,9 @@ export const defaultOrder: MemberType[] = [
   'decorated-field',
 
   'field',
+
+  // Static initialization
+  'static-initialization',
 
   // Constructors
   'public-constructor',
@@ -231,12 +238,13 @@ const allMemberTypes = Array.from(
       'constructor',
       'get',
       'set',
+      'static-initialization',
     ] as const
   ).reduce<Set<MemberType>>((all, type) => {
     all.add(type);
 
     (['public', 'protected', 'private'] as const).forEach(accessibility => {
-      if (type !== 'signature') {
+      if (type !== 'signature' && type !== 'static-initialization') {
         all.add(`${accessibility}-${type}`); // e.g. `public-field`
       }
 
@@ -295,6 +303,8 @@ function getNodeType(node: Member): MemberKind | null {
       return 'field';
     case AST_NODE_TYPES.TSIndexSignature:
       return 'signature';
+    case AST_NODE_TYPES.StaticBlock:
+      return 'static-initialization';
     default:
       return null;
   }
@@ -352,6 +362,8 @@ function getMemberName(
       return 'call';
     case AST_NODE_TYPES.TSIndexSignature:
       return util.getNameFromIndexSignature(node);
+    case AST_NODE_TYPES.StaticBlock:
+      return 'static block';
     default:
       return null;
   }
@@ -438,7 +450,7 @@ function getRank(
       memberGroups.push(`decorated-${type}`);
     }
 
-    if (type !== 'signature') {
+    if (type !== 'signature' && type !== 'static-initialization') {
       if (type !== 'constructor') {
         // Constructors have no scope
         memberGroups.push(`${accessibility}-${scope}-${type}`);

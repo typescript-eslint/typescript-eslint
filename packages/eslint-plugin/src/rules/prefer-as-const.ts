@@ -65,6 +65,11 @@ export default util.createRule({
       TSTypeAssertion(node): void {
         compareTypes(node.expression, node.typeAnnotation, true);
       },
+      PropertyDefinition(node): void {
+        if (node.value && node.typeAnnotation) {
+          compareTypes(node.value, node.typeAnnotation.typeAnnotation, false);
+        }
+      },
       VariableDeclarator(node): void {
         if (node.init && node.id.typeAnnotation) {
           compareTypes(node.init, node.id.typeAnnotation.typeAnnotation, false);
