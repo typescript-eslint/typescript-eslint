@@ -1,2 +1,0 @@
-yarn run v1.22.19
-$ /Users/josh/repos/typescript-eslint/node_modules/.bin/jest --json
