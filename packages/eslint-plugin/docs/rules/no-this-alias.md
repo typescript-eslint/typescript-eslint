@@ -1,3 +1,7 @@
+---
+description: 'Disallow aliasing `this`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-this-alias** for documentation.

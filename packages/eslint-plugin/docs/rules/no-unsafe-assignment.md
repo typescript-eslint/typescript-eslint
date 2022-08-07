@@ -1,3 +1,7 @@
+---
+description: 'Disallow assigning a value with type `any` to variables and properties.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-assignment** for documentation.

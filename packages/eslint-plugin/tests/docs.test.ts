@@ -42,7 +42,11 @@ function tokenIs<Type extends TokenType>(
 }
 
 function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
-  return tokenIs(token, 'heading') && token.depth === 2;
+  return (
+    tokenIs(token, 'heading') &&
+    token.depth === 2 &&
+    !/[a-z]+: /.test(token.text)
+  );
 }
 
 describe('Validating rule docs', () => {
@@ -64,13 +68,28 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
-    describe(ruleName, () => {
+    const { description } = rule.meta.docs!;
+
+    describe(`${ruleName}.md`, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
+      const tokens = parseMarkdownFile(filePath);
 
-      test(`${ruleName}.md must start with blockquote directing to website`, () => {
-        const tokens = parseMarkdownFile(filePath);
-
+      test(`${ruleName}.md must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
+          raw: '---\n',
+          type: 'hr',
+        });
+        expect(tokens[1]).toMatchObject({
+          text: description.includes("'")
+            ? `description: "${description}."`
+            : `description: '${description}.'`,
+          depth: 2,
+          type: 'heading',
+        });
+      });
+
+      test(`${ruleName}.md must next have a blockquote directing to website`, () => {
+        expect(tokens[2]).toMatchObject({
           text: [
             `🛑 This file is source code, not the primary documentation location! 🛑`,
             ``,
@@ -81,9 +100,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      it(`Headers in ${ruleName}.md must be title-cased`, () => {
-        const tokens = parseMarkdownFile(filePath);
-
+      test(`headers must be title-cased`, () => {
         // Get all H2 headers objects as the other levels are variable by design.
         const headers = tokens.filter(tokenIsH2);
 
@@ -92,7 +109,7 @@ describe('Validating rule docs', () => {
         );
       });
 
-      it(`Options in ${ruleName}.md must match the rule meta`, () => {
+      test(`options must match the rule meta`, () => {
         // TODO(#4365): We don't yet enforce formatting for all rules.
         if (
           !isEmptySchema(rule.meta.schema) ||
@@ -101,8 +118,6 @@ describe('Validating rule docs', () => {
         ) {
           return;
         }
-
-        const tokens = parseMarkdownFile(filePath);
 
         const optionsIndex = tokens.findIndex(
           token => tokenIsH2(token) && token.text === 'Options',

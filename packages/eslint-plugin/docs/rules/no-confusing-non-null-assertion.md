@@ -1,3 +1,7 @@
+---
+description: 'Disallow non-null assertion in locations that may be confusing.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-confusing-non-null-assertion** for documentation.

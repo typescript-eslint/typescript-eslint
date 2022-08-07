@@ -1,3 +1,7 @@
+---
+description: 'Require or disallow an empty line between class members.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/lines-between-class-members** for documentation.

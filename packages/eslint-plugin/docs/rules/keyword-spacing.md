@@ -1,3 +1,7 @@
+---
+description: 'Enforce consistent spacing before and after keywords.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/keyword-spacing** for documentation.

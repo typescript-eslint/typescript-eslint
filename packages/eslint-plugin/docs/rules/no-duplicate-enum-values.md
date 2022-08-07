@@ -1,3 +1,7 @@
+---
+description: 'Disallow duplicate enum member values.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-duplicate-enum-values** for documentation.

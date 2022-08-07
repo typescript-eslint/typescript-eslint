@@ -1,3 +1,7 @@
+---
+description: 'Disallow classes used as namespaces.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-extraneous-class** for documentation.
