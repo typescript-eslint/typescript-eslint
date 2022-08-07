@@ -7021,9 +7021,9 @@ eslint-plugin-eslint-comments@^3.2.0:
     ignore "^5.0.5"
 
 eslint-plugin-eslint-plugin@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-eslint-plugin/-/eslint-plugin-eslint-plugin-5.0.1.tgz#96318fe15a224a62073c3656c41fe0143c727515"
-  integrity sha512-Q0ymijkdviKNozMko2iIIpvKUN80oaoUd9hMkej08e1eLhfmu8covIdWAjs1LwiyvT585RiqWorINZI5Ep2twQ==
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-eslint-plugin/-/eslint-plugin-eslint-plugin-5.0.2.tgz#cc9389668b200134297914b2f9046a3cfb3f23f0"
+  integrity sha512-i1g9NpZXaBu3E+ufXHn9muW67PGDxxPpAVDUrAWWS9dG7y5wtxqEhnvookb+O+r2ByLjMJ+tyGizu5TyueBmbw==
   dependencies:
     eslint-utils "^3.0.0"
     estraverse "^5.2.0"
