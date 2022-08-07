@@ -1,9 +1,9 @@
-name: "♻ Propose a Change to Preset Configurations"
-description: "Propose an addition, removal, or general change to a preset config"
-title: "Configs: <a short description of my proposal>"
+name: '♻ Propose a Change to Preset Configurations'
+description: 'Propose an addition, removal, or general change to a preset config'
+title: 'Configs: <a short description of my proposal>'
 labels:
-  - "package: eslint-plugin"
-  - "preset config change"
+  - 'package: eslint-plugin'
+  - 'preset config change'
   - triage
 body:
   - type: checkboxes
