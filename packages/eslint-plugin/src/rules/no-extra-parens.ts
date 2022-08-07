@@ -122,10 +122,9 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       // AssignmentExpression
-      // AwaitExpression
       AwaitExpression(node) {
         if (util.isTypeAssertion(node.argument)) {
-          // reduces the precedence of the node so the rule thinks it needs to be rapped
+          // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.AwaitExpression({
             ...node,
             argument: {
@@ -161,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
           });
         }
         if (util.isTypeAssertion(node.alternate)) {
-          // reduces the precedence of the node so the rule thinks it needs to be rapped
+          // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.ConditionalExpression({
             ...node,
             alternate: {
