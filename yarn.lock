@@ -3046,24 +3046,24 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@microsoft/api-extractor-model@7.22.1":
-  version "7.22.1"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.22.1.tgz#2c72bba972bdcc74d16f6f5c8a5f575eff9ce977"
-  integrity sha512-3Bx6VC8F4ti8XlhaOCynCpwGvdXGwHD2dGBpo2xpJT9gEmPQvpAL3Ni+5gaEX0eQ27zGILVTUZDqZSRYskk/Rw==
+"@microsoft/api-extractor-model@7.22.2":
+  version "7.22.2"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.22.2.tgz#9d49c22ae713d8662c995d844e29c59200ebe72f"
+  integrity sha512-fqb7std1sRfg7tvXkJwB7zrgIyzty7iIJXxpqA2/bEdct36jhkgIhKpgYr2yoi+Jhqbinjmhyf9tPKJ2E3TdwA==
   dependencies:
     "@microsoft/tsdoc" "0.14.1"
     "@microsoft/tsdoc-config" "~0.16.1"
-    "@rushstack/node-core-library" "3.49.0"
+    "@rushstack/node-core-library" "3.50.0"
 
 "@microsoft/api-extractor@^7.23.2":
-  version "7.28.6"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.28.6.tgz#da88050d37b19edd414d8daf7da890beeff264f2"
-  integrity sha512-RNUokJTlBGD0ax/Jo8xLPWv4s6IboqrYrcabEEh6rFadO/tVPoV/R5YHtEeZ2q4ubvwhHTtX3sRm+p4fJo/3Sg==
+  version "7.28.7"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.28.7.tgz#3c2745499b38d1ae3b8e0488c3f5aaeb6edc3e60"
+  integrity sha512-hDVYSbqGsY4gioHMi/NkIarAJ2qoE5cKEZ6V5HqLcUl0+hNV0Auk/5VbBmU2UO2le6MFgO69EJsrfszwzC6QBA==
   dependencies:
-    "@microsoft/api-extractor-model" "7.22.1"
+    "@microsoft/api-extractor-model" "7.22.2"
     "@microsoft/tsdoc" "0.14.1"
     "@microsoft/tsdoc-config" "~0.16.1"
-    "@rushstack/node-core-library" "3.49.0"
+    "@rushstack/node-core-library" "3.50.0"
     "@rushstack/rig-package" "0.3.13"
     "@rushstack/ts-command-line" "4.12.1"
     colors "~1.2.1"
@@ -3560,10 +3560,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rushstack/node-core-library@3.49.0":
-  version "3.49.0"
-  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.49.0.tgz#0324c1a5ba5e469967b70e9718d1a90750648503"
-  integrity sha512-yBJRzGgUNFwulVrwwBARhbGaHsxVMjsZ9JwU1uSBbqPYCdac+t2HYdzi4f4q/Zpgb0eNbwYj2yxgHYpJORNEaw==
+"@rushstack/node-core-library@3.50.0":
+  version "3.50.0"
+  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.50.0.tgz#8b628247f16e5719c39ed1890c11959f8d303559"
+  integrity sha512-FFEZhgu6iN1MVjpQWmLcz46pSa4r2Oe2JYPo7mtnl3uYfwDaSXUSZuRN3JQgKkXu10TBcffJ7AGKcIt/k+qE/Q==
   dependencies:
     "@types/node" "12.20.24"
     colors "~1.2.1"
