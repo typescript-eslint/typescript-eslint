@@ -1,17 +1,17 @@
-name: "Prepare: Checkout and Install"
-description: "Prepares the repo for a job by checking out and installing dependencies"
+name: 'Prepare: Checkout and Install'
+description: 'Prepares the repo for a job by checking out and installing dependencies'
 inputs:
   node-version:
-    description: "The node version to setup"
+    description: 'The node version to setup'
     required: true
   registry-url:
-    description: "Define registry-url"
+    description: 'Define registry-url'
     required: false
 
 # outputs: - no outputs
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: echo github.ref
       shell: bash
