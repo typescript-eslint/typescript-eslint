@@ -25,26 +25,6 @@ type EcmaVersion =
 
 type SourceType = 'script' | 'module';
 
-type ecmaFeatures =
-  | {
-      globalReturn?: boolean | undefined;
-      jsx?: boolean | undefined;
-    }
-  | undefined;
-
-type ParserOptionsValue =
-  | ecmaFeatures
-  | EcmaVersion
-  | Program
-  | SourceType
-  | boolean
-  | string
-  | string[]
-  | (string | RegExp)[]
-  | null
-  | undefined
-  | DebugLevel;
-
 interface ParserOptions {
   ecmaFeatures?: {
     globalReturn?: boolean;
@@ -78,7 +58,7 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
   moduleResolver?: string;
-  [additionalProperties: string]: ParserOptionsValue | undefined;
+  [additionalProperties: string]: unknown
 }
 
 export { DebugLevel, EcmaVersion, ParserOptions, SourceType };
