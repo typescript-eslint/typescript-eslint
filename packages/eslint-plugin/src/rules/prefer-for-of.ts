@@ -7,12 +7,14 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce the use of `for-of` loop over the standard `for` loop where possible',
+        'Enforce the use of `for-of` loop over the standard `for` loop and `forEach` where possible',
       recommended: 'strict',
     },
     messages: {
       preferForOf:
         'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
+      preferForOfToForEach:
+        'Expected a `for-of` loop instead of a `forEach` loop with this simple iteration.',
     },
     schema: [],
   },

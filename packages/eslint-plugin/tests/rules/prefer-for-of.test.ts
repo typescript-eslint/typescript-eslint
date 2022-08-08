@@ -382,7 +382,7 @@ arr.forEach(item => {
       `,
       errors: [
         {
-          messageId: 'preferForOf',
+          messageId: 'preferForOfToForEach',
         },
       ],
     },
@@ -394,7 +394,7 @@ arr.forEach(function (item) {
       `,
       errors: [
         {
-          messageId: 'preferForOf',
+          messageId: 'preferForOfToForEach',
         },
       ],
     },
