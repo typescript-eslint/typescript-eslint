@@ -92,8 +92,10 @@ function getExtension(fileName: string | undefined): string | null {
 function getAstFromProgram(
   currentProgram: Program,
   extra: Extra,
+  ignoreExternalFiles?: boolean,
 ): ASTAndProgram | undefined {
   if (
+    ignoreExternalFiles &&
     ts.getMatchedIncludeSpec &&
     !ts.getMatchedIncludeSpec(currentProgram, extra.filePath)
   ) {

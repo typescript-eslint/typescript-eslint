@@ -32,10 +32,15 @@ function createProjectProgram(
 ): ASTAndProgram | undefined {
   log('Creating project program for: %s', extra.filePath);
 
-  const astAndProgram = firstDefined(
-    getProgramsForProjects(code, extra.filePath, extra),
-    currentProgram => getAstFromProgram(currentProgram, extra),
-  );
+  const astAndProgram =
+    firstDefined(
+      getProgramsForProjects(code, extra.filePath, extra),
+      currentProgram => getAstFromProgram(currentProgram, extra, true),
+    ) ??
+    firstDefined(
+      getProgramsForProjects(code, extra.filePath, extra),
+      currentProgram => getAstFromProgram(currentProgram, extra),
+    );
 
   if (!astAndProgram && !createDefaultProgram) {
     // the file was either not matched within the tsconfig, or the extension wasn't expected
