@@ -12,7 +12,7 @@
     "image": "https://images.opencollective.com/nx/0efbe42/logo.png",
     "name": "Nx (by Nrwl)",
     "tier": "sponsor",
-    "totalDonations": 450000,
+    "totalDonations": 475000,
     "website": "https://nx.dev"
   },
   {
@@ -20,7 +20,7 @@
     "image": "https://images.opencollective.com/eslint/96b09dc/logo.png",
     "name": "ESLint",
     "tier": "sponsor",
-    "totalDonations": 155000,
+    "totalDonations": 170000,
     "website": "https://eslint.org/"
   },
   {
@@ -28,7 +28,7 @@
     "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
     "name": "Airbnb",
     "tier": "sponsor",
-    "totalDonations": 120800,
+    "totalDonations": 125800,
     "website": "https://www.airbnb.com/"
   },
   {
@@ -44,7 +44,7 @@
     "image": "https://images.opencollective.com/n8n/dca2f0c/logo.png",
     "name": "n8n.io - n8n GmbH",
     "tier": "sponsor",
-    "totalDonations": 95000,
+    "totalDonations": 100000,
     "website": "https://n8n.io"
   },
   {
@@ -60,7 +60,7 @@
     "image": "https://images.opencollective.com/gitbook/d35a8e7/logo.png",
     "name": "GitBook",
     "tier": "sponsor",
-    "totalDonations": 70000,
+    "totalDonations": 80000,
     "website": "https://www.gitbook.com"
   },
   {
@@ -68,7 +68,7 @@
     "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
     "name": "Codecademy",
     "tier": "sponsor",
-    "totalDonations": 60000,
+    "totalDonations": 70000,
     "website": "https://codecademy.com"
   },
   {
@@ -119,6 +119,14 @@
     "website": "https://revojs.ro"
   },
   {
+    "id": "STORIS",
+    "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
+    "name": "STORIS",
+    "tier": "supporter",
+    "totalDonations": 22500,
+    "website": "https://www.storis.com/"
+  },
+  {
     "id": "Ian MacLeod",
     "image": "https://images.opencollective.com/nevir/35c52ef/avatar.png",
     "name": "Ian MacLeod",
@@ -127,19 +135,19 @@
     "website": "https://twitter.com/nevir"
   },
   {
-    "id": "STORIS",
-    "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
-    "name": "STORIS",
-    "tier": "supporter",
-    "totalDonations": 21000,
-    "website": "https://www.storis.com/"
+    "id": "Sourcegraph",
+    "image": "https://images.opencollective.com/sourcegraph/8587b83/logo.png",
+    "name": "Sourcegraph",
+    "tier": "sponsor",
+    "totalDonations": 20000,
+    "website": "https://about.sourcegraph.com"
   },
   {
     "id": "Michael Ranciglio",
     "image": "https://images.opencollective.com/michael-ranciglio/avatar.png",
     "name": "Michael Ranciglio",
     "tier": "supporter",
-    "totalDonations": 16500
+    "totalDonations": 17000
   },
   {
     "id": "Joe Alden",
@@ -154,7 +162,7 @@
     "image": "https://images.opencollective.com/blacksheepcode/976d69a/avatar.png",
     "name": "David Johnston",
     "tier": "contributor",
-    "totalDonations": 13000,
+    "totalDonations": 13500,
     "website": "https://blacksheepcode.com"
   },
   {
@@ -181,14 +189,6 @@
     "totalDonations": 10000
   },
   {
-    "id": "Sourcegraph",
-    "image": "https://images.opencollective.com/sourcegraph/8587b83/logo.png",
-    "name": "Sourcegraph",
-    "tier": "sponsor",
-    "totalDonations": 10000,
-    "website": "https://about.sourcegraph.com"
-  },
-  {
     "id": "Laserhub",
     "image": "https://images.opencollective.com/laserhub/bae6275/logo.png",
     "name": "Laserhub",
@@ -201,7 +201,7 @@
     "image": "https://images.opencollective.com/tripwire/7599e30/logo.png",
     "name": "Tripwire, Inc.",
     "tier": "contributor",
-    "totalDonations": 8500,
+    "totalDonations": 9000,
     "website": "https://tripwire.com"
   },
   {
@@ -209,7 +209,7 @@
     "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
     "name": "Evil Martians",
     "tier": "contributor",
-    "totalDonations": 8000,
+    "totalDonations": 8500,
     "website": "https://evilmartians.com/"
   },
   {
@@ -217,7 +217,7 @@
     "image": "https://images.opencollective.com/balsa/77de498/logo.png",
     "name": "Balsa",
     "tier": "contributor",
-    "totalDonations": 8000,
+    "totalDonations": 8500,
     "website": "https://balsa.com"
   },
   {
@@ -225,7 +225,15 @@
     "image": "https://images.opencollective.com/jeffrey-rennie/avatar.png",
     "name": "Jeffrey Rennie",
     "tier": "contributor",
-    "totalDonations": 7500
+    "totalDonations": 8000
+  },
+  {
+    "id": "Corellium",
+    "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
+    "name": "Corellium",
+    "tier": "contributor",
+    "totalDonations": 5400,
+    "website": "https://www.corellium.com"
   },
   {
     "id": "Pete Gonzalez",
@@ -244,19 +252,27 @@
     "website": "https://backscattering.de"
   },
   {
-    "id": "Corellium",
-    "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
-    "name": "Corellium",
+    "id": "Christian Healthcare Ministries",
+    "image": "https://images.opencollective.com/christian-healthcare-ministries/5f05f8c/logo.png",
+    "name": "Christian Healthcare Ministries",
     "tier": "contributor",
-    "totalDonations": 4800,
-    "website": "https://www.corellium.com"
+    "totalDonations": 2100,
+    "website": "https://sharehealthcare.com"
   },
   {
     "id": "Alexey Berezin",
     "image": "https://images.opencollective.com/beraliv/034d971/avatar.png",
     "name": "Alexey Berezin",
     "tier": "contributor",
-    "totalDonations": 1500,
+    "totalDonations": 2000,
     "website": "https://beraliv.dev"
+  },
+  {
+    "id": "THE PADDING",
+    "image": "https://images.opencollective.com/thepadding/55e79ad/logo.png",
+    "name": "THE PADDING",
+    "tier": "supporter",
+    "totalDonations": 2000,
+    "website": "https://paddn.com/hk"
   }
 ]
