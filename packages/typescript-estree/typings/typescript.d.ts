@@ -10,4 +10,11 @@ declare module 'typescript' {
   interface JSDocContainer {
     jsDoc?: JSDoc[];
   }
+
+  type GetMatchedIncludeSpec = (
+    program: Program,
+    fileName: string,
+  ) => string | undefined;
+
+  const getMatchedIncludeSpec: GetMatchedIncludeSpec | undefined;
 }
