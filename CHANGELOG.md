@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.32.0...v5.33.0) (2022-08-08)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-extra-parens] handle await with type assertion ([#5428](https://github.com/typescript-eslint/typescript-eslint/issues/5428)) ([e03826f](https://github.com/typescript-eslint/typescript-eslint/commit/e03826f08ce8bfdd6d6702025d975cfb7d867097))
+* **website:** add explicit frontmatter description to rule docs ([#5429](https://github.com/typescript-eslint/typescript-eslint/issues/5429)) ([63cba5f](https://github.com/typescript-eslint/typescript-eslint/commit/63cba5f4c1884e102927b3b14b18a00e96ac63a1))
+
+
+### Features
+
+* **eslint-plugin:** [member-ordering] support static blocks ([#5417](https://github.com/typescript-eslint/typescript-eslint/issues/5417)) ([5983e5a](https://github.com/typescript-eslint/typescript-eslint/commit/5983e5ab3bfb94fec782bea54a37457fe31db545))
+* **eslint-plugin:** [prefer-as-const] adds support for class properties ([#5413](https://github.com/typescript-eslint/typescript-eslint/issues/5413)) ([d2394f8](https://github.com/typescript-eslint/typescript-eslint/commit/d2394f810960fda07b9c8affd47b769d16f4b8cb))
+
+
+
+
+
 # [5.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.31.0...v5.32.0) (2022-08-01)
 
 
