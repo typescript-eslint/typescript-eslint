@@ -93,7 +93,17 @@ function getAstFromProgram(
   currentProgram: Program,
   extra: Extra,
 ): ASTAndProgram | undefined {
+  if (
+    ts.getMatchedIncludeSpec &&
+    !ts.getMatchedIncludeSpec(currentProgram, extra.filePath)
+  ) {
+    return undefined;
+  }
+
   const ast = currentProgram.getSourceFile(extra.filePath);
+  if (!ast) {
+    return undefined;
+  }
 
   // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
   const expectedExt = getExtension(extra.filePath);
@@ -102,7 +112,7 @@ function getAstFromProgram(
     return undefined;
   }
 
-  return ast && { ast, program: currentProgram };
+  return { ast, program: currentProgram };
 }
 
 function getModuleResolver(moduleResolverPath: string): ModuleResolver {
