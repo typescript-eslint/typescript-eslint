@@ -179,6 +179,26 @@ export default util.createRule({
     }
 
     return {
+      CallExpression(node): void {
+        if (
+          // forEach call
+          node.callee.type === AST_NODE_TYPES.MemberExpression &&
+          node.callee.property.type === AST_NODE_TYPES.Identifier &&
+          node.callee.property.name === 'forEach' &&
+          // only being called with one arg, aka we're not passing a `this` param
+          node.arguments.length === 1 &&
+          (node.arguments[0].type === AST_NODE_TYPES.FunctionExpression ||
+            node.arguments[0].type ===
+              AST_NODE_TYPES.ArrowFunctionExpression) &&
+          // function expression with one param
+          node.arguments[0].params.length === 1
+        ) {
+          context.report({
+            node,
+            messageId: 'preferForOf',
+          });
+        }
+      },
       'ForStatement:exit'(node: TSESTree.ForStatement): void {
         if (!isSingleVariableDeclaration(node.init)) {
           return;

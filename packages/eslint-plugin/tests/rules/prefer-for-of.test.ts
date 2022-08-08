@@ -130,6 +130,29 @@ for (var r of arr) {
 }
     `,
     `
+arr.forEach((item, index) => {
+  console.log(item, index);
+});
+    `,
+    `
+arr.forEach(item => {
+  console.log(item);
+}, _this);
+    `,
+    `
+arr.forEach(function (item, index) {
+  console.log(item, index);
+});
+    `,
+    `
+arr.forEach(function (item, index) {
+  console.log(item, index);
+}, _this);
+    `,
+    `
+arr.forEach(func);
+    `,
+    `
 for (let x = 0; x < arr.length; x++) {
   let y = arr[x + 1];
 }
@@ -344,6 +367,30 @@ for (let i = 0; i < arr.length; i++) {
 for (let i = 0; i < arr.length; i++) {
   [obj[arr[i]]] = [1];
 }
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+arr.forEach(item => {
+  console.log(item);
+});
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+arr.forEach(function (item) {
+  console.log(item);
+});
       `,
       errors: [
         {
