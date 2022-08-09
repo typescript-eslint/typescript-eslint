@@ -31,7 +31,7 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
 }
 
 /**
- * Check if method is not unless due to typescript parameter properties and decorators
+ * Check if method is not useless due to typescript parameter properties and decorators
  */
 function checkParams(node: TSESTree.MethodDefinition): boolean {
   return (
