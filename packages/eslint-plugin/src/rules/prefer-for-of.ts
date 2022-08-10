@@ -16,10 +16,20 @@ export default util.createRule({
       preferForOfToForEach:
         'Expected a `for-of` loop instead of a `forEach` loop with this simple iteration.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          checkForEach: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ checkForEach: false }],
+  create(context, [{ checkForEach }]) {
     function isSingleVariableDeclaration(
       node: TSESTree.Node | null,
     ): node is TSESTree.VariableDeclaration {
@@ -183,6 +193,7 @@ export default util.createRule({
     return {
       CallExpression(node): void {
         if (
+          checkForEach &&
           // forEach call
           node.callee.type === AST_NODE_TYPES.MemberExpression &&
           node.callee.property.type === AST_NODE_TYPES.Identifier &&

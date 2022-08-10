@@ -380,6 +380,7 @@ arr.forEach(item => {
   console.log(item);
 });
       `,
+      options: [{ checkForEach: true }],
       errors: [
         {
           messageId: 'preferForOfToForEach',
@@ -392,6 +393,7 @@ arr.forEach(function (item) {
   console.log(item);
 });
       `,
+      options: [{ checkForEach: true }],
       errors: [
         {
           messageId: 'preferForOfToForEach',
