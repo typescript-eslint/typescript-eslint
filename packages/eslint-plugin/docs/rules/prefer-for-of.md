@@ -1,5 +1,5 @@
 ---
-description: 'Enforce the use of `for-of` loop over the standard `for` loop where possible.'
+description: 'Enforce the use of `for-of` loop over the standard `for` loop and `forEach` where possible'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -44,16 +44,41 @@ for (let i = 0; i < arr.length; i++) {
 
 ## Options
 
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-for-of": "warn"
-  }
-}
+The rule accepts an options object with the following properties:
+
+```ts
+type Options = {
+  checkForEach: boolean;
+};
+
+const defaults = {
+  checkForEach: false,
+};
 ```
 
-This rule is not configurable.
+### `checkForEach`
+
+A boolean to specify if `for of` should be preferred to `forEach`. `false` by default.
+
+Examples of **incorrect** code for the `{ "checkForEach": true }` option:
+
+```ts
+/*eslint @typescript-eslint/prefer-for-of: ["error", { "ignoreRestArgs": true }]*/
+
+bar.forEach(item => {
+  console.log(item);
+});
+```
+
+Examples of **correct** code for the `{ "checkForEach": true }` option:
+
+```ts
+/*eslint @typescript-eslint/prefer-for-of: ["error", { "checkForEach": true }]*/
+
+bar.forEach((item, index) => {
+  console.log(item, index);
+});
+```
 
 ## When Not To Use It
 
