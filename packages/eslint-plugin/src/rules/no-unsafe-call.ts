@@ -1,5 +1,5 @@
 /* eslint-disable eslint-comments/no-use */
-/* eslint eslint-plugin/no-unused-message-ids:"off" -- disabled because the rule doesn't understand our helper function checkCall() */
+/* eslint eslint-plugin/no-unused-message-ids:"off" -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/282 */
 /* eslint-enable eslint-comments/no-use */
 
 import { TSESTree } from '@typescript-eslint/utils';

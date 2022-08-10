@@ -1,5 +1,5 @@
 /* eslint-disable eslint-comments/no-use */
-/* eslint eslint-plugin/no-unused-message-ids:"off" -- rule has false positives due to our usage of an external helper function */
+/* eslint eslint-plugin/no-unused-message-ids:"off" -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/283 */
 /* eslint-enable eslint-comments/no-use */
 
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
