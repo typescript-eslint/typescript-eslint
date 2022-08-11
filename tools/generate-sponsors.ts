@@ -111,7 +111,7 @@ const excludedNames = new Set([
 
   // These names are of organizations we cannot in good conscience link to.
   // If you disagree with a name on this list, please email a maintainer.
-  "Christian Healthcare Ministries" // #5440
+  'Christian Healthcare Ministries', // #5440
 ]);
 
 async function requestGraphql<Data>(key: keyof typeof queries): Promise<Data> {
