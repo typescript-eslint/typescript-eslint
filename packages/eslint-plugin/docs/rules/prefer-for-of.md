@@ -1,5 +1,5 @@
 ---
-description: 'Enforce the use of `for-of` loop over the standard `for` loop and `forEach` where possible'
+description: 'Enforce the use of `for-of` loop over the standard `for` loop and `forEach` where possible'.
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
