@@ -28,10 +28,9 @@ export default util.createRule({
       description:
         "Disallow empty exports that don't change anything in a module file",
       recommended: false,
-      suggestion: true,
     },
     fixable: 'code',
-    hasSuggestions: true,
+    hasSuggestions: false,
     messages: {
       uselessExport: 'Empty export does nothing and can be removed.',
     },
