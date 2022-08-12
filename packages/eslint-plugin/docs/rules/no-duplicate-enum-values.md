@@ -25,8 +25,8 @@ enum E {
 
 ```ts
 enum E {
-  A = 'A'
-  B = 'A'
+  A = 'A',
+  B = 'A',
 }
 ```
 
@@ -41,8 +41,8 @@ enum E {
 
 ```ts
 enum E {
-  A = 'A'
-  B = 'B'
+  A = 'A',
+  B = 'B',
 }
 ```
 
