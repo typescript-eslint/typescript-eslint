@@ -138,7 +138,9 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
-      if (!options.allowMixins) return false;
+      if (!options.allowMixins) {
+        return false;
+      }
 
       return doesImmediatelyReturnClassExpression(node);
     }
