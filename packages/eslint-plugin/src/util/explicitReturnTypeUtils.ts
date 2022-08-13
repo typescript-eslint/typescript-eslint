@@ -131,6 +131,54 @@ function doesImmediatelyReturnFunctionExpression({
 }
 
 /**
+ * Checks if a function belongs to:
+ * ```
+ * () => () => ...
+ * () => function () { ... }
+ * () => { return () => ... }
+ * () => { return function () { ... } }
+ * function fn() { return () => ... }
+ * function fn() { return function() { ... } }
+ * ```
+ */
+function doesImmediatelyReturnClassExpression({ body }: FunctionNode): boolean {
+  // Should always have a body; really checking just in case
+  /* istanbul ignore if */ if (!body) {
+    return false;
+  }
+
+  // Check if body is a class expression
+  if (body.type === AST_NODE_TYPES.ClassExpression) {
+    return true;
+  }
+
+  // Check if body is a block with a single statement
+  if (body.type === AST_NODE_TYPES.BlockStatement && body.body.length === 1) {
+    const [statement] = body.body;
+
+    // Check if that statement is a return statement with a class declaration argument
+    return (
+      statement.type === AST_NODE_TYPES.ReturnStatement &&
+      statement.argument?.type === AST_NODE_TYPES.ClassExpression
+    );
+  }
+
+  // Check if body is a block with a class definition immediately followed by a return
+  if (body.type === AST_NODE_TYPES.BlockStatement && body.body.length === 2) {
+    const [statement1, statement2] = body.body;
+
+    return (
+      statement1.type === AST_NODE_TYPES.ClassDeclaration &&
+      statement2.type === AST_NODE_TYPES.ReturnStatement &&
+      statement2.argument?.type === AST_NODE_TYPES.Identifier &&
+      statement1.id.name === statement2.argument.name
+    );
+  }
+
+  return false;
+}
+
+/**
  * Checks if a node belongs to:
  * ```
  * foo(() => 1)
@@ -341,6 +389,7 @@ export {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
   doesImmediatelyReturnFunctionExpression,
+  doesImmediatelyReturnClassExpression,
   FunctionExpression,
   FunctionNode,
   isTypedFunctionExpression,

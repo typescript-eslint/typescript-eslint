@@ -81,6 +81,8 @@ type Options = {
   allowDirectConstAssertionInArrowFunctions?: boolean;
   // if true, concise arrow functions that start with the void keyword will not be checked
   allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+  // if true, functions immediately returning a class definition will not be checked
+  allowMixins?: boolean;
   /**
    * An array of function/method names that will not have their arguments or their return values checked.
    */
@@ -93,6 +95,7 @@ const defaults = {
   allowHigherOrderFunctions: true,
   allowDirectConstAssertionInArrowFunctions: true,
   allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+  allowMixins: false,
   allowedNames: [],
 };
 ```
@@ -269,6 +272,54 @@ const log = (message: string) => {
 
 ```ts
 var log = (message: string) => void console.log(message);
+```
+
+### `allowMixins`
+
+Examples of code for this rule with `{ allowMixins: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+function fn(supertype: Constructor<Object>) {
+  return new (class extends supertype {})();
+}
+
+function fn(supertype: Constructor<Object>) {}
+
+var fn = () => {};
+```
+
+#### ✅ Correct
+
+```ts
+type Constructor<T> = abstract new (...args: any) => T;
+
+function M1(supertype: Constructor<Object>) {
+  return class extends supertype {};
+}
+
+const M2 = (supertype: Constructor<Object>) => class extends supertype {};
+
+const M3 = (supertype: Constructor<Object>) => {
+  return class extends supertype {};
+};
+
+const M4 = function (supertype: Constructor<Object>) {
+  return class extends supertype {};
+};
+
+function M5(supertype: Constructor<Object>) {
+  class Response extends supertype {}
+  return Response;
+}
+
+const M6 = (supertype: Constructor<Object>) => {
+  class Response extends supertype {}
+  return Response;
+};
 ```
 
 ### `allowedNames`

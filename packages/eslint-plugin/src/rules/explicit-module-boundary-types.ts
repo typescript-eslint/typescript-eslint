@@ -9,6 +9,7 @@ import {
   FunctionNode,
   isTypedFunctionExpression,
   ancestorHasReturnType,
+  doesImmediatelyReturnClassExpression,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -18,6 +19,7 @@ type Options = [
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
+    allowMixins?: boolean;
     shouldTrackReferences?: boolean;
   },
 ];
@@ -67,6 +69,9 @@ export default util.createRule<Options, MessageIds>({
           allowTypedFunctionExpressions: {
             type: 'boolean',
           },
+          allowMixins: {
+            type: 'boolean',
+          },
           // DEPRECATED - To be removed in next major
           shouldTrackReferences: {
             type: 'boolean',
@@ -83,6 +88,7 @@ export default util.createRule<Options, MessageIds>({
       allowedNames: [],
       allowHigherOrderFunctions: true,
       allowTypedFunctionExpressions: true,
+      allowMixins: false,
     },
   ],
   create(context, [options]) {
@@ -255,6 +261,22 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    /**
+     * Checks if a mixin function is allowed and should not be checked.
+     */
+    function isAllowedMixin(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
+    ): boolean {
+      if (!options.allowMixins) {
+        return false;
+      }
+
+      return doesImmediatelyReturnClassExpression(node);
+    }
+
     function isExportedHigherOrderFunction(node: FunctionNode): boolean {
       let current = node.parent;
       while (current) {
@@ -418,7 +440,8 @@ export default util.createRule<Options, MessageIds>({
       if (
         isAllowedName(node.parent) ||
         isTypedFunctionExpression(node, options) ||
-        ancestorHasReturnType(node)
+        ancestorHasReturnType(node) ||
+        isAllowedMixin(node)
       ) {
         return;
       }
@@ -440,7 +463,11 @@ export default util.createRule<Options, MessageIds>({
       }
       checkedFunctions.add(node);
 
-      if (isAllowedName(node) || ancestorHasReturnType(node)) {
+      if (
+        isAllowedName(node) ||
+        ancestorHasReturnType(node) ||
+        isAllowedMixin(node)
+      ) {
         return;
       }
 

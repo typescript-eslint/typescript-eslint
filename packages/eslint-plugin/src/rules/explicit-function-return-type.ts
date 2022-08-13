@@ -4,6 +4,7 @@ import {
   checkFunctionReturnType,
   isValidFunctionExpressionReturnType,
   ancestorHasReturnType,
+  doesImmediatelyReturnClassExpression,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -13,6 +14,7 @@ type Options = [
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+    allowMixins?: boolean;
     allowedNames?: string[];
   },
 ];
@@ -49,6 +51,9 @@ export default util.createRule<Options, MessageIds>({
           allowConciseArrowFunctionExpressionsStartingWithVoid: {
             type: 'boolean',
           },
+          allowMixins: {
+            type: 'boolean',
+          },
           allowedNames: {
             type: 'array',
             items: {
@@ -67,6 +72,7 @@ export default util.createRule<Options, MessageIds>({
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+      allowMixins: false,
       allowedNames: [],
     },
   ],
@@ -125,6 +131,18 @@ export default util.createRule<Options, MessageIds>({
       }
       return false;
     }
+
+    function isAllowedMixin(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
+    ): boolean {
+      if (!options.allowMixins) return false;
+
+      return doesImmediatelyReturnClassExpression(node);
+    }
+
     return {
       'ArrowFunctionExpression, FunctionExpression'(
         node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
@@ -140,6 +158,10 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (isAllowedName(node)) {
+          return;
+        }
+
+        if (isAllowedMixin(node)) {
           return;
         }
 
@@ -163,6 +185,11 @@ export default util.createRule<Options, MessageIds>({
         if (isAllowedName(node)) {
           return;
         }
+
+        if (isAllowedMixin(node)) {
+          return;
+        }
+
         if (options.allowTypedFunctionExpressions && node.returnType) {
           return;
         }

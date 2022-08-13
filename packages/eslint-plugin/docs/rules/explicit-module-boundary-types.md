@@ -101,6 +101,11 @@ type Options = {
    * rather than on the function arguments/return value directly.
    */
   allowTypedFunctionExpressions?: boolean;
+
+  /*
+   * if true, functions immediately returning a class definition will not be checked
+   */
+  allowMixins: boolean;
 };
 
 const defaults = {
@@ -109,6 +114,7 @@ const defaults = {
   allowedNames: [],
   allowHigherOrderFunctions: true,
   allowTypedFunctionExpressions: true,
+  allowMixins: false,
 };
 ```
 
@@ -279,6 +285,55 @@ export let objectPropCast = <ObjectType>{
 
 type FooType = (bar: string) => void;
 export const foo: FooType = bar => {};
+```
+
+### `allowMixins`
+
+Examples of code for this rule with `{ allowMixins: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+export function fn(supertype: Constructor<Object>) {
+  return new (class extends supertype {})();
+}
+
+export function fn(supertype: Constructor<Object>) {}
+
+export var fn = () => {};
+```
+
+#### ✅ Correct
+
+```ts
+type Constructor<T> = abstract new (...args: any) => T;
+
+export function M1(supertype: Constructor<Object>) {
+  return class extends supertype {};
+}
+
+export const M2 = (supertype: Constructor<Object>) =>
+  class extends supertype {};
+
+export const M3 = (supertype: Constructor<Object>) => {
+  return class extends supertype {};
+};
+
+export const M4 = function (supertype: Constructor<Object>) {
+  return class extends supertype {};
+};
+
+export function M5(supertype: Constructor<Object>) {
+  class Response extends supertype {}
+  return Response;
+}
+
+export const M6 = (supertype: Constructor<Object>) => {
+  class Response extends supertype {}
+  return Response;
+};
 ```
 
 ## When Not To Use It

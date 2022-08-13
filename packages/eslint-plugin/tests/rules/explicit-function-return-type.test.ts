@@ -555,6 +555,91 @@ const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
         },
       ],
     },
+
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+function M(supertype: Constructor<Object>) {
+  return class extends supertype {};
+}
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = (supertype: Constructor<Object>) => class extends supertype {};
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = (supertype: Constructor<Object>) => {
+  return class extends supertype {};
+};
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = function (supertype: Constructor<Object>) {
+  return class extends supertype {};
+};
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+function M(supertype: Constructor<Object>) {
+  class Response extends supertype {}
+  return Response;
+}
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = (supertype: Constructor<Object>) => {
+  class Response extends supertype {}
+  return Response;
+};
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1411,6 +1496,114 @@ class Foo {
           endLine: 4,
           column: 3,
           endColumn: 18,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+function M(supertype: Constructor<Object>) {
+  return class extends supertype {};
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 43,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = (supertype: Constructor<Object>) => class extends supertype {};
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 46,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = (supertype: Constructor<Object>) => {
+  return class extends supertype {};
+};
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 46,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = function (supertype: Constructor<Object>) {
+  return class extends supertype {};
+};
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 52,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+function M(supertype: Constructor<Object>) {
+  class Response extends supertype {}
+  return Response;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 43,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+type Constructor<T> = abstract new (...args: any) => T;
+const M = (supertype: Constructor<Object>) => {
+  class Response extends supertype {}
+  return Response;
+};
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 46,
         },
       ],
     },
