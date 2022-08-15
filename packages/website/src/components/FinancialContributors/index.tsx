@@ -17,7 +17,7 @@ export function FinancialContributors(): JSX.Element {
           className={styles.tierSponsorArea}
           include={{ link: true, name: true }}
           tier="sponsor"
-          title="Sponsors"
+          title="Platinum Sponsors"
         />
         <Sponsors
           className={styles.tierSupporterArea}
@@ -28,7 +28,7 @@ export function FinancialContributors(): JSX.Element {
         <Sponsors
           className={styles.tierOtherArea}
           tier="contributor"
-          title="Supporters"
+          title="Silver Supporters"
         />
       </div>
       <div className={styles.linksArea}>
