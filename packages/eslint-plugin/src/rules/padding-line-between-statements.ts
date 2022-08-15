@@ -592,7 +592,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
-    hasSuggestions: true,
+    hasSuggestions: false,
     schema: {
       definitions: {
         paddingType: {

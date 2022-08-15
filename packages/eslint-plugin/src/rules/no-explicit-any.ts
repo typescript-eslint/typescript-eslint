@@ -16,10 +16,9 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the `any` type',
       recommended: 'warn',
-      suggestion: true,
     },
     fixable: 'code',
-    hasSuggestions: true,
+    hasSuggestions: true, // eslint-disable-line eslint-plugin/require-meta-has-suggestions -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/281
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
       suggestUnknown:

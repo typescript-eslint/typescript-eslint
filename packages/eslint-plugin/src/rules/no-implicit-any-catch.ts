@@ -19,7 +19,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow usage of the implicit `any` type in catch clauses',
       recommended: false,
-      suggestion: true,
     },
     fixable: 'code',
     hasSuggestions: true,
