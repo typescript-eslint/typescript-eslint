@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.33.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.0...v5.33.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* missing placeholders in violation messages for `no-unnecessary-type-constraint` and `no-unsafe-argument` (and enable `eslint-plugin/recommended` rules internally) ([#5453](https://github.com/typescript-eslint/typescript-eslint/issues/5453)) ([d023910](https://github.com/typescript-eslint/typescript-eslint/commit/d0239104f4dbffd2b5ecdb19e520c7d4b71962e0))
+
+
+
+
+
 # [5.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.32.0...v5.33.0) (2022-08-08)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
