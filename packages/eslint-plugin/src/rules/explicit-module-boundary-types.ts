@@ -274,7 +274,7 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      return doesImmediatelyReturnClassExpression(node);
+      return doesImmediatelyReturnClassExpression(node.body);
     }
 
     function isExportedHigherOrderFunction(node: FunctionNode): boolean {

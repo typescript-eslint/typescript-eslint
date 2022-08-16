@@ -2094,5 +2094,69 @@ export const M = (supertype: Constructor<Object>) => {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+export function M() {
+  return [1, 2, 3];
+}
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 8,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export const M = () => [1, 2, 3];
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 18,
+          endColumn: 23,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export const M = function () {
+  return [1, 2, 3];
+};
+      `,
+      options: [
+        {
+          allowMixins: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 18,
+          endColumn: 29,
+        },
+      ],
+    },
   ],
 });

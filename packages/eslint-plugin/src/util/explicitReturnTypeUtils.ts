@@ -141,12 +141,9 @@ function doesImmediatelyReturnFunctionExpression({
  * function fn() { return function() { ... } }
  * ```
  */
-function doesImmediatelyReturnClassExpression({ body }: FunctionNode): boolean {
-  // Should always have a body; really checking just in case
-  /* istanbul ignore if */ if (!body) {
-    return false;
-  }
-
+function doesImmediatelyReturnClassExpression(
+  body: TSESTree.BlockStatement | TSESTree.Expression,
+): boolean {
   // Check if body is a class expression
   if (body.type === AST_NODE_TYPES.ClassExpression) {
     return true;

@@ -142,7 +142,7 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      return doesImmediatelyReturnClassExpression(node);
+      return doesImmediatelyReturnClassExpression(node.body);
     }
 
     return {
@@ -159,11 +159,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (isAllowedName(node)) {
-          return;
-        }
-
-        if (isAllowedMixin(node)) {
+        if (isAllowedName(node) || isAllowedMixin(node)) {
           return;
         }
 
@@ -184,11 +180,7 @@ export default util.createRule<Options, MessageIds>({
         );
       },
       FunctionDeclaration(node): void {
-        if (isAllowedName(node)) {
-          return;
-        }
-
-        if (isAllowedMixin(node)) {
+        if (isAllowedName(node) || isAllowedMixin(node)) {
           return;
         }
 
