@@ -184,12 +184,7 @@ declare module FooBar {
         },
       ],
       // output matches input because a suggestion was made
-      output: `
-declare module FooBar {
-  type Baz = typeof baz;
-  export interface Bar extends Baz {}
-}
-      `.trimRight(),
+      output: null,
     },
   ],
 });

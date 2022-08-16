@@ -1,3 +1,7 @@
+---
+description: 'Enforce `includes` method over `indexOf` method.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-includes** for documentation.

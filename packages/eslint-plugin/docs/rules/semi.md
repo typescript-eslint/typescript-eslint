@@ -1,3 +1,7 @@
+---
+description: 'Require or disallow semicolons instead of ASI.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/semi** for documentation.

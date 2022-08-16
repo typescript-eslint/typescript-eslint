@@ -142,7 +142,7 @@ export default util.createRule<[], MessageIds>({
       unsafeArgument:
         'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
       unsafeTupleSpread:
-        'Unsafe spread of a tuple type. The {{index}} element is of type `{{sender}}` and is assigned to a parameter of type `{{reciever}}`.',
+        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
       unsafeArraySpread: 'Unsafe spread of an `any` array type.',
       unsafeSpread: 'Unsafe spread of an `any` type.',
     },

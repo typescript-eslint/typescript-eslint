@@ -1,3 +1,7 @@
+---
+description: 'Disallow certain types in boolean expressions.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/strict-boolean-expressions** for documentation.

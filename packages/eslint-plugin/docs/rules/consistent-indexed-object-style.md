@@ -1,3 +1,7 @@
+---
+description: 'Require or disallow the `Record` type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/consistent-indexed-object-style** for documentation.

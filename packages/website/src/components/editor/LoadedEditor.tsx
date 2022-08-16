@@ -127,21 +127,27 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
       webLinter.updateParserOptions(jsx, sourceType);
 
-      const messages = webLinter.lint(code);
+      try {
+        const messages = webLinter.lint(code);
 
-      const markers = parseLintResults(messages, codeActions, ruleId =>
-        sandboxInstance.monaco.Uri.parse(webLinter.rulesUrl.get(ruleId) ?? ''),
-      );
+        const markers = parseLintResults(messages, codeActions, ruleId =>
+          sandboxInstance.monaco.Uri.parse(
+            webLinter.rulesUrl.get(ruleId) ?? '',
+          ),
+        );
 
-      sandboxInstance.monaco.editor.setModelMarkers(
-        tabs.code,
-        'eslint',
-        markers,
-      );
+        sandboxInstance.monaco.editor.setModelMarkers(
+          tabs.code,
+          'eslint',
+          markers,
+        );
 
-      // fallback when event is not preset, ts < 4.0.5
-      if (!sandboxInstance.monaco.editor.onDidChangeMarkers) {
-        updateMarkers();
+        // fallback when event is not preset, ts < 4.0.5
+        if (!sandboxInstance.monaco.editor.onDidChangeMarkers) {
+          updateMarkers();
+        }
+      } catch (e) {
+        onMarkersChange(e as Error);
       }
 
       onEsASTChange(webLinter.storedAST);

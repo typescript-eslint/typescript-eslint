@@ -1,3 +1,7 @@
+---
+description: 'Enforce using function types instead of interfaces with call signatures.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-function-type** for documentation.

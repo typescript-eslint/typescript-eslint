@@ -1,3 +1,7 @@
+---
+description: 'Require consistent spacing around type annotations.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/type-annotation-spacing** for documentation.

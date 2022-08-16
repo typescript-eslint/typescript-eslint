@@ -1,3 +1,7 @@
+---
+description: 'Require or disallow parameter properties in class constructors.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/parameter-properties** for documentation.

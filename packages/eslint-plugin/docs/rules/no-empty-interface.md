@@ -1,3 +1,7 @@
+---
+description: 'Disallow the declaration of empty interfaces.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-empty-interface** for documentation.
