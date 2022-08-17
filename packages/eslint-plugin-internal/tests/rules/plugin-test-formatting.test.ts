@@ -25,26 +25,6 @@ ruleTester.run({
 });
   `;
 }
-function wrapWithOutput(
-  strings: TemplateStringsArray,
-  ...keys: string[]
-): string {
-  const lastIndex = strings.length - 1;
-  const code =
-    strings.slice(0, lastIndex).reduce((p, s, i) => p + s + keys[i], '') +
-    strings[lastIndex];
-  return `
-ruleTester.run({
-  invalid: [
-    {
-      code: ${code},
-      output: ${code},
-    },
-  ],
-});
-  `;
-}
-
 ruleTester.run('plugin-test-formatting', rule, {
   valid: [
     // sanity check for valid tests non-object style
@@ -365,33 +345,12 @@ ${PARENT_INDENT}\``,
       code: wrap`\`
 ${CODE_INDENT}const a=\\\`\\\${a}\\\`;
 ${PARENT_INDENT}\``,
-      // make sure it escapes backticks
       output: wrap`\`
 ${CODE_INDENT}const a = \\\`\\\${a}\\\`;
 ${PARENT_INDENT}\``,
       errors: [
         {
           messageId: 'invalidFormatting',
-        },
-      ],
-    },
-
-    // sanity check that it runs on both output and code properties
-    {
-      code: wrapWithOutput`\`
-${CODE_INDENT}const a="1";
-${CODE_INDENT}          const b    =   "2";
-${PARENT_INDENT}\``,
-      output: wrapWithOutput`\`
-${CODE_INDENT}const a = '1';
-${CODE_INDENT}const b = '2';
-${PARENT_INDENT}\``,
-      errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-        {
-          messageId: 'invalidFormattingErrorTest',
         },
       ],
     },
@@ -431,7 +390,7 @@ ruleTester.run({
           suggestions: [
             {
               messageId: 'bar',
-              output: 'const x = 1;',
+              output: 'const x=1;',
             },
           ],
         },
@@ -441,9 +400,6 @@ ruleTester.run({
 });
       `,
       errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
         {
           messageId: 'invalidFormattingErrorTest',
         },
@@ -547,29 +503,6 @@ foo
           data: {
             message: 'Unterminated string literal.',
           },
-        },
-      ],
-    },
-
-    // checks tests with .trimRight calls
-    {
-      code: wrap`'const a=1;'.trimRight()`,
-      output: wrap`'const a = 1;'.trimRight()`,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    {
-      code: wrap`\`const a = "1";
-${CODE_INDENT}\`.trimRight()`,
-      output: wrap`\`
-const a = "1";
-${CODE_INDENT}\`.trimRight()`,
-      errors: [
-        {
-          messageId: 'templateLiteralEmptyEnds',
         },
       ],
     },
