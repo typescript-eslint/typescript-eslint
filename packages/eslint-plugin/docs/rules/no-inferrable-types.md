@@ -13,33 +13,11 @@ Explicit types where they can be easily inferred may add unnecessary verbosity.
 This rule disallows explicit type declarations on parameters, variables
 and properties where the type can be easily inferred from its value.
 
-## Options
-
-This rule accepts the following options:
-
-```ts
-interface Options {
-  ignoreParameters?: boolean;
-  ignoreProperties?: boolean;
-}
-```
-
-### Default
-
-The default options are:
-
-```json
-{
-  "ignoreParameters": false,
-  "ignoreProperties": false
-}
-```
-
-With these options, the following patterns are:
+Examples of code with the default options:
 
 <!--tabs-->
 
-#### ❌ Incorrect
+### ❌ Incorrect
 
 ```ts
 const a: bigint = 10n;
@@ -80,7 +58,7 @@ class Foo {
 function fn(a: number = 5, b: boolean = true) {}
 ```
 
-#### ✅ Correct
+### ✅ Correct
 
 ```ts
 const a = 10n;
@@ -124,6 +102,8 @@ function fn(a: number, b: boolean, c: string) {}
 ```
 
 <!--/tabs-->
+
+## Options
 
 ### `ignoreParameters`
 

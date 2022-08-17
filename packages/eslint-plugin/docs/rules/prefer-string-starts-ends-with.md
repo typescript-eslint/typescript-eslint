@@ -48,19 +48,6 @@ foo.startsWith('bar');
 foo.endsWith('bar');
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-string-starts-ends-with": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't mind that style, you can turn this rule off safely.

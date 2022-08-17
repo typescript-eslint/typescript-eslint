@@ -33,23 +33,3 @@ new Array<Foo>(x, y, z);
 Array(500);
 new Array(someOtherArray.length);
 ```
-
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-array-constructor": "off",
-  "@typescript-eslint/no-array-constructor": ["error"]
-}
-```
-
-## Options
-
-See [`eslint/no-array-constructor` options](https://eslint.org/docs/rules/no-array-constructor#options).
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-array-constructor.md)
-
-</sup>

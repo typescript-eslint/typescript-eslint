@@ -49,16 +49,3 @@ function foo(bar?: { n: number }) {
   return bar?.n;
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-extra-non-null-assertion": "error"
-  }
-}
-```
-
-This rule is not configurable.

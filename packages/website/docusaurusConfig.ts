@@ -23,8 +23,11 @@ const presetClassicOptions: PresetClassicOptions = {
     sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
     routeBasePath: 'rules',
     editUrl: `${githubUrl}/edit/main/packages/website/`,
-    beforeDefaultRemarkPlugins,
-    remarkPlugins: [...remarkPlugins, [generatedRuleDocs, {}]],
+    beforeDefaultRemarkPlugins: [
+      ...beforeDefaultRemarkPlugins,
+      [generatedRuleDocs, {}],
+    ],
+    remarkPlugins: remarkPlugins,
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },

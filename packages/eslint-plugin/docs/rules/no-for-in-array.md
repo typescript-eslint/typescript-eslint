@@ -43,19 +43,6 @@ for (const x in { a: 3, b: 4, c: 5 }) {
 }
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-for-in-array": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you want to iterate through a loop using the indices in an array as strings, you can turn off this rule.

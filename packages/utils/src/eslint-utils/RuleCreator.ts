@@ -95,13 +95,14 @@ function createRule<
   TRuleListener
 > {
   return {
-    meta,
     create(
       context: Readonly<RuleContext<TMessageIds, TOptions>>,
     ): TRuleListener {
       const optionsWithDefault = applyDefault(defaultOptions, context.options);
       return create(context, optionsWithDefault);
     },
+    defaultOptions,
+    meta,
   };
 }
 

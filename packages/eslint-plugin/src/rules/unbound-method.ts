@@ -142,6 +142,8 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreStatic: {
+            description:
+              'Whether to skip checking whether `static` methods are correctly bound.',
             type: 'boolean',
           },
         },

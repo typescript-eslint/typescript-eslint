@@ -56,9 +56,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowComparingNullableBooleansToTrue: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `true`.',
             type: 'boolean',
           },
           allowComparingNullableBooleansToFalse: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `false`.',
             type: 'boolean',
           },
         },

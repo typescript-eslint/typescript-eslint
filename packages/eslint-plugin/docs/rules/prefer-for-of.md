@@ -42,19 +42,6 @@ for (let i = 0; i < arr.length; i++) {
 }
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-for-of": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you transpile for browsers that do not support for-of loops, you may wish to use traditional for loops that produce more compact code.

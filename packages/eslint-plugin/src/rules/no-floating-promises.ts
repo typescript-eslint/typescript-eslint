@@ -35,8 +35,15 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          ignoreVoid: { type: 'boolean' },
-          ignoreIIFE: { type: 'boolean' },
+          ignoreVoid: {
+            description: 'Whether to ignore `void` expressions.',
+            type: 'boolean',
+          },
+          ignoreIIFE: {
+            description:
+              'Whether to ignore async IIFEs (Immediately Invocated Function Expressions).',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },

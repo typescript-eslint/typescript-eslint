@@ -61,18 +61,6 @@ type stillVoid = void | never;
 
 ## Options
 
-```ts
-interface Options {
-  allowInGenericTypeArguments?: boolean | string[];
-  allowAsThisParameter?: boolean;
-}
-
-const defaultOptions: Options = {
-  allowInGenericTypeArguments: true,
-  allowAsThisParameter: false,
-};
-```
-
 ### `allowInGenericTypeArguments`
 
 This option lets you control if `void` can be used as a valid value for generic type parameters.

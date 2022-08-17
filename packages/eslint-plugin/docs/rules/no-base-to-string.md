@@ -64,16 +64,6 @@ const literalWithToString = {
 
 ## Options
 
-```ts
-type Options = {
-  ignoredTypeNames?: string[];
-};
-
-const defaultOptions: Options = {
-  ignoredTypeNames: ['RegExp'],
-};
-```
-
 ### `ignoredTypeNames`
 
 A string array of type names to ignore, this is useful for types missing `toString()` (but actually has `toString()`).

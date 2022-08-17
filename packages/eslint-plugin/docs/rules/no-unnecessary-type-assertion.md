@@ -65,9 +65,9 @@ function foo(x: number | undefined): number {
 
 ## Options
 
-This rule optionally takes an object with a single property `typesToIgnore`, which can be set to a list of type names to ignore.
+### `typesToIgnore`
 
-For example, with `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
+With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
 
 ```ts
 type Foo = 3;

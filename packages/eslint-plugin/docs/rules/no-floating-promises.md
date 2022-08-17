@@ -65,22 +65,6 @@ Promise.reject('value').finally(() => {});
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, checking void expressions will be skipped
-  ignoreVoid?: boolean;
-  // if true, checking for async iife will be skipped
-  ignoreIIFE?: boolean;
-};
-
-const defaults = {
-  ignoreVoid: true,
-  ignoreIIFE: false,
-};
-```
-
 ### `ignoreVoid`
 
 This allows you to stop the rule reporting promises consumed with void operator.

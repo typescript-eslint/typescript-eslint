@@ -95,49 +95,6 @@ type T4 =
 
 ## Options
 
-```ts
-type Options = {
-  // true to check intersection types, false otherwise
-  checkIntersections?: boolean;
-  // true to check union types, false otherwise
-  checkUnions?: boolean;
-  // the ordering of the groups
-  groupOrder?: (
-    | 'conditional'
-    | 'function'
-    | 'import'
-    | 'intersection'
-    | 'keyword'
-    | 'literal'
-    | 'named'
-    | 'object'
-    | 'operator'
-    | 'tuple'
-    | 'union'
-    | 'nullish'
-  )[];
-};
-
-const defaultOptions: Options = {
-  checkIntersections: true,
-  checkUnions: true,
-  groupOrder: [
-    'named',
-    'keyword',
-    'operator',
-    'literal',
-    'function',
-    'import',
-    'conditional',
-    'object',
-    'tuple',
-    'intersection',
-    'union',
-    'nullish',
-  ],
-};
-```
-
 ### `groupOrder`
 
 Each member of the type is placed into a group, and then the rule sorts alphabetically within each group.
