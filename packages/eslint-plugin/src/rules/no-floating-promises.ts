@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageId>({
       description:
         'Require Promise-like statements to be handled appropriately',
       recommended: 'error',
-      suggestion: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

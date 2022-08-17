@@ -1,3 +1,7 @@
+---
+description: 'Enforce the use of `as const` over literal type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-as-const** for documentation.

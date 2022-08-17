@@ -1,3 +1,7 @@
+---
+description: 'Disallow non-null assertions after an optional chain expression.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-non-null-asserted-optional-chain** for documentation.

@@ -1,3 +1,7 @@
+---
+description: 'Disallow type aliases.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-type-alias** for documentation.

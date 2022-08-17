@@ -1,3 +1,7 @@
+---
+description: 'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-string-starts-ends-with** for documentation.

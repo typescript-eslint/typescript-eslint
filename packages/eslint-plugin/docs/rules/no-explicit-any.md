@@ -1,3 +1,7 @@
+---
+description: 'Disallow the `any` type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.

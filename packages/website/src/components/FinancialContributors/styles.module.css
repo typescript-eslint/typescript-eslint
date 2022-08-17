@@ -4,15 +4,22 @@
   gap: 8px;
 }
 
+.linksArea {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-direction: column;
+  margin: 48px 24px 24px;
+}
+
 .become {
-  margin: 8px 0 24px;
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 @media screen and (min-width: 1150px) {
   .sponsorsContainer {
     display: grid;
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 50% 50%;
     margin: auto;
     max-width: 100%;
   }
@@ -33,5 +40,13 @@
 
   .tierOtherArea {
     grid-area: 2 / 2 / 3 / 3;
+  }
+
+  .sponsorLink {
+    display: flex;
+  }
+
+  .linksArea {
+    margin: 24px;
   }
 }

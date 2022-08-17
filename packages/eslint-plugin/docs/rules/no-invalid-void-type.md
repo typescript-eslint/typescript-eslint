@@ -1,3 +1,7 @@
+---
+description: 'Disallow `void` type outside of generic or return types.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-invalid-void-type** for documentation.

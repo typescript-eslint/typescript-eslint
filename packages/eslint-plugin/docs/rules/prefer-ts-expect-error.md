@@ -1,3 +1,7 @@
+---
+description: 'Enforce using `@ts-expect-error` over `@ts-ignore`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-ts-expect-error** for documentation.

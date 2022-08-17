@@ -1,3 +1,7 @@
+---
+description: 'Require using either `T[]` or `Array<T>` for arrays.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/array-type** for documentation.

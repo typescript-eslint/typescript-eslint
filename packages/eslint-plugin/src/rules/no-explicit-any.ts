@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the `any` type',
       recommended: 'warn',
-      suggestion: true,
     },
     fixable: 'code',
     hasSuggestions: true,

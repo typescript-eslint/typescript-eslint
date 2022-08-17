@@ -1,3 +1,7 @@
+---
+description: 'Require switch-case statements to be exhaustive with union type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.

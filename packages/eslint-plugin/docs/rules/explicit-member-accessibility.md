@@ -1,3 +1,7 @@
+---
+description: 'Require explicit accessibility modifiers on class properties and methods.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.

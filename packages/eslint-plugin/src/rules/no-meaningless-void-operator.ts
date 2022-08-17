@@ -20,7 +20,6 @@ export default util.createRule<
       description:
         'Disallow the `void` operator except when used to discard a value',
       recommended: 'strict',
-      suggestion: true,
       requiresTypeChecking: true,
     },
     fixable: 'code',

@@ -1,3 +1,7 @@
+---
+description: 'Enforce using the nullish coalescing operator instead of logical chaining.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-nullish-coalescing** for documentation.

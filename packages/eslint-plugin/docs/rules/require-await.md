@@ -1,3 +1,7 @@
+---
+description: 'Disallow async functions which have no `await` expression.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/require-await** for documentation.

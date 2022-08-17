@@ -29,13 +29,13 @@ try {
       code: `
 try {
 } catch (e3) {}
-      `.trim(),
+      `,
       errors: [
         {
-          line: 2,
+          line: 3,
           column: 3,
           messageId: 'implicitAnyInCatch',
-          endLine: 2,
+          endLine: 3,
           endColumn: 16,
           suggestions: [
             {
@@ -43,7 +43,7 @@ try {
               output: `
 try {
 } catch (e3: unknown) {}
-              `.trim(),
+      `,
             },
           ],
         },
@@ -53,14 +53,14 @@ try {
       code: `
 try {
 } catch (e4: any) {}
-      `.trim(),
+      `,
       options: [{ allowExplicitAny: false }],
       errors: [
         {
-          line: 2,
+          line: 3,
           column: 3,
           messageId: 'explicitAnyInCatch',
-          endLine: 2,
+          endLine: 3,
           endColumn: 21,
           suggestions: [
             {
@@ -68,7 +68,7 @@ try {
               output: `
 try {
 } catch (e4: unknown) {}
-              `.trim(),
+      `,
             },
           ],
         },

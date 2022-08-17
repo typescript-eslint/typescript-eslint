@@ -1,3 +1,7 @@
+---
+description: 'Disallow generic `Array` constructors.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-array-constructor** for documentation.

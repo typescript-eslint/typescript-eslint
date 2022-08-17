@@ -1,3 +1,7 @@
+---
+description: 'Disallow Promises in places not designed to handle them.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-misused-promises** for documentation.

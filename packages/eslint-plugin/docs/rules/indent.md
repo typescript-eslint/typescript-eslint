@@ -1,3 +1,7 @@
+---
+description: 'Enforce consistent indentation.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/indent** for documentation.

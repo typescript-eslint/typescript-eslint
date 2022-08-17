@@ -1,3 +1,7 @@
+---
+description: 'Disallow the use of `eval()`-like methods.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-implied-eval** for documentation.

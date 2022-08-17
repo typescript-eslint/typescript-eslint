@@ -661,7 +661,7 @@ let bar: B;
 import { A, B } from 'foo';
 const foo: A = B();
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B } from 'foo';
 const foo: A = B();
@@ -769,7 +769,7 @@ type T = A;
         import type { Already2 } from 'bar';
         type T = { b: B; c: C; d: D };
       `,
-      output: noFormat`
+      output: `
         import type Already1Def from 'foo';
         import type { Already1 , B } from 'foo';
         import A from 'foo';
@@ -817,7 +817,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = A | D;
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B, C } from 'foo';
 import type { D} from 'bar';
@@ -845,7 +845,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = B | E;
       `,
-      output: noFormat`
+      output: `
 import type { B} from 'foo';
 import { A, C } from 'foo';
 import type { E} from 'bar';
@@ -873,7 +873,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = C | F;
       `,
-      output: noFormat`
+      output: `
 import type { C } from 'foo';
 import { A, B } from 'foo';
 import type { F} from 'bar';
@@ -944,7 +944,7 @@ import Value3, { Type3 } from 'default_import2';
 import Type4, { Type5, Value4 } from 'default_and_named_import';
 type T = Type1 | Type2 | Type3 | Type4 | Type5;
       `,
-      output: noFormat`
+      output: `
 import type { Type1 } from 'named_import';
 import { Value1 } from 'named_import';
 import type Type2 from 'default_import';
@@ -1324,7 +1324,7 @@ import type /*comment*/ { Type } from 'foo';
 type T = { a: AllType; b: DefType; c: Type };
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
+      output: `
 import /*comment*/ * as AllType from 'foo';
 import // comment
 DefType from 'foo';
@@ -1437,7 +1437,7 @@ import Default /*comment1*/, /*comment2*/ { Data } from 'module';
 const a: Default = '';
       `,
       options: [{ prefer: 'type-imports' }],
-      output: noFormat`
+      output: `
 import type Default /*comment1*/ from 'module';
 import /*comment2*/ { Data } from 'module';
 const a: Default = '';
@@ -1481,7 +1481,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import Foo from 'foo';
         @deco
         class A {
@@ -1506,7 +1506,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { Foo } from 'foo';
         @deco
         class A {
@@ -1533,7 +1533,7 @@ const a: Default = '';
         }
         type T = Bar;
       `,
-      output: noFormat`
+      output: `
         import type { Type , Bar } from 'foo';
         import { Foo } from 'foo';
         @deco
@@ -1562,7 +1562,7 @@ const a: Default = '';
           foo(@deco bar: Bar) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { V , Foo, Bar} from 'foo';
         import type { T } from 'foo';
         @deco
@@ -1590,7 +1590,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import type { T } from 'foo';
         import { V , Foo} from 'foo';
         @deco
@@ -1616,7 +1616,7 @@ const a: Default = '';
           constructor(foo: Type.Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import * as Type from 'foo';
         @deco
         class A {
@@ -1641,7 +1641,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import Foo from 'foo';
         @deco
         class A {
@@ -1666,7 +1666,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { Foo } from 'foo';
         @deco
         class A {
@@ -1693,7 +1693,7 @@ const a: Default = '';
         }
         type T = Bar;
       `,
-      output: noFormat`
+      output: `
         import type { Type , Bar } from 'foo';
         import { Foo } from 'foo';
         @deco
@@ -1722,7 +1722,7 @@ const a: Default = '';
           foo(@deco bar: Bar) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { V , Foo, Bar} from 'foo';
         import type { T } from 'foo';
         @deco
@@ -1750,7 +1750,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import type { T } from 'foo';
         import { V , Foo} from 'foo';
         @deco
@@ -1776,7 +1776,7 @@ const a: Default = '';
           constructor(foo: Type.Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import * as Type from 'foo';
         @deco
         class A {
@@ -1818,7 +1818,7 @@ import { A, B, type C } from 'foo';
 type T = A | C;
 const b = B;
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B, type C } from 'foo';
 type T = A | C;

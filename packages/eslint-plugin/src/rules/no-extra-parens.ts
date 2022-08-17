@@ -122,7 +122,19 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       // AssignmentExpression
-      // AwaitExpression
+      AwaitExpression(node) {
+        if (util.isTypeAssertion(node.argument)) {
+          // reduces the precedence of the node so the rule thinks it needs to be wrapped
+          return rules.AwaitExpression({
+            ...node,
+            argument: {
+              ...node.argument,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+        return rules.AwaitExpression(node);
+      },
       BinaryExpression: binaryExp,
       CallExpression: callExp,
       // ClassDeclaration
@@ -148,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
           });
         }
         if (util.isTypeAssertion(node.alternate)) {
-          // reduces the precedence of the node so the rule thinks it needs to be rapped
+          // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.ConditionalExpression({
             ...node,
             alternate: {

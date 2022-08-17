@@ -1,3 +1,7 @@
+---
+description: 'Enforce consistent returning of awaited values.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/return-await** for documentation.

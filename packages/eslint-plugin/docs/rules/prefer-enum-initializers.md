@@ -1,3 +1,7 @@
+---
+description: 'Require each enum member value to be explicitly initialized.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-enum-initializers** for documentation.

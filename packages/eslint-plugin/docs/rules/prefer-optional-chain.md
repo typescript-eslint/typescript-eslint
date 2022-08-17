@@ -1,3 +1,7 @@
+---
+description: 'Enforce using concise optional chain expressions instead of chained logical ands.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-optional-chain** for documentation.

@@ -1,3 +1,7 @@
+---
+description: 'Disallow conditionals where the type is always truthy or always falsy.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-condition** for documentation.

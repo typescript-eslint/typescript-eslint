@@ -1,3 +1,7 @@
+---
+description: 'Disallow certain types.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/ban-types** for documentation.

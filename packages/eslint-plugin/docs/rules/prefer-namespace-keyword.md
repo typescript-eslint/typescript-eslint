@@ -1,3 +1,7 @@
+---
+description: 'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-namespace-keyword** for documentation.

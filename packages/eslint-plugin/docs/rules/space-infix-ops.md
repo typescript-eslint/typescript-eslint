@@ -1,3 +1,7 @@
+---
+description: 'Require spacing around infix operators.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/space-infix-ops** for documentation.

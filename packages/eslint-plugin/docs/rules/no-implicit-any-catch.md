@@ -1,3 +1,7 @@
+---
+description: 'Disallow usage of the implicit `any` type in catch clauses.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-implicit-any-catch** for documentation.

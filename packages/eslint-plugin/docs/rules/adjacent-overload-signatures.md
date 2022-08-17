@@ -1,3 +1,7 @@
+---
+description: 'Require that member overloads be consecutive.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/adjacent-overload-signatures** for documentation.

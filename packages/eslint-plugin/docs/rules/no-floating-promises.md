@@ -1,3 +1,7 @@
+---
+description: 'Require Promise-like statements to be handled appropriately.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-floating-promises** for documentation.

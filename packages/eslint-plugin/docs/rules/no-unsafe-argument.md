@@ -1,3 +1,7 @@
+---
+description: 'Disallow calling a function with a value with type `any`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-argument** for documentation.

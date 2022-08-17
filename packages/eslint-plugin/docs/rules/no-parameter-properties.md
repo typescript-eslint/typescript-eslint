@@ -1,3 +1,7 @@
+---
+description: 'Disallow the use of parameter properties in class constructors.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-parameter-properties** for documentation.

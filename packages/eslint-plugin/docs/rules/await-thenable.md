@@ -1,3 +1,7 @@
+---
+description: 'Disallow awaiting a value that is not a Thenable.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/await-thenable** for documentation.

@@ -1,3 +1,7 @@
+---
+description: 'Disallow unnecessary equality comparisons against boolean literals.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare** for documentation.

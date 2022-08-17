@@ -1,3 +1,7 @@
+---
+description: 'Disallow calling a value with type `any`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-call** for documentation.

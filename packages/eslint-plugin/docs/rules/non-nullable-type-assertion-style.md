@@ -1,3 +1,7 @@
+---
+description: 'Enforce non-null assertions over explicit type casts.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/non-nullable-type-assertion-style** for documentation.

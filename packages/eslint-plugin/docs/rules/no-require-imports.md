@@ -1,3 +1,7 @@
+---
+description: 'Disallow invocation of `require()`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-require-imports** for documentation.

@@ -1,3 +1,7 @@
+---
+description: 'Disallow certain triple slash directives in favor of ES6-style import declarations.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/triple-slash-reference** for documentation.

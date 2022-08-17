@@ -1,3 +1,7 @@
+---
+description: 'Require explicit return types on functions and class methods.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/explicit-function-return-type** for documentation.

@@ -1,6 +1,6 @@
-name: "📝 Documentation Request"
-description: "Request a change in documentation"
-title: "Docs: <a short description of my proposal>"
+name: '📝 Documentation Request'
+description: 'Request a change in documentation'
+title: 'Docs: <a short description of my proposal>'
 labels:
   - documentation
   - triage

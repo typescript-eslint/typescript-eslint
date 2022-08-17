@@ -1,3 +1,7 @@
+---
+description: 'Disallow unnecessary semicolons.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-extra-semi** for documentation.

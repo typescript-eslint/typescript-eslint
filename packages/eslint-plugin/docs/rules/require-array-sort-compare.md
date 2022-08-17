@@ -1,3 +1,7 @@
+---
+description: 'Require `Array#sort` calls to always provide a `compareFunction`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/require-array-sort-compare** for documentation.

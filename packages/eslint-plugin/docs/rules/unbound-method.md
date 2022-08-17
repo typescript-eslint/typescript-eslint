@@ -1,3 +1,7 @@
+---
+description: 'Enforce unbound methods are called with their expected scope.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/unbound-method** for documentation.
