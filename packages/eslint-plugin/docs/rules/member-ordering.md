@@ -1,3 +1,7 @@
+---
+description: 'Require a consistent member declaration order.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/member-ordering** for documentation.
@@ -40,7 +44,7 @@ You can configure `OrderConfig` options for:
 
 The `OrderConfig` settings for each kind of construct may configure sorting on one or both two levels:
 
-- **`memberType`**: organizing on member type groups such as methods vs. properties
+- **`memberTypes`**: organizing on member type groups such as methods vs. properties
 - **`order`**: organizing based on member names, such as alphabetically
 
 ### Groups
@@ -93,6 +97,9 @@ The default configuration looks as follows:
     "decorated-field",
 
     "field",
+
+    // Static initialization
+    "static-initialization",
 
     // Constructors
     "public-constructor",
@@ -908,6 +915,9 @@ The most explicit and granular form is the following:
   "protected-abstract-field",
   "private-abstract-field",
 
+  // Static initialization
+  "static-initialization",
+
   // Constructors
   "public-constructor",
   "protected-constructor",
@@ -1006,6 +1016,9 @@ It is also possible to group member types by their accessibility (`static`, `ins
   "protected-field", // = ["protected-static-field", "protected-instance-field"]
   "private-field", // = ["private-static-field", "private-instance-field"]
 
+  // Static initialization
+  // No accessibility for static initialization.
+
   // Constructors
   // Only the accessibility of constructors is configurable. See below.
 
@@ -1043,6 +1056,9 @@ their accessibility.
 
   "decorated-field", // = ["public-decorated-field", "protected-decorated-field", "private-decorated-field"]
 
+  // Static initialization
+  // No decorators for static initialization.
+
   // Constructors
   // There are no decorators for constructors.
 
@@ -1051,14 +1067,14 @@ their accessibility.
   "protected-decorated-get",
   "private-decorated-get",
 
-  "decorated-get" // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
+  "decorated-get", // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
 
   // Setters
   "public-decorated-set",
   "protected-decorated-set",
   "private-decorated-set",
 
-  "decorated-set" // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
+  "decorated-set", // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
 
   // Methods
   "public-decorated-method",
@@ -1083,18 +1099,21 @@ Another option is to group the member types by their scope (`public`, `protected
   "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
   "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
 
+  // Static initialization
+  // No scope for static initialization.
+
   // Constructors
   "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
 
   // Getters
   "static-get", // = ["public-static-get", "protected-static-get", "private-static-get"]
   "instance-get", // = ["public-instance-get", "protected-instance-get", "private-instance-get"]
-  "abstract-get" // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+  "abstract-get", // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
 
   // Setters
   "static-set", // = ["public-static-set", "protected-static-set", "private-static-set"]
   "instance-set", // = ["public-instance-set", "protected-instance-set", "private-instance-set"]
-  "abstract-set" // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+  "abstract-set", // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
 
   // Methods
   "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
@@ -1116,15 +1135,18 @@ The third grouping option is to ignore both scope and accessibility.
   "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
   //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
 
+  // Static initialization
+  // No grouping for static initialization.
+
   // Constructors
   // Only the accessibility of constructors is configurable.
 
   // Getters
-  "get" // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
+  "get", // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
   //                "public-abstract-get", "protected-abstract-get", "private-abstract-get"]
 
   // Setters
-  "set" // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
+  "set", // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
   //                "public-abstract-set", "protected-abstract-set", "private-abstract-set"]
 
   // Methods
@@ -1144,6 +1166,9 @@ It is also possible to group different member types at the same rank.
 
   // Fields
   "field",
+
+  // Static initialization
+  "static-initialization",
 
   // Constructors
   "constructor",

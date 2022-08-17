@@ -9,7 +9,7 @@ export default util.createRule({
       description: 'Disallow duplicate enum member values',
       recommended: 'strict',
     },
-    hasSuggestions: true,
+    hasSuggestions: false,
     messages: {
       duplicateValue: 'Duplicate enum member value {{value}}.',
     },

@@ -22,6 +22,11 @@ That generally makes them run orders of magnitude slower.
 Additionally, modern formatters such as Prettier are architected in a way that applies formatting to all code regardless of original formatting.
 Linters typically run on a rule-by-rule basis, typically resulting in many edge cases and missed coverage in formatting.
 
+### Suggested Usage
+
+We recommend using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
+You can then configure your formatter separately from ESLint.
+
 ## ESLint Core and Formatting
 
 Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies#what-are-the-changes):

@@ -36,7 +36,7 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
       </td>
       <td className={styles.attrCol}>
         {rule.fixable ? '🔧\n' : '\n'}
-        {rule.hasSuggestions ? '🛠' : ''}
+        {rule.hasSuggestions ? '💡' : ''}
       </td>
       <td className={styles.attrCol}>
         {rule.docs.requiresTypeChecking ? '💭' : ''}
@@ -168,7 +168,7 @@ export default function RulesTable({
         <RuleFilterCheckBox
           mode={showHasSuggestions}
           setMode={setShowHasSuggestion}
-          label="🛠 has suggestions"
+          label="💡 has suggestions"
         />
         <RuleFilterCheckBox
           mode={showTypeCheck}
@@ -181,7 +181,7 @@ export default function RulesTable({
           <tr>
             <th className={styles.ruleCol}>Rule</th>
             <th className={styles.attrCol}>✅{'\n'}🔒</th>
-            <th className={styles.attrCol}>🔧{'\n'}🛠</th>
+            <th className={styles.attrCol}>🔧{'\n'}💡</th>
             <th className={styles.attrCol}>💭</th>
           </tr>
         </thead>

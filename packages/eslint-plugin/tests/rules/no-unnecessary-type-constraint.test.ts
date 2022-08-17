@@ -39,6 +39,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: 'function data<T>() {}',
             },
           ],
@@ -57,6 +58,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: 'function data<T, U>() {}',
             },
           ],
@@ -75,6 +77,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: 'function data<T, U>() {}',
             },
           ],
@@ -93,6 +96,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: 'function data<T, U extends T>() {}',
             },
           ],
@@ -111,6 +115,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: `const data = <T,>() => {};`,
             },
           ],
@@ -130,6 +135,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: `const data = <T,>() => {};`,
             },
           ],
@@ -149,6 +155,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: `const data = <T, >() => {};`,
             },
           ],
@@ -168,6 +175,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: `const data = <T ,>() => {};`,
             },
           ],
@@ -187,6 +195,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: `const data = <T , >() => {};`,
             },
           ],
@@ -206,6 +215,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: 'const data = <T = unknown>() => {};',
             },
           ],
@@ -225,6 +235,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: `const data = <T, U extends any>() => {};`,
             },
           ],
@@ -238,6 +249,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: `const data = <T extends any, U>() => {};`,
             },
           ],
@@ -257,6 +269,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: 'function data<T>() {}',
             },
           ],
@@ -275,6 +288,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
               output: 'const data = <T>() => {};',
             },
           ],
@@ -293,6 +307,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: 'const data = <T>() => {};',
             },
           ],
@@ -311,6 +326,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: 'class Data<T> {}',
             },
           ],
@@ -329,6 +345,7 @@ function data<T extends TODO>() {}
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: 'const Data = class<T> {};',
             },
           ],
@@ -351,6 +368,7 @@ class Data {
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: `
 class Data {
   member<T>() {}
@@ -377,6 +395,7 @@ const Data = class {
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: `
 const Data = class {
   member<T>() {}
@@ -399,6 +418,7 @@ const Data = class {
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: 'interface Data<T> {}',
             },
           ],
@@ -417,6 +437,7 @@ const Data = class {
           suggestions: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'unknown' },
               output: 'type Data<T> = {};',
             },
           ],

@@ -1,3 +1,7 @@
+---
+description: 'Require or disallow trailing commas.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/comma-dangle** for documentation.

@@ -1,3 +1,7 @@
+---
+description: 'Disallow custom TypeScript modules and namespaces.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-namespace** for documentation.

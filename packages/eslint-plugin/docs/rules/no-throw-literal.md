@@ -1,3 +1,7 @@
+---
+description: 'Disallow throwing literals as exceptions.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-throw-literal** for documentation.

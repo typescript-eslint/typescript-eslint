@@ -6,7 +6,7 @@ import { ScopeManager } from '../ScopeManager';
 
 class ClassStaticBlockScope extends ScopeBase<
   ScopeType.classStaticBlock,
-  TSESTree.Expression,
+  TSESTree.StaticBlock,
   Scope
 > {
   constructor(

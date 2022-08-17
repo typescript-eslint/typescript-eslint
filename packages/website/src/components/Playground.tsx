@@ -66,7 +66,7 @@ function Playground(): JSX.Element {
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();
   const [tsAst, setTsAST] = useState<SourceFile | null>();
   const [scope, setScope] = useState<Record<string, unknown> | null>();
-  const [markers, setMarkers] = useState<ErrorGroup[]>();
+  const [markers, setMarkers] = useState<ErrorGroup[] | Error>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);

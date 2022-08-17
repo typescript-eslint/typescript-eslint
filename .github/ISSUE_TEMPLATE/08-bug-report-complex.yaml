@@ -1,6 +1,6 @@
-name: "🐛 Report a Complex Bug With a Reproduction Repository"
+name: '🐛 Report a Complex Bug With a Reproduction Repository'
 description: Report a complex bug you encountered by providing an isolated reproduction repository
-title: "Bug: <short description of the issue>"
+title: 'Bug: <short description of the issue>'
 labels:
   - bug
   - triage

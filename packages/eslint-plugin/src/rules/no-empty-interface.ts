@@ -15,10 +15,9 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the declaration of empty interfaces',
       recommended: 'error',
-      suggestion: true,
     },
     fixable: 'code',
-    hasSuggestions: true,
+    hasSuggestions: true, // eslint-disable-line eslint-plugin/require-meta-has-suggestions -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/272
     messages: {
       noEmpty: 'An empty interface is equivalent to `{}`.',
       noEmptyWithSuper:

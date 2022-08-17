@@ -82,12 +82,7 @@ export default interface Foo {
           },
         },
       ],
-      output: `
-export default interface Foo {
-  /** comment */
-  (): string;
-}
-      `,
+      output: null,
     },
     {
       code: `
