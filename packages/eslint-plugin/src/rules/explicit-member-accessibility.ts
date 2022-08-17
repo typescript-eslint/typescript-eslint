@@ -93,7 +93,7 @@ export default util.createRule<Options, MessageIds>({
       nodeType: string,
       node: TSESTree.Node,
       nodeName: string,
-      fix: TSESLint.ReportFixFunction | null = null,
+      fix: TSESLint.ReportFixFunction,
     ): void {
       context.report({
         node,
@@ -159,6 +159,7 @@ export default util.createRule<Options, MessageIds>({
           nodeType,
           methodDefinition,
           methodName,
+          getMissingAccessibilityFixer(methodDefinition),
         );
       }
     }
@@ -206,6 +207,30 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Creates a fixer that adds a "public" keyword with following spaces
+     */
+    function getMissingAccessibilityFixer(
+      node:
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition
+        | TSESTree.TSParameterProperty,
+    ): TSESLint.ReportFixFunction {
+      return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null {
+        if (node.decorators && node.decorators.length > 0) {
+          const lastDecorator = node.decorators[node.decorators.length - 1];
+          const nextToken = sourceCode.getTokenAfter(lastDecorator);
+          if (!nextToken) {
+            return null;
+          }
+          return fixer.insertTextBefore(nextToken, 'public ');
+        }
+        return fixer.insertTextBefore(node, 'public ');
+      };
+    }
+
+    /**
      * Checks if property has an accessibility modifier.
      * @param propertyDefinition The node representing a PropertyDefinition.
      */
@@ -244,6 +269,7 @@ export default util.createRule<Options, MessageIds>({
           nodeType,
           propertyDefinition,
           propertyName,
+          getMissingAccessibilityFixer(propertyDefinition),
         );
       }
     }
@@ -273,7 +299,13 @@ export default util.createRule<Options, MessageIds>({
       switch (paramPropCheck) {
         case 'explicit': {
           if (!node.accessibility) {
-            reportIssue('missingAccessibility', nodeType, node, nodeName);
+            reportIssue(
+              'missingAccessibility',
+              nodeType,
+              node,
+              nodeName,
+              getMissingAccessibilityFixer(node),
+            );
           }
           break;
         }

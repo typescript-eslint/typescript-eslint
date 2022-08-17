@@ -368,7 +368,11 @@ export class XXXX {
           line: 3,
         },
       ],
-      output: null,
+      output: `
+export class XXXX {
+  public constructor(public readonly value: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -379,7 +383,11 @@ export class WithParameterProperty {
       `,
       options: [{ accessibility: 'explicit' }],
       errors: [{ messageId: 'missingAccessibility' }],
-      output: null,
+      output: `
+export class WithParameterProperty {
+  public constructor(public readonly value: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -398,7 +406,11 @@ export class XXXX {
         },
       ],
       errors: [{ messageId: 'missingAccessibility' }],
-      output: null,
+      output: `
+export class XXXX {
+  public constructor(public readonly samosa: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -414,7 +426,11 @@ class Test {
         },
       ],
       errors: [{ messageId: 'missingAccessibility' }],
-      output: null,
+      output: `
+class Test {
+  public constructor(public readonly foo: string) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -437,7 +453,14 @@ class Test {
           column: 3,
         },
       ],
-      output: null,
+      output: `
+class Test {
+  public x: number;
+  public getX() {
+    return this.x;
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -460,7 +483,14 @@ class Test {
           column: 3,
         },
       ],
-      output: null,
+      output: `
+class Test {
+  private x: number;
+  public getX() {
+    return this.x;
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -492,7 +522,14 @@ class Test {
           column: 3,
         },
       ],
-      output: null,
+      output: `
+class Test {
+  public x?: number;
+  public getX?() {
+    return this.x;
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -621,7 +658,20 @@ class Test {
         },
       ],
       options: [{ overrides: { constructors: 'no-public' } }],
-      output: null,
+      output: `
+class Test {
+  private x: number;
+  constructor(x: number) {
+    this.x = x;
+  }
+  public get internalValue() {
+    return this.x;
+  }
+  public set internalValue(value: number) {
+    this.x = value;
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -656,7 +706,20 @@ class Test {
           column: 3,
         },
       ],
-      output: null,
+      output: `
+class Test {
+  private x: number;
+  public constructor(x: number) {
+    this.x = x;
+  }
+  public get internalValue() {
+    return this.x;
+  }
+  public set internalValue(value: number) {
+    this.x = value;
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -680,7 +743,14 @@ class Test {
           overrides: { parameterProperties: 'no-public' },
         },
       ],
-      output: null,
+      output: `
+class Test {
+  public constructor(public x: number) {}
+  public foo(): string {
+    return 'foo';
+  }
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -696,7 +766,11 @@ class Test {
           column: 3,
         },
       ],
-      output: null,
+      output: `
+class Test {
+  public constructor(public x: number) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -744,7 +818,11 @@ class Test {
           column: 3,
         },
       ],
-      output: null,
+      output: `
+class Test {
+  public x = 2;
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -788,7 +866,11 @@ class Test {
           column: 3,
         },
       ],
-      output: null,
+      output: `
+class Test {
+  public constructor(public ...x: any[]) {}
+}
+      `,
     },
     {
       filename: 'test.ts',
@@ -1073,6 +1155,11 @@ abstract class SomeClass {
           column: 3,
         },
       ],
+      output: `
+abstract class SomeClass {
+  public abstract method(): string;
+}
+      `,
     },
     {
       code: `
@@ -1114,6 +1201,11 @@ abstract class SomeClass {
           column: 3,
         },
       ],
+      output: `
+abstract class SomeClass {
+  public abstract x: string;
+}
+      `,
     },
     {
       code: `
@@ -1137,6 +1229,50 @@ abstract class SomeClass {
       output: `
 abstract class SomeClass {
   abstract x: string;
+}
+      `,
+    },
+    {
+      code: `
+class DecoratedClass {
+  constructor(@foo @bar() readonly arg: string) {}
+  @foo @bar() x: string;
+  @foo @bar() getX() {
+    return this.x;
+  }
+  @foo
+  @bar()
+  get y() {
+    return this.x;
+  }
+  @foo @bar() set y(@foo @bar() value: x) {
+    this.x = x;
+  }
+}
+      `,
+      errors: [
+        { messageId: 'missingAccessibility', line: 3, column: 3 },
+        { messageId: 'missingAccessibility', line: 3, column: 15 },
+        { messageId: 'missingAccessibility', line: 4, column: 3 },
+        { messageId: 'missingAccessibility', line: 5, column: 3 },
+        { messageId: 'missingAccessibility', line: 8, column: 3 },
+        { messageId: 'missingAccessibility', line: 13, column: 3 },
+      ],
+      output: `
+class DecoratedClass {
+  public constructor(@foo @bar() public readonly arg: string) {}
+  @foo @bar() public x: string;
+  @foo @bar() public getX() {
+    return this.x;
+  }
+  @foo
+  @bar()
+  public get y() {
+    return this.x;
+  }
+  @foo @bar() public set y(@foo @bar() value: x) {
+    this.x = x;
+  }
 }
       `,
     },
