@@ -3,7 +3,7 @@ id: typed-linting
 title: Linting with Type Information
 ---
 
-Some typescript-eslint rules tap utilize the awesome power of TypeScript's type checking APIs to provide much deeper insights into your code.
+Some typescript-eslint rules utilize the awesome power of TypeScript's type checking APIs to provide much deeper insights into your code.
 To tap into TypeScript's additional powers, there are two small changes you need to make to your config file:
 
 ```js title=".eslintrc.js"
