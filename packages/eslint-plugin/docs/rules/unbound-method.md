@@ -1,11 +1,12 @@
-# `unbound-method`
+---
+description: 'Enforce unbound methods are called with their expected scope.'
+---
 
-Enforces unbound methods are called with their expected scope.
-
-Warns when a method is used outside of a method call.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/unbound-method** for documentation.
 
 Class functions don't preserve the class scope when passed as standalone variables.
-
 If your function does not access `this`, [you can annotate it with `this: void`](https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function), or consider using an arrow function instead.
 
 If you're working with `jest`, you can use [`eslint-plugin-jest`'s version of this rule](https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/unbound-method.md) to lint your test files, which knows when it's ok to pass an unbound method to `expect` calls.

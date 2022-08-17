@@ -1,6 +1,10 @@
-# `quotes`
+---
+description: 'Enforce the consistent use of either backticks, double, or single quotes.'
+---
 
-Enforces the consistent use of either backticks, double, or single quotes.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/quotes** for documentation.
 
 ## Rule Details
 

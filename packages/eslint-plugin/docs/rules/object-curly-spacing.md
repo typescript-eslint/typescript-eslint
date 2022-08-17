@@ -1,6 +1,10 @@
-# `object-curly-spacing`
+---
+description: 'Enforce consistent spacing inside braces.'
+---
 
-Enforces consistent spacing inside braces.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/object-curly-spacing** for documentation.
 
 ## Rule Details
 

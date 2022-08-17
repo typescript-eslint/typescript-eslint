@@ -1,6 +1,10 @@
-# `restrict-template-expressions`
+---
+description: 'Enforce template literal expressions to be of `string` type.'
+---
 
-Enforces template literal expressions to be of `string` type.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/restrict-template-expressions** for documentation.
 
 ## Rule Details
 

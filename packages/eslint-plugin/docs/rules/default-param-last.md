@@ -1,6 +1,10 @@
-# `default-param-last`
+---
+description: 'Enforce default parameters to be last.'
+---
 
-Enforces default parameters to be last.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/default-param-last** for documentation.
 
 ## Rule Details
 

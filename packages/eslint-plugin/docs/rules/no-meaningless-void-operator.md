@@ -1,6 +1,10 @@
-# `no-meaningless-void-operator`
+---
+description: 'Disallow the `void` operator except when used to discard a value.'
+---
 
-Disallows the `void` operator except when used to discard a value.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-meaningless-void-operator** for documentation.
 
 Disallows the `void` operator when its argument is already of type `void` or `undefined`.
 

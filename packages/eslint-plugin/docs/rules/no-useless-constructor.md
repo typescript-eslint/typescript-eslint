@@ -1,6 +1,10 @@
-# `no-useless-constructor`
+---
+description: 'Disallow unnecessary constructors.'
+---
 
-Disallows unnecessary constructors.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-useless-constructor** for documentation.
 
 ## Rule Details
 

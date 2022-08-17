@@ -1,6 +1,10 @@
-# `no-unnecessary-type-constraint`
+---
+description: 'Disallow unnecessary constraints on generic types.'
+---
 
-Disallows unnecessary constraints on generic types.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-type-constraint** for documentation.
 
 ## Rule Details
 

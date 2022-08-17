@@ -1,6 +1,10 @@
-# `no-unused-expressions`
+---
+description: 'Disallow unused expressions.'
+---
 
-Disallows unused expressions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unused-expressions** for documentation.
 
 ## Rule Details
 

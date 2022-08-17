@@ -1,6 +1,10 @@
-# `explicit-member-accessibility`
+---
+description: 'Require explicit accessibility modifiers on class properties and methods.'
+---
 
-Requires explicit accessibility modifiers on class properties and methods.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
 
 Leaving off accessibility modifier and making everything public can make
 your interface hard to use by others.

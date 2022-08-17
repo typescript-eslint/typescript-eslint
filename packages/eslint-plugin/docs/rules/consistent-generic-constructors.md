@@ -1,6 +1,10 @@
-# `consistent-generic-constructors`
+---
+description: 'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call.'
+---
 
-Enforces specifying generic type arguments on type annotation or constructor name of a constructor call.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-generic-constructors** for documentation.
 
 When constructing a generic class, you can specify the type arguments on either the left-hand side (as a type annotation) or the right-hand side (as part of the constructor call):
 

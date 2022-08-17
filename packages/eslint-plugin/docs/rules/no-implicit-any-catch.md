@@ -1,6 +1,10 @@
-# `no-implicit-any-catch`
+---
+description: 'Disallow usage of the implicit `any` type in catch clauses.'
+---
 
-Disallows usage of the implicit `any` type in catch clauses.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-implicit-any-catch** for documentation.
 
 TypeScript 4.0 added support for adding an explicit `any` or `unknown` type annotation on a catch clause variable.
 

@@ -1,6 +1,10 @@
-# `no-inferrable-types`
+---
+description: 'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean.'
+---
 
-Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-inferrable-types** for documentation.
 
 Explicit types where they can be easily inferred may add unnecessary verbosity.
 

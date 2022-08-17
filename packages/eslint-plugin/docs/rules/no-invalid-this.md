@@ -1,6 +1,10 @@
-# `no-invalid-this`
+---
+description: 'Disallow `this` keywords outside of classes or class-like objects.'
+---
 
-Disallows `this` keywords outside of classes or class-like objects.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-invalid-this** for documentation.
 
 ## Rule Details
 

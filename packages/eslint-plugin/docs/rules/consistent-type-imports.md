@@ -1,6 +1,10 @@
-# `consistent-type-imports`
+---
+description: 'Enforce consistent usage of type imports.'
+---
 
-Enforces consistent usage of type imports.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-imports** for documentation.
 
 TypeScript 3.8 added support for type-only imports.
 Type-only imports allow you to specify that an import can only be used in a type location, allowing certain optimizations within compilers.

@@ -1,6 +1,10 @@
-# `prefer-optional-chain`
+---
+description: 'Enforce using concise optional chain expressions instead of chained logical ands.'
+---
 
-Enforces using concise optional chain expressions instead of chained logical ands.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-optional-chain** for documentation.
 
 TypeScript 3.7 added support for the optional chain operator.
 This operator allows you to safely access properties and methods on objects when they are potentially `null` or `undefined`.

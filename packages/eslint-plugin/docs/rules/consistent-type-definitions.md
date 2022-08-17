@@ -1,6 +1,10 @@
-# `consistent-type-definitions`
+---
+description: 'Enforce type definitions to consistently use either `interface` or `type`.'
+---
 
-Enforces type definitions to consistently use either `interface` or `type`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-definitions** for documentation.
 
 There are two ways to define a type.
 

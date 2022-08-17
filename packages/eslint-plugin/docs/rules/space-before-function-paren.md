@@ -1,6 +1,10 @@
-# `space-before-function-paren`
+---
+description: 'Enforce consistent spacing before function parenthesis.'
+---
 
-Enforces consistent spacing before function parenthesis.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/space-before-function-paren** for documentation.
 
 ## Rule Details
 

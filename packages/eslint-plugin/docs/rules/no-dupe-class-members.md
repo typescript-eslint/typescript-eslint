@@ -1,6 +1,10 @@
-# `no-dupe-class-members`
+---
+description: 'Disallow duplicate class members.'
+---
 
-Disallows duplicate class members.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-dupe-class-members** for documentation.
 
 ## Rule Details
 

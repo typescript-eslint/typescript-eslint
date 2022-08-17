@@ -1,6 +1,10 @@
-# `no-throw-literal`
+---
+description: 'Disallow throwing literals as exceptions.'
+---
 
-Disallows throwing literals as exceptions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-throw-literal** for documentation.
 
 It is considered good practice to only `throw` the `Error` object itself or an object using the `Error` object as base objects for user-defined exceptions.
 The fundamental benefit of `Error` objects is that they automatically keep track of where they were built and originated.

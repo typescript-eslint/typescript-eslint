@@ -469,7 +469,7 @@ let baz: object = {};
     },
     {
       code: noFormat`let a: Foo<   F   >;`,
-      output: noFormat`let a: Foo<   T   >;`,
+      output: `let a: Foo<   T   >;`,
       errors: [
         {
           messageId: 'bannedTypeMessage',

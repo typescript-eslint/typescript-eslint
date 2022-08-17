@@ -1,6 +1,10 @@
-# `init-declarations`
+---
+description: 'Require or disallow initialization in variable declarations.'
+---
 
-Requires or disallows initialization in variable declarations.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/init-declarations** for documentation.
 
 ## Rule Details
 

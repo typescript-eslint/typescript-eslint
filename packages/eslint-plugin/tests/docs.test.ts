@@ -41,12 +41,12 @@ function tokenIs<Type extends TokenType>(
   return token.type === type;
 }
 
-function tokenIsH1(token: marked.Token): token is marked.Tokens.Heading {
-  return tokenIs(token, 'heading') && token.depth === 1;
-}
-
 function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
-  return tokenIs(token, 'heading') && token.depth === 2;
+  return (
+    tokenIs(token, 'heading') &&
+    token.depth === 2 &&
+    !/[a-z]+: /.test(token.text)
+  );
 }
 
 describe('Validating rule docs', () => {
@@ -68,35 +68,39 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
-    describe(ruleName, () => {
+    const { description } = rule.meta.docs!;
+
+    describe(`${ruleName}.md`, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
+      const tokens = parseMarkdownFile(filePath);
 
-      it(`First header in ${ruleName}.md must be the name of the rule`, () => {
-        const tokens = parseMarkdownFile(filePath);
-
-        const header = tokens.find(tokenIsH1)!;
-
-        expect(header.text).toBe(`\`${ruleName}\``);
-      });
-
-      it(`Description of ${ruleName}.md must match`, () => {
-        // validate if description of rule is same as in docs
-        const tokens = parseMarkdownFile(filePath);
-
-        // Rule title not found.
-        // Rule title does not match the rule metadata.
+      test(`${ruleName}.md must start with frontmatter description`, () => {
+        expect(tokens[0]).toMatchObject({
+          raw: '---\n',
+          type: 'hr',
+        });
         expect(tokens[1]).toMatchObject({
-          type: 'paragraph',
-          text: `${rule.meta.docs?.description.replace(
-            /(?<!`)(require|enforce|disallow)/gi,
-            '$1s',
-          )}.`,
+          text: description.includes("'")
+            ? `description: "${description}."`
+            : `description: '${description}.'`,
+          depth: 2,
+          type: 'heading',
         });
       });
 
-      it(`Headers in ${ruleName}.md must be title-cased`, () => {
-        const tokens = parseMarkdownFile(filePath);
+      test(`${ruleName}.md must next have a blockquote directing to website`, () => {
+        expect(tokens[2]).toMatchObject({
+          text: [
+            `🛑 This file is source code, not the primary documentation location! 🛑`,
+            ``,
+            `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
+            ``,
+          ].join('\n'),
+          type: 'blockquote',
+        });
+      });
 
+      test(`headers must be title-cased`, () => {
         // Get all H2 headers objects as the other levels are variable by design.
         const headers = tokens.filter(tokenIsH2);
 
@@ -105,7 +109,7 @@ describe('Validating rule docs', () => {
         );
       });
 
-      it(`Options in ${ruleName}.md must match the rule meta`, () => {
+      test(`options must match the rule meta`, () => {
         // TODO(#4365): We don't yet enforce formatting for all rules.
         if (
           !isEmptySchema(rule.meta.schema) ||
@@ -114,8 +118,6 @@ describe('Validating rule docs', () => {
         ) {
           return;
         }
-
-        const tokens = parseMarkdownFile(filePath);
 
         const optionsIndex = tokens.findIndex(
           token => tokenIsH2(token) && token.text === 'Options',

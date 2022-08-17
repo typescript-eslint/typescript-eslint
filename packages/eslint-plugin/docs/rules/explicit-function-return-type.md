@@ -1,6 +1,10 @@
-# `explicit-function-return-type`
+---
+description: 'Require explicit return types on functions and class methods.'
+---
 
-Requires explicit return types on functions and class methods.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/explicit-function-return-type** for documentation.
 
 Explicit types for function return values makes it clear to any calling code what type is returned.
 This ensures that the return value is assigned to a variable of the correct type; or in the case

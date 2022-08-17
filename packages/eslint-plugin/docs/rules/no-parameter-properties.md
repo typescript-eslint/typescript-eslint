@@ -1,6 +1,10 @@
-# `no-parameter-properties`
+---
+description: 'Disallow the use of parameter properties in class constructors.'
+---
 
-Disallows the use of parameter properties in class constructors.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-parameter-properties** for documentation.
 
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.

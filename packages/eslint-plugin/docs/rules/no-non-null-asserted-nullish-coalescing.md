@@ -1,6 +1,10 @@
-# `no-non-null-asserted-nullish-coalescing`
+---
+description: 'Disallow non-null assertions in the left operand of a nullish coalescing operator.'
+---
 
-Disallows non-null assertions in the left operand of a nullish coalescing operator.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-non-null-asserted-nullish-coalescing** for documentation.
 
 ## Rule Details
 

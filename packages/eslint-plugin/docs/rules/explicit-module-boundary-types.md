@@ -1,6 +1,10 @@
-# `explicit-module-boundary-types`
+---
+description: "Require explicit return and argument types on exported functions' and classes' public class methods."
+---
 
-Requires explicit return and argument types on exported functions' and classes' public class methods.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/explicit-module-boundary-types** for documentation.
 
 Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.
 

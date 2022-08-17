@@ -1,6 +1,10 @@
-# `no-duplicate-imports`
+---
+description: 'Disallow duplicate imports.'
+---
 
-Disallows duplicate imports.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-duplicate-imports** for documentation.
 
 ## DEPRECATED
 

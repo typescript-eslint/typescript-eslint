@@ -1001,7 +1001,7 @@ type obj = {
         code: `
 function test<T extends Partial<any>>() {}
 const test = <T extends Partial<any>>() => {};
-      `.trimRight(),
+      `,
         errors: [
           {
             messageId: 'unexpectedAny',
@@ -1013,14 +1013,14 @@ const test = <T extends Partial<any>>() => {};
                 output: `
 function test<T extends Partial<unknown>>() {}
 const test = <T extends Partial<any>>() => {};
-              `.trimRight(),
+      `,
               },
               {
                 messageId: 'suggestNever',
                 output: `
 function test<T extends Partial<never>>() {}
 const test = <T extends Partial<any>>() => {};
-              `.trimRight(),
+      `,
               },
             ],
           },
@@ -1034,14 +1034,14 @@ const test = <T extends Partial<any>>() => {};
                 output: `
 function test<T extends Partial<any>>() {}
 const test = <T extends Partial<unknown>>() => {};
-              `.trimRight(),
+      `,
               },
               {
                 messageId: 'suggestNever',
                 output: `
 function test<T extends Partial<any>>() {}
 const test = <T extends Partial<never>>() => {};
-              `.trimRight(),
+      `,
               },
             ],
           },

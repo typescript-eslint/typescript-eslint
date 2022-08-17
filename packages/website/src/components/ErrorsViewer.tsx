@@ -7,7 +7,7 @@ import IconExternalLink from '@theme/IconExternalLink';
 import styles from './ErrorsViewer.module.css';
 
 export interface ErrorsViewerProps {
-  readonly value?: ErrorGroup[];
+  readonly value?: ErrorGroup[] | Error;
 }
 
 export interface ErrorBlockProps {
@@ -99,6 +99,17 @@ export default function ErrorsViewer({
   useEffect(() => {
     setIsLocked(false);
   }, [value]);
+
+  if (value && !Array.isArray(value)) {
+    return (
+      <div className={styles.list}>
+        <div className="margin-top--sm">
+          <h4>ESLint internal error</h4>
+          {value?.stack}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.list}>

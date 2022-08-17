@@ -1,6 +1,10 @@
-# `no-type-alias`
+---
+description: 'Disallow type aliases.'
+---
 
-Disallows type aliases.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-type-alias** for documentation.
 
 In TypeScript, type aliases serve three purposes:
 

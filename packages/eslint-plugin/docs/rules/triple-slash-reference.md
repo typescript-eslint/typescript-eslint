@@ -1,6 +1,10 @@
-# `triple-slash-reference`
+---
+description: 'Disallow certain triple slash directives in favor of ES6-style import declarations.'
+---
 
-Disallows certain triple slash directives in favor of ES6-style import declarations.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/triple-slash-reference** for documentation.
 
 Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
 

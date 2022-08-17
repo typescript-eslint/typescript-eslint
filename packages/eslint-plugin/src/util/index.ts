@@ -9,6 +9,9 @@ export * from './getThisExpression';
 export * from './getWrappingFixer';
 export * from './misc';
 export * from './objectIterators';
+export * from './isNullLiteral';
+export * from './isUndefinedIdentifier';
+export * from './isNodeEqual';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';

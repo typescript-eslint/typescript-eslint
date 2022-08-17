@@ -1,6 +1,10 @@
-# `prefer-nullish-coalescing`
+---
+description: 'Enforce using the nullish coalescing operator instead of logical chaining.'
+---
 
-Enforces using the nullish coalescing operator instead of logical chaining.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-nullish-coalescing** for documentation.
 
 TypeScript 3.7 added support for the nullish coalescing operator.
 This operator allows you to safely cascade a value when dealing with `null` or `undefined`.
@@ -46,6 +50,7 @@ This rule aims enforce the usage of the safer operator.
 ```ts
 type Options = [
   {
+    ignoreTernaryTests?: boolean;
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
   },
@@ -53,10 +58,51 @@ type Options = [
 
 const defaultOptions = [
   {
+    ignoreTernaryTests: true;
     ignoreConditionalTests: true,
     ignoreMixedLogicalExpressions: true,
   },
 ];
+```
+
+### `ignoreTernaryTests`
+
+Setting this option to `true` (the default) will cause the rule to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.
+
+Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
+
+```ts
+const foo: any = 'bar';
+foo !== undefined && foo !== null ? foo : 'a string';
+foo === undefined || foo === null ? 'a string' : foo;
+foo == undefined ? 'a string' : foo;
+foo == null ? 'a string' : foo;
+
+const foo: string | undefined = 'bar';
+foo !== undefined ? foo : 'a string';
+foo === undefined ? 'a string' : foo;
+
+const foo: string | null = 'bar';
+foo !== null ? foo : 'a string';
+foo === null ? 'a string' : foo;
+```
+
+Correct code for `ignoreTernaryTests: false`:
+
+```ts
+const foo: any = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
+foo ?? 'a string';
+foo ?? 'a string';
+
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
+
+const foo: string | null = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
 ```
 
 ### `ignoreConditionalTests`

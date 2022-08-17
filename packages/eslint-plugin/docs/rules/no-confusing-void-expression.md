@@ -1,6 +1,10 @@
-# `no-confusing-void-expression`
+---
+description: 'Require expressions of type void to appear in statement position.'
+---
 
-Requires expressions of type void to appear in statement position.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-confusing-void-expression** for documentation.
 
 Returning the results of an expression whose type is void can be misleading.
 Attempting to do so is likely a symptom of expecting a different return type from a function.

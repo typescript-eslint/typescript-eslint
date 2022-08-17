@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`instantiation-expressions type-arguments2 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        FunctionNameDefinition$1 {
+          name: Identifier<"makeBox">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "makeBox",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"makeBox">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+        Reference$6 {
+          identifier: Identifier<"makeBox">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        ParameterDefinition$2 {
+          name: Identifier<"value">,
+          node: FunctionDeclaration$1,
+        },
+      ],
+      name: "value",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"value">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$2,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$5,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: Array [
+        TypeDefinition$4 {
+          name: Identifier<"BoxFunc">,
+          node: TSTypeAliasDeclaration$3,
+        },
+      ],
+      name: "BoxFunc",
+      references: Array [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$7 {
+      defs: Array [
+        TypeDefinition$5 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$4,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$4 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$7,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$8 {
+      defs: Array [
+        VariableDefinition$6 {
+          name: Identifier<"makeStringBox">,
+          node: VariableDeclarator$5,
+        },
+      ],
+      name: "makeStringBox",
+      references: Array [
+        Reference$5 {
+          identifier: Identifier<"makeStringBox">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$8,
+          writeExpr: TSInstantiationExpression$6,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$7,
+      isStrict: false,
+      references: Array [
+        Reference$5,
+        Reference$6,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "makeBox" => Variable$2,
+        "BoxFunc" => Variable$6,
+        "makeStringBox" => Variable$8,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$6,
+        Variable$8,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionDeclaration$1,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "arguments" => Variable$3,
+        "value" => Variable$4,
+        "T" => Variable$5,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+        Variable$5,
+      ],
+    },
+    TypeScope$3 {
+      block: TSTypeAliasDeclaration$3,
+      isStrict: true,
+      references: Array [
+        Reference$3,
+        Reference$4,
+      ],
+      set: Map {
+        "T" => Variable$7,
+      },
+      type: "type",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$7,
+      ],
+    },
+  ],
+}
+`;

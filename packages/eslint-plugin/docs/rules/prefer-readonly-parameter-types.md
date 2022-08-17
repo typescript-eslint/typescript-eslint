@@ -1,6 +1,10 @@
-# `prefer-readonly-parameter-types`
+---
+description: 'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs.'
+---
 
-Requires function parameters to be typed as `readonly` to prevent accidental mutation of inputs.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-readonly-parameter-types** for documentation.
 
 Mutating function arguments can lead to confusing, hard to debug behavior.
 Whilst it's easy to implicitly remember to not modify function arguments, explicitly typing arguments as readonly provides clear contract to consumers.

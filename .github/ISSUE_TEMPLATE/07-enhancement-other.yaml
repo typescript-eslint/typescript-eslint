@@ -1,6 +1,6 @@
-name: "✨ Propose an Enhancement With Another Package"
-description: "Report an enhancement to another one of our packages (parser, util, scope-manager, etc)"
-title: "Enhancement: <a short description of my proposal>"
+name: '✨ Propose an Enhancement With Another Package'
+description: 'Report an enhancement to another one of our packages (parser, util, scope-manager, etc)'
+title: 'Enhancement: <a short description of my proposal>'
 labels:
   - enhancement
   - triage

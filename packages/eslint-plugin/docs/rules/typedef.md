@@ -1,6 +1,10 @@
-# `typedef`
+---
+description: 'Require type annotations in certain places.'
+---
 
-Requires type annotations in certain places.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/typedef** for documentation.
 
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.

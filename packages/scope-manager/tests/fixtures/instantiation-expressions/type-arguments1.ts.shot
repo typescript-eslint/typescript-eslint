@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`instantiation-expressions type-arguments1 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        ClassNameDefinition$1 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"Foo">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: Array [
+        ClassNameDefinition$2 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: Array [
+        TypeDefinition$3 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$2,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$5 {
+      defs: Array [
+        ClassNameDefinition$4 {
+          name: Identifier<"Bar">,
+          node: ClassDeclaration$3,
+        },
+      ],
+      name: "Bar",
+      references: Array [
+        Reference$4 {
+          identifier: Identifier<"Bar">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$5,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: Array [
+        ClassNameDefinition$5 {
+          name: Identifier<"Bar">,
+          node: ClassDeclaration$3,
+        },
+      ],
+      name: "Bar",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$7 {
+      defs: Array [
+        TypeDefinition$6 {
+          name: Identifier<"T">,
+          node: TSTypeParameter$4,
+        },
+      ],
+      name: "T",
+      references: Array [
+        Reference$3 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$7,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$5,
+      isStrict: false,
+      references: Array [
+        Reference$4,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
+        "Bar" => Variable$5,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$5,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$1,
+      isStrict: true,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "Foo" => Variable$3,
+        "T" => Variable$4,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$3,
+        Variable$4,
+      ],
+    },
+    ClassScope$3 {
+      block: ClassDeclaration$3,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "Bar" => Variable$6,
+        "T" => Variable$7,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [
+        Variable$6,
+        Variable$7,
+      ],
+    },
+    ClassFieldInitializerScope$4 {
+      block: TSInstantiationExpression$6,
+      isStrict: true,
+      references: Array [
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {},
+      type: "class-field-initializer",
+      upper: ClassScope$3,
+      variables: Array [],
+    },
+  ],
+}
+`;

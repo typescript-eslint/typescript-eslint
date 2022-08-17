@@ -1,6 +1,10 @@
-# `no-unnecessary-type-arguments`
+---
+description: 'Disallow type arguments that are equal to the default.'
+---
 
-Disallows type arguments that are equal to the default.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-type-arguments** for documentation.
 
 Warns if an explicitly specified type argument is the default for that type parameter.
 

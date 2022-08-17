@@ -1,7 +1,6 @@
 ---
 id: troubleshooting
 title: Troubleshooting & FAQs
-sidebar_label: Troubleshooting & FAQs
 ---
 
 ## I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code
@@ -31,12 +30,10 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
-This error means that the file that's being linted is not included in any of the tsconfig files you provided us.
+This error means that the file that's being linted is not included in any of the TSConfig files you provided us.
 This happens when users have test files, config files, or similar that are not included.
 
-There are a couple of solutions to this, depending on what you want to achieve.
-
-See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions to this.
+See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions.
 
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 

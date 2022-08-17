@@ -1,6 +1,10 @@
-# `ban-tslint-comment`
+---
+description: 'Disallow `// tslint:<rule-flag>` comments.'
+---
 
-Disallows `// tslint:<rule-flag>` comments.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/ban-tslint-comment** for documentation.
 
 Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this rule helps locate TSLint annotations (e.g. `// tslint:disable`).
 

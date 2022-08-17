@@ -1,9 +1,12 @@
-# `require-array-sort-compare`
+---
+description: 'Require `Array#sort` calls to always provide a `compareFunction`.'
+---
 
-Requires `Array#sort` calls to always provide a `compareFunction`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/require-array-sort-compare** for documentation.
 
 This rule prevents invoking the `Array#sort()` method without providing a `compare` argument.
-
 When called without a compare function, `Array#sort()` converts all non-undefined array elements into strings and then compares said strings based off their UTF-16 code units.
 
 The result is that elements are sorted alphabetically, regardless of their type.

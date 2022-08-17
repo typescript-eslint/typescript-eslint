@@ -326,6 +326,92 @@ enum Foo {
       `,
       options: [{ enums: false }],
     },
+
+    // "allowNamedExports" option
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { a as b };
+const a = 1;
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { a, b };
+let a, b;
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { a };
+var a;
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { f };
+function f() {}
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { C };
+class C {}
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { Foo };
+
+enum Foo {
+  BAR,
+}
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { Foo };
+
+namespace Foo {
+  export let bar = () => console.log('bar');
+}
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
+    {
+      code: `
+export { Foo, baz };
+
+enum Foo {
+  BAR,
+}
+
+let baz: Enum;
+enum Enum {}
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2502
     {
       code: `
@@ -1091,6 +1177,237 @@ enum Foo {
           messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
           line: 2,
+        },
+      ],
+    },
+    // "allowNamedExports" option
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      options: [{}],
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      options: [{ allowNamedExports: false }],
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      options: ['nofunc'],
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { a as b };
+const a = 1;
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { a, b };
+let a, b;
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'b' },
+        },
+      ],
+    },
+    {
+      code: `
+export { a };
+var a;
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { f };
+function f() {}
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'f' },
+        },
+      ],
+    },
+    {
+      code: `
+export { C };
+class C {}
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'C' },
+        },
+      ],
+    },
+    {
+      code: `
+export const foo = a;
+const a = 1;
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export function foo() {
+  return a;
+}
+const a = 1;
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export class C {
+  foo() {
+    return a;
+  }
+}
+const a = 1;
+      `,
+      options: [{ allowNamedExports: true }],
+      parserOptions,
+
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'a' },
+        },
+      ],
+    },
+    {
+      code: `
+export { Foo };
+
+enum Foo {
+  BAR,
+}
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+        },
+      ],
+    },
+    {
+      code: `
+export { Foo };
+
+namespace Foo {
+  export let bar = () => console.log('bar');
+}
+      `,
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+        },
+      ],
+    },
+    {
+      code: `
+export { Foo, baz };
+
+enum Foo {
+  BAR,
+}
+
+let baz: Enum;
+enum Enum {}
+      `,
+      options: [{ ignoreTypeReferences: true, allowNamedExports: false }],
+      parserOptions,
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'Foo' },
+        },
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'baz' },
         },
       ],
     },

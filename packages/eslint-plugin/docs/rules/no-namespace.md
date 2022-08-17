@@ -1,6 +1,10 @@
-# `no-namespace`
+---
+description: 'Disallow custom TypeScript modules and namespaces.'
+---
 
-Disallows custom TypeScript modules and namespaces.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-namespace** for documentation.
 
 Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
 ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).

@@ -55,7 +55,7 @@ export function RuleAttributes({ name }: { name: string }): JSX.Element | null {
             </li>
             <li>
               <input type="checkbox" disabled checked={!!rule.hasSuggestions} />
-              🛠 Suggestion Fixer
+              💡 Suggestion Fixer
             </li>
           </ul>
         </li>

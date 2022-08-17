@@ -1,6 +1,10 @@
-# `no-shadow`
+---
+description: 'Disallow variable declarations from shadowing variables declared in the outer scope.'
+---
 
-Disallows variable declarations from shadowing variables declared in the outer scope.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-shadow** for documentation.
 
 ## Rule Details
 

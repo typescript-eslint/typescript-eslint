@@ -1,6 +1,10 @@
-# `prefer-reduce-type-parameter`
+---
+description: 'Enforce using type parameter when calling `Array#reduce` instead of casting.'
+---
 
-Enforces using type parameter when calling `Array#reduce` instead of casting.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-reduce-type-parameter** for documentation.
 
 It's common to call `Array#reduce` with a generic type, such as an array or object, as the initial value.
 Since these values are empty, their types are not usable:

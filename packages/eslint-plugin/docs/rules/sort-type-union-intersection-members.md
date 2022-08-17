@@ -1,6 +1,10 @@
-# `sort-type-union-intersection-members`
+---
+description: 'Enforce members of a type union/intersection to be sorted alphabetically.'
+---
 
-Enforces members of a type union/intersection to be sorted alphabetically.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/sort-type-union-intersection-members** for documentation.
 
 Sorting union (`|`) and intersection (`&`) types can help:
 

@@ -1,6 +1,10 @@
-# `func-call-spacing`
+---
+description: 'Require or disallow spacing between function identifiers and their invocations.'
+---
 
-Requires or disallows spacing between function identifiers and their invocations.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/func-call-spacing** for documentation.
 
 ## Rule Details
 

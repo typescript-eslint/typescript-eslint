@@ -1,6 +1,10 @@
-# `brace-style`
+---
+description: 'Enforce consistent brace style for blocks.'
+---
 
-Enforces consistent brace style for blocks.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/brace-style** for documentation.
 
 ## Rule Details
 

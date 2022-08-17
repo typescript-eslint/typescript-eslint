@@ -36,7 +36,7 @@ enum Direction {
 enum Direction {
   Up,
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'defineInitializer',
@@ -49,7 +49,7 @@ enum Direction {
 enum Direction {
   Up = 0,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -57,7 +57,7 @@ enum Direction {
 enum Direction {
   Up = 1,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -65,7 +65,7 @@ enum Direction {
 enum Direction {
   Up = 'Up',
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -77,7 +77,7 @@ enum Direction {
   Up,
   Down,
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'defineInitializer',
@@ -91,7 +91,7 @@ enum Direction {
   Up = 0,
   Down,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -100,7 +100,7 @@ enum Direction {
   Up = 1,
   Down,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -109,7 +109,7 @@ enum Direction {
   Up = 'Up',
   Down,
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -125,7 +125,7 @@ enum Direction {
   Up,
   Down = 1,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -134,7 +134,7 @@ enum Direction {
   Up,
   Down = 2,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -143,7 +143,7 @@ enum Direction {
   Up,
   Down = 'Down',
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -155,7 +155,7 @@ enum Direction {
   Up = 'Up',
   Down,
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'defineInitializer',
@@ -169,7 +169,7 @@ enum Direction {
   Up = 'Up',
   Down = 1,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -178,7 +178,7 @@ enum Direction {
   Up = 'Up',
   Down = 2,
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -187,7 +187,7 @@ enum Direction {
   Up = 'Up',
   Down = 'Down',
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -199,7 +199,7 @@ enum Direction {
   Up,
   Down = 'Down',
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'defineInitializer',
@@ -213,7 +213,7 @@ enum Direction {
   Up = 0,
   Down = 'Down',
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -222,7 +222,7 @@ enum Direction {
   Up = 1,
   Down = 'Down',
 }
-              `.trimRight(),
+      `,
             },
             {
               messageId: 'defineInitializerSuggestion',
@@ -231,7 +231,7 @@ enum Direction {
   Up = 'Up',
   Down = 'Down',
 }
-              `.trimRight(),
+      `,
             },
           ],
         },

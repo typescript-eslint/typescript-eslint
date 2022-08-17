@@ -1,6 +1,10 @@
-# `array-type`
+---
+description: 'Require using either `T[]` or `Array<T>` for arrays.'
+---
 
-Requires using either `T[]` or `Array<T>` for arrays.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/array-type** for documentation.
 
 Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
 

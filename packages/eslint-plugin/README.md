@@ -85,7 +85,7 @@ Some highly valuable rules require type-checking in order to be implemented corr
 
 Pro Tip: For larger codebases you may want to consider splitting our linting into two separate stages: 1. fast feedback rules which operate purely based on syntax (no type-checking), 2. rules which are based on semantics (type-checking).
 
-**[You can read more about linting with type information here](https://typescript-eslint.io/docs/linting/type-linting)**
+**[You can read more about linting with type information here](https://typescript-eslint.io/docs/linting/typed-linting)**
 
 ## Supported Rules
 

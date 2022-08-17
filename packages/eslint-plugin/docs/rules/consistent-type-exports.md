@@ -1,6 +1,10 @@
-# `consistent-type-exports`
+---
+description: 'Enforce consistent usage of type exports.'
+---
 
-Enforces consistent usage of type exports.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-exports** for documentation.
 
 TypeScript 3.8 added support for type-only exports.
 

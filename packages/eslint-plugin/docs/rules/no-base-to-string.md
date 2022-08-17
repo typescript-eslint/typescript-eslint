@@ -1,4 +1,10 @@
-# `no-base-to-string`
+---
+description: 'Require `.toString()` to only be called on objects which provide useful information when stringified.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-base-to-string** for documentation.
 
 Requires `.toString()` to only be called on objects which provide useful information when stringified.
 

@@ -90,10 +90,9 @@ function OptionsSelectorContent({
             name="ts"
             className="text--right"
             value={state.ts}
+            disabled={!tsVersions.length}
             onChange={updateTS}
-            options={((tsVersions.length && tsVersions) || [state.ts]).filter(
-              item => parseFloat(item) >= 3.3,
-            )}
+            options={(tsVersions.length && tsVersions) || [state.ts]}
           />
         </label>
         <label className={styles.optionLabel}>

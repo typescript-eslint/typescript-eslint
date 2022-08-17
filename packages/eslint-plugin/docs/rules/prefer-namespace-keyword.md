@@ -1,6 +1,10 @@
-# `prefer-namespace-keyword`
+---
+description: 'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules.'
+---
 
-Requires using `namespace` keyword over `module` keyword to declare custom TypeScript modules.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-namespace-keyword** for documentation.
 
 In an effort to prevent further confusion between custom TypeScript modules and the new ES2015 modules, starting
 with TypeScript `v1.5` the keyword `namespace` is now the preferred way to declare custom TypeScript modules.

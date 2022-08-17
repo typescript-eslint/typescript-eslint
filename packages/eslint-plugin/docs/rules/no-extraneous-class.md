@@ -1,6 +1,10 @@
-# `no-extraneous-class`
+---
+description: 'Disallow classes used as namespaces.'
+---
 
-Disallows classes used as namespaces.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-extraneous-class** for documentation.
 
 This rule warns when a class has no non-static members, such as for a class used exclusively as a static namespace.
 

@@ -1,6 +1,10 @@
-# `consistent-indexed-object-style`
+---
+description: 'Require or disallow the `Record` type.'
+---
 
-Requires or disallows the `Record` type.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-indexed-object-style** for documentation.
 
 TypeScript supports defining object show keys can be flexible using an index signature. TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature. For example, the following types are equal:
 

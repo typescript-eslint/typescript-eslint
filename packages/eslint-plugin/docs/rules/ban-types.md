@@ -1,6 +1,10 @@
-# `ban-types`
+---
+description: 'Disallow certain types.'
+---
 
-Disallows certain types.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/ban-types** for documentation.
 
 Some builtin types have aliases, some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.

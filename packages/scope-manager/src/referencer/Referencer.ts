@@ -692,6 +692,13 @@ class Referencer extends Visitor {
     this.close(node);
   }
 
+  protected TSInstantiationExpression(
+    node: TSESTree.TSInstantiationExpression,
+  ): void {
+    this.visitChildren(node, ['typeParameters']);
+    this.visitType(node.typeParameters);
+  }
+
   protected TSInterfaceDeclaration(
     node: TSESTree.TSInterfaceDeclaration,
   ): void {

@@ -1,6 +1,10 @@
-# `no-dynamic-delete`
+---
+description: 'Disallow using the `delete` operator on computed key expressions.'
+---
 
-Disallows using the `delete` operator on computed key expressions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-dynamic-delete** for documentation.
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 

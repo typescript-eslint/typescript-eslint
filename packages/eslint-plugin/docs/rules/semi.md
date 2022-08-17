@@ -1,6 +1,10 @@
-# `semi`
+---
+description: 'Require or disallow semicolons instead of ASI.'
+---
 
-Requires or disallows semicolons instead of ASI.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/semi** for documentation.
 
 This rule enforces consistent use of semicolons after statements.
 

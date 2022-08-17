@@ -1,6 +1,10 @@
-# `space-before-blocks`
+---
+description: 'Enforce consistent spacing before blocks.'
+---
 
-Enforces consistent spacing before blocks.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/space-before-blocks** for documentation.
 
 ## Rule Details
 
