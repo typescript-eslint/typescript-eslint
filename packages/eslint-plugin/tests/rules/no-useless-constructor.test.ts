@@ -208,6 +208,20 @@ class A {
   constructor(foo);
 }
     `,
+    `
+class A extends Object {
+  constructor(@Foo foo: string) {
+    super(foo);
+  }
+}
+    `,
+    `
+class A extends Object {
+  constructor(foo: string, @Bar() bar) {
+    super(foo, bar);
+  }
+}
+    `,
   ],
   invalid: [
     {

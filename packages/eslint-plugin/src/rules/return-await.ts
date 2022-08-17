@@ -25,7 +25,7 @@ export default util.createRule({
       extendsBaseRule: 'no-return-await',
     },
     fixable: 'code',
-    hasSuggestions: true, // eslint-disable-line eslint-plugin/require-meta-has-suggestions -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/272
+    hasSuggestions: true,
     type: 'problem',
     messages: {
       nonPromiseAwait:

@@ -3,7 +3,7 @@
   <div>
     <div>
       <!-- !!!!! expected error !!!!! -->
-      Hello {{ (name as any) }}{{ exclamationMarks }}
+      Hello {{ name as any }}{{ exclamationMarks }}
     </div>
     <button @click="decrement">-</button>
     <button @click="increment">+</button>

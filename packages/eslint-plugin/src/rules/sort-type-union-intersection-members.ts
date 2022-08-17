@@ -110,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
     },
     fixable: 'code',
-    hasSuggestions: true, // eslint-disable-line eslint-plugin/require-meta-has-suggestions -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/272
+    hasSuggestions: true,
     messages: {
       notSorted: '{{type}} type members must be sorted.',
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',

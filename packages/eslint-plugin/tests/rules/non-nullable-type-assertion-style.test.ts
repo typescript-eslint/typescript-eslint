@@ -241,8 +241,6 @@ function first<T extends string | number>(array: ArrayLike<T>): T | null {
           messageId: 'preferNonNullAssertion',
         },
       ],
-      // Output is not expected to match required formatting due to excess parentheses
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       output: `
 function first<T extends string | number>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0]!) : null;
