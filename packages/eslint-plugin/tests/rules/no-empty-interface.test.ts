@@ -64,7 +64,7 @@ interface Foo {
 
 interface Bar extends Foo {}
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   name: string;
 }
@@ -82,7 +82,7 @@ type Bar = Foo
     },
     {
       code: 'interface Foo extends Array<number> {}',
-      output: noFormat`type Foo = Array<number>`,
+      output: `type Foo = Array<number>`,
       errors: [
         {
           messageId: 'noEmptyWithSuper',
@@ -93,7 +93,7 @@ type Bar = Foo
     },
     {
       code: 'interface Foo extends Array<number | {}> {}',
-      output: noFormat`type Foo = Array<number | {}>`,
+      output: `type Foo = Array<number | {}>`,
       errors: [
         {
           messageId: 'noEmptyWithSuper',
@@ -109,7 +109,7 @@ interface Bar {
 }
 interface Foo extends Array<Bar> {}
       `,
-      output: noFormat`
+      output: `
 interface Bar {
   bar: string;
 }
@@ -128,7 +128,7 @@ type Foo = Array<Bar>
 type R = Record<string, unknown>;
 interface Foo extends R {}
       `,
-      output: noFormat`
+      output: `
 type R = Record<string, unknown>;
 type Foo = R
       `,
@@ -144,7 +144,7 @@ type Foo = R
       code: `
 interface Foo<T> extends Bar<T> {}
       `,
-      output: noFormat`
+      output: `
 type Foo<T> = Bar<T>
       `,
       errors: [
@@ -162,7 +162,7 @@ declare module FooBar {
   type Baz = typeof baz;
   export interface Bar extends Baz {}
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noEmptyWithSuper',
@@ -173,12 +173,12 @@ declare module FooBar {
           suggestions: [
             {
               messageId: 'noEmptyWithSuper',
-              output: noFormat`
+              output: `
 declare module FooBar {
   type Baz = typeof baz;
   export type Bar = Baz
 }
-              `.trimRight(),
+      `,
             },
           ],
         },

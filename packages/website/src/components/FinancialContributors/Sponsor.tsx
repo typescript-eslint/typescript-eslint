@@ -1,18 +1,14 @@
 import React from 'react';
 
 import { SponsorData, SponsorIncludeOptions } from './types';
+import styles from './styles.module.css';
 
 interface SponsorProps {
-  className?: string;
   include?: SponsorIncludeOptions;
   sponsor: SponsorData;
 }
 
-export function Sponsor({
-  className,
-  include = {},
-  sponsor,
-}: SponsorProps): JSX.Element {
+export function Sponsor({ include = {}, sponsor }: SponsorProps): JSX.Element {
   let children = <img alt={`${sponsor.name} logo`} src={sponsor.image} />;
 
   if (include.name) {
@@ -27,7 +23,7 @@ export function Sponsor({
   if (include.link) {
     children = (
       <a
-        className={className}
+        className={styles.sponsorLink}
         href={sponsor.website ?? undefined}
         title={sponsor.name}
         target="_blank"

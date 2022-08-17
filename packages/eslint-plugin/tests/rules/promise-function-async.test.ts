@@ -654,7 +654,7 @@ class Test {
         { line: 7, column: 3, messageId },
         { line: 10, column: 3, messageId },
       ],
-      output: noFormat`
+      output: `
 class Test {
   @decorator(async () => {})
   static protected async [(1)]() {
