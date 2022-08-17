@@ -1,9 +1,9 @@
 class Foo<T> {
-  value: T
+  value: T;
 }
 
 class Bar<T> {
-  foo = Foo<T>
+  foo = Foo<T>;
 }
 
-new Bar()
+new Bar();
