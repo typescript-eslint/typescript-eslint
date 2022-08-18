@@ -4,7 +4,8 @@ import * as util from '../util';
 interface Options {
   allowInGenericTypeArguments?: boolean | string[];
   allowAsThisParameter?: boolean;
-  allowUnionType?: boolean | string[];
+  allowUnionType?: boolean;
+  invalidUnionParameter?: boolean | string[];
 }
 
 type MessageIds =
@@ -53,15 +54,33 @@ export default util.createRule<[Options], MessageIds>({
           allowAsThisParameter: {
             type: 'boolean',
           },
+          invalidUnionParameter: {
+            oneOf: [
+              { type: 'boolean' },
+              {
+                type: 'array',
+                items: { type: 'string' },
+                minLength: 1,
+              },
+            ],
+          },
+          allowUnionType: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
     ],
   },
   defaultOptions: [
-    { allowInGenericTypeArguments: true, allowAsThisParameter: false },
+    {
+      allowInGenericTypeArguments: true,
+      allowAsThisParameter: false,
+      invalidUnionParameter: true,
+      allowUnionType:true,
+    },
   ],
-  create(context, [{ allowInGenericTypeArguments, allowAsThisParameter }]) {
+  create(context, [{ allowInGenericTypeArguments, allowAsThisParameter, invalidUnionParameter,allowUnionType }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //
     ];
@@ -124,6 +143,15 @@ export default util.createRule<[Options], MessageIds>({
           messageId: allowAsThisParameter
             ? 'invalidVoidNotReturnOrThisParam'
             : 'invalidVoidNotReturn',
+          node,
+        });
+      }
+
+      if (!invalidUnionParameter) {
+        context.report({
+          messageId: invalidUnionParameter
+            ? 'InvalidVoidForUnion'
+            : 'InvalidVoidForUnion',
           node,
         });
       }
@@ -192,7 +220,7 @@ export default util.createRule<[Options], MessageIds>({
 
         context.report({
           messageId:
-            allowInGenericTypeArguments && allowAsThisParameter
+            allowInGenericTypeArguments && allowAsThisParameter && allowUnionType
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
               : allowInGenericTypeArguments
               ? 'invalidVoidNotReturnOrGeneric'
