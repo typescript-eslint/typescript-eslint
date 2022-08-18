@@ -98,6 +98,28 @@ function foo(): void | never {
   ],
 });
 
+ruleTester.run('invalidUnionParameter:true', rule, {
+  valid: [
+    {
+      code: 'type allowUnion = string | number',
+      options: [{ allowUnionType: true }],
+    },
+  ],
+  invalid: [
+    {
+      code: 'type invalidVoidUnion = void | number;',
+      options: [{ invalidUnionParameter: false }],
+      errors: [
+        {
+          messageId: 'InvalidVoidForUnion',
+          line: 1,
+          column: 25,
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('allowInGenericTypeArguments: true', rule, {
   valid: [
     'function func(): void {}',
