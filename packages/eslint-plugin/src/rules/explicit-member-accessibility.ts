@@ -232,7 +232,7 @@ export default util.createRule<Options, MessageIds>({
         accessibility: TSESTree.Accessibility,
         fixer: TSESLint.RuleFixer,
       ): TSESLint.RuleFix | null {
-        if (node.decorators && node.decorators.length > 0) {
+        if (node?.decorators?.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
           const nextToken = sourceCode.getTokenAfter(lastDecorator);
           if (!nextToken) {
