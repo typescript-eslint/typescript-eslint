@@ -1,3 +1,7 @@
+---
+description: 'Require each enum member value to be explicitly initialized.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-enum-initializers** for documentation.
@@ -70,19 +74,6 @@ enum Color {
   Blue = 'Blue',
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-enum-initializers": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

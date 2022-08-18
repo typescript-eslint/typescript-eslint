@@ -81,6 +81,8 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           ignoreDifferentlyNamedParameters: {
+            description:
+              'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
             type: 'boolean',
           },
         },

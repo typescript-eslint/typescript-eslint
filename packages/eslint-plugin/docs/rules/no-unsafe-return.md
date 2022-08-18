@@ -1,3 +1,7 @@
+---
+description: 'Disallow returning a value with type `any` from a function.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-return** for documentation.
@@ -90,19 +94,6 @@ function foo2(): unknown[] {
   return [] as any[];
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-return": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## Related To
 

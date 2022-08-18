@@ -31,7 +31,6 @@ export default util.createRule({
     docs: {
       description: 'Disallow unnecessary constraints on generic types',
       recommended: 'error',
-      suggestion: true,
     },
     hasSuggestions: true,
     messages: {
@@ -89,6 +88,9 @@ export default util.createRule({
           suggest: [
             {
               messageId: 'removeUnnecessaryConstraint',
+              data: {
+                constraint,
+              },
               fix(fixer): TSESLint.RuleFix | null {
                 return fixer.replaceTextRange(
                   [node.name.range[1], node.constraint.range[1]],

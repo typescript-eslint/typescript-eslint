@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageId>({
       description:
         'Require Promise-like statements to be handled appropriately',
       recommended: 'error',
-      suggestion: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -36,8 +35,15 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          ignoreVoid: { type: 'boolean' },
-          ignoreIIFE: { type: 'boolean' },
+          ignoreVoid: {
+            description: 'Whether to ignore `void` expressions.',
+            type: 'boolean',
+          },
+          ignoreIIFE: {
+            description:
+              'Whether to ignore async IIFEs (Immediately Invocated Function Expressions).',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },

@@ -1,3 +1,7 @@
+---
+description: 'Enforce using concise optional chain expressions instead of chained logical ands.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-optional-chain** for documentation.
@@ -84,19 +88,6 @@ foo?.a?.b?.c?.d?.e;
 ```
 
 **Note:** there are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-optional-chain": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

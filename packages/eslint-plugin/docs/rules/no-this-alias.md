@@ -1,3 +1,7 @@
+---
+description: 'Disallow aliasing `this`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-this-alias** for documentation.
@@ -34,22 +38,6 @@ Examples of **incorrect** code for this rule:
 Examples of **correct** code for this rule:
 
 (see the rationale above)
-
-## Options
-
-You can pass an object option:
-
-```jsonc
-{
-  "@typescript-eslint/no-this-alias": [
-    "error",
-    {
-      "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
-      "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
-    }
-  ]
-}
-```
 
 ## When Not To Use It
 

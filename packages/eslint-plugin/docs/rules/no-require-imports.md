@@ -1,3 +1,7 @@
+---
+description: 'Disallow invocation of `require()`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-require-imports** for documentation.
@@ -30,19 +34,6 @@ var lib7 = 700;
 import lib9 = lib2.anotherSubImport;
 import lib10 from 'lib10';
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-require-imports": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

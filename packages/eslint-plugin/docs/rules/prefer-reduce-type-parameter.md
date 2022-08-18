@@ -1,3 +1,7 @@
+---
+description: 'Enforce using type parameter when calling `Array#reduce` instead of casting.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-reduce-type-parameter** for documentation.
@@ -50,19 +54,6 @@ Examples of code for this rule:
   {},
 );
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-reduce-type-parameter": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

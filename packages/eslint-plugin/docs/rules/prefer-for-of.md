@@ -1,3 +1,7 @@
+---
+description: 'Enforce the use of `for-of` loop over the standard `for` loop where possible.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-for-of** for documentation.
@@ -37,19 +41,6 @@ for (let i = 0; i < arr.length; i++) {
   console.log(i, arr[i]);
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-for-of": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

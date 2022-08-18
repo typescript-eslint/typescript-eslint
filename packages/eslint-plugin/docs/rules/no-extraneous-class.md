@@ -1,3 +1,7 @@
+---
+description: 'Disallow classes used as namespaces.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-extraneous-class** for documentation.
@@ -191,28 +195,6 @@ export function incrementCount() {
 ```
 
 ## Options
-
-This rule accepts a single object option.
-
-```ts
-type Options = {
-  // allow extraneous classes if they only contain a constructor
-  allowConstructorOnly?: boolean;
-  // allow extraneous classes if they have no body (i.e. are empty)
-  allowEmpty?: boolean;
-  // allow extraneous classes if they only contain static members
-  allowStaticOnly?: boolean;
-  // allow extraneous classes if they have a decorator
-  allowWithDecorator?: boolean;
-};
-
-const defaultOptions: Options = {
-  allowConstructorOnly: false,
-  allowEmpty: false,
-  allowStaticOnly: false,
-  allowWithDecorator: false,
-};
-```
 
 This rule normally bans classes that are empty (have no constructor or fields).
 The rule's options each add an exemption for a specific type of class.

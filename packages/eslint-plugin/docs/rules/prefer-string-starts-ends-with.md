@@ -1,3 +1,7 @@
+---
+description: 'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-string-starts-ends-with** for documentation.
@@ -43,19 +47,6 @@ foo.match(/bar$/) != null;
 foo.startsWith('bar');
 foo.endsWith('bar');
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-string-starts-ends-with": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

@@ -1,3 +1,7 @@
+---
+description: 'Require any function or method that returns a Promise to be marked async.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/promise-function-async** for documentation.
@@ -34,34 +38,5 @@ const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
 
 async function functionReturnsPromise() {
   return Promise.resolve('value');
-}
-```
-
-## Options
-
-Options may be provided as an object with:
-
-- `allowAny` to indicate that `any` or `unknown` shouldn't be considered Promises (`true` by default).
-- `allowedPromiseNames` to indicate any extra names of classes or interfaces to be considered Promises when returned.
-
-In addition, each of the following properties may be provided, and default to `true`:
-
-- `checkArrowFunctions`
-- `checkFunctionDeclarations`
-- `checkFunctionExpressions`
-- `checkMethodDeclarations`
-
-```json
-{
-  "@typescript-eslint/promise-function-async": [
-    "error",
-    {
-      "allowedPromiseNames": ["Thenable"],
-      "checkArrowFunctions": true,
-      "checkFunctionDeclarations": true,
-      "checkFunctionExpressions": true,
-      "checkMethodDeclarations": true
-    }
-  ]
 }
 ```

@@ -1,3 +1,7 @@
+---
+description: 'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-readonly-parameter-types** for documentation.
@@ -126,19 +130,6 @@ interface Foo {
 ```
 
 ## Options
-
-```ts
-interface Options {
-  checkParameterProperties?: boolean;
-  ignoreInferredTypes?: boolean;
-}
-
-const defaultOptions: Options = {
-  checkParameterProperties: true,
-  ignoreInferredTypes: false,
-  treatMethodsAsReadonly: false,
-};
-```
 
 ### `checkParameterProperties`
 

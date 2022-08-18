@@ -1,3 +1,7 @@
+---
+description: "Disallow empty exports that don't change anything in a module file."
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-useless-empty-export** for documentation.
@@ -37,16 +41,3 @@ export const value = 'Hello, world!';
 ```ts
 import 'some-other-module';
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-useless-empty-export": "warn"
-  }
-}
-```
-
-This rule is not configurable.

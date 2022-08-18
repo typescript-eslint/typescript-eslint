@@ -1,3 +1,7 @@
+---
+description: 'Require type annotations in certain places.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/typedef** for documentation.
@@ -18,10 +22,14 @@ class ContainsText {
 }
 ```
 
-**_Note:_** requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
+:::caution
+
+Requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
 TypeScript is often better at inferring types than easily written type annotations would allow.
 
 **Instead of enabling `typedef`, it is generally recommended to use the `--noImplicitAny` and `--strictPropertyInitialization` compiler options to enforce type annotations only when useful.**
+
+:::
 
 ## Rule Details
 
@@ -31,30 +39,6 @@ This is typically used to maintain consistency for element types that sometimes 
 > To enforce type definitions existing on call signatures, use `explicit-function-return-type`, or `explicit-module-boundary-types`.
 
 ## Options
-
-```ts
-type Options = {
-  arrayDestructuring?: boolean;
-  arrowParameter?: boolean;
-  memberVariableDeclaration?: boolean;
-  objectDestructuring?: boolean;
-  parameter?: boolean;
-  propertyDeclaration?: boolean;
-  variableDeclaration?: boolean;
-  variableDeclarationIgnoreFunction?: boolean;
-};
-
-const defaultOptions: Options = {
-  arrayDestructuring: false,
-  arrowParameter: false,
-  memberVariableDeclaration: false,
-  objectDestructuring: false,
-  parameter: false,
-  propertyDeclaration: false,
-  variableDeclaration: false,
-  variableDeclarationIgnoreFunction: false,
-};
-```
 
 For example, with the following configuration:
 

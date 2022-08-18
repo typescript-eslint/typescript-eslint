@@ -1,3 +1,7 @@
+---
+description: 'Disallow non-null assertions after an optional chain expression.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-non-null-asserted-optional-chain** for documentation.
@@ -43,19 +47,6 @@ foo?.bar!.baz;
 foo?.bar!();
 foo?.bar!().baz;
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-non-null-asserted-optional-chain": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

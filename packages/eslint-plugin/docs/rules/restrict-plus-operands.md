@@ -1,3 +1,7 @@
+---
+description: 'Require both operands of addition to have type `number` or `string`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/restrict-plus-operands** for documentation.
@@ -23,22 +27,6 @@ var foo = 1n + 1n;
 ```
 
 ## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, check compound assignments (`+=`)
-  checkCompoundAssignments?: boolean;
-  // if true, 'any' itself and `string`,`bigint`, `number` is allowed.
-  allowAny?: boolean;
-};
-
-const defaults = {
-  checkCompoundAssignments: false,
-  allowAny: false,
-};
-```
 
 ### `checkCompoundAssignments`
 
@@ -94,9 +82,3 @@ var fn = (a: any, b: number) => a + b;
 ```
 
 ## How to Use
-
-```json
-{
-  "@typescript-eslint/restrict-plus-operands": "error"
-}
-```

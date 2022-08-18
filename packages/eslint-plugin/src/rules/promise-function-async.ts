@@ -37,9 +37,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowAny: {
+            description:
+              'Whether to consider `any` and `unknown` to be Promises.',
             type: 'boolean',
           },
           allowedPromiseNames: {
+            description:
+              'Any extra names of classes or interfaces to be considered Promises.',
             type: 'array',
             items: {
               type: 'string',

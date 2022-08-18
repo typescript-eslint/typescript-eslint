@@ -1,3 +1,7 @@
+---
+description: 'Require `.toString()` to only be called on objects which provide useful information when stringified.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-base-to-string** for documentation.
@@ -59,16 +63,6 @@ const literalWithToString = {
 ```
 
 ## Options
-
-```ts
-type Options = {
-  ignoredTypeNames?: string[];
-};
-
-const defaultOptions: Options = {
-  ignoredTypeNames: ['RegExp'],
-};
-```
 
 ### `ignoredTypeNames`
 

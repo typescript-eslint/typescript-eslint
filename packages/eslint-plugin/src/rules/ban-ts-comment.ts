@@ -14,24 +14,6 @@ interface Options {
   minimumDescriptionLength?: number;
 }
 
-const directiveConfigSchema = {
-  oneOf: [
-    {
-      type: 'boolean',
-      default: true,
-    },
-    {
-      enum: ['allow-with-description'],
-    },
-    {
-      type: 'object',
-      properties: {
-        descriptionFormat: { type: 'string' },
-      },
-    },
-  ],
-};
-
 export const defaultMinimumDescriptionLength = 3;
 
 type MessageIds =
@@ -58,12 +40,33 @@ export default util.createRule<[Options], MessageIds>({
     },
     schema: [
       {
+        definitions: {
+          directiveConfigSchema: {
+            oneOf: [
+              {
+                type: 'boolean',
+                default: true,
+              },
+              {
+                enum: ['allow-with-description'],
+              },
+              {
+                type: 'object',
+                properties: {
+                  descriptionFormat: { type: 'string' },
+                },
+              },
+            ],
+          },
+        },
         type: 'object',
         properties: {
-          'ts-expect-error': directiveConfigSchema,
-          'ts-ignore': directiveConfigSchema,
-          'ts-nocheck': directiveConfigSchema,
-          'ts-check': directiveConfigSchema,
+          'ts-expect-error': {
+            $ref: '#/definitions/directiveConfigSchema',
+          },
+          'ts-ignore': { $ref: '#/definitions/directiveConfigSchema' },
+          'ts-nocheck': { $ref: '#/definitions/directiveConfigSchema' },
+          'ts-check': { $ref: '#/definitions/directiveConfigSchema' },
           minimumDescriptionLength: {
             type: 'number',
             default: defaultMinimumDescriptionLength,

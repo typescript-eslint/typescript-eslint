@@ -8,7 +8,6 @@ export default util.createRule({
     docs: {
       description: 'Enforce the use of `as const` over literal type',
       recommended: 'error',
-      suggestion: true,
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -64,6 +63,11 @@ export default util.createRule({
       },
       TSTypeAssertion(node): void {
         compareTypes(node.expression, node.typeAnnotation, true);
+      },
+      PropertyDefinition(node): void {
+        if (node.value && node.typeAnnotation) {
+          compareTypes(node.value, node.typeAnnotation.typeAnnotation, false);
+        }
       },
       VariableDeclarator(node): void {
         if (node.init && node.id.typeAnnotation) {

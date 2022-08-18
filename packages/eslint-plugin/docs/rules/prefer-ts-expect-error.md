@@ -1,3 +1,7 @@
+---
+description: 'Enforce using `@ts-expect-error` over `@ts-ignore`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-ts-expect-error** for documentation.
@@ -61,19 +65,6 @@ const isOptionEnabled = (key: string): boolean => {
   return !!globalOptions[key];
 };
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-ts-expect-error": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

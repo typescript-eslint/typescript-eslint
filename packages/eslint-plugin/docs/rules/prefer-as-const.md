@@ -1,3 +1,7 @@
+---
+description: 'Enforce the use of `as const` over literal type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-as-const** for documentation.
@@ -30,19 +34,6 @@ let foo = { bar: 'baz' };
 ```
 
 <!--/tabs-->
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-as-const": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

@@ -1,3 +1,7 @@
+---
+description: 'Disallow awaiting a value that is not a Thenable.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/await-thenable** for documentation.
@@ -28,19 +32,6 @@ await Promise.resolve('value');
 const createValue = async () => 'value';
 await createValue();
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/await-thenable": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

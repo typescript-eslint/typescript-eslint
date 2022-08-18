@@ -8,7 +8,6 @@ import { SponsorIncludeOptions } from '../types';
 
 interface SponsorsProps {
   className: string;
-  description: string;
   include?: SponsorIncludeOptions;
   expanded?: boolean;
   tier?: string;
@@ -17,7 +16,6 @@ interface SponsorsProps {
 
 export function Sponsors({
   className,
-  description,
   include,
   tier,
   title,
@@ -25,7 +23,6 @@ export function Sponsors({
   return (
     <div className={clsx(styles.tierArea, className)}>
       <h3>{title}</h3>
-      <p>{description}</p>
       <ul className={clsx(styles.sponsorsTier, styles[`tier-${tier}`])}>
         {sponsors
           .filter(sponsor => sponsor.tier === tier)

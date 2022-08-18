@@ -493,6 +493,24 @@ const foo = class Foo {
         },
       ],
     },
+
+    // default option + static blocks; should always be valid
+    {
+      code: `
+class Foo {
+  static {}
+  static {}
+}
+            `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
   ],
   invalid: [
     // default option + interface + wrong order within group and wrong group order + alphabetically

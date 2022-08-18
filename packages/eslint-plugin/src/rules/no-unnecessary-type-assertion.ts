@@ -37,6 +37,7 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           typesToIgnore: {
+            description: 'A list of type names to ignore.',
             type: 'array',
             items: {
               type: 'string',

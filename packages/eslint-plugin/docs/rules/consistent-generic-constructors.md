@@ -1,3 +1,7 @@
+---
+description: 'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/consistent-generic-constructors** for documentation.
@@ -14,27 +18,14 @@ const map = new Map<string, number>();
 
 This rule ensures that type arguments appear consistently on one side of the declaration.
 
-## Options
-
-```jsonc
-{
-  "rules": {
-    "@typescript-eslint/consistent-generic-constructors": [
-      "error",
-      "constructor"
-    ]
-  }
-}
-```
-
-This rule takes a string option:
-
-- If it's set to `constructor` (default), type arguments that **only** appear on the type annotation are disallowed.
-- If it's set to `type-annotation`, type arguments that **only** appear on the constructor are disallowed.
-
 ## Rule Details
 
 The rule never reports when there are type parameters on both sides, or neither sides of the declaration. It also doesn't report if the names of the type annotation and the constructor don't match.
+
+## Options
+
+- `constructor` _(default)_: type arguments that **only** appear on the type annotation are disallowed.
+- `type-annotation`: type arguments that **only** appear on the constructor are disallowed.
 
 ### `constructor`
 

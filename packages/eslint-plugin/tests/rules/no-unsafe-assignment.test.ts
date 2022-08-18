@@ -112,7 +112,7 @@ class Foo {
     'const x = new Set<any>();',
     'const x = { y: 1 };',
     'const x = { y = 1 };',
-    'const x = { y(); };',
+    noFormat`const x = { y(); };`,
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
     'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',

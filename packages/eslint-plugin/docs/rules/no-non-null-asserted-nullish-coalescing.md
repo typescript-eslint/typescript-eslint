@@ -1,3 +1,7 @@
+---
+description: 'Disallow non-null assertions in the left operand of a nullish coalescing operator.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-non-null-asserted-nullish-coalescing** for documentation.
@@ -44,19 +48,6 @@ foo() ?? bar;
 let x: string;
 x! ?? '';
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

@@ -1,3 +1,7 @@
+---
+description: 'Enforce using function types instead of interfaces with call signatures.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-function-type** for documentation.
@@ -77,19 +81,6 @@ interface Overloaded {
 // this is equivelent to Overloaded interface.
 type Intersection = ((data: string) => number) & ((id: number) => string);
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-function-type": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

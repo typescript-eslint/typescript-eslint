@@ -1,3 +1,7 @@
+---
+description: 'Disallow conditionals where the type is always truthy or always falsy.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-condition** for documentation.
@@ -69,20 +73,6 @@ function bar(arg?: string | null) {
 ```
 
 ## Options
-
-```ts
-type Options = {
-  // if true, the rule will ignore constant loop conditions
-  allowConstantLoopConditions?: boolean;
-  // if true, the rule will not error when running with a tsconfig that has strictNullChecks turned **off**
-  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
-};
-
-const defaultOptions: Options = {
-  allowConstantLoopConditions: false,
-  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-};
-```
 
 ### `allowConstantLoopConditions`
 

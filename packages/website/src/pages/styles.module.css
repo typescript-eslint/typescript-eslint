@@ -33,6 +33,18 @@
   margin: 1rem 1rem;
 }
 
+.buttonPrimary {
+  border: var(--ifm-button-border-width) solid var(--ifm-button-color);
+}
+
+.buttonPrimary:hover {
+  box-shadow: 0 2px 8px var(--ifm-button-color);
+}
+
+[data-theme='dark'] .buttonPrimary {
+  border: var(--ifm-button-border-width) solid var(--ifm-button-color);
+}
+
 .lightBackground {
   background: var(--ifm-color-emphasis-100);
 }

@@ -1,3 +1,7 @@
+---
+description: 'Disallow calling a function with a value with type `any`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-argument** for documentation.
@@ -70,19 +74,6 @@ Example of `any` to `unknown` assignment that are allowed.
 declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-argument": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## Related To
 

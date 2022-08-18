@@ -1,3 +1,7 @@
+---
+description: 'Enforce non-null assertions over explicit type casts.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/non-nullable-type-assertion-style** for documentation.
@@ -27,19 +31,6 @@ const maybe = Math.random() > 0.5 ? '' : undefined;
 const definitely = maybe!;
 const alsoDefinitely = maybe!;
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/non-nullable-type-assertion-style": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

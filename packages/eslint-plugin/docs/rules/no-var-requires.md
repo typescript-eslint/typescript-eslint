@@ -1,3 +1,7 @@
+---
+description: 'Disallow `require` statements except in import statements.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-var-requires** for documentation.
@@ -25,19 +29,6 @@ import foo = require('foo');
 require('foo');
 import foo from 'foo';
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-var-requires": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

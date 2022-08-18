@@ -111,9 +111,24 @@
 .rulesTable,
 .ruleCol {
   width: 100%;
+  overflow: visible;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.rulesTable thead {
+  background-color: #f7f7f7;
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  box-shadow: 0 5px 5px var(--gray-border-shadow);
+}
+
+[data-theme='dark'] .rulesTable th {
+  background-color: #2b2b2d;
 }
 
 .attrCol {
   min-width: 2.5em;
   text-align: center;
+  cursor: default;
 }

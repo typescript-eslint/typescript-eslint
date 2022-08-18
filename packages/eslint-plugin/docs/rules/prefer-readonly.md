@@ -1,3 +1,7 @@
+---
+description: "Require private members to be marked as `readonly` if they're never modified outside of the constructor."
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-readonly** for documentation.
@@ -51,8 +55,6 @@ class Container {
 ```
 
 ## Options
-
-This rule, in its default state, does not require any argument.
 
 ### `onlyInlineLambdas`
 

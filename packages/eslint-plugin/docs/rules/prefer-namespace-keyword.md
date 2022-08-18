@@ -1,3 +1,7 @@
+---
+description: 'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-namespace-keyword** for documentation.
@@ -12,19 +16,6 @@ This rule aims to standardize the way modules are declared.
 ## When Not To Use It
 
 If you are using the ES2015 module syntax, then you will not need this rule.
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-namespace-keyword": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## Further Reading
 

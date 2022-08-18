@@ -1,3 +1,7 @@
+---
+description: 'Enforce consistent returning of awaited values.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/return-await** for documentation.
@@ -8,16 +12,6 @@ Returning an awaited promise can make sense for better stack trace information a
 
 This rule builds on top of the [`eslint/no-return-await`](https://eslint.org/docs/rules/no-return-await) rule.
 It expands upon the base rule to add support for optionally requiring `return await` in certain cases.
-
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-return-await": "off",
-  "@typescript-eslint/return-await": "error"
-}
-```
 
 ## Options
 

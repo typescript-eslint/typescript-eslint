@@ -91,7 +91,7 @@ interface Test {
         { messageId: 'errorMethod', line: 9 },
         { messageId: 'errorMethod', line: 10 },
       ],
-      output: noFormat`
+      output: `
         interface Test { f: (a: string) => number }
         interface Test { ['f']: (a: boolean) => void }
         interface Test { f: <T>(a: T) => T }
@@ -127,7 +127,7 @@ interface Test {
         { messageId: 'errorProperty', line: 9 },
         { messageId: 'errorProperty', line: 10 },
       ],
-      output: noFormat`
+      output: `
         interface Test { f(a: string): number }
         interface Test { ['f'](a: boolean): void }
         interface Test { f<T>(a: T): T }
@@ -147,7 +147,7 @@ interface Foo {
   none(arg: string): void
 }
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   semi: (arg: string) => void;
   comma: (arg: string) => void,
@@ -177,7 +177,7 @@ interface Foo {
   none: (arg: string) => void
 }
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   semi(arg: string): void;
   comma(arg: string): void,
@@ -216,7 +216,7 @@ interface Foo {
   ): void;
 }
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   x: (
     args: Pick<
@@ -249,7 +249,7 @@ interface Foo {
   foo(): three;
 }
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   foo: (() => one) & (() => two) & (() => three);
 }
@@ -277,7 +277,7 @@ interface Foo {
   foo(): three;
 }
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   foo: ((bar: string) => one) & ((bar: number, baz: string) => two) & (() => three);
 }
@@ -305,7 +305,7 @@ interface Foo {
   [foo](): three;
 }
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   [foo]: ((bar: string) => one) & ((bar: number, baz: string) => two) & (() => three);
 }
@@ -335,7 +335,7 @@ interface Foo {
   bar(baz: number): Foo;
 }
       `,
-      output: noFormat`
+      output: `
 interface Foo {
   [foo]: ((bar: string) => one) & ((bar: number, baz: string) => two) & (() => three);
   bar: ((arg: string) => void) & ((baz: number) => Foo);
@@ -395,7 +395,7 @@ type Foo = {
   foo(): three;
 }
       `,
-      output: noFormat`
+      output: `
 type Foo = {
   foo: (() => one) & (() => two) & (() => three);
 }
@@ -423,7 +423,7 @@ declare const Foo: {
   foo(): three;
 }
       `,
-      output: noFormat`
+      output: `
 declare const Foo: {
   foo: (() => one) & (() => two) & (() => three);
 }
