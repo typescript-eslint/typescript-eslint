@@ -20,34 +20,24 @@ type Foo = {
 type Foo = Record<string, unknown>;
 ```
 
-## Options
-
-- `"record"`: Set to `"record"` to only allow the `Record` type. Set to `"index-signature"` to only allow index signatures. (Defaults to `"record"`)
-
-For example:
-
-```json
-{
-  "@typescript-eslint/consistent-indexed-object-style": [
-    "error",
-    "index-signature"
-  ]
-}
-```
-
 ## Rule Details
 
 This rule enforces a consistent way to define records.
 
-### `record`
+## Options
 
-Examples of code with `record` option.
+- `"record"` _(default)_: only allow the `Record` type.
+- `"index-signature"`: only allow index signatures.
+
+### `record`
 
 <!--tabs-->
 
 #### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "record"] */
+
 interface Foo {
   [key: string]: unknown;
 }
@@ -60,24 +50,28 @@ type Foo = {
 #### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "record"] */
+
 type Foo = Record<string, unknown>;
 ```
 
 ### `index-signature`
-
-Examples of code with `index-signature` option.
 
 <!--tabs-->
 
 #### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "index-signature"] */
+
 type Foo = Record<string, unknown>;
 ```
 
 #### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "index-signature"] */
+
 interface Foo {
   [key: string]: unknown;
 }

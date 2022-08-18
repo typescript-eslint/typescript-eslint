@@ -13,19 +13,8 @@ It adds support for handling TypeScript specific code that would otherwise trigg
 
 One example of valid TypeScript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-empty-function": "off",
-  "@typescript-eslint/no-empty-function": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/no-empty-function` options](https://eslint.org/docs/rules/no-empty-function#options).
 This rule adds the following options:
 
 ```ts
@@ -97,19 +86,3 @@ class Foo extends Base {
   protected override greet(): void {}
 }
 ```
-
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-empty-function": "off",
-  "@typescript-eslint/no-empty-function": ["error"]
-}
-```
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-empty-function.md)
-
-</sup>

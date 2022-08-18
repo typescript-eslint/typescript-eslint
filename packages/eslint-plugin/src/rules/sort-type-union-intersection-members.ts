@@ -110,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
     },
     fixable: 'code',
-    hasSuggestions: true, // eslint-disable-line eslint-plugin/require-meta-has-suggestions -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/272
+    hasSuggestions: true,
     messages: {
       notSorted: '{{type}} type members must be sorted.',
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',
@@ -121,12 +121,15 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           checkIntersections: {
+            description: 'Whether to check intersection types.',
             type: 'boolean',
           },
           checkUnions: {
+            description: 'Whether to check union types.',
             type: 'boolean',
           },
           groupOrder: {
+            description: 'Ordering of the groups.',
             type: 'array',
             items: {
               type: 'string',

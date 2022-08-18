@@ -42,9 +42,11 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           checkCompoundAssignments: {
+            description: 'Whether to check compound assignments such as `+=`.',
             type: 'boolean',
           },
           allowAny: {
+            description: 'Whether to allow `any` typed values.',
             type: 'boolean',
           },
         },

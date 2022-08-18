@@ -66,19 +66,6 @@ const isOptionEnabled = (key: string): boolean => {
 };
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-ts-expect-error": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able to use this rule, as the directive is not supported

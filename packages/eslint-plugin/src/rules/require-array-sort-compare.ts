@@ -32,6 +32,8 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreStringArrays: {
+            description:
+              'Whether to ignore arrays in which all elements are strings.',
             type: 'boolean',
           },
         },

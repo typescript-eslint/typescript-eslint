@@ -50,21 +50,35 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowArgumentsExplicitlyTypedAsAny: {
+            description:
+              'Whether to ignore arguments that are explicitly typed as `any`.',
             type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
+            description: [
+              'Whether to ignore return type annotations on body-less arrow functions that return an `as const` type assertion.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
             type: 'boolean',
           },
           allowedNames: {
-            type: 'array',
+            description:
+              'An array of function/method names that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
           allowHigherOrderFunctions: {
+            description: [
+              'Whether to ignore return type annotations on functions immediately returning another function expression.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
             type: 'boolean',
           },
           allowTypedFunctionExpressions: {
+            description:
+              'Whether to ignore type annotations on the variable of a function expresion.',
             type: 'boolean',
           },
           // DEPRECATED - To be removed in next major

@@ -13,7 +13,7 @@ If you're working with `jest`, you can use [`eslint-plugin-jest`'s version of th
 
 ## Rule Details
 
-Examples of code for this rule
+Examples of code for this rule with the default options:
 
 <!--tabs-->
 
@@ -76,10 +76,6 @@ const { double } = arith;
 
 ## Options
 
-The rule accepts an options object with the following property:
-
-- `ignoreStatic` to not check whether `static` methods are correctly bound
-
 ### `ignoreStatic`
 
 Examples of **correct** code for this rule with `{ ignoreStatic: true }`:
@@ -95,19 +91,6 @@ class OtherClass {
 const { log } = OtherClass;
 
 log();
-```
-
-## Example
-
-```json
-{
-  "@typescript-eslint/unbound-method": [
-    "error",
-    {
-      "ignoreStatic": true
-    }
-  ]
-}
 ```
 
 ## When Not To Use It

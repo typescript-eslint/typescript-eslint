@@ -33,19 +33,6 @@ const createValue = async () => 'value';
 await createValue();
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/await-thenable": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you want to allow code to `await` non-Promise values.

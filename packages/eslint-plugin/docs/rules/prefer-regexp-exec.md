@@ -46,19 +46,6 @@ const search = /thing/;
 search.exec(text);
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-regexp-exec": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you prefer consistent use of `String#match` for both, with `g` flag and without it, you can turn this rule off.

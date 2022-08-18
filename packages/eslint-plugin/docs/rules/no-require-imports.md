@@ -35,19 +35,6 @@ import lib9 = lib2.anotherSubImport;
 import lib10 from 'lib10';
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-require-imports": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't care about TypeScript module syntax, then you will not need this rule.

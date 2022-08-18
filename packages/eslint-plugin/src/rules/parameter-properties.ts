@@ -38,20 +38,25 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        definitions: {
+          modifier: {
+            enum: [
+              'readonly',
+              'private',
+              'protected',
+              'public',
+              'private readonly',
+              'protected readonly',
+              'public readonly',
+            ],
+          },
+        },
         type: 'object',
         properties: {
           allow: {
             type: 'array',
             items: {
-              enum: [
-                'readonly',
-                'private',
-                'protected',
-                'public',
-                'private readonly',
-                'protected readonly',
-                'public readonly',
-              ],
+              $ref: '#/definitions/modifier',
             },
             minItems: 1,
           },

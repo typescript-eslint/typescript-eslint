@@ -95,19 +95,6 @@ function foo2(): unknown[] {
 }
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-return": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)

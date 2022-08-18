@@ -41,21 +41,11 @@ This rule aims to enforce specific spacing patterns around type annotations and 
 
 ## Options
 
-This rule has an object option:
-
-- `"before": false`, (default for colon) disallows spaces before the colon/arrow.
-- `"before": true`, (default for arrow) requires a space before the colon/arrow.
-- `"after": true`, (default) requires a space after the colon/arrow.
-- `"after": false`, disallows spaces after the colon/arrow.
-- `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`). Additionally allows granular overrides for `variable` (`const foo: string`),`parameter` (`function foo(bar: string) {...}`),`property` (`interface Foo { bar: string }`) and `returnType` (`function foo(): string {...}`) annotations.
-
-### defaults
-
 Examples of code for this rule with no options at all:
 
 <!--tabs-->
 
-#### ❌ Incorrect
+### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -84,7 +74,7 @@ type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
-#### ✅ Correct
+### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts

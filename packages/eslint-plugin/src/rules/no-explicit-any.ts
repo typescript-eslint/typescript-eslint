@@ -18,7 +18,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: 'warn',
     },
     fixable: 'code',
-    hasSuggestions: true, // eslint-disable-line eslint-plugin/require-meta-has-suggestions -- https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/281
+    hasSuggestions: true,
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
       suggestUnknown:
@@ -32,9 +32,12 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           fixToUnknown: {
+            description:
+              'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
             type: 'boolean',
           },
           ignoreRestArgs: {
+            description: 'Whether to ignore rest parameter arrays.',
             type: 'boolean',
           },
         },

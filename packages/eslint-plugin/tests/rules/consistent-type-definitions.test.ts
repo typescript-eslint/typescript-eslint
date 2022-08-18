@@ -63,7 +63,7 @@ export type W<T> = {
   invalid: [
     {
       code: noFormat`type T = { x: number; };`,
-      output: noFormat`interface T { x: number; }`,
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -75,7 +75,7 @@ export type W<T> = {
     },
     {
       code: noFormat`type T={ x: number; };`,
-      output: noFormat`interface T { x: number; }`,
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -87,7 +87,7 @@ export type W<T> = {
     },
     {
       code: noFormat`type T=                         { x: number; };`,
-      output: noFormat`interface T { x: number; }`,
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -119,7 +119,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T { x: number; }`,
-      output: noFormat`type T = { x: number; }`,
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -131,7 +131,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T{ x: number; }`,
-      output: noFormat`type T = { x: number; }`,
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -143,7 +143,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T                          { x: number; }`,
-      output: noFormat`type T = { x: number; }`,
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -155,7 +155,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface A extends B, C { x: number; };`,
-      output: noFormat`type A = { x: number; } & B & C;`,
+      output: `type A = { x: number; } & B & C;`,
       options: ['type'],
       errors: [
         {
@@ -167,7 +167,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface A extends B<T1>, C<T2> { x: number; };`,
-      output: noFormat`type A = { x: number; } & B<T1> & C<T2>;`,
+      output: `type A = { x: number; } & B<T1> & C<T2>;`,
       options: ['type'],
       errors: [
         {
@@ -183,7 +183,7 @@ export interface W<T> {
   x: T;
 }
       `,
-      output: noFormat`
+      output: `
 export type W<T> = {
   x: T;
 }
@@ -205,7 +205,7 @@ namespace JSX {
   }
 }
       `,
-      output: noFormat`
+      output: `
 namespace JSX {
   type Array<T> = {
     foo(x: (x: number) => T): T[];
@@ -229,7 +229,7 @@ global {
   }
 }
       `,
-      output: noFormat`
+      output: `
 global {
   type Array<T> = {
     foo(x: (x: number) => T): T[];
@@ -289,7 +289,7 @@ export default interface Test {
   foo(): number;
 }
       `,
-      output: noFormat`
+      output: `
 type Test = {
   bar(): string;
   foo(): number;
@@ -336,7 +336,7 @@ export declare interface Test {
   bar: string;
 }
       `,
-      output: noFormat`
+      output: `
 export declare type Test = {
   foo: string;
   bar: string;

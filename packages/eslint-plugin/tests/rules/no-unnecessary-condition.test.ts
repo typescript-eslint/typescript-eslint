@@ -914,7 +914,7 @@ foo ?.
 foo
   ?. bar;
       `,
-      output: noFormat`
+      output: `
 let foo = { bar: true };
 foo.bar;
 foo . bar;

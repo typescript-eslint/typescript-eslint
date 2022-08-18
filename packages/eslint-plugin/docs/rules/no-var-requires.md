@@ -30,19 +30,6 @@ require('foo');
 import foo from 'foo';
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-var-requires": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't care about TypeScript module syntax, then you will not need this rule.

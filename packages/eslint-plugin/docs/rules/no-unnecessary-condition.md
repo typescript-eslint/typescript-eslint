@@ -74,20 +74,6 @@ function bar(arg?: string | null) {
 
 ## Options
 
-```ts
-type Options = {
-  // if true, the rule will ignore constant loop conditions
-  allowConstantLoopConditions?: boolean;
-  // if true, the rule will not error when running with a tsconfig that has strictNullChecks turned **off**
-  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
-};
-
-const defaultOptions: Options = {
-  allowConstantLoopConditions: false,
-  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-};
-```
-
 ### `allowConstantLoopConditions`
 
 Example of correct code for `{ allowConstantLoopConditions: true }`:

@@ -58,6 +58,7 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
   moduleResolver?: string;
+  [additionalProperties: string]: unknown;
 }
 
 export { DebugLevel, EcmaVersion, ParserOptions, SourceType };

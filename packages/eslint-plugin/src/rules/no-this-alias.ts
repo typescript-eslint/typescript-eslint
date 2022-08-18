@@ -23,9 +23,13 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowDestructuring: {
+            description:
+              'Whether to ignore destructurings, such as `const { props, state } = this`.',
             type: 'boolean',
           },
           allowedNames: {
+            description:
+              'Names to ignore, such as ["self"] for `const self = this;`.',
             type: 'array',
             items: {
               type: 'string',

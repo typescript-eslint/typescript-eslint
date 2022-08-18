@@ -55,19 +55,6 @@ Examples of code for this rule:
 );
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-reduce-type-parameter": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't want to use typechecking in your linting, you can't use this rule.

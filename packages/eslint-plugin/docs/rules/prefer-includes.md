@@ -74,19 +74,6 @@ userDefined.includes(value);
 mismatchExample.indexOf(value) >= 0;
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-includes": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't want to suggest `includes`, you can safely turn this rule off.

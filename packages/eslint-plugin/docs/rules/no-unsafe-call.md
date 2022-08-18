@@ -52,19 +52,6 @@ new Map();
 String.raw`foo`;
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-call": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)

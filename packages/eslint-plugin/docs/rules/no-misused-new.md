@@ -37,16 +37,3 @@ interface I {
   new (): C;
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-misused-new": "error"
-  }
-}
-```
-
-This rule is not configurable.

@@ -85,18 +85,6 @@ and simplified types (primitives, tuples, unions, intersections, etc).
 
 ## Options
 
-This rule, in its default state, does not require any argument. If you would like to enable one
-or more of the following you may pass an object with the options set as follows:
-
-- `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
-- `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
-- `allowConditionalTypes` set to `"always"` will allow you to use type aliases with conditional types (Defaults to `"never"`)
-- `allowConstructors` set to `"always"` will allow you to use type aliases with constructors (Defaults to `"never"`)
-- `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
-- `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
-- `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
-- `allowGenerics` set to `"always"` will allow you to use type aliases with generics (Defaults to `"never"`)
-
 ### `allowAliases`
 
 This applies to primitive types and reference types.

@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { JSONSchema4 } from 'json-schema';
 import path from 'path';
 
 import { marked } from 'marked';
@@ -18,21 +17,7 @@ function parseMarkdownFile(filePath: string): marked.TokensList {
   });
 }
 
-function isEmptySchema(schema: JSONSchema4 | JSONSchema4[]): boolean {
-  return Array.isArray(schema)
-    ? schema.length === 0
-    : Object.keys(schema).length === 0;
-}
-
 type TokenType = marked.Token['type'];
-
-function tokenAs<Type extends TokenType>(
-  token: marked.Token,
-  type: Type,
-): marked.Token & { type: Type } {
-  expect(token.type).toBe(type);
-  return token as marked.Token & { type: Type };
-}
 
 function tokenIs<Type extends TokenType>(
   token: marked.Token,
@@ -107,46 +92,6 @@ describe('Validating rule docs', () => {
         headers.forEach(header =>
           expect(header.text).toBe(titleCase(header.text)),
         );
-      });
-
-      test(`options must match the rule meta`, () => {
-        // TODO(#4365): We don't yet enforce formatting for all rules.
-        if (
-          !isEmptySchema(rule.meta.schema) ||
-          !rule.meta.docs?.recommended ||
-          rule.meta.docs.extendsBaseRule
-        ) {
-          return;
-        }
-
-        const optionsIndex = tokens.findIndex(
-          token => tokenIsH2(token) && token.text === 'Options',
-        );
-        expect(optionsIndex).toBeGreaterThan(0);
-
-        const codeBlock = tokenAs(tokens[optionsIndex + 1], 'code');
-        tokenAs(tokens[optionsIndex + 2], 'space');
-        const descriptionBlock = tokenAs(tokens[optionsIndex + 3], 'paragraph');
-
-        expect(codeBlock).toMatchObject({
-          lang: 'jsonc',
-          text: `
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/${ruleName}": "${
-            rule.meta.docs.recommended === 'strict'
-              ? 'warn'
-              : rule.meta.docs.recommended
-          }"
-  }
-}
-          `.trim(),
-          type: 'code',
-        });
-        expect(descriptionBlock).toMatchObject({
-          text: 'This rule is not configurable.',
-        });
       });
     });
   }

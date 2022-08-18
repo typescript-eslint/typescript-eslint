@@ -455,7 +455,7 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        if (prop.key.name === 'code' || prop.key.name === 'output') {
+        if (prop.key.name === 'code') {
           checkExpression(prop.value, isErrorTest);
         }
       }

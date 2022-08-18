@@ -268,15 +268,15 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
-              output: noFormat`if (((''.length > 0) && {}) || (0 && void 0)) { }`,
+              output: `if (((''.length > 0) && {}) || (0 && void 0)) { }`,
             },
             {
               messageId: 'conditionFixCompareEmptyString',
-              output: noFormat`if ((('' !== "") && {}) || (0 && void 0)) { }`,
+              output: `if ((('' !== "") && {}) || (0 && void 0)) { }`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: noFormat`if (((Boolean('')) && {}) || (0 && void 0)) { }`,
+              output: `if (((Boolean('')) && {}) || (0 && void 0)) { }`,
             },
           ],
         },
@@ -288,15 +288,15 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: noFormat`if (('' && {}) || ((0 !== 0) && void 0)) { }`,
+              output: `if (('' && {}) || ((0 !== 0) && void 0)) { }`,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: noFormat`if (('' && {}) || ((!Number.isNaN(0)) && void 0)) { }`,
+              output: `if (('' && {}) || ((!Number.isNaN(0)) && void 0)) { }`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: noFormat`if (('' && {}) || ((Boolean(0)) && void 0)) { }`,
+              output: `if (('' && {}) || ((Boolean(0)) && void 0)) { }`,
             },
           ],
         },
@@ -625,7 +625,7 @@ if (y) {
         { messageId: 'conditionErrorNumber', line: 3, column: 26 },
         { messageId: 'conditionErrorNumber', line: 4, column: 43 },
       ],
-      output: noFormat`
+      output: `
         if ([].length === 0) {}
         (a: number[]) => (a.length > 0) && "..."
         <T extends unknown[]>(...a: T) => (a.length > 0) || "empty";
@@ -717,7 +717,7 @@ if (y) {
         { messageId: 'conditionErrorNullableObject', line: 3, column: 33 },
         { messageId: 'conditionErrorNullableObject', line: 4, column: 52 },
       ],
-      output: noFormat`
+      output: `
         declare const x: object | null; if (x != null) {}
         (x?: { a: number }) => x == null;
         <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;
@@ -962,7 +962,7 @@ if (x) {
         { messageId: 'conditionErrorNullableObject', line: 5, column: 9 },
         { messageId: 'conditionErrorNullableObject', line: 6, column: 9 },
       ],
-      output: noFormat`
+      output: `
         declare const obj: { x: number } | null;
         (obj == null) ? 1 : 0
         obj == null

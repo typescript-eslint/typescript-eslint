@@ -35,19 +35,6 @@ let foo = { bar: 'baz' };
 
 <!--/tabs-->
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-as-const": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you are using TypeScript < 3.4

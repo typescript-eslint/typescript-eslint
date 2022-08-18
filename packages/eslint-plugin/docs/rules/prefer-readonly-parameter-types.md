@@ -131,19 +131,6 @@ interface Foo {
 
 ## Options
 
-```ts
-interface Options {
-  checkParameterProperties?: boolean;
-  ignoreInferredTypes?: boolean;
-}
-
-const defaultOptions: Options = {
-  checkParameterProperties: true,
-  ignoreInferredTypes: false,
-  treatMethodsAsReadonly: false,
-};
-```
-
 ### `checkParameterProperties`
 
 This option allows you to enable or disable the checking of parameter properties.

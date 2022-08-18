@@ -32,7 +32,22 @@ type MessageIds =
   | 'addPrivateAccessibility'
   | 'addProtectedAccessibility';
 
-const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
+const accessibilityLevel = {
+  oneOf: [
+    {
+      const: 'explicit',
+      description: 'Always require an accessor.',
+    },
+    {
+      const: 'no-public',
+      description: 'Require an accessor except when public.',
+    },
+    {
+      const: 'off',
+      description: 'Never check whether there is an accessor.',
+    },
+  ],
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
@@ -57,17 +72,20 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        definitions: {
+          accessibilityLevel,
+        },
         type: 'object',
         properties: {
-          accessibility: accessibilityLevel,
+          accessibility: { $ref: '#/definitions/accessibilityLevel' },
           overrides: {
             type: 'object',
             properties: {
-              accessors: accessibilityLevel,
-              constructors: accessibilityLevel,
-              methods: accessibilityLevel,
-              properties: accessibilityLevel,
-              parameterProperties: accessibilityLevel,
+              accessors: { $ref: '#/definitions/accessibilityLevel' },
+              constructors: { $ref: '#/definitions/accessibilityLevel' },
+              methods: { $ref: '#/definitions/accessibilityLevel' },
+              properties: { $ref: '#/definitions/accessibilityLevel' },
+              parameterProperties: { $ref: '#/definitions/accessibilityLevel' },
             },
 
             additionalProperties: false,
