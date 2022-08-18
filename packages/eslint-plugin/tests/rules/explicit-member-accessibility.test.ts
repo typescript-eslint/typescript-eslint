@@ -352,7 +352,7 @@ class Test {
 export class XXXX {
   public constructor(readonly value: string) {}
 }
-      `.trim(),
+      `,
       options: [
         {
           accessibility: 'off',
@@ -365,7 +365,7 @@ export class XXXX {
         {
           messageId: 'missingAccessibility',
           column: 22,
-          line: 2,
+          line: 3,
           suggestions: [
             {
               messageId: 'addPublicAccessibility',
@@ -373,7 +373,7 @@ export class XXXX {
 export class XXXX {
   public constructor(public readonly value: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -381,7 +381,7 @@ export class XXXX {
 export class XXXX {
   public constructor(private readonly value: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -389,7 +389,7 @@ export class XXXX {
 export class XXXX {
   public constructor(protected readonly value: string) {}
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -401,7 +401,7 @@ export class XXXX {
 export class WithParameterProperty {
   public constructor(readonly value: string) {}
 }
-      `.trim(),
+      `,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
@@ -413,7 +413,7 @@ export class WithParameterProperty {
 export class WithParameterProperty {
   public constructor(public readonly value: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -421,7 +421,7 @@ export class WithParameterProperty {
 export class WithParameterProperty {
   public constructor(private readonly value: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -429,7 +429,7 @@ export class WithParameterProperty {
 export class WithParameterProperty {
   public constructor(protected readonly value: string) {}
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -441,7 +441,7 @@ export class WithParameterProperty {
 export class XXXX {
   public constructor(readonly samosa: string) {}
 }
-      `.trim(),
+      `,
       options: [
         {
           accessibility: 'off',
@@ -461,7 +461,7 @@ export class XXXX {
 export class XXXX {
   public constructor(public readonly samosa: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -469,7 +469,7 @@ export class XXXX {
 export class XXXX {
   public constructor(private readonly samosa: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -477,7 +477,7 @@ export class XXXX {
 export class XXXX {
   public constructor(protected readonly samosa: string) {}
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -489,7 +489,7 @@ export class XXXX {
 class Test {
   public constructor(readonly foo: string) {}
 }
-      `.trim(),
+      `,
       options: [
         {
           accessibility: 'explicit',
@@ -506,7 +506,7 @@ class Test {
 class Test {
   public constructor(public readonly foo: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -514,7 +514,7 @@ class Test {
 class Test {
   public constructor(private readonly foo: string) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -522,7 +522,7 @@ class Test {
 class Test {
   public constructor(protected readonly foo: string) {}
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -537,7 +537,7 @@ class Test {
     return this.x;
   }
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -545,7 +545,7 @@ class Test {
             type: 'class property',
             name: 'x',
           },
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -558,7 +558,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -570,7 +570,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -582,7 +582,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -597,7 +597,7 @@ class Test {
     return this.x;
   }
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -605,7 +605,7 @@ class Test {
             type: 'method definition',
             name: 'getX',
           },
-          line: 3,
+          line: 4,
           column: 3,
           suggestions: [
             {
@@ -617,7 +617,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -628,7 +628,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -639,7 +639,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -654,7 +654,7 @@ class Test {
     return this.x;
   }
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -662,7 +662,7 @@ class Test {
             type: 'class property',
             name: 'x',
           },
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -674,7 +674,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -685,7 +685,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -696,7 +696,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -706,7 +706,7 @@ class Test {
             type: 'method definition',
             name: 'getX',
           },
-          line: 3,
+          line: 4,
           column: 3,
           suggestions: [
             {
@@ -718,7 +718,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -729,7 +729,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -740,7 +740,7 @@ class Test {
     return this.x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -859,11 +859,11 @@ class Test {
     this.x = value;
   }
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 6,
+          line: 7,
           column: 3,
           suggestions: [
             {
@@ -881,7 +881,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -898,7 +898,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -915,13 +915,13 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 9,
+          line: 10,
           column: 3,
           suggestions: [
             {
@@ -939,7 +939,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -956,7 +956,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -973,7 +973,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -995,11 +995,11 @@ class Test {
     this.x = value;
   }
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 3,
+          line: 4,
           column: 3,
           suggestions: [
             {
@@ -1017,7 +1017,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1034,7 +1034,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1051,13 +1051,13 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 6,
+          line: 7,
           column: 3,
           suggestions: [
             {
@@ -1075,7 +1075,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1092,7 +1092,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1109,13 +1109,13 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 9,
+          line: 10,
           column: 3,
           suggestions: [
             {
@@ -1133,7 +1133,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1150,7 +1150,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1167,7 +1167,7 @@ class Test {
     this.x = value;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -1182,11 +1182,11 @@ class Test {
     return 'foo';
   }
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -1198,7 +1198,7 @@ class Test {
     return 'foo';
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1209,7 +1209,7 @@ class Test {
     return 'foo';
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1220,7 +1220,7 @@ class Test {
     return 'foo';
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -1237,11 +1237,11 @@ class Test {
 class Test {
   constructor(public x: number) {}
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -1250,7 +1250,7 @@ class Test {
 class Test {
   public constructor(public x: number) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1258,7 +1258,7 @@ class Test {
 class Test {
   private constructor(public x: number) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1266,7 +1266,7 @@ class Test {
 class Test {
   protected constructor(public x: number) {}
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -1304,7 +1304,7 @@ class Test {
 class Test {
   x = 2;
 }
-      `.trim(),
+      `,
       options: [
         {
           accessibility: 'off',
@@ -1314,7 +1314,7 @@ class Test {
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -1323,7 +1323,7 @@ class Test {
 class Test {
   public x = 2;
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1331,7 +1331,7 @@ class Test {
 class Test {
   private x = 2;
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1339,7 +1339,7 @@ class Test {
 class Test {
   protected x = 2;
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -1378,12 +1378,12 @@ class Test {
 class Test {
   constructor(public ...x: any[]) {}
 }
-      `.trim(),
+      `,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -1392,7 +1392,7 @@ class Test {
 class Test {
   public constructor(public ...x: any[]) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1400,7 +1400,7 @@ class Test {
 class Test {
   private constructor(public ...x: any[]) {}
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1408,7 +1408,7 @@ class Test {
 class Test {
   protected constructor(public ...x: any[]) {}
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -1688,12 +1688,12 @@ class Test {
 abstract class SomeClass {
   abstract method(): string;
 }
-      `.trim(),
+      `,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -1702,7 +1702,7 @@ abstract class SomeClass {
 abstract class SomeClass {
   public abstract method(): string;
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1710,7 +1710,7 @@ abstract class SomeClass {
 abstract class SomeClass {
   private abstract method(): string;
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1718,7 +1718,7 @@ abstract class SomeClass {
 abstract class SomeClass {
   protected abstract method(): string;
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -1755,12 +1755,12 @@ abstract class SomeClass {
 abstract class SomeClass {
   abstract x: string;
 }
-      `.trim(),
+      `,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -1769,7 +1769,7 @@ abstract class SomeClass {
 abstract class SomeClass {
   public abstract x: string;
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1777,7 +1777,7 @@ abstract class SomeClass {
 abstract class SomeClass {
   private abstract x: string;
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1785,7 +1785,7 @@ abstract class SomeClass {
 abstract class SomeClass {
   protected abstract x: string;
 }
-              `.trim(),
+      `,
             },
           ],
         },
@@ -1833,11 +1833,11 @@ class DecoratedClass {
     this.x = x;
   }
 }
-      `.trim(),
+      `,
       errors: [
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 3,
           suggestions: [
             {
@@ -1858,7 +1858,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1878,7 +1878,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1898,13 +1898,13 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 2,
+          line: 3,
           column: 15,
           suggestions: [
             {
@@ -1925,7 +1925,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -1945,7 +1945,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -1965,13 +1965,13 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 3,
+          line: 4,
           column: 3,
           suggestions: [
             {
@@ -1992,7 +1992,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -2012,7 +2012,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -2032,13 +2032,13 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 4,
+          line: 5,
           column: 3,
           suggestions: [
             {
@@ -2059,7 +2059,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -2079,7 +2079,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -2099,13 +2099,13 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 7,
+          line: 8,
           column: 3,
           suggestions: [
             {
@@ -2126,7 +2126,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -2146,7 +2146,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -2166,13 +2166,13 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
         {
           messageId: 'missingAccessibility',
-          line: 12,
+          line: 13,
           column: 3,
           suggestions: [
             {
@@ -2193,7 +2193,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addPrivateAccessibility',
@@ -2213,7 +2213,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
             {
               messageId: 'addProtectedAccessibility',
@@ -2233,7 +2233,7 @@ class DecoratedClass {
     this.x = x;
   }
 }
-              `.trim(),
+      `,
             },
           ],
         },
