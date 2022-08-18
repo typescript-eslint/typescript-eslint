@@ -230,10 +230,7 @@ export default util.createRule<Options, MessageIds>({
       ): TSESLint.RuleFix | null {
         if (node?.decorators?.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
-          const nextToken = sourceCode.getTokenAfter(lastDecorator);
-          if (!nextToken) {
-            return null;
-          }
+          const nextToken = sourceCode.getTokenAfter(lastDecorator)!;
           return fixer.insertTextBefore(nextToken, `${accessibility} `);
         }
         return fixer.insertTextBefore(node, `${accessibility} `);
