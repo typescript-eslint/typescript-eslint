@@ -28,9 +28,7 @@ type Options = [Config];
 type MessageIds =
   | 'unwantedPublicAccessibility'
   | 'missingAccessibility'
-  | 'addPublicAccessibility'
-  | 'addPrivateAccessibility'
-  | 'addProtectedAccessibility';
+  | 'addExplicitAccessibility';
 
 const accessibilityLevel = {
   oneOf: [
@@ -64,11 +62,9 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       missingAccessibility:
         'Missing accessibility modifier on {{type}} {{name}}.',
-      addPublicAccessibility: "Add 'public' accessibility modifier",
-      addPrivateAccessibility: "Add 'private' accessibility modifier",
-      addProtectedAccessibility: "Add 'protected' accessibility modifier",
       unwantedPublicAccessibility:
         'Public accessibility modifier on {{type}} {{name}}.',
+      addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
     },
     schema: [
       {
@@ -245,15 +241,18 @@ export default util.createRule<Options, MessageIds>({
 
       return [
         {
-          messageId: 'addPublicAccessibility',
+          messageId: 'addExplicitAccessibility',
+          data: { type: 'public' },
           fix: fixer => fix('public', fixer),
         },
         {
-          messageId: 'addPrivateAccessibility',
+          messageId: 'addExplicitAccessibility',
+          data: { type: 'private' },
           fix: fixer => fix('private', fixer),
         },
         {
-          messageId: 'addProtectedAccessibility',
+          messageId: 'addExplicitAccessibility',
+          data: { type: 'protected' },
           fix: fixer => fix('protected', fixer),
         },
       ];
