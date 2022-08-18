@@ -25,13 +25,19 @@ interface Config {
 
 type Options = [Config];
 
-type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
+type MessageIds =
+  | 'unwantedPublicAccessibility'
+  | 'missingAccessibility'
+  | 'addPublicAccessibility'
+  | 'addPrivateAccessibility'
+  | 'addProtectedAccessibility';
 
 const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
+    hasSuggestions: true,
     type: 'problem',
     docs: {
       description:
@@ -43,6 +49,9 @@ export default util.createRule<Options, MessageIds>({
     messages: {
       missingAccessibility:
         'Missing accessibility modifier on {{type}} {{name}}.',
+      addPublicAccessibility: "Add 'public' accessibility modifier",
+      addPrivateAccessibility: "Add 'private' accessibility modifier",
+      addProtectedAccessibility: "Add 'protected' accessibility modifier",
       unwantedPublicAccessibility:
         'Public accessibility modifier on {{type}} {{name}}.',
     },
@@ -85,26 +94,6 @@ export default util.createRule<Options, MessageIds>({
     const propCheck = overrides.properties ?? baseCheck;
     const paramPropCheck = overrides.parameterProperties ?? baseCheck;
     const ignoredMethodNames = new Set(option.ignoredMethodNames ?? []);
-    /**
-     * Generates the report for rule violations
-     */
-    function reportIssue(
-      messageId: MessageIds,
-      nodeType: string,
-      node: TSESTree.Node,
-      nodeName: string,
-      fix: TSESLint.ReportFixFunction,
-    ): void {
-      context.report({
-        node,
-        messageId,
-        data: {
-          type: nodeType,
-          name: nodeName,
-        },
-        fix,
-      });
-    }
 
     /**
      * Checks if a method declaration has an accessibility modifier.
@@ -146,21 +135,25 @@ export default util.createRule<Options, MessageIds>({
         check === 'no-public' &&
         methodDefinition.accessibility === 'public'
       ) {
-        reportIssue(
-          'unwantedPublicAccessibility',
-          nodeType,
-          methodDefinition,
-          methodName,
-          getUnwantedPublicAccessibilityFixer(methodDefinition),
-        );
+        context.report({
+          node: methodDefinition,
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: nodeType,
+            name: methodName,
+          },
+          fix: getUnwantedPublicAccessibilityFixer(methodDefinition),
+        });
       } else if (check === 'explicit' && !methodDefinition.accessibility) {
-        reportIssue(
-          'missingAccessibility',
-          nodeType,
-          methodDefinition,
-          methodName,
-          getMissingAccessibilityFixer(methodDefinition),
-        );
+        context.report({
+          node: methodDefinition,
+          messageId: 'missingAccessibility',
+          data: {
+            type: nodeType,
+            name: methodName,
+          },
+          suggest: getMissingAccessibilitySuggestions(methodDefinition),
+        });
       }
     }
 
@@ -209,25 +202,43 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Creates a fixer that adds a "public" keyword with following spaces
      */
-    function getMissingAccessibilityFixer(
+    function getMissingAccessibilitySuggestions(
       node:
         | TSESTree.MethodDefinition
         | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
-    ): TSESLint.ReportFixFunction {
-      return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null {
+    ): TSESLint.ReportSuggestionArray<MessageIds> {
+      function fix(
+        accessibility: TSESTree.Accessibility,
+        fixer: TSESLint.RuleFixer,
+      ): TSESLint.RuleFix | null {
         if (node.decorators && node.decorators.length > 0) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
           const nextToken = sourceCode.getTokenAfter(lastDecorator);
           if (!nextToken) {
             return null;
           }
-          return fixer.insertTextBefore(nextToken, 'public ');
+          return fixer.insertTextBefore(nextToken, `${accessibility} `);
         }
-        return fixer.insertTextBefore(node, 'public ');
-      };
+        return fixer.insertTextBefore(node, `${accessibility} `);
+      }
+
+      return [
+        {
+          messageId: 'addPublicAccessibility',
+          fix: fixer => fix('public', fixer),
+        },
+        {
+          messageId: 'addPrivateAccessibility',
+          fix: fixer => fix('private', fixer),
+        },
+        {
+          messageId: 'addProtectedAccessibility',
+          fix: fixer => fix('protected', fixer),
+        },
+      ];
     }
 
     /**
@@ -253,24 +264,28 @@ export default util.createRule<Options, MessageIds>({
         propCheck === 'no-public' &&
         propertyDefinition.accessibility === 'public'
       ) {
-        reportIssue(
-          'unwantedPublicAccessibility',
-          nodeType,
-          propertyDefinition,
-          propertyName,
-          getUnwantedPublicAccessibilityFixer(propertyDefinition),
-        );
+        context.report({
+          node: propertyDefinition,
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: nodeType,
+            name: propertyName,
+          },
+          fix: getUnwantedPublicAccessibilityFixer(propertyDefinition),
+        });
       } else if (
         propCheck === 'explicit' &&
         !propertyDefinition.accessibility
       ) {
-        reportIssue(
-          'missingAccessibility',
-          nodeType,
-          propertyDefinition,
-          propertyName,
-          getMissingAccessibilityFixer(propertyDefinition),
-        );
+        context.report({
+          node: propertyDefinition,
+          messageId: 'missingAccessibility',
+          data: {
+            type: nodeType,
+            name: propertyName,
+          },
+          suggest: getMissingAccessibilitySuggestions(propertyDefinition),
+        });
       }
     }
 
@@ -299,25 +314,29 @@ export default util.createRule<Options, MessageIds>({
       switch (paramPropCheck) {
         case 'explicit': {
           if (!node.accessibility) {
-            reportIssue(
-              'missingAccessibility',
-              nodeType,
+            context.report({
               node,
-              nodeName,
-              getMissingAccessibilityFixer(node),
-            );
+              messageId: 'missingAccessibility',
+              data: {
+                type: nodeType,
+                name: nodeName,
+              },
+              suggest: getMissingAccessibilitySuggestions(node),
+            });
           }
           break;
         }
         case 'no-public': {
           if (node.accessibility === 'public' && node.readonly) {
-            reportIssue(
-              'unwantedPublicAccessibility',
-              nodeType,
+            context.report({
               node,
-              nodeName,
-              getUnwantedPublicAccessibilityFixer(node),
-            );
+              messageId: 'unwantedPublicAccessibility',
+              data: {
+                type: nodeType,
+                name: nodeName,
+              },
+              fix: getUnwantedPublicAccessibilityFixer(node),
+            });
           }
           break;
         }
