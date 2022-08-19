@@ -102,33 +102,39 @@ export default util.createRule({
       ].join(', ')](child: TSESTree.Node): void {
         // selector guarantees this assertion
         const node = child.parent as TSESTree.TSNonNullExpression;
+        const hasOptionalChain = ((): boolean => {
+          let current = child;
+          while (current) {
+            switch (current.type) {
+              case AST_NODE_TYPES.MemberExpression:
+                if (current.optional) {
+                  // found an optional chain! stop traversing
+                  return true;
+                }
 
-        let current = child;
-        let isRight = true;
-        while (current && isRight) {
-          switch (current.type) {
-            case AST_NODE_TYPES.MemberExpression:
-              if (current.optional) {
-                // found an optional chain! stop traversing
-                isRight = false;
-              }
+                current = current.object;
+                continue;
 
-              current = current.object;
-              continue;
+              case AST_NODE_TYPES.CallExpression:
+                if (current.optional) {
+                  // found an optional chain! stop traversing
+                  return true;
+                }
 
-            case AST_NODE_TYPES.CallExpression:
-              if (current.optional) {
-                // found an optional chain! stop traversing
-                isRight = false;
-              }
+                current = current.callee;
+                continue;
 
-              current = current.callee;
-              continue;
-
-            default:
-              // something that's not a ChainElement, which means this is not an optional chain we want to check
-              return;
+              default:
+                // something that's not a ChainElement, which means this is not an optional chain we want to check
+                return false;
+            }
           }
+
+          return true;
+        })();
+
+        if (!hasOptionalChain) {
+          return;
         }
 
         context.report({
