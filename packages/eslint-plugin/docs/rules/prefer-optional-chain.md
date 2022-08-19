@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using concise optional chain expressions instead of chained logical ands.'
+description: 'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
