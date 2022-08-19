@@ -1,3 +1,7 @@
+---
+description: 'Enforce template literal expressions to be of `string` type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/restrict-template-expressions** for documentation.
@@ -30,31 +34,6 @@ const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 ```
 
 ## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, also allow number type in template expressions
-  allowNumber?: boolean;
-  // if true, also allow boolean type in template expressions
-  allowBoolean?: boolean;
-  // if true, also allow any in template expressions
-  allowAny?: boolean;
-  // if true, also allow null and undefined in template expressions
-  allowNullish?: boolean;
-  // if true, also allow RegExp in template expressions
-  allowRegExp?: boolean;
-};
-
-const defaults = {
-  allowNumber: true,
-  allowBoolean: false,
-  allowAny: false,
-  allowNullish: false,
-  allowRegExp: false,
-};
-```
 
 ### `allowNumber`
 

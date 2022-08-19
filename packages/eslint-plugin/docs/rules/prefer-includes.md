@@ -1,3 +1,7 @@
+---
+description: 'Enforce `includes` method over `indexOf` method.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-includes** for documentation.
@@ -69,19 +73,6 @@ userDefined.includes(value);
 // the two methods have different parameters.
 mismatchExample.indexOf(value) >= 0;
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-includes": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

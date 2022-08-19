@@ -1,3 +1,7 @@
+---
+description: 'Disallow calling a value with type `any`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-call** for documentation.
@@ -47,19 +51,6 @@ new Map();
 
 String.raw`foo`;
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-call": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## Related To
 

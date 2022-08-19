@@ -500,7 +500,7 @@ doSomething();
 async function test() {
   Promise.resolve('value');
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           line: 3,
@@ -512,7 +512,7 @@ async function test() {
 async function test() {
   void Promise.resolve('value');
 }
-              `.trimRight(),
+      `,
             },
           ],
         },

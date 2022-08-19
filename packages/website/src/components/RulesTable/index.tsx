@@ -18,6 +18,8 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
   if (!rule.docs?.url) {
     return null;
   }
+  const { fixable, hasSuggestions } = rule;
+  const { recommended, requiresTypeChecking } = rule.docs;
   return (
     <tr>
       <td>
@@ -27,19 +29,38 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
-      <td className={styles.attrCol}>
-        {rule.docs.recommended === 'strict'
-          ? '🔒'
-          : rule.docs.recommended
-          ? '✅'
-          : ''}
+      <td
+        className={styles.attrCol}
+        title={
+          recommended === 'strict'
+            ? 'strict'
+            : recommended
+            ? 'recommended'
+            : undefined
+        }
+      >
+        {recommended === 'strict' ? '🔒' : recommended ? '✅' : ''}
       </td>
-      <td className={styles.attrCol}>
-        {rule.fixable ? '🔧\n' : '\n'}
-        {rule.hasSuggestions ? '🛠' : ''}
+      <td
+        className={styles.attrCol}
+        title={
+          fixable && hasSuggestions
+            ? 'fixable and has suggestions'
+            : fixable
+            ? 'fixable'
+            : hasSuggestions
+            ? 'has suggestions'
+            : undefined
+        }
+      >
+        {fixable ? '🔧\n' : '\n'}
+        {hasSuggestions ? '💡' : ''}
       </td>
-      <td className={styles.attrCol}>
-        {rule.docs.requiresTypeChecking ? '💭' : ''}
+      <td
+        className={styles.attrCol}
+        title={requiresTypeChecking ? 'requires type information' : undefined}
+      >
+        {requiresTypeChecking ? '💭' : ''}
       </td>
     </tr>
   );
@@ -168,7 +189,7 @@ export default function RulesTable({
         <RuleFilterCheckBox
           mode={showHasSuggestions}
           setMode={setShowHasSuggestion}
-          label="🛠 has suggestions"
+          label="💡 has suggestions"
         />
         <RuleFilterCheckBox
           mode={showTypeCheck}
@@ -180,9 +201,18 @@ export default function RulesTable({
         <thead>
           <tr>
             <th className={styles.ruleCol}>Rule</th>
-            <th className={styles.attrCol}>✅{'\n'}🔒</th>
-            <th className={styles.attrCol}>🔧{'\n'}🛠</th>
-            <th className={styles.attrCol}>💭</th>
+            <th className={styles.attrCol} title={'✅ recommended\n🔒 strict'}>
+              ✅{'\n'}🔒
+            </th>
+            <th
+              className={styles.attrCol}
+              title={'🔧 fixable\n💡 has suggestions'}
+            >
+              🔧{'\n'}💡
+            </th>
+            <th className={styles.attrCol} title="💭 requires type information">
+              💭
+            </th>
           </tr>
         </thead>
         <tbody>

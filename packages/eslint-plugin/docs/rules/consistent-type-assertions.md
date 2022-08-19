@@ -1,3 +1,7 @@
+---
+description: 'Enforce consistent usage of type assertions.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/consistent-type-assertions** for documentation.
@@ -10,25 +14,9 @@ Type assertions are also commonly referred as "type casting" in TypeScript (even
 
 In addition to ensuring that type assertions are written in a consistent way, this rule also helps make your codebase more type-safe.
 
-`const` assertions, [introduced in TypeScript 3.4](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions), is always allowed by this rule. Examples of it include `let x = "hello" as const;` and `let x = <const>"hello";`.
+[`const` assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) are always allowed by this rule. Examples of them include `let x = "hello" as const;` and `let x = <const>"hello";`.
 
 ## Options
-
-```ts
-type Options =
-  | {
-      assertionStyle: 'as' | 'angle-bracket';
-      objectLiteralTypeAssertions: 'allow' | 'allow-as-parameter' | 'never';
-    }
-  | {
-      assertionStyle: 'never';
-    };
-
-const defaultOptions: Options = {
-  assertionStyle: 'as',
-  objectLiteralTypeAssertions: 'allow',
-};
-```
 
 ### `assertionStyle`
 
@@ -52,7 +40,7 @@ The const assertion `const x = { foo: 1 } as const`, introduced in TypeScript 3.
 
 Assertions to `any` are also ignored by this option.
 
-Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`
+Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }`:
 
 <!--tabs-->
 
@@ -80,7 +68,7 @@ function foo(): T {
 
 <!--/tabs-->
 
-Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`
+Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`:
 
 <!--tabs-->
 

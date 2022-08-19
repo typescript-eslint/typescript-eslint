@@ -25,15 +25,23 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowConstructorOnly: {
+            description:
+              'Whether to allow extraneous classes that contain only a constructor.',
             type: 'boolean',
           },
           allowEmpty: {
+            description:
+              'Whether to allow extraneous classes that have no body (i.e. are empty).',
             type: 'boolean',
           },
           allowStaticOnly: {
+            description:
+              'Whether to allow extraneous classes that only contain static members.',
             type: 'boolean',
           },
           allowWithDecorator: {
+            description:
+              'Whether to allow extraneous classes that include a decorator.',
             type: 'boolean',
           },
         },

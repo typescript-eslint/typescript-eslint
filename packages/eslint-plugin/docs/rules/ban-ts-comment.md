@@ -1,3 +1,7 @@
+---
+description: 'Disallow `@ts-<directive>` comments or require descriptions after directive.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/ban-ts-comment** for documentation.
@@ -17,32 +21,10 @@ The directive comments supported by TypeScript are:
 ## Rule Details
 
 This rule lets you set which directive comments you want to allow in your codebase.
+
+## Options
+
 By default, only `@ts-check` is allowed, as it enables rather than suppresses errors.
-
-The configuration looks like this:
-
-```ts
-type DirectiveConfig =
-  | boolean
-  | 'allow-with-description'
-  | { descriptionFormat: string };
-
-interface Options {
-  'ts-expect-error'?: DirectiveConfig;
-  'ts-ignore'?: DirectiveConfig;
-  'ts-nocheck'?: DirectiveConfig;
-  'ts-check'?: DirectiveConfig;
-  minimumDescriptionLength?: number;
-}
-
-const defaultOptions: Options = {
-  'ts-expect-error': 'allow-with-description',
-  'ts-ignore': true,
-  'ts-nocheck': true,
-  'ts-check': false,
-  minimumDescriptionLength: 3,
-};
-```
 
 ### `ts-expect-error`, `ts-ignore`, `ts-nocheck`, `ts-check` directives
 

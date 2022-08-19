@@ -55,11 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: [
-          "check-spelling",
-          "check-format",
-          "lint-markdown",
-        ]
+        lint-task: ['check-spelling', 'check-format', 'lint-markdown']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -78,10 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: [
-          "lint",
-          "typecheck",
-        ]
+        lint-task: ['lint', 'typecheck']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -122,18 +115,19 @@ jobs:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [12, 18]
-        package: [
-          "ast-spec",
-          "eslint-plugin",
-          "eslint-plugin-internal",
-          "eslint-plugin-tslint",
-          "parser",
-          "scope-manager",
-          "type-utils",
-          "typescript-estree",
-          "utils",
-          "visitor-keys",
-        ]
+        package:
+          [
+            'ast-spec',
+            'eslint-plugin',
+            'eslint-plugin-internal',
+            'eslint-plugin-tslint',
+            'parser',
+            'scope-manager',
+            'type-utils',
+            'typescript-estree',
+            'utils',
+            'visitor-keys',
+          ]
     env:
       # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
       NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
@@ -194,7 +188,9 @@ jobs:
       - name: Install Cypress
         run: yarn cypress install
 
-      - name: Cypress run
+      - env:
+          DEBUG: '@cypress/github-action'
+        name: Cypress run
         uses: cypress-io/github-action@v2
         with:
           project: ./packages/website
@@ -228,17 +224,10 @@ jobs:
           flags: unittest
           name: codecov
 
-
   publish_canary_version:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
-    needs:
-      [
-        integration_tests,
-        lint_with_build,
-        lint_without_build,
-        unit_tests,
-      ]
+    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
     if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
@@ -247,7 +236,7 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
       - name: Build
         uses: ./.github/actions/prepare-build
 

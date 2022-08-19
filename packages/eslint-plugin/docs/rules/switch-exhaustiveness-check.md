@@ -1,3 +1,7 @@
+---
+description: 'Require switch-case statements to be exhaustive with union type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.
@@ -105,19 +109,6 @@ switch (day) {
   }
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/switch-exhaustiveness-check": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

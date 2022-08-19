@@ -1,10 +1,16 @@
+---
+description: 'Disallow certain triple slash directives in favor of ES6-style import declarations.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/triple-slash-reference** for documentation.
 
+## Rule Details
+
 Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
 
-## Rule Details
+## Options
 
 With `{ "path": "never", "types": "never", "lib": "never" }` options set, the following will all be **incorrect** usage:
 
@@ -42,22 +48,6 @@ import * as foo from 'foo';
 
 ```ts
 import foo = require('foo');
-```
-
-## Options
-
-```ts
-type Options = {
-  lib?: 'always' | 'never';
-  path?: 'always' | 'never';
-  types?: 'always' | 'never' | 'prefer-import';
-};
-
-const defaultOptions: Options = {
-  lib: 'always',
-  path: 'never',
-  types: 'prefer-import',
-};
 ```
 
 ## When To Use It

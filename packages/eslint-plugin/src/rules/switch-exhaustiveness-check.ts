@@ -18,7 +18,6 @@ export default createRule({
       description:
         'Require switch-case statements to be exhaustive with union type',
       recommended: false,
-      suggestion: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

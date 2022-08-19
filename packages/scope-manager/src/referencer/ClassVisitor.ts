@@ -322,6 +322,10 @@ class ClassVisitor extends Visitor {
     this.visitType(node);
   }
 
+  protected visitStaticBlock(node: TSESTree.StaticBlock): void {
+    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
+  }
+
   /////////////////////
   // Visit selectors //
   /////////////////////
@@ -358,6 +362,10 @@ class ClassVisitor extends Visitor {
 
   protected PrivateIdentifier(): void {
     // intentionally skip
+  }
+
+  protected StaticBlock(node: TSESTree.StaticBlock): void {
+    this.visitStaticBlock(node);
   }
 }
 

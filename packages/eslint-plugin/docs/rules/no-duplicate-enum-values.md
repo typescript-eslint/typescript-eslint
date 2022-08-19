@@ -1,3 +1,7 @@
+---
+description: 'Disallow duplicate enum member values.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-duplicate-enum-values** for documentation.
@@ -21,8 +25,8 @@ enum E {
 
 ```ts
 enum E {
-  A = 'A'
-  B = 'A'
+  A = 'A',
+  B = 'A',
 }
 ```
 
@@ -37,20 +41,7 @@ enum E {
 
 ```ts
 enum E {
-  A = 'A'
-  B = 'B'
+  A = 'A',
+  B = 'B',
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-duplicate-enum-values": "warn"
-  }
-}
-```
-
-This rule is not configurable.

@@ -1,3 +1,7 @@
+---
+description: 'Disallow custom TypeScript modules and namespaces.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-namespace** for documentation.
@@ -11,16 +15,7 @@ This rule still allows the use of TypeScript module declarations to describe ext
 
 This rule aims to standardize the way modules are declared.
 
-## Options
-
-This rule, in its default state, does not require any argument. If you would like to enable one
-or more of the following you may pass an object with the options set as follows:
-
-- `allowDeclarations` set to `true` will allow you to `declare` custom TypeScript modules and namespaces (Default: `false`).
-- `allowDefinitionFiles` set to `true` will allow you to `declare` and use custom TypeScript modules and namespaces
-  inside definition files (Default: `true`).
-
-Examples of code for the default `{ "allowDeclarations": false, "allowDefinitionFiles": true }` options:
+Examples of code with the default options:
 
 <!--tabs-->
 
@@ -44,9 +39,11 @@ declare module 'foo' {}
 
 <!--/tabs-->
 
+## Options
+
 ### `allowDeclarations`
 
-Examples of code for the `{ "allowDeclarations": true }` option:
+Examples of code with the `{ "allowDeclarations": true }` option:
 
 <!--tabs-->
 

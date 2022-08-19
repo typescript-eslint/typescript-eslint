@@ -98,9 +98,13 @@ export default createRule<Options, MessageId>({
         type: 'object',
         properties: {
           allowConstantLoopConditions: {
+            description:
+              'Whether to ignore constant loop conditions, such as `while (true)`.',
             type: 'boolean',
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            description:
+              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
             type: 'boolean',
           },
         },

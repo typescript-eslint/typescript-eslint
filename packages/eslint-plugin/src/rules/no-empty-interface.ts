@@ -15,7 +15,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the declaration of empty interfaces',
       recommended: 'error',
-      suggestion: true,
     },
     fixable: 'code',
     hasSuggestions: true,

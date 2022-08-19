@@ -1,3 +1,7 @@
+---
+description: 'Disallow unnecessary constraints on generic types.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-constraint** for documentation.
@@ -55,19 +59,6 @@ const Quux = <T>() => {};
 
 function Quuz<T>() {}
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unnecessary-type-constraint": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

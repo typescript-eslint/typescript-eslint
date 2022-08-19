@@ -1701,6 +1701,24 @@ const foo = class Foo {
           },
         ],
       },
+
+      // default option + static blocks; should always be valid
+      {
+        code: `
+class Foo {
+  static {}
+  static {}
+}
+              `,
+        options: [
+          {
+            default: {
+              memberTypes: 'never',
+              order: 'alphabetically',
+            },
+          },
+        ],
+      },
     ],
     invalid: [
       // default option + class + wrong order within group and wrong group order + alphabetically

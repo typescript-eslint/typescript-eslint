@@ -1,3 +1,7 @@
+---
+description: 'Disallow the `any` type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.
@@ -92,22 +96,6 @@ function greet(param: Array<string>): Array<string> {}
 ```
 
 ## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, auto-fixing will be made available in which the "any" type is converted to an "unknown" type
-  fixToUnknown: boolean;
-  // specify if arrays from the rest operator are considered okay
-  ignoreRestArgs: boolean;
-};
-
-const defaults = {
-  fixToUnknown: false,
-  ignoreRestArgs: false,
-};
-```
 
 ### `ignoreRestArgs`
 

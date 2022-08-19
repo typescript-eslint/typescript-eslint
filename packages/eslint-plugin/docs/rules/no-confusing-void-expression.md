@@ -1,3 +1,7 @@
+---
+description: 'Require expressions of type void to appear in statement position.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-confusing-void-expression** for documentation.
@@ -66,32 +70,7 @@ cond ? console.log('true') : console.error('false');
 
 ## Options
 
-An object option can be specified. Each boolean flag makes the rule less strict.
-
-```ts
-type Options = {
-  ignoreArrowShorthand?: boolean;
-  ignoreVoidOperator?: boolean;
-};
-
-const defaults: Options = {
-  ignoreArrowShorthand: false,
-  ignoreVoidOperator: false,
-};
-```
-
 ### `ignoreArrowShorthand`
-
-`false` by default.
-
-```json
-{
-  "@typescript-eslint/no-confusing-void-expression": [
-    "error",
-    { "ignoreArrowShorthand": true }
-  ]
-}
-```
 
 It might be undesirable to wrap every arrow function shorthand expression with braces.
 Especially when using Prettier formatter, which spreads such code across 3 lines instead of 1.
@@ -103,17 +82,6 @@ promise.then(value => window.postMessage(value));
 ```
 
 ### `ignoreVoidOperator`
-
-`false` by default.
-
-```json
-{
-  "@typescript-eslint/no-confusing-void-expression": [
-    "error",
-    { "ignoreVoidOperator": true }
-  ]
-}
-```
 
 It might be preferable to only use some distinct syntax
 to explicitly mark the confusing but valid usage of void expressions.

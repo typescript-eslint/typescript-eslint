@@ -1,3 +1,7 @@
+---
+description: 'Require Promise-like statements to be handled appropriately.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-floating-promises** for documentation.
@@ -60,22 +64,6 @@ Promise.reject('value').finally(() => {});
 ```
 
 ## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, checking void expressions will be skipped
-  ignoreVoid?: boolean;
-  // if true, checking for async iife will be skipped
-  ignoreIIFE?: boolean;
-};
-
-const defaults = {
-  ignoreVoid: true,
-  ignoreIIFE: false,
-};
-```
 
 ### `ignoreVoid`
 

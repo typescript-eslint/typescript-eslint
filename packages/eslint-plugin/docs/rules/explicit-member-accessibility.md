@@ -1,3 +1,7 @@
+---
+description: 'Require explicit accessibility modifiers on class properties and methods.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
@@ -14,29 +18,6 @@ which properties.
 
 ## Options
 
-```ts
-type AccessibilityLevel =
-  | 'explicit' // require an accessor (including public)
-  | 'no-public' // don't require public
-  | 'off'; // don't check
-
-type Options = {
-  accessibility?: AccessibilityLevel;
-  ignoredMethodNames?: string[];
-  overrides?: {
-    accessors?: AccessibilityLevel;
-    constructors?: AccessibilityLevel;
-    methods?: AccessibilityLevel;
-    properties?: AccessibilityLevel;
-    parameterProperties?: AccessibilityLevel;
-  };
-};
-
-const defaultOptions: Options = {
-  accessibility: 'explicit',
-};
-```
-
 ### Configuring in a mixed JS/TS codebase
 
 If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.mjs`/`.cjs`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.mts`/`.cts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.mjs`/`.cjs`/`.jsx` files.
@@ -52,7 +33,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-member-accessibility": ["error"]
+        "@typescript-eslint/explicit-member-accessibility": "error"
       }
     }
   ]

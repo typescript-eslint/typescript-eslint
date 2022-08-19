@@ -334,7 +334,7 @@ const fn = (): any => null;
 async function test() {
   return await fn();
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           line: 4,
@@ -347,7 +347,7 @@ const fn = (): any => null;
 async function test() {
   return fn();
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -359,7 +359,7 @@ const fn = (): unknown => null;
 async function test() {
   return await fn();
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           line: 4,
@@ -372,7 +372,7 @@ const fn = (): unknown => null;
 async function test() {
   return fn();
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -703,7 +703,7 @@ async function buzz() {
   return (await foo()) ? bar() : baz();
 }
       `,
-      output: noFormat`
+      output: `
 async function foo() {}
 async function bar() {}
 async function baz() {}
@@ -737,7 +737,7 @@ async function buzz() {
     ) : baz ? baz() : bar();
 }
       `,
-      output: noFormat`
+      output: `
 async function foo() {}
 async function bar() {}
 async function baz() {}

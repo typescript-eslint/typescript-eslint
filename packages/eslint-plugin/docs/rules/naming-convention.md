@@ -1,3 +1,7 @@
+---
+description: 'Enforce naming conventions for everything across a codebase.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/naming-convention** for documentation.

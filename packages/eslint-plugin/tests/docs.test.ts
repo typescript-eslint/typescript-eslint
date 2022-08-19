@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { JSONSchema4 } from 'json-schema';
 import path from 'path';
 
 import { marked } from 'marked';
@@ -18,21 +17,7 @@ function parseMarkdownFile(filePath: string): marked.TokensList {
   });
 }
 
-function isEmptySchema(schema: JSONSchema4 | JSONSchema4[]): boolean {
-  return Array.isArray(schema)
-    ? schema.length === 0
-    : Object.keys(schema).length === 0;
-}
-
 type TokenType = marked.Token['type'];
-
-function tokenAs<Type extends TokenType>(
-  token: marked.Token,
-  type: Type,
-): marked.Token & { type: Type } {
-  expect(token.type).toBe(type);
-  return token as marked.Token & { type: Type };
-}
 
 function tokenIs<Type extends TokenType>(
   token: marked.Token,
@@ -42,7 +27,11 @@ function tokenIs<Type extends TokenType>(
 }
 
 function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
-  return tokenIs(token, 'heading') && token.depth === 2;
+  return (
+    tokenIs(token, 'heading') &&
+    token.depth === 2 &&
+    !/[a-z]+: /.test(token.text)
+  );
 }
 
 describe('Validating rule docs', () => {
@@ -64,13 +53,28 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
-    describe(ruleName, () => {
+    const { description } = rule.meta.docs!;
+
+    describe(`${ruleName}.md`, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
+      const tokens = parseMarkdownFile(filePath);
 
-      test(`${ruleName}.md must start with blockquote directing to website`, () => {
-        const tokens = parseMarkdownFile(filePath);
-
+      test(`${ruleName}.md must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
+          raw: '---\n',
+          type: 'hr',
+        });
+        expect(tokens[1]).toMatchObject({
+          text: description.includes("'")
+            ? `description: "${description}."`
+            : `description: '${description}.'`,
+          depth: 2,
+          type: 'heading',
+        });
+      });
+
+      test(`${ruleName}.md must next have a blockquote directing to website`, () => {
+        expect(tokens[2]).toMatchObject({
           text: [
             `🛑 This file is source code, not the primary documentation location! 🛑`,
             ``,
@@ -81,57 +85,13 @@ describe('Validating rule docs', () => {
         });
       });
 
-      it(`Headers in ${ruleName}.md must be title-cased`, () => {
-        const tokens = parseMarkdownFile(filePath);
-
+      test(`headers must be title-cased`, () => {
         // Get all H2 headers objects as the other levels are variable by design.
         const headers = tokens.filter(tokenIsH2);
 
         headers.forEach(header =>
           expect(header.text).toBe(titleCase(header.text)),
         );
-      });
-
-      it(`Options in ${ruleName}.md must match the rule meta`, () => {
-        // TODO(#4365): We don't yet enforce formatting for all rules.
-        if (
-          !isEmptySchema(rule.meta.schema) ||
-          !rule.meta.docs?.recommended ||
-          rule.meta.docs.extendsBaseRule
-        ) {
-          return;
-        }
-
-        const tokens = parseMarkdownFile(filePath);
-
-        const optionsIndex = tokens.findIndex(
-          token => tokenIsH2(token) && token.text === 'Options',
-        );
-        expect(optionsIndex).toBeGreaterThan(0);
-
-        const codeBlock = tokenAs(tokens[optionsIndex + 1], 'code');
-        tokenAs(tokens[optionsIndex + 2], 'space');
-        const descriptionBlock = tokenAs(tokens[optionsIndex + 3], 'paragraph');
-
-        expect(codeBlock).toMatchObject({
-          lang: 'jsonc',
-          text: `
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/${ruleName}": "${
-            rule.meta.docs.recommended === 'strict'
-              ? 'warn'
-              : rule.meta.docs.recommended
-          }"
-  }
-}
-          `.trim(),
-          type: 'code',
-        });
-        expect(descriptionBlock).toMatchObject({
-          text: 'This rule is not configurable.',
-        });
       });
     });
   }

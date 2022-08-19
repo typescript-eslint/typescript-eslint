@@ -1,3 +1,7 @@
+---
+description: 'Require `Array#sort` calls to always provide a `compareFunction`.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/require-array-sort-compare** for documentation.
@@ -53,21 +57,6 @@ userDefinedType.sort();
 ```
 
 ## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  /**
-   * If true, an array which all elements are string is ignored.
-   */
-  ignoreStringArrays?: boolean;
-};
-
-const defaults = {
-  ignoreStringArrays: false,
-};
-```
 
 ### `ignoreStringArrays`
 

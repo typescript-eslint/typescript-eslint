@@ -1,3 +1,7 @@
+---
+description: 'Disallow throwing literals as exceptions.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-throw-literal** for documentation.
@@ -85,34 +89,26 @@ class CustomError extends Error {
 throw new CustomError();
 ```
 
-## How to Use
+## Options
 
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-throw-literal": "off",
-  "@typescript-eslint/no-throw-literal": ["error"]
+This rule adds the following options:
+
+```ts
+interface Options extends BaseNoShadowOptions {
+  /**
+   * Whether to always allow throwing values typed as `any`.
+   */
+  allowThrowingAny?: boolean;
+
+  /**
+   * Whether to always allow throwing values typed as `unknown`.
+   */
+  allowThrowingUnknown?: boolean;
 }
+
+const defaultOptions: Options = {
+  ...baseNoShadowDefaultOptions,
+  allowThrowingAny: false,
+  allowThrowingUnknown: false,
+};
 ```
-
-### Options
-
-```jsonc
-{
-  "@typescript-eslint/no-throw-literal": [
-    "error",
-    {
-      "allowThrowingAny": true, // Default is to allow throwing values of type any
-      "allowThrowingUnknown": true // Default is to allow throwing values of type unknown
-    }
-  ]
-}
-```
-
----
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-throw-literal.md)
-
-</sup>
