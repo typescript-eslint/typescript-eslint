@@ -1,5 +1,7 @@
+import * as fs from 'fs';
 import type * as unist from 'unist';
 import * as mdast from 'mdast';
+import * as path from 'path';
 import { format } from 'prettier';
 import type { Plugin } from 'unified';
 import { compile } from 'json-schema-to-typescript';
@@ -18,6 +20,13 @@ const COMPLICATED_RULE_OPTIONS = new Set([
   'member-ordering',
   'naming-convention',
 ]);
+
+const sourceUrlPrefix =
+  'https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/';
+
+const eslintPluginDirectory = path.resolve(
+  path.join(__dirname, '../../eslint-plugin'),
+);
 
 export const generatedRuleDocs: Plugin = () => {
   return async (root, file) => {
@@ -288,6 +297,65 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'paragraph',
       } as mdast.Paragraph);
     }
+
+    // 7. Also add a link to view the rule's source and test code
+    parent.children.push(
+      {
+        children: [
+          {
+            type: 'text',
+            value: 'Resources',
+          },
+        ],
+        depth: 2,
+        type: 'heading',
+      } as mdast.Heading,
+      {
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    type: 'link',
+                    url: `${sourceUrlPrefix}src/rules/${file.stem}.ts`,
+                    children: [
+                      {
+                        type: 'text',
+                        value: 'Rule source',
+                      },
+                    ],
+                  },
+                ],
+                type: 'paragraph',
+              },
+            ],
+            type: 'listItem',
+          },
+          {
+            children: [
+              {
+                children: [
+                  {
+                    type: 'link',
+                    url: getUrlForRuleTest(file.stem),
+                    children: [
+                      {
+                        type: 'text',
+                        value: 'Test source',
+                      },
+                    ],
+                  },
+                ],
+                type: 'paragraph',
+              },
+            ],
+            type: 'listItem',
+          },
+        ],
+        type: 'list',
+      } as mdast.List,
+    );
   };
 };
 
@@ -304,4 +372,17 @@ function createH2TextFilter(
     node.children.length === 1 &&
     node.children[0].type === 'text' &&
     node.children[0].value === text;
+}
+
+function getUrlForRuleTest(ruleName: string): string {
+  for (const localPath of [
+    `tests/rules/${ruleName}.test.ts`,
+    `tests/rules/${ruleName}/`,
+  ]) {
+    if (fs.existsSync(`${eslintPluginDirectory}/${localPath}`)) {
+      return `${sourceUrlPrefix}${localPath}`;
+    }
+  }
+
+  throw new Error(`Could not find test file for ${ruleName}.`);
 }
