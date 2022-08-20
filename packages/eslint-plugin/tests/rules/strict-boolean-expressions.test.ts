@@ -304,6 +304,67 @@ if (y) {
       ],
     },
 
+    // a chain of logical operators should check every operand except the last one in a chain
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "'asd' && 123 && [] && null;",
+      errors: [
+        { messageId: 'conditionErrorString', line: 1, column: 1 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
+        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "'asd' || 123 || [] || null;",
+      errors: [
+        { messageId: 'conditionErrorString', line: 1, column: 1 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
+        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "(1 && 'a' && null) || 0 || '' || {};",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 2 },
+        { messageId: 'conditionErrorString', line: 1, column: 7 },
+        { messageId: 'conditionErrorNullish', line: 1, column: 14 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 23 },
+        { messageId: 'conditionErrorString', line: 1, column: 28 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "(1 || 'a' || null) && 0 && '' && {};",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 2 },
+        { messageId: 'conditionErrorString', line: 1, column: 7 },
+        { messageId: 'conditionErrorNullish', line: 1, column: 14 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 23 },
+        { messageId: 'conditionErrorString', line: 1, column: 28 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "(1 && []) || ('a' && {});",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 2 },
+        { messageId: 'conditionErrorObject', line: 1, column: 7 },
+        { messageId: 'conditionErrorString', line: 1, column: 15 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "if ((1 && []) || ('a' && {})) void 0;",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 6 },
+        { messageId: 'conditionErrorObject', line: 1, column: 11 },
+        { messageId: 'conditionErrorString', line: 1, column: 19 },
+        { messageId: 'conditionErrorObject', line: 1, column: 26 },
+      ],
+    },
+
     // nullish in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       code: noFormat`

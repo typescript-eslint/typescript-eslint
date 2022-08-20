@@ -215,11 +215,12 @@ export default util.createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.LogicalExpression &&
         node.operator !== '??'
       ) {
-        checkNode(node.left, isTestExpr);
+        checkNode(node.left, true);
 
         // we ignore the right operand when not in a context of a test expression
+        // if the right operand is itself a logical expression, it will be checked separately
         if (isTestExpr) {
-          checkNode(node.right, isTestExpr);
+          checkNode(node.right, true);
         }
         return;
       }
