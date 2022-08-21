@@ -98,22 +98,6 @@ class Foo {
 setTimeout(Foo.fn, 100);
 ```
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-implied-eval": "off",
-  "@typescript-eslint/no-implied-eval": ["error"]
-}
-```
-
 ## When Not To Use It
 
 If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can safely disable this rule.
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-implied-eval.md)
-
-</sup>

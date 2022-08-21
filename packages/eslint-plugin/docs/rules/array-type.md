@@ -14,25 +14,6 @@ This rule aims to standardize usage of array types within your codebase.
 
 ## Options
 
-```ts
-type ArrayOption = 'array' | 'generic' | 'array-simple';
-type Options = {
-  default: ArrayOption;
-  readonly?: ArrayOption;
-};
-
-const defaultOptions: Options = {
-  default: 'array',
-};
-```
-
-The rule accepts an options object with the following properties:
-
-- `default` - sets the array type expected for mutable cases.
-- `readonly` - sets the array type expected for readonly arrays. If this is omitted, then the value for `default` will be used.
-
-Each property can be set to one of three strings: `'array' | 'generic' | 'array-simple'`.
-
 The default config will enforce that all mutable and readonly arrays use the `'array'` syntax.
 
 ### `"array"`

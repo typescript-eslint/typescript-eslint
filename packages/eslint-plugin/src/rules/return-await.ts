@@ -306,7 +306,7 @@ export default util.createRule({
       },
       ReturnStatement(node): void {
         const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
-        if (!scopeInfo || !scopeInfo.hasAsync || !node.argument) {
+        if (!scopeInfo?.hasAsync || !node.argument) {
           return;
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {

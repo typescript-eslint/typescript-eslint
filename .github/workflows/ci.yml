@@ -114,7 +114,7 @@ jobs:
     strategy:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [12, 18]
+        node-version: [14, 18]
         package:
           [
             'ast-spec',
@@ -188,7 +188,9 @@ jobs:
       - name: Install Cypress
         run: yarn cypress install
 
-      - name: Cypress run
+      - env:
+          DEBUG: '@cypress/github-action'
+        name: Cypress run
         uses: cypress-io/github-action@v2
         with:
           project: ./packages/website

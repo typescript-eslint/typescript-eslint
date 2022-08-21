@@ -60,19 +60,6 @@ const Quux = <T>() => {};
 function Quuz<T>() {}
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unnecessary-type-constraint": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't care about the specific styles of your type constraints, or never use them in the first place, then you will not need this rule.

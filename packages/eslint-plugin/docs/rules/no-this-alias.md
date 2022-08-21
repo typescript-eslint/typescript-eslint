@@ -39,22 +39,6 @@ Examples of **correct** code for this rule:
 
 (see the rationale above)
 
-## Options
-
-You can pass an object option:
-
-```jsonc
-{
-  "@typescript-eslint/no-this-alias": [
-    "error",
-    {
-      "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
-      "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
-    }
-  ]
-}
-```
-
 ## When Not To Use It
 
 If you need to assign `this` to variables, you shouldn’t use this rule.

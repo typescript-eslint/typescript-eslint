@@ -88,19 +88,6 @@ export function foo(n: number): void;
 export function foo(sn: string | number): void;
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/adjacent-overload-signatures": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't care about the general structure of the code, then you will not need this rule.

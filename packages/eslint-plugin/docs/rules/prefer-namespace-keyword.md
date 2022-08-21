@@ -17,19 +17,6 @@ This rule aims to standardize the way modules are declared.
 
 If you are using the ES2015 module syntax, then you will not need this rule.
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-namespace-keyword": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Further Reading
 
 - [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)

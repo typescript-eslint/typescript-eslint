@@ -97,19 +97,6 @@ class Derived extends Base {
 }
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-return-this-type": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't use method chaining or explicit return values, you can safely turn this rule off.

@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using concise optional chain expressions instead of chained logical ands.'
+description: 'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -65,8 +65,14 @@ foo && foo.a && foo.a.b && foo.a.b.c;
 foo && foo['a'] && foo['a'].b && foo['a'].b.c;
 foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
+// With empty objects
 (((foo || {}).a || {}).b || {}).c;
 (((foo || {})['a'] || {}).b || {}).c;
+
+// With negated `or`s
+!foo || !foo.bar;
+!foo || !foo[bar];
+!foo || !foo.bar || !foo.bar.baz || !foo.bar.baz();
 
 // this rule also supports converting chained strict nullish checks:
 foo &&
@@ -85,22 +91,13 @@ foo?.['a']?.b?.c;
 foo?.a?.b?.method?.();
 
 foo?.a?.b?.c?.d?.e;
+
+!foo?.bar;
+!foo?.[bar];
+!foo?.bar?.baz?.();
 ```
 
 **Note:** there are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-optional-chain": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

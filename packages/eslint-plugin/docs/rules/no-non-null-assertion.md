@@ -36,19 +36,6 @@ const foo: Foo = getFoo();
 const includesBaz: boolean = foo.bar?.includes('baz') ?? false;
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-non-null-assertion": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't care about strict null-checking, then you will not need this rule.

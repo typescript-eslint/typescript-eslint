@@ -57,16 +57,3 @@ class D extends C<string> {}
 interface I<T = number> {}
 class Impl implements I<string> {}
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unnecessary-type-arguments": "warn"
-  }
-}
-```
-
-This rule is not configurable.

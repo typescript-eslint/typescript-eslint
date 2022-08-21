@@ -28,22 +28,6 @@ var foo = 1n + 1n;
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, check compound assignments (`+=`)
-  checkCompoundAssignments?: boolean;
-  // if true, 'any' itself and `string`,`bigint`, `number` is allowed.
-  allowAny?: boolean;
-};
-
-const defaults = {
-  checkCompoundAssignments: false,
-  allowAny: false,
-};
-```
-
 ### `checkCompoundAssignments`
 
 Examples of code for this rule with `{ checkCompoundAssignments: true }`:
@@ -98,9 +82,3 @@ var fn = (a: any, b: number) => a + b;
 ```
 
 ## How to Use
-
-```json
-{
-  "@typescript-eslint/restrict-plus-operands": "error"
-}
-```

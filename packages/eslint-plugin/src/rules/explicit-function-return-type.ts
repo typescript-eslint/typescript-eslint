@@ -34,26 +34,38 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowExpressions: {
+          allowConciseArrowFunctionExpressionsStartingWithVoid: {
+            description:
+              'Whether to allow arrow functions that start with the `void` keyword.',
             type: 'boolean',
           },
-          allowTypedFunctionExpressions: {
+          allowExpressions: {
+            description:
+              'Whether to ignore function expressions (functions which are not part of a declaration).',
             type: 'boolean',
           },
           allowHigherOrderFunctions: {
+            description:
+              'Whether to ignore functions immediately returning another function expression.',
+            type: 'boolean',
+          },
+          allowTypedFunctionExpressions: {
+            description:
+              'Whether to ignore type annotations on the variable of function expressions.',
             type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
-            type: 'boolean',
-          },
-          allowConciseArrowFunctionExpressionsStartingWithVoid: {
+            description:
+              'Whether to ignore arrow functions immediately returning a `as const` value.',
             type: 'boolean',
           },
           allowedNames: {
-            type: 'array',
+            description:
+              'An array of function/method names that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
         },
         additionalProperties: false,
@@ -78,7 +90,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
-      if (!options.allowedNames || !options.allowedNames.length) {
+      if (!options.allowedNames?.length) {
         return false;
       }
 

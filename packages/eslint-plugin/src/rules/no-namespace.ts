@@ -26,9 +26,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowDeclarations: {
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces.',
             type: 'boolean',
           },
           allowDefinitionFiles: {
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces inside definition files.',
             type: 'boolean',
           },
         },

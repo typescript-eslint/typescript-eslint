@@ -75,19 +75,6 @@ declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-argument": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
