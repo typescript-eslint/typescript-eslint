@@ -402,7 +402,7 @@ export class Converter {
   private convertParameters(
     parameters: ts.NodeArray<ts.ParameterDeclaration>,
   ): TSESTree.Parameter[] {
-    if (!parameters || !parameters.length) {
+    if (!parameters?.length) {
       return [];
     }
     return parameters.map(param => {
@@ -688,7 +688,7 @@ export class Converter {
     result: TSESTree.TSEnumDeclaration | TSESTree.TSModuleDeclaration,
     modifiers?: ts.ModifiersArray,
   ): void {
-    if (!modifiers || !modifiers.length) {
+    if (!modifiers?.length) {
       return;
     }
     const remainingModifiers: TSESTree.Modifier[] = [];

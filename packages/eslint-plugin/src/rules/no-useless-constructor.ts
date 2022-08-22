@@ -34,13 +34,10 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
  * Check if method is not useless due to typescript parameter properties and decorators
  */
 function checkParams(node: TSESTree.MethodDefinition): boolean {
-  return (
-    !node.value.params ||
-    !node.value.params.some(
-      param =>
-        param.type === AST_NODE_TYPES.TSParameterProperty ||
-        param.decorators?.length,
-    )
+  return !node.value.params.some(
+    param =>
+      param.type === AST_NODE_TYPES.TSParameterProperty ||
+      param.decorators?.length,
   );
 }
 
