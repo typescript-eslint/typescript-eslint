@@ -4,7 +4,7 @@ import * as mdast from 'mdast';
 import * as path from 'path';
 import { format } from 'prettier';
 import type { Plugin } from 'unified';
-import { compile } from 'json-schema-to-typescript';
+import { compile, JSONSchema } from 'json-schema-to-typescript';
 
 import * as tseslintParser from '@typescript-eslint/parser';
 import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
@@ -214,7 +214,14 @@ export const generatedRuleDocs: Plugin = () => {
         } as mdast.Paragraph);
       } else if (!COMPLICATED_RULE_OPTIONS.has(file.stem)) {
         const optionsSchema =
-          meta.schema instanceof Array ? meta.schema[0] : meta.schema;
+          meta.schema instanceof Array
+            ? meta.schema[0]
+            : meta.schema.type === 'array'
+            ? {
+                ...meta.schema,
+                ...(meta.schema.prefixItems as [JSONSchema])[0],
+              }
+            : meta.schema;
 
         parent.children.splice(
           optionsH2Index + 2,
