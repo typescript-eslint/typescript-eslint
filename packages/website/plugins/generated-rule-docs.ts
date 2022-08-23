@@ -9,6 +9,7 @@ import { compile, JSONSchema } from 'json-schema-to-typescript';
 import * as tseslintParser from '@typescript-eslint/parser';
 import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
 import { EOL } from 'os';
+import { JSONSchema7 } from 'json-schema';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -213,13 +214,15 @@ export const generatedRuleDocs: Plugin = () => {
           type: 'paragraph',
         } as mdast.Paragraph);
       } else if (!COMPLICATED_RULE_OPTIONS.has(file.stem)) {
-        const optionsSchema =
+        const optionsSchema: JSONSchema =
           meta.schema instanceof Array
             ? meta.schema[0]
             : meta.schema.type === 'array'
             ? {
-                ...meta.schema,
+                ...(meta.schema.definitions ??
+                  (meta.schema as JSONSchema7).$defs),
                 ...(meta.schema.prefixItems as [JSONSchema])[0],
+                type: 'array',
               }
             : meta.schema;
 
