@@ -594,7 +594,7 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'whitespace',
     hasSuggestions: false,
     schema: {
-      definitions: {
+      $defs: {
         paddingType: {
           enum: Object.keys(PaddingTypes),
         },
@@ -615,9 +615,9 @@ export default util.createRule<Options, MessageIds>({
       items: {
         type: 'object',
         properties: {
-          blankLine: { $ref: '#/definitions/paddingType' },
-          prev: { $ref: '#/definitions/statementType' },
-          next: { $ref: '#/definitions/statementType' },
+          blankLine: { $ref: '#/$defs/paddingType' },
+          prev: { $ref: '#/$defs/statementType' },
+          next: { $ref: '#/$defs/statementType' },
         },
         additionalProperties: false,
         required: ['blankLine', 'prev', 'next'],
