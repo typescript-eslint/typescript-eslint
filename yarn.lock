@@ -1184,9 +1184,9 @@
     globals "^11.1.0"
 
 "@babel/types@^7.0.0", "@babel/types@^7.12.7", "@babel/types@^7.15.6", "@babel/types@^7.16.0", "@babel/types@^7.16.7", "@babel/types@^7.16.8", "@babel/types@^7.17.0", "@babel/types@^7.17.12", "@babel/types@^7.18.0", "@babel/types@^7.18.2", "@babel/types@^7.18.4", "@babel/types@^7.3.0", "@babel/types@^7.3.3", "@babel/types@^7.4.4":
-  version "7.18.10"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.18.10.tgz#4908e81b6b339ca7c6b7a555a5fc29446f26dde6"
-  integrity sha512-MJvnbEiiNkpjo+LknnmRrqbY1GPUUggjv+wQVjetM/AONoupqRALB7I6jGqNUAZsKcRIEu2J6FRFvsczljjsaQ==
+  version "7.18.13"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.18.13.tgz#30aeb9e514f4100f7c1cb6e5ba472b30e48f519a"
+  integrity sha512-ePqfTihzW0W6XAU+aMw2ykilisStJfDnsejDCXRchCcMJ4O0+8DhPXf2YUbZ6wjBlsEmZwLK/sPweWtu8hcJYQ==
   dependencies:
     "@babel/helper-string-parser" "^7.18.10"
     "@babel/helper-validator-identifier" "^7.18.6"
@@ -3067,24 +3067,24 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@microsoft/api-extractor-model@7.23.0":
-  version "7.23.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.23.0.tgz#266de12607fffe72259bfdf94e35331a18fdb223"
-  integrity sha512-h+2aVyf8IYidPZp+N+yIc/LY/aBwRZ1Vxlsx7rU31807bba5ScJ94bj7OjsPMje0vRYALf+yjZToYT0HdP6omA==
+"@microsoft/api-extractor-model@7.23.1":
+  version "7.23.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.23.1.tgz#d93704882241e7720094d41c7005b07eb593c073"
+  integrity sha512-axlZ33H2LfYX7goAaWpzABWZl3JtX/EUkfVBsI4SuMn3AZYBJsP5MVpMCq7jt0PCefWGwwO+Rv+lCmmJIjFhlQ==
   dependencies:
     "@microsoft/tsdoc" "0.14.1"
     "@microsoft/tsdoc-config" "~0.16.1"
-    "@rushstack/node-core-library" "3.50.1"
+    "@rushstack/node-core-library" "3.50.2"
 
 "@microsoft/api-extractor@^7.23.2":
-  version "7.29.2"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.29.2.tgz#a7174297ac9e1acc3a08f87ccc2b8d05cfdebe02"
-  integrity sha512-MwT/Xi1DperfrBO+SU3f/xKdyR6bMvk59/WN6w7g1rHmDBMegan3Ya6npMo+abJAgQOtp6uExY/elHXcYE/Ofw==
+  version "7.29.3"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.29.3.tgz#f91ca61833c170c6c47a0fc064fa010460a11457"
+  integrity sha512-PHq+Oo8yiXhwi11VQ1Nz36s+aZwgFqjtkd41udWHtSpyMv2slJ74m1cHdpWbs2ovGUCfldayzdpGwnexZLd2bA==
   dependencies:
-    "@microsoft/api-extractor-model" "7.23.0"
+    "@microsoft/api-extractor-model" "7.23.1"
     "@microsoft/tsdoc" "0.14.1"
     "@microsoft/tsdoc-config" "~0.16.1"
-    "@rushstack/node-core-library" "3.50.1"
+    "@rushstack/node-core-library" "3.50.2"
     "@rushstack/rig-package" "0.3.14"
     "@rushstack/ts-command-line" "4.12.2"
     colors "~1.2.1"
@@ -3581,10 +3581,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rushstack/node-core-library@3.50.1":
-  version "3.50.1"
-  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.50.1.tgz#d4aa4602460f29bbf0662052969b65129384da23"
-  integrity sha512-9d2xE7E9yQEBS6brTptdP8cslt6iL5+UnkY2lRxQQ4Q/jlXtsrWCCJCxwr56W/eJEe9YT/yHR4mMn5QY64Ps2w==
+"@rushstack/node-core-library@3.50.2":
+  version "3.50.2"
+  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.50.2.tgz#43df3f8422898a448114fcb9c7d4e967625da585"
+  integrity sha512-+zpZBcaX5s+wA0avF0Lk3sd5jbGRo5SmsEJpElJbqQd3KGFvc/hcyeNSMqV5+esJ1JuTfnE1QyRt8nvxFNTaQg==
   dependencies:
     "@types/node" "12.20.24"
     colors "~1.2.1"
@@ -10006,9 +10006,9 @@ konami-code-js@^0.8.1:
   integrity sha512-bJ0tuWYLYiUueIVTpA0MV4h4Gz1X16uuJggh5TpIWXOQoLv0238SU7Im23z2wYKCCBsOfk5j4HKWB/pqdCgu5Q==
 
 konamimojisplosion@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/konamimojisplosion/-/konamimojisplosion-0.5.1.tgz#610108e3d36bf83d9d26a2e0f3f180491b8023af"
-  integrity sha512-eT8nElztw28D/xlirsm50NxBYt1LgHQg8qaTJ3S2c363YmhesGKSptckEJS2yQpwQsAPe0QpJxUp/z1gnWXl0A==
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/konamimojisplosion/-/konamimojisplosion-0.5.2.tgz#9ccc1ad5e727a3934e3a7a0335246c87d6a0de2e"
+  integrity sha512-gPZ+0a720xl9OcfJOUw549fnij0xsP78GupIhl0irnJF6wwIhHSjHEp75qrXNVJb2p9Rtui5yOeJQoUcLy1lvQ==
   dependencies:
     emojisplosion "^2.6.1"
     konami-code-js "^0.8.1"
@@ -13018,9 +13018,9 @@ rollup-plugin-terser@^7.0.2:
     terser "^5.0.0"
 
 rollup@^2.75.4:
-  version "2.78.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.78.0.tgz#00995deae70c0f712ea79ad904d5f6b033209d9e"
-  integrity sha512-4+YfbQC9QEVvKTanHhIAFVUFSRsezvQF8vFOJwtGfb9Bb+r014S+qryr9PSmw8x6sMnPkmFBGAvIFVQxvJxjtg==
+  version "2.78.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.78.1.tgz#52fe3934d9c83cb4f7c4cb5fb75d88591be8648f"
+  integrity sha512-VeeCgtGi4P+o9hIg+xz4qQpRl6R401LWEXBmxYKOV4zlF82lyhgh2hTZnheFUbANE8l2A41F458iwj2vEYaXJg==
   optionalDependencies:
     fsevents "~2.3.2"
 
