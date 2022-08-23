@@ -219,8 +219,12 @@ export const generatedRuleDocs: Plugin = () => {
             ? meta.schema[0]
             : meta.schema.type === 'array'
             ? {
-                ...(meta.schema.definitions ??
-                  (meta.schema as JSONSchema7).$defs),
+                ...(meta.schema.definitions
+                  ? { definitions: meta.schema.definitions }
+                  : {}),
+                ...(meta.schema.$defs
+                  ? { $defs: (meta.schema as JSONSchema7).$defs }
+                  : {}),
                 ...(meta.schema.prefixItems as [JSONSchema])[0],
                 type: 'array',
               }
