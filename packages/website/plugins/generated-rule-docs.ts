@@ -226,7 +226,6 @@ export const generatedRuleDocs: Plugin = () => {
                   ? { $defs: (meta.schema as JSONSchema7).$defs }
                   : {}),
                 ...(meta.schema.prefixItems as [JSONSchema])[0],
-                type: 'array',
               }
             : meta.schema;
 
