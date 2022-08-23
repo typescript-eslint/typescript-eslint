@@ -38,43 +38,45 @@ export default util.createRule<[Options], MessageIds>({
       tsDirectiveCommentDescriptionNotMatchPattern:
         'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
     },
-    schema: [
-      {
-        definitions: {
-          directiveConfigSchema: {
-            oneOf: [
-              {
-                type: 'boolean',
-                default: true,
+    schema: {
+      definitions: {
+        directiveConfigSchema: {
+          oneOf: [
+            {
+              type: 'boolean',
+              default: true,
+            },
+            {
+              enum: ['allow-with-description'],
+            },
+            {
+              type: 'object',
+              properties: {
+                descriptionFormat: { type: 'string' },
               },
-              {
-                enum: ['allow-with-description'],
-              },
-              {
-                type: 'object',
-                properties: {
-                  descriptionFormat: { type: 'string' },
-                },
-              },
-            ],
-          },
+            },
+          ],
         },
-        type: 'object',
-        properties: {
-          'ts-expect-error': {
-            $ref: '#/definitions/directiveConfigSchema',
-          },
-          'ts-ignore': { $ref: '#/definitions/directiveConfigSchema' },
-          'ts-nocheck': { $ref: '#/definitions/directiveConfigSchema' },
-          'ts-check': { $ref: '#/definitions/directiveConfigSchema' },
-          minimumDescriptionLength: {
-            type: 'number',
-            default: defaultMinimumDescriptionLength,
-          },
-        },
-        additionalProperties: false,
       },
-    ],
+      prefixItems: [
+        {
+          properties: {
+            'ts-expect-error': {
+              $ref: '#/definitions/directiveConfigSchema',
+            },
+            'ts-ignore': { $ref: '#/definitions/directiveConfigSchema' },
+            'ts-nocheck': { $ref: '#/definitions/directiveConfigSchema' },
+            'ts-check': { $ref: '#/definitions/directiveConfigSchema' },
+            minimumDescriptionLength: {
+              type: 'number',
+              default: defaultMinimumDescriptionLength,
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [
     {

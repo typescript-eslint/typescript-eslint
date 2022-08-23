@@ -61,36 +61,41 @@ export default util.createRule<Options, MessageIds>({
       unwantedPublicAccessibility:
         'Public accessibility modifier on {{type}} {{name}}.',
     },
-    schema: [
-      {
-        definitions: {
-          accessibilityLevel,
-        },
-        type: 'object',
-        properties: {
-          accessibility: { $ref: '#/definitions/accessibilityLevel' },
-          overrides: {
-            type: 'object',
-            properties: {
-              accessors: { $ref: '#/definitions/accessibilityLevel' },
-              constructors: { $ref: '#/definitions/accessibilityLevel' },
-              methods: { $ref: '#/definitions/accessibilityLevel' },
-              properties: { $ref: '#/definitions/accessibilityLevel' },
-              parameterProperties: { $ref: '#/definitions/accessibilityLevel' },
-            },
-
-            additionalProperties: false,
-          },
-          ignoredMethodNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        },
-        additionalProperties: false,
+    schema: {
+      definitions: {
+        accessibilityLevel,
       },
-    ],
+      prefixItems: [
+        {
+          type: 'object',
+          properties: {
+            accessibility: { $ref: '#/definitions/accessibilityLevel' },
+            overrides: {
+              type: 'object',
+              properties: {
+                accessors: { $ref: '#/definitions/accessibilityLevel' },
+                constructors: { $ref: '#/definitions/accessibilityLevel' },
+                methods: { $ref: '#/definitions/accessibilityLevel' },
+                properties: { $ref: '#/definitions/accessibilityLevel' },
+                parameterProperties: {
+                  $ref: '#/definitions/accessibilityLevel',
+                },
+              },
+
+              additionalProperties: false,
+            },
+            ignoredMethodNames: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
