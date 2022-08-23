@@ -10006,9 +10006,9 @@ konami-code-js@^0.8.1:
   integrity sha512-bJ0tuWYLYiUueIVTpA0MV4h4Gz1X16uuJggh5TpIWXOQoLv0238SU7Im23z2wYKCCBsOfk5j4HKWB/pqdCgu5Q==
 
 konamimojisplosion@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/konamimojisplosion/-/konamimojisplosion-0.5.1.tgz#610108e3d36bf83d9d26a2e0f3f180491b8023af"
-  integrity sha512-eT8nElztw28D/xlirsm50NxBYt1LgHQg8qaTJ3S2c363YmhesGKSptckEJS2yQpwQsAPe0QpJxUp/z1gnWXl0A==
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/konamimojisplosion/-/konamimojisplosion-0.5.2.tgz#9ccc1ad5e727a3934e3a7a0335246c87d6a0de2e"
+  integrity sha512-gPZ+0a720xl9OcfJOUw549fnij0xsP78GupIhl0irnJF6wwIhHSjHEp75qrXNVJb2p9Rtui5yOeJQoUcLy1lvQ==
   dependencies:
     emojisplosion "^2.6.1"
     konami-code-js "^0.8.1"
