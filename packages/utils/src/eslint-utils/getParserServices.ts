@@ -17,8 +17,7 @@ function getParserServices<
   // backwards compatibility check
   // old versions of the parser would not return any parserServices unless parserOptions.project was set
   if (
-    !context.parserServices ||
-    !context.parserServices.program ||
+    !context.parserServices?.program ||
     !context.parserServices.esTreeNodeToTSNodeMap ||
     !context.parserServices.tsNodeToESTreeNodeMap
   ) {

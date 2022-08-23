@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.1...v5.34.0) (2022-08-22)
+
+
+### Bug Fixes
+
+* **ast-spec:** NewExpression argument can be SpreadElement now ([#5422](https://github.com/typescript-eslint/typescript-eslint/issues/5422)) ([3ced62f](https://github.com/typescript-eslint/typescript-eslint/commit/3ced62fb8474ed377c1336ac3e855f0270ce9beb))
+* **eslint-plugin:** [no-useless-constructor] handle parameter decorator ([#5450](https://github.com/typescript-eslint/typescript-eslint/issues/5450)) ([864dbcf](https://github.com/typescript-eslint/typescript-eslint/commit/864dbcfccba274fe1b26eac8aeeaf2a2355b5969))
+* **scope-manager:** visit static blocks ([#5489](https://github.com/typescript-eslint/typescript-eslint/issues/5489)) ([78745c2](https://github.com/typescript-eslint/typescript-eslint/commit/78745c2092064446837b5683892001030a8bb4e2))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-optional-chain] support suggesting `!foo || !foo.bar` as a valid match for the rule ([#5266](https://github.com/typescript-eslint/typescript-eslint/issues/5266)) ([aca935c](https://github.com/typescript-eslint/typescript-eslint/commit/aca935c9696712d4aff18144c4690db4d6ba9bf9))
+* **types:** add unbound property in parser options ([#5419](https://github.com/typescript-eslint/typescript-eslint/issues/5419)) ([e08a9dd](https://github.com/typescript-eslint/typescript-eslint/commit/e08a9dd79365c1b1f5d0145ab69377f7d45f8a4f))
+
+
+
+
+
 ## [5.33.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.0...v5.33.1) (2022-08-15)
 
 
