@@ -38,7 +38,7 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        definitions: {
+        $defs: {
           modifier: {
             enum: [
               'readonly',
@@ -56,7 +56,7 @@ export default util.createRule<Options, MessageIds>({
           allow: {
             type: 'array',
             items: {
-              $ref: '#/definitions/modifier',
+              $ref: '#/$defs/modifier',
             },
             minItems: 1,
           },
