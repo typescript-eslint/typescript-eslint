@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.35.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.34.0...v5.35.0) (2022-08-24)
+
+
+### Features
+
+* **eslint-plugin:** [explicit-member-accessibility] suggest adding explicit accessibility specifiers ([#5492](https://github.com/typescript-eslint/typescript-eslint/issues/5492)) ([0edb94a](https://github.com/typescript-eslint/typescript-eslint/commit/0edb94aee55e1ec6afa7f46f99a9b308bbb66301))
+
+
+
+
+
 # [5.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.1...v5.34.0) (2022-08-22)
 
 
