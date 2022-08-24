@@ -66,36 +66,41 @@ export default util.createRule<Options, MessageIds>({
         'Public accessibility modifier on {{type}} {{name}}.',
       addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
     },
-    schema: [
-      {
-        $defs: {
-          accessibilityLevel,
-        },
-        type: 'object',
-        properties: {
-          accessibility: { $ref: '#/$defs/accessibilityLevel' },
-          overrides: {
-            type: 'object',
-            properties: {
-              accessors: { $ref: '#/$defs/accessibilityLevel' },
-              constructors: { $ref: '#/$defs/accessibilityLevel' },
-              methods: { $ref: '#/$defs/accessibilityLevel' },
-              properties: { $ref: '#/$defs/accessibilityLevel' },
-              parameterProperties: { $ref: '#/$defs/accessibilityLevel' },
-            },
-
-            additionalProperties: false,
-          },
-          ignoredMethodNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        },
-        additionalProperties: false,
+    schema: {
+      $defs: {
+        accessibilityLevel,
       },
-    ],
+      prefixItems: [
+        {
+          type: 'object',
+          properties: {
+            accessibility: { $ref: '#/$defs/accessibilityLevel' },
+            overrides: {
+              type: 'object',
+              properties: {
+                accessors: { $ref: '#/$defs/accessibilityLevel' },
+                constructors: { $ref: '#/$defs/accessibilityLevel' },
+                methods: { $ref: '#/$defs/accessibilityLevel' },
+                properties: { $ref: '#/$defs/accessibilityLevel' },
+                parameterProperties: {
+                  $ref: '#/$defs/accessibilityLevel',
+                },
+              },
+
+              additionalProperties: false,
+            },
+            ignoredMethodNames: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {

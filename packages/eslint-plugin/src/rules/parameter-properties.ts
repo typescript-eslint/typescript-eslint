@@ -36,37 +36,40 @@ export default util.createRule<Options, MessageIds>({
       preferParameterProperty:
         'Property {{parameter}} should be declared as a parameter property.',
     },
-    schema: [
-      {
-        $defs: {
-          modifier: {
-            enum: [
-              'readonly',
-              'private',
-              'protected',
-              'public',
-              'private readonly',
-              'protected readonly',
-              'public readonly',
-            ],
-          },
+    schema: {
+      $defs: {
+        modifier: {
+          enum: [
+            'readonly',
+            'private',
+            'protected',
+            'public',
+            'private readonly',
+            'protected readonly',
+            'public readonly',
+          ],
         },
-        type: 'object',
-        properties: {
-          allow: {
-            type: 'array',
-            items: {
-              $ref: '#/$defs/modifier',
-            },
-            minItems: 1,
-          },
-          prefer: {
-            enum: ['class-property', 'parameter-property'],
-          },
-        },
-        additionalProperties: false,
       },
-    ],
+      prefixItems: [
+        {
+          type: 'object',
+          properties: {
+            allow: {
+              type: 'array',
+              items: {
+                $ref: '#/$defs/modifier',
+              },
+              minItems: 1,
+            },
+            prefer: {
+              enum: ['class-property', 'parameter-property'],
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [
     {
