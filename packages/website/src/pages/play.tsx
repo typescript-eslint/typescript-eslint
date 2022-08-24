@@ -8,7 +8,11 @@ function Play(): JSX.Element {
     <Layout title="Playground" description="Playground" noFooter={true}>
       <BrowserOnly fallback={<Loader />}>
         {(): JSX.Element => {
-          const Playground = lazy(() => import('../components/Playground'));
+          const Playground = lazy(
+            () =>
+              // @ts-expect-error: This does not follow Node resolution
+              import('../components/Playground') as Promise<() => JSX.Element>,
+          );
           return (
             <Suspense fallback={<Loader />}>
               <Playground />
