@@ -37,7 +37,7 @@ export default util.createRule<Options, MessageIds>({
         'Property {{parameter}} should be declared as a parameter property.',
     },
     schema: {
-      definitions: {
+      $defs: {
         modifier: {
           enum: [
             'readonly',
@@ -57,7 +57,7 @@ export default util.createRule<Options, MessageIds>({
             allow: {
               type: 'array',
               items: {
-                $ref: '#/definitions/modifier',
+                $ref: '#/$defs/modifier',
               },
               minItems: 1,
             },

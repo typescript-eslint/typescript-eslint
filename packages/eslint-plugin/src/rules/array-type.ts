@@ -103,7 +103,7 @@ export default util.createRule<Options, MessageIds>({
         "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
     schema: {
-      definitions: {
+      $defs: {
         arrayOption: {
           enum: ['array', 'generic', 'array-simple'],
         },
@@ -112,11 +112,11 @@ export default util.createRule<Options, MessageIds>({
         {
           properties: {
             default: {
-              $ref: '#/definitions/arrayOption',
+              $ref: '#/$defs/arrayOption',
               description: 'The array type expected for mutable cases...',
             },
             readonly: {
-              $ref: '#/definitions/arrayOption',
+              $ref: '#/$defs/arrayOption',
               description:
                 'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
             },

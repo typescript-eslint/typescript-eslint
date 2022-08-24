@@ -62,23 +62,23 @@ export default util.createRule<Options, MessageIds>({
         'Public accessibility modifier on {{type}} {{name}}.',
     },
     schema: {
-      definitions: {
+      $defs: {
         accessibilityLevel,
       },
       prefixItems: [
         {
           type: 'object',
           properties: {
-            accessibility: { $ref: '#/definitions/accessibilityLevel' },
+            accessibility: { $ref: '#/$defs/accessibilityLevel' },
             overrides: {
               type: 'object',
               properties: {
-                accessors: { $ref: '#/definitions/accessibilityLevel' },
-                constructors: { $ref: '#/definitions/accessibilityLevel' },
-                methods: { $ref: '#/definitions/accessibilityLevel' },
-                properties: { $ref: '#/definitions/accessibilityLevel' },
+                accessors: { $ref: '#/$defs/accessibilityLevel' },
+                constructors: { $ref: '#/$defs/accessibilityLevel' },
+                methods: { $ref: '#/$defs/accessibilityLevel' },
+                properties: { $ref: '#/$defs/accessibilityLevel' },
                 parameterProperties: {
-                  $ref: '#/definitions/accessibilityLevel',
+                  $ref: '#/$defs/accessibilityLevel',
                 },
               },
 

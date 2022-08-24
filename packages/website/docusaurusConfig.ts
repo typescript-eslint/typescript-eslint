@@ -55,8 +55,8 @@ const pluginContentDocsOptions: PluginContentDocsOptions = {
 
 const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   algolia: {
-    appId: 'BH4D9OD16A',
-    apiKey: '1ad6b47d4e742c4c0653877b5511c602',
+    appId: 'N1HUB2TU6A',
+    apiKey: '74d42ed10d0f7b327d74d774570035c7',
     indexName: 'typescript-eslint',
   },
   metadata: [

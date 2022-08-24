@@ -39,7 +39,7 @@ export default util.createRule<[Options], MessageIds>({
         'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
     },
     schema: {
-      definitions: {
+      $defs: {
         directiveConfigSchema: {
           oneOf: [
             {
@@ -62,11 +62,11 @@ export default util.createRule<[Options], MessageIds>({
         {
           properties: {
             'ts-expect-error': {
-              $ref: '#/definitions/directiveConfigSchema',
+              $ref: '#/$defs/directiveConfigSchema',
             },
-            'ts-ignore': { $ref: '#/definitions/directiveConfigSchema' },
-            'ts-nocheck': { $ref: '#/definitions/directiveConfigSchema' },
-            'ts-check': { $ref: '#/definitions/directiveConfigSchema' },
+            'ts-ignore': { $ref: '#/$defs/directiveConfigSchema' },
+            'ts-nocheck': { $ref: '#/$defs/directiveConfigSchema' },
+            'ts-check': { $ref: '#/$defs/directiveConfigSchema' },
             minimumDescriptionLength: {
               type: 'number',
               default: defaultMinimumDescriptionLength,
