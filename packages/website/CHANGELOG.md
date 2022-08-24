@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.35.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.0...v5.35.1) (2022-08-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** correct rule schemas to pass ajv validation ([#5531](https://github.com/typescript-eslint/typescript-eslint/issues/5531)) ([dbf8b56](https://github.com/typescript-eslint/typescript-eslint/commit/dbf8b569dbada29e4a295d6c265976e55de1b2aa))
+
+
+
+
+
+# [5.35.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.34.0...v5.35.0) (2022-08-24)
+
+**Note:** Version bump only for package website
+
+
+
+
+
 # [5.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.1...v5.34.0) (2022-08-22)
 
 

@@ -102,27 +102,30 @@ export default util.createRule<Options, MessageIds>({
       errorStringGenericSimple:
         "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
-    schema: [
-      {
-        $defs: {
-          arrayOption: {
-            enum: ['array', 'generic', 'array-simple'],
-          },
+    schema: {
+      $defs: {
+        arrayOption: {
+          enum: ['array', 'generic', 'array-simple'],
         },
-        properties: {
-          default: {
-            $ref: '#/$defs/arrayOption',
-            description: 'The array type expected for mutable cases...',
-          },
-          readonly: {
-            $ref: '#/$defs/arrayOption',
-            description:
-              'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
-          },
-        },
-        type: 'object',
       },
-    ],
+      prefixItems: [
+        {
+          properties: {
+            default: {
+              $ref: '#/$defs/arrayOption',
+              description: 'The array type expected for mutable cases...',
+            },
+            readonly: {
+              $ref: '#/$defs/arrayOption',
+              description:
+                'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
+            },
+          },
+          type: 'object',
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [
     {
