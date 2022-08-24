@@ -397,6 +397,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      * SyntaxError: Missing initializer in const declaration.
      */
     'var-with-definite-assignment',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: A JSON module can only be imported with `default`.
+     */
+    'export-with-import-assertions',
   ],
   ignoreSourceType: [
     /**
