@@ -73,6 +73,7 @@
     "@types/rimraf": "^3.0.2",
     "@types/semver": "^7.3.9",
     "@types/tmp": "^0.2.3",
+    "console-fail-test": "^0.1.7",
     "cross-env": "^7.0.3",
     "cross-fetch": "^3.1.5",
     "cspell": "^5.20.0",

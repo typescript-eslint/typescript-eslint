@@ -5786,6 +5786,11 @@ console-control-strings@^1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
+console-fail-test@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/console-fail-test/-/console-fail-test-0.1.7.tgz#f21ee5f944fb42c0d176a56c5b4744cb2f8d86c8"
+  integrity sha512-WZ9unWXJSqDGMt/06wOSPNHwAIAdIJvhgSD2MepJHG5B7b3PD3b8q0NMpaqegGmGFgZUiru+0xEsyvpvg/CM+A==
+
 content-disposition@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.2.tgz#0cf68bb9ddf5f2be7961c3a85178cb85dba78cb4"
