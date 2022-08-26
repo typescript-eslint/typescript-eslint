@@ -200,6 +200,7 @@ describe('convert', () => {
       shouldPreserveNodeMaps: true,
     });
 
+    // eslint-disable-next-line deprecation/deprecation -- TODO - switch to factory method
     const tsNode = ts.createNode(ts.SyntaxKind.AsKeyword, 0, 10);
     const convertedNode = (instance as any).createNode(tsNode, {
       range: [0, 20],

@@ -110,6 +110,7 @@ export default createRule<Options, MessageIds>({
       if (
         prevToken &&
         isTokenOnSameLine(prevToken, commaToken) &&
+        // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
         spaceBefore !== sourceCode.isSpaceBetweenTokens(prevToken, commaToken)
       ) {
         context.report({
@@ -139,6 +140,7 @@ export default createRule<Options, MessageIds>({
       if (
         nextToken &&
         isTokenOnSameLine(commaToken, nextToken) &&
+        // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
         spaceAfter !== sourceCode.isSpaceBetweenTokens(commaToken, nextToken)
       ) {
         context.report({

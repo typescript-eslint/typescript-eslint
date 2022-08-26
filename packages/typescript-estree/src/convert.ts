@@ -1,6 +1,7 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
+import { getDecorators } from './getModifiers';
 import {
   canContainDirective,
   createError,
@@ -408,10 +409,9 @@ export class Converter {
     return parameters.map(param => {
       const convertedParam = this.convertChild(param) as TSESTree.Parameter;
 
-      if (param.decorators?.length) {
-        convertedParam.decorators = param.decorators.map(el =>
-          this.convertChild(el),
-        );
+      const decorators = getDecorators(param);
+      if (decorators?.length) {
+        convertedParam.decorators = decorators.map(el => this.convertChild(el));
       }
       return convertedParam;
     });
@@ -509,8 +509,9 @@ export class Converter {
             )
           : null;
     }
-    if ('decorators' in node && node.decorators && node.decorators.length) {
-      result.decorators = node.decorators.map(el => this.convertChild(el));
+    const decorators = getDecorators(node);
+    if (decorators?.length) {
+      result.decorators = decorators.map(el => this.convertChild(el));
     }
 
     Object.entries<any>(node)
@@ -679,10 +680,12 @@ export class Converter {
 
   /**
    * Applies the given TS modifiers to the given result object.
+   *
+   * This method adds not standardized `modifiers` property in nodes
+   *
    * @param result
    * @param modifiers original ts.Nodes from the node.modifiers array
    * @returns the current result object will be mutated
-   * @deprecated This method adds not standardized `modifiers` property in nodes
    */
   private applyModifiersToResult(
     result: TSESTree.TSEnumDeclaration | TSESTree.TSModuleDeclaration,
@@ -1034,8 +1037,9 @@ export class Converter {
          * but the TypeScript compiler will parse them and produce a valid AST,
          * so we handle them here too.
          */
-        if (node.decorators) {
-          (result as any).decorators = node.decorators.map(el =>
+        const decorators = getDecorators(node);
+        if (decorators) {
+          (result as any).decorators = decorators.map(el =>
             this.convertChild(el),
           );
         }
@@ -1167,8 +1171,9 @@ export class Converter {
           result.typeAnnotation = this.convertTypeAnnotation(node.type, node);
         }
 
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
+        const decorators = getDecorators(node);
+        if (decorators) {
+          result.decorators = decorators.map(el => this.convertChild(el));
         }
 
         const accessibility = getTSNodeAccessibility(node);
@@ -1281,10 +1286,9 @@ export class Converter {
             override: hasModifier(SyntaxKind.OverrideKeyword, node),
           });
 
-          if (node.decorators) {
-            result.decorators = node.decorators.map(el =>
-              this.convertChild(el),
-            );
+          const decorators = getDecorators(node);
+          if (decorators) {
+            result.decorators = decorators.map(el => this.convertChild(el));
           }
 
           const accessibility = getTSNodeAccessibility(node);
@@ -1737,8 +1741,9 @@ export class Converter {
           result.declare = true;
         }
 
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
+        const decorators = getDecorators(node);
+        if (decorators) {
+          result.decorators = decorators.map(el => this.convertChild(el));
         }
 
         const filteredMembers = node.members.filter(isESTreeClassMember);
@@ -2511,7 +2516,11 @@ export class Converter {
           typeAnnotation: node.type
             ? this.convertTypeAnnotation(node.type, node)
             : undefined,
-          initializer: this.convertChild(node.initializer) || undefined,
+          initializer:
+            this.convertChild(
+              // eslint-disable-next-line deprecation/deprecation -- TODO breaking change remove this from the AST
+              node.initializer,
+            ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
           export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,

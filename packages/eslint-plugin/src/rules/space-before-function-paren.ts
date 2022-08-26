@@ -146,6 +146,7 @@ export default util.createRule<Options, MessageIds>({
         rightToken = sourceCode.getFirstToken(node, util.isOpeningParenToken)!;
         leftToken = sourceCode.getTokenBefore(rightToken)!;
       }
+      // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
       const hasSpacing = sourceCode.isSpaceBetweenTokens(leftToken, rightToken);
 
       if (hasSpacing && functionConfig === 'never') {

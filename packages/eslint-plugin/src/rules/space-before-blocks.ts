@@ -46,6 +46,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const precedingToken = sourceCode.getTokenBefore(node);
       if (precedingToken && util.isTokenOnSameLine(precedingToken, node)) {
+        // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
         const hasSpace = sourceCode.isSpaceBetweenTokens(
           precedingToken,
           node as TSESTree.Token,

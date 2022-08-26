@@ -4,10 +4,8 @@
 // npx nx generate-lib @typescript-eslint/scope-manager
 
 import { ImplicitLibVariableOptions } from '../variable';
-import { es2018_intl } from './es2018.intl';
 import { TYPE_VALUE } from './base-config';
 
-export const es2020_intl = {
-  ...es2018_intl,
+export const es2022_intl = {
   Intl: TYPE_VALUE,
 } as Record<string, ImplicitLibVariableOptions>;
