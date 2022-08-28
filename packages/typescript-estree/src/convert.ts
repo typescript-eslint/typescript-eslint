@@ -161,14 +161,15 @@ export class Converter {
     result: T,
   ): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
     // check for exports
-    if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
+    const modifiers = getModifiers(node);
+    if (modifiers?.[0].kind === SyntaxKind.ExportKeyword) {
       /**
        * Make sure that original node is registered instead of export
        */
       this.registerTSNodeInNodeMap(node, result);
 
-      const exportKeyword = node.modifiers[0];
-      const nextModifier = node.modifiers[1];
+      const exportKeyword = modifiers[0];
+      const nextModifier = modifiers[1];
       const declarationIsDefault =
         nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword;
 
@@ -709,11 +710,12 @@ export class Converter {
    */
   private applyModifiersToResult(
     result: TSESTree.TSEnumDeclaration | TSESTree.TSModuleDeclaration,
-    modifiers?: ts.ModifiersArray,
+    modifiers: Iterable<ts.Modifier> | undefined,
   ): void {
-    if (!modifiers?.length) {
+    if (!modifiers) {
       return;
     }
+
     const remainingModifiers: TSESTree.Modifier[] = [];
     /**
      * Some modifiers are explicitly handled by applying them as
@@ -748,7 +750,7 @@ export class Converter {
      * not been explicitly handled above, we just convert and
      * add the modifiers array to the result node.
      */
-    if (remainingModifiers.length) {
+    if (remainingModifiers.length > 0) {
       result.modifiers = remainingModifiers;
     }
   }
@@ -1642,7 +1644,8 @@ export class Converter {
             right: this.convertChild(node.initializer),
           });
 
-          if (node.modifiers) {
+          const modifiers = getModifiers(node);
+          if (modifiers) {
             // AssignmentPattern should not contain modifiers in range
             result.range[0] = parameter.range[0];
             result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -2760,7 +2763,7 @@ export class Converter {
           members: node.members.map(el => this.convertChild(el)),
         });
         // apply modifiers first...
-        this.applyModifiersToResult(result, node.modifiers);
+        this.applyModifiersToResult(result, getModifiers(node));
         // ...then check for exports
         return this.fixExports(node, result);
       }
@@ -2788,7 +2791,7 @@ export class Converter {
           result.body = this.convertChild(node.body);
         }
         // apply modifiers first...
-        this.applyModifiersToResult(result, node.modifiers);
+        this.applyModifiersToResult(result, getModifiers(node));
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
           result.global = true;
         }
