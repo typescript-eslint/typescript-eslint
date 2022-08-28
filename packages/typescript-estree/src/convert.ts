@@ -1,7 +1,7 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
-import { getDecorators } from './getModifiers';
+import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
   createError,
@@ -514,13 +514,33 @@ export class Converter {
       result.decorators = decorators.map(el => this.convertChild(el));
     }
 
+    // keys we never want to clone from the base typescript node as they
+    // introduce garbage into our AST
+    const KEYS_TO_NOT_COPY = new Set([
+      '_children',
+      'decorators',
+      'end',
+      'flags',
+      'illegalDecorators',
+      'heritageClauses',
+      'locals',
+      'localSymbol',
+      'jsDoc',
+      'kind',
+      'modifierFlagsCache',
+      'modifiers',
+      'nextContainer',
+      'parent',
+      'pos',
+      'symbol',
+      'transformFlags',
+      'type',
+      'typeArguments',
+      'typeParameters',
+    ]);
+
     Object.entries<any>(node)
-      .filter(
-        ([key]) =>
-          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators|transformFlags)$/.test(
-            key,
-          ),
-      )
+      .filter(([key]) => !KEYS_TO_NOT_COPY.has(key))
       .forEach(([key, value]) => {
         if (Array.isArray(value)) {
           result[key] = value.map(el => this.convertChild(el as TSNode));
@@ -1650,7 +1670,13 @@ export class Converter {
           parameter.optional = true;
         }
 
-        if (node.modifiers) {
+        const decorators = getDecorators(node);
+        if (decorators) {
+          parameter.decorators = decorators.map(d => this.convertChild(d));
+        }
+
+        const modifiers = getModifiers(node);
+        if (modifiers) {
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
             accessibility: getTSNodeAccessibility(node) ?? undefined,

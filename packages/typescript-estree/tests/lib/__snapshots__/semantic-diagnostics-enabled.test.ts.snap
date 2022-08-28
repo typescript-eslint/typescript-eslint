@@ -1346,10 +1346,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-tags.src 1`] = `
 TSError {
-  "column": 16,
-  "index": 16,
+  "column": 40,
+  "index": 40,
   "lineNumber": 1,
-  "message": "'{' expected.",
+  "message": "Unexpected token. Did you mean \`{'>'}\` or \`&gt;\`?",
 }
 `;
 
@@ -1368,7 +1368,7 @@ TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
-  "message": "'{' expected.",
+  "message": "'{' or JSX element expected.",
 }
 `;
 

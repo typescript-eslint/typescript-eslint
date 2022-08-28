@@ -24,7 +24,7 @@ interface CreateFixturePatternConfig {
 }
 
 const fixturesDirPath = path.join(__dirname, '../fixtures');
-const sharedFixturesDirPath = path.join(
+export const sharedFixturesDirPath = path.join(
   __dirname,
   '../../../shared-fixtures/fixtures',
 );
