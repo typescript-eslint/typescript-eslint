@@ -13,7 +13,7 @@ addSerializer(serializer);
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output
 // eg. ['type-declaration', 'signatures', 'method-generic.src'] will only test /type-declaration/signatures/method-generic.src.ts
 // prettier-ignore
-const ONLY = ['typescript', 'decorators', 'class-decorators', 'export-named-class-decorator.src'].join(path.sep);
+const ONLY = [].join(path.sep);
 
 const fixturesDir = path.resolve(
   __dirname,
