@@ -89,7 +89,7 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "glob": "^8.0.1",
     "husky": "^8.0.1",
-    "jest": "^28.1.0",
+    "jest": "^29.0.1",
     "jest-diff": "^28.1.0",
     "jest-snapshot": "^28.1.0",
     "jest-specific-snapshot": "^5.0.0",
