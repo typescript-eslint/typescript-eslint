@@ -1,0 +1,13 @@
+diff --git a/node_modules/tsutils/util/util.d.ts b/node_modules/tsutils/util/util.d.ts
+index 97cedda..4a63900 100644
+--- a/node_modules/tsutils/util/util.d.ts
++++ b/node_modules/tsutils/util/util.d.ts
+@@ -9,7 +9,7 @@ export declare function isJsDocKind(kind: ts.SyntaxKind): boolean;
+ export declare function isKeywordKind(kind: ts.SyntaxKind): boolean;
+ export declare function isThisParameter(parameter: ts.ParameterDeclaration): boolean;
+ export declare function getModifier(node: ts.Node, kind: ts.Modifier['kind']): ts.Modifier | undefined;
+-export declare function hasModifier(modifiers: ts.ModifiersArray | undefined, ...kinds: Array<ts.Modifier['kind']>): boolean;
++export declare function hasModifier(modifiers: Iterable<ts.Modifiers> | undefined, ...kinds: Array<ts.Modifier['kind']>): boolean;
+ export declare function isParameterProperty(node: ts.ParameterDeclaration): boolean;
+ export declare function hasAccessModifier(node: ts.ClassElement | ts.ParameterDeclaration): boolean;
+ export declare const isNodeFlagSet: (node: ts.Node, flag: ts.NodeFlags) => boolean;

@@ -230,7 +230,7 @@ export default util.createRule({
             break;
           }
           const { rightText, shouldBreak } = breakIfInvalid({
-            rightNode: current.right as ValidChainTarget,
+            rightNode: current.right,
             previousLeftText,
           });
           if (shouldBreak) {

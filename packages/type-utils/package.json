@@ -39,6 +39,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@typescript-eslint/typescript-estree": "5.35.1",
     "@typescript-eslint/utils": "5.35.1",
     "debug": "^4.3.4",
     "tsutils": "^3.21.0"

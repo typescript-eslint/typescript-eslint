@@ -1,6 +1,7 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
+import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
   createError,
@@ -160,14 +161,15 @@ export class Converter {
     result: T,
   ): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
     // check for exports
-    if (node.modifiers && node.modifiers[0].kind === SyntaxKind.ExportKeyword) {
+    const modifiers = getModifiers(node);
+    if (modifiers?.[0].kind === SyntaxKind.ExportKeyword) {
       /**
        * Make sure that original node is registered instead of export
        */
       this.registerTSNodeInNodeMap(node, result);
 
-      const exportKeyword = node.modifiers[0];
-      const nextModifier = node.modifiers[1];
+      const exportKeyword = modifiers[0];
+      const nextModifier = modifiers[1];
       const declarationIsDefault =
         nextModifier && nextModifier.kind === SyntaxKind.DefaultKeyword;
 
@@ -408,10 +410,9 @@ export class Converter {
     return parameters.map(param => {
       const convertedParam = this.convertChild(param) as TSESTree.Parameter;
 
-      if (param.decorators?.length) {
-        convertedParam.decorators = param.decorators.map(el =>
-          this.convertChild(el),
-        );
+      const decorators = getDecorators(param);
+      if (decorators?.length) {
+        convertedParam.decorators = decorators.map(el => this.convertChild(el));
       }
       return convertedParam;
     });
@@ -509,17 +510,38 @@ export class Converter {
             )
           : null;
     }
-    if ('decorators' in node && node.decorators && node.decorators.length) {
-      result.decorators = node.decorators.map(el => this.convertChild(el));
+    const decorators = getDecorators(node);
+    if (decorators?.length) {
+      result.decorators = decorators.map(el => this.convertChild(el));
     }
 
+    // keys we never want to clone from the base typescript node as they
+    // introduce garbage into our AST
+    const KEYS_TO_NOT_COPY = new Set([
+      '_children',
+      'decorators',
+      'end',
+      'flags',
+      'illegalDecorators',
+      'heritageClauses',
+      'locals',
+      'localSymbol',
+      'jsDoc',
+      'kind',
+      'modifierFlagsCache',
+      'modifiers',
+      'nextContainer',
+      'parent',
+      'pos',
+      'symbol',
+      'transformFlags',
+      'type',
+      'typeArguments',
+      'typeParameters',
+    ]);
+
     Object.entries<any>(node)
-      .filter(
-        ([key]) =>
-          !/^(?:_children|kind|parent|pos|end|flags|modifierFlagsCache|jsDoc|type|typeArguments|typeParameters|decorators|transformFlags)$/.test(
-            key,
-          ),
-      )
+      .filter(([key]) => !KEYS_TO_NOT_COPY.has(key))
       .forEach(([key, value]) => {
         if (Array.isArray(value)) {
           result[key] = value.map(el => this.convertChild(el as TSNode));
@@ -679,18 +701,21 @@ export class Converter {
 
   /**
    * Applies the given TS modifiers to the given result object.
+   *
+   * This method adds not standardized `modifiers` property in nodes
+   *
    * @param result
    * @param modifiers original ts.Nodes from the node.modifiers array
    * @returns the current result object will be mutated
-   * @deprecated This method adds not standardized `modifiers` property in nodes
    */
   private applyModifiersToResult(
     result: TSESTree.TSEnumDeclaration | TSESTree.TSModuleDeclaration,
-    modifiers?: ts.ModifiersArray,
+    modifiers: Iterable<ts.Modifier> | undefined,
   ): void {
-    if (!modifiers?.length) {
+    if (!modifiers) {
       return;
     }
+
     const remainingModifiers: TSESTree.Modifier[] = [];
     /**
      * Some modifiers are explicitly handled by applying them as
@@ -725,7 +750,7 @@ export class Converter {
      * not been explicitly handled above, we just convert and
      * add the modifiers array to the result node.
      */
-    if (remainingModifiers.length) {
+    if (remainingModifiers.length > 0) {
       result.modifiers = remainingModifiers;
     }
   }
@@ -1034,8 +1059,9 @@ export class Converter {
          * but the TypeScript compiler will parse them and produce a valid AST,
          * so we handle them here too.
          */
-        if (node.decorators) {
-          (result as any).decorators = node.decorators.map(el =>
+        const decorators = getDecorators(node);
+        if (decorators) {
+          (result as any).decorators = decorators.map(el =>
             this.convertChild(el),
           );
         }
@@ -1167,8 +1193,9 @@ export class Converter {
           result.typeAnnotation = this.convertTypeAnnotation(node.type, node);
         }
 
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
+        const decorators = getDecorators(node);
+        if (decorators) {
+          result.decorators = decorators.map(el => this.convertChild(el));
         }
 
         const accessibility = getTSNodeAccessibility(node);
@@ -1281,10 +1308,9 @@ export class Converter {
             override: hasModifier(SyntaxKind.OverrideKeyword, node),
           });
 
-          if (node.decorators) {
-            result.decorators = node.decorators.map(el =>
-              this.convertChild(el),
-            );
+          const decorators = getDecorators(node);
+          if (decorators) {
+            result.decorators = decorators.map(el => this.convertChild(el));
           }
 
           const accessibility = getTSNodeAccessibility(node);
@@ -1618,7 +1644,8 @@ export class Converter {
             right: this.convertChild(node.initializer),
           });
 
-          if (node.modifiers) {
+          const modifiers = getModifiers(node);
+          if (modifiers) {
             // AssignmentPattern should not contain modifiers in range
             result.range[0] = parameter.range[0];
             result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -1646,7 +1673,13 @@ export class Converter {
           parameter.optional = true;
         }
 
-        if (node.modifiers) {
+        const decorators = getDecorators(node);
+        if (decorators) {
+          parameter.decorators = decorators.map(d => this.convertChild(d));
+        }
+
+        const modifiers = getModifiers(node);
+        if (modifiers) {
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
             accessibility: getTSNodeAccessibility(node) ?? undefined,
@@ -1737,8 +1770,9 @@ export class Converter {
           result.declare = true;
         }
 
-        if (node.decorators) {
-          result.decorators = node.decorators.map(el => this.convertChild(el));
+        const decorators = getDecorators(node);
+        if (decorators) {
+          result.decorators = decorators.map(el => this.convertChild(el));
         }
 
         const filteredMembers = node.members.filter(isESTreeClassMember);
@@ -2511,7 +2545,11 @@ export class Converter {
           typeAnnotation: node.type
             ? this.convertTypeAnnotation(node.type, node)
             : undefined,
-          initializer: this.convertChild(node.initializer) || undefined,
+          initializer:
+            this.convertChild(
+              // eslint-disable-next-line deprecation/deprecation -- TODO breaking change remove this from the AST
+              node.initializer,
+            ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
           export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
@@ -2725,7 +2763,7 @@ export class Converter {
           members: node.members.map(el => this.convertChild(el)),
         });
         // apply modifiers first...
-        this.applyModifiersToResult(result, node.modifiers);
+        this.applyModifiersToResult(result, getModifiers(node));
         // ...then check for exports
         return this.fixExports(node, result);
       }
@@ -2753,7 +2791,7 @@ export class Converter {
           result.body = this.convertChild(node.body);
         }
         // apply modifiers first...
-        this.applyModifiersToResult(result, node.modifiers);
+        this.applyModifiersToResult(result, getModifiers(node));
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
           result.global = true;
         }

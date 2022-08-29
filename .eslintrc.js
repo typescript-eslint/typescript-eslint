@@ -1,12 +1,13 @@
 module.exports = {
   root: true,
   plugins: [
-    'eslint-plugin',
     '@typescript-eslint',
-    'jest',
-    'import',
-    'eslint-comments',
     '@typescript-eslint/internal',
+    'deprecation',
+    'eslint-comments',
+    'eslint-plugin',
+    'import',
+    'jest',
     'simple-import-sort',
   ],
   env: {
@@ -41,6 +42,9 @@ module.exports = {
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   },
   rules: {
+    // make sure we're not leveraging any deprecated APIs
+    'deprecation/deprecation': 'error',
+
     //
     // our plugin :D
     //

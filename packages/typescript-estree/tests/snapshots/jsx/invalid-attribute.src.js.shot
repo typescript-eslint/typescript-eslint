@@ -5,6 +5,6 @@ TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
-  "message": "'{' expected.",
+  "message": "'{' or JSX element expected.",
 }
 `;
