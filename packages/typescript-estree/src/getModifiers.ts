@@ -47,6 +47,6 @@ export function getDecorators(
 
   return (
     // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
-    node.modifiers?.filter(ts.isDecorator)
+    node.decorators?.filter(ts.isDecorator)
   );
 }
