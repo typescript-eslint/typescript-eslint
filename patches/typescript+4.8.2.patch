@@ -1,5 +1,5 @@
 diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
-index 0fd60ae..b3610b8 100644
+index 0fd60ae..8bce90e 100644
 --- a/node_modules/typescript/lib/typescript.d.ts
 +++ b/node_modules/typescript/lib/typescript.d.ts
 @@ -425,8 +425,8 @@ declare namespace ts {
@@ -40,3 +40,12 @@ index 0fd60ae..b3610b8 100644
      function canHaveDecorators(node: Node): node is HasDecorators;
  }
  declare namespace ts {
+@@ -7924,7 +7936,7 @@ declare namespace ts {
+          * const decorators = ts.canHaveDecorators(node) ? ts.getDecorators(node) : undefined;
+          * ```
+          */
+-        readonly decorators?: undefined;
++        readonly decorators?: NodeArray<Decorator> | undefined;
+         /**
+          * @deprecated `modifiers` has been removed from `Node` and moved to the `Node` subtypes that support them.
+          * Use `ts.canHaveModifiers()` to test whether a `Node` can have modifiers.
