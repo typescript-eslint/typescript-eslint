@@ -32,6 +32,6 @@
     "eslint": "*",
     "rollup": "^2.75.4",
     "rollup-plugin-terser": "^7.0.2",
-    "semver": "^7.3.7"
+    "semver": "*"
   }
 }

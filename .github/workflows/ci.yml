@@ -9,7 +9,9 @@ on:
       - '**'
 
 env:
+  PRIMARY_ESLINT_VERSION: '^8.0.0'
   PRIMARY_NODE_VERSION: 18
+  PRIMARY_TYPESCRIPT_VERSION: '~4.8.0'
 
 defaults:
   run:
@@ -117,6 +119,7 @@ jobs:
     strategy:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
+        # unfortunately you can't reference environment variables in an array :(
         node-version: [14, 18]
         package:
           [
@@ -171,6 +174,102 @@ jobs:
           path: packages/${{ matrix.package }}/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
+
+  unit_tests_ts_regression:
+    name: Run Unit Tests (TypeScript Version Regression Checks)
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          # note that we don't regression test all packages here on purpose because most don't depend on TS directly.
+          ['eslint-plugin', 'scope-manager', 'type-utils', 'typescript-estree']
+
+        ts-version:
+          # unfortunately you can't reference environment variables in an array :(
+          [
+            # lowest possible version
+            '3.3.1',
+            # somewhere in the middle for sanity check
+            '~4.0.8',
+            # highest possible version
+            '~4.8.2',
+          ]
+    env:
+      # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
+      NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
+      COLLECT_COVERAGE: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Install Specific TS Version
+        run: |
+          yarn ts-node ./tools/change-ts-version.ts ${{ matrix.ts-version }}
+          yarn --ignore-engines --ignore-scripts
+
+      - name: Patch Packages
+        if: matrix.ts-version == env.PRIMARY_TYPESCRIPT_VERSION
+        run: |
+          yarn patch-package
+
+      # we don't collect coverage for these tests on purpose
+      - name: Run unit tests for ${{ matrix.package }}
+        run: npx nx test @typescript-eslint/${{ matrix.package }} --coverage=false
+        env:
+          CI: true
+
+  unit_tests_eslint_regression:
+    name: Run Unit Tests (ESLint Version Regression Checks)
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          # note that we don't regression test all packages here on purpose because most don't depend on ESLint directly.
+          ['eslint-plugin', 'utils']
+        eslint-version:
+          # unfortunately you can't reference environment variables in an array :(
+          [
+            # lowest possible version
+            '6.0.0',
+            # somewhere in the middle for sanity check
+            '~7.32.0',
+            # highest possible version
+            '^8.0.0',
+          ]
+    env:
+      # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
+      NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
+      COLLECT_COVERAGE: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Install Specific ESLint Version
+        run: yarn add -DW --ignore-engines --ignore-scripts eslint@${{ matrix.eslint-version }}
+
+      # we don't collect coverage for these tests on purpose
+      - name: Run unit tests for ${{ matrix.package }}
+        run: npx nx test @typescript-eslint/${{ matrix.package }} --coverage=false
+        env:
+          CI: true
 
   website_tests:
     permissions:

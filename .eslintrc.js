@@ -26,6 +26,7 @@ module.exports = {
       './tsconfig.eslint.json',
       './packages/*/tsconfig.json',
       './tests/integration/tsconfig.json',
+      './tools/tsconfig.json',
       /**
        * We are currently in the process of transitioning to nx's out of the box structure and
        * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
