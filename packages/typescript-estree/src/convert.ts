@@ -1669,11 +1669,6 @@ export class Converter {
           parameter.optional = true;
         }
 
-        const decorators = getDecorators(node);
-        if (decorators) {
-          parameter.decorators = decorators.map(d => this.convertChild(d));
-        }
-
         const modifiers = getModifiers(node);
         if (modifiers) {
           return this.createNode<TSESTree.TSParameterProperty>(node, {
