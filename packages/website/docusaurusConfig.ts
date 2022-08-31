@@ -31,8 +31,6 @@ const presetClassicOptions: PresetClassicOptions = {
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },
-  // TODO enable this
-  blog: false,
   pages: {
     beforeDefaultRemarkPlugins,
     remarkPlugins,
@@ -86,6 +84,12 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         to: 'rules/',
         activeBasePath: 'rules',
         label: 'Rules',
+        position: 'left',
+      },
+      {
+        to: 'blog/',
+        activeBasePath: 'blog',
+        label: 'Blog',
         position: 'left',
       },
       {
