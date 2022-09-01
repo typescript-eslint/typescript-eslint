@@ -1056,15 +1056,11 @@ export class Converter {
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
-         * but the TypeScript compiler will parse them and produce a valid AST,
-         * so we handle them here too.
+         * Pre 4.8 TS would include them in the AST, so we did as well.
+         * However as of 4.8 TS no longer includes it (as it is, well, invalid).
+         *
+         * So for consistency across versions, we no longer include it either.
          */
-        const decorators = getDecorators(node);
-        if (decorators) {
-          (result as any).decorators = decorators.map(el =>
-            this.convertChild(el),
-          );
-        }
 
         if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
           result.declare = true;
@@ -1671,11 +1667,6 @@ export class Converter {
             );
           }
           parameter.optional = true;
-        }
-
-        const decorators = getDecorators(node);
-        if (decorators) {
-          parameter.decorators = decorators.map(d => this.convertChild(d));
         }
 
         const modifiers = getModifiers(node);
