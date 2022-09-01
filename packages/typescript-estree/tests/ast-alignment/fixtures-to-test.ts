@@ -444,6 +444,11 @@ tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
      */
     'export-default-class-decorator',
     'export-named-class-decorator',
+    /**
+     * babel sets the range of the export node to the start of the parameter
+     * TSESTree sets it to the start of the decorator
+     */
+    'class-parameter-property',
   ],
 });
 tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
