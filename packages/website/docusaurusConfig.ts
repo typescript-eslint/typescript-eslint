@@ -69,7 +69,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
     title: 'TypeScript ESLint',
     // hideOnScroll: true,
     logo: {
-      alt: 'TypeScript ESLint logo',
+      alt: '',
       height: '32px',
       src: 'img/logo.svg',
       width: '32px',
