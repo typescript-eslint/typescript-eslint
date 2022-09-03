@@ -151,7 +151,7 @@ The rule's `meta.docs` property contains a plethora of information on the rule.
 
 For example, `meta.docs.description` is a plain-text description of what the rule does.
 We add a blockquote containing the rule's description as text.
-Inline code (text surrounded by <code>\`</code> backticks) is rendered as a Markdown `inlineCode` node:
+Inline code (text surrounded by \` backticks) is rendered as a Markdown `inlineCode` node:
 
 ```ts
 root.children.unshift({
