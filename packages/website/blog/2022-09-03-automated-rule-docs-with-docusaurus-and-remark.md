@@ -21,7 +21,7 @@ We're happy to say that now, we've overhauled rule docs pages to automatically g
 That means the pages always display up-to-date information without developers needing to manually rewrite docs on rule changes.
 Hooray! 🎉
 
-This blog post gives an overview of the code and tooling that went into auto-generating our rule docs.
+This blog post gives an overview of the [chore(website): generate rule docs options automatically](https://github.com/typescript-eslint/typescript-eslint/pull/5386).
 
 <!--truncate-->
 
