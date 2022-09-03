@@ -205,6 +205,11 @@ ruleTester.run('prefer-optional-chain', rule, {
     // currently do not handle 'this' as the first part of a chain
     'this && this.foo;',
     '!this || !this.foo;',
+    // currently do not handle mixed TSNonNullExpression in properties
+    '!entity.__helper!.__initialized || options.refresh;',
+    '!foo!.bar || !foo!.bar.baz;',
+    '!foo!.bar!.baz || !foo!.bar!.baz!.paz;',
+    '!foo.bar!.baz || !foo.bar!.baz!.paz;',
   ],
   invalid: [
     ...baseCases,

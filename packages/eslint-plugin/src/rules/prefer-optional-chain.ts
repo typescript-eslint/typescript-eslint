@@ -354,6 +354,11 @@ export default util.createRule({
         return getText(node.expression);
       }
 
+      if (node.object.type === AST_NODE_TYPES.TSNonNullExpression) {
+        // Not supported mixing with TSNonNullExpression
+        return '';
+      }
+
       return getMemberExpressionText(node);
     }
 
@@ -369,6 +374,10 @@ export default util.createRule({
         case AST_NODE_TYPES.Identifier:
           objectText = getText(node.object);
           break;
+
+        case AST_NODE_TYPES.TSNonNullExpression:
+          // Not supported mixing with TSNonNullExpression
+          return '';
 
         case AST_NODE_TYPES.MemberExpression:
           objectText = getMemberExpressionText(node.object);
