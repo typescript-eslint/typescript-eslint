@@ -69,7 +69,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
     ...batchedSingleLineTests({
-      code: `${OBJECT_LITERAL_AS_CASTS.trimRight()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
+      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
       options: [
         {
           assertionStyle: 'as',
@@ -78,7 +78,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
     ...batchedSingleLineTests({
-      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimRight()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
+      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -287,7 +287,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
     ...batchedSingleLineTests({
-      code: `${OBJECT_LITERAL_AS_CASTS.trimRight()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
+      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
       options: [
         {
           assertionStyle: 'as',
@@ -330,7 +330,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
     ...batchedSingleLineTests({
-      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimRight()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
+      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
       options: [
         {
           assertionStyle: 'angle-bracket',

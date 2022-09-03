@@ -4,6 +4,7 @@ import * as tsutils from 'tsutils';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import {
   createRule,
+  getModifiers,
   getParserServices,
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -95,13 +96,14 @@ export default createRule<Options, MessageIds>({
           const propertySymbol = typeChecker.getSymbolAtLocation(
             esTreeNodeToTSNodeMap.get(node.property),
           );
-          const modifierKind =
-            propertySymbol?.getDeclarations()?.[0]?.modifiers?.[0].kind;
+          const modifierKind = getModifiers(
+            propertySymbol?.getDeclarations()?.[0],
+          )?.[0].kind;
           if (
             (allowPrivateClassPropertyAccess &&
-              modifierKind == ts.SyntaxKind.PrivateKeyword) ||
+              modifierKind === ts.SyntaxKind.PrivateKeyword) ||
             (allowProtectedClassPropertyAccess &&
-              modifierKind == ts.SyntaxKind.ProtectedKeyword)
+              modifierKind === ts.SyntaxKind.ProtectedKeyword)
           ) {
             return;
           }
@@ -115,7 +117,7 @@ export default createRule<Options, MessageIds>({
             const indexType = objectType
               .getNonNullableType()
               .getStringIndexType();
-            if (indexType != undefined) {
+            if (indexType !== undefined) {
               return;
             }
           }

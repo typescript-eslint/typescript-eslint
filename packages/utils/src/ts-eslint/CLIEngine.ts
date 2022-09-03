@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable deprecation/deprecation -- "uses" deprecated API to define the deprecated API */
 
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
 import { Linter } from './Linter';

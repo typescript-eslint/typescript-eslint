@@ -14,7 +14,11 @@ interface ModalProps {
 function Modal(props: ModalProps): JSX.Element {
   useEffect(() => {
     const closeOnEscapeKeyDown = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape' || e.keyCode === 27) {
+      if (
+        e.key === 'Escape' ||
+        // eslint-disable-next-line deprecation/deprecation -- intentional fallback for old browsers
+        e.keyCode === 27
+      ) {
         props.onClose();
       }
     };

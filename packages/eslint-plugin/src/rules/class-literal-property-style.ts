@@ -15,7 +15,7 @@ const printNodeModifiers = (
 ): string =>
   `${node.accessibility ?? ''}${
     node.static ? ' static' : ''
-  } ${final} `.trimLeft();
+  } ${final} `.trimStart();
 
 const isSupportedLiteral = (
   node: TSESTree.Node,

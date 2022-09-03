@@ -12,3 +12,8 @@ export * from './predicates';
 export * from './propertyTypes';
 export * from './requiresQuoting';
 export * from './typeFlagUtils';
+export {
+  getDecorators,
+  getModifiers,
+  typescriptVersionIsAtLeast,
+} from '@typescript-eslint/typescript-estree';
