@@ -38,9 +38,16 @@ Remark plugins take in Markdown files in a format known as an Abstract Syntax Tr
 
 You can see what Remark's AST equivalent of a Markdown document looks like by visiting [AST Explorer](https://astexplorer.net) and selecting the Markdown language.
 
+<figure>
+
 ![A screenshot of the astexplorer.net interface. The left pane shows a snippet of Markdown source with one paragraph highlighted. The right pane shows its AST structure in a collapsible JSON format, with the paragraph's corresponding AST node automatically highlighted.](./ast-explorer-remark.png)
 
-> _astexplorer.net showing the default snippet with the paragraph highlighted_
+<figcaption>
+  <em>
+    astexplorer.net showing the default snippet with the paragraph highlighted
+  </em>
+</figcaption>
+</figure>
 
 Lastly, Remark and several other packages around parsing and modifying ASTs are built on the [`unified` project](https://github.com/unifiedjs/unified).
 The unified AST format adheres to the [`unist` specification](https://github.com/syntax-tree/unist).
@@ -210,7 +217,7 @@ I'm excited to focus in particular on [Docs: Proofread rule docs for clarity (#4
 
 ## Appreciation and Thanks
 
-We'd like to extend thanks to [Joshua Chen](https://github.com/Josh-Cena), one of the Docusaurus maintainers who also has been helping us with Docusaurus — and helped proofread [this blog post's PR](https://github.com/typescript-eslint/typescript-eslint/pull/5593).
+We'd like to extend thanks to [Josh Cena](https://github.com/Josh-Cena), one of the Docusaurus maintainers who also has been helping us with Docusaurus — and helped proofread [this blog post's PR](https://github.com/typescript-eslint/typescript-eslint/pull/5593).
 Without Josh, this change would have taken us a great deal longer (if we'd have been able to tackle it at all).
 Thanks Josh! 🤗
 
