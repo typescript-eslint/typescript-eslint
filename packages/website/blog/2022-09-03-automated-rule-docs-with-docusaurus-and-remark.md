@@ -217,9 +217,9 @@ I'm excited to focus in particular on [Docs: Proofread rule docs for clarity (#4
 
 ## Appreciation and Thanks
 
-We'd like to extend thanks to [Josh Cena](https://github.com/Josh-Cena), one of the Docusaurus maintainers who also has been helping us with Docusaurus — and helped proofread [this blog post's PR](https://github.com/typescript-eslint/typescript-eslint/pull/5593).
-Without Josh, this change would have taken us a great deal longer (if we'd have been able to tackle it at all).
-Thanks Josh! 🤗
+We'd like to extend thanks to [Joshua Cena](https://github.com/Josh-Cena), one of the Docusaurus maintainers who also has been helping us with Docusaurus — and helped proofread [this blog post's PR](https://github.com/typescript-eslint/typescript-eslint/pull/5593).
+Without Joshua, this change would have taken us a great deal longer (if we'd have been able to tackle it at all).
+Thanks Joshua! 🤗
 
 ## Supporting TypeScript ESLint
 
