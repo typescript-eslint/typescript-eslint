@@ -12,7 +12,7 @@ import { generatedRuleDocs } from './plugins/generated-rule-docs';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
-const beforeDefaultRemarkPlugins: MDXPlugin[] = [[tabsPlugin, {}]];
+const beforeDefaultRemarkPlugins: MDXPlugin[] = [tabsPlugin];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
@@ -25,7 +25,7 @@ const presetClassicOptions: PresetClassicOptions = {
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     beforeDefaultRemarkPlugins: [
       ...beforeDefaultRemarkPlugins,
-      [generatedRuleDocs, {}],
+      generatedRuleDocs,
     ],
     remarkPlugins: remarkPlugins,
     exclude: ['TEMPLATE.md'],

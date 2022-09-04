@@ -50,7 +50,7 @@ The unified AST format adheres to the [`unist` specification](https://github.com
 Remark allows projects to register any number of custom Remark plugins for transforming Markdown contents.
 For example, typescript-eslint.io already uses [`remark-docusaurus-tabs`](https://www.npmjs.com/package/remark-docusaurus-tabs)
 
-The relevant parts of [typescript-eslint.io's Docusaurus config](https://github.com/typescript-eslint/typescript-eslint/blob/39829c01906f326fec94e9b3a5fdb1730eb02002/packages/website/docusaurusConfig.ts) specify the `remark-docusaurus-tabs` plugin and custom `./plugins/generated-rule-docs` plugins, both with their default options (`{}`):
+The relevant parts of [typescript-eslint.io's Docusaurus config](https://github.com/typescript-eslint/typescript-eslint/blob/39829c01906f326fec94e9b3a5fdb1730eb02002/packages/website/docusaurusConfig.ts) specify the `remark-docusaurus-tabs` plugin and the custom `./plugins/generated-rule-docs` plugin:
 
 ```ts
 import tabsPlugin from 'remark-docusaurus-tabs';
@@ -62,10 +62,7 @@ export = {
     [
       'classic',
       {
-        beforeDefaultRemarkPlugins: [
-          [tabsPlugin, {}],
-          [generatedRuleDocs, {}],
-        ],
+        beforeDefaultRemarkPlugins: [tabsPlugin, generatedRuleDocs],
       },
     ],
   ],
@@ -213,7 +210,7 @@ I'm excited to focus in particular on [Docs: Proofread rule docs for clarity (#4
 
 ## Appreciation and Thanks
 
-We'd like to extend thanks to [Josh Cena](https://github.com/Josh-Cena), one of the Docusaurus maintainers who also has been helping us with Docusaurus.
+We'd like to extend thanks to [Josh Cena](https://github.com/Josh-Cena), one of the Docusaurus maintainers who also has been helping us with Docusaurus — and helped proofread [this blog post's PR](https://github.com/typescript-eslint/typescript-eslint/pull/5593).
 Without Josh, this change would have taken us a great deal longer (if we'd have been able to tackle it at all).
 Thanks Josh! 🤗
 
