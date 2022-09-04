@@ -227,6 +227,17 @@ switch (foo) { case 1: case (<2>2): break; default: break; }
         },
       ],
     }),
+    ...batchedSingleLineTests({
+      code: `
+declare const f: <T>(x: T) => any
+f<(number | string)[]>(['a', 1])
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    }),
   ],
 
   invalid: [
