@@ -10,7 +10,7 @@ These steps will get you running ESLint with our recommended rules on your TypeS
 
 ### Step 1: Installation
 
-First, install the required packages for [ESLint](https://eslint.io), [TypeScript](https://typescriptlang.org), and this plugin:
+First, install the required packages for [ESLint](https://eslint.org), [TypeScript](https://typescriptlang.org), and this plugin:
 
 ```bash npm2yarn
 npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
