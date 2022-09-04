@@ -2,6 +2,7 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 import * as util from '../util';
+import { getModifiers } from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -285,7 +286,7 @@ function checkMethod(
           !(
             ignoreStatic &&
             tsutils.hasModifier(
-              valueDeclaration.modifiers,
+              getModifiers(valueDeclaration),
               ts.SyntaxKind.StaticKeyword,
             )
           ),

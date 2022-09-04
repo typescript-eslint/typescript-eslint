@@ -24,7 +24,7 @@ interface CreateFixturePatternConfig {
 }
 
 const fixturesDirPath = path.join(__dirname, '../fixtures');
-const sharedFixturesDirPath = path.join(
+export const sharedFixturesDirPath = path.join(
   __dirname,
   '../../../shared-fixtures/fixtures',
 );
@@ -437,6 +437,19 @@ tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * babel sets the range of the export node to the start of the decorator
+     * TSESTree sets it to the start of the export keyword
+     */
+    'export-default-class-decorator',
+    'export-named-class-decorator',
+    /**
+     * babel sets the range of the export node to the start of the parameter
+     * TSESTree sets it to the start of the decorator
+     */
+    'class-parameter-property',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts',

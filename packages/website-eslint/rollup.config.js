@@ -36,6 +36,10 @@ module.exports = {
             /utils\/dist\/ts-eslint\/ESLint\.js/,
             // 'eslint/lib/shared/ajv.js',
             // 'eslint/lib/shared/runtime-info.js',
+            /ajv\/lib\/definition_schema\.js/,
+            /stream/,
+            /os/,
+            /fs/,
           ],
           target: './src/mock/empty.js',
         },
@@ -63,6 +67,14 @@ module.exports = {
           // semver simplified, solve issue with circular dependencies
           match: /semver$/u,
           target: './src/mock/semver.js',
+        },
+        {
+          match: /^globby$/u,
+          target: './src/mock/globby.js',
+        },
+        {
+          match: /^is-glob$/u,
+          target: './src/mock/is-glob.js',
         },
       ],
       replace: [

@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
 import { xhtmlEntities } from './jsx/xhtml-entities';
+import { getModifiers } from './getModifiers';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -80,11 +81,8 @@ export function hasModifier(
   modifierKind: ts.KeywordSyntaxKind,
   node: ts.Node,
 ): boolean {
-  return (
-    !!node.modifiers &&
-    !!node.modifiers.length &&
-    node.modifiers.some(modifier => modifier.kind === modifierKind)
-  );
+  const modifiers = getModifiers(node);
+  return modifiers?.some(modifier => modifier.kind === modifierKind) === true;
 }
 
 /**
@@ -93,12 +91,11 @@ export function hasModifier(
  * @returns returns last modifier if present or null
  */
 export function getLastModifier(node: ts.Node): ts.Modifier | null {
-  return (
-    (!!node.modifiers &&
-      !!node.modifiers.length &&
-      node.modifiers[node.modifiers.length - 1]) ||
-    null
-  );
+  const modifiers = getModifiers(node);
+  if (modifiers == null) {
+    return null;
+  }
+  return modifiers[modifiers.length - 1] ?? null;
 }
 
 /**
@@ -274,8 +271,8 @@ export function getDeclarationKind(
 export function getTSNodeAccessibility(
   node: ts.Node,
 ): 'public' | 'protected' | 'private' | null {
-  const modifiers = node.modifiers;
-  if (!modifiers) {
+  const modifiers = getModifiers(node);
+  if (modifiers == null) {
     return null;
   }
   for (const modifier of modifiers) {

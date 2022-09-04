@@ -217,7 +217,7 @@ ruleTester.run('prefer-as-const', rule, {
 class foo {
   bar: 'baz' = 'baz';
 }
-      `.trimRight(),
+      `,
       output: null,
       errors: [
         {
@@ -231,7 +231,7 @@ class foo {
 class foo {
   bar = 'baz' as const;
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -242,7 +242,7 @@ class foo {
 class foo {
   bar: 2 = 2;
 }
-      `.trimRight(),
+      `,
       output: null,
       errors: [
         {
@@ -256,7 +256,7 @@ class foo {
 class foo {
   bar = 2 as const;
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -267,12 +267,12 @@ class foo {
 class foo {
   foo = <'bar'>'bar';
 }
-      `.trimRight(),
+      `,
       output: `
 class foo {
   foo = <const>'bar';
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'preferConstAssertion',
@@ -286,12 +286,12 @@ class foo {
 class foo {
   foo = 'bar' as 'bar';
 }
-      `.trimRight(),
+      `,
       output: `
 class foo {
   foo = 'bar' as const;
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'preferConstAssertion',
@@ -305,12 +305,12 @@ class foo {
 class foo {
   foo = 5 as 5;
 }
-      `.trimRight(),
+      `,
       output: `
 class foo {
   foo = 5 as const;
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'preferConstAssertion',
