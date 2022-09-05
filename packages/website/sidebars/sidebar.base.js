@@ -6,6 +6,7 @@ module.exports = {
         {
           label: 'Linting with Type Information',
           items: ['linting/typed-linting/monorepos'],
+          collapsed: false,
           link: {
             id: 'linting/typed-linting',
             type: 'doc',
@@ -19,6 +20,7 @@ module.exports = {
             id: 'linting/troubleshooting',
             type: 'doc',
           },
+          collapsed: false,
           type: 'category',
           items: [
             'linting/troubleshooting/formatting',
@@ -41,6 +43,7 @@ module.exports = {
         {
           label: 'Architecture',
           type: 'category',
+          collapsed: false,
           items: [
             'development/architecture/asts',
             'development/architecture/packages',

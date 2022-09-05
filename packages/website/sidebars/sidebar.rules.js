@@ -43,10 +43,7 @@ const paths = globby
   });
 
 function createCategory(label, rules, additionalItems = []) {
-  const collapsed = !additionalItems.length;
   return {
-    collapsed,
-    collapsible: collapsed,
     items: [
       ...rules.map(rule => {
         return {
