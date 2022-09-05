@@ -4,17 +4,24 @@
 
 Feel free to raise an issue if you have a question, an enhancement, or a bug report.
 
-Use the issue search functionality to search all **_opened and closed_** issues before raising a new issue. If you raise a duplicate issue, you're just creating noise for everyone watching this repo.
+Use the issue search functionality to search all **_opened and closed_** [issues](https://github.com/typescript-eslint/typescript-eslint/issues) before raising a new issue. If you raise a duplicate issue, you're just creating noise for everyone watching this repo.
 
 Before raising a bug, ensure you are using the latest version of our packages. We release every week, so there's a good chance your issue might have already been fixed.
 
-Finally, when raising a new issue, please fill out the issue template - **_please don't skip sections_**.
+Finally, when raising a new issue, please fill out the [issue template](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose) - **_please don't skip sections_**.
 
 Please provide **_as much information as possible_**. This project is maintained by volunteers, so the more information you provide, the less likely we will have to waste everyone's time in asking you for more information.
 
-If you have a particularly complex issue - consider creating a small, self-contained reproduction repo. This will help you in figuring out the exact problem, and will help us in reproducing and diagnosing the bug.
+If you have a particularly complex issue that can't be reproduced on [our playground](https://typescript-eslint.io/play) - consider creating a small, self-contained reproduction repo. This will help you in figuring out the exact problem, and will help us in reproducing and diagnosing the bug.
 
 **_Help us to help you_**
+
+## Questions and requests for support
+
+Questions and requests for support should not be opened as issues and should be handled in the following ways:
+
+- Ask a question on [StackOverflow](https://stackoverflow.com/questions/tagged/typescript-eslint) using the `typescript-eslint` tag.
+- Publicly tweet [@tseslint on Twitter](https://twitter.com/tseslint).
 
 ## Commenting
 
@@ -22,7 +29,7 @@ Feel free to comment on any open issue if you have more information that you fee
 
 Please refrain from leaving useless comments on issues. Comments like "+1", or "when's this getting fixed", or "any progress on this" just serve as spam, and annoy every single person subscribed to the issue. Generally we will just delete those comments, so save everyone time and think twice.
 
-Please refrain from commenting on old, closed issues and PRs. Your issue is rarely related enough to a closed issue to warrant "necroing" a dead thread - raising a new issue means you can fill in the template, and make it easier for us to help you. Often times if you comment on a closed issue, we will just ask you to open a new issue, so please save everyone's time, and **_help us to help you_**.
+Please refrain from commenting on old, closed issues and PRs. Your issue is rarely related enough to a closed issue to warrant "necroing" a dead thread - raising a new issue means you can fill in the [template](<(https://github.com/typescript-eslint/typescript-eslint/issues/new/choose)>), and make it easier for us to help you. Often times if you comment on a closed issue, we will just ask you to open a new issue, so please save everyone's time, and **_help us to help you_**.
 
 Please refrain from commenting on `main` commits. Commit comments are not searchable, meaning that nobody else can discover your comments. Raise an issue and reference the commit instead so that everyone can see your comment, and you can fill out the template.
 
@@ -70,10 +77,26 @@ We have a sophisticated CI process setup which gets run on every PR. You must pa
 Once your changes are ready, you can raise a PR. The title of your PR should match the following format:
 
 ```text
-<tag>(<package>): <short description>
+<type>(<package>): <short description>
 ```
 
-Where `<tag>` is one of:
+You can find more samples of good past PR titles in [recent commits to `main`](https://github.com/typescript-eslint/typescript-eslint/commits/main))
+
+```text
+fix(scope-manager): correct handling for class static blocks
+```
+
+```text
+docs: Fix links to getting started in README.md
+```
+
+### Revert
+
+If the commit reverts a previous commit, it should begin with `revert:`, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
+
+### Type
+
+Must be one of the following:
 
 - `feat` - for any new functionality additions
 - `fix` - for any bug fixes that don't add new functionality
@@ -81,7 +104,11 @@ Where `<tag>` is one of:
 - `docs` - if you only change documentation, and not shipped code
 - `chore` - anything else
 
-And `<package>` is the name of the package you have made changes within (`eslint-plugin`, `parser`, `typescript-estree`, etc). If you make significant changes across multiple packages, you can omit this (i.e. `feat: foo bar`).
+### package
+
+`<package>` is the name of the package you have made changes within (`eslint-plugin`, `parser`, `typescript-estree`, etc). If you make significant changes across multiple packages, you can omit this (i.e. `feat: foo bar`).
+
+### short description
 
 And `<short description>` is a succinct title for the PR.
 

@@ -114,7 +114,8 @@
     "unoptimized",
     "unprefixed",
     "upsert",
-    "Zacher"
+    "Zacher",
+    "tseslint"
   ],
   "overrides": [
     {
