@@ -62,7 +62,7 @@
     "@types/babel__code-frame": "^7.0.3",
     "@types/debug": "^4.1.7",
     "@types/eslint-visitor-keys": "^1.0.0",
-    "@types/glob": "^7.2.0",
+    "@types/glob": "^8.0.0",
     "@types/is-glob": "^4.0.2",
     "@types/jest": "^28.1.1",
     "@types/jest-specific-snapshot": "^0.5.5",
