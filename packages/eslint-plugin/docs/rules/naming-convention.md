@@ -173,7 +173,8 @@ If these are provided, the identifier must start with one of the provided values
     - `unused` - matches anything that is not used.
     - `requiresQuotes` - matches any name that requires quotes as it is not a valid identifier (i.e. has a space, a dash, etc in it).
     - `public` - matches any member that is either explicitly declared as `public`, or has no visibility modifier (i.e. implicitly public).
-    - `readonly`, `static`, `abstract`, `protected`, `private` - matches any member explicitly declared with the given modifier.
+    - `readonly`, `static`, `abstract`, `protected`, `private`, `override` - matches any member explicitly declared with the given modifier.
+    - `async` - matches any method, function, or function variable which is async via the `async` keyword (e.g. does not match functions that return promises without using `async` keyword)
 - `types` allows you to specify which types to match. This option supports simple, primitive types only (`boolean`, `string`, `number`, `array`, `function`).
   - The name must match _one_ of the types.
   - **_NOTE - Using this option will require that you lint with type information._**
@@ -196,16 +197,16 @@ There are two types of selectors, individual selectors, and grouped selectors.
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
 - `variable` - matches any `var` / `let` / `const` variable name.
-  - Allowed `modifiers`: `const`, `destructured`, `global`, `exported`, `unused`.
+  - Allowed `modifiers`: `const`, `destructured`, `global`, `exported`, `unused`, `override`, `async`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `function` - matches any named function declaration or named function expression.
-  - Allowed `modifiers`: `global`, `exported`, `unused`.
+  - Allowed `modifiers`: `global`, `exported`, `unused`, `async`.
   - Allowed `types`: none.
 - `parameter` - matches any function parameter. Does not match parameter properties.
   - Allowed `modifiers`: `destructured`, `unused`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `classProperty` - matches any class property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
+  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`, `override`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `objectLiteralProperty` - matches any object literal property. Does not match properties that have direct function expression or arrow function expression values.
   - Allowed `modifiers`: `public`, `requiresQuotes`.
@@ -217,16 +218,16 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
   - Allowed `modifiers`: `private`, `protected`, `public`, `readonly`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `classMethod` - matches any class method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `requiresQuotes`, `static`, `override`, `async`.
   - Allowed `types`: none.
 - `objectLiteralMethod` - matches any object literal method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `public`, `requiresQuotes`.
+  - Allowed `modifiers`: `public`, `requiresQuotes`, `async`.
   - Allowed `types`: none.
 - `typeMethod` - matches any object type method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
   - Allowed `modifiers`: `public`, `requiresQuotes`.
   - Allowed `types`: none.
 - `accessor` - matches any accessor.
-  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `modifiers`: `abstract`, `private`, `protected`, `public`, `requiresQuotes`, `static`, `override`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `enumMember` - matches any enum member.
   - Allowed `modifiers`: `requiresQuotes`.
@@ -255,19 +256,19 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
   - Allowed `modifiers`: all modifiers.
   - Allowed `types`: none.
 - `variableLike` - matches the same as `variable`, `function` and `parameter`.
-  - Allowed `modifiers`: `unused`.
+  - Allowed `modifiers`: `unused`, `async`.
   - Allowed `types`: none.
 - `memberLike` - matches the same as `property`, `parameterProperty`, `method`, `accessor`, `enumMember`.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`, `override`, `async`.
   - Allowed `types`: none.
 - `typeLike` - matches the same as `class`, `interface`, `typeAlias`, `enum`, `typeParameter`.
   - Allowed `modifiers`: `abstract`, `unused`.
   - Allowed `types`: none.
 - `property` - matches the same as `classProperty`, `objectLiteralProperty`, `typeProperty`.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`, `override`, `async`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `method` - matches the same as `classMethod`, `objectLiteralMethod`, `typeMethod`.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `static`, `readonly`, `abstract`, `requiresQuotes`, `override`, `async`.
   - Allowed `types`: none.
 
 ## FAQ

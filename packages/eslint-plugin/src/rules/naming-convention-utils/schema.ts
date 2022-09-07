@@ -167,15 +167,21 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       selectorsSchema(),
       ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
 
-      ...selectorSchema('variableLike', false, ['unused']),
+      ...selectorSchema('variableLike', false, ['unused', 'async']),
       ...selectorSchema('variable', true, [
         'const',
         'destructured',
         'exported',
         'global',
         'unused',
+        'async',
       ]),
-      ...selectorSchema('function', false, ['exported', 'global', 'unused']),
+      ...selectorSchema('function', false, [
+        'exported',
+        'global',
+        'unused',
+        'async',
+      ]),
       ...selectorSchema('parameter', true, ['destructured', 'unused']),
 
       ...selectorSchema('memberLike', false, [
@@ -186,6 +192,8 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'readonly',
         'requiresQuotes',
         'static',
+        'override',
+        'async',
       ]),
       ...selectorSchema('classProperty', true, [
         'abstract',
@@ -195,6 +203,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'readonly',
         'requiresQuotes',
         'static',
+        'override',
       ]),
       ...selectorSchema('objectLiteralProperty', true, [
         'public',
@@ -219,6 +228,8 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'readonly',
         'requiresQuotes',
         'static',
+        'override',
+        'async',
       ]),
 
       ...selectorSchema('classMethod', false, [
@@ -228,10 +239,13 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'requiresQuotes',
         'static',
+        'override',
+        'async',
       ]),
       ...selectorSchema('objectLiteralMethod', false, [
         'public',
         'requiresQuotes',
+        'async',
       ]),
       ...selectorSchema('typeMethod', false, ['public', 'requiresQuotes']),
       ...selectorSchema('method', false, [
@@ -241,6 +255,8 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'requiresQuotes',
         'static',
+        'override',
+        'async',
       ]),
       ...selectorSchema('accessor', true, [
         'abstract',
@@ -249,6 +265,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'public',
         'requiresQuotes',
         'static',
+        'override',
       ]),
       ...selectorSchema('enumMember', false, ['requiresQuotes']),
 
