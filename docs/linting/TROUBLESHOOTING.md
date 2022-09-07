@@ -241,3 +241,18 @@ However this involves a _lot_ of computations across every single token in a fil
 Across a large codebase, these can add up, and severely impact performance.
 
 We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
+
+## I am running into errors when parsing Typescript in my .vue files
+
+If you are running into issues parsing .vue files, it might be because parsers like [vue-eslint-parser](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files.  In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
+
+```diff
+- "parser": "@typescript-eslint/parser",
++ "parser": "vue-eslint-parser",
+  "parserOptions": {
++     "parser": "@typescript-eslint/parser",
+      "sourceType": "module"
+  }
+```
+
+The `parserOptions.parser` option can also specify an object to specify multiple parsers. See [vue-eslint-parser README](https://github.com/vuejs/vue-eslint-parser#readme) for more details.
