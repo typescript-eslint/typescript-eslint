@@ -44,3 +44,4 @@ runs:
       run: |
         yarn --ignore-engines --frozen-lockfile --ignore-scripts
         yarn check-clean-workspace-after-install
+        yarn patch-package

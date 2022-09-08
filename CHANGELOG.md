@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-extra-parens] handle generic ts array type. ([#5550](https://github.com/typescript-eslint/typescript-eslint/issues/5550)) ([0d6a190](https://github.com/typescript-eslint/typescript-eslint/commit/0d6a190c56fb3489f9f554b9035a008e29cc08ec))
+* **scope-manager:** correct handling for class static blocks ([#5580](https://github.com/typescript-eslint/typescript-eslint/issues/5580)) ([35bb8dd](https://github.com/typescript-eslint/typescript-eslint/commit/35bb8ddac1b46397f6447c1a6e1e4e1774dd7957))
+* **typescript-estree:** don't double add decorators to a parameter property's parameter ([#5582](https://github.com/typescript-eslint/typescript-eslint/issues/5582)) ([863694c](https://github.com/typescript-eslint/typescript-eslint/commit/863694cbc71b5158ca6a018de8707c9f9fbc22c3))
+
+
+
+
+
+## [5.36.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.0...v5.36.1) (2022-08-30)
+
+
+### Bug Fixes
+
+* **typescript-estree:** fix decorator regression for pre TS4.8 ([#5574](https://github.com/typescript-eslint/typescript-eslint/issues/5574)) ([a603015](https://github.com/typescript-eslint/typescript-eslint/commit/a603015c93a6ea96d500c57bec1e284340141b1f))
+
+
+
+
+
+# [5.36.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.1...v5.36.0) (2022-08-30)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** revert [#5266](https://github.com/typescript-eslint/typescript-eslint/issues/5266) ([#5564](https://github.com/typescript-eslint/typescript-eslint/issues/5564)) ([7a8afe2](https://github.com/typescript-eslint/typescript-eslint/commit/7a8afe29039c6c80fe584acaf5d933424a4452a9))
+
+
+### Features
+
+* support TypeScript 4.8 ([#5551](https://github.com/typescript-eslint/typescript-eslint/issues/5551)) ([81450ed](https://github.com/typescript-eslint/typescript-eslint/commit/81450ed7eaede74b384e9a91a84e9b4d34513866))
+
+
+
+
+
 ## [5.35.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.0...v5.35.1) (2022-08-24)
 
 

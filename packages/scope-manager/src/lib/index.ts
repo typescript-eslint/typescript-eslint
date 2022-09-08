@@ -59,7 +59,9 @@ import { es2021_weakref } from './es2021.weakref';
 import { es2021_intl } from './es2021.intl';
 import { es2022_array } from './es2022.array';
 import { es2022_error } from './es2022.error';
+import { es2022_intl } from './es2022.intl';
 import { es2022_object } from './es2022.object';
+import { es2022_sharedmemory } from './es2022.sharedmemory';
 import { es2022_string } from './es2022.string';
 import { esnext_array } from './esnext.array';
 import { esnext_symbol } from './esnext.symbol';
@@ -136,7 +138,9 @@ const lib = {
   'es2021.intl': es2021_intl,
   'es2022.array': es2022_array,
   'es2022.error': es2022_error,
+  'es2022.intl': es2022_intl,
   'es2022.object': es2022_object,
+  'es2022.sharedmemory': es2022_sharedmemory,
   'es2022.string': es2022_string,
   'esnext.array': esnext_array,
   'esnext.symbol': esnext_symbol,

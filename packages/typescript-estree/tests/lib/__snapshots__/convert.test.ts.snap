@@ -189,9 +189,6 @@ Object {
           "line": 1,
         },
       },
-      "localSymbol": undefined,
-      "locals": undefined,
-      "modifiers": undefined,
       "name": Object {
         "escapedText": "foo",
         "loc": Object {
@@ -211,12 +208,10 @@ Object {
         ],
         "type": "TSUnparsedPrologue",
       },
-      "nextContainer": undefined,
       "range": Array [
         0,
         35,
       ],
-      "symbol": undefined,
       "type": "TSUnparsedPrologue",
       "typeAnnotation": null,
       "typeParameters": null,
@@ -280,7 +275,6 @@ Object {
       "type": "Decorator",
     },
   ],
-  "heritageClauses": undefined,
   "loc": Object {
     "end": Object {
       "column": 18,
@@ -291,10 +285,7 @@ Object {
       "line": 1,
     },
   },
-  "localSymbol": undefined,
-  "locals": undefined,
   "members": Array [],
-  "modifiers": undefined,
   "name": Object {
     "loc": Object {
       "end": Object {
@@ -313,12 +304,10 @@ Object {
     ],
     "type": "Identifier",
   },
-  "nextContainer": undefined,
   "range": Array [
     0,
     18,
   ],
-  "symbol": undefined,
   "type": "TSClassDeclaration",
   "typeParameters": null,
 }
@@ -420,7 +409,6 @@ Object {
 
 exports[`convert deeplyCopy should convert node with type parameters correctly 1`] = `
 Object {
-  "heritageClauses": undefined,
   "loc": Object {
     "end": Object {
       "column": 15,
@@ -431,10 +419,7 @@ Object {
       "line": 1,
     },
   },
-  "localSymbol": undefined,
-  "locals": undefined,
   "members": Array [],
-  "modifiers": undefined,
   "name": Object {
     "loc": Object {
       "end": Object {
@@ -453,12 +438,10 @@ Object {
     ],
     "type": "Identifier",
   },
-  "nextContainer": undefined,
   "range": Array [
     0,
     15,
   ],
-  "symbol": undefined,
   "type": "TSClassDeclaration",
   "typeParameters": Object {
     "loc": Object {

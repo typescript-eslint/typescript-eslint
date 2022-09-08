@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
+
+
+### Bug Fixes
+
+* **typescript-estree:** don't double add decorators to a parameter property's parameter ([#5582](https://github.com/typescript-eslint/typescript-eslint/issues/5582)) ([863694c](https://github.com/typescript-eslint/typescript-eslint/commit/863694cbc71b5158ca6a018de8707c9f9fbc22c3))
+
+
+
+
+
+## [5.36.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.0...v5.36.1) (2022-08-30)
+
+
+### Bug Fixes
+
+* **typescript-estree:** fix decorator regression for pre TS4.8 ([#5574](https://github.com/typescript-eslint/typescript-eslint/issues/5574)) ([a603015](https://github.com/typescript-eslint/typescript-eslint/commit/a603015c93a6ea96d500c57bec1e284340141b1f))
+
+
+
+
+
+# [5.36.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.1...v5.36.0) (2022-08-30)
+
+
+### Features
+
+* support TypeScript 4.8 ([#5551](https://github.com/typescript-eslint/typescript-eslint/issues/5551)) ([81450ed](https://github.com/typescript-eslint/typescript-eslint/commit/81450ed7eaede74b384e9a91a84e9b4d34513866))
+
+
+
+
+
 ## [5.35.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.0...v5.35.1) (2022-08-24)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree
