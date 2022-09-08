@@ -65,7 +65,7 @@ interface ParserOptions {
   extraFileExtensions?: string[];
   warnOnUnsupportedTypeScriptVersion?: boolean;
 
-  program?: import('typescript').Program;
+  programs?: import('typescript').Program;
   moduleResolver?: string;
 
   emitDecoratorMetadata?: boolean;
