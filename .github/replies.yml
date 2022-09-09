@@ -1,7 +1,6 @@
 replies:
   - body: |
-      <img alt="Maury meme: You checked 'I have searched for related issues'. A cursory issue search related issues determined that was a lie." src="https://user-images.githubusercontent.com/3335181/186501430-7f4c481a-f557-48b0-826c-74bb8434f4d5.png" height="483" width="488">\
-      Thanks for posting, but this is a duplicate of #<insert issue>. Next time, please use the search 🙂.
+      Thanks for posting! This is a duplicate of #<insert issue>. Before filing an issue, please [use our issue search](https://github.com/typescript-eslint/typescript-eslint/issues) to check for open and closed issues that already address what you're looking for.
     name: Clearly Duplicate Issue
   - body: |
       With any issue in opened in this project - it either has a visible progress in the form of an attached PR, or it has no progress.\
