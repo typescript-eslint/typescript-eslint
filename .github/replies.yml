@@ -3,3 +3,13 @@ replies:
       <img alt="Maury meme: You checked 'I have searched for related issues'. A cursory issue search related issues determined that was a lie." src="https://user-images.githubusercontent.com/3335181/186501430-7f4c481a-f557-48b0-826c-74bb8434f4d5.png" height="483" width="488">\
       Thanks for posting, but this is a duplicate of #<insert issue>. Next time, please use the search 🙂.
     name: Clearly Duplicate Issue
+  - body: |
+      With any issue in opened in this project - it either has a visible progress in the form of an attached PR, or it has no progress.\
+      \
+      We are a community run project. The volunteer maintainers spend most of their time triaging issues and reviewing PRs. This means that most issues will not progress unless a member of the community steps up and champions it.\
+      \
+      If this issue is important to you - consider being that champion.\
+      \
+      If not - please just subscribe to the issue and wait patiently.\
+      Commenting asking for status updates does not bump issue priority in any way and just serves to spam everyone subscribed to the issue.
+    name: Bump for Updates
