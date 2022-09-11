@@ -117,6 +117,20 @@ ruleTester.run('strict-boolean-expressions', rule, {
         <T extends any>(x: T) => x ? 1 : 0;
       `,
     }),
+
+    // logical operator
+    ...batchedSingleLineTests<Options>({
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
+        1 && true && 'x' && {};
+        let x = 0 || false || '' || null;
+        if (1 && true && 'x') void 0;
+        if (0 || false || '') void 0;
+        1 && true && 'x' ? {} : null;
+        0 || false || '' ? null : {};
+      `,
+    }),
+
     {
       code: `
 declare const x: string[] | null;
@@ -301,6 +315,89 @@ if (y) {
           ],
         },
         { messageId: 'conditionErrorNullish', line: 1, column: 25 },
+      ],
+    },
+
+    // shouldn't check last logical operand when used for control flow
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "'asd' && 123 && [] && null;",
+      errors: [
+        { messageId: 'conditionErrorString', line: 1, column: 1 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
+        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "'asd' || 123 || [] || null;",
+      errors: [
+        { messageId: 'conditionErrorString', line: 1, column: 1 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
+        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "let x = (1 && 'a' && null) || 0 || '' || {};",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
+        { messageId: 'conditionErrorString', line: 1, column: 15 },
+        { messageId: 'conditionErrorNullish', line: 1, column: 22 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 31 },
+        { messageId: 'conditionErrorString', line: 1, column: 36 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "return (1 || 'a' || null) && 0 && '' && {};",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 9 },
+        { messageId: 'conditionErrorString', line: 1, column: 14 },
+        { messageId: 'conditionErrorNullish', line: 1, column: 21 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 30 },
+        { messageId: 'conditionErrorString', line: 1, column: 35 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "console.log((1 && []) || ('a' && {}));",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 14 },
+        { messageId: 'conditionErrorObject', line: 1, column: 19 },
+        { messageId: 'conditionErrorString', line: 1, column: 27 },
+      ],
+    },
+
+    // should check all logical operands when used in a condition
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "if ((1 && []) || ('a' && {})) void 0;",
+      errors: [
+        { messageId: 'conditionErrorNumber', line: 1, column: 6 },
+        { messageId: 'conditionErrorObject', line: 1, column: 11 },
+        { messageId: 'conditionErrorString', line: 1, column: 19 },
+        { messageId: 'conditionErrorObject', line: 1, column: 26 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "let x = null || 0 || 'a' || [] ? {} : undefined;",
+      errors: [
+        { messageId: 'conditionErrorNullish', line: 1, column: 9 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 17 },
+        { messageId: 'conditionErrorString', line: 1, column: 22 },
+        { messageId: 'conditionErrorObject', line: 1, column: 29 },
+      ],
+    },
+    {
+      options: [{ allowString: false, allowNumber: false }],
+      code: "return !(null || 0 || 'a' || []);",
+      errors: [
+        { messageId: 'conditionErrorNullish', line: 1, column: 10 },
+        { messageId: 'conditionErrorNumber', line: 1, column: 18 },
+        { messageId: 'conditionErrorString', line: 1, column: 23 },
+        { messageId: 'conditionErrorObject', line: 1, column: 30 },
       ],
     },
 
