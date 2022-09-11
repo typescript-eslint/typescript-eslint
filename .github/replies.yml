@@ -16,7 +16,7 @@ replies:
       The fix has been merged to main, and will be released Monday, as per our [release schedule](https://github.com/typescript-eslint/typescript-eslint#versioning)
       \
       If you need it sooner, please try the `canary` tag on NPM.
-    name: Fix has been merged
+    name: Fix Has Been Merged
   - body: |
 
     name:
