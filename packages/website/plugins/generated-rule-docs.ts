@@ -163,7 +163,7 @@ export const generatedRuleDocs: Plugin = () => {
             children: [
               {
                 type: 'inlineCode',
-                value: `eslint/${file.stem}`,
+                value: `eslint/${meta.docs.extendsBaseRule}`,
               },
               {
                 type: 'text',
@@ -171,7 +171,7 @@ export const generatedRuleDocs: Plugin = () => {
               },
             ],
             type: 'link',
-            url: `https://eslint.org/docs/rules/${file.stem}#options`,
+            url: `https://eslint.org/docs/rules/${meta.docs.extendsBaseRule}#options`,
           },
           {
             type: 'text',
@@ -187,7 +187,7 @@ export const generatedRuleDocs: Plugin = () => {
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
   // Note: you must disable the base rule as it can report incorrect errors
-  "${file.stem}": "off",
+  "${meta.docs.extendsBaseRule}": "off",
   "@typescript-eslint/${file.stem}": "${optionLevel}"
 };`,
       } as mdast.Code);
@@ -294,7 +294,7 @@ export const generatedRuleDocs: Plugin = () => {
           {
             type: 'link',
             title: null,
-            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${file.stem}.md`,
+            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${meta.docs.extendsBaseRule}.md`,
             children: [
               {
                 type: 'text',
