@@ -9,7 +9,7 @@ replies:
       \
       We don't break from the base rule to add new features unless they are specifically related to TS.
       \
-      In this instance - this request is not related to TS, thus we shall not implement it. If you'd like to see it, feel free to raise a request with the ESLint team.
+      In this instance — this request is not related to TS, thus we shall not implement it. If you'd like to see it, feel free to raise a request with the ESLint team.
       \
     name: Extension Rule - Reject Due to Enhancement
   - body: |
@@ -21,20 +21,20 @@ replies:
 
     name:
   - body: |
-      With any issue in opened in this project - it either has a visible progress in the form of an attached PR, or it has no progress.\
+      With any issue opened in this project — it either has visible progress in the form of an attached PR, or it has no progress.\
       \
-      We are a community run project. The volunteer maintainers spend most of their time triaging issues and reviewing PRs. This means that most issues will not progress unless a member of the community steps up and champions it.\
+      We are a community-run project. The volunteer maintainers spend most of their time triaging issues and reviewing PRs. This means that most issues will not progress unless a member of the community steps up and champions it.\
       \
-      If this issue is important to you - consider being that champion.\
+      If this issue is important to you — consider being that champion.\
       \
-      If not - please just subscribe to the issue and wait patiently.\
+      If not — please just subscribe to the issue and wait patiently.\
       Commenting asking for status updates does not bump issue priority in any way and just serves to spam everyone subscribed to the issue.
     name: Progress - Blunt
   - body: |
       We are a community run project. The **volunteer** maintainers spend most of their time triaging issues and reviewing PRs. This means that most issues *will not progress* unless a member of the community steps up and **champions** it.
       \
-      If this issue is important to you - consider being that champion.
-      If not - please use the subscribe function and wait patiently for someone else to implement.
+      If this issue is important to you — consider being that champion.
+      If not — please use the subscribe function and wait patiently for someone else to implement this.
     name: Progress - Nice
   - body: |
       As per [our contributing guidelines](https://github.com/typescript-eslint/typescript-eslint/blob/master/CONTRIBUTING.md#addressing-feedback-and-beyond) this PR is in the queue of PRs to reviewed, and will be reviewed when we are able.
