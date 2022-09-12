@@ -153,6 +153,11 @@ export const generatedRuleDocs: Plugin = () => {
     const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
 
     if (meta.docs.extendsBaseRule) {
+      const extendsBaseRuleName =
+        typeof meta.docs.extendsBaseRule === 'string'
+          ? meta.docs.extendsBaseRule
+          : file.stem;
+
       parent.children.splice(optionsH2Index + 1, 0, {
         children: [
           {
@@ -163,7 +168,7 @@ export const generatedRuleDocs: Plugin = () => {
             children: [
               {
                 type: 'inlineCode',
-                value: `eslint/${meta.docs.extendsBaseRule}`,
+                value: `eslint/${extendsBaseRuleName}`,
               },
               {
                 type: 'text',
@@ -171,7 +176,7 @@ export const generatedRuleDocs: Plugin = () => {
               },
             ],
             type: 'link',
-            url: `https://eslint.org/docs/rules/${meta.docs.extendsBaseRule}#options`,
+            url: `https://eslint.org/docs/rules/${extendsBaseRuleName}#options`,
           },
           {
             type: 'text',
@@ -187,7 +192,7 @@ export const generatedRuleDocs: Plugin = () => {
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
   // Note: you must disable the base rule as it can report incorrect errors
-  "${meta.docs.extendsBaseRule}": "off",
+  "${extendsBaseRuleName}": "off",
   "@typescript-eslint/${file.stem}": "${optionLevel}"
 };`,
       } as mdast.Code);
