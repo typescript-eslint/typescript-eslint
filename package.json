@@ -85,7 +85,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-eslint-plugin": "^5.0.1",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^26.1.5",
+    "eslint-plugin-jest": "^27.0.4",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "glob": "^8.0.1",
     "husky": "^8.0.1",
