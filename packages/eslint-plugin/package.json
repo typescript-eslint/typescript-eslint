@@ -48,7 +48,6 @@
     "@typescript-eslint/type-utils": "5.36.2",
     "@typescript-eslint/utils": "5.36.2",
     "debug": "^4.3.4",
-    "functional-red-black-tree": "^1.0.1",
     "ignore": "^5.2.0",
     "regexpp": "^3.2.0",
     "semver": "^7.3.7",
