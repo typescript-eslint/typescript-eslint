@@ -174,5 +174,13 @@
     "tier": "contributor",
     "totalDonations": 10000,
     "website": "https://laserhub.com/"
+  },
+  {
+    "id": "Codiga",
+    "image": "https://images.opencollective.com/codiga/1065f9f/logo.png",
+    "name": "Codiga",
+    "tier": "contributor",
+    "totalDonations": 10000,
+    "website": "https://www.codiga.io"
   }
 ]
