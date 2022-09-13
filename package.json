@@ -100,7 +100,7 @@
     "ncp": "^2.0.0",
     "patch-package": "^6.4.7",
     "prettier": "2.7.1",
-    "pretty-format": "^28.1.0",
+    "pretty-format": "^29.0.3",
     "rimraf": "^3.0.2",
     "tmp": "^0.2.1",
     "ts-node": "^10.7.0",
