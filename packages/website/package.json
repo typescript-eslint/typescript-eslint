@@ -37,7 +37,7 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "~2.0.1",
+    "@docusaurus/module-type-aliases": "~2.1.0",
     "@types/react": "^18.0.9",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
