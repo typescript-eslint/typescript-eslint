@@ -119,6 +119,7 @@ import spaceBeforeBlocks from './space-before-blocks';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
+import strictComparisons from './strict-comparisons';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
@@ -248,6 +249,7 @@ export default {
   'space-before-function-paren': spaceBeforeFunctionParen,
   'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,
+  'strict-comparisons': strictComparisons,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,

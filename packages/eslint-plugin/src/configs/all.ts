@@ -161,6 +161,7 @@ export = {
     'space-infix-ops': 'off',
     '@typescript-eslint/space-infix-ops': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'error',
+    '@typescript-eslint/strict-comparisons': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/type-annotation-spacing': 'error',
