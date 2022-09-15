@@ -3108,26 +3108,26 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@microsoft/api-extractor-model@7.24.0":
-  version "7.24.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.24.0.tgz#df71615f7c7d2c4f520c8b179d03a85efcdaf452"
-  integrity sha512-lFzF5h+quTyVB7eaKJkqrbQRDGSkrHzXyF8iMVvHdlaNrodGeyhtQeBFDuRVvBXTW2ILBiOV6ZWwUM1eGKcD+A==
+"@microsoft/api-extractor-model@7.24.1":
+  version "7.24.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor-model/-/api-extractor-model-7.24.1.tgz#afe8de95531cfb61bd7393570fd75c2dda880a36"
+  integrity sha512-H2KrRbO3beDnH2Fwt+3zXgK8KagFEzHHWNUR7weSEOssabGH5T/aADNR0k1FBidKpXokrvMM6SHamdMCVJjlBg==
   dependencies:
     "@microsoft/tsdoc" "0.14.1"
     "@microsoft/tsdoc-config" "~0.16.1"
-    "@rushstack/node-core-library" "3.51.1"
+    "@rushstack/node-core-library" "3.51.2"
 
 "@microsoft/api-extractor@^7.23.2":
-  version "7.31.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.31.0.tgz#a4dd2af2e176a330652a19f9254f77d4fdcea06f"
-  integrity sha512-1gVDvm/eKmntBn5X5Rc+XDREm9gfxQ/BQfGFf7Rf4uWvJc4Q4GxidC3lBODYDOcikjG983bzbo0xTu5BS8J93Q==
+  version "7.31.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.31.1.tgz#defe791e4f1acc3a10202590fd39e7c487edb7e8"
+  integrity sha512-rWEE+S1to8B2X8E8fVttwmCNS7yfvTNzlFGdla/OT8bJeS94L7Lw1Wkynwsl59gb46yvMZrQDXiRkXWzxgvc8g==
   dependencies:
-    "@microsoft/api-extractor-model" "7.24.0"
+    "@microsoft/api-extractor-model" "7.24.1"
     "@microsoft/tsdoc" "0.14.1"
     "@microsoft/tsdoc-config" "~0.16.1"
-    "@rushstack/node-core-library" "3.51.1"
-    "@rushstack/rig-package" "0.3.14"
-    "@rushstack/ts-command-line" "4.12.2"
+    "@rushstack/node-core-library" "3.51.2"
+    "@rushstack/rig-package" "0.3.15"
+    "@rushstack/ts-command-line" "4.12.3"
     colors "~1.2.1"
     lodash "~4.17.15"
     resolve "~1.17.0"
@@ -3622,10 +3622,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rushstack/node-core-library@3.51.1":
-  version "3.51.1"
-  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.51.1.tgz#e123053c4924722cc9614c0091fda5ed7bbc6c9d"
-  integrity sha512-xLoUztvGpaT5CphDexDPt2WbBx8D68VS5tYOkwfr98p90y0f/wepgXlTA/q5MUeZGGucASiXKp5ysdD+GPYf9A==
+"@rushstack/node-core-library@3.51.2":
+  version "3.51.2"
+  resolved "https://registry.yarnpkg.com/@rushstack/node-core-library/-/node-core-library-3.51.2.tgz#e74986c0ff519b4ce4dd8a642564387740067dc7"
+  integrity sha512-DwK2Lo62sHCsg8VsVe/WfugiL1lC5YzmhwzdWr8jLsfOCl8DzcIdLm4Plz0bOCQj/9ItJX1QGXr2jK5xw1Kzwg==
   dependencies:
     "@types/node" "12.20.24"
     colors "~1.2.1"
@@ -3636,18 +3636,18 @@
     semver "~7.3.0"
     z-schema "~5.0.2"
 
-"@rushstack/rig-package@0.3.14":
-  version "0.3.14"
-  resolved "https://registry.yarnpkg.com/@rushstack/rig-package/-/rig-package-0.3.14.tgz#f2611b59245fd7cc29c6982566b2fbb4a4192bc5"
-  integrity sha512-Ic9EN3kWJCK6iOxEDtwED9nrM146zCDrQaUxbeGOF+q/VLZ/HNHPw+aLqrqmTl0ZT66Sf75Qk6OG+rySjTorvQ==
+"@rushstack/rig-package@0.3.15":
+  version "0.3.15"
+  resolved "https://registry.yarnpkg.com/@rushstack/rig-package/-/rig-package-0.3.15.tgz#8a870880cbeb8de82b951e628f6a37d428b4c5ce"
+  integrity sha512-jxVfvO5OnkRlYRhcVDZWvwiI2l4pv37HDJRtyg5HbD8Z/I8Xj32RICgrxS5xMeGGytobrg5S6OfPOHskg7Nw+A==
   dependencies:
     resolve "~1.17.0"
     strip-json-comments "~3.1.1"
 
-"@rushstack/ts-command-line@4.12.2":
-  version "4.12.2"
-  resolved "https://registry.yarnpkg.com/@rushstack/ts-command-line/-/ts-command-line-4.12.2.tgz#59b7450c5d75190778cce8b159c7d7043c32cc4e"
-  integrity sha512-poBtnumLuWmwmhCEkVAgynWgtnF9Kygekxyp4qtQUSbBrkuyPQTL85c8Cva1YfoUpOdOXxezMAkUt0n5SNKGqw==
+"@rushstack/ts-command-line@4.12.3":
+  version "4.12.3"
+  resolved "https://registry.yarnpkg.com/@rushstack/ts-command-line/-/ts-command-line-4.12.3.tgz#3c5e4b381dcd780aab6efe42c7faa2018248cbb1"
+  integrity sha512-Pdij22RotMXzI+HWHyYCvw0RMZhiP5a6Za/96XamZ1+mxmpSm4ujf8TROKxGAHySmR5A8iNVSlzhNMnUlFQE6g==
   dependencies:
     "@types/argparse" "1.0.38"
     argparse "~1.0.9"
