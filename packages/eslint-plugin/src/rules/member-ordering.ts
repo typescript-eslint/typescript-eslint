@@ -1,3 +1,11 @@
+// todo complain somewhere about this:
+/*
+error An unexpected error occurred: "expected workspace package to exist for \"jest-snapshot\"".
+info If you think this is a bug, please open a bug report with the information provided in "/Users/josh/repos/typescript-eslint/packages/eslint-plugin/yarn-error.log".
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
+*/
+
+import naturalCompare from 'natural-compare-lite';
 import {
   AST_NODE_TYPES,
   TSESLint,
@@ -37,10 +45,16 @@ type BaseMemberType =
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
-type Order =
+type AlphabeticalOrder =
   | 'alphabetically'
   | 'alphabetically-case-insensitive'
-  | 'as-written';
+  | 'natural';
+
+// todo: document as-written and what these are in general (lol)
+type Order = AlphabeticalOrder | 'as-written';
+// is this inherently case insensitive? ['a', 'B']
+// I think so???
+// | 'natural-case-insensitive';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
@@ -90,7 +104,12 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
     },
     order: {
       type: 'string',
-      enum: ['alphabetically', 'alphabetically-case-insensitive', 'as-written'],
+      enum: [
+        'alphabetically',
+        'alphabetically-case-insensitive',
+        'as-written',
+        'natural',
+      ],
     },
   },
   additionalProperties: false,
@@ -632,7 +651,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkAlphaSort(
       members: Member[],
-      caseSensitive: boolean,
+      order: AlphabeticalOrder,
     ): boolean {
       let previousName = '';
       let isCorrectlySorted = true;
@@ -643,11 +662,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Note: Not all members have names
         if (name) {
-          if (
-            caseSensitive
-              ? name < previousName
-              : name.toLowerCase() < previousName.toLowerCase()
-          ) {
+          if (naturalOutOfOrder(name, previousName, order)) {
             context.report({
               node: member,
               messageId: 'incorrectOrder',
@@ -667,6 +682,25 @@ export default util.createRule<Options, MessageIds>({
       return isCorrectlySorted;
     }
 
+    function naturalOutOfOrder(
+      name: string,
+      previousName: string,
+      order: AlphabeticalOrder,
+    ): boolean {
+      switch (order) {
+        case 'alphabetically':
+          return name < previousName;
+        case 'alphabetically-case-insensitive':
+          return name.toLowerCase() < previousName.toLowerCase();
+        case 'natural':
+          // todo: call out in PR and tag the plugin owner
+          // (maybe there is actually a user need for case sensitivity)
+          return (
+            naturalCompare(name.toLowerCase(), previousName.toLowerCase()) !== 1
+          );
+      }
+    }
+
     /**
      * Validates if all members are correctly sorted.
      *
@@ -684,7 +718,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       // Standardize config
-      let order: Order | null = null;
+      let order: Order | undefined;
       let memberTypes;
 
       if (Array.isArray(orderConfig)) {
@@ -694,9 +728,7 @@ export default util.createRule<Options, MessageIds>({
         memberTypes = orderConfig.memberTypes;
       }
 
-      const hasAlphaSort = order?.startsWith('alphabetically');
-      const alphaSortIsCaseSensitive =
-        order !== 'alphabetically-case-insensitive';
+      const hasAlphaSort = !!(order && order !== 'as-written');
 
       // Check order
       if (Array.isArray(memberTypes)) {
@@ -709,11 +741,11 @@ export default util.createRule<Options, MessageIds>({
         if (hasAlphaSort) {
           grouped.some(
             groupMember =>
-              !checkAlphaSort(groupMember, alphaSortIsCaseSensitive),
+              !checkAlphaSort(groupMember, order as AlphabeticalOrder),
           );
         }
       } else if (hasAlphaSort) {
-        checkAlphaSort(members, alphaSortIsCaseSensitive);
+        checkAlphaSort(members, order as AlphabeticalOrder);
       }
     }
 
