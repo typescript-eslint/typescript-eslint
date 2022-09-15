@@ -227,11 +227,11 @@ function MyComp() {
   console.log('test');
   return (
     <div>
-      <Button type=\\"primary\\">Primary</Button>
+      <Button type=\"primary\">Primary</Button>
       <Button>Default</Button>
-      <Button type=\\"dashed\\">Dashed</Button>
-      <Button type=\\"danger\\">Danger</Button>
-      <Button type=\\"link\\">Link</Button>
+      <Button type=\"dashed\">Dashed</Button>
+      <Button type=\"danger\">Danger</Button>
+      <Button type=\"link\">Link</Button>
     </div>
   );
 }
@@ -247,11 +247,11 @@ function MyComp(): any {
   console.log('test');
   return (
     <div>
-      <Button type=\\"primary\\">Primary</Button>
+      <Button type=\"primary\">Primary</Button>
       <Button>Default</Button>
-      <Button type=\\"dashed\\">Dashed</Button>
-      <Button type=\\"danger\\">Danger</Button>
-      <Button type=\\"link\\">Link</Button>
+      <Button type=\"dashed\">Dashed</Button>
+      <Button type=\"danger\">Danger</Button>
+      <Button type=\"link\">Link</Button>
     </div>
   );
 }
