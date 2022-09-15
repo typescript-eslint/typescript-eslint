@@ -12,14 +12,15 @@ interface ConfigTypeScriptProps {
 }
 
 function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
+  const { onClose: onCloseProps, isOpen, config } = props;
   const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
   const [configObject, updateConfigObject] = useState<TSConfig>();
 
   useEffect(() => {
-    if (props.isOpen) {
-      updateConfigObject(parseTSConfig(props.config));
+    if (isOpen) {
+      updateConfigObject(parseTSConfig(config));
     }
-  }, [props.isOpen, props.config]);
+  }, [isOpen, config]);
 
   useEffect(() => {
     if (window.ts) {
@@ -53,20 +54,20 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
         ),
       );
     }
-  }, [props.isOpen]);
+  }, [isOpen]);
 
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
       const cfg = { ...newConfig };
       if (!shallowEqual(cfg, configObject?.compilerOptions)) {
-        props.onClose({
+        onCloseProps({
           tsconfig: toJson({ ...(configObject ?? {}), compilerOptions: cfg }),
         });
       } else {
-        props.onClose();
+        onCloseProps();
       }
     },
-    [props.onClose, configObject],
+    [onCloseProps, configObject],
   );
 
   return (
@@ -74,7 +75,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
       header="TypeScript Config"
       options={tsConfigOptions}
       values={configObject?.compilerOptions ?? {}}
-      isOpen={props.isOpen}
+      isOpen={isOpen}
       onClose={onClose}
     />
   );

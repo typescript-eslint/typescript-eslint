@@ -53,7 +53,17 @@ export default function ASTViewerTS({
       ['TypeFlags', typeFlags],
     );
     setModel(serialize(value, scopeSerializer));
-  }, [value, syntaxKind]);
+  }, [
+    value,
+    syntaxKind,
+    nodeFlags,
+    tokenFlags,
+    modifierFlags,
+    objectFlags,
+    symbolFlags,
+    flowFlags,
+    typeFlags,
+  ]);
 
   return (
     <ASTViewer position={position} onSelectNode={onSelectNode} value={model} />

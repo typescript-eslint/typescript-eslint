@@ -12,6 +12,8 @@ interface ModalProps {
 }
 
 function Modal(props: ModalProps): JSX.Element {
+  const { onClose } = props;
+
   useEffect(() => {
     const closeOnEscapeKeyDown = (e: KeyboardEvent): void => {
       if (
@@ -19,7 +21,7 @@ function Modal(props: ModalProps): JSX.Element {
         // eslint-disable-next-line deprecation/deprecation -- intentional fallback for old browsers
         e.keyCode === 27
       ) {
-        props.onClose();
+        onClose();
       }
     };
 
@@ -27,15 +29,15 @@ function Modal(props: ModalProps): JSX.Element {
     return (): void => {
       document.body.removeEventListener('keydown', closeOnEscapeKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   const onClick = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       if (e.currentTarget === e.target) {
-        props.onClose();
+        onClose();
       }
     },
-    [props.onClose],
+    [onClose],
   );
 
   return (

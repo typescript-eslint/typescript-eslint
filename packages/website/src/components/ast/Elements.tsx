@@ -33,7 +33,7 @@ export function ComplexItem({
         }
       }
     },
-    [data],
+    [data.model.range, onSelectNode],
   );
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export function ComplexItem({
     if (selected && !isExpanded) {
       setIsExpanded(selected);
     }
-  }, [selection, data]);
+  }, [selection, data, level, isExpanded]);
 
   return (
     <ItemGroup

@@ -83,7 +83,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       resource: model.uri,
     });
     onMarkersChange(parseMarkers(markers, codeActions, sandboxInstance.editor));
-  }, []);
+  }, [
+    codeActions,
+    onMarkersChange,
+    sandboxInstance.editor,
+    sandboxInstance.monaco.editor,
+  ]);
 
   useEffect(() => {
     const newPath = jsx ? '/input.tsx' : '/input.ts';
@@ -100,7 +105,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       tabs.code.dispose();
       tabs.code = newModel;
     }
-  }, [jsx]);
+  }, [
+    jsx,
+    sandboxInstance.editor,
+    sandboxInstance.monaco.Uri,
+    sandboxInstance.monaco.editor,
+    tabs,
+  ]);
 
   useEffect(() => {
     const config = createCompilerOptions(
@@ -109,19 +120,19 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     );
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
-  }, [jsx, tsconfig]);
+  }, [jsx, sandboxInstance, tsconfig, webLinter]);
 
   useEffect(() => {
     webLinter.updateRules(parseESLintRC(eslintrc).rules);
-  }, [eslintrc]);
+  }, [eslintrc, webLinter]);
 
   useEffect(() => {
     sandboxInstance.editor.setModel(tabs[activeTab]);
     updateMarkers();
-  }, [activeTab]);
+  }, [activeTab, sandboxInstance.editor, tabs, updateMarkers]);
 
-  useEffect(
-    debounce(() => {
+  useEffect(() => {
+    const lintEditor = debounce(() => {
       // eslint-disable-next-line no-console
       console.info('[Editor] linting triggered');
 
@@ -154,9 +165,28 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       onTsASTChange(webLinter.storedTsAST);
       onScopeChange(webLinter.storedScope);
       onSelect(sandboxInstance.editor.getPosition());
-    }, 500),
-    [code, jsx, tsconfig, eslintrc, sourceType, webLinter],
-  );
+    }, 500);
+
+    lintEditor();
+  }, [
+    code,
+    jsx,
+    tsconfig,
+    eslintrc,
+    sourceType,
+    webLinter,
+    onEsASTChange,
+    onTsASTChange,
+    onScopeChange,
+    onSelect,
+    sandboxInstance.editor,
+    sandboxInstance.monaco.editor,
+    sandboxInstance.monaco.Uri,
+    codeActions,
+    tabs.code,
+    updateMarkers,
+    onMarkersChange,
+  ]);
 
   useEffect(() => {
     // configure the JSON language support with schemas and schema associations
@@ -230,7 +260,20 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       }
     };
-  }, []);
+  }, [
+    codeActions,
+    main.languages,
+    onChange,
+    onSelect,
+    sandboxInstance.editor,
+    sandboxInstance.monaco.editor,
+    sandboxInstance.monaco.languages.json.jsonDefaults,
+    tabs.code,
+    tabs.eslintrc,
+    tabs.tsconfig,
+    updateMarkers,
+    webLinter.ruleNames,
+  ]);
 
   const resize = useMemo(() => {
     return debounce(() => sandboxInstance.editor.layout(), 1);
@@ -256,7 +299,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [code]);
+  }, [code, tabs.code]);
 
   useEffect(() => {
     if (tsconfig !== tabs.tsconfig.getValue()) {
@@ -267,7 +310,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [tsconfig]);
+  }, [tabs.tsconfig, tsconfig]);
 
   useEffect(() => {
     if (eslintrc !== tabs.eslintrc.getValue()) {
@@ -278,7 +321,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [eslintrc]);
+  }, [eslintrc, tabs.eslintrc]);
 
   useEffect(() => {
     sandboxInstance.monaco.editor.setTheme(darkTheme ? 'vs-dark' : 'vs-light');
@@ -308,7 +351,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         ),
       );
     }
-  }, [decoration, sandboxInstance, showAST]);
+  }, [decoration, decorations, sandboxInstance, showAST, tabs.code]);
 
   return null;
 };
