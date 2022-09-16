@@ -110,6 +110,7 @@ import promiseFunctionAsync from './promise-function-async';
 import quotes from './quotes';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
+import requireObjectTypeAnnotations from './require-object-type-annotations';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
@@ -239,6 +240,7 @@ export default {
   quotes: quotes,
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
+  'require-object-type-annotations': requireObjectTypeAnnotations,
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
