@@ -1,7 +1,8 @@
-import type Monaco from 'monaco-editor';
-import type { ConfigModel, SelectedRange, ErrorGroup, TabType } from '../types';
 import type { TSESTree } from '@typescript-eslint/utils';
+import type Monaco from 'monaco-editor';
 import type { SourceFile } from 'typescript';
+
+import type { ConfigModel, ErrorGroup, SelectedRange, TabType } from '../types';
 
 export interface CommonEditorProps extends ConfigModel {
   readonly darkTheme: boolean;

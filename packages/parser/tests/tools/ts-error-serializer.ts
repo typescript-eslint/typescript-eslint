@@ -1,5 +1,5 @@
-import type { Plugin } from 'pretty-format';
 import { TSError } from '@typescript-eslint/typescript-estree/dist/node-utils';
+import type { Plugin } from 'pretty-format';
 
 export const serializer: Plugin = {
   test: (val: unknown): val is TSError => val instanceof TSError,

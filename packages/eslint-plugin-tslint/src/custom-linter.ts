@@ -1,5 +1,6 @@
-import { ILinterOptions, Linter, LintResult } from 'tslint';
-import { Program, SourceFile } from 'typescript';
+import type { ILinterOptions, LintResult } from 'tslint';
+import { Linter } from 'tslint';
+import type { Program, SourceFile } from 'typescript';
 
 // @ts-expect-error - We need to access the program, but Linter has private program already
 export class CustomLinter extends Linter {

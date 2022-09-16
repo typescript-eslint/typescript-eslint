@@ -1,17 +1,21 @@
-import { ParserOptions, TSESTree, Lib } from '@typescript-eslint/types';
-import {
-  parseAndGenerateServices,
-  ParserServices,
-  TSESTreeOptions,
-  visitorKeys,
-} from '@typescript-eslint/typescript-estree';
-import {
-  analyze,
+import type {
   AnalyzeOptions,
   ScopeManager,
 } from '@typescript-eslint/scope-manager';
+import { analyze } from '@typescript-eslint/scope-manager';
+import type { Lib, TSESTree } from '@typescript-eslint/types';
+import { ParserOptions } from '@typescript-eslint/types';
+import type {
+  ParserServices,
+  TSESTreeOptions,
+} from '@typescript-eslint/typescript-estree';
+import {
+  parseAndGenerateServices,
+  visitorKeys,
+} from '@typescript-eslint/typescript-estree';
 import debug from 'debug';
-import { CompilerOptions, ScriptTarget } from 'typescript';
+import type { CompilerOptions } from 'typescript';
+import { ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
 

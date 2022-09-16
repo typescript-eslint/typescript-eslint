@@ -1,5 +1,5 @@
-import rules from '../src/rules';
 import plugin from '../src/index';
+import rules from '../src/rules';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)

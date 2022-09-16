@@ -1,6 +1,7 @@
-import { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { createRule, isNodeEqual } from '../../src/util';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rule = createRule({
   name: 'no-useless-expression',

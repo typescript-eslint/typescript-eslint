@@ -1,5 +1,5 @@
 import rule from '../../src/rules/restrict-plus-operands';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 

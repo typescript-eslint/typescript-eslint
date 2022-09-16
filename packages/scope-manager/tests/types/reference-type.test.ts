@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { getSpecificNode, parseAndAnalyze } from '../util';
 
 describe('referencing a type - positive', () => {

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-dupe-class-members';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
