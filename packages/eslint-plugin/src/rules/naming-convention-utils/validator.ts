@@ -1,6 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
+
+import * as util from '../../util';
 import type { SelectorsString } from './enums';
 import {
   MetaSelectors,
@@ -17,7 +19,6 @@ import {
   selectorTypeToMessageString,
 } from './shared';
 import type { Context, NormalizedSelector } from './types';
-import * as util from '../../util';
 
 function createValidator(
   type: SelectorsString,

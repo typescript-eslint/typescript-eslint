@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/init-declarations';
 import { RuleTester } from '../RuleTester';
 

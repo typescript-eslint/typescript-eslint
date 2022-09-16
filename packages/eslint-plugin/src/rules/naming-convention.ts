@@ -1,7 +1,8 @@
+import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { ScriptTarget } from 'typescript';
+
 import * as util from '../util';
 import type {
   Context,

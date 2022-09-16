@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import type { MessageIds, Options } from '../../src/rules/ban-types';
 import rule, { TYPE_KEYWORDS } from '../../src/rules/ban-types';
 import { objectReduceKey } from '../../src/util';

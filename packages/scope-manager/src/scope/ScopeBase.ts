@@ -1,11 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
-import type { FunctionScope } from './FunctionScope';
-import type { GlobalScope } from './GlobalScope';
-import { ScopeType } from './ScopeType';
-import type { ScopeManager } from '../ScopeManager';
-import type { Scope } from './Scope';
-import type { ModuleScope } from './ModuleScope';
+
 import { assert } from '../assert';
 import type { Definition } from '../definition';
 import { DefinitionType } from '../definition';
@@ -16,7 +11,13 @@ import {
   ReferenceFlag,
   ReferenceTypeFlag,
 } from '../referencer/Reference';
+import type { ScopeManager } from '../ScopeManager';
 import { Variable } from '../variable';
+import type { FunctionScope } from './FunctionScope';
+import type { GlobalScope } from './GlobalScope';
+import type { ModuleScope } from './ModuleScope';
+import type { Scope } from './Scope';
+import { ScopeType } from './ScopeType';
 import type { TSModuleScope } from './TSModuleScope';
 
 /**

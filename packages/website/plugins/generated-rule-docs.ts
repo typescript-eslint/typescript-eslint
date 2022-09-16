@@ -1,16 +1,15 @@
+import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
+import * as tseslintParser from '@typescript-eslint/parser';
 import * as fs from 'fs';
-import type * as unist from 'unist';
+import type { JSONSchema7 } from 'json-schema';
+import type { JSONSchema } from 'json-schema-to-typescript';
+import { compile } from 'json-schema-to-typescript';
 import type * as mdast from 'mdast';
+import { EOL } from 'os';
 import * as path from 'path';
 import { format } from 'prettier';
 import type { Plugin } from 'unified';
-import type { JSONSchema } from 'json-schema-to-typescript';
-import { compile } from 'json-schema-to-typescript';
-
-import * as tseslintParser from '@typescript-eslint/parser';
-import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
-import { EOL } from 'os';
-import type { JSONSchema7 } from 'json-schema';
+import type * as unist from 'unist';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.

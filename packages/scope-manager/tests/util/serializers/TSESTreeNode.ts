@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import type { NewPlugin } from 'pretty-format';
+
 import { createIdGenerator } from '../../../src/ID';
 
 const EXCLUDED_KEYS = new Set([

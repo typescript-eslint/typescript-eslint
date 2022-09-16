@@ -1,11 +1,12 @@
 import ESLintPatternVisitor from 'eslint-scope/lib/pattern-visitor';
+
 import type { TSESTree } from '../ts-estree';
-import type { ScopeManager } from './ScopeManager';
 import type {
   PatternVisitorCallback,
   PatternVisitorOptions,
   Visitor,
 } from './Options';
+import type { ScopeManager } from './ScopeManager';
 
 interface PatternVisitor extends Visitor {
   options: PatternVisitorOptions;

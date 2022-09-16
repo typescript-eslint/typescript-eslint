@@ -1,8 +1,9 @@
-import type * as ts from 'typescript';
-import type { TSESTree } from '@typescript-eslint/utils';
 import { parseForESLint } from '@typescript-eslint/parser';
-import { isUnsafeAssignment } from '../src/isUnsafeAssignment';
+import type { TSESTree } from '@typescript-eslint/utils';
 import path from 'path';
+import type * as ts from 'typescript';
+
+import { isUnsafeAssignment } from '../src/isUnsafeAssignment';
 
 describe('isUnsafeAssignment', () => {
   const rootDir = path.join(__dirname, 'fixtures');

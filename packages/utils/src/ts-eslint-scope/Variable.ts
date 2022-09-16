@@ -1,7 +1,8 @@
 import ESLintVariable from 'eslint-scope/lib/variable';
+
 import type { TSESTree } from '../ts-estree';
-import type { Reference } from './Reference';
 import type { Definition } from './Definition';
+import type { Reference } from './Reference';
 import type { Scope } from './Scope';
 
 interface Variable {

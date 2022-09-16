@@ -1,4 +1,5 @@
 import { RuleTester as ESLintRuleTester } from 'eslint';
+
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import type { Linter } from './Linter';
 import type { ParserOptions } from './ParserOptions';

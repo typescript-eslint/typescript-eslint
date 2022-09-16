@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { createIdGenerator } from '../ID';
 import type { Scope } from '../scope';
 import type { Variable } from '../variable';

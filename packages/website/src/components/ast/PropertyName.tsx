@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
+
 import styles from './ASTViewer.module.css';
 
 export interface PropertyNameProps {

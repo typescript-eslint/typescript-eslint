@@ -4,7 +4,7 @@
 // npx nx generate-lib @typescript-eslint/scope-manager
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE_VALUE, TYPE } from './base-config';
+import { TYPE, TYPE_VALUE } from './base-config';
 
 export const esnext_weakref = {
   WeakRef: TYPE_VALUE,

@@ -1,5 +1,6 @@
-import type { SelectedPosition, SelectedRange } from '../types';
 import type Monaco from 'monaco-editor';
+
+import type { SelectedPosition, SelectedRange } from '../types';
 
 export type OnSelectNodeFn = (node: SelectedRange | null) => void;
 

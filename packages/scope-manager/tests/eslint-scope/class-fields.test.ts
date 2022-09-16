@@ -1,8 +1,8 @@
 import {
   expectToBeClassFieldInitializerScope,
-  expectToBeIdentifier,
   expectToBeClassScope,
   expectToBeGlobalScope,
+  expectToBeIdentifier,
   parseAndAnalyze,
 } from '../util';
 

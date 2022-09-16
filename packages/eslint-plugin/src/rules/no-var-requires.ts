@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { ASTUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [];

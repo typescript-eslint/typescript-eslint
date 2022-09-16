@@ -1,5 +1,6 @@
 import debug from 'debug';
 import * as ts from 'typescript';
+
 import type { Extra } from '../parser-options';
 import { getScriptKind } from './getScriptKind';
 

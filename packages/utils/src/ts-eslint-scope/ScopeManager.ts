@@ -1,6 +1,7 @@
 import ESLintScopeManager from 'eslint-scope/lib/scope-manager';
-import type { TSESTree } from '../ts-estree';
+
 import type { EcmaVersion } from '../ts-eslint';
+import type { TSESTree } from '../ts-estree';
 import type { Scope } from './Scope';
 import type { Variable } from './Variable';
 

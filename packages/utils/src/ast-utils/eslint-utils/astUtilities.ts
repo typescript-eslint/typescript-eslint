@@ -1,4 +1,5 @@
 import * as eslintUtils from 'eslint-utils';
+
 import type * as TSESLint from '../../ts-eslint';
 import type { TSESTree } from '../../ts-estree';
 

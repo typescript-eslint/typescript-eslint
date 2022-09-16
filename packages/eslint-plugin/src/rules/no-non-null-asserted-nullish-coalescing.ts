@@ -1,7 +1,8 @@
-import type { TSESLint } from '@typescript-eslint/utils';
-import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
 import type { Definition } from '@typescript-eslint/scope-manager';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 function hasAssignmentBeforeNode(

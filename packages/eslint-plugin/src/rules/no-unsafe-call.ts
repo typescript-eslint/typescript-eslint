@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+
 import * as util from '../util';
 import { getThisExpression } from '../util';
 

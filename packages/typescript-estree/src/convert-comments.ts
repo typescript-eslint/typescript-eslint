@@ -1,5 +1,6 @@
-import * as ts from 'typescript';
 import { forEachComment } from 'tsutils/util/util';
+import * as ts from 'typescript';
+
 import { getLocFor } from './node-utils';
 import type { TSESTree } from './ts-estree';
 import { AST_TOKEN_TYPES } from './ts-estree';

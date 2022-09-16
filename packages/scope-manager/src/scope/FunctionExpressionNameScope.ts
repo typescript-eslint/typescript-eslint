@@ -1,9 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/types';
-import { ScopeBase } from './ScopeBase';
-import { ScopeType } from './ScopeType';
-import type { Scope } from './Scope';
+
 import { FunctionNameDefinition } from '../definition';
 import type { ScopeManager } from '../ScopeManager';
+import type { Scope } from './Scope';
+import { ScopeBase } from './ScopeBase';
+import { ScopeType } from './ScopeType';
 
 class FunctionExpressionNameScope extends ScopeBase<
   ScopeType.functionExpressionName,

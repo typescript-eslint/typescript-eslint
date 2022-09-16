@@ -1,10 +1,11 @@
 import debug from 'debug';
 import { join, resolve } from 'path';
+
 import * as parser from '../../src';
-import type { TSESTreeOptions } from '../../src/parser-options';
-import * as sharedParserUtilsModule from '../../src/create-program/shared';
-import { createSnapshotTestBlock } from '../../tools/test-utils';
 import * as astConverterModule from '../../src/ast-converter';
+import * as sharedParserUtilsModule from '../../src/create-program/shared';
+import type { TSESTreeOptions } from '../../src/parser-options';
+import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 

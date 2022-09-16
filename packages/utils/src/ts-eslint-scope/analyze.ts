@@ -1,4 +1,5 @@
 import { analyze as ESLintAnalyze } from 'eslint-scope';
+
 import type { EcmaVersion } from '../ts-eslint';
 import type { TSESTree } from '../ts-estree';
 import type { ScopeManager } from './ScopeManager';

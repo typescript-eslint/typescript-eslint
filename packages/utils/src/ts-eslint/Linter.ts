@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { Linter as ESLintLinter } from 'eslint';
-import type { TSESTree, ParserServices } from '../ts-estree';
+
+import type { ParserServices, TSESTree } from '../ts-estree';
 import type { ParserOptions as TSParserOptions } from './ParserOptions';
 import type {
   RuleCreateFunction,

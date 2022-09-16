@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { SponsorData, SponsorIncludeOptions } from './types';
 import styles from './styles.module.css';
+import type { SponsorData, SponsorIncludeOptions } from './types';
 
 interface SponsorProps {
   include?: SponsorIncludeOptions;

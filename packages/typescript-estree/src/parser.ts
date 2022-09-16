@@ -1,18 +1,16 @@
 import debug from 'debug';
 import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
-import semver from 'semver';
 import { normalize } from 'path';
+import semver from 'semver';
 import * as ts from 'typescript';
+
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
 import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import { createSourceFile } from './create-program/createSourceFile';
-import type { Extra, TSESTreeOptions, ParserServices } from './parser-options';
-import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
-import type { TSESTree } from './ts-estree';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   ensureAbsolutePath,
@@ -22,6 +20,9 @@ import {
   createProgramFromConfigFile,
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
+import type { Extra, ParserServices, TSESTreeOptions } from './parser-options';
+import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
+import type { TSESTree } from './ts-estree';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 

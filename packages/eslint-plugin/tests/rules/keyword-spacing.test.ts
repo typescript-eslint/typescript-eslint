@@ -3,6 +3,7 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import type { MessageIds, Options } from '../../src/rules/keyword-spacing';
 import rule from '../../src/rules/keyword-spacing';
 import { RuleTester } from '../RuleTester';

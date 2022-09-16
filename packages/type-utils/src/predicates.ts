@@ -1,6 +1,7 @@
 import debug from 'debug';
 import { unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
+
 import { getTypeArguments } from './getTypeArguments';
 import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
 

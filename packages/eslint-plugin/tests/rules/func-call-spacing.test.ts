@@ -4,6 +4,7 @@
 /* eslint-enable eslint-comments/no-use */
 
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import type { MessageIds, Options } from '../../src/rules/func-call-spacing';
 import rule from '../../src/rules/func-call-spacing';
 import { RuleTester } from '../RuleTester';

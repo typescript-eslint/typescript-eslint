@@ -1,4 +1,6 @@
 import type { JSONSchema } from '@typescript-eslint/utils';
+
+import * as util from '../../util';
 import type {
   IndividualAndMetaSelectorsString,
   ModifiersString,
@@ -11,7 +13,6 @@ import {
   TypeModifiers,
   UnderscoreOptions,
 } from './enums';
-import * as util from '../../util';
 
 const UNDERSCORE_SCHEMA: JSONSchema.JSONSchema4 = {
   type: 'string',

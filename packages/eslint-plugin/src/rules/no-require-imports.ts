@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { ASTUtils } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({

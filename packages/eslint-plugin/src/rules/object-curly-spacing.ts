@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -11,6 +11,7 @@ import {
   isClosingBracketToken,
   isTokenOnSameLine,
 } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('object-curly-spacing');
 

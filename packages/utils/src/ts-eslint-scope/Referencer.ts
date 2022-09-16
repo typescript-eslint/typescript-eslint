@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ESLintReferencer from 'eslint-scope/lib/referencer';
+
 import type { TSESTree } from '../ts-estree';
 import type {
   PatternVisitorCallback,

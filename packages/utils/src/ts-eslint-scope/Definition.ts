@@ -2,6 +2,7 @@ import {
   Definition as ESLintDefinition,
   ParameterDefinition as ESLintParameterDefinition,
 } from 'eslint-scope/lib/definition';
+
 import type { TSESTree } from '../ts-estree';
 
 interface Definition {

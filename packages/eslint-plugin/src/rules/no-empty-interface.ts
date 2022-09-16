@@ -1,5 +1,6 @@
-import * as util from '../util';
 import type { TSESLint } from '@typescript-eslint/utils';
+
+import * as util from '../util';
 
 type Options = [
   {

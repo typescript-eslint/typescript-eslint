@@ -1,12 +1,12 @@
+import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
+import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
 import type { TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
-  TSESLint,
   ASTUtils,
   ESLintUtils,
+  TSESLint,
 } from '@typescript-eslint/utils';
-import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
-import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
 
 class UnusedVarsVisitor<
   TMessageIds extends string,

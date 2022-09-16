@@ -1,9 +1,9 @@
-import React from 'react';
-import clsx from 'clsx';
-import { useCollapsible, Collapsible } from '@docusaurus/theme-common';
-import styles from './Expander.module.css';
-
+import { Collapsible, useCollapsible } from '@docusaurus/theme-common';
 import ArrowIcon from '@site/src/icons/arrow.svg';
+import clsx from 'clsx';
+import React from 'react';
+
+import styles from './Expander.module.css';
 
 export interface ExpanderProps {
   readonly children?: React.ReactNode;

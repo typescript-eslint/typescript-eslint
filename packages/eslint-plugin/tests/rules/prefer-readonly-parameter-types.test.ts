@@ -1,10 +1,11 @@
 import type { TSESLint } from '@typescript-eslint/utils';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
+
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;

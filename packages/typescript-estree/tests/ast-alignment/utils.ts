@@ -1,6 +1,7 @@
 // babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
 import type { File, Identifier, Program, TSTypeQuery } from '@babel/types';
+
 import type { TSESTree } from '../../src/ts-estree';
 import { AST_NODE_TYPES } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';

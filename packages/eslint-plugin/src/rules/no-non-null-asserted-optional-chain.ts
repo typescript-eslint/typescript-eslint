@@ -1,7 +1,8 @@
-import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
 import * as semver from 'semver';
+import * as ts from 'typescript';
+
 import * as util from '../util';
 
 const is3dot9 = semver.satisfies(

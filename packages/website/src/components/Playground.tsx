@@ -1,39 +1,35 @@
-import React, { useCallback, useReducer, useState } from 'react';
-import type Monaco from 'monaco-editor';
-import clsx from 'clsx';
 import { useColorMode } from '@docusaurus/theme-common';
-
-import styles from './Playground.module.css';
-import Loader from './layout/Loader';
-
-import useHashState from './hooks/useHashState';
-import OptionsSelector from './OptionsSelector';
-import { LoadingEditor } from './editor/LoadingEditor';
-import { EditorEmbed } from './editor/EditorEmbed';
-import { shallowEqual } from './lib/shallowEqual';
-
-import ASTViewerESTree from './ASTViewerESTree';
-import ASTViewerTS from './ASTViewerTS';
-
-import type {
-  RuleDetails,
-  SelectedRange,
-  ErrorGroup,
-  TabType,
-  ConfigModel,
-} from './types';
-
-import type { TSESTree } from '@typescript-eslint/utils';
-import type { SourceFile } from 'typescript';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
-import ErrorsViewer from '@site/src/components/ErrorsViewer';
-import EditorTabs from '@site/src/components/EditorTabs';
 import ConfigEslint from '@site/src/components/config/ConfigEslint';
 import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
 import {
   defaultEslintConfig,
   defaultTsConfig,
 } from '@site/src/components/config/utils';
+import EditorTabs from '@site/src/components/EditorTabs';
+import ErrorsViewer from '@site/src/components/ErrorsViewer';
+import type { TSESTree } from '@typescript-eslint/utils';
+import clsx from 'clsx';
+import type Monaco from 'monaco-editor';
+import React, { useCallback, useReducer, useState } from 'react';
+import type { SourceFile } from 'typescript';
+
+import ASTViewerESTree from './ASTViewerESTree';
+import ASTViewerTS from './ASTViewerTS';
+import { EditorEmbed } from './editor/EditorEmbed';
+import { LoadingEditor } from './editor/LoadingEditor';
+import useHashState from './hooks/useHashState';
+import Loader from './layout/Loader';
+import { shallowEqual } from './lib/shallowEqual';
+import OptionsSelector from './OptionsSelector';
+import styles from './Playground.module.css';
+import type {
+  ConfigModel,
+  ErrorGroup,
+  RuleDetails,
+  SelectedRange,
+  TabType,
+} from './types';
 
 function rangeReducer<T extends SelectedRange | null>(
   prevState: T,

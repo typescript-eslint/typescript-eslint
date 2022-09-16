@@ -1,4 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../naming-convention';
 import type {
   IndividualAndMetaSelectorsString,
   MetaSelectors,
@@ -13,7 +15,6 @@ import type {
   UnderscoreOptions,
   UnderscoreOptionsString,
 } from './enums';
-import type { MessageIds, Options } from '../naming-convention';
 
 interface MatchRegex {
   regex: string;

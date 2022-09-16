@@ -1,5 +1,6 @@
 import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
+
 import type { TSNode } from './ts-nodes';
 
 export interface EstreeToTsNodeTypes {

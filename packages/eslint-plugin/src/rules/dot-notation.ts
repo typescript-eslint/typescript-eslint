@@ -1,12 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+import * as ts from 'typescript';
+
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
 import { createRule, getModifiers, getParserServices } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('dot-notation');
 

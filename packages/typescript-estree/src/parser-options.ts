@@ -1,5 +1,6 @@
 import type { DebugLevel } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
+
 import type { CanonicalPath } from './create-program/shared';
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { SourceCode as ESLintSourceCode } from 'eslint';
+
 import type { ParserServices, TSESTree } from '../ts-estree';
 import type { Scope } from './Scope';
 

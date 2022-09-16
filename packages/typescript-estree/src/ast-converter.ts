@@ -1,11 +1,12 @@
 import type { SourceFile } from 'typescript';
+
 import type { ASTMaps } from './convert';
-import { convertError, Converter } from './convert';
+import { Converter, convertError } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import type { Extra } from './parser-options';
-import type { TSESTree } from './ts-estree';
 import { simpleTraverse } from './simple-traverse';
+import type { TSESTree } from './ts-estree';
 
 export function astConverter(
   ast: SourceFile,

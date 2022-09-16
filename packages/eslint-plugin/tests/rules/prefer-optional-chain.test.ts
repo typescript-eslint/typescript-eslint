@@ -1,10 +1,11 @@
-import rule from '../../src/rules/prefer-optional-chain';
-import { RuleTester, noFormat } from '../RuleTester';
 import type { TSESLint } from '@typescript-eslint/utils';
+
+import rule from '../../src/rules/prefer-optional-chain';
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

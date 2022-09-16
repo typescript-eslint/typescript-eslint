@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import type {
   MessageIds,
   Options,

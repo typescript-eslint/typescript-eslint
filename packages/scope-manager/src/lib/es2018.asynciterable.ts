@@ -4,9 +4,9 @@
 // npx nx generate-lib @typescript-eslint/scope-manager
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { es2015_symbol } from './es2015.symbol';
-import { es2015_iterable } from './es2015.iterable';
 import { TYPE } from './base-config';
+import { es2015_iterable } from './es2015.iterable';
+import { es2015_symbol } from './es2015.symbol';
 
 export const es2018_asynciterable = {
   ...es2015_symbol,

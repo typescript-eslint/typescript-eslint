@@ -6,6 +6,7 @@
 
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
 import rule from '../../../src/rules/no-unused-vars';
 import { RuleTester } from '../../RuleTester';

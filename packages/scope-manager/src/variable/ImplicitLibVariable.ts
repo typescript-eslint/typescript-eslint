@@ -1,6 +1,6 @@
+import type { Scope } from '../scope';
 import { ESLintScopeVariable } from './ESLintScopeVariable';
 import type { Variable } from './Variable';
-import type { Scope } from '../scope';
 
 interface ImplicitLibVariableOptions {
   readonly eslintImplicitGlobalSetting?: ESLintScopeVariable['eslintImplicitGlobalSetting'];

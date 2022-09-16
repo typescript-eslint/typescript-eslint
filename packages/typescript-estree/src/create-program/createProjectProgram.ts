@@ -1,9 +1,10 @@
 import debug from 'debug';
 import path from 'path';
 import * as ts from 'typescript';
-import { getProgramsForProjects } from './createWatchProgram';
+
 import { firstDefined } from '../node-utils';
 import type { Extra } from '../parser-options';
+import { getProgramsForProjects } from './createWatchProgram';
 import type { ASTAndProgram } from './shared';
 import { getAstFromProgram } from './shared';
 

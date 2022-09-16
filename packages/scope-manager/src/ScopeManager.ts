@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { assert } from './assert';
 import type { Scope } from './scope';
 import {
@@ -21,7 +22,6 @@ import {
 } from './scope';
 import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
 import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
-
 import type { Variable } from './variable';
 
 interface ScopeManagerOptions {

@@ -1,10 +1,9 @@
+import { toJsonConfig } from '@site/src/components/config/utils';
+import * as lz from 'lzstring.ts';
 import { useCallback, useEffect, useState } from 'react';
 
-import type { ConfigModel } from '../types';
-
-import * as lz from 'lzstring.ts';
 import { shallowEqual } from '../lib/shallowEqual';
-import { toJsonConfig } from '@site/src/components/config/utils';
+import type { ConfigModel } from '../types';
 
 function writeQueryParam(value: string): string {
   return lz.LZString.compressToEncodedURIComponent(value);

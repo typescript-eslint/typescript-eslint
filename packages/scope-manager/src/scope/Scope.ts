@@ -1,8 +1,8 @@
 import type { BlockScope } from './BlockScope';
 import type { CatchScope } from './CatchScope';
 import type { ClassFieldInitializerScope } from './ClassFieldInitializerScope';
-import type { ClassStaticBlockScope } from './ClassStaticBlockScope';
 import type { ClassScope } from './ClassScope';
+import type { ClassStaticBlockScope } from './ClassStaticBlockScope';
 import type { ConditionalTypeScope } from './ConditionalTypeScope';
 import type { ForScope } from './ForScope';
 import type { FunctionExpressionNameScope } from './FunctionExpressionNameScope';

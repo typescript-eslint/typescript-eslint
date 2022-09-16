@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import type { Definition } from '../definition';
 import { createIdGenerator } from '../ID';
 import type { Reference } from '../referencer/Reference';

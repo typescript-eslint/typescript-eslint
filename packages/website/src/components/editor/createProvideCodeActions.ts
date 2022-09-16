@@ -1,4 +1,5 @@
 import type Monaco from 'monaco-editor';
+
 import type { LintCodeAction } from '../linter/utils';
 import { createEditOperation, createURI } from '../linter/utils';
 

@@ -5,6 +5,7 @@ import type {
 } from 'eslint/lib/rules/no-restricted-imports';
 import type { Ignore } from 'ignore';
 import ignore from 'ignore';
+
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,

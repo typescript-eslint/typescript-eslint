@@ -6,6 +6,7 @@ import type {
   AST_TOKEN_TYPES,
   TSESLint,
 } from '@typescript-eslint/utils';
+
 import type rule from '../../../src/rules/indent';
 import type { InferMessageIdsTypeFromRule } from '../../../src/util';
 

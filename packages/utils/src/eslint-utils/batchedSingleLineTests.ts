@@ -1,4 +1,4 @@
-import type { ValidTestCase, InvalidTestCase } from '../ts-eslint';
+import type { InvalidTestCase, ValidTestCase } from '../ts-eslint';
 
 /**
  * Converts a batch of single line tests into a number of separate test cases.

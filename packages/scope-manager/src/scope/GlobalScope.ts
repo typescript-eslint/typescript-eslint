@@ -1,14 +1,15 @@
 import type { TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
-import type { Scope } from './Scope';
-import { ScopeBase } from './ScopeBase';
-import { ScopeType } from './ScopeType';
+
 import { assert } from '../assert';
 import { ImplicitGlobalVariableDefinition } from '../definition/ImplicitGlobalVariableDefinition';
 import type { Reference } from '../referencer/Reference';
 import type { ScopeManager } from '../ScopeManager';
-import type { Variable, ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions, Variable } from '../variable';
 import { ImplicitLibVariable } from '../variable';
+import type { Scope } from './Scope';
+import { ScopeBase } from './ScopeBase';
+import { ScopeType } from './ScopeType';
 
 class GlobalScope extends ScopeBase<
   ScopeType.global,

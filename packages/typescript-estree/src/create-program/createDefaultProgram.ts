@@ -1,6 +1,7 @@
 import debug from 'debug';
 import path from 'path';
 import * as ts from 'typescript';
+
 import type { Extra } from '../parser-options';
 import type { ASTAndProgram, CanonicalPath } from './shared';
 import {

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { ImportBindingDefinition } from '../definition';
 import type { Referencer } from './Referencer';
 import { Visitor } from './Visitor';

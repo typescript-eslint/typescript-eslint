@@ -2,6 +2,7 @@ import debug from 'debug';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
+
 import type { Extra } from '../parser-options';
 import type { ASTAndProgram } from './shared';
 import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';

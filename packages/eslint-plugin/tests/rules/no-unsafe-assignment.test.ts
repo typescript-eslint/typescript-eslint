@@ -1,15 +1,16 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-unsafe-assignment';
-import {
-  RuleTester,
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-} from '../RuleTester';
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import {
+  batchedSingleLineTests,
+  getFixturesRootDir,
+  noFormat,
+  RuleTester,
+} from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;

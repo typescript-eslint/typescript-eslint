@@ -2,6 +2,7 @@
 /* eslint-disable deprecation/deprecation -- "uses" deprecated API to define the deprecated API */
 
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
+
 import type { Linter } from './Linter';
 import type { RuleListener, RuleMetaData, RuleModule } from './Rule';
 

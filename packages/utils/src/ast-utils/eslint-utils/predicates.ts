@@ -1,4 +1,5 @@
 import * as eslintUtils from 'eslint-utils';
+
 import type { TSESTree } from '../../ts-estree';
 
 type IsSpecificTokenFunction<SpecificToken extends TSESTree.Token> = (

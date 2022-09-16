@@ -2,8 +2,8 @@ import debug from 'debug';
 import fs from 'fs';
 import semver from 'semver';
 import * as ts from 'typescript';
+
 import type { Extra } from '../parser-options';
-import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 import type { CanonicalPath } from './shared';
 import {
   canonicalDirname,
@@ -11,6 +11,7 @@ import {
   getCanonicalFileName,
   getModuleResolver,
 } from './shared';
+import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
 

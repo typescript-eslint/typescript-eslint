@@ -1,5 +1,6 @@
-import { VariableBase } from './VariableBase';
 import type { TSESTree } from '@typescript-eslint/types';
+
+import { VariableBase } from './VariableBase';
 
 /**
  * ESLint defines global variables using the eslint-scope Variable class
