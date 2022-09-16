@@ -1,15 +1,14 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { ScriptTarget } from 'typescript';
 import * as util from '../util';
-import {
+import type {
   Context,
-  Modifiers,
-  parseOptions,
-  SCHEMA,
   Selector,
   ValidatorFunction,
 } from './naming-convention-utils';
+import { Modifiers, parseOptions, SCHEMA } from './naming-convention-utils';
 
 type MessageIds =
   | 'unexpectedUnderscore'

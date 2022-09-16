@@ -1,7 +1,8 @@
 import debug from 'debug';
 import * as ts from 'typescript';
-import { Extra } from '../parser-options';
-import { ASTAndProgram, createDefaultCompilerOptionsFromExtra } from './shared';
+import type { Extra } from '../parser-options';
+import type { ASTAndProgram } from './shared';
+import { createDefaultCompilerOptionsFromExtra } from './shared';
 import { getScriptKind } from './getScriptKind';
 
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');

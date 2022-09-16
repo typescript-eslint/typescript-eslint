@@ -1,10 +1,5 @@
-import React, {
-  useCallback,
-  useMemo,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type React from 'react';
+import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
 import type Monaco from 'monaco-editor';
 import type { SandboxInstance } from './useSandboxServices';
 import type { CommonEditorProps } from './types';
@@ -18,11 +13,8 @@ import {
   getEslintSchema,
   getTsConfigSchema,
 } from './config';
-import {
-  parseMarkers,
-  parseLintResults,
-  LintCodeAction,
-} from '../linter/utils';
+import type { LintCodeAction } from '../linter/utils';
+import { parseMarkers, parseLintResults } from '../linter/utils';
 import {
   tryParseEslintModule,
   parseESLintRC,

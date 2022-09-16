@@ -4,7 +4,7 @@ import React from 'react';
 
 import styles from './styles.module.css';
 import { Sponsor } from '../Sponsor';
-import { SponsorIncludeOptions } from '../types';
+import type { SponsorIncludeOptions } from '../types';
 
 interface SponsorsProps {
   className: string;

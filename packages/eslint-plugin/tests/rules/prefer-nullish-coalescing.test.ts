@@ -1,8 +1,9 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, {
+import type { TSESLint } from '@typescript-eslint/utils';
+import type {
   MessageIds,
   Options,
 } from '../../src/rules/prefer-nullish-coalescing';
+import rule from '../../src/rules/prefer-nullish-coalescing';
 import { RuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();

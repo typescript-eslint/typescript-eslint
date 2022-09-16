@@ -1,4 +1,4 @@
-import { TSESTree, TSESLint } from '@typescript-eslint/utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 import { createRule, isNodeEqual } from '../../src/util';
 

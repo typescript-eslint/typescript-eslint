@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 

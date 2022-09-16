@@ -1,5 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-import { Referencer } from './Referencer';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import type { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
 
 type ExportNode =

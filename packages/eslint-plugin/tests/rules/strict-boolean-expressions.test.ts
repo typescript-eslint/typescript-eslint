@@ -1,8 +1,9 @@
 import * as path from 'path';
-import rule, {
+import type {
   MessageId,
   Options,
 } from '../../src/rules/strict-boolean-expressions';
+import rule from '../../src/rules/strict-boolean-expressions';
 import {
   batchedSingleLineTests,
   getFixturesRootDir,

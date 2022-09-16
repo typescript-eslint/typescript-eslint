@@ -1,21 +1,23 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { FunctionScope } from './FunctionScope';
-import { GlobalScope } from './GlobalScope';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import type { FunctionScope } from './FunctionScope';
+import type { GlobalScope } from './GlobalScope';
 import { ScopeType } from './ScopeType';
-import { ScopeManager } from '../ScopeManager';
-import { Scope } from './Scope';
-import { ModuleScope } from './ModuleScope';
+import type { ScopeManager } from '../ScopeManager';
+import type { Scope } from './Scope';
+import type { ModuleScope } from './ModuleScope';
 import { assert } from '../assert';
-import { Definition, DefinitionType } from '../definition';
+import type { Definition } from '../definition';
+import { DefinitionType } from '../definition';
 import { createIdGenerator } from '../ID';
+import type { ReferenceImplicitGlobal } from '../referencer/Reference';
 import {
   Reference,
   ReferenceFlag,
-  ReferenceImplicitGlobal,
   ReferenceTypeFlag,
 } from '../referencer/Reference';
 import { Variable } from '../variable';
-import { TSModuleScope } from './TSModuleScope';
+import type { TSModuleScope } from './TSModuleScope';
 
 /**
  * Test if scope is strict

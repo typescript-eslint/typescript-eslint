@@ -1,10 +1,11 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { Scope } from './Scope';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
-import { Reference } from '../referencer/Reference';
-import { ScopeManager } from '../ScopeManager';
-import { Variable } from '../variable';
+import type { Reference } from '../referencer/Reference';
+import type { ScopeManager } from '../ScopeManager';
+import type { Variable } from '../variable';
 
 class FunctionScope extends ScopeBase<
   ScopeType.function,

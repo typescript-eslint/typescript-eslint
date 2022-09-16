@@ -1,4 +1,5 @@
-import { ESLintUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as util from '../util';
 import * as ts from 'typescript';

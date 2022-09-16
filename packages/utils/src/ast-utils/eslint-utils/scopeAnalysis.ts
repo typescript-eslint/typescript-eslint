@@ -1,6 +1,6 @@
 import * as eslintUtils from 'eslint-utils';
-import { TSESTree } from '../../ts-estree';
-import * as TSESLint from '../../ts-eslint';
+import type { TSESTree } from '../../ts-estree';
+import type * as TSESLint from '../../ts-eslint';
 
 /**
  * Get the variable of a given name.

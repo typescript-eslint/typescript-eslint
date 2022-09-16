@@ -1,15 +1,10 @@
-import {
-  ASTUtils,
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
-import {
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { ASTUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type {
   Definition,
-  DefinitionType,
   ImportBindingDefinition,
-  ScopeType,
 } from '@typescript-eslint/scope-manager';
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import * as util from '../util';
 
 type MessageIds = 'noShadow' | 'noShadowGlobal';

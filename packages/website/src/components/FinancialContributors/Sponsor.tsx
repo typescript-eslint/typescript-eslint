@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SponsorData, SponsorIncludeOptions } from './types';
+import type { SponsorData, SponsorIncludeOptions } from './types';
 import styles from './styles.module.css';
 
 interface SponsorProps {

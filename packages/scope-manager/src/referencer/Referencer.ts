@@ -1,12 +1,15 @@
-import { AST_NODE_TYPES, Lib, TSESTree } from '@typescript-eslint/types';
+import type { Lib, TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import { ClassVisitor } from './ClassVisitor';
 import { ExportVisitor } from './ExportVisitor';
 import { ImportVisitor } from './ImportVisitor';
 import { PatternVisitor } from './PatternVisitor';
-import { ReferenceFlag, ReferenceImplicitGlobal } from './Reference';
-import { ScopeManager } from '../ScopeManager';
+import type { ReferenceImplicitGlobal } from './Reference';
+import { ReferenceFlag } from './Reference';
+import type { ScopeManager } from '../ScopeManager';
 import { TypeVisitor } from './TypeVisitor';
-import { Visitor, VisitorOptions } from './Visitor';
+import type { VisitorOptions } from './Visitor';
+import { Visitor } from './Visitor';
 import { assert } from '../assert';
 import {
   CatchClauseDefinition,
@@ -19,7 +22,7 @@ import {
   VariableDefinition,
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
-import { Scope, GlobalScope } from '../scope';
+import type { Scope, GlobalScope } from '../scope';
 
 interface ReferencerOptions extends VisitorOptions {
   jsxPragma: string | null;

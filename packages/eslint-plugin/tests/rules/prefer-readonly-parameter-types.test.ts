@@ -1,7 +1,7 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
 import rule from '../../src/rules/prefer-readonly-parameter-types';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';

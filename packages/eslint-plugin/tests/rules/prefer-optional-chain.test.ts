@@ -1,7 +1,7 @@
 import rule from '../../src/rules/prefer-optional-chain';
 import { RuleTester, noFormat } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/utils';
-import {
+import type { TSESLint } from '@typescript-eslint/utils';
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';

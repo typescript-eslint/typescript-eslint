@@ -2,8 +2,8 @@
 /* eslint-disable deprecation/deprecation -- "uses" deprecated API to define the deprecated API */
 
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
-import { Linter } from './Linter';
-import { RuleListener, RuleMetaData, RuleModule } from './Rule';
+import type { Linter } from './Linter';
+import type { RuleListener, RuleMetaData, RuleModule } from './Rule';
 
 declare class CLIEngineBase {
   /**

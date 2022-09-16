@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
 import { es2020_intl } from './es2020.intl';
 import { TYPE } from './base-config';
 

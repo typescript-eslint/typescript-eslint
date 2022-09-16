@@ -1,5 +1,5 @@
-import * as ts from 'typescript';
-import { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { parseForESLint } from '@typescript-eslint/parser';
 import { isUnsafeAssignment } from '../src/isUnsafeAssignment';
 import path from 'path';

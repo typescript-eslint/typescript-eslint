@@ -1,7 +1,8 @@
 import * as ts from 'typescript';
 import { forEachComment } from 'tsutils/util/util';
 import { getLocFor } from './node-utils';
-import { AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+import type { TSESTree } from './ts-estree';
+import { AST_TOKEN_TYPES } from './ts-estree';
 
 /**
  * Convert all comments for the given AST.

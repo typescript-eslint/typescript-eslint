@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 import * as util from '../util';
-import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { isBinaryExpression } from 'tsutils';
 
 type ValidChainTarget =

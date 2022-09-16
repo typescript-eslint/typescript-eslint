@@ -1,4 +1,4 @@
-import { ParserOptions } from '@typescript-eslint/types';
+import type { ParserOptions } from '@typescript-eslint/types';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
 import * as scopeManager from '@typescript-eslint/scope-manager/dist/analyze';
 import { parse, parseForESLint } from '../../src/parser';

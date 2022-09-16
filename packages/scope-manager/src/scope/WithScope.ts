@@ -1,9 +1,9 @@
-import { TSESTree } from '@typescript-eslint/types';
-import { Scope } from './Scope';
+import type { TSESTree } from '@typescript-eslint/types';
+import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 import { assert } from '../assert';
-import { ScopeManager } from '../ScopeManager';
+import type { ScopeManager } from '../ScopeManager';
 
 class WithScope extends ScopeBase<
   ScopeType.with,

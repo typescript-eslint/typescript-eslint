@@ -1,4 +1,4 @@
-import { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionType } from './DefinitionType';
 import { DefinitionBase } from './DefinitionBase';
 

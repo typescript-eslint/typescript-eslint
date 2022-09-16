@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
 import { es2016 } from './es2016';
 import { es2017_object } from './es2017.object';
 import { es2017_sharedmemory } from './es2017.sharedmemory';

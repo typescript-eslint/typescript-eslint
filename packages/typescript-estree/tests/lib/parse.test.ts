@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { join, resolve } from 'path';
 import * as parser from '../../src';
-import { TSESTreeOptions } from '../../src/parser-options';
+import type { TSESTreeOptions } from '../../src/parser-options';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 import * as astConverterModule from '../../src/ast-converter';

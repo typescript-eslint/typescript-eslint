@@ -1,8 +1,9 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, {
+import type { TSESLint } from '@typescript-eslint/utils';
+import type {
   MessageIds,
   Options,
 } from '../../src/rules/sort-type-union-intersection-members';
+import rule from '../../src/rules/sort-type-union-intersection-members';
 import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({

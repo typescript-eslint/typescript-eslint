@@ -1,9 +1,11 @@
-import { JSONSchema } from '@typescript-eslint/utils';
-import {
+import type { JSONSchema } from '@typescript-eslint/utils';
+import type {
   IndividualAndMetaSelectorsString,
+  ModifiersString,
+} from './enums';
+import {
   MetaSelectors,
   Modifiers,
-  ModifiersString,
   PredefinedFormats,
   Selectors,
   TypeModifiers,

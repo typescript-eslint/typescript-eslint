@@ -1,8 +1,8 @@
+import type { TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
   TSESLint,
   ASTUtils,
-  TSESTree,
   ESLintUtils,
 } from '@typescript-eslint/utils';
 import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';

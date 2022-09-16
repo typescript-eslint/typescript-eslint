@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import * as eslintUtils from 'eslint-utils';
-import { TSESTree } from '../../ts-estree';
-import * as TSESLint from '../../ts-eslint';
+import type { TSESTree } from '../../ts-estree';
+import type * as TSESLint from '../../ts-eslint';
 
 const ReferenceTrackerREAD: unique symbol = eslintUtils.ReferenceTracker.READ;
 const ReferenceTrackerCALL: unique symbol = eslintUtils.ReferenceTracker.CALL;

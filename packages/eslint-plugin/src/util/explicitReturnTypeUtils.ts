@@ -1,9 +1,5 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-  ESLintUtils,
-  TSESLint,
-} from '@typescript-eslint/utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 

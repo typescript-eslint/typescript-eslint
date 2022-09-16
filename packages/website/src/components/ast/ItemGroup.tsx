@@ -1,4 +1,5 @@
-import React, { MouseEvent, useEffect, useRef } from 'react';
+import type { MouseEvent } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { scrollIntoViewIfNeeded } from '@site/src/components/lib/scroll-into';
 import clsx from 'clsx';
 

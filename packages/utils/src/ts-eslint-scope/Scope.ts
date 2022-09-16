@@ -13,11 +13,11 @@ import {
   ForScope as ESLintForScope,
   ClassScope as ESLintClassScope,
 } from 'eslint-scope/lib/scope';
-import { TSESTree } from '../ts-estree';
-import { Definition } from './Definition';
-import { Reference, ReferenceFlag } from './Reference';
-import { ScopeManager } from './ScopeManager';
-import { Variable } from './Variable';
+import type { TSESTree } from '../ts-estree';
+import type { Definition } from './Definition';
+import type { Reference, ReferenceFlag } from './Reference';
+import type { ScopeManager } from './ScopeManager';
+import type { Variable } from './Variable';
 
 type ScopeType =
   | 'block'

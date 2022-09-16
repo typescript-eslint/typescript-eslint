@@ -1,5 +1,6 @@
-import { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
 import { assert } from './assert';
+import type { Scope } from './scope';
 import {
   BlockScope,
   CatchScope,
@@ -12,7 +13,6 @@ import {
   GlobalScope,
   MappedTypeScope,
   ModuleScope,
-  Scope,
   SwitchScope,
   TSEnumScope,
   TSModuleScope,
@@ -22,7 +22,7 @@ import {
 import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
 import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
 
-import { Variable } from './variable';
+import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;

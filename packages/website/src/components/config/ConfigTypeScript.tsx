@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
+import type { ConfigOptionsType } from './ConfigEditor';
+import ConfigEditor from './ConfigEditor';
 import type { ConfigModel, TSConfig } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
 import { getTypescriptOptions, parseTSConfig, toJson } from './utils';

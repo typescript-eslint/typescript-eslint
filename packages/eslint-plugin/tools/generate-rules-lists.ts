@@ -6,7 +6,7 @@ import path from 'path';
 import rules from '../src/rules';
 
 import prettier from 'prettier';
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 
 interface RuleDetails {
   name: string;

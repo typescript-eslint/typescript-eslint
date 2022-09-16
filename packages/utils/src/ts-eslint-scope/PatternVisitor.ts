@@ -1,7 +1,7 @@
 import ESLintPatternVisitor from 'eslint-scope/lib/pattern-visitor';
-import { TSESTree } from '../ts-estree';
-import { ScopeManager } from './ScopeManager';
-import {
+import type { TSESTree } from '../ts-estree';
+import type { ScopeManager } from './ScopeManager';
+import type {
   PatternVisitorCallback,
   PatternVisitorOptions,
   Visitor,

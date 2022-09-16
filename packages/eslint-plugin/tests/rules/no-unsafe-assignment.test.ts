@@ -1,4 +1,4 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import rule from '../../src/rules/no-unsafe-assignment';
 import {
   RuleTester,
@@ -6,7 +6,7 @@ import {
   getFixturesRootDir,
   noFormat,
 } from '../RuleTester';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';

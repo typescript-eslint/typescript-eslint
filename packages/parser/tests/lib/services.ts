@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
-import { ParserOptions } from '../../src/parser';
+import type { ParserOptions } from '../../src/parser';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,

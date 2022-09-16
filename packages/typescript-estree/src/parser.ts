@@ -10,12 +10,11 @@ import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import { createSourceFile } from './create-program/createSourceFile';
-import { Extra, TSESTreeOptions, ParserServices } from './parser-options';
+import type { Extra, TSESTreeOptions, ParserServices } from './parser-options';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
-import { TSESTree } from './ts-estree';
+import type { TSESTree } from './ts-estree';
+import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
-  ASTAndProgram,
-  CanonicalPath,
   ensureAbsolutePath,
   getCanonicalFileName,
 } from './create-program/shared';

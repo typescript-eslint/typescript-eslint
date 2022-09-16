@@ -1,13 +1,14 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, {
+import type { TSESLint } from '@typescript-eslint/utils';
+import type {
   MessageIds,
   Options,
 } from '../../../../src/rules/naming-convention';
-import {
+import rule from '../../../../src/rules/naming-convention';
+import type {
   PredefinedFormatsString,
   Selector,
-  selectorTypeToMessageString,
 } from '../../../../src/rules/naming-convention-utils';
+import { selectorTypeToMessageString } from '../../../../src/rules/naming-convention-utils';
 import { RuleTester } from '../../../RuleTester';
 
 export const formatTestNames: Readonly<

@@ -1,4 +1,5 @@
-import { TSESLint, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';

@@ -2,11 +2,11 @@ import debug from 'debug';
 import fs from 'fs';
 import semver from 'semver';
 import * as ts from 'typescript';
-import { Extra } from '../parser-options';
-import { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
+import type { Extra } from '../parser-options';
+import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
+import type { CanonicalPath } from './shared';
 import {
   canonicalDirname,
-  CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   getCanonicalFileName,
   getModuleResolver,

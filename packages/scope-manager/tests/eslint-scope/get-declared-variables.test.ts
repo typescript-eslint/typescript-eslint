@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 import { parse } from '../util/parse';
 import { analyze } from '../../src/analyze';

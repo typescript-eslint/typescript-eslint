@@ -1,5 +1,6 @@
 import type { SourceFile } from 'typescript';
-import { convertError, Converter, ASTMaps } from './convert';
+import type { ASTMaps } from './convert';
+import { convertError, Converter } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import type { Extra } from './parser-options';

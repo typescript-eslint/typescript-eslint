@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { TSESTree, AST_TOKEN_TYPES } from '../ts-estree';
+import type { TSESTree, AST_TOKEN_TYPES } from '../ts-estree';
 
 namespace AST {
   export type TokenType = AST_TOKEN_TYPES;

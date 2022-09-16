@@ -1,6 +1,6 @@
 import * as eslintUtils from 'eslint-utils';
-import * as TSESLint from '../../ts-eslint';
-import { TSESTree } from '../../ts-estree';
+import type * as TSESLint from '../../ts-eslint';
+import type { TSESTree } from '../../ts-estree';
 
 /**
  * Get the proper location of a given function node to report.

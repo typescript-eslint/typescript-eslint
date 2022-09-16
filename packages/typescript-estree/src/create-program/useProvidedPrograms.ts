@@ -2,12 +2,9 @@ import debug from 'debug';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
-import { Extra } from '../parser-options';
-import {
-  ASTAndProgram,
-  CORE_COMPILER_OPTIONS,
-  getAstFromProgram,
-} from './shared';
+import type { Extra } from '../parser-options';
+import type { ASTAndProgram } from './shared';
+import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 

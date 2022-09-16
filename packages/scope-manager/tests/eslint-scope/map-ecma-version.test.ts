@@ -1,6 +1,6 @@
 import { analyze } from '../../src/analyze';
 import { Referencer } from '../../src/referencer';
-import { TSESTree, EcmaVersion, Lib } from '@typescript-eslint/types';
+import type { TSESTree, EcmaVersion, Lib } from '@typescript-eslint/types';
 
 jest.mock('../../src/referencer');
 jest.mock('../../src/ScopeManager');

@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { Linter as ESLintLinter } from 'eslint';
-import { TSESTree, ParserServices } from '../ts-estree';
-import { ParserOptions as TSParserOptions } from './ParserOptions';
-import {
+import type { TSESTree, ParserServices } from '../ts-estree';
+import type { ParserOptions as TSParserOptions } from './ParserOptions';
+import type {
   RuleCreateFunction,
   RuleFix,
   RuleModule,
   SharedConfigurationSettings,
 } from './Rule';
-import { Scope } from './Scope';
-import { SourceCode } from './SourceCode';
+import type { Scope } from './Scope';
+import type { SourceCode } from './SourceCode';
 
 declare class LinterBase {
   /**
