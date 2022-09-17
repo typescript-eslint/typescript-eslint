@@ -11,7 +11,7 @@ import ErrorsViewer from '@site/src/components/ErrorsViewer';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type Monaco from 'monaco-editor';
-import React, { useCallback, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
 import ASTViewerESTree from './ASTViewerESTree';
@@ -70,6 +70,34 @@ function Playground(): JSX.Element {
   const [position, setPosition] = useState<Monaco.Position | null>(null);
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
+  const [editorWidth, setEditorWidth] = useState<number | undefined>();
+  const [dragging, setDragging] = useState<boolean>(false);
+  const [editorLeftEdge, setEditorLeftEdge] = useState<number | undefined>();
+  const sourceCodeContainerRef = React.createRef<HTMLDivElement>();
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent): void => {
+      if (dragging && editorLeftEdge) {
+        setEditorWidth(e.clientX - editorLeftEdge);
+      }
+    };
+    const handleMouseUp = (): void => {
+      setDragging(false);
+    };
+
+    const boundingRect =
+      sourceCodeContainerRef.current?.getBoundingClientRect();
+    setEditorLeftEdge(boundingRect?.x);
+    setEditorWidth(boundingRect?.width);
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return (): void => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [sourceCodeContainerRef]);
 
   const updateModal = useCallback(
     (config?: Partial<ConfigModel>) => {
@@ -105,39 +133,56 @@ function Playground(): JSX.Element {
         />
       </div>
       <div className={styles.codeBlocks}>
-        <div className={clsx(styles.sourceCode)}>
-          {isLoading && <Loader />}
-          <EditorTabs
-            tabs={['code', 'tsconfig', 'eslintrc']}
-            activeTab={activeTab}
-            change={setTab}
-            showModal={(): void => setShowModal(activeTab)}
-          />
-          <div className={styles.tabCode}>
-            <EditorEmbed />
+        <div
+          className={styles.sourceCodeContainer}
+          ref={sourceCodeContainerRef}
+          style={editorWidth ? { width: editorWidth } : {}}
+        >
+          <div
+            className={clsx(styles.sourceCode)}
+            style={editorWidth ? { width: editorWidth - 10 } : {}}
+          >
+            {isLoading && <Loader />}
+            <EditorTabs
+              tabs={['code', 'tsconfig', 'eslintrc']}
+              activeTab={activeTab}
+              change={setTab}
+              showModal={(): void => setShowModal(activeTab)}
+            />
+            <div className={styles.tabCode}>
+              <EditorEmbed />
+            </div>
+            <LoadingEditor
+              ts={state.ts}
+              jsx={state.jsx}
+              activeTab={activeTab}
+              code={state.code}
+              tsconfig={state.tsconfig}
+              eslintrc={state.eslintrc}
+              darkTheme={colorMode === 'dark'}
+              sourceType={state.sourceType}
+              showAST={state.showAST}
+              onEsASTChange={setEsAst}
+              onTsASTChange={setTsAST}
+              onScopeChange={setScope}
+              onMarkersChange={setMarkers}
+              sizeChanged={dragging}
+              decoration={selectedRange}
+              onChange={setState}
+              onLoaded={(ruleNames, tsVersions): void => {
+                setRuleNames(ruleNames);
+                setTSVersion(tsVersions);
+                setIsLoading(false);
+              }}
+              onSelect={setPosition}
+            />
           </div>
-          <LoadingEditor
-            ts={state.ts}
-            jsx={state.jsx}
-            activeTab={activeTab}
-            code={state.code}
-            tsconfig={state.tsconfig}
-            eslintrc={state.eslintrc}
-            darkTheme={colorMode === 'dark'}
-            sourceType={state.sourceType}
-            showAST={state.showAST}
-            onEsASTChange={setEsAst}
-            onTsASTChange={setTsAST}
-            onScopeChange={setScope}
-            onMarkersChange={setMarkers}
-            decoration={selectedRange}
-            onChange={setState}
-            onLoaded={(ruleNames, tsVersions): void => {
-              setRuleNames(ruleNames);
-              setTSVersion(tsVersions);
-              setIsLoading(false);
+          <div
+            className={styles.sourceCode__rightResizeHandle}
+            onMouseDown={(): void => {
+              setDragging(true);
             }}
-            onSelect={setPosition}
+            role="presentation"
           />
         </div>
         <div className={styles.astViewer}>

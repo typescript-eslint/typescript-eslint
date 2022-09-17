@@ -41,6 +41,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   onMarkersChange,
   onChange,
   onSelect,
+  sizeChanged,
   sandboxInstance,
   showAST,
   sourceType,
@@ -230,7 +231,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     resize();
-  }, [resize, showAST]);
+  }, [resize, showAST, sizeChanged]);
 
   useEffect(() => {
     window.addEventListener('resize', resize);

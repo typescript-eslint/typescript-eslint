@@ -13,5 +13,6 @@ export interface CommonEditorProps extends ConfigModel {
   readonly onEsASTChange: (value: undefined | TSESTree.Program) => void;
   readonly onScopeChange: (value: undefined | Record<string, unknown>) => void;
   readonly onMarkersChange: (value: ErrorGroup[] | Error) => void;
+  readonly sizeChanged: boolean;
   readonly onSelect: (position: Monaco.Position | null) => void;
 }

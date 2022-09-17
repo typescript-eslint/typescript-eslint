@@ -11,12 +11,25 @@
 
 .sourceCode {
   height: 100%;
-  width: 50%;
   border: 1px solid var(--playground-secondary-color);
+}
+
+.sourceCodeContainer {
+  display: flex;
+}
+
+.sourceCode__rightResizeHandle {
+  cursor: ew-resize;
+  width: 10px;
+  padding-left: -10px;
+  margin-left: auto;
 }
 
 .codeBlocks {
   display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   flex-direction: row;
   height: 100%;
   width: calc(100vw - 20rem);
@@ -24,13 +37,14 @@
 
 .astViewer {
   height: 100%;
-  width: 50%;
+  width: 100%;
   border: 1px solid var(--playground-secondary-color);
   padding: 0;
   overflow: auto;
   word-wrap: initial;
   white-space: nowrap;
   background: var(--code-editor-bg);
+  z-index: var(--ifm-z-index-fixed);
 }
 
 .codeContainer {
@@ -96,7 +110,7 @@
   }
 
   .astViewer,
-  .sourceCode {
+  .sourceCodeContainer {
     height: 30rem;
     width: 100%;
   }
