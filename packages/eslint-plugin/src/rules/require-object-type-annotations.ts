@@ -8,7 +8,8 @@ export default util.createRule({
   name: 'require-object-type-annotations',
   meta: {
     docs: {
-      description: '',
+      description:
+        'Require type annotations for objects where there is no contextual type.',
       requiresTypeChecking: true,
       recommended: false,
     },
