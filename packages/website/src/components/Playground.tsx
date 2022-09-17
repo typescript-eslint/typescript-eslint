@@ -1,3 +1,5 @@
+import './SplitPaneResize.css';
+
 import { useColorMode } from '@docusaurus/theme-common';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 import ConfigEslint from '@site/src/components/config/ConfigEslint';
@@ -12,6 +14,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type Monaco from 'monaco-editor';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import SplitPane from 'react-split-pane';
 import type { SourceFile } from 'typescript';
 
 import ASTViewerESTree from './ASTViewerESTree';
@@ -70,34 +73,19 @@ function Playground(): JSX.Element {
   const [position, setPosition] = useState<Monaco.Position | null>(null);
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
-  const [editorWidth, setEditorWidth] = useState<number | undefined>();
-  const [dragging, setDragging] = useState<boolean>(false);
-  const [editorLeftEdge, setEditorLeftEdge] = useState<number | undefined>();
-  const sourceCodeContainerRef = React.createRef<HTMLDivElement>();
+  const [editorDragging, setEditorDragging] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent): void => {
-      if (dragging && editorLeftEdge) {
-        setEditorWidth(e.clientX - editorLeftEdge);
-      }
-    };
     const handleMouseUp = (): void => {
-      setDragging(false);
+      setEditorDragging(false);
     };
 
-    const boundingRect =
-      sourceCodeContainerRef.current?.getBoundingClientRect();
-    setEditorLeftEdge(boundingRect?.x);
-    setEditorWidth(boundingRect?.width);
-
-    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
 
     return (): void => {
-      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [sourceCodeContainerRef]);
+  }, []);
 
   const updateModal = useCallback(
     (config?: Partial<ConfigModel>) => {
@@ -124,90 +112,92 @@ function Playground(): JSX.Element {
         config={state.tsconfig}
         onClose={updateModal}
       />
-      <div className={clsx(styles.options, 'thin-scrollbar')}>
-        <OptionsSelector
-          isLoading={isLoading}
-          state={state}
-          tsVersions={tsVersions}
-          setState={setState}
-        />
-      </div>
       <div className={styles.codeBlocks}>
-        <div
-          className={styles.sourceCodeContainer}
-          ref={sourceCodeContainerRef}
-          style={editorWidth ? { width: editorWidth } : {}}
+        <SplitPane
+          split="vertical"
+          minSize="10%"
+          defaultSize="20rem"
+          maxSize={
+            20 * parseFloat(getComputedStyle(document.documentElement).fontSize)
+          }
         >
-          <div
-            className={clsx(styles.sourceCode)}
-            style={editorWidth ? { width: editorWidth - 10 } : {}}
-          >
-            {isLoading && <Loader />}
-            <EditorTabs
-              tabs={['code', 'tsconfig', 'eslintrc']}
-              activeTab={activeTab}
-              change={setTab}
-              showModal={(): void => setShowModal(activeTab)}
-            />
-            <div className={styles.tabCode}>
-              <EditorEmbed />
-            </div>
-            <LoadingEditor
-              ts={state.ts}
-              jsx={state.jsx}
-              activeTab={activeTab}
-              code={state.code}
-              tsconfig={state.tsconfig}
-              eslintrc={state.eslintrc}
-              darkTheme={colorMode === 'dark'}
-              sourceType={state.sourceType}
-              showAST={state.showAST}
-              onEsASTChange={setEsAst}
-              onTsASTChange={setTsAST}
-              onScopeChange={setScope}
-              onMarkersChange={setMarkers}
-              sizeChanged={dragging}
-              decoration={selectedRange}
-              onChange={setState}
-              onLoaded={(ruleNames, tsVersions): void => {
-                setRuleNames(ruleNames);
-                setTSVersion(tsVersions);
-                setIsLoading(false);
-              }}
-              onSelect={setPosition}
+          <div className={clsx(styles.options, 'thin-scrollbar')}>
+            <OptionsSelector
+              isLoading={isLoading}
+              state={state}
+              tsVersions={tsVersions}
+              setState={setState}
             />
           </div>
-          <div
-            className={styles.sourceCode__rightResizeHandle}
-            onMouseDown={(): void => {
-              setDragging(true);
+          <SplitPane
+            split="vertical"
+            minSize="10%"
+            defaultSize="50%"
+            onDragStarted={(): void => {
+              setEditorDragging(true);
             }}
-            role="presentation"
-          />
-        </div>
-        <div className={styles.astViewer}>
-          {(state.showAST === 'ts' && tsAst && (
-            <ASTViewerTS
-              value={tsAst}
-              position={position}
-              onSelectNode={setSelectedRange}
-            />
-          )) ||
-            (state.showAST === 'scope' && scope && (
-              <ASTViewerScope
-                value={scope}
-                position={position}
-                onSelectNode={setSelectedRange}
+          >
+            <div className={clsx(styles.sourceCode)}>
+              {isLoading && <Loader />}
+              <EditorTabs
+                tabs={['code', 'tsconfig', 'eslintrc']}
+                activeTab={activeTab}
+                change={setTab}
+                showModal={(): void => setShowModal(activeTab)}
               />
-            )) ||
-            (state.showAST === 'es' && esAst && (
-              <ASTViewerESTree
-                value={esAst}
-                position={position}
-                onSelectNode={setSelectedRange}
+              <div className={styles.tabCode}>
+                <EditorEmbed />
+              </div>
+              <LoadingEditor
+                ts={state.ts}
+                jsx={state.jsx}
+                activeTab={activeTab}
+                code={state.code}
+                tsconfig={state.tsconfig}
+                eslintrc={state.eslintrc}
+                darkTheme={colorMode === 'dark'}
+                sourceType={state.sourceType}
+                showAST={state.showAST}
+                onEsASTChange={setEsAst}
+                onTsASTChange={setTsAST}
+                onScopeChange={setScope}
+                onMarkersChange={setMarkers}
+                sizeChanged={editorDragging}
+                decoration={selectedRange}
+                onChange={setState}
+                onLoaded={(ruleNames, tsVersions): void => {
+                  setRuleNames(ruleNames);
+                  setTSVersion(tsVersions);
+                  setIsLoading(false);
+                }}
+                onSelect={setPosition}
               />
-            )) || <ErrorsViewer value={markers} />}
-        </div>
+            </div>
+            <div className={styles.astViewer}>
+              {(state.showAST === 'ts' && tsAst && (
+                <ASTViewerTS
+                  value={tsAst}
+                  position={position}
+                  onSelectNode={setSelectedRange}
+                />
+              )) ||
+                (state.showAST === 'scope' && scope && (
+                  <ASTViewerScope
+                    value={scope}
+                    position={position}
+                    onSelectNode={setSelectedRange}
+                  />
+                )) ||
+                (state.showAST === 'es' && esAst && (
+                  <ASTViewerESTree
+                    value={esAst}
+                    position={position}
+                    onSelectNode={setSelectedRange}
+                  />
+                )) || <ErrorsViewer value={markers} />}
+            </div>
+          </SplitPane>
+        </SplitPane>
       </div>
     </div>
   );

@@ -33,8 +33,12 @@
     "prism-react-renderer": "^1.3.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-split-pane": "^0.1.92",
     "remark-docusaurus-tabs": "^0.2.0",
     "typescript": "*"
+  },
+  "resolutions": {
+    "react": "^18.0.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "~2.0.1",

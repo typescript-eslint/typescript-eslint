@@ -7,23 +7,12 @@
   width: 20rem;
   background: var(--playground-main-color);
   overflow: auto;
+  z-index: 1;
 }
 
 .sourceCode {
   height: 100%;
   border: 1px solid var(--playground-secondary-color);
-}
-
-.sourceCodeContainer {
-  display: flex;
-  width: 100%;
-}
-
-.sourceCode__rightResizeHandle {
-  cursor: ew-resize;
-  width: 10px;
-  padding-left: -10px;
-  margin-left: auto;
 }
 
 .codeBlocks {
@@ -111,7 +100,7 @@
   }
 
   .astViewer,
-  .sourceCodeContainer {
+  .sourceCode {
     height: 30rem;
   }
 
