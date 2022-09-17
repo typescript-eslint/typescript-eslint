@@ -16,6 +16,7 @@
 
 .sourceCodeContainer {
   display: flex;
+  width: 100%;
 }
 
 .sourceCode__rightResizeHandle {
@@ -112,7 +113,6 @@
   .astViewer,
   .sourceCodeContainer {
     height: 30rem;
-    width: 100%;
   }
 
   .astViewer {
