@@ -1,5 +1,5 @@
 ---
-description: 'TODO'
+description: 'Require type annotations for objects where there is no contextual type.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
