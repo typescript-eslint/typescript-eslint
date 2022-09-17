@@ -20,11 +20,11 @@ export default util.createRule({
   },
   defaultOptions: [],
   create: (context): RuleListener => {
+    const parserServices = util.getParserServices(context);
+    const checker = parserServices.program.getTypeChecker();
+
     return {
       ObjectExpression: (esNode): void => {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
-
         const tsNode: ts.ObjectLiteralExpression =
           parserServices.esTreeNodeToTSNodeMap.get(esNode);
 
