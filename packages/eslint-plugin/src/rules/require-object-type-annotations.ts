@@ -6,7 +6,6 @@ import * as util from '../util';
 
 export default util.createRule({
   name: 'require-object-type-annotations',
-  defaultOptions: [],
   meta: {
     docs: {
       description: '',
@@ -19,6 +18,7 @@ export default util.createRule({
     schema: [],
     type: 'problem',
   },
+  defaultOptions: [],
   create: (context): RuleListener => {
     const listener = (esNode: TSESTree.ObjectExpression): void => {
       const parserServices = util.getParserServices(context);
