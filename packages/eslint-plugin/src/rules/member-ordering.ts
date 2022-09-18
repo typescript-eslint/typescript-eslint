@@ -44,11 +44,7 @@ type AlphabeticalOrder =
   | 'natural'
   | 'natural-case-insensitive';
 
-// todo: document as-written and what these are in general (lol)
 type Order = AlphabeticalOrder | 'as-written';
-// is this inherently case insensitive? ['a', 'B']
-// I think so???
-// | 'natural-case-insensitive';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
