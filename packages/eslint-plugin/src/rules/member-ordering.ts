@@ -1,10 +1,3 @@
-// todo complain somewhere about this:
-/*
-error An unexpected error occurred: "expected workspace package to exist for \"jest-snapshot\"".
-info If you think this is a bug, please open a bug report with the information provided in "/Users/josh/repos/typescript-eslint/packages/eslint-plugin/yarn-error.log".
-info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
-*/
-
 import naturalCompare from 'natural-compare-lite';
 import {
   AST_NODE_TYPES,
@@ -48,7 +41,8 @@ type MemberType = BaseMemberType | BaseMemberType[];
 type AlphabeticalOrder =
   | 'alphabetically'
   | 'alphabetically-case-insensitive'
-  | 'natural';
+  | 'natural'
+  | 'natural-case-insensitive';
 
 // todo: document as-written and what these are in general (lol)
 type Order = AlphabeticalOrder | 'as-written';
@@ -109,6 +103,7 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
         'alphabetically-case-insensitive',
         'as-written',
         'natural',
+        'natural-case-insensitive',
       ],
     },
   },
@@ -693,8 +688,8 @@ export default util.createRule<Options, MessageIds>({
         case 'alphabetically-case-insensitive':
           return name.toLowerCase() < previousName.toLowerCase();
         case 'natural':
-          // todo: call out in PR and tag the plugin owner
-          // (maybe there is actually a user need for case sensitivity)
+          return naturalCompare(name, previousName) !== 1;
+        case 'natural-case-insensitive':
           return (
             naturalCompare(name.toLowerCase(), previousName.toLowerCase()) !== 1
           );

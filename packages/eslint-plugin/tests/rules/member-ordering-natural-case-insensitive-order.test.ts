@@ -18,7 +18,7 @@ interface Example {
       options: [
         {
           default: {
-            order: 'natural',
+            order: 'natural-case-insensitive',
           },
         },
       ],
@@ -28,26 +28,26 @@ interface Example {
 interface Example {
   new (): unknown;
 
-  B1(): void;
-  B5(): void;
-  B10(): void;
   a1(): void;
   a5(): void;
   a10(): void;
+  B1(): void;
+  B5(): void;
+  B10(): void;
 
-  B1: number;
-  B5: number;
-  B10: number;
   a1: number;
   a5: number;
   a10: number;
+  B1: number;
+  B5: number;
+  B10: number;
 }
       `,
       options: [
         {
           default: {
             memberTypes: ['constructor', 'method', 'field'],
-            order: 'natural',
+            order: 'natural-case-insensitive',
           },
         },
       ],
@@ -76,7 +76,7 @@ interface Example {
       options: [
         {
           default: {
-            order: 'natural',
+            order: 'natural-case-insensitive',
           },
         },
       ],
@@ -115,15 +115,6 @@ interface Example {
         {
           column: 3,
           data: {
-            beforeMember: 'a5',
-            member: 'B5',
-          },
-          line: 8,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
             beforeMember: 'B10',
             member: 'B1',
           },
@@ -135,7 +126,7 @@ interface Example {
         {
           default: {
             memberTypes: ['constructor', 'method', 'field'],
-            order: 'natural',
+            order: 'natural-case-insensitive',
           },
         },
       ],
