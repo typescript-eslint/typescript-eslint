@@ -261,6 +261,7 @@ export const rule: eslint.Rule.RuleModule = {
     type: 'suggestion',
     schema: [],
   },
+  defaultOptions: [],
 };
 ```
 
