@@ -65,7 +65,22 @@ export const generatedRuleDocs: Plugin = () => {
       type: 'blockquote',
     } as mdast.Blockquote);
 
-    // 3. Add a rule attributes list...
+    // 3. Add a notice about formatting rules being 🤢
+    if (meta.type === 'layout') {
+      const warningNode = {
+        value: `
+<admonition type="warning">
+  We strongly recommend you do not use this rule or any other formatting linter rules.
+  Use a separate dedicated formatter instead.
+  See <a href="/docs/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
+</admonition>
+`,
+        type: 'jsx',
+      };
+      parent.children.unshift(warningNode);
+    }
+
+    // 4. Add a rule attributes list...
     const attributesH2Index =
       // ...before the first h2, if it exists...
       parent.children.findIndex(
@@ -81,7 +96,7 @@ export const generatedRuleDocs: Plugin = () => {
     };
     parent.children.splice(attributesH2Index, 0, attributesNode);
 
-    // 4. Make sure the appropriate headers exist to place content under
+    // 5. Make sure the appropriate headers exist to place content under
     const [howToUseH2Index, optionsH2Index] = ((): [number, number] => {
       let howToUseH2Index = parent.children.findIndex(
         createH2TextFilter('How to Use'),
@@ -149,7 +164,7 @@ export const generatedRuleDocs: Plugin = () => {
       return [howToUseH2Index, optionsH2Index];
     })();
 
-    // 5. Add a description of how to use / options for the rule
+    // 6. Add a description of how to use / options for the rule
     const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
 
     if (meta.docs.extendsBaseRule) {
@@ -284,7 +299,7 @@ export const generatedRuleDocs: Plugin = () => {
       }
     }
 
-    // 6. Add a notice about coming from ESLint core for extension rules
+    // 7. Add a notice about coming from ESLint core for extension rules
     if (meta.docs.extendsBaseRule) {
       parent.children.push({
         children: [
@@ -316,7 +331,7 @@ export const generatedRuleDocs: Plugin = () => {
       } as mdast.Paragraph);
     }
 
-    // 7. Also add a link to view the rule's source and test code
+    // 8. Also add a link to view the rule's source and test code
     parent.children.push(
       {
         children: [
