@@ -1,9 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-  JSONSchema,
-} from '@typescript-eslint/utils';
+import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';

@@ -1,4 +1,5 @@
 import path from 'path';
+
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
 import { RuleTester } from '../RuleTester';
 

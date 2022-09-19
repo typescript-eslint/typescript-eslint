@@ -1,15 +1,16 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
 } from 'eslint/lib/rules/no-restricted-imports';
-import ignore, { Ignore } from 'ignore';
-import {
-  createRule,
-  deepMerge,
+import type { Ignore } from 'ignore';
+import ignore from 'ignore';
+
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-restricted-imports');

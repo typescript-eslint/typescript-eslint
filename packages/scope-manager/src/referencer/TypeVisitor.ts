@@ -1,8 +1,10 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { Referencer } from './Referencer';
-import { Visitor } from './Visitor';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { ParameterDefinition, TypeDefinition } from '../definition';
 import { ScopeType } from '../scope';
+import type { Referencer } from './Referencer';
+import { Visitor } from './Visitor';
 
 class TypeVisitor extends Visitor {
   readonly #referencer: Referencer;

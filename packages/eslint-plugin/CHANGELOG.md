@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.37.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.2...v5.37.0) (2022-09-12)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [strict-boolean-expressions] check all conditions in a logical operator chain ([#5539](https://github.com/typescript-eslint/typescript-eslint/issues/5539)) ([77d76e2](https://github.com/typescript-eslint/typescript-eslint/commit/77d76e21cdc2e100c729c839c292e82ab7c554c5))
+
+
+
+
+
 ## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
 
 

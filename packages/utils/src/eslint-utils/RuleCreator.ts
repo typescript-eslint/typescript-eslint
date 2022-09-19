@@ -1,8 +1,8 @@
-import {
+import type {
+  RuleContext,
+  RuleListener,
   RuleMetaData,
   RuleMetaDataDocs,
-  RuleListener,
-  RuleContext,
   RuleModule,
 } from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';

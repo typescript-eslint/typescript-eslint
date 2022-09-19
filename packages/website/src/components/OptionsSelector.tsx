@@ -1,23 +1,18 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useCallback } from 'react';
-
 import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
 } from '@docusaurus/theme-common';
-
-import Expander from './layout/Expander';
-import Dropdown from './inputs/Dropdown';
-import Checkbox from './inputs/Checkbox';
-import Tooltip from './inputs/Tooltip';
 import CopyIcon from '@site/src/icons/copy.svg';
+import React, { useCallback } from 'react';
 
 import useDebouncedToggle from './hooks/useDebouncedToggle';
-
+import Checkbox from './inputs/Checkbox';
+import Dropdown from './inputs/Dropdown';
+import Tooltip from './inputs/Tooltip';
+import Expander from './layout/Expander';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
-
 import styles from './OptionsSelector.module.css';
-
 import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {

@@ -5,6 +5,7 @@
 'use strict';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../../src/rules/no-shadow';
 import { RuleTester } from '../../RuleTester';
 

@@ -1,19 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import styles from './ASTViewer.module.css';
+import HiddenItem from './HiddenItem';
+import ItemGroup from './ItemGroup';
+import { SimpleItem } from './SimpleItem';
 import type {
-  GenericParams,
   ASTViewerModelMap,
   ASTViewerModelMapComplex,
   ASTViewerModelMapSimple,
+  GenericParams,
 } from './types';
-
 import { hasChildInRange, isArrayInRange, isInRange } from './utils';
-
-import styles from './ASTViewer.module.css';
-
-import ItemGroup from './ItemGroup';
-import HiddenItem from './HiddenItem';
-import { SimpleItem } from './SimpleItem';
 
 export function ComplexItem({
   data,

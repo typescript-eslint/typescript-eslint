@@ -1,5 +1,9 @@
-import type { SelectedPosition, SelectedRange } from './types';
-import { ASTViewerModel, ASTViewerModelComplex } from './types';
+import type {
+  ASTViewerModel,
+  ASTViewerModelComplex,
+  SelectedPosition,
+  SelectedRange,
+} from './types';
 
 export function isWithinRange(
   loc: SelectedPosition,

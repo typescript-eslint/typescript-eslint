@@ -1,9 +1,10 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import {
-  expectToBeGlobalScope,
   expectToBeFunctionScope,
-  expectToBeModuleScope,
+  expectToBeGlobalScope,
   expectToBeImportBindingDefinition,
+  expectToBeModuleScope,
   getRealVariables,
 } from '../util';
 import { parseAndAnalyze } from '../util/parse';
