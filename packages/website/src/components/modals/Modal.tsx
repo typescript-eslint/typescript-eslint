@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
-import React, { MouseEvent, useCallback, useEffect } from 'react';
-import clsx from 'clsx';
-import styles from './Modal.module.css';
 import CloseIcon from '@site/src/icons/close.svg';
+import clsx from 'clsx';
+import type { MouseEvent } from 'react';
+import React, { useCallback, useEffect } from 'react';
+
+import styles from './Modal.module.css';
 
 interface ModalProps {
   readonly header: string;

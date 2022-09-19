@@ -4,7 +4,7 @@
 /* eslint-enable eslint-comments/no-use */
 
 import rule from '../../src/rules/no-extra-parens';
-import { RuleTester, batchedSingleLineTests } from '../RuleTester';
+import { batchedSingleLineTests, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {

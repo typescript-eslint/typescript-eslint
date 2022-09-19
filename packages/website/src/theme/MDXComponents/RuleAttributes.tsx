@@ -1,6 +1,6 @@
-import React from 'react';
-import type { TSESLint } from '@typescript-eslint/utils';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type { TSESLint } from '@typescript-eslint/utils';
+import React from 'react';
 
 import styles from './RuleAttributes.module.css';
 

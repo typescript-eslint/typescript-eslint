@@ -1,9 +1,9 @@
 import fs from 'fs';
-import path from 'path';
-
 import { marked } from 'marked';
-import rules from '../src/rules';
+import path from 'path';
 import { titleCase } from 'title-case';
+
+import rules from '../src/rules';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);

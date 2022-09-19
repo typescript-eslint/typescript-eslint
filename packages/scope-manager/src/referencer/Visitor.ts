@@ -1,10 +1,11 @@
-import { TSESTree } from '@typescript-eslint/types';
-import { VisitorBase, VisitorOptions } from './VisitorBase';
-import {
-  PatternVisitor,
+import type { TSESTree } from '@typescript-eslint/types';
+
+import type {
   PatternVisitorCallback,
   PatternVisitorOptions,
 } from './PatternVisitor';
+import { PatternVisitor } from './PatternVisitor';
+import { VisitorBase, VisitorOptions } from './VisitorBase';
 
 interface VisitPatternOptions extends PatternVisitorOptions {
   processRightHandNodes?: boolean;

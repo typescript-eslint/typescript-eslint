@@ -1,4 +1,5 @@
 import path from 'path';
+
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { RuleTester } from '../RuleTester';
 

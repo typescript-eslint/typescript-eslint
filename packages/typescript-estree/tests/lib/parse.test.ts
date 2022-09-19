@@ -1,10 +1,11 @@
 import debug from 'debug';
 import { join, resolve } from 'path';
+
 import * as parser from '../../src';
-import { TSESTreeOptions } from '../../src/parser-options';
-import * as sharedParserUtilsModule from '../../src/create-program/shared';
-import { createSnapshotTestBlock } from '../../tools/test-utils';
 import * as astConverterModule from '../../src/ast-converter';
+import * as sharedParserUtilsModule from '../../src/create-program/shared';
+import type { TSESTreeOptions } from '../../src/parser-options';
+import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
@@ -60,10 +61,10 @@ describe('parseWithNodeMaps()', () => {
     it('should simple code', () => {
       const result = parser.parseWithNodeMaps('1;');
       expect(result.ast).toMatchInlineSnapshot(`
-        Object {
-          "body": Array [
-            Object {
-              "expression": Object {
+        {
+          "body": [
+            {
+              "expression": {
                 "raw": "1",
                 "type": "Literal",
                 "value": 1,

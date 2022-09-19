@@ -1,5 +1,5 @@
-import * as fs from 'fs';
 import fetch from 'cross-fetch';
+import * as fs from 'fs';
 import * as path from 'path';
 
 const baseHost = 'https://www.staging-typescript.org';
