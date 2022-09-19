@@ -103,6 +103,11 @@ ruleTester.run('require-object-type-annotations', rule, {
         f({ prop: 1 });
       `,
     },
+    {
+      code: `
+        [1, 2, 3].map((id): { prop: number } => ({ prop: id }));
+      `,
+    },
   ],
   invalid: [
     {
@@ -148,6 +153,12 @@ ruleTester.run('require-object-type-annotations', rule, {
       code: `
         declare const f: <T>(x: { [key: string]: T }) => T;
         f({ prop: { prop: 1 } });
+      `,
+      errors: [{ messageId: 'forbidden' }],
+    },
+    {
+      code: `
+        [1, 2, 3].map(id => ({ prop: id }));
       `,
       errors: [{ messageId: 'forbidden' }],
     },
