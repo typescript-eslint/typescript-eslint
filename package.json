@@ -121,6 +121,15 @@
     "jest-resolve": "^29",
     "jest-snapshot": "^29",
     "jest-util": "^29",
-    "pretty-format": "^29"
+    "pretty-format": "^29",
+    "//": "Stub out unnecessary swc packages to improve install size and speed",
+    "@swc/core-android-arm-eabi": "npm:dummypkg-a@1.0.0",
+    "@swc/core-android-arm64": "npm:dummypkg-a@1.0.0",
+    "@swc/core-freebsd-x64": "npm:dummypkg-a@1.0.0",
+    "@swc/core-linux-arm-gnueabihf": "npm:dummypkg-a@1.0.0",
+    "@swc/core-linux-arm64-gnu": "npm:dummypkg-a@1.0.0",
+    "@swc/core-linux-arm64-musl": "npm:dummypkg-a@1.0.0",
+    "@swc/core-win32-arm64-msvc": "npm:dummypkg-a@1.0.0",
+    "@swc/core-win32-ia32-msvc": "npm:dummypkg-a@1.0.0"
   }
 }
