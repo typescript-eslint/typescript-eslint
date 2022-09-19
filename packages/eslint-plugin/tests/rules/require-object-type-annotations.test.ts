@@ -97,6 +97,12 @@ ruleTester.run('require-object-type-annotations', rule, {
         const v: MyType = { ...union };
       `,
     },
+    {
+      code: `
+        declare const f: (x: unknown) => unknown;
+        f({ prop: 1 });
+      `,
+    },
   ],
   invalid: [
     {
