@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import clsx from 'clsx';
-
-import styles from './ConfigEditor.module.css';
-
-import Text from '../inputs/Text';
-import Checkbox from '../inputs/Checkbox';
-import useFocus from '../hooks/useFocus';
-import Modal from '@site/src/components/modals/Modal';
 import Dropdown from '@site/src/components/inputs/Dropdown';
+import Modal from '@site/src/components/modals/Modal';
+import clsx from 'clsx';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
+
+import useFocus from '../hooks/useFocus';
+import Checkbox from '../inputs/Checkbox';
+import Text from '../inputs/Text';
+import styles from './ConfigEditor.module.css';
 
 export interface ConfigOptionsField {
   key: string;

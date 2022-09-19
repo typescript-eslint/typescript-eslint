@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 
 function getSpecificNode<

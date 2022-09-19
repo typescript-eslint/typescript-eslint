@@ -1,13 +1,13 @@
 import {
+  isBinaryExpression,
   isCallExpression,
-  isJsxExpression,
   isIdentifier,
+  isJsxExpression,
   isNewExpression,
   isParameterDeclaration,
+  isPropertyAssignment,
   isPropertyDeclaration,
   isVariableDeclaration,
-  isPropertyAssignment,
-  isBinaryExpression,
 } from 'tsutils';
 import * as ts from 'typescript';
 

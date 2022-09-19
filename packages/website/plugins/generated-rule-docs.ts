@@ -1,15 +1,15 @@
+import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
+import * as tseslintParser from '@typescript-eslint/parser';
 import * as fs from 'fs';
-import type * as unist from 'unist';
-import * as mdast from 'mdast';
+import type { JSONSchema7 } from 'json-schema';
+import type { JSONSchema } from 'json-schema-to-typescript';
+import { compile } from 'json-schema-to-typescript';
+import type * as mdast from 'mdast';
+import { EOL } from 'os';
 import * as path from 'path';
 import { format } from 'prettier';
 import type { Plugin } from 'unified';
-import { compile, JSONSchema } from 'json-schema-to-typescript';
-
-import * as tseslintParser from '@typescript-eslint/parser';
-import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
-import { EOL } from 'os';
-import { JSONSchema7 } from 'json-schema';
+import type * as unist from 'unist';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -149,6 +149,11 @@ export const generatedRuleDocs: Plugin = () => {
     const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
 
     if (meta.docs.extendsBaseRule) {
+      const extendsBaseRuleName =
+        typeof meta.docs.extendsBaseRule === 'string'
+          ? meta.docs.extendsBaseRule
+          : file.stem;
+
       root.children.splice(optionsH2Index + 1, 0, {
         children: [
           {
@@ -159,7 +164,7 @@ export const generatedRuleDocs: Plugin = () => {
             children: [
               {
                 type: 'inlineCode',
-                value: `eslint/${file.stem}`,
+                value: `eslint/${extendsBaseRuleName}`,
               },
               {
                 type: 'text',
@@ -167,7 +172,7 @@ export const generatedRuleDocs: Plugin = () => {
               },
             ],
             type: 'link',
-            url: `https://eslint.org/docs/rules/${file.stem}#options`,
+            url: `https://eslint.org/docs/rules/${extendsBaseRuleName}#options`,
           },
           {
             type: 'text',
@@ -183,7 +188,7 @@ export const generatedRuleDocs: Plugin = () => {
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
   // Note: you must disable the base rule as it can report incorrect errors
-  "${file.stem}": "off",
+  "${extendsBaseRuleName}": "off",
   "@typescript-eslint/${file.stem}": "${optionLevel}"
 };`,
       } as mdast.Code);
@@ -290,7 +295,7 @@ export const generatedRuleDocs: Plugin = () => {
           {
             type: 'link',
             title: null,
-            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${file.stem}.md`,
+            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${meta.docs.extendsBaseRule}.md`,
             children: [
               {
                 type: 'text',

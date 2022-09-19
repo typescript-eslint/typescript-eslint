@@ -1,5 +1,5 @@
 import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const rule = getESLintCoreRule('arrow-parens');
 

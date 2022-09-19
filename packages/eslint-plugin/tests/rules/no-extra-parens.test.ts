@@ -4,7 +4,7 @@
 /* eslint-enable eslint-comments/no-use */
 
 import rule from '../../src/rules/no-extra-parens';
-import { RuleTester, batchedSingleLineTests } from '../RuleTester';
+import { batchedSingleLineTests, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -226,6 +226,17 @@ switch (foo) { case 1: case (<2>2): break; default: break; }
           nestedBinaryExpressions: false,
         },
       ],
+    }),
+    ...batchedSingleLineTests({
+      code: `
+declare const f: <T>(x: T) => any
+f<(number | string)[]>(['a', 1])
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     }),
   ],
 

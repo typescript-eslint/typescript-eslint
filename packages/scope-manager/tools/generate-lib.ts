@@ -1,10 +1,12 @@
-import { TSESTree, AST_TOKEN_TYPES } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import * as fs from 'fs';
 import * as path from 'path';
 import { format, resolveConfig } from 'prettier';
 import rimraf from 'rimraf';
 import * as ts from 'typescript';
-import { ScopeManager, Variable } from '../src';
+
+import type { ScopeManager, Variable } from '../src';
 import { parseAndAnalyze } from '../tests/util/parse';
 
 const libMap = new Map(ts.libMap);
