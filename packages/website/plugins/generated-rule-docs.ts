@@ -29,9 +29,13 @@ const eslintPluginDirectory = path.resolve(
   path.join(__dirname, '../../eslint-plugin'),
 );
 
+function nodeIsParent(node: unist.Node<unist.Data>): node is unist.Parent {
+  return 'children' in node;
+}
+
 export const generatedRuleDocs: Plugin = () => {
   return async (root, file) => {
-    if (file.stem == null) {
+    if (!nodeIsParent(root) || file.stem == null) {
       return;
     }
 
@@ -41,16 +45,14 @@ export const generatedRuleDocs: Plugin = () => {
       return;
     }
 
-    const parent = root as unist.Parent;
-
     // 1. Remove the " 🛑 This file is source code, not the primary documentation location! 🛑"
-    parent.children.splice(
-      parent.children.findIndex(v => v.type === 'blockquote'),
+    root.children.splice(
+      root.children.findIndex(v => v.type === 'blockquote'),
       1,
     );
 
     // 2. Add a description of the rule at the top of the file
-    parent.children.unshift({
+    root.children.unshift({
       children: [
         {
           children: meta.docs.description
@@ -77,37 +79,33 @@ export const generatedRuleDocs: Plugin = () => {
 `,
         type: 'jsx',
       };
-      parent.children.unshift(warningNode);
+      root.children.unshift(warningNode);
     }
 
-    // 4. Add a rule attributes list...
-    const attributesH2Index =
-      // ...before the first h2, if it exists...
-      parent.children.findIndex(
-        child => nodeIsHeading(child) && child.depth === 2,
-      ) ??
-      // ...or at the very end, if not.
-      parent.children.length;
+    // 4. Add a rule attributes list before the first h2.
+    const attributesH2Index = root.children.findIndex(
+      child => nodeIsHeading(child) && child.depth === 2,
+    );
 
     // The actual content will be injected on client side.
     const attributesNode = {
       type: 'jsx',
       value: `<rule-attributes name="${file.stem}" />`,
     };
-    parent.children.splice(attributesH2Index, 0, attributesNode);
+    root.children.splice(attributesH2Index, 0, attributesNode);
 
     // 5. Make sure the appropriate headers exist to place content under
     const [howToUseH2Index, optionsH2Index] = ((): [number, number] => {
-      let howToUseH2Index = parent.children.findIndex(
+      let howToUseH2Index = root.children.findIndex(
         createH2TextFilter('How to Use'),
       );
-      let optionsH2Index = parent.children.findIndex(
+      let optionsH2Index = root.children.findIndex(
         createH2TextFilter('Options'),
       );
-      const relatedToH2Index = parent.children.findIndex(
+      const relatedToH2Index = root.children.findIndex(
         createH2TextFilter('Related To'),
       );
-      let whenNotToUseItH2Index = parent.children.findIndex(
+      let whenNotToUseItH2Index = root.children.findIndex(
         createH2TextFilter('When Not To Use It'),
       );
 
@@ -123,11 +121,11 @@ export const generatedRuleDocs: Plugin = () => {
           } else {
             howToUseH2Index =
               whenNotToUseItH2Index === -1
-                ? parent.children.length
+                ? root.children.length
                 : ++whenNotToUseItH2Index;
           }
 
-          parent.children.splice(howToUseH2Index, 0, {
+          root.children.splice(howToUseH2Index, 0, {
             children: [
               {
                 type: 'text',
@@ -144,10 +142,10 @@ export const generatedRuleDocs: Plugin = () => {
         optionsH2Index =
           whenNotToUseItH2Index === -1
             ? relatedToH2Index === -1
-              ? parent.children.length
+              ? root.children.length
               : relatedToH2Index
             : whenNotToUseItH2Index;
-        parent.children.splice(optionsH2Index, 0, {
+        root.children.splice(optionsH2Index, 0, {
           children: [
             {
               type: 'text',
@@ -173,7 +171,7 @@ export const generatedRuleDocs: Plugin = () => {
           ? meta.docs.extendsBaseRule
           : file.stem;
 
-      parent.children.splice(optionsH2Index + 1, 0, {
+      root.children.splice(optionsH2Index + 1, 0, {
         children: [
           {
             value: 'See ',
@@ -201,7 +199,7 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'paragraph',
       } as mdast.Paragraph);
 
-      parent.children.splice(howToUseH2Index + 1, 0, {
+      root.children.splice(howToUseH2Index + 1, 0, {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
@@ -212,7 +210,7 @@ export const generatedRuleDocs: Plugin = () => {
 };`,
       } as mdast.Code);
     } else {
-      parent.children.splice(optionsH2Index, 0, {
+      root.children.splice(optionsH2Index, 0, {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
@@ -224,7 +222,7 @@ export const generatedRuleDocs: Plugin = () => {
       } as mdast.Code);
 
       if (meta.schema.length === 0) {
-        parent.children.splice(optionsH2Index + 1, 0, {
+        root.children.splice(optionsH2Index + 1, 0, {
           children: [
             {
               type: 'text',
@@ -249,7 +247,7 @@ export const generatedRuleDocs: Plugin = () => {
               }
             : meta.schema;
 
-        parent.children.splice(
+        root.children.splice(
           optionsH2Index + 2,
           0,
           {
@@ -301,7 +299,7 @@ export const generatedRuleDocs: Plugin = () => {
 
     // 7. Add a notice about coming from ESLint core for extension rules
     if (meta.docs.extendsBaseRule) {
-      parent.children.push({
+      root.children.push({
         children: [
           {
             type: 'jsx',
@@ -332,7 +330,7 @@ export const generatedRuleDocs: Plugin = () => {
     }
 
     // 8. Also add a link to view the rule's source and test code
-    parent.children.push(
+    root.children.push(
       {
         children: [
           {
