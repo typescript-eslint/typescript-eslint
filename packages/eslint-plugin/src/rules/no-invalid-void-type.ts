@@ -128,6 +128,20 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     /**
+     * @brief checks if the generic type parameter extends void
+     */
+    function checkExtendedVoid(node: TSESTree.TSVoidKeyword): void {
+      if (node.parent.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword) {
+        return;
+      }
+
+      context.report({
+        messageId: 'invalidVoidNotReturnOrGeneric',
+        node: node.parent.constraint,
+      });
+    }
+
+    /**
      * @brief checks that a union containing void is valid
      * @return true if every member of the union is specified as a valid type in
      * validUnionMembers, or is a valid generic type parametrized by void
@@ -159,6 +173,15 @@ export default util.createRule<[Options], MessageIds>({
           node.parent.parent.type === AST_NODE_TYPES.TSTypeReference
         ) {
           checkGenericTypeArgument(node);
+          return;
+        }
+
+        // allow <T = void> if allowInGenericTypeArguments is specified, and report if the generic type parameter extends void
+        if (
+          allowInGenericTypeArguments &&
+          node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
+        ) {
+          checkExtendedVoid(node);
           return;
         }
 
