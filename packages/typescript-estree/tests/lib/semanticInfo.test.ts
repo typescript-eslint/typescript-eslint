@@ -2,14 +2,13 @@ import * as fs from 'fs';
 import glob from 'glob';
 import * as path from 'path';
 import * as ts from 'typescript';
+
 import { clearWatchCaches } from '../../src/create-program/createWatchProgram';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
-import {
-  parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
-} from '../../src/parser';
-import { TSESTreeOptions } from '../../src/parser-options';
-import { TSESTree } from '../../src/ts-estree';
+import type { ParseAndGenerateServicesResult } from '../../src/parser';
+import { parseAndGenerateServices } from '../../src/parser';
+import type { TSESTreeOptions } from '../../src/parser-options';
+import type { TSESTree } from '../../src/ts-estree';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,

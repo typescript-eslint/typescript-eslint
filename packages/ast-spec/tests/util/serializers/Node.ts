@@ -1,5 +1,6 @@
+import type { NewPlugin } from 'pretty-format';
+
 import type * as TSESTree from '../../../src';
-import { NewPlugin } from 'pretty-format';
 import { AST_NODE_TYPES } from '../../../src';
 
 function sortKeys(node: TSESTree.Node): (keyof typeof node)[] {

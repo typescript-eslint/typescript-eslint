@@ -1,9 +1,9 @@
 import rule from '../../src/rules/no-unsafe-member-access';
 import {
-  RuleTester,
   batchedSingleLineTests,
   getFixturesRootDir,
   noFormat,
+  RuleTester,
 } from '../RuleTester';
 
 const ruleTester = new RuleTester({

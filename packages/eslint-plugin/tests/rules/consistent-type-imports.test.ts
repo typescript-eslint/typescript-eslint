@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-imports';
-import { RuleTester, noFormat, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

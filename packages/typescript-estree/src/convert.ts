@@ -1,7 +1,9 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
+
 import { getDecorators, getModifiers } from './getModifiers';
+import type { TSError } from './node-utils';
 import {
   canContainDirective,
   createError,
@@ -22,7 +24,6 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
-  TSError,
   unescapeStringLiteralText,
 } from './node-utils';
 import type {
@@ -30,12 +31,8 @@ import type {
   ParserWeakMapESTreeToTSNode,
 } from './parser-options';
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-  TSESTreeToTSNode,
-  TSNode,
-} from './ts-estree';
+import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
+import { AST_NODE_TYPES } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
 const SyntaxKind = ts.SyntaxKind;

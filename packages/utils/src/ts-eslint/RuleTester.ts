@@ -1,8 +1,9 @@
 import { RuleTester as ESLintRuleTester } from 'eslint';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
-import { Linter } from './Linter';
-import { ParserOptions } from './ParserOptions';
-import {
+
+import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
+import type { Linter } from './Linter';
+import type { ParserOptions } from './ParserOptions';
+import type {
   RuleCreateFunction,
   RuleModule,
   SharedConfigurationSettings,

@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 interface VisitorKeys {

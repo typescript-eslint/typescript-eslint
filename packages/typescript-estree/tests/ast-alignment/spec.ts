@@ -1,6 +1,7 @@
+import type { File } from '@babel/types';
 import fs from 'fs';
 import path from 'path';
-import type { File } from '@babel/types';
+
 import { fixturesToTest, sharedFixturesDirPath } from './fixtures-to-test';
 import { parse } from './parse';
 import {

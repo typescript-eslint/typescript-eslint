@@ -1,4 +1,5 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type DirectiveConfig =

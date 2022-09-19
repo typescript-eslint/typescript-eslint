@@ -1,6 +1,7 @@
 import debug from 'debug';
 import * as ts from 'typescript';
-import { Extra } from '../parser-options';
+
+import type { Extra } from '../parser-options';
 import { getScriptKind } from './getScriptKind';
 
 const log = debug('typescript-eslint:typescript-estree:createSourceFile');

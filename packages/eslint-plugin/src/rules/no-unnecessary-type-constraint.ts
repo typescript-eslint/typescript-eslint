@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as semver from 'semver';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &

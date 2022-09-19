@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+
 import { typescriptVersionIsAtLeast } from './version-check';
 
 const isAtLeast48 = typescriptVersionIsAtLeast['4.8'];

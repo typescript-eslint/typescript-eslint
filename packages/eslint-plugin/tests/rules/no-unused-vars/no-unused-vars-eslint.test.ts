@@ -4,8 +4,11 @@
 
 'use strict';
 
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import rule, { MessageIds } from '../../../src/rules/no-unused-vars';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
+import type { MessageIds } from '../../../src/rules/no-unused-vars';
+import rule from '../../../src/rules/no-unused-vars';
 import { RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
