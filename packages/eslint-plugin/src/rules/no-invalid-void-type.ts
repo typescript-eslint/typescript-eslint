@@ -130,15 +130,22 @@ export default util.createRule<[Options], MessageIds>({
     /**
      * @brief checks if the generic type parameter extends void
      */
-    function checkExtendedVoid(node: TSESTree.TSVoidKeyword): void {
-      if (node.parent.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword) {
+    function checkExtendedVoid(parentNode: TSESTree.TSTypeParameter): void {
+      if (parentNode.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword) {
         return;
       }
 
       context.report({
         messageId: 'invalidVoidNotReturnOrGeneric',
-        node: node.parent.constraint,
+        node: parentNode.constraint,
       });
+    }
+
+    /**
+     * @brief checks if the type of given argument is TSESTree.TSTypeParameter
+     */
+    function isTSTypeParameter(node: any): node is TSESTree.TSTypeParameter {
+      return node.type === AST_NODE_TYPES.TSTypeParameter;
     }
 
     /**
@@ -179,9 +186,10 @@ export default util.createRule<[Options], MessageIds>({
         // allow <T = void> if allowInGenericTypeArguments is specified, and report if the generic type parameter extends void
         if (
           allowInGenericTypeArguments &&
+          isTSTypeParameter(node.parent) &&
           node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
         ) {
-          checkExtendedVoid(node);
+          checkExtendedVoid(node.parent);
           return;
         }
 
