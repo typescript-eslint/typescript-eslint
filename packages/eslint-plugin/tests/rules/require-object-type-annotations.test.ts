@@ -162,5 +162,16 @@ ruleTester.run('require-object-type-annotations', rule, {
       `,
       errors: [{ messageId: 'forbidden' }],
     },
+    {
+      code: `
+        declare function pipe<A, B>(a: A, ab: (a: A) => B): B;
+
+        declare const logName: (user: User) => void;
+        type User = { name: string };
+
+        pipe({ name: 'foo' }, logName);
+      `,
+      errors: [{ messageId: 'forbidden' }],
+    },
   ],
 });
