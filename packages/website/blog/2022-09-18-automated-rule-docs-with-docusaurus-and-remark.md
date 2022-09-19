@@ -55,7 +55,7 @@ The unified AST format adheres to the [`unist` specification](https://github.com
 ### Custom Remark Plugins
 
 Remark allows projects to register any number of custom Remark plugins for transforming Markdown contents.
-For example, typescript-eslint.io already uses [`remark-docusaurus-tabs`](https://www.npmjs.com/package/remark-docusaurus-tabs)
+For example, typescript-eslint.io already uses [`remark-docusaurus-tabs`](https://www.npmjs.com/package/remark-docusaurus-tabs).
 
 The relevant parts of [typescript-eslint.io's Docusaurus config](https://github.com/typescript-eslint/typescript-eslint/blob/39829c01906f326fec94e9b3a5fdb1730eb02002/packages/website/docusaurusConfig.ts) specify the `remark-docusaurus-tabs` plugin and the custom `./plugins/generated-rule-docs` plugin:
 
