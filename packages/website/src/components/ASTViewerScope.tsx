@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
-import type { ASTViewerBaseProps } from './ast/types';
-
 import { serialize } from './ast/serializer/serializer';
 import { createScopeSerializer } from './ast/serializer/serializerScope';
+import type { ASTViewerBaseProps } from './ast/types';
 
 export interface ASTScopeViewerProps extends ASTViewerBaseProps {
   readonly value: Record<string, unknown>;

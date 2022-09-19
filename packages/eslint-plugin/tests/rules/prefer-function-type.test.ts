@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule, { phrases } from '../../src/rules/prefer-function-type';
 import { noFormat, RuleTester } from '../RuleTester';
 

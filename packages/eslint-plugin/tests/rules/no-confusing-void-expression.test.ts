@@ -1,7 +1,8 @@
-import rule, {
+import type {
   MessageId,
   Options,
 } from '../../src/rules/no-confusing-void-expression';
+import rule from '../../src/rules/no-confusing-void-expression';
 import {
   batchedSingleLineTests,
   getFixturesRootDir,

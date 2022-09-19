@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-unnecessary-type-constraint';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.37.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.2...v5.37.0) (2022-09-12)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [strict-boolean-expressions] check all conditions in a logical operator chain ([#5539](https://github.com/typescript-eslint/typescript-eslint/issues/5539)) ([77d76e2](https://github.com/typescript-eslint/typescript-eslint/commit/77d76e21cdc2e100c729c839c292e82ab7c554c5))
+
+
+
+
+
+## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-extra-parens] handle generic ts array type. ([#5550](https://github.com/typescript-eslint/typescript-eslint/issues/5550)) ([0d6a190](https://github.com/typescript-eslint/typescript-eslint/commit/0d6a190c56fb3489f9f554b9035a008e29cc08ec))
+* **scope-manager:** correct handling for class static blocks ([#5580](https://github.com/typescript-eslint/typescript-eslint/issues/5580)) ([35bb8dd](https://github.com/typescript-eslint/typescript-eslint/commit/35bb8ddac1b46397f6447c1a6e1e4e1774dd7957))
+
+
+
+
+
 ## [5.36.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.0...v5.36.1) (2022-08-30)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

@@ -1,7 +1,8 @@
 import path from 'path';
+import type { Program } from 'typescript';
 import * as ts from 'typescript';
-import { Program } from 'typescript';
-import { Extra, ModuleResolver } from '../parser-options';
+
+import type { Extra, ModuleResolver } from '../parser-options';
 
 interface ASTAndProgram {
   ast: ts.SourceFile;

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import type Monaco from 'monaco-editor';
-import clsx from 'clsx';
-
-import type { ErrorItem, ErrorGroup } from './types';
 import IconExternalLink from '@theme/Icon/ExternalLink';
+import clsx from 'clsx';
+import type Monaco from 'monaco-editor';
+import React, { useEffect, useState } from 'react';
+
 import styles from './ErrorsViewer.module.css';
+import type { ErrorGroup, ErrorItem } from './types';
 
 export interface ErrorsViewerProps {
   readonly value?: ErrorGroup[] | Error;
