@@ -61,10 +61,10 @@ describe('parseWithNodeMaps()', () => {
     it('should simple code', () => {
       const result = parser.parseWithNodeMaps('1;');
       expect(result.ast).toMatchInlineSnapshot(`
-        Object {
-          "body": Array [
-            Object {
-              "expression": Object {
+        {
+          "body": [
+            {
+              "expression": {
                 "raw": "1",
                 "type": "Literal",
                 "value": 1,

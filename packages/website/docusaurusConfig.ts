@@ -12,7 +12,7 @@ import { rulesMeta } from './rulesMeta';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
-const beforeDefaultRemarkPlugins: MDXPlugin[] = [[tabsPlugin, {}]];
+const beforeDefaultRemarkPlugins: MDXPlugin[] = [tabsPlugin];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
@@ -25,14 +25,12 @@ const presetClassicOptions: PresetClassicOptions = {
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     beforeDefaultRemarkPlugins: [
       ...beforeDefaultRemarkPlugins,
-      [generatedRuleDocs, {}],
+      generatedRuleDocs,
     ],
     remarkPlugins: remarkPlugins,
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },
-  // TODO enable this
-  blog: false,
   pages: {
     beforeDefaultRemarkPlugins,
     remarkPlugins,
@@ -86,6 +84,12 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         to: 'rules/',
         activeBasePath: 'rules',
         label: 'Rules',
+        position: 'left',
+      },
+      {
+        to: 'blog/',
+        activeBasePath: 'blog',
+        label: 'Blog',
         position: 'left',
       },
       {
