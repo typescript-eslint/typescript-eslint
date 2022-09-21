@@ -1,5 +1,3 @@
-import './SplitPaneResize.css';
-
 import { useColorMode } from '@docusaurus/theme-common';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 import ConfigEslint from '@site/src/components/config/ConfigEslint';
@@ -14,9 +12,9 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type Monaco from 'monaco-editor';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import SplitPane from 'react-split-pane';
 import type { SourceFile } from 'typescript';
 
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import ASTViewerESTree from './ASTViewerESTree';
 import ASTViewerTS from './ASTViewerTS';
 import { EditorEmbed } from './editor/EditorEmbed';
@@ -26,6 +24,7 @@ import Loader from './layout/Loader';
 import { shallowEqual } from './lib/shallowEqual';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
+import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
 import type {
   ConfigModel,
   ErrorGroup,
@@ -74,6 +73,7 @@ function Playground(): JSX.Element {
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
   const [editorDragging, setEditorDragging] = useState<boolean>(false);
+  const enableSplitPanes = useMediaQuery('(min-width: 996px)');
 
   useEffect(() => {
     const handleMouseUp = (): void => {
@@ -113,13 +113,17 @@ function Playground(): JSX.Element {
         onClose={updateModal}
       />
       <div className={styles.codeBlocks}>
-        <SplitPane
+        <ConditionalSplitPane
+          render={enableSplitPanes}
           split="vertical"
           minSize="10%"
           defaultSize="20rem"
           maxSize={
             20 * parseFloat(getComputedStyle(document.documentElement).fontSize)
           }
+          onDragStarted={(): void => {
+            setEditorDragging(true);
+          }}
         >
           <div className={clsx(styles.options, 'thin-scrollbar')}>
             <OptionsSelector
@@ -129,7 +133,8 @@ function Playground(): JSX.Element {
               setState={setState}
             />
           </div>
-          <SplitPane
+          <ConditionalSplitPane
+            render={enableSplitPanes}
             split="vertical"
             minSize="10%"
             defaultSize="50%"
@@ -196,8 +201,8 @@ function Playground(): JSX.Element {
                   />
                 )) || <ErrorsViewer value={markers} />}
             </div>
-          </SplitPane>
-        </SplitPane>
+          </ConditionalSplitPane>
+        </ConditionalSplitPane>
       </div>
     </div>
   );

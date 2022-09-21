@@ -4,7 +4,6 @@
 }
 
 .options {
-  width: 20rem;
   background: var(--playground-main-color);
   overflow: auto;
   z-index: 1;
@@ -34,7 +33,6 @@
   word-wrap: initial;
   white-space: nowrap;
   background: var(--code-editor-bg);
-  z-index: var(--ifm-z-index-fixed);
 }
 
 .codeContainer {
