@@ -11,7 +11,7 @@ import ErrorsViewer from '@site/src/components/ErrorsViewer';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type Monaco from 'monaco-editor';
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
 import { useMediaQuery } from '../hooks/useMediaQuery';
@@ -72,20 +72,7 @@ function Playground(): JSX.Element {
   const [position, setPosition] = useState<Monaco.Position | null>(null);
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
-  const [editorDragging, setEditorDragging] = useState<boolean>(false);
   const enableSplitPanes = useMediaQuery('(min-width: 996px)');
-
-  useEffect(() => {
-    const handleMouseUp = (): void => {
-      setEditorDragging(false);
-    };
-
-    window.addEventListener('mouseup', handleMouseUp);
-
-    return (): void => {
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, []);
 
   const updateModal = useCallback(
     (config?: Partial<ConfigModel>) => {
@@ -121,9 +108,6 @@ function Playground(): JSX.Element {
           maxSize={
             20 * parseFloat(getComputedStyle(document.documentElement).fontSize)
           }
-          onDragStarted={(): void => {
-            setEditorDragging(true);
-          }}
         >
           <div className={clsx(styles.options, 'thin-scrollbar')}>
             <OptionsSelector
@@ -138,9 +122,6 @@ function Playground(): JSX.Element {
             split="vertical"
             minSize="10%"
             defaultSize="50%"
-            onDragStarted={(): void => {
-              setEditorDragging(true);
-            }}
           >
             <div className={clsx(styles.sourceCode)}>
               {isLoading && <Loader />}
@@ -167,7 +148,6 @@ function Playground(): JSX.Element {
                 onTsASTChange={setTsAST}
                 onScopeChange={setScope}
                 onMarkersChange={setMarkers}
-                sizeChanged={editorDragging}
                 decoration={selectedRange}
                 onChange={setState}
                 onLoaded={(ruleNames, tsVersions): void => {
