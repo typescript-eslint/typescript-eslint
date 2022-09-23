@@ -226,7 +226,7 @@ import { ESLintUtils } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 
-export const rule: eslint.Rule.RuleModule = {
+export const rule = createRule({
   create(context) {
     return {
       ForOfStatement(node) {
@@ -252,8 +252,8 @@ export const rule: eslint.Rule.RuleModule = {
   },
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Avoid looping over enums.',
+      recommended: 'error',
     },
     messages: {
       loopOverEnum: 'Do not loop over enums.',
@@ -261,8 +261,9 @@ export const rule: eslint.Rule.RuleModule = {
     type: 'suggestion',
     schema: [],
   },
+  name: 'no-loop-over-enum',
   defaultOptions: [],
-};
+});
 ```
 
 ## Testing
