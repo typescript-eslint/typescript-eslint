@@ -144,7 +144,9 @@ export default util.createRule<[Options], MessageIds>({
     /**
      * @brief checks if the type of given argument is TSESTree.TSTypeParameter
      */
-    function isTSTypeParameter(node: any): node is TSESTree.TSTypeParameter {
+    function isTSTypeParameter(
+      node: TSESTree.Node,
+    ): node is TSESTree.TSTypeParameter {
       return node.type === AST_NODE_TYPES.TSTypeParameter;
     }
 
