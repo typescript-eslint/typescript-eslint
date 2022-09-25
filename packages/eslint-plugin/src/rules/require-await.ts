@@ -1,3 +1,4 @@
+import { isThenableType } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
@@ -83,15 +84,6 @@ export default util.createRule({
     }
 
     /**
-     * Checks if the node returns a thenable type
-     */
-    function isThenableType(node: ts.Node): boolean {
-      const type = checker.getTypeAtLocation(node);
-
-      return tsutils.isThenableType(checker, node, type);
-    }
-
-    /**
      * Marks the current scope as having an await
      */
     function markAsHasAwait(): void {
@@ -153,7 +145,14 @@ export default util.createRule({
         >,
       ): void {
         const expression = parserServices.esTreeNodeToTSNodeMap.get(node);
-        if (expression && isThenableType(expression)) {
+        if (
+          expression &&
+          isThenableType(
+            checker,
+            expression,
+            checker.getTypeAtLocation(expression),
+          )
+        ) {
           markAsHasAwait();
         }
       },
@@ -164,7 +163,14 @@ export default util.createRule({
         }
 
         const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
-        if (expression && isThenableType(expression)) {
+        if (
+          expression &&
+          isThenableType(
+            checker,
+            expression,
+            checker.getTypeAtLocation(expression),
+          )
+        ) {
           markAsHasAwait();
         }
       },

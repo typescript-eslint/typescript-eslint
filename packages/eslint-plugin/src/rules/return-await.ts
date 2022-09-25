@@ -1,7 +1,9 @@
-import { isBinaryExpression } from '@typescript-eslint/type-utils';
+import {
+  isBinaryExpression,
+  isThenableType,
+} from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -189,7 +191,7 @@ export default util.createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const isThenable = tsutils.isThenableType(checker, expression, type);
+      const isThenable = isThenableType(checker, expression, type);
 
       if (!isAwait && !isThenable) {
         return;

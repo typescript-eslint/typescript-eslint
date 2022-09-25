@@ -1,10 +1,8 @@
-import type * as ts from 'typescript';
+import type { Symbol as SymbolType, SymbolFlags } from 'typescript';
 
-function isFlagSet(obj: { flags: number }, flag: number): boolean {
-  return (obj.flags & flag) !== 0;
-}
+import { isFlagSet } from './isFlagSet';
 
 export const isSymbolFlagSet: (
-  symbol: ts.Symbol,
-  flag: ts.SymbolFlags,
+  symbol: SymbolType,
+  flag: SymbolFlags,
 ) => boolean = isFlagSet;

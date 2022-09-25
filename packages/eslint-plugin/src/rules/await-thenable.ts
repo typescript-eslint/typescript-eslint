@@ -1,4 +1,4 @@
-import * as tsutils from 'tsutils';
+import { isThenableType } from '@typescript-eslint/type-utils';
 
 import * as util from '../util';
 
@@ -30,7 +30,7 @@ export default util.createRule({
         if (
           !util.isTypeAnyType(type) &&
           !util.isTypeUnknownType(type) &&
-          !tsutils.isThenableType(checker, originalNode.expression, type)
+          !isThenableType(checker, originalNode.expression, type)
         ) {
           context.report({
             messageId: 'await',

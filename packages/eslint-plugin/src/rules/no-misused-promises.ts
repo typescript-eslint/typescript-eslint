@@ -1,4 +1,7 @@
-import { isCallExpression } from '@typescript-eslint/type-utils';
+import {
+  isCallExpression,
+  isThenableType,
+} from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
@@ -412,7 +415,7 @@ function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
   for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
-    if (tsutils.isThenableType(checker, node, subType)) {
+    if (isThenableType(checker, node, subType)) {
       return true;
     }
   }
@@ -541,7 +544,7 @@ function anySignatureIsThenableType(
 ): boolean {
   for (const signature of type.getCallSignatures()) {
     const returnType = signature.getReturnType();
-    if (tsutils.isThenableType(checker, node, returnType)) {
+    if (isThenableType(checker, node, returnType)) {
       return true;
     }
   }
@@ -582,7 +585,7 @@ function isVoidReturningFunctionType(
 
       // If a certain positional argument accepts both thenable and void returns,
       // a promise-returning function is valid
-      if (tsutils.isThenableType(checker, node, returnType)) {
+      if (isThenableType(checker, node, returnType)) {
         return false;
       }
 
