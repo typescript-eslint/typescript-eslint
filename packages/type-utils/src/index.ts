@@ -20,6 +20,7 @@ export * from './isObjectType';
 export * from './isParameterDeclaration';
 export * from './isPropertyAssignment';
 export * from './isPropertyDeclaration';
+export * from './isStrictCompilerOptionEnabled';
 export * from './isTypeFlagSet';
 export * from './isTypeReadonly';
 export * from './isTypeReference';

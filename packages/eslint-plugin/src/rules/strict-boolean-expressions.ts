@@ -1,3 +1,4 @@
+import { isStrictCompilerOptionEnabled } from '@typescript-eslint/type-utils';
 import type { ParserServices, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
@@ -146,7 +147,7 @@ export default util.createRule<Options, MessageId>({
     const typeChecker = parserServices.program.getTypeChecker();
     const compilerOptions = parserServices.program.getCompilerOptions();
     const sourceCode = context.getSourceCode();
-    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
+    const isStrictNullChecks = isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
     );

@@ -1,3 +1,4 @@
+import { isStrictCompilerOptionEnabled } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
@@ -30,7 +31,7 @@ export default util.createRule({
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
     const compilerOptions = program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const isNoImplicitThis = isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
