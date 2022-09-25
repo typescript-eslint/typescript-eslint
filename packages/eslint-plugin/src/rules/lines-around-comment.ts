@@ -266,30 +266,18 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    /**
-     * Returns whether or not comments are at the interface start or not.
-     */
     function isCommentAtInterfaceStart(token: TSESTree.Comment): boolean {
       return isCommentAtParentStart(token, AST_NODE_TYPES.TSInterfaceBody);
     }
 
-    /**
-     * Returns whether or not comments are at the interface end or not.
-     */
     function isCommentAtInterfaceEnd(token: TSESTree.Comment): boolean {
       return isCommentAtParentEnd(token, AST_NODE_TYPES.TSInterfaceBody);
     }
 
-    /**
-     * Returns whether or not comments are at the type start or not.
-     */
     function isCommentAtTypeStart(token: TSESTree.Comment): boolean {
       return isCommentAtParentStart(token, AST_NODE_TYPES.TSTypeLiteral);
     }
 
-    /**
-     * Returns whether or not comments are at the type end or not.
-     */
     function isCommentAtTypeEnd(token: TSESTree.Comment): boolean {
       return isCommentAtParentEnd(token, AST_NODE_TYPES.TSTypeLiteral);
     }
@@ -318,7 +306,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkForEmptyLine(
       token: TSESTree.Comment,
-      opts: { before?: boolean; after?: boolean },
+      { before, after }: { before?: boolean; after?: boolean },
     ): void {
       // the base rule handles non-TS codes, we skip those
       if (!isCommentInsideTSConstruct(token)) {
@@ -335,9 +323,6 @@ export default util.createRule<Options, MessageIds>({
       if (options.ignorePattern && customIgnoreRegExp.test(token.value)) {
         return;
       }
-
-      let after = opts.after,
-        before = opts.before;
 
       const prevLineNum = token.loc.start.line - 1;
       const nextLineNum = token.loc.end.line + 1;
