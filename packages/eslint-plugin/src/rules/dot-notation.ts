@@ -1,5 +1,5 @@
+import { isCompilerOptionEnabled } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import type {
@@ -77,9 +77,8 @@ export default createRule<Options, MessageIds>({
       options.allowProtectedClassPropertyAccess;
     const allowIndexSignaturePropertyAccess =
       (options.allowIndexSignaturePropertyAccess ?? false) ||
-      tsutils.isCompilerOptionEnabled(
+      isCompilerOptionEnabled(
         program.getCompilerOptions(),
-        // @ts-expect-error - TS is refining the type to never for some reason
         'noPropertyAccessFromIndexSignature',
       );
 

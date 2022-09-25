@@ -13,6 +13,7 @@ export * from './isAssignmentKind';
 export * from './isBinaryExpression';
 export * from './isBindableObjectDefinePropertyCall';
 export * from './isCallExpression';
+export * from './isCompilerOptionEnabled';
 export * from './isConditionalType';
 export * from './isConstAssertion';
 export * from './isEntityNameExpression';
