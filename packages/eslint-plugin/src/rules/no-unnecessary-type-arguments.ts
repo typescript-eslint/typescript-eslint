@@ -1,6 +1,8 @@
-import { isCallExpression } from '@typescript-eslint/type-utils';
+import {
+  isCallExpression,
+  isSymbolFlagSet,
+} from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -181,7 +183,7 @@ function getAliasedSymbol(
   symbol: ts.Symbol,
   checker: ts.TypeChecker,
 ): ts.Symbol {
-  return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+  return isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
     ? checker.getAliasedSymbol(symbol)
     : symbol;
 }
