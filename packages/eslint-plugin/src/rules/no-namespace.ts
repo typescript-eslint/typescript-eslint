@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -26,9 +28,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowDeclarations: {
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces.',
             type: 'boolean',
           },
           allowDefinitionFiles: {
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces inside definition files.',
             type: 'boolean',
           },
         },

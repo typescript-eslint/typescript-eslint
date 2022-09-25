@@ -51,7 +51,7 @@ The latest version under the `canary` tag **(latest commit to `main`)** is:
 
 ### Supported TypeScript Version
 
-**The version range of TypeScript currently supported by this parser is `>=3.3.1 <4.8.0`.**
+**The version range of TypeScript currently supported by this parser is `>=3.3.1 <4.9.0`.**
 
 These versions are what we test against.
 
@@ -110,25 +110,6 @@ This project exists thanks to every one of the awesome people who contribute cod
 ## Financial Contributors
 
 In addition to submitting code and documentation updates, you can help us sustain our community by becoming a financial contributor [[Click here to contribute - every little bit helps!](https://opencollective.com/typescript-eslint/contribute)]
-
-### Individuals
-
-<a href="https://opencollective.com/typescript-eslint"><img alt="Gallery of all individual financial contributors' profile photos" src="https://opencollective.com/typescript-eslint/individuals.svg?width=890"></a>
-
-### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website. [[Click here to contribute - every little bit helps!](https://opencollective.com/typescript-eslint/contribute)]
-
-<a href="https://opencollective.com/typescript-eslint/organization/0/website"><img src="https://opencollective.com/typescript-eslint/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/1/website"><img src="https://opencollective.com/typescript-eslint/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/2/website"><img src="https://opencollective.com/typescript-eslint/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/3/website"><img src="https://opencollective.com/typescript-eslint/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/4/website"><img src="https://opencollective.com/typescript-eslint/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/5/website"><img src="https://opencollective.com/typescript-eslint/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/6/website"><img src="https://opencollective.com/typescript-eslint/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/7/website"><img src="https://opencollective.com/typescript-eslint/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/8/website"><img src="https://opencollective.com/typescript-eslint/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/typescript-eslint/organization/9/website"><img src="https://opencollective.com/typescript-eslint/organization/9/avatar.svg"></a>
 
 <a href="https://www.netlify.com">
   <img src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify" />

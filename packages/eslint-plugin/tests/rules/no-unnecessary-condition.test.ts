@@ -1,13 +1,15 @@
-import {
-  TestCaseError,
+import type {
   InvalidTestCase,
+  TestCaseError,
 } from '@typescript-eslint/utils/dist/ts-eslint';
 import * as path from 'path';
-import rule, {
-  Options,
+
+import type {
   MessageId,
+  Options,
 } from '../../src/rules/no-unnecessary-condition';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
+import rule from '../../src/rules/no-unnecessary-condition';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -914,7 +916,7 @@ foo ?.
 foo
   ?. bar;
       `,
-      output: noFormat`
+      output: `
 let foo = { bar: true };
 foo.bar;
 foo . bar;

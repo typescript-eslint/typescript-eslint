@@ -1,6 +1,10 @@
-# `explicit-member-accessibility`
+---
+description: 'Require explicit accessibility modifiers on class properties and methods.'
+---
 
-Requires explicit accessibility modifiers on class properties and methods.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
 
 Leaving off accessibility modifier and making everything public can make
 your interface hard to use by others.
@@ -13,29 +17,6 @@ This rule aims to make code more readable and explicit about who can use
 which properties.
 
 ## Options
-
-```ts
-type AccessibilityLevel =
-  | 'explicit' // require an accessor (including public)
-  | 'no-public' // don't require public
-  | 'off'; // don't check
-
-type Options = {
-  accessibility?: AccessibilityLevel;
-  ignoredMethodNames?: string[];
-  overrides?: {
-    accessors?: AccessibilityLevel;
-    constructors?: AccessibilityLevel;
-    methods?: AccessibilityLevel;
-    properties?: AccessibilityLevel;
-    parameterProperties?: AccessibilityLevel;
-  };
-};
-
-const defaultOptions: Options = {
-  accessibility: 'explicit',
-};
-```
 
 ### Configuring in a mixed JS/TS codebase
 
@@ -52,7 +33,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-member-accessibility": ["error"]
+        "@typescript-eslint/explicit-member-accessibility": "error"
       }
     }
   ]

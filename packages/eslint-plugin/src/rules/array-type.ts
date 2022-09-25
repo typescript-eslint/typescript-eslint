@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 /**
@@ -83,8 +85,6 @@ type MessageIds =
   | 'errorStringArraySimple'
   | 'errorStringGenericSimple';
 
-const arrayOption = { enum: ['array', 'generic', 'array-simple'] };
-
 export default util.createRule<Options, MessageIds>({
   name: 'array-type',
   meta: {
@@ -104,15 +104,30 @@ export default util.createRule<Options, MessageIds>({
       errorStringGenericSimple:
         "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          default: arrayOption,
-          readonly: arrayOption,
+    schema: {
+      $defs: {
+        arrayOption: {
+          enum: ['array', 'generic', 'array-simple'],
         },
       },
-    ],
+      prefixItems: [
+        {
+          properties: {
+            default: {
+              $ref: '#/$defs/arrayOption',
+              description: 'The array type expected for mutable cases...',
+            },
+            readonly: {
+              $ref: '#/$defs/arrayOption',
+              description:
+                'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
+            },
+          },
+          type: 'object',
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [
     {

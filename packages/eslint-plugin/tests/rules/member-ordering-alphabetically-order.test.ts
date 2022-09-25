@@ -1,10 +1,8 @@
-import rule, {
-  defaultOrder,
-  MessageIds,
-  Options,
-} from '../../src/rules/member-ordering';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/member-ordering';
+import rule, { defaultOrder } from '../../src/rules/member-ordering';
 import { RuleTester } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -1696,6 +1694,24 @@ const foo = class Foo {
           {
             default: {
               memberTypes: ['constructor', 'instance-field', 'static-field'],
+              order: 'alphabetically',
+            },
+          },
+        ],
+      },
+
+      // default option + static blocks; should always be valid
+      {
+        code: `
+class Foo {
+  static {}
+  static {}
+}
+              `,
+        options: [
+          {
+            default: {
+              memberTypes: 'never',
               order: 'alphabetically',
             },
           },

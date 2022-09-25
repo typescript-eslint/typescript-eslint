@@ -1,6 +1,10 @@
-# `sort-type-union-intersection-members`
+---
+description: 'Enforce members of a type union/intersection to be sorted alphabetically.'
+---
 
-Enforces members of a type union/intersection to be sorted alphabetically.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/sort-type-union-intersection-members** for documentation.
 
 Sorting union (`|`) and intersection (`&`) types can help:
 
@@ -90,49 +94,6 @@ type T4 =
 ```
 
 ## Options
-
-```ts
-type Options = {
-  // true to check intersection types, false otherwise
-  checkIntersections?: boolean;
-  // true to check union types, false otherwise
-  checkUnions?: boolean;
-  // the ordering of the groups
-  groupOrder?: (
-    | 'conditional'
-    | 'function'
-    | 'import'
-    | 'intersection'
-    | 'keyword'
-    | 'literal'
-    | 'named'
-    | 'object'
-    | 'operator'
-    | 'tuple'
-    | 'union'
-    | 'nullish'
-  )[];
-};
-
-const defaultOptions: Options = {
-  checkIntersections: true,
-  checkUnions: true,
-  groupOrder: [
-    'named',
-    'keyword',
-    'operator',
-    'literal',
-    'function',
-    'import',
-    'conditional',
-    'object',
-    'tuple',
-    'intersection',
-    'union',
-    'nullish',
-  ],
-};
-```
 
 ### `groupOrder`
 

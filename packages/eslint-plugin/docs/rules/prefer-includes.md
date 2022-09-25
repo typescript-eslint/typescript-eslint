@@ -1,6 +1,10 @@
-# `prefer-includes`
+---
+description: 'Enforce `includes` method over `indexOf` method.'
+---
 
-Enforces `includes` method over `indexOf` method.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-includes** for documentation.
 
 Until ES5, we were using `String#indexOf` method to check whether a string contains an arbitrary substring or not.
 Until ES2015, we were using `Array#indexOf` method to check whether an array contains an arbitrary value or not.
@@ -69,19 +73,6 @@ userDefined.includes(value);
 // the two methods have different parameters.
 mismatchExample.indexOf(value) >= 0;
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-includes": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

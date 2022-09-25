@@ -1,6 +1,10 @@
-# `no-unnecessary-qualifier`
+---
+description: 'Disallow unnecessary namespace qualifiers.'
+---
 
-Disallows unnecessary namespace qualifiers.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-qualifier** for documentation.
 
 ## Rule Details
 
@@ -75,19 +79,6 @@ namespace X {
   }
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unnecessary-qualifier": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

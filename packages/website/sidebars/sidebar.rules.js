@@ -10,9 +10,20 @@ const rules = Object.entries(plugin.rules).map(([name, rule]) => {
   };
 });
 
-const notDeprecatedRules = rules.filter(rule => !rule.meta.deprecated);
+const deprecatedRules = new Set(rules.filter(rule => rule.meta.deprecated));
 
-const deprecatedRules = rules.filter(rule => rule.meta.deprecated);
+const formattingRules = new Set(
+  rules.filter(
+    rule => !rule.meta.deprecated && rule.meta.fixable === 'whitespace',
+  ),
+);
+
+const emphasizedRules = rules.filter(
+  rule =>
+    !rule.meta.deprecated &&
+    !deprecatedRules.has(rule) &&
+    !formattingRules.has(rule),
+);
 
 const paths = globby
   .sync('*.md', {
@@ -31,34 +42,35 @@ const paths = globby
     );
   });
 
+function createCategory(label, rules, additionalItems = []) {
+  return {
+    items: [
+      ...rules.map(rule => {
+        return {
+          type: 'doc',
+          id: rule.name,
+          label: rule.name,
+        };
+      }),
+      ...additionalItems,
+    ],
+    label,
+    type: 'category',
+  };
+}
+
 module.exports = {
   someSidebar: [
     'README',
     {
-      type: 'category',
-      label: 'Rules',
-      collapsible: true,
+      ...createCategory('Rules', emphasizedRules, [
+        createCategory('Formatting Rules', Array.from(formattingRules)),
+        createCategory('Deprecated Rules', [
+          ...Array.from(deprecatedRules),
+          ...paths,
+        ]),
+      ]),
       collapsed: false,
-      items: notDeprecatedRules.map(item => {
-        return {
-          type: 'doc',
-          id: item.name,
-          label: item.name,
-        };
-      }),
-    },
-    {
-      type: 'category',
-      label: 'Deprecated',
-      collapsible: true,
-      collapsed: false,
-      items: [...deprecatedRules, ...paths].map(item => {
-        return {
-          type: 'doc',
-          id: item.name,
-          label: item.name,
-        };
-      }),
     },
   ],
 };

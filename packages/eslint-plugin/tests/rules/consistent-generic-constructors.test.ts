@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-generic-constructors';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -19,6 +19,11 @@ ruleTester.run('consistent-generic-constructors', rule, {
     'const a: Foo<string> = Foo<string>();',
     'const a: Foo<string> = Foo();',
     'const a: Foo = Foo<string>();',
+    `
+class Foo {
+  a = new Foo<string>();
+}
+    `,
     // type-annotation
     {
       code: 'const a = new Foo();',
@@ -60,6 +65,14 @@ ruleTester.run('consistent-generic-constructors', rule, {
       code: 'const a = new (class C<T> {})<string>();',
       options: ['type-annotation'],
     },
+    {
+      code: `
+class Foo {
+  a: Foo<string> = new Foo();
+}
+      `,
+      options: ['type-annotation'],
+    },
   ],
   invalid: [
     {
@@ -87,7 +100,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Map<string, number>();`,
+      output: `const a = new Map<string, number>();`,
     },
     {
       code: noFormat`const a: Map< string, number > = new Map();`,
@@ -96,7 +109,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Map< string, number >();`,
+      output: `const a = new Map< string, number >();`,
     },
     {
       code: noFormat`const a: Map<string, number> = new Map ();`,
@@ -105,7 +118,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Map<string, number> ();`,
+      output: `const a = new Map<string, number> ();`,
     },
     {
       code: noFormat`const a: Foo<number> = new Foo;`,
@@ -114,7 +127,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Foo<number>();`,
+      output: `const a = new Foo<number>();`,
     },
     {
       code: 'const a: /* comment */ Foo/* another */ <string> = new Foo();',
@@ -123,7 +136,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Foo/* comment *//* another */<string>();`,
+      output: `const a = new Foo/* comment *//* another */<string>();`,
     },
     {
       code: 'const a: Foo/* comment */ <string> = new Foo /* another */();',
@@ -132,7 +145,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Foo/* comment */<string> /* another */();`,
+      output: `const a = new Foo/* comment */<string> /* another */();`,
     },
     {
       code: noFormat`const a: Foo<string> = new \n Foo \n ();`,
@@ -141,7 +154,41 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new \n Foo<string> \n ();`,
+      output: `const a = new \n Foo<string> \n ();`,
+    },
+    {
+      code: `
+class Foo {
+  a: Foo<string> = new Foo();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Foo {
+  a = new Foo<string>();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  [a]: Foo<string> = new Foo();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Foo {
+  [a] = new Foo<string>();
+}
+      `,
     },
     {
       code: 'const a = new Foo<string>();',
@@ -171,7 +218,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Map<string, number> = new Map  ();`,
+      output: `const a: Map<string, number> = new Map  ();`,
     },
     {
       code: noFormat`const a = new Map< string, number >();`,
@@ -181,7 +228,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Map< string, number > = new Map();`,
+      output: `const a: Map< string, number > = new Map();`,
     },
     {
       code: noFormat`const a = new \n Foo<string> \n ();`,
@@ -191,7 +238,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Foo<string> = new \n Foo \n ();`,
+      output: `const a: Foo<string> = new \n Foo \n ();`,
     },
     {
       code: 'const a = new Foo/* comment */ <string> /* another */();',
@@ -201,7 +248,7 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Foo<string> = new Foo/* comment */  /* another */();`,
+      output: `const a: Foo<string> = new Foo/* comment */  /* another */();`,
     },
     {
       code: 'const a = new Foo</* comment */ string, /* another */ number>();',
@@ -211,7 +258,61 @@ ruleTester.run('consistent-generic-constructors', rule, {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
+      output: `const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
+    },
+    {
+      code: `
+class Foo {
+  a = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  a: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  [a] = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  [a]: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  [a + b] = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  [a + b]: Foo<string> = new Foo();
+}
+      `,
     },
   ],
 });

@@ -1,7 +1,8 @@
 import { analyze as ESLintAnalyze } from 'eslint-scope';
-import { EcmaVersion } from '../ts-eslint';
-import { TSESTree } from '../ts-estree';
-import { ScopeManager } from './ScopeManager';
+
+import type { EcmaVersion } from '../ts-eslint';
+import type { TSESTree } from '../ts-estree';
+import type { ScopeManager } from './ScopeManager';
 
 interface AnalysisOptions {
   optimistic?: boolean;

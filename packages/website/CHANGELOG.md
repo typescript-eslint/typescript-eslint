@@ -3,6 +3,178 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.38.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.37.0...v5.38.0) (2022-09-19)
+
+
+### Features
+
+* **website:** add warning on top of formatting rule docs pages ([#5598](https://github.com/typescript-eslint/typescript-eslint/issues/5598)) ([5dfa2e9](https://github.com/typescript-eslint/typescript-eslint/commit/5dfa2e9a33491905e99d8940dbdac0b31ada4858))
+
+
+
+
+
+# [5.37.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.2...v5.37.0) (2022-09-12)
+
+
+### Bug Fixes
+
+* **website:** Use extended base rule name from file's meta ([#5621](https://github.com/typescript-eslint/typescript-eslint/issues/5621)) ([7fd2f89](https://github.com/typescript-eslint/typescript-eslint/commit/7fd2f89ae732ca12ec83fad278362032473ff3ca))
+
+
+### Features
+
+* **docs:** always expanding collapsible sidebar menus under docs ([#5608](https://github.com/typescript-eslint/typescript-eslint/issues/5608)) ([8176fb1](https://github.com/typescript-eslint/typescript-eslint/commit/8176fb15299943cbf20385eb0ea7ba877e193285))
+
+
+
+
+
+## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.36.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.0...v5.36.1) (2022-08-30)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.36.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.1...v5.36.0) (2022-08-30)
+
+
+### Features
+
+* support TypeScript 4.8 ([#5551](https://github.com/typescript-eslint/typescript-eslint/issues/5551)) ([81450ed](https://github.com/typescript-eslint/typescript-eslint/commit/81450ed7eaede74b384e9a91a84e9b4d34513866))
+
+
+
+
+
+## [5.35.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.0...v5.35.1) (2022-08-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** correct rule schemas to pass ajv validation ([#5531](https://github.com/typescript-eslint/typescript-eslint/issues/5531)) ([dbf8b56](https://github.com/typescript-eslint/typescript-eslint/commit/dbf8b569dbada29e4a295d6c265976e55de1b2aa))
+
+
+
+
+
+# [5.35.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.34.0...v5.35.0) (2022-08-24)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.1...v5.34.0) (2022-08-22)
+
+
+### Features
+
+* **eslint-plugin:** [prefer-optional-chain] support suggesting `!foo || !foo.bar` as a valid match for the rule ([#5266](https://github.com/typescript-eslint/typescript-eslint/issues/5266)) ([aca935c](https://github.com/typescript-eslint/typescript-eslint/commit/aca935c9696712d4aff18144c4690db4d6ba9bf9))
+
+
+
+
+
+## [5.33.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.0...v5.33.1) (2022-08-15)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.32.0...v5.33.0) (2022-08-08)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.31.0...v5.32.0) (2022-08-01)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+# [5.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.7...v5.31.0) (2022-07-25)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.30.7](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.6...v5.30.7) (2022-07-18)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.30.6](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.5...v5.30.6) (2022-07-11)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.30.5](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.4...v5.30.5) (2022-07-04)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.30.4](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.3...v5.30.4) (2022-07-03)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.30.3](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.2...v5.30.3) (2022-07-01)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [5.30.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.1...v5.30.2) (2022-07-01)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## 5.30.1 (2022-07-01)
+
+**Note:** Version bump only for package website
+
+
+
+
+
 # [5.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.29.0...v5.30.0) (2022-06-27)
 
 **Note:** Version bump only for package website

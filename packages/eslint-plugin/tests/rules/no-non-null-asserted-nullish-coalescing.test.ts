@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-non-null-asserted-nullish-coalescing';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -178,7 +178,7 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: `
 let x!: string;
 x! ?? '';
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noNonNullAssertedNullishCoalescing',
@@ -188,7 +188,7 @@ x! ?? '';
               output: `
 let x!: string;
 x ?? '';
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -199,7 +199,7 @@ x ?? '';
 let x: string;
 x = foo();
 x! ?? '';
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noNonNullAssertedNullishCoalescing',
@@ -210,7 +210,7 @@ x! ?? '';
 let x: string;
 x = foo();
 x ?? '';
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -222,7 +222,7 @@ let x: string;
 x = foo();
 x! ?? '';
 x = foo();
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noNonNullAssertedNullishCoalescing',
@@ -234,7 +234,7 @@ let x: string;
 x = foo();
 x ?? '';
 x = foo();
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -244,7 +244,7 @@ x = foo();
       code: `
 let x = foo();
 x! ?? '';
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noNonNullAssertedNullishCoalescing',
@@ -254,7 +254,7 @@ x! ?? '';
               output: `
 let x = foo();
 x ?? '';
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -266,7 +266,7 @@ function foo() {
   let x!: string;
   return x! ?? '';
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noNonNullAssertedNullishCoalescing',
@@ -278,7 +278,7 @@ function foo() {
   let x!: string;
   return x ?? '';
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -290,7 +290,7 @@ let x!: string;
 function foo() {
   return x! ?? '';
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noNonNullAssertedNullishCoalescing',
@@ -302,7 +302,7 @@ let x!: string;
 function foo() {
   return x ?? '';
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -312,17 +312,17 @@ function foo() {
       code: noFormat`
 let x = foo();
 x  ! ?? '';
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
               messageId: 'suggestRemovingNonNull',
-              output: noFormat`
+              output: `
 let x = foo();
 x   ?? '';
-              `.trimRight(),
+      `,
             },
           ],
         },

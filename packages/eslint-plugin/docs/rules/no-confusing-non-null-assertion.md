@@ -1,6 +1,10 @@
-# `no-confusing-non-null-assertion`
+---
+description: 'Disallow non-null assertion in locations that may be confusing.'
+---
 
-Disallows non-null assertion in locations that may be confusing.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-confusing-non-null-assertion** for documentation.
 
 ## Rule Details
 
@@ -40,19 +44,6 @@ const foo: Foo = getFoo();
 const isEqualsBar = foo.bar == 'hello';
 const isEqualsNum = (1 + foo.num!) == 2;
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-confusing-non-null-assertion": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

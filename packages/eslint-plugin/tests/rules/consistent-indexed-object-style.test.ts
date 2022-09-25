@@ -174,6 +174,19 @@ type Foo<A> = Record<string, A>;
       errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
+    // Interface with generic parameter and default value
+    {
+      code: `
+interface Foo<A = any> {
+  [key: string]: A;
+}
+      `,
+      output: `
+type Foo<A = any> = Record<string, A>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
     // Interface with extends
     {
       code: `
@@ -181,11 +194,7 @@ interface B extends A {
   [index: number]: unknown;
 }
       `,
-      output: `
-interface B extends A {
-  [index: number]: unknown;
-}
-      `,
+      output: null,
       errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
     // Readonly interface with generic parameter

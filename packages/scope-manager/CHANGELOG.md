@@ -3,6 +3,173 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.38.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.37.0...v5.38.0) (2022-09-19)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.37.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.2...v5.37.0) (2022-09-12)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
+
+
+### Bug Fixes
+
+* **scope-manager:** correct handling for class static blocks ([#5580](https://github.com/typescript-eslint/typescript-eslint/issues/5580)) ([35bb8dd](https://github.com/typescript-eslint/typescript-eslint/commit/35bb8ddac1b46397f6447c1a6e1e4e1774dd7957))
+
+
+
+
+
+## [5.36.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.0...v5.36.1) (2022-08-30)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.36.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.1...v5.36.0) (2022-08-30)
+
+
+### Features
+
+* support TypeScript 4.8 ([#5551](https://github.com/typescript-eslint/typescript-eslint/issues/5551)) ([81450ed](https://github.com/typescript-eslint/typescript-eslint/commit/81450ed7eaede74b384e9a91a84e9b4d34513866))
+
+
+
+
+
+## [5.35.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.0...v5.35.1) (2022-08-24)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.35.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.34.0...v5.35.0) (2022-08-24)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.1...v5.34.0) (2022-08-22)
+
+
+### Bug Fixes
+
+* **scope-manager:** visit static blocks ([#5489](https://github.com/typescript-eslint/typescript-eslint/issues/5489)) ([78745c2](https://github.com/typescript-eslint/typescript-eslint/commit/78745c2092064446837b5683892001030a8bb4e2))
+
+
+
+
+
+## [5.33.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.0...v5.33.1) (2022-08-15)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.32.0...v5.33.0) (2022-08-08)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.31.0...v5.32.0) (2022-08-01)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.7...v5.31.0) (2022-07-25)
+
+
+### Bug Fixes
+
+* **scope-manager:** handle typeParameters of TSInstantiationExpression ([#5355](https://github.com/typescript-eslint/typescript-eslint/issues/5355)) ([2595ccf](https://github.com/typescript-eslint/typescript-eslint/commit/2595ccf67cd5158edbd6bebd9ac2dbd8bbd8b99c))
+
+
+
+
+
+## [5.30.7](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.6...v5.30.7) (2022-07-18)
+
+
+### Bug Fixes
+
+* **scope-manager:** allow visiting of constraint in infer type ([#5331](https://github.com/typescript-eslint/typescript-eslint/issues/5331)) ([b2846a1](https://github.com/typescript-eslint/typescript-eslint/commit/b2846a16777a3aea7b1e6ac9d81b9b6dce0bb874))
+
+
+
+
+
+## [5.30.6](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.5...v5.30.6) (2022-07-11)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [5.30.5](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.4...v5.30.5) (2022-07-04)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [5.30.4](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.3...v5.30.4) (2022-07-03)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [5.30.3](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.2...v5.30.3) (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [5.30.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.1...v5.30.2) (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## 5.30.1 (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
 # [5.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.29.0...v5.30.0) (2022-06-27)
 
 

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-exports';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -106,7 +106,7 @@ export {
   CatchScope,
 } from '@typescript-eslint/scope-manager';
       `,
-      output: noFormat`
+      output: `
 export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';
 export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
       `,
@@ -157,7 +157,7 @@ export {
   CatchScope as CScope,
 } from '@typescript-eslint/scope-manager';
       `,
-      output: noFormat`
+      output: `
 export type { Definition as Foo } from '@typescript-eslint/scope-manager';
 export { BlockScope as BScope, CatchScope as CScope } from '@typescript-eslint/scope-manager';
       `,
@@ -279,7 +279,7 @@ export type { T, T };
 type T = 1;
 export { type/* */T, type     /* */T, T };
       `,
-      output: noFormat`
+      output: `
 type T = 1;
 export type { /* */T, /* */T, T };
       `,
@@ -358,7 +358,7 @@ export {
   CatchScope as CScope,
 } from '@typescript-eslint/scope-manager';
       `,
-      output: noFormat`
+      output: `
 export type { AnalyzeOptions, Definition as Foo, BlockScope as BScope } from '@typescript-eslint/scope-manager';
 export { CatchScope as CScope } from '@typescript-eslint/scope-manager';
       `,
@@ -380,7 +380,7 @@ export {
   CatchScope as CScope,
 } from '@typescript-eslint/scope-manager';
       `,
-      output: noFormat`
+      output: `
 export {
   type AnalyzeOptions,
   type Definition as Foo,

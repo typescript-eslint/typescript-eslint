@@ -1,6 +1,6 @@
-# `your-rule-name`
-
-Your rule description here.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/your-rule-name** for documentation.
 
 ## Rule Details
 
@@ -18,33 +18,6 @@ To fill out: tell us more about this rule.
 
 ```ts
 // To fill out: correct code
-```
-
-## Options
-
-This rule is not configurable.
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/your-rule-name": "error"
-  }
-}
-```
-
-If not configurable: This rule is not configurable.
-
-If configurable...
-
-```ts
-type Options = {
-  someOption?: boolean;
-};
-
-const defaultOptions: Options = {
-  someOption: false,
-};
 ```
 
 ## When Not To Use It

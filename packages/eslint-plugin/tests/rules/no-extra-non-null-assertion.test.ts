@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-extra-non-null-assertion';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -128,7 +128,7 @@ function foo(bar?: { n: number }) {
 const foo: { bar: number } | null = null;
 const bar = (foo!)!.bar;
       `,
-      output: noFormat`
+      output: `
 const foo: { bar: number } | null = null;
 const bar = (foo)!.bar;
       `,
@@ -147,7 +147,7 @@ function foo(bar?: { n: number }) {
   return (bar!)?.n;
 }
       `,
-      output: noFormat`
+      output: `
 function foo(bar?: { n: number }) {
   return (bar)?.n;
 }
@@ -167,7 +167,7 @@ function foo(bar?: { n: number }) {
   return (bar)!?.n;
 }
       `,
-      output: noFormat`
+      output: `
 function foo(bar?: { n: number }) {
   return (bar)?.n;
 }
@@ -187,7 +187,7 @@ function foo(bar?: { n: number }) {
   return (bar!)?.();
 }
       `,
-      output: noFormat`
+      output: `
 function foo(bar?: { n: number }) {
   return (bar)?.();
 }

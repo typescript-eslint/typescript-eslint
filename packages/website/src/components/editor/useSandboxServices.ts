@@ -1,17 +1,16 @@
+import { useColorMode } from '@docusaurus/theme-common';
+import { createCompilerOptions } from '@site/src/components/editor/config';
+import type Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
-import type Monaco from 'monaco-editor';
-import type { RuleDetails } from '../types';
 import type {
   createTypeScriptSandbox,
   SandboxConfig,
 } from '../../vendor/sandbox';
-
 import { WebLinter } from '../linter/WebLinter';
-import { sandboxSingleton } from './loadSandbox';
+import type { RuleDetails } from '../types';
 import { editorEmbedId } from './EditorEmbed';
-import { useColorMode } from '@docusaurus/theme-common';
-import { createCompilerOptions } from '@site/src/components/editor/config';
+import { sandboxSingleton } from './loadSandbox';
 
 export interface SandboxServicesProps {
   readonly jsx?: boolean;
@@ -110,7 +109,14 @@ export const useSandboxServices = (
 
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
-        props.onLoaded(webLinter.ruleNames, sandboxInstance.supportedVersions);
+        props.onLoaded(
+          webLinter.ruleNames,
+          Array.from(
+            new Set([...sandboxInstance.supportedVersions, window.ts.version]),
+          )
+            .filter(item => parseFloat(item) >= 3.3)
+            .sort((a, b) => b.localeCompare(a)),
+        );
 
         setServices({
           main,

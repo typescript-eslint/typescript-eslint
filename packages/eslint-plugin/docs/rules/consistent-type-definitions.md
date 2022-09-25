@@ -1,6 +1,10 @@
-# `consistent-type-definitions`
+---
+description: 'Enforce type definitions to consistently use either `interface` or `type`.'
+---
 
-Enforces type definitions to consistently use either `interface` or `type`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-definitions** for documentation.
 
 There are two ways to define a type.
 
@@ -20,35 +24,26 @@ interface T2 {
 
 ## Options
 
-This rule accepts one string option:
-
-- `"interface"`: enforce using `interface`s for object type definitions.
+- `"interface"` _(default)_: enforce using `interface`s for object type definitions.
 - `"type"`: enforce using `type`s for object type definitions.
 
-For example:
-
-```jsonc
-{
-  // Use type for object definitions
-  "@typescript-eslint/consistent-type-definitions": ["error", "type"]
-}
-```
-
 ### `interface`
-
-Examples of code with `interface` option.
 
 <!--tabs-->
 
 #### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "interface"] */
+
 type T = { x: number };
 ```
 
 #### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "interface"] */
+
 type T = string;
 type Foo = string | {};
 
@@ -59,13 +54,13 @@ interface T {
 
 ### `type`
 
-Examples of code with `type` option.
-
 <!--tabs-->
 
 #### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "type"] */
+
 interface T {
   x: number;
 }
@@ -74,6 +69,8 @@ interface T {
 #### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "type"] */
+
 type T = { x: number };
 ```
 

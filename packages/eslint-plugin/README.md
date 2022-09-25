@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-- **[You can find our Getting Started docs here](https://typescript-eslint.io/docs/linting)**
+- **[You can find our Getting Started docs here](https://typescript-eslint.io/docs)**
 - **[You can find our FAQ / Troubleshooting docs here](https://typescript-eslint.io/docs/linting/troubleshooting)**
 
 These docs walk you through setting up ESLint, this plugin, and our parser. If you know what you're doing and just want to quick start, read on...
@@ -85,7 +85,7 @@ Some highly valuable rules require type-checking in order to be implemented corr
 
 Pro Tip: For larger codebases you may want to consider splitting our linting into two separate stages: 1. fast feedback rules which operate purely based on syntax (no type-checking), 2. rules which are based on semantics (type-checking).
 
-**[You can read more about linting with type information here](https://typescript-eslint.io/docs/linting/type-linting)**
+**[You can read more about linting with type information here](https://typescript-eslint.io/docs/linting/typed-linting)**
 
 ## Supported Rules
 

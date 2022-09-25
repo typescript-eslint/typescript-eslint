@@ -3,8 +3,8 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
-import { TYPE_VALUE, TYPE } from './base-config';
+import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE, TYPE_VALUE } from './base-config';
 
 export const es2015_collection = {
   Map: TYPE_VALUE,

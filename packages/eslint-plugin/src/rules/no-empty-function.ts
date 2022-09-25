@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-empty-function');
 

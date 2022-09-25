@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 type MessageIds = 'preferRecord' | 'preferIndexSignature';
@@ -132,7 +134,7 @@ export default createRule<Options, MessageIds>({
 
           if ((node.typeParameters?.params ?? []).length > 0) {
             genericTypes = `<${node.typeParameters?.params
-              .map(p => p.name.name)
+              .map(p => sourceCode.getText(p))
               .join(', ')}>`;
           }
 

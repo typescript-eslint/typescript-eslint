@@ -1,30 +1,28 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
-  TSESTree,
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/utils';
-import * as ts from 'typescript';
-import {
-  unionTypeParts,
-  isFalsyType,
-  isBooleanLiteralType,
-  isLiteralType,
   getCallSignaturesOfType,
+  isBooleanLiteralType,
+  isFalsyType,
+  isLiteralType,
   isStrictCompilerOptionEnabled,
+  unionTypeParts,
 } from 'tsutils';
+import * as ts from 'typescript';
+
 import {
-  isTypeFlagSet,
   createRule,
-  getParserServices,
   getConstrainedTypeAtLocation,
+  getParserServices,
+  getTypeName,
   getTypeOfPropertyOfName,
+  isIdentifier,
   isNullableType,
+  isTypeAnyType,
+  isTypeFlagSet,
+  isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
-  isIdentifier,
-  isTypeAnyType,
-  isTypeUnknownType,
-  getTypeName,
 } from '../util';
 
 // Truthiness utilities
@@ -98,9 +96,13 @@ export default createRule<Options, MessageId>({
         type: 'object',
         properties: {
           allowConstantLoopConditions: {
+            description:
+              'Whether to ignore constant loop conditions, such as `while (true)`.',
             type: 'boolean',
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            description:
+              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
             type: 'boolean',
           },
         },

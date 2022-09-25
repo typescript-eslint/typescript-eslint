@@ -3,6 +3,161 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.38.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.37.0...v5.38.0) (2022-09-19)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.37.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.2...v5.37.0) (2022-09-12)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.36.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.0...v5.36.1) (2022-08-30)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.36.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.1...v5.36.0) (2022-08-30)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.35.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.35.0...v5.35.1) (2022-08-24)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.35.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.34.0...v5.35.0) (2022-08-24)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.34.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.1...v5.34.0) (2022-08-22)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.33.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.33.0...v5.33.1) (2022-08-15)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.33.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.32.0...v5.33.0) (2022-08-08)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.32.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.31.0...v5.32.0) (2022-08-01)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.31.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.7...v5.31.0) (2022-07-25)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.30.7](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.6...v5.30.7) (2022-07-18)
+
+
+### Bug Fixes
+
+* expose types supporting old versions of typescript ([#5339](https://github.com/typescript-eslint/typescript-eslint/issues/5339)) ([4ba9bdb](https://github.com/typescript-eslint/typescript-eslint/commit/4ba9bdb93f87e6bc370f13aa1de48f435abe3f88))
+
+
+
+
+
+## [5.30.6](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.5...v5.30.6) (2022-07-11)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.30.5](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.4...v5.30.5) (2022-07-04)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.30.4](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.3...v5.30.4) (2022-07-03)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.30.3](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.2...v5.30.3) (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## [5.30.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.30.1...v5.30.2) (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+## 5.30.1 (2022-07-01)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
 # [5.30.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.29.0...v5.30.0) (2022-06-27)
 
 **Note:** Version bump only for package @typescript-eslint/parser

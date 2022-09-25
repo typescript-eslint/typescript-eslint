@@ -1,6 +1,7 @@
 import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('space-infix-ops');
 

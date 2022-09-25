@@ -1,5 +1,5 @@
 import rule from '../../src/rules/await-thenable';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const messageId = 'await';

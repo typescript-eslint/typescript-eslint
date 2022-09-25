@@ -1,6 +1,6 @@
-import React from 'react';
-import type { TSESLint } from '@typescript-eslint/utils';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type { TSESLint } from '@typescript-eslint/utils';
+import React from 'react';
 
 import styles from './RuleAttributes.module.css';
 
@@ -55,7 +55,7 @@ export function RuleAttributes({ name }: { name: string }): JSX.Element | null {
             </li>
             <li>
               <input type="checkbox" disabled checked={!!rule.hasSuggestions} />
-              🛠 Suggestion Fixer
+              💡 Suggestion Fixer
             </li>
           </ul>
         </li>

@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 export default createRule({

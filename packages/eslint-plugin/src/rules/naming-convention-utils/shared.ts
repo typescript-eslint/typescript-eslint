@@ -1,10 +1,10 @@
-import {
+import type {
   IndividualAndMetaSelectorsString,
-  MetaSelectors,
   MetaSelectorsString,
   Selectors,
   SelectorsString,
 } from './enums';
+import { MetaSelectors } from './enums';
 
 function selectorTypeToMessageString(selectorType: SelectorsString): string {
   const notCamelCase = selectorType.replace(/([A-Z])/g, ' $1');

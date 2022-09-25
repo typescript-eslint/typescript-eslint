@@ -1,6 +1,10 @@
-# `no-unnecessary-boolean-literal-compare`
+---
+description: 'Disallow unnecessary equality comparisons against boolean literals.'
+---
 
-Disallows unnecessary equality comparisons against boolean literals.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare** for documentation.
 
 Comparing boolean values to boolean literals is unnecessary, those comparisons result in the same booleans. Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
 
@@ -50,29 +54,9 @@ if (someStringBoolean === true) {
 
 ## Options
 
-The rule accepts an options object with the following properties.
-
-```ts
-type Options = {
-  // if false, comparisons between a nullable boolean variable to `true` will be checked and fixed
-  allowComparingNullableBooleansToTrue?: boolean;
-  // if false, comparisons between a nullable boolean variable to `false` will be checked and fixed
-  allowComparingNullableBooleansToFalse?: boolean;
-};
-```
-
-### Defaults
-
 This rule always checks comparisons between a boolean variable and a boolean
 literal. Comparisons between nullable boolean variables and boolean literals
 are **not** checked by default.
-
-```ts
-const defaults = {
-  allowComparingNullableBooleansToTrue: true,
-  allowComparingNullableBooleansToFalse: true,
-};
-```
 
 ### `allowComparingNullableBooleansToTrue`
 
