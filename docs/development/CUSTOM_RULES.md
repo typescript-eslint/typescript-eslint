@@ -222,9 +222,9 @@ By mapping from ESTree nodes to TypeScript nodes and retrieving the TypeScript p
 This rule bans for-of looping over an enum by using the type-checker via typescript-eslint and TypeScript APIs:
 
 ```ts
+import { isTypeFlagSet } from '@typescript-eslint/type-utils';
 import { ESLintUtils } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
-import * as tsutils from 'tsutils';
 
 export const rule = createRule({
   create(context) {
@@ -241,7 +241,7 @@ export const rule = createRule({
         const nodeType = checker.getTypeAtLocation(originalNode);
 
         // 3. Check the TS node type using the TypeScript APIs
-        if (tsutils.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
+        if (isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
           context.report({
             messageId: 'loopOverEnum',
             node: node.right,
