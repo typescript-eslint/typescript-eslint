@@ -24,6 +24,7 @@ export * from './isFlagSet';
 export * from './isInConstContext';
 export * from './isIntersectionType';
 export * from './isJsxExpression';
+export * from './isLiteralType';
 export * from './isModifierFlagSet';
 export * from './isNewExpression';
 export * from './isNodeFlagSet';

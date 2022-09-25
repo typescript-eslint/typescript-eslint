@@ -1,11 +1,12 @@
 import {
   isBooleanLiteralType,
+  isLiteralType,
   isStrictCompilerOptionEnabled,
   unionTypeParts,
 } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getCallSignaturesOfType, isFalsyType, isLiteralType } from 'tsutils';
+import { getCallSignaturesOfType, isFalsyType } from 'tsutils';
 import * as ts from 'typescript';
 
 import {
