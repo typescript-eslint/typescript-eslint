@@ -14,6 +14,7 @@ export * from './isConditionalType';
 export * from './isIntersectionType';
 export * from './isJsxExpression';
 export * from './isNewExpression';
+export * from './isPropertyDeclaration';
 export * from './isTypeFlagSet';
 export * from './isTypeReadonly';
 export * from './isTypeReference';
