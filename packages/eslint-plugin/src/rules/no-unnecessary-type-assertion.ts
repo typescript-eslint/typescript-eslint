@@ -1,11 +1,11 @@
-import { isObjectFlagSet, isObjectType } from '@typescript-eslint/type-utils';
+import {
+  isObjectFlagSet,
+  isObjectType,
+  isVariableDeclaration,
+} from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  isStrictCompilerOptionEnabled,
-  isTypeFlagSet,
-  isVariableDeclaration,
-} from 'tsutils';
+import { isStrictCompilerOptionEnabled, isTypeFlagSet } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';

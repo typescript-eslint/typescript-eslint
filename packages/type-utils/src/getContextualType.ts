@@ -1,4 +1,4 @@
-import { isIdentifier, isVariableDeclaration } from 'tsutils';
+import { isIdentifier } from 'tsutils';
 import * as ts from 'typescript';
 
 import {
@@ -9,6 +9,7 @@ import {
   isParameterDeclaration,
   isPropertyAssignment,
   isPropertyDeclaration,
+  isVariableDeclaration,
 } from './';
 
 /**
