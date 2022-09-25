@@ -1,6 +1,8 @@
+import type { ScopeBoundary } from '@typescript-eslint/type-utils';
 import {
   isAssignmentKind,
   isBinaryExpression,
+  isFunctionScopeBoundary,
   isIntersectionType,
   isModifierFlagSet,
   isObjectFlagSet,
@@ -8,7 +10,6 @@ import {
 } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -143,7 +144,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.MethodDefinition,
-    ): boolean | tsutils.ScopeBoundary {
+    ): boolean | ScopeBoundary {
       if (classScopeStack.length === 0) {
         return false;
       }
@@ -153,7 +154,7 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      return tsutils.isFunctionScopeBoundary(tsNode);
+      return isFunctionScopeBoundary(tsNode);
     }
 
     function getEsNodesFromViolatingNode(

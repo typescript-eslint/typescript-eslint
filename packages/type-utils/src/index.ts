@@ -23,6 +23,7 @@ export * from './isEnumMember';
 export * from './isExpression';
 export * from './isFalsyType';
 export * from './isFlagSet';
+export * from './isFunctionScopeBoundary';
 export * from './isInConstContext';
 export * from './isIntersectionType';
 export * from './isJsxExpression';
