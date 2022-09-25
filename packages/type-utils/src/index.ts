@@ -21,6 +21,7 @@ export * from './isTypeReadonly';
 export * from './isTypeReference';
 export * from './isUnionType';
 export * from './isUnsafeAssignment';
+export * from './isValidPropertyAccess';
 export * from './predicates';
 export * from './propertyTypes';
 export * from './requiresQuoting';

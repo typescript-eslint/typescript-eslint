@@ -1,6 +1,6 @@
+import { isValidPropertyAccess } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 
 import * as util from '../util';
 
@@ -96,7 +96,6 @@ function isNecessaryDynamicAccess(property: TSESTree.Expression): boolean {
   }
 
   return (
-    typeof property.value === 'string' &&
-    !tsutils.isValidPropertyAccess(property.value)
+    typeof property.value === 'string' && !isValidPropertyAccess(property.value)
   );
 }
