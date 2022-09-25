@@ -19,6 +19,7 @@ export * from './isConditionalType';
 export * from './isConstAssertion';
 export * from './isEntityNameExpression';
 export * from './isEnumMember';
+export * from './isExpression';
 export * from './isFlagSet';
 export * from './isInConstContext';
 export * from './isIntersectionType';
