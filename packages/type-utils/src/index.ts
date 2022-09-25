@@ -5,13 +5,22 @@ export * from './getDeclaration';
 export * from './getSourceFileOfNode';
 export * from './getTokenAtPosition';
 export * from './getTypeArguments';
+export * from './getTypeFlags';
 export * from './getTypeName';
+export * from './isAssignmentKind';
+export * from './isBinaryExpression';
+export * from './isCallExpression';
+export * from './isConditionalType';
+export * from './isIntersectionType';
+export * from './isTypeFlagSet';
 export * from './isTypeReadonly';
+export * from './isTypeReference';
+export * from './isUnionType';
 export * from './isUnsafeAssignment';
 export * from './predicates';
 export * from './propertyTypes';
 export * from './requiresQuoting';
-export * from './typeFlagUtils';
+export * from './unionTypeParts';
 export {
   getDecorators,
   getModifiers,

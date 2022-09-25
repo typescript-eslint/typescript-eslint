@@ -1,3 +1,4 @@
+import { isCallExpression } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
@@ -502,7 +503,7 @@ function voidFunctionParams(
 
   for (const subType of tsutils.unionTypeParts(type)) {
     // Standard function calls and `new` have two different types of signatures
-    const signatures = ts.isCallExpression(node)
+    const signatures = isCallExpression(node)
       ? subType.getCallSignatures()
       : subType.getConstructSignatures();
     for (const signature of signatures) {

@@ -1,9 +1,8 @@
 import debug from 'debug';
-import { unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
 
+import { getTypeFlags, isTypeFlagSet, unionTypeParts } from './';
 import { getTypeArguments } from './getTypeArguments';
-import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
 

@@ -1,6 +1,6 @@
+import { isBinaryExpression } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';

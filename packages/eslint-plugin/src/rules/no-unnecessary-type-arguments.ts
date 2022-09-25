@@ -1,3 +1,4 @@
+import { isCallExpression } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -129,7 +130,7 @@ function getTypeParametersFromNode(
     return getTypeParametersFromType(node.typeName, checker);
   }
 
-  if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+  if (isCallExpression(node) || ts.isNewExpression(node)) {
     return getTypeParametersFromCall(node, checker);
   }
 

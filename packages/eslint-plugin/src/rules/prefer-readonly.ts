@@ -1,3 +1,8 @@
+import {
+  isAssignmentKind,
+  isBinaryExpression,
+  isIntersectionType,
+} from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
@@ -58,7 +63,7 @@ export default util.createRule<Options, MessageIds>({
       parent: ts.Node,
       classScope: ClassScope,
     ): void {
-      if (ts.isBinaryExpression(parent)) {
+      if (isBinaryExpression(parent)) {
         handleParentBinaryExpression(node, parent, classScope);
         return;
       }
@@ -81,10 +86,7 @@ export default util.createRule<Options, MessageIds>({
       parent: ts.BinaryExpression,
       classScope: ClassScope,
     ): void {
-      if (
-        parent.left === node &&
-        tsutils.isAssignmentKind(parent.operatorToken.kind)
-      ) {
+      if (parent.left === node && isAssignmentKind(parent.operatorToken.kind)) {
         classScope.addVariableModification(node);
       }
     }
@@ -119,7 +121,7 @@ export default util.createRule<Options, MessageIds>({
             ts.isArrayLiteralExpression(parent.parent))
         ) {
           current = parent;
-        } else if (ts.isBinaryExpression(parent)) {
+        } else if (isBinaryExpression(parent)) {
           return (
             parent.left === current &&
             parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
@@ -273,7 +275,7 @@ class ClassScope {
     private readonly onlyInlineLambdas?: boolean,
   ) {
     const classType = checker.getTypeAtLocation(classNode);
-    if (tsutils.isIntersectionType(classType)) {
+    if (isIntersectionType(classType)) {
       this.classType = classType.types[0];
     } else {
       this.classType = classType;

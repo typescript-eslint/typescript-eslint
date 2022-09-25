@@ -1,8 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isTypeReference } from 'tsutils';
 import type * as ts from 'typescript';
 
+import { isTypeReference } from './isTypeReference';
 import { isTypeAnyType, isTypeUnknownType } from './predicates';
 
 /**
