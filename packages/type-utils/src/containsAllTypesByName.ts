@@ -1,8 +1,8 @@
-import { isUnionOrIntersectionType } from 'tsutils';
 import * as ts from 'typescript';
 
 import { isTypeFlagSet } from './isTypeFlagSet';
 import { isTypeReference } from './isTypeReference';
+import { isUnionOrIntersectionType } from './isUnionOrIntersectionType';
 
 /**
  * @param type Type being checked by name.
