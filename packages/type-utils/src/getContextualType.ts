@@ -1,8 +1,4 @@
-import {
-  isIdentifier,
-  isParameterDeclaration,
-  isVariableDeclaration,
-} from 'tsutils';
+import { isIdentifier, isVariableDeclaration } from 'tsutils';
 import * as ts from 'typescript';
 
 import {
@@ -10,6 +6,7 @@ import {
   isCallExpression,
   isJsxExpression,
   isNewExpression,
+  isParameterDeclaration,
   isPropertyAssignment,
   isPropertyDeclaration,
 } from './';
