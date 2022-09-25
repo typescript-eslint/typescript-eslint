@@ -13,7 +13,7 @@ const COMMENTS_IGNORE_PATTERN =
   /^\s*(?:eslint|jshint\s+|jslint\s+|istanbul\s+|globals?\s+|exported\s+|jscs)/u;
 
 /**
- * Return an array with with any line numbers that are empty.
+ * @returns an array with with any line numbers that are empty.
  */
 function getEmptyLineNums(lines: string[]): number[] {
   const emptyLines = lines
@@ -28,7 +28,7 @@ function getEmptyLineNums(lines: string[]): number[] {
 }
 
 /**
- * Return an array with with any line numbers that contain comments.
+ * @returns an array with with any line numbers that contain comments.
  */
 function getCommentLineNums(comments: TSESTree.Comment[]): number[] {
   const lines: number[] = [];
@@ -146,7 +146,7 @@ export default util.createRule<Options, MessageIds>({
     const commentAndEmptyLines = new Set(commentLines.concat(emptyLines));
 
     /**
-     * Returns whether or not comments are on lines starting with or ending with code
+     * @returns whether or not comments are on lines starting with or ending with code
      */
     function codeAroundComment(token: TSESTree.Token): boolean {
       let currentToken: TSESTree.Token | null = token;
@@ -176,7 +176,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Returns whether or not comments are inside a node type or not.
+     * @returns whether or not comments are inside a node type or not.
      */
     function isParentNodeType<T extends TSESTree.AST_NODE_TYPES>(
       parent: TSESTree.Node,
@@ -194,7 +194,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Returns the parent node that contains the given token.
+     * @returns the parent node that contains the given token.
      */
     function getParentNodeOfToken(token: TSESTree.Token): TSESTree.Node | null {
       const node = sourceCode.getNodeByRangeIndex(token.range[0]);
@@ -228,7 +228,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Returns whether or not comments are at the parent start or not.
+     * @returns whether or not comments are at the parent start or not.
      */
     function isCommentAtParentStart(
       token: TSESTree.Token,
@@ -251,7 +251,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * Returns whether or not comments are at the parent end or not.
+     * @returns whether or not comments are at the parent end or not.
      */
     function isCommentAtParentEnd(
       token: TSESTree.Token,
@@ -426,8 +426,8 @@ export default util.createRule<Options, MessageIds>({
 
     const customContext = { report: customReport };
 
-    // we can't directly proxy context because it's `report` property is non-configurable
-    // and non-writable. So we proxy on a customContext and redirect all other
+    // we can't directly proxy `context` because its `report` property is non-configurable
+    // and non-writable. So we proxy `customContext` and redirect all
     // property access to the original context except for `report`
     const proxiedContext = new Proxy<typeof context>(
       customContext as typeof context,
