@@ -7,10 +7,8 @@ import { unionTypeParts } from './unionTypeParts';
  */
 export function getTypeFlags(type: Type): TypeFlags {
   let flags: TypeFlags = 0;
-
   for (const t of unionTypeParts(type)) {
     flags |= t.flags;
   }
-
   return flags;
 }
