@@ -12,6 +12,7 @@ export * from './isBinaryExpression';
 export * from './isCallExpression';
 export * from './isConditionalType';
 export * from './isIntersectionType';
+export * from './isJsxExpression';
 export * from './isTypeFlagSet';
 export * from './isTypeReadonly';
 export * from './isTypeReference';
