@@ -664,7 +664,7 @@ declare module 'eslint/lib/rules/no-extra-semi' {
 }
 
 declare module 'eslint/lib/rules/lines-around-comment' {
-  import { TSESLint } from '@typescript-eslint/utils';
+  import type { TSESLint } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
     'after' | 'before',

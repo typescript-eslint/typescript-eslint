@@ -1,7 +1,8 @@
-import rule from '../../src/rules/lines-around-comment';
-import { unIndent } from './indent/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
+import rule from '../../src/rules/lines-around-comment';
 import { noFormat, RuleTester } from '../RuleTester';
+import { unIndent } from './indent/utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
