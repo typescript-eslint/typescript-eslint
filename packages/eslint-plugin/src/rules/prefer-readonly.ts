@@ -2,6 +2,7 @@ import {
   isAssignmentKind,
   isBinaryExpression,
   isIntersectionType,
+  isModifierFlagSet,
   isObjectFlagSet,
   isObjectType,
 } from '@typescript-eslint/type-utils';
@@ -292,8 +293,8 @@ class ClassScope {
 
   public addDeclaredVariable(node: ParameterOrPropertyDeclaration): void {
     if (
-      !tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
-      tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
+      !isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+      isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
       ts.isComputedPropertyName(node.name)
     ) {
       return;
@@ -307,7 +308,7 @@ class ClassScope {
       return;
     }
 
-    (tsutils.isModifierFlagSet(node, ts.ModifierFlags.Static)
+    (isModifierFlagSet(node, ts.ModifierFlags.Static)
       ? this.privateModifiableStatics
       : this.privateModifiableMembers
     ).set(node.name.getText(), node);
@@ -348,7 +349,7 @@ class ClassScope {
     this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
 
     for (const parameter of node.parameters) {
-      if (tsutils.isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
+      if (isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
         this.addDeclaredVariable(parameter);
       }
     }

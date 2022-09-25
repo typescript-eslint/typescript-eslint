@@ -13,6 +13,7 @@ export * from './isCallExpression';
 export * from './isConditionalType';
 export * from './isIntersectionType';
 export * from './isJsxExpression';
+export * from './isModifierFlagSet';
 export * from './isNewExpression';
 export * from './isObjectFlagSet';
 export * from './isObjectType';
