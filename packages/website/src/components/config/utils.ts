@@ -1,7 +1,6 @@
-import type { EslintRC, TSConfig } from '@site/src/components/types';
-
-import { parse } from 'json5';
 import { isRecord } from '@site/src/components/ast/utils';
+import type { EslintRC, TSConfig } from '@site/src/components/types';
+import { parse } from 'json5';
 
 export interface OptionDeclarations {
   name: string;

@@ -1,11 +1,12 @@
-import * as ts from 'typescript';
-import { TSESTree } from '@typescript-eslint/utils';
 import { parseForESLint } from '@typescript-eslint/parser';
-import {
-  isTypeReadonly,
-  type ReadonlynessOptions,
-} from '../src/isTypeReadonly';
+import type { TSESTree } from '@typescript-eslint/utils';
 import path from 'path';
+import type * as ts from 'typescript';
+
+import {
+  type ReadonlynessOptions,
+  isTypeReadonly,
+} from '../src/isTypeReadonly';
 
 describe('isTypeReadonly', () => {
   const rootDir = path.join(__dirname, 'fixtures');

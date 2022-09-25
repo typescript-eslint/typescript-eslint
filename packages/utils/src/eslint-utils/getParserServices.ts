@@ -1,5 +1,5 @@
-import * as TSESLint from '../ts-eslint';
-import { ParserServices } from '../ts-estree';
+import type * as TSESLint from '../ts-eslint';
+import type { ParserServices } from '../ts-estree';
 
 const ERROR_MESSAGE =
   'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';

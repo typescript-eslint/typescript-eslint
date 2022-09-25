@@ -1,33 +1,25 @@
-import React, {
-  useCallback,
-  useMemo,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
 import type Monaco from 'monaco-editor';
-import type { SandboxInstance } from './useSandboxServices';
-import type { CommonEditorProps } from './types';
-import type { TabType } from '../types';
-import type { WebLinter } from '../linter/WebLinter';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import {
+  parseESLintRC,
+  parseTSConfig,
+  tryParseEslintModule,
+} from '../config/utils';
 import { debounce } from '../lib/debounce';
-import { createProvideCodeActions } from './createProvideCodeActions';
+import type { LintCodeAction } from '../linter/utils';
+import { parseLintResults, parseMarkers } from '../linter/utils';
+import type { WebLinter } from '../linter/WebLinter';
+import type { TabType } from '../types';
 import {
   createCompilerOptions,
   getEslintSchema,
   getTsConfigSchema,
 } from './config';
-import {
-  parseMarkers,
-  parseLintResults,
-  LintCodeAction,
-} from '../linter/utils';
-import {
-  tryParseEslintModule,
-  parseESLintRC,
-  parseTSConfig,
-} from '../config/utils';
+import { createProvideCodeActions } from './createProvideCodeActions';
+import type { CommonEditorProps } from './types';
+import type { SandboxInstance } from './useSandboxServices';
 
 export interface LoadedEditorProps extends CommonEditorProps {
   readonly main: typeof Monaco;
@@ -282,6 +274,22 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   useEffect(() => {
     resize();
   }, [resize, showAST]);
+
+  const domNode = sandboxInstance.editor.getContainerDomNode();
+  const resizeObserver = useMemo(() => {
+    return new ResizeObserver(() => {
+      resize();
+    });
+  }, []);
+
+  useEffect(() => {
+    if (domNode) {
+      resizeObserver.observe(domNode);
+
+      return (): void => resizeObserver.unobserve(domNode);
+    }
+    return (): void => {};
+  }, [domNode]);
 
   useEffect(() => {
     window.addEventListener('resize', resize);

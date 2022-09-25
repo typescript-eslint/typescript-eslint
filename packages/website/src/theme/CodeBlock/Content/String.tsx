@@ -1,21 +1,21 @@
 // Change: added `copiedCode` which filters out the removed lines
 
-import React from 'react';
-import clsx from 'clsx';
-import { useThemeConfig, usePrismTheme } from '@docusaurus/theme-common';
+import { usePrismTheme, useThemeConfig } from '@docusaurus/theme-common';
 import {
+  containsLineNumbers,
   parseCodeBlockTitle,
   parseLanguage,
   parseLines,
-  containsLineNumbers,
   useCodeWordWrap,
 } from '@docusaurus/theme-common/internal';
-import Highlight, { defaultProps, type Language } from 'prism-react-renderer';
-import Line from '@theme/CodeBlock/Line';
-import CopyButton from '@theme/CodeBlock/CopyButton';
-import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import Container from '@theme/CodeBlock/Container';
 import type { Props } from '@theme/CodeBlock/Content/String';
+import CopyButton from '@theme/CodeBlock/CopyButton';
+import Line from '@theme/CodeBlock/Line';
+import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
+import clsx from 'clsx';
+import Highlight, { type Language, defaultProps } from 'prism-react-renderer';
+import React from 'react';
 
 import styles from './styles.module.css';
 

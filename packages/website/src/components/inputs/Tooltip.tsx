@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from './Tooltip.module.css';
 import clsx from 'clsx';
+import React from 'react';
+
+import styles from './Tooltip.module.css';
 
 export interface TooltipProps {
   readonly children: JSX.Element | (JSX.Element | false)[];

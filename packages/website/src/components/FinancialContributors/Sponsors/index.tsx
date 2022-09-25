@@ -2,9 +2,9 @@ import sponsors from '@site/data/sponsors.json';
 import clsx from 'clsx';
 import React from 'react';
 
-import styles from './styles.module.css';
 import { Sponsor } from '../Sponsor';
-import { SponsorIncludeOptions } from '../types';
+import type { SponsorIncludeOptions } from '../types';
+import styles from './styles.module.css';
 
 interface SponsorsProps {
   className: string;

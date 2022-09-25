@@ -1,6 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, { MessageIds, Options } from '../../src/rules/unbound-method';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/unbound-method';
+import rule from '../../src/rules/unbound-method';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 

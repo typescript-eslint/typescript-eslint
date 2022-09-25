@@ -1,11 +1,12 @@
 import { addSerializer } from 'jest-specific-snapshot';
+
+import { resetIds } from '../../../src/ID';
 import * as DefinitionBase from './DefinitionBase';
 import * as Reference from './Reference';
 import * as ScopeBase from './ScopeBase';
 import * as ScopeManager from './ScopeManager';
 import * as TSESTreeNode from './TSESTreeNode';
 import * as Variable from './Variable';
-import { resetIds } from '../../../src/ID';
 
 const serializers = [
   DefinitionBase.serializer,

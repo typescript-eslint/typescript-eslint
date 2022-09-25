@@ -1,15 +1,14 @@
-import type {
-  CompilerOptions,
-  SourceFile,
-  CompilerHost,
-  System,
-} from 'typescript';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type { ParserOptions } from '@typescript-eslint/types';
-import type { LintUtils } from '@typescript-eslint/website-eslint';
-
 import { createVirtualCompilerHost } from '@site/src/components/linter/CompilerHost';
 import { extra } from '@site/src/components/linter/config';
+import type { ParserOptions } from '@typescript-eslint/types';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { LintUtils } from '@typescript-eslint/website-eslint';
+import type {
+  CompilerHost,
+  CompilerOptions,
+  SourceFile,
+  System,
+} from 'typescript';
 
 const PARSER_NAME = '@typescript-eslint/parser';
 

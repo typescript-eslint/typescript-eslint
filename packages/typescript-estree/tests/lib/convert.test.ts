@@ -1,5 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as ts from 'typescript';
+
 import type { TSNode } from '../../src';
 import { Converter } from '../../src/convert';
 
