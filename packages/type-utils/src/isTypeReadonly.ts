@@ -1,6 +1,5 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 import {
-  isObjectType,
   isPropertyReadonlyInType,
   isSymbolFlagSet,
   isUnionType,
@@ -10,6 +9,7 @@ import * as ts from 'typescript';
 
 import { isConditionalType } from './isConditionalType';
 import { isIntersectionType } from './isIntersectionType';
+import { isObjectType } from './isObjectType';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 
 const enum Readonlyness {

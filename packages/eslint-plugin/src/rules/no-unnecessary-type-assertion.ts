@@ -1,8 +1,8 @@
+import { isObjectType } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   isObjectFlagSet,
-  isObjectType,
   isStrictCompilerOptionEnabled,
   isTypeFlagSet,
   isVariableDeclaration,
