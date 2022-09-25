@@ -146,7 +146,7 @@ export default util.createRule<Options, MessageIds>({
     const commentAndEmptyLines = new Set(commentLines.concat(emptyLines));
 
     /**
-     * @returns whether or not comments are on lines starting with or ending with code
+     * @returns whether comments are on lines starting with or ending with code.
      */
     function codeAroundComment(token: TSESTree.Token): boolean {
       let currentToken: TSESTree.Token | null = token;
@@ -176,7 +176,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * @returns whether or not comments are inside a node type or not.
+     * @returns whether comments are inside a node type.
      */
     function isParentNodeType<T extends TSESTree.AST_NODE_TYPES>(
       parent: TSESTree.Node,
@@ -228,7 +228,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * @returns whether or not comments are at the parent start or not.
+     * @returns whether comments are at the parent start.
      */
     function isCommentAtParentStart(
       token: TSESTree.Token,
@@ -251,7 +251,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * @returns whether or not comments are at the parent end or not.
+     * @returns whether comments are at the parent end.
      */
     function isCommentAtParentEnd(
       token: TSESTree.Token,
