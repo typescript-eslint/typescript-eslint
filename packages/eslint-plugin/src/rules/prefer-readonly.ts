@@ -2,6 +2,7 @@ import {
   isAssignmentKind,
   isBinaryExpression,
   isIntersectionType,
+  isObjectFlagSet,
   isObjectType,
 } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
@@ -323,7 +324,7 @@ class ClassScope {
 
     const modifyingStatic =
       isObjectType(modifierType) &&
-      tsutils.isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
+      isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
     if (
       !modifyingStatic &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
