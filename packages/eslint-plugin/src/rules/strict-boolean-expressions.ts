@@ -1,7 +1,11 @@
-import { isStrictCompilerOptionEnabled } from '@typescript-eslint/type-utils';
+import {
+  isBooleanLiteralType,
+  isStrictCompilerOptionEnabled,
+  isTypeFlagSet,
+  unionTypeParts,
+} from '@typescript-eslint/type-utils';
 import type { ParserServices, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -261,7 +265,7 @@ export default util.createRule<Options, MessageId>({
     function checkNode(node: TSESTree.Node): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
-      const types = inspectVariantTypes(tsutils.unionTypeParts(type));
+      const types = inspectVariantTypes(unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
         types.size === wantedTypes.length &&
@@ -765,7 +769,7 @@ export default util.createRule<Options, MessageId>({
 
       if (
         types.some(type =>
-          tsutils.isTypeFlagSet(
+          isTypeFlagSet(
             type,
             ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.VoidLike,
           ),
@@ -774,15 +778,15 @@ export default util.createRule<Options, MessageId>({
         variantTypes.add('nullish');
       }
       const booleans = types.filter(type =>
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+        isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
       );
 
       // If incoming type is either "true" or "false", there will be one type
       // object with intrinsicName set accordingly
       // If incoming type is boolean, there will be two type objects with
-      // intrinsicName set "true" and "false" each because of tsutils.unionTypeParts()
+      // intrinsicName set "true" and "false" each because of unionTypeParts()
       if (booleans.length === 1) {
-        tsutils.isBooleanLiteralType(booleans[0], true)
+        isBooleanLiteralType(booleans[0], true)
           ? variantTypes.add('truthy boolean')
           : variantTypes.add('boolean');
       } else if (booleans.length === 2) {
@@ -790,7 +794,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       const strings = types.filter(type =>
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike),
+        isTypeFlagSet(type, ts.TypeFlags.StringLike),
       );
 
       if (strings.length) {
@@ -802,10 +806,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       const numbers = types.filter(type =>
-        tsutils.isTypeFlagSet(
-          type,
-          ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
-        ),
+        isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike),
       );
       if (numbers.length) {
         if (numbers.some(type => type.isNumberLiteral() && type.value !== 0)) {
@@ -818,7 +819,7 @@ export default util.createRule<Options, MessageId>({
       if (
         types.some(
           type =>
-            !tsutils.isTypeFlagSet(
+            !isTypeFlagSet(
               type,
               ts.TypeFlags.Null |
                 ts.TypeFlags.Undefined |
@@ -850,7 +851,7 @@ export default util.createRule<Options, MessageId>({
         variantTypes.add('any');
       }
 
-      if (types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.Never))) {
+      if (types.some(type => isTypeFlagSet(type, ts.TypeFlags.Never))) {
         variantTypes.add('never');
       }
 

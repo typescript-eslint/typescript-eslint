@@ -1,6 +1,6 @@
+import { isTypeFlagSet } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageId>({
         const checker = parserServices.program.getTypeChecker();
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = util.getConstrainedTypeAtLocation(checker, tsNode);
-        if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        if (!isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
         }

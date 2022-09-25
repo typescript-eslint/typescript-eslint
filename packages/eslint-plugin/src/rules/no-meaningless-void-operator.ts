@@ -1,6 +1,6 @@
+import { unionTypeParts } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { ESLintUtils } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -64,7 +64,7 @@ export default util.createRule<
           node.argument,
         );
         const argType = checker.getTypeAtLocation(argTsNode);
-        const unionParts = tsutils.unionTypeParts(argType);
+        const unionParts = unionTypeParts(argType);
         if (
           unionParts.every(
             part => part.flags & (ts.TypeFlags.Void | ts.TypeFlags.Undefined),

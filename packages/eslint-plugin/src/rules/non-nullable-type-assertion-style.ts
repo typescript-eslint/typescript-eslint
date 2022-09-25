@@ -1,6 +1,10 @@
+import {
+  isTypeFlagSet,
+  isUnionType,
+  unionTypeParts,
+} from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -33,20 +37,18 @@ export default util.createRule({
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
 
-      if (
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
-      ) {
+      if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         return undefined;
       }
 
-      return tsutils.unionTypeParts(type);
+      return unionTypeParts(type);
     };
 
     const couldBeNullish = (type: ts.Type): boolean => {
       if (type.flags & ts.TypeFlags.TypeParameter) {
         const constraint = type.getConstraint();
         return constraint == null || couldBeNullish(constraint);
-      } else if (tsutils.isUnionType(type)) {
+      } else if (isUnionType(type)) {
         for (const part of type.types) {
           if (couldBeNullish(part)) {
             return true;

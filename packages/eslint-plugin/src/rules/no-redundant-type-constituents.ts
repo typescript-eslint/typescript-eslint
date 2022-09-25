@@ -1,5 +1,8 @@
+import {
+  isBooleanLiteralType,
+  unionTypeParts,
+} from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -106,11 +109,11 @@ function describeLiteralType(type: ts.Type): string {
     return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
   }
 
-  if (tsutils.isBooleanLiteralType(type, true)) {
+  if (isBooleanLiteralType(type, true)) {
     return 'true';
   }
 
-  if (tsutils.isBooleanLiteralType(type, false)) {
+  if (isBooleanLiteralType(type, false)) {
     return 'false';
   }
 
@@ -167,10 +170,10 @@ function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
 function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
   return type.isUnion() &&
     type.types.length === 2 &&
-    tsutils.isBooleanLiteralType(type.types[0], false) &&
-    tsutils.isBooleanLiteralType(type.types[1], true)
+    isBooleanLiteralType(type.types[0], false) &&
+    isBooleanLiteralType(type.types[1], true)
     ? [type]
-    : tsutils.unionTypeParts(type);
+    : unionTypeParts(type);
 }
 
 export default util.createRule({

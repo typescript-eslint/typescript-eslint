@@ -12,6 +12,7 @@ export * from './getWellKnownSymbolPropertyOfType';
 export * from './isAssignmentKind';
 export * from './isBinaryExpression';
 export * from './isBindableObjectDefinePropertyCall';
+export * from './isBooleanLiteralType';
 export * from './isCallExpression';
 export * from './isCompilerOptionEnabled';
 export * from './isConditionalType';

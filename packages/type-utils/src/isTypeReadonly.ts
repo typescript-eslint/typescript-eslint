@@ -1,5 +1,4 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
-import { isUnionType, unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
 
 import { isConditionalType } from './isConditionalType';
@@ -7,7 +6,9 @@ import { isIntersectionType } from './isIntersectionType';
 import { isObjectType } from './isObjectType';
 import { isPropertyReadonlyInType } from './isPropertyReadonlyInType';
 import { isSymbolFlagSet } from './isSymbolFlagSet';
+import { isUnionType } from './isUnionType';
 import { getTypeOfPropertyOfType } from './propertyTypes';
+import { unionTypeParts } from './unionTypeParts';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */

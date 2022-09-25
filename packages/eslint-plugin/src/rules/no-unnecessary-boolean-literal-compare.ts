@@ -1,6 +1,6 @@
+import { isTypeFlagSet } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -113,7 +113,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isBooleanType(expressionType: ts.Type): boolean {
-      return tsutils.isTypeFlagSet(
+      return isTypeFlagSet(
         expressionType,
         ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
       );
@@ -134,10 +134,7 @@ export default util.createRule<Options, MessageIds>({
 
       const nonNullishTypes = types.filter(
         type =>
-          !tsutils.isTypeFlagSet(
-            type,
-            ts.TypeFlags.Undefined | ts.TypeFlags.Null,
-          ),
+          !isTypeFlagSet(type, ts.TypeFlags.Undefined | ts.TypeFlags.Null),
       );
 
       const hasNonNullishType = nonNullishTypes.length > 0;

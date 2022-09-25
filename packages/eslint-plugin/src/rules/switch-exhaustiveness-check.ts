@@ -1,5 +1,5 @@
+import { isTypeFlagSet, unionTypeParts } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
 
 import {
