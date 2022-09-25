@@ -1,6 +1,5 @@
 import {
   isIdentifier,
-  isNewExpression,
   isParameterDeclaration,
   isPropertyAssignment,
   isPropertyDeclaration,
@@ -8,7 +7,12 @@ import {
 } from 'tsutils';
 import * as ts from 'typescript';
 
-import { isBinaryExpression, isCallExpression, isJsxExpression } from './';
+import {
+  isBinaryExpression,
+  isCallExpression,
+  isJsxExpression,
+  isNewExpression,
+} from './';
 
 /**
  * Returns the contextual type of a given node.
