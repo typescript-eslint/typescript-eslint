@@ -1,7 +1,9 @@
-import { isThenableType } from '@typescript-eslint/type-utils';
+import {
+  getWellKnownSymbolPropertyOfType,
+  isThenableType,
+} from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
 import type * as ts from 'typescript';
 
 import * as util from '../util';
@@ -112,7 +114,7 @@ export default util.createRule({
       const type = checker.getTypeAtLocation(tsNode);
       const typesToCheck = expandUnionOrIntersectionType(type);
       for (const type of typesToCheck) {
-        const asyncIterator = tsutils.getWellKnownSymbolPropertyOfType(
+        const asyncIterator = getWellKnownSymbolPropertyOfType(
           type,
           'asyncIterator',
           checker,
