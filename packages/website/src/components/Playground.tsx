@@ -14,6 +14,7 @@ import type Monaco from 'monaco-editor';
 import React, { useCallback, useReducer, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import ASTViewerESTree from './ASTViewerESTree';
 import ASTViewerTS from './ASTViewerTS';
 import { EditorEmbed } from './editor/EditorEmbed';
@@ -23,6 +24,7 @@ import Loader from './layout/Loader';
 import { shallowEqual } from './lib/shallowEqual';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
+import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
 import type {
   ConfigModel,
   ErrorGroup,
@@ -70,6 +72,7 @@ function Playground(): JSX.Element {
   const [position, setPosition] = useState<Monaco.Position | null>(null);
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
+  const enableSplitPanes = useMediaQuery('(min-width: 996px)');
 
   const updateModal = useCallback(
     (config?: Partial<ConfigModel>) => {
@@ -96,73 +99,90 @@ function Playground(): JSX.Element {
         config={state.tsconfig}
         onClose={updateModal}
       />
-      <div className={clsx(styles.options, 'thin-scrollbar')}>
-        <OptionsSelector
-          isLoading={isLoading}
-          state={state}
-          tsVersions={tsVersions}
-          setState={setState}
-        />
-      </div>
       <div className={styles.codeBlocks}>
-        <div className={clsx(styles.sourceCode)}>
-          {isLoading && <Loader />}
-          <EditorTabs
-            tabs={['code', 'tsconfig', 'eslintrc']}
-            activeTab={activeTab}
-            change={setTab}
-            showModal={(): void => setShowModal(activeTab)}
-          />
-          <div className={styles.tabCode}>
-            <EditorEmbed />
-          </div>
-          <LoadingEditor
-            ts={state.ts}
-            jsx={state.jsx}
-            activeTab={activeTab}
-            code={state.code}
-            tsconfig={state.tsconfig}
-            eslintrc={state.eslintrc}
-            darkTheme={colorMode === 'dark'}
-            sourceType={state.sourceType}
-            showAST={state.showAST}
-            onEsASTChange={setEsAst}
-            onTsASTChange={setTsAST}
-            onScopeChange={setScope}
-            onMarkersChange={setMarkers}
-            decoration={selectedRange}
-            onChange={setState}
-            onLoaded={(ruleNames, tsVersions): void => {
-              setRuleNames(ruleNames);
-              setTSVersion(tsVersions);
-              setIsLoading(false);
-            }}
-            onSelect={setPosition}
-          />
-        </div>
-        <div className={styles.astViewer}>
-          {(state.showAST === 'ts' && tsAst && (
-            <ASTViewerTS
-              value={tsAst}
-              position={position}
-              onSelectNode={setSelectedRange}
+        <ConditionalSplitPane
+          render={enableSplitPanes}
+          split="vertical"
+          minSize="10%"
+          defaultSize="20rem"
+          maxSize={
+            20 * parseFloat(getComputedStyle(document.documentElement).fontSize)
+          }
+        >
+          <div className={clsx(styles.options, 'thin-scrollbar')}>
+            <OptionsSelector
+              isLoading={isLoading}
+              state={state}
+              tsVersions={tsVersions}
+              setState={setState}
             />
-          )) ||
-            (state.showAST === 'scope' && scope && (
-              <ASTViewerScope
-                value={scope}
-                position={position}
-                onSelectNode={setSelectedRange}
+          </div>
+          <ConditionalSplitPane
+            render={enableSplitPanes}
+            split="vertical"
+            minSize="10%"
+            defaultSize="50%"
+          >
+            <div className={clsx(styles.sourceCode)}>
+              {isLoading && <Loader />}
+              <EditorTabs
+                tabs={['code', 'tsconfig', 'eslintrc']}
+                activeTab={activeTab}
+                change={setTab}
+                showModal={(): void => setShowModal(activeTab)}
               />
-            )) ||
-            (state.showAST === 'es' && esAst && (
-              <ASTViewerESTree
-                value={esAst}
-                position={position}
-                onSelectNode={setSelectedRange}
+              <div className={styles.tabCode}>
+                <EditorEmbed />
+              </div>
+              <LoadingEditor
+                ts={state.ts}
+                jsx={state.jsx}
+                activeTab={activeTab}
+                code={state.code}
+                tsconfig={state.tsconfig}
+                eslintrc={state.eslintrc}
+                darkTheme={colorMode === 'dark'}
+                sourceType={state.sourceType}
+                showAST={state.showAST}
+                onEsASTChange={setEsAst}
+                onTsASTChange={setTsAST}
+                onScopeChange={setScope}
+                onMarkersChange={setMarkers}
+                decoration={selectedRange}
+                onChange={setState}
+                onLoaded={(ruleNames, tsVersions): void => {
+                  setRuleNames(ruleNames);
+                  setTSVersion(tsVersions);
+                  setIsLoading(false);
+                }}
+                onSelect={setPosition}
               />
-            )) || <ErrorsViewer value={markers} />}
-        </div>
+            </div>
+            <div className={styles.astViewer}>
+              {(state.showAST === 'ts' && tsAst && (
+                <ASTViewerTS
+                  value={tsAst}
+                  position={position}
+                  onSelectNode={setSelectedRange}
+                />
+              )) ||
+                (state.showAST === 'scope' && scope && (
+                  <ASTViewerScope
+                    value={scope}
+                    position={position}
+                    onSelectNode={setSelectedRange}
+                  />
+                )) ||
+                (state.showAST === 'es' && esAst && (
+                  <ASTViewerESTree
+                    value={esAst}
+                    position={position}
+                    onSelectNode={setSelectedRange}
+                  />
+                )) || <ErrorsViewer value={markers} />}
+            </div>
+          </ConditionalSplitPane>
+        </ConditionalSplitPane>
       </div>
     </div>
   );

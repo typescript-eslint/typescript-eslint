@@ -232,6 +232,22 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     resize();
   }, [resize, showAST]);
 
+  const domNode = sandboxInstance.editor.getContainerDomNode();
+  const resizeObserver = useMemo(() => {
+    return new ResizeObserver(() => {
+      resize();
+    });
+  }, []);
+
+  useEffect(() => {
+    if (domNode) {
+      resizeObserver.observe(domNode);
+
+      return (): void => resizeObserver.unobserve(domNode);
+    }
+    return (): void => {};
+  }, [domNode]);
+
   useEffect(() => {
     window.addEventListener('resize', resize);
     return (): void => {
