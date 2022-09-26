@@ -1,10 +1,11 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-inferrable-types';
-import { RuleTester } from '../RuleTester';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;

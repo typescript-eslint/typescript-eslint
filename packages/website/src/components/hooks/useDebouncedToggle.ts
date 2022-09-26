@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export default function useDebouncedToggle<T>(
   value: T,

@@ -1,6 +1,7 @@
-import type Monaco from 'monaco-editor';
-import type { ErrorGroup } from '../types';
 import type { TSESLint } from '@typescript-eslint/utils';
+import type Monaco from 'monaco-editor';
+
+import type { ErrorGroup } from '../types';
 
 export interface LintCodeAction {
   message: string;

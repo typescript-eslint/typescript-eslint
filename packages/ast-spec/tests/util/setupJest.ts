@@ -1,4 +1,5 @@
 import { addSerializer } from 'jest-specific-snapshot';
+
 import { serializers } from './serializers';
 
 for (const serializer of serializers) {

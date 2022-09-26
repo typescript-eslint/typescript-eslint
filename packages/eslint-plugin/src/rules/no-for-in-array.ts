@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export default util.createRule({

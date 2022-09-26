@@ -94,7 +94,7 @@ throw new CustomError();
 This rule adds the following options:
 
 ```ts
-interface Options extends BaseNoShadowOptions {
+interface Options {
   /**
    * Whether to always allow throwing values typed as `any`.
    */
@@ -107,7 +107,6 @@ interface Options extends BaseNoShadowOptions {
 }
 
 const defaultOptions: Options = {
-  ...baseNoShadowDefaultOptions,
   allowThrowingAny: false,
   allowThrowingUnknown: false,
 };

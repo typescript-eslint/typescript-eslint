@@ -43,10 +43,7 @@ const paths = globby
   });
 
 function createCategory(label, rules, additionalItems = []) {
-  const collapsed = !additionalItems.length;
   return {
-    collapsed,
-    collapsible: collapsed,
     items: [
       ...rules.map(rule => {
         return {
@@ -65,12 +62,15 @@ function createCategory(label, rules, additionalItems = []) {
 module.exports = {
   someSidebar: [
     'README',
-    createCategory('Rules', emphasizedRules, [
-      createCategory('Formatting Rules', Array.from(formattingRules)),
-      createCategory('Deprecated Rules', [
-        ...Array.from(deprecatedRules),
-        ...paths,
+    {
+      ...createCategory('Rules', emphasizedRules, [
+        createCategory('Formatting Rules', Array.from(formattingRules)),
+        createCategory('Deprecated Rules', [
+          ...Array.from(deprecatedRules),
+          ...paths,
+        ]),
       ]),
-    ]),
+      collapsed: false,
+    },
   ],
 };

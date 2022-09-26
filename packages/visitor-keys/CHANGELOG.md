@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.38.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.38.0...v5.38.1) (2022-09-26)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [5.38.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.37.0...v5.38.0) (2022-09-19)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+# [5.37.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.2...v5.37.0) (2022-09-12)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
+## [5.36.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.1...v5.36.2) (2022-09-05)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+
+
+
+
 ## [5.36.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.36.0...v5.36.1) (2022-08-30)
 
 **Note:** Version bump only for package @typescript-eslint/visitor-keys

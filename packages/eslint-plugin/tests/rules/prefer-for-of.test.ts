@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-for-of';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

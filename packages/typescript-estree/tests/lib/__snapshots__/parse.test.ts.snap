@@ -1,130 +1,130 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is empty the extension does not match 1`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: other/unknownFileType.unknown.
-The extension for the file (.unknown) is non-standard. You should add \\"parserOptions.extraFileExtensions\\" to your config."
+The extension for the file (.unknown) is non-standard. You should add "parserOptions.extraFileExtensions" to your config."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty invalid extension 1`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: other/unknownFileType.unknown.
-Found unexpected extension \\"unknown\\" specified with the \\"extraFileExtensions\\" option. Did you mean \\".unknown\\"?
-The extension for the file (.unknown) is non-standard. It should be added to your existing \\"parserOptions.extraFileExtensions\\"."
+Found unexpected extension "unknown" specified with the "extraFileExtensions" option. Did you mean ".unknown"?
+The extension for the file (.unknown) is non-standard. It should be added to your existing "parserOptions.extraFileExtensions"."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension does not match 1`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: other/unknownFileType.unknown.
-The extension for the file (.unknown) is non-standard. It should be added to your existing \\"parserOptions.extraFileExtensions\\"."
+The extension for the file (.unknown) is non-standard. It should be added to your existing "parserOptions.extraFileExtensions"."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches duplicate extension 1`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: ts/notIncluded.ts.
-You unnecessarily included the extension \\".ts\\" with the \\"extraFileExtensions\\" option. This extension is already handled by the parser by default.
+You unnecessarily included the extension ".ts" with the "extraFileExtensions" option. This extension is already handled by the parser by default.
 The file must be included in at least one of the projects provided."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches the file isn't included 1`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: other/notIncluded.vue.
 The file must be included in at least one of the projects provided."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 1`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: ts/notIncluded0j1.ts.
 The file must be included in at least one of the projects provided."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 2`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: ts/notIncluded02.tsx.
 The file must be included in at least one of the projects provided."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 3`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: js/notIncluded01.js.
 The file must be included in at least one of the projects provided."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 4`] = `
-"\\"parserOptions.project\\" has been set for @typescript-eslint/parser.
+""parserOptions.project" has been set for @typescript-eslint/parser.
 The file does not match your project config: js/notIncluded02.jsx.
 The file must be included in at least one of the projects provided."
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .js file - with JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "children": Array [],
+            "init": {
+              "children": [],
               "closingElement": null,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "openingElement": Object {
-                "attributes": Array [],
-                "loc": Object {
-                  "end": Object {
+              "openingElement": {
+                "attributes": [],
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 10,
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
+                "name": {
+                  "loc": {
+                    "end": {
                       "column": 14,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 11,
                       "line": 1,
                     },
                   },
                   "name": "div",
-                  "range": Array [
+                  "range": [
                     11,
                     14,
                   ],
                   "type": "JSXIdentifier",
                 },
-                "range": Array [
+                "range": [
                   10,
                   17,
                 ],
@@ -132,23 +132,23 @@ Object {
                 "type": "JSXOpeningElement",
                 "typeParameters": undefined,
               },
-              "range": Array [
+              "range": [
                 10,
                 17,
               ],
               "type": "JSXElement",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 17,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               17,
             ],
@@ -156,178 +156,178 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           18,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 18,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       18,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
         "type": "Punctuator",
         "value": "<",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 14,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 11,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           11,
           14,
         ],
         "type": "JSXIdentifier",
         "value": "div",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 16,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 15,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           15,
           16,
         ],
         "type": "Punctuator",
         "value": "/",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 17,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 16,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           16,
           17,
         ],
         "type": "Punctuator",
         "value": ">",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 17,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           17,
           18,
         ],
@@ -337,84 +337,84 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .js file - with JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "children": Array [],
+            "init": {
+              "children": [],
               "closingElement": null,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "openingElement": Object {
-                "attributes": Array [],
-                "loc": Object {
-                  "end": Object {
+              "openingElement": {
+                "attributes": [],
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 10,
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
+                "name": {
+                  "loc": {
+                    "end": {
                       "column": 14,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 11,
                       "line": 1,
                     },
                   },
                   "name": "div",
-                  "range": Array [
+                  "range": [
                     11,
                     14,
                   ],
                   "type": "JSXIdentifier",
                 },
-                "range": Array [
+                "range": [
                   10,
                   17,
                 ],
@@ -422,23 +422,23 @@ Object {
                 "type": "JSXOpeningElement",
                 "typeParameters": undefined,
               },
-              "range": Array [
+              "range": [
                 10,
                 17,
               ],
               "type": "JSXElement",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 17,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               17,
             ],
@@ -446,178 +446,178 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           18,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 18,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       18,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
         "type": "Punctuator",
         "value": "<",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 14,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 11,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           11,
           14,
         ],
         "type": "JSXIdentifier",
         "value": "div",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 16,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 15,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           15,
           16,
         ],
         "type": "Punctuator",
         "value": "/",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 17,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 16,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           16,
           17,
         ],
         "type": "Punctuator",
         "value": ">",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 17,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           17,
           18,
         ],
@@ -627,52 +627,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .js file - without JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -680,17 +680,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -698,106 +698,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -807,52 +807,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .js file - without JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -860,17 +860,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -878,106 +878,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -987,83 +987,83 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .json file - without JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "expression": Object {
-          "loc": Object {
-            "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "expression": {
+          "loc": {
+            "end": {
               "column": 10,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 0,
               "line": 1,
             },
           },
-          "properties": Array [
-            Object {
+          "properties": [
+            {
               "computed": false,
-              "key": Object {
-                "loc": Object {
-                  "end": Object {
+              "key": {
+                "loc": {
+                  "end": {
                     "column": 5,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 2,
                     "line": 1,
                   },
                 },
-                "range": Array [
+                "range": [
                   2,
                   5,
                 ],
-                "raw": "\\"x\\"",
+                "raw": ""x"",
                 "type": "Literal",
                 "value": "x",
               },
               "kind": "init",
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 8,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 2,
                   "line": 1,
                 },
               },
               "method": false,
-              "range": Array [
+              "range": [
                 2,
                 8,
               ],
               "shorthand": false,
               "type": "Property",
-              "value": Object {
-                "loc": Object {
-                  "end": Object {
+              "value": {
+                "loc": {
+                  "end": {
                     "column": 8,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 7,
                     "line": 1,
                   },
                 },
-                "range": Array [
+                "range": [
                   7,
                   8,
                 ],
@@ -1073,130 +1073,130 @@ Object {
               },
             },
           ],
-          "range": Array [
+          "range": [
             0,
             10,
           ],
           "type": "ObjectExpression",
         },
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 10,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           10,
         ],
         "type": "ExpressionStatement",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 10,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       10,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 1,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           1,
         ],
         "type": "Punctuator",
         "value": "{",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 2,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           2,
           5,
         ],
         "type": "String",
-        "value": "\\"x\\"",
+        "value": ""x"",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 6,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 5,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           5,
           6,
         ],
         "type": "Punctuator",
         "value": ":",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 8,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 7,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           7,
           8,
         ],
         "type": "Numeric",
         "value": "1",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 10,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 9,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           9,
           10,
         ],
@@ -1206,84 +1206,84 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "children": Array [],
+            "init": {
+              "children": [],
               "closingElement": null,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "openingElement": Object {
-                "attributes": Array [],
-                "loc": Object {
-                  "end": Object {
+              "openingElement": {
+                "attributes": [],
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 10,
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
+                "name": {
+                  "loc": {
+                    "end": {
                       "column": 14,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 11,
                       "line": 1,
                     },
                   },
                   "name": "div",
-                  "range": Array [
+                  "range": [
                     11,
                     14,
                   ],
                   "type": "JSXIdentifier",
                 },
-                "range": Array [
+                "range": [
                   10,
                   17,
                 ],
@@ -1291,23 +1291,23 @@ Object {
                 "type": "JSXOpeningElement",
                 "typeParameters": undefined,
               },
-              "range": Array [
+              "range": [
                 10,
                 17,
               ],
               "type": "JSXElement",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 17,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               17,
             ],
@@ -1315,178 +1315,178 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           18,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 18,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       18,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
         "type": "Punctuator",
         "value": "<",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 14,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 11,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           11,
           14,
         ],
         "type": "JSXIdentifier",
         "value": "div",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 16,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 15,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           15,
           16,
         ],
         "type": "Punctuator",
         "value": "/",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 17,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 16,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           16,
           17,
         ],
         "type": "Punctuator",
         "value": ">",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 17,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           17,
           18,
         ],
@@ -1496,84 +1496,84 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "children": Array [],
+            "init": {
+              "children": [],
               "closingElement": null,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "openingElement": Object {
-                "attributes": Array [],
-                "loc": Object {
-                  "end": Object {
+              "openingElement": {
+                "attributes": [],
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 10,
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
+                "name": {
+                  "loc": {
+                    "end": {
                       "column": 14,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 11,
                       "line": 1,
                     },
                   },
                   "name": "div",
-                  "range": Array [
+                  "range": [
                     11,
                     14,
                   ],
                   "type": "JSXIdentifier",
                 },
-                "range": Array [
+                "range": [
                   10,
                   17,
                 ],
@@ -1581,23 +1581,23 @@ Object {
                 "type": "JSXOpeningElement",
                 "typeParameters": undefined,
               },
-              "range": Array [
+              "range": [
                 10,
                 17,
               ],
               "type": "JSXElement",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 17,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               17,
             ],
@@ -1605,178 +1605,178 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           18,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 18,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       18,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
         "type": "Punctuator",
         "value": "<",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 14,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 11,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           11,
           14,
         ],
         "type": "JSXIdentifier",
         "value": "div",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 16,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 15,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           15,
           16,
         ],
         "type": "Punctuator",
         "value": "/",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 17,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 16,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           16,
           17,
         ],
         "type": "Punctuator",
         "value": ">",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 17,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           17,
           18,
         ],
@@ -1786,52 +1786,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .jsx file - without JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -1839,17 +1839,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -1857,106 +1857,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -1966,52 +1966,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .jsx file - without JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -2019,17 +2019,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -2037,106 +2037,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -2146,52 +2146,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .ts file - without JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -2199,17 +2199,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -2217,106 +2217,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -2326,52 +2326,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .ts file - without JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -2379,17 +2379,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -2397,106 +2397,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -2506,84 +2506,84 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "children": Array [],
+            "init": {
+              "children": [],
               "closingElement": null,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "openingElement": Object {
-                "attributes": Array [],
-                "loc": Object {
-                  "end": Object {
+              "openingElement": {
+                "attributes": [],
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 10,
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
+                "name": {
+                  "loc": {
+                    "end": {
                       "column": 14,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 11,
                       "line": 1,
                     },
                   },
                   "name": "div",
-                  "range": Array [
+                  "range": [
                     11,
                     14,
                   ],
                   "type": "JSXIdentifier",
                 },
-                "range": Array [
+                "range": [
                   10,
                   17,
                 ],
@@ -2591,23 +2591,23 @@ Object {
                 "type": "JSXOpeningElement",
                 "typeParameters": undefined,
               },
-              "range": Array [
+              "range": [
                 10,
                 17,
               ],
               "type": "JSXElement",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 17,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               17,
             ],
@@ -2615,178 +2615,178 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           18,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 18,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       18,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
         "type": "Punctuator",
         "value": "<",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 14,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 11,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           11,
           14,
         ],
         "type": "JSXIdentifier",
         "value": "div",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 16,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 15,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           15,
           16,
         ],
         "type": "Punctuator",
         "value": "/",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 17,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 16,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           16,
           17,
         ],
         "type": "Punctuator",
         "value": ">",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 17,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           17,
           18,
         ],
@@ -2796,84 +2796,84 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "children": Array [],
+            "init": {
+              "children": [],
               "closingElement": null,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "openingElement": Object {
-                "attributes": Array [],
-                "loc": Object {
-                  "end": Object {
+              "openingElement": {
+                "attributes": [],
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 10,
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
+                "name": {
+                  "loc": {
+                    "end": {
                       "column": 14,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 11,
                       "line": 1,
                     },
                   },
                   "name": "div",
-                  "range": Array [
+                  "range": [
                     11,
                     14,
                   ],
                   "type": "JSXIdentifier",
                 },
-                "range": Array [
+                "range": [
                   10,
                   17,
                 ],
@@ -2881,23 +2881,23 @@ Object {
                 "type": "JSXOpeningElement",
                 "typeParameters": undefined,
               },
-              "range": Array [
+              "range": [
                 10,
                 17,
               ],
               "type": "JSXElement",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 17,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               17,
             ],
@@ -2905,178 +2905,178 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           18,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 18,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       18,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
         "type": "Punctuator",
         "value": "<",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 14,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 11,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           11,
           14,
         ],
         "type": "JSXIdentifier",
         "value": "div",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 16,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 15,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           15,
           16,
         ],
         "type": "Punctuator",
         "value": "/",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 17,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 16,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           16,
           17,
         ],
         "type": "Punctuator",
         "value": ">",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 17,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           17,
           18,
         ],
@@ -3086,52 +3086,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .tsx file - without JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -3139,17 +3139,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -3157,106 +3157,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -3266,52 +3266,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .tsx file - without JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -3319,17 +3319,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -3337,106 +3337,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -3446,84 +3446,84 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .vue file - with JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "children": Array [],
+            "init": {
+              "children": [],
               "closingElement": null,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "openingElement": Object {
-                "attributes": Array [],
-                "loc": Object {
-                  "end": Object {
+              "openingElement": {
+                "attributes": [],
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 10,
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
+                "name": {
+                  "loc": {
+                    "end": {
                       "column": 14,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 11,
                       "line": 1,
                     },
                   },
                   "name": "div",
-                  "range": Array [
+                  "range": [
                     11,
                     14,
                   ],
                   "type": "JSXIdentifier",
                 },
-                "range": Array [
+                "range": [
                   10,
                   17,
                 ],
@@ -3531,23 +3531,23 @@ Object {
                 "type": "JSXOpeningElement",
                 "typeParameters": undefined,
               },
-              "range": Array [
+              "range": [
                 10,
                 17,
               ],
               "type": "JSXElement",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 17,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               17,
             ],
@@ -3555,178 +3555,178 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           18,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 18,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       18,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
         "type": "Punctuator",
         "value": "<",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 14,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 11,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           11,
           14,
         ],
         "type": "JSXIdentifier",
         "value": "div",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 16,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 15,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           15,
           16,
         ],
         "type": "Punctuator",
         "value": "/",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 17,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 16,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           16,
           17,
         ],
         "type": "Punctuator",
         "value": ">",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 18,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 17,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           17,
           18,
         ],
@@ -3736,52 +3736,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .vue file - without JSX content - parserOptions.jsx = false 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -3789,17 +3789,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -3807,106 +3807,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -3916,52 +3916,52 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .vue file - without JSX content - parserOptions.jsx = true 1`] = `
-Object {
-  "ast": Object {
-    "body": Array [
-      Object {
-        "declarations": Array [
-          Object {
-            "id": Object {
-              "loc": Object {
-                "end": Object {
+{
+  "ast": {
+    "body": [
+      {
+        "declarations": [
+          {
+            "id": {
+              "loc": {
+                "end": {
                   "column": 7,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 6,
                   "line": 1,
                 },
               },
               "name": "x",
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
             },
-            "init": Object {
-              "loc": Object {
-                "end": Object {
+            "init": {
+              "loc": {
+                "end": {
                   "column": 11,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 10,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -3969,17 +3969,17 @@ Object {
               "type": "Literal",
               "value": 1,
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 6,
                 "line": 1,
               },
             },
-            "range": Array [
+            "range": [
               6,
               11,
             ],
@@ -3987,106 +3987,106 @@ Object {
           },
         ],
         "kind": "const",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           11,
         ],
         "type": "VariableDeclaration",
       },
     ],
-    "comments": Array [],
-    "loc": Object {
-      "end": Object {
+    "comments": [],
+    "loc": {
+      "end": {
         "column": 11,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       0,
       11,
     ],
     "sourceType": "script",
-    "tokens": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "tokens": [
+      {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
         "type": "Keyword",
         "value": "const",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 7,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 6,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           6,
           7,
         ],
         "type": "Identifier",
         "value": "x",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "Punctuator",
         "value": "=",
       },
-      Object {
-        "loc": Object {
-          "end": Object {
+      {
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -4096,38 +4096,38 @@ Object {
     ],
     "type": "Program",
   },
-  "services": Object {
+  "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
     "hasFullTypeInformation": false,
-    "program": Object {},
+    "program": {},
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
 `;
 
 exports[`parseWithNodeMaps() general output should not contain loc 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
+{
+  "body": [
+    {
+      "declarations": [
+        {
+          "id": {
             "name": "foo",
-            "range": Array [
+            "range": [
               4,
               7,
             ],
             "type": "Identifier",
           },
-          "init": Object {
+          "init": {
             "name": "bar",
-            "range": Array [
+            "range": [
               10,
               13,
             ],
             "type": "Identifier",
           },
-          "range": Array [
+          "range": [
             4,
             13,
           ],
@@ -4135,14 +4135,14 @@ Object {
         },
       ],
       "kind": "let",
-      "range": Array [
+      "range": [
         0,
         14,
       ],
       "type": "VariableDeclaration",
     },
   ],
-  "range": Array [
+  "range": [
     0,
     14,
   ],
@@ -4152,18 +4152,18 @@ Object {
 `;
 
 exports[`parseWithNodeMaps() general output should not contain range 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
+{
+  "body": [
+    {
+      "declarations": [
+        {
+          "id": {
+            "loc": {
+              "end": {
                 "column": 7,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
@@ -4171,13 +4171,13 @@ Object {
             "name": "foo",
             "type": "Identifier",
           },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
+          "init": {
+            "loc": {
+              "end": {
                 "column": 13,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 10,
                 "line": 1,
               },
@@ -4185,12 +4185,12 @@ Object {
             "name": "bar",
             "type": "Identifier",
           },
-          "loc": Object {
-            "end": Object {
+          "loc": {
+            "end": {
               "column": 13,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 4,
               "line": 1,
             },
@@ -4199,12 +4199,12 @@ Object {
         },
       ],
       "kind": "let",
-      "loc": Object {
-        "end": Object {
+      "loc": {
+        "end": {
           "column": 14,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
@@ -4212,12 +4212,12 @@ Object {
       "type": "VariableDeclaration",
     },
   ],
-  "loc": Object {
-    "end": Object {
+  "loc": {
+    "end": {
       "column": 14,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
@@ -4228,58 +4228,58 @@ Object {
 `;
 
 exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges when called with those options 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "declarations": Array [
-        Object {
-          "id": Object {
-            "loc": Object {
-              "end": Object {
+{
+  "body": [
+    {
+      "declarations": [
+        {
+          "id": {
+            "loc": {
+              "end": {
                 "column": 7,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 4,
                 "line": 1,
               },
             },
             "name": "foo",
-            "range": Array [
+            "range": [
               4,
               7,
             ],
             "type": "Identifier",
           },
-          "init": Object {
-            "loc": Object {
-              "end": Object {
+          "init": {
+            "loc": {
+              "end": {
                 "column": 13,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 10,
                 "line": 1,
               },
             },
             "name": "bar",
-            "range": Array [
+            "range": [
               10,
               13,
             ],
             "type": "Identifier",
           },
-          "loc": Object {
-            "end": Object {
+          "loc": {
+            "end": {
               "column": 13,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 4,
               "line": 1,
             },
           },
-          "range": Array [
+          "range": [
             4,
             13,
           ],
@@ -4287,124 +4287,124 @@ Object {
         },
       ],
       "kind": "let",
-      "loc": Object {
-        "end": Object {
+      "loc": {
+        "end": {
           "column": 14,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         14,
       ],
       "type": "VariableDeclaration",
     },
   ],
-  "comments": Array [],
-  "loc": Object {
-    "end": Object {
+  "comments": [],
+  "loc": {
+    "end": {
       "column": 14,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "range": Array [
+  "range": [
     0,
     14,
   ],
   "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
+  "tokens": [
+    {
+      "loc": {
+        "end": {
           "column": 3,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         3,
       ],
       "type": "Keyword",
       "value": "let",
     },
-    Object {
-      "loc": Object {
-        "end": Object {
+    {
+      "loc": {
+        "end": {
           "column": 7,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 4,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         4,
         7,
       ],
       "type": "Identifier",
       "value": "foo",
     },
-    Object {
-      "loc": Object {
-        "end": Object {
+    {
+      "loc": {
+        "end": {
           "column": 9,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 8,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         8,
         9,
       ],
       "type": "Punctuator",
       "value": "=",
     },
-    Object {
-      "loc": Object {
-        "end": Object {
+    {
+      "loc": {
+        "end": {
           "column": 13,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 10,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         10,
         13,
       ],
       "type": "Identifier",
       "value": "bar",
     },
-    Object {
-      "loc": Object {
-        "end": Object {
+    {
+      "loc": {
+        "end": {
           "column": 14,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 13,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         13,
         14,
       ],
@@ -4417,21 +4417,21 @@ Object {
 `;
 
 exports[`parseWithNodeMaps() non string code should correctly convert code to a string for parse() 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "expression": Object {
-        "loc": Object {
-          "end": Object {
+{
+  "body": [
+    {
+      "expression": {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
@@ -4439,52 +4439,52 @@ Object {
         "type": "Literal",
         "value": 12345,
       },
-      "loc": Object {
-        "end": Object {
+      "loc": {
+        "end": {
           "column": 5,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         5,
       ],
       "type": "ExpressionStatement",
     },
   ],
-  "comments": Array [],
-  "loc": Object {
-    "end": Object {
+  "comments": [],
+  "loc": {
+    "end": {
       "column": 5,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "range": Array [
+  "range": [
     0,
     5,
   ],
   "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
+  "tokens": [
+    {
+      "loc": {
+        "end": {
           "column": 5,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         5,
       ],
@@ -4497,21 +4497,21 @@ Object {
 `;
 
 exports[`parseWithNodeMaps() non string code should correctly convert code to a string for parseAndGenerateServices() 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "expression": Object {
-        "loc": Object {
-          "end": Object {
+{
+  "body": [
+    {
+      "expression": {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           5,
         ],
@@ -4519,52 +4519,52 @@ Object {
         "type": "Literal",
         "value": 12345,
       },
-      "loc": Object {
-        "end": Object {
+      "loc": {
+        "end": {
           "column": 5,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         5,
       ],
       "type": "ExpressionStatement",
     },
   ],
-  "comments": Array [],
-  "loc": Object {
-    "end": Object {
+  "comments": [],
+  "loc": {
+    "end": {
       "column": 5,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "range": Array [
+  "range": [
     0,
     5,
   ],
   "sourceType": "script",
-  "tokens": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
+  "tokens": [
+    {
+      "loc": {
+        "end": {
           "column": 5,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         5,
       ],

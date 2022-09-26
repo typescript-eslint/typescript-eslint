@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { RuleDetails, RuleEntry, ConfigModel, EslintRC } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
+import type { ConfigModel, EslintRC, RuleDetails, RuleEntry } from '../types';
+import type { ConfigOptionsType } from './ConfigEditor';
+import ConfigEditor from './ConfigEditor';
 import { parseESLintRC, toJson } from './utils';
 
 export interface ConfigEslintProps {

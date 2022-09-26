@@ -1,7 +1,7 @@
 import type {
+  ParseAndGenerateServicesResult,
   TSESTree,
   TSESTreeOptions,
-  ParseAndGenerateServicesResult,
 } from '../src';
 import { parse as parserParse, parseAndGenerateServices } from '../src';
 
