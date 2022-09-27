@@ -280,7 +280,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     return new ResizeObserver(() => {
       resize();
     });
-  }, []);
+  }, [resize]);
 
   useEffect(() => {
     if (domNode) {
@@ -289,7 +289,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       return (): void => resizeObserver.unobserve(domNode);
     }
     return (): void => {};
-  }, [domNode]);
+  }, [domNode, resizeObserver]);
 
   useEffect(() => {
     window.addEventListener('resize', resize);
