@@ -40,6 +40,7 @@ Be sure to update your `.eslintrc.js` to point at this new config file.
 
 The `parserOptions.project` option introduced in [Linting with Type Information](../TYPED_LINTING.md) accepts an array of relative paths.
 Paths may be provided as [Node globs](https://github.com/isaacs/node-glob/blob/f5a57d3d6e19b324522a3fa5bdd5075fd1aa79d1/README.md#glob-primer).
+For each file being linted, the first matching project path will be used as its backing TSConfig.
 
 ```js title=".eslintrc.js"
 module.exports = {
