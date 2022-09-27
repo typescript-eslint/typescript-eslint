@@ -151,11 +151,6 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
           line: 1,
           column: 34,
         },
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 34,
-        },
       ],
     },
     {
@@ -176,11 +171,6 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
           line: 1,
           column: 37,
         },
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 37,
-        },
       ],
     },
     {
@@ -196,11 +186,6 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     {
       code: 'declare function functionDeclaration2<T extends void = void>(arg: T): void;',
       errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 49,
-        },
         {
           messageId: 'invalidVoidNotReturnOrGeneric',
           line: 1,
