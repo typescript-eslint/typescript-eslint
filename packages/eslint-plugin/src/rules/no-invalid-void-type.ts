@@ -130,8 +130,14 @@ export default util.createRule<[Options], MessageIds>({
     /**
      * @brief checks if the generic type parameter extends void
      */
-    function checkExtendedVoid(parentNode: TSESTree.TSTypeParameter): void {
-      if (parentNode.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword) {
+    function checkExtendedVoid(
+      node: TSESTree.TSVoidKeyword,
+      parentNode: TSESTree.TSTypeParameter,
+    ): void {
+      if (
+        parentNode.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword ||
+        JSON.stringify(parentNode.default?.range) !== JSON.stringify(node.range)
+      ) {
         return;
       }
 
@@ -191,7 +197,7 @@ export default util.createRule<[Options], MessageIds>({
           isTSTypeParameter(node.parent) &&
           node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
         ) {
-          checkExtendedVoid(node.parent);
+          checkExtendedVoid(node, node.parent);
           return;
         }
 
