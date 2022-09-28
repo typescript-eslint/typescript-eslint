@@ -20,7 +20,7 @@ export function SimpleItem({
         onSelectNode(state ? data.model.range : null);
       }
     },
-    [data],
+    [data.model.range, onSelectNode],
   );
 
   return (

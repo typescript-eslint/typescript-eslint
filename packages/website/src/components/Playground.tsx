@@ -84,6 +84,15 @@ function Playground(): JSX.Element {
     [setState],
   );
 
+  const onLoaded = useCallback(
+    (ruleNames: RuleDetails[], tsVersions: readonly string[]): void => {
+      setRuleNames(ruleNames);
+      setTSVersion(tsVersions);
+      setIsLoading(false);
+    },
+    [],
+  );
+
   return (
     <div className={styles.codeContainer}>
       {ruleNames.length > 0 && (
@@ -150,11 +159,7 @@ function Playground(): JSX.Element {
                 onMarkersChange={setMarkers}
                 decoration={selectedRange}
                 onChange={setState}
-                onLoaded={(ruleNames, tsVersions): void => {
-                  setRuleNames(ruleNames);
-                  setTSVersion(tsVersions);
-                  setIsLoading(false);
-                }}
+                onLoaded={onLoaded}
                 onSelect={setPosition}
               />
             </div>

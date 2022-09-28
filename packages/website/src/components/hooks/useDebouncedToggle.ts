@@ -19,7 +19,7 @@ export default function useDebouncedToggle<T>(
         setState(value);
       }, timeout);
     },
-    [timeoutIdRef],
+    [timeout, value],
   );
 
   return [state, update];
