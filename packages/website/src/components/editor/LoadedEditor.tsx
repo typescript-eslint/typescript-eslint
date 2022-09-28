@@ -47,7 +47,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   webLinter,
   activeTab,
 }) => {
-  const [decorations, setDecorations] = useState<string[]>([]);
+  const [_, setDecorations] = useState<string[]>([]);
+
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
     const tabsDefault = {
@@ -337,9 +338,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     if (sandboxInstance.editor.getModel() === tabs.code) {
-      setDecorations(
+      setDecorations(prevDecorations =>
         sandboxInstance.editor.deltaDecorations(
-          decorations,
+          prevDecorations,
           decoration && showAST
             ? [
                 {
@@ -359,7 +360,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         ),
       );
     }
-  }, [decoration, decorations, sandboxInstance, showAST, tabs.code]);
+  }, [decoration, sandboxInstance, showAST, tabs.code]);
 
   return null;
 };
