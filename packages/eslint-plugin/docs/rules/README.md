@@ -17,7 +17,8 @@ import RulesTable from "@site/src/components/RulesTable";
 
 ## Extension Rules
 
-In some cases, ESLint provides a rule itself, but it doesn't support TypeScript syntax; either it crashes, or it ignores the syntax, or it falsely reports against it.
-In these cases, we create what we call an extension rule; a rule within our plugin that has the same functionality, but also supports TypeScript.
+In some cases, ESLint provides a rule itself, but it doesn't support TypeScript syntax.
+It may crash, or it ignore the syntax, or falsely reports against it.
+In these cases we create what we call an extension rule: a rule within our plugin that has the same functionality, but also supports TypeScript.
 
 <RulesTable extensionRules />

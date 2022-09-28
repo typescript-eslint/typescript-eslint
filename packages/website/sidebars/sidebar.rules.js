@@ -13,9 +13,7 @@ const rules = Object.entries(plugin.rules).map(([name, rule]) => {
 const deprecatedRules = new Set(rules.filter(rule => rule.meta.deprecated));
 
 const formattingRules = new Set(
-  rules.filter(
-    rule => !rule.meta.deprecated && rule.meta.fixable === 'whitespace',
-  ),
+  rules.filter(rule => !rule.meta.deprecated && rule.meta.type === 'layout'),
 );
 
 const emphasizedRules = rules.filter(
