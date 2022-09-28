@@ -44,10 +44,10 @@ export function ComplexItem({
       level !== 'ast' && selected && !hasChildInRange(selection, data.model),
     );
 
-    if (selected && !isExpanded) {
+    if (selected) {
       setIsExpanded(selected);
     }
-  }, [selection, data, level, isExpanded]);
+  }, [selection, data, level]);
 
   return (
     <ItemGroup
