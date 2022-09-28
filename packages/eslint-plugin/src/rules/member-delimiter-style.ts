@@ -135,13 +135,13 @@ const makeFixFunction = ({
 export default util.createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
-    type: 'suggestion',
+    type: 'layout',
     docs: {
       description:
         'Require a specific member delimiter style for interfaces and type literals',
       recommended: false,
     },
-    fixable: 'code',
+    fixable: 'whitespace',
     messages: {
       unexpectedComma: 'Unexpected separator (,).',
       unexpectedSemi: 'Unexpected separator (;).',

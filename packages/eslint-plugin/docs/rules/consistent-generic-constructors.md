@@ -17,6 +17,7 @@ const map = new Map<string, number>();
 ```
 
 This rule ensures that type arguments appear consistently on one side of the declaration.
+Keeping to one side consistently improve code readability.
 
 ## Rule Details
 

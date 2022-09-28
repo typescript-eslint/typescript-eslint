@@ -7,7 +7,8 @@ description: 'Disallow `@ts-<directive>` comments or require descriptions after 
 > See **https://typescript-eslint.io/rules/ban-ts-comment** for documentation.
 
 TypeScript provides several directive comments that can be used to alter how it processes files.
-Using these to suppress TypeScript Compiler Errors reduces the effectiveness of TypeScript overall.
+Using these to suppress TypeScript compiler errors reduces the effectiveness of TypeScript overall.
+Instead, it's generally better to correct the types of code, to make directives unnecessary.
 
 The directive comments supported by TypeScript are:
 

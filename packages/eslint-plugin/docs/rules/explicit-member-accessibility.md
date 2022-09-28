@@ -6,10 +6,13 @@ description: 'Require explicit accessibility modifiers on class properties and m
 >
 > See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
 
-Leaving off accessibility modifier and making everything public can make
-your interface hard to use by others.
-If you make all internal pieces private or protected, your interface will
-be easier to use.
+TypeScript allows placing explicit `public`, `protected`, and `private` accessibility modifiers in front of class members.
+The modifiers exist solely in the type system and just server to describe who is allowed to access those members.
+
+Leaving off accessibility modifiers makes for less code to read and write.
+Members are `public` by default.
+
+However, adding in explicit accessibility modifiers can be helpful in codebases with many classes for enforcing proper privacy of members.
 
 ## Rule Details
 
@@ -18,7 +21,7 @@ which properties.
 
 ## Options
 
-### Configuring in a mixed JS/TS codebase
+### Configuring in a mixed JS/TS codebasez
 
 If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.mjs`/`.cjs`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.mts`/`.cts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.mjs`/`.cjs`/`.jsx` files.
 
@@ -324,4 +327,4 @@ If you think defaulting to public is a good default, then you should consider us
 
 ## Further Reading
 
-- TypeScript [Accessibility Modifiers](https://www.typescriptlang.org/docs/handbook/classes.html#public-private-and-protected-modifiers)
+- TypeScript [Accessibility Modifiers Handbook Docs](https://www.typescriptlang.org/docs/handbook/2/classes.html#member-visibility)

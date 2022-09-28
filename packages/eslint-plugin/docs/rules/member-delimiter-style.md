@@ -62,26 +62,6 @@ This rule aims to standardize the way interface and type literal members are del
 
 ## Options
 
-```ts
-interface BaseConfig {
-  multiline?: {
-    delimiter?: 'none' | 'semi' | 'comma';
-    requireLast?: boolean;
-  };
-  singleline?: {
-    delimiter?: 'semi' | 'comma';
-    requireLast?: boolean;
-  };
-}
-type Config = BaseConfig & {
-  overrides?: {
-    interface?: BaseConfig;
-    typeLiteral?: BaseConfig;
-  };
-  multilineDetection?: 'brackets' | 'last-member';
-};
-```
-
 Default config:
 
 ```json
