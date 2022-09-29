@@ -133,11 +133,6 @@ const baseCases = [
     code: 'foo.bar && foo.bar?.() && foo.bar?.().baz',
     output: 'foo.bar?.()?.baz',
   },
-  // TODO: deepest left node already pre-optional chained
-  // {
-  //   code: 'foo?.bar && foo.bar?.() && foo.bar?.().baz',
-  //   output: 'foo?.bar?.()?.baz',
-  // },
 ].map(
   c =>
     ({
@@ -209,7 +204,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     // currently do not handle 'this' as the first part of a chain
     'this && this.foo;',
     '!this || !this.foo;',
-    // currently do not handle mixed TSNonNullExpression in properties
+    // intentionally do not handle mixed TSNonNullExpression in properties
     '!entity.__helper!.__initialized || options.refresh;',
     '!foo!.bar || !foo!.bar.baz;',
     '!foo!.bar!.baz || !foo!.bar!.baz!.paz;',
@@ -1324,21 +1319,5 @@ foo?.bar(/* comment */a,
         },
       ],
     },
-    // TODO: deepest left node already pre-optional chained
-    // {
-    //   code: '!foo?.bar || !foo?.bar.baz;',
-    //   output: null,
-    //   errors: [
-    //     {
-    //       messageId: 'preferOptionalChain',
-    //       suggestions: [
-    //         {
-    //           messageId: 'optionalChainSuggest',
-    //           output: '!foo?.bar?.baz;',
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   ],
 });
