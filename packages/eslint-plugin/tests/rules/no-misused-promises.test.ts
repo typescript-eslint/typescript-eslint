@@ -970,5 +970,29 @@ console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
         { line: 7, messageId: 'spread' },
       ],
     },
+    {
+      code: `
+type MyUnion = (() => void) | boolean;
+
+function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
+function restUnion(first: string, ...callbacks: Array<MyUnion>): void {}
+
+restPromises(
+  true,
+  () => Promise.resolve(true),
+  () => Promise.resolve(null),
+  () => true,
+  () => Promise.resolve('Hello'),
+);
+
+restUnion('Testing', false, () => Promise.resolve(true));
+      `,
+      errors: [
+        { line: 9, messageId: 'voidReturnArgument' },
+        { line: 10, messageId: 'voidReturnArgument' },
+        { line: 12, messageId: 'voidReturnArgument' },
+        { line: 15, messageId: 'voidReturnArgument' },
+      ],
+    },
   ],
 });

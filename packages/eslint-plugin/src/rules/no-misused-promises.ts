@@ -213,13 +213,13 @@ export default util.createRule<Options, MessageId>({
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const voidParams = voidFunctionParams(checker, tsNode);
-      if (voidParams.size === 0) {
+      const voidArgs = voidFunctionArguments(checker, tsNode);
+      if (voidArgs.size === 0) {
         return;
       }
 
       for (const [index, argument] of node.arguments.entries()) {
-        if (!voidParams.has(index)) {
+        if (!voidArgs.has(index)) {
           continue;
         }
 
@@ -486,10 +486,13 @@ function isFunctionParam(
   return false;
 }
 
-// Get the positions of parameters which are void functions (and not also
+// Get the positions of arguments which are void functions (and not also
 // thenable functions). These are the candidates for the void-return check at
 // the current call site.
-function voidFunctionParams(
+// If the function parameters end with a 'rest' parameter, then we consider
+// the array type parameter (e.g. '...args:Array<SomeType>') when determining
+// if trailing arguments are candidates.
+function voidFunctionArguments(
   checker: ts.TypeChecker,
   node: ts.CallExpression | ts.NewExpression,
 ): Set<number> {
@@ -507,17 +510,41 @@ function voidFunctionParams(
       : subType.getConstructSignatures();
     for (const signature of signatures) {
       for (const [index, parameter] of signature.parameters.entries()) {
-        const type = checker.getTypeOfSymbolAtLocation(
+        const decl = parameter.getDeclarations()?.[0];
+        let type = checker.getTypeOfSymbolAtLocation(
           parameter,
           node.expression,
         );
+
+        const indices = [index];
+        // If this is a array 'rest' parameter, add all of the remaining parameter indices.
+        // Note - we currently do not support 'spread' arguments
+        if (
+          decl &&
+          ts.isParameter(decl) &&
+          decl.dotDotDotToken &&
+          checker.isArrayType(type) &&
+          node.arguments
+        ) {
+          for (let i = index + 1; i < node.arguments.length; i++) {
+            indices.push(i);
+          }
+          // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
+          // so that we'll handle it in the same way as a non-rest
+          // 'param: MaybeVoidFunction'
+          type = checker.getTypeArguments(type)[0];
+        }
+
         if (isThenableReturningFunctionType(checker, node.expression, type)) {
-          thenableReturnIndices.add(index);
+          indices.forEach(index => thenableReturnIndices.add(index));
         } else if (
-          !thenableReturnIndices.has(index) &&
           isVoidReturningFunctionType(checker, node.expression, type)
         ) {
-          voidReturnIndices.add(index);
+          indices.forEach(index => {
+            if (!thenableReturnIndices.has(index)) {
+              voidReturnIndices.add(index);
+            }
+          });
         }
       }
     }
