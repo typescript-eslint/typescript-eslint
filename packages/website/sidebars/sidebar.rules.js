@@ -68,26 +68,17 @@ module.exports = {
   someSidebar: [
     'README',
     {
-      ...createCategory(
-        'Rules',
-        [],
-        [
-          {
-            ...createCategory('TypeScript Rules', Array.from(typescriptRules)),
-            collapsed: false,
-          },
-          {
-            ...createCategory('Extension Rules', Array.from(extensionRules)),
-            collapsed: false,
-          },
-          createCategory('Formatting Rules', Array.from(formattingRules)),
-          createCategory('Deprecated Rules', [
-            ...Array.from(deprecatedRules),
-            ...paths,
-          ]),
-        ],
-      ),
-      collapsible: false,
+      ...createCategory('TypeScript Rules', Array.from(typescriptRules)),
+      collapsed: false,
     },
+    {
+      ...createCategory('Extension Rules', Array.from(extensionRules)),
+      collapsed: false,
+    },
+    createCategory('Formatting Rules', Array.from(formattingRules)),
+    createCategory('Deprecated Rules', [
+      ...Array.from(deprecatedRules),
+      ...paths,
+    ]),
   ],
 };

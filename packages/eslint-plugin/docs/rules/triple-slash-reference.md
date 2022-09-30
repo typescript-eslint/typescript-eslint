@@ -6,7 +6,7 @@ description: 'Disallow certain triple slash directives in favor of ES6-style imp
 >
 > See **https://typescript-eslint.io/rules/triple-slash-reference** for documentation.
 
-## Rule Details
+## Examples
 
 Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
 

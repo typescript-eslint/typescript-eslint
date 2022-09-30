@@ -8,11 +8,9 @@ description: 'Enforce the use of `for-of` loop over the standard `for` loop wher
 
 This rule recommends a for-of loop when the loop index is only used to read from an array that is being iterated.
 
-## Rule Details
+## Examples
 
 For cases where the index is only used to read from the array being iterated, a for-of loop is easier to read and write.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

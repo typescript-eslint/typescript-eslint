@@ -49,9 +49,7 @@ const cat = new Cat();
 cat.eat().meow();
 ```
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

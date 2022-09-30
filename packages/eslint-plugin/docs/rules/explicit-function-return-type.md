@@ -14,7 +14,7 @@ They can also speed up TypeScript type checking performance in large codebases w
 
 This rule enforces that functions do have an explicit return type annotation.
 
-## Rule Details
+## Examples
 
 <!--tabs-->
 

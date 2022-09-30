@@ -8,7 +8,7 @@ description: 'Disallow explicit type declarations for variables or parameters in
 
 Explicit types where they can be easily inferred may add unnecessary verbosity.
 
-## Rule Details
+## Examples
 
 This rule disallows explicit type declarations on parameters, variables
 and properties where the type can be easily inferred from its value.

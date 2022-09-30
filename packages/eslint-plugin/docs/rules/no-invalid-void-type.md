@@ -16,11 +16,9 @@ in contrast with implicit `undefined` type which means that a function returns a
 So “nothing” cannot be mixed with any other types, other than `never`, which accepts all types.
 If you need this - use the `undefined` type instead.
 
-## Rule Details
+## Examples
 
 This rule aims to ensure that the `void` type is only used in valid places.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

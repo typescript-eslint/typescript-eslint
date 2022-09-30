@@ -24,11 +24,9 @@ Method calls performed by the `ToString` abstract operations in steps 5 and 7 ha
 https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
 :::
 
-## Rule Details
+## Examples
 
 This rule aims to ensure all calls of the native `Array#sort` method provide a `compareFunction`, while ignoring calls to user-defined `sort` methods.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

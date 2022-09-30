@@ -11,7 +11,7 @@ ways to organize TypeScript code. ES2015 module syntax is now preferred (`import
 
 This rule still allows the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
 
-## Rule Details
+## Examples
 
 This rule aims to standardize the way modules are declared.
 

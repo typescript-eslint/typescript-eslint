@@ -9,13 +9,11 @@ description: 'Disallow calling a function with a value with type `any`.'
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Call a function with `any` typed argument are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
 
-## Rule Details
+## Examples
 
 This rule disallows calling a function with `any` in its arguments, and it will disallow spreading `any[]`.
 This rule also disallows spreading a tuple type with one of its elements typed as `any`.
 This rule also compares the argument's type to the variable's type to ensure you don't pass an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you assign `Set<any>` to an argument declared as `Set<string>`.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

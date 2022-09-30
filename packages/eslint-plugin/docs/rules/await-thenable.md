@@ -12,9 +12,7 @@ The `await` keyword is generally used to retrieve the result of calling a Thenab
 If the `await` keyword is used on a value that is not a Thenable, the value is directly resolved immediately.
 While doing so is valid JavaScript, it i often a programmer error, such as forgetting to add parenthesis to call a function that returns a Promise.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

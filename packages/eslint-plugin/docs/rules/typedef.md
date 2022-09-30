@@ -31,7 +31,7 @@ TypeScript is often better at inferring types than easily written type annotatio
 
 :::
 
-## Rule Details
+## Examples
 
 This rule can enforce type annotations in locations regardless of whether they're required.
 This is typically used to maintain consistency for element types that sometimes require them.

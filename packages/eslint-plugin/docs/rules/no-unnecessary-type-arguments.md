@@ -8,7 +8,7 @@ description: 'Disallow type arguments that are equal to the default.'
 
 Warns if an explicitly specified type argument is the default for that type parameter.
 
-## Rule Details
+## Examples
 
 Type parameters in TypeScript may specify a default value.
 For example:
@@ -18,8 +18,6 @@ function f<T = number>() {}
 ```
 
 It is redundant to provide an explicit type parameter equal to that default.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

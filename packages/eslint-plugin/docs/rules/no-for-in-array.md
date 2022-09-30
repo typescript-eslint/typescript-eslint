@@ -8,7 +8,7 @@ description: 'Disallow iterating over an array with a for-in loop.'
 
 This rule prohibits iterating over an array with a for-in loop.
 
-## Rule Details
+## Examples
 
 A for-in loop (`for (var k in o)`) iterates over the properties of an Object.
 While it is legal to use for-in loops with array types, it is not common.
@@ -22,8 +22,6 @@ array.forEach((value, index) => { ... });
 for (const [index, value] of array.entries()) { ... }
 for (let i = 0; i < array.length; i++) { ... }
 ```
-
-Examples of code for this rule:
 
 <!--tabs-->
 

@@ -6,7 +6,7 @@ description: "Disallow empty exports that don't change anything in a module file
 >
 > See **https://typescript-eslint.io/rules/no-useless-empty-export** for documentation.
 
-## Rule Details
+## Examples
 
 An empty `export {}` statement is sometimes useful in TypeScript code to turn a file that would otherwise be a script file into a module file.
 Per the TypeScript Handbook [Modules](https://www.typescriptlang.org/docs/handbook/modules.html) page:
@@ -15,8 +15,6 @@ Per the TypeScript Handbook [Modules](https://www.typescriptlang.org/docs/handbo
 > Conversely, a file without any top-level import or export declarations is treated as a script whose contents are available in the global scope (and therefore to modules as well).
 
 However, an `export {}` statement does nothing if there are any other top-level import or export statements in a file.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

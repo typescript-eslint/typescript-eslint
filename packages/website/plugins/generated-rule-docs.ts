@@ -210,7 +210,7 @@ export const generatedRuleDocs: Plugin = () => {
 };`,
       } as mdast.Code);
     } else {
-      root.children.splice(optionsH2Index, 0, {
+      root.children.splice(attributesH2Index + 1, 0, {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',

@@ -10,7 +10,7 @@ Explicit types for function return values and arguments makes it clear to any ca
 Adding explicit type annotations for those types can help improve code readability.
 It can also improve TypeScript type checking performance on larger codebases.
 
-## Rule Details
+## Examples
 
 <!--tabs-->
 

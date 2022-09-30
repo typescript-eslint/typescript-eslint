@@ -15,7 +15,7 @@ functions are handled/awaited.
 See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled Promise _statements_.
 :::
 
-## Rule Details
+## Examples
 
 This rule accepts a single option which is an object with `checksConditionals`,
 `checksVoidReturn`, and `checksSpreads` properties indicating which types of

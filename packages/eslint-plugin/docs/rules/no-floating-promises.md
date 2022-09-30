@@ -22,9 +22,7 @@ Valid ways of handling a Promise-valued statement include:
 See [`no-misused-promises`](./no-misused-promises.md) for detecting code that provides Promises to _logical_ locations such as if statements.
 :::
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

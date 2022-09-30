@@ -8,9 +8,7 @@ description: 'Enforce valid definition of `new` and `constructor`.'
 
 Warns on apparent attempts to define constructors for interfaces or `new` for classes.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

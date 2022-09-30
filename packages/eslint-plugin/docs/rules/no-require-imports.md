@@ -8,9 +8,7 @@ description: 'Disallow invocation of `require()`.'
 
 Prefer the newer ES6-style imports over `require()`.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

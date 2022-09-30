@@ -14,9 +14,7 @@ The following expressions are checked:
 - Conditions for `if`, `for`, `while`, and `do-while` statements
 - Base values of optional chain expressions
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

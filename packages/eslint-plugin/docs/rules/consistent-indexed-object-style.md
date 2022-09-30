@@ -22,10 +22,6 @@ type Foo = Record<string, unknown>;
 
 Keeping to one declaration form consistently improve code readability.
 
-## Rule Details
-
-This rule enforces a consistent way to define records.
-
 ## Options
 
 - `"record"` _(default)_: only allow the `Record` type.

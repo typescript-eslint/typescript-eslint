@@ -8,7 +8,7 @@ description: 'Disallow aliasing `this`.'
 
 This rule prohibits assigning variables to `this`.
 
-## Rule Details
+## Examples
 
 Assigning a variable to `this` instead of properly using arrow lambdas may be a symptom of pre-ES6 practices
 or not managing scope well.

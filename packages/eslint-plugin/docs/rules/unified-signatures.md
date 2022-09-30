@@ -6,7 +6,7 @@ description: 'Disallow two overloads that could be unified into one with a union
 >
 > See **https://typescript-eslint.io/rules/unified-signatures** for documentation.
 
-## Rule Details
+## Examples
 
 This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
 

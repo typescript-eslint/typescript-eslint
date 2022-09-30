@@ -12,7 +12,7 @@ Sorting union (`|`) and intersection (`&`) types can help:
 - find repeated types
 - reduce diff churn
 
-## Rule Details
+## Examples
 
 Sorting within each group is done using the following code:
 
@@ -28,8 +28,6 @@ function compare(a, b) {
 ```
 
 In other words, the types are sorted alphabetically, case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

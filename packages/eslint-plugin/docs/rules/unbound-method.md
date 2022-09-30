@@ -11,7 +11,7 @@ If your function does not access `this`, [you can annotate it with `this: void`]
 
 If you're working with `jest`, you can use [`eslint-plugin-jest`'s version of this rule](https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/unbound-method.md) to lint your test files, which knows when it's ok to pass an unbound method to `expect` calls.
 
-## Rule Details
+## Examples
 
 Examples of code for this rule with the default options:
 

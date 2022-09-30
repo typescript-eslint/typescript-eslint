@@ -10,7 +10,7 @@ Function overload signatures represent multiple ways a function can be called, p
 It's typical for an interface or type alias describing a function to place all overload signatures next to each other.
 If Signatures placed elsewhere in the type are easier to be missed by future developers reading the code.
 
-## Rule Details
+## Examples
 
 <!--tabs-->
 

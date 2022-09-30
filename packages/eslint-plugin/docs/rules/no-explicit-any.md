@@ -6,16 +6,12 @@ description: 'Disallow the `any` type.'
 >
 > See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.
 
-Using the `any` type defeats the purpose of using TypeScript.
-When `any` is used, all compiler type checks around that value are ignored.
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally considered only valid in rare edge cases or when prototyping code.
 
-## Rule Details
+> TypeScript's `--noImplicitAny` compiler option prevents an implied `any`, but doesn't prevent `any` from being explicitly used the way this rule does.
 
-This rule doesn't allow `any` types to be defined.
-It aims to keep TypeScript maximally useful.
-TypeScript has a compiler flag for `--noImplicitAny` that will prevent
-an `any` type from being implied by the compiler, but doesn't prevent
-`any` from being explicitly used.
+## Examples
 
 <!--tabs-->
 

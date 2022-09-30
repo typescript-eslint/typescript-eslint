@@ -1,5 +1,5 @@
 ---
-description: 'Disallow `@ts-<directive>` comments or require descriptions after directive.'
+description: 'Disallow `@ts-<directive>` comments or require descriptions after directives.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -18,8 +18,6 @@ The directive comments supported by TypeScript are:
 // @ts-nocheck
 // @ts-check
 ```
-
-## Rule Details
 
 This rule lets you set which directive comments you want to allow in your codebase.
 

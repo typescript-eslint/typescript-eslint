@@ -6,7 +6,7 @@ description: 'Disallow unnecessary constraints on generic types.'
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-constraint** for documentation.
 
-## Rule Details
+## Examples
 
 Type parameters (`<T>`) may be "constrained" with an `extends` keyword ([docs](https://www.typescriptlang.org/docs/handbook/generics.html#generic-constraints)).
 When not provided, type parameters happen to default to:
@@ -15,8 +15,6 @@ When not provided, type parameters happen to default to:
 - Before that, as of 3.5: `any` ([docs](https://devblogs.microsoft.com/typescript/announcing-typescript-3-5/#breaking-changes))
 
 It is therefore redundant to `extend` from these types in later versions of TypeScript.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

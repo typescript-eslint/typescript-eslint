@@ -6,11 +6,9 @@ description: 'Enforce using function types instead of interfaces with call signa
 >
 > See **https://typescript-eslint.io/rules/prefer-function-type** for documentation.
 
-## Rule Details
+## Examples
 
 This rule suggests using a function type instead of an interface or object type literal with a single call signature.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

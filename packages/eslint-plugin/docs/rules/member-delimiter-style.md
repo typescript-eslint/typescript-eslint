@@ -56,7 +56,7 @@ type Bar = {
 The rule also enforces the presence (or absence) of the delimiter in the last member of the interface and/or type literal.
 Finally, this rule can enforce separate delimiter syntax for single line declarations.
 
-## Rule Details
+## Examples
 
 This rule aims to standardize the way interface and type literal members are delimited.
 

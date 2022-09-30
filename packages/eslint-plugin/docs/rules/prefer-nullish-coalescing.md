@@ -41,7 +41,7 @@ const logical2 = nullString || 'safe';
 // logical2 === 'safe'
 ```
 
-## Rule Details
+## Examples
 
 This rule aims enforce the usage of the safer operator.
 

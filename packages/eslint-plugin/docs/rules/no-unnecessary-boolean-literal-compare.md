@@ -8,7 +8,7 @@ description: 'Disallow unnecessary equality comparisons against boolean literals
 
 Comparing boolean values to boolean literals is unnecessary, those comparisons result in the same booleans. Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
 
-## Rule Details
+## Examples
 
 This rule ensures that you do not include unnecessary comparisons with boolean literals.
 A comparison is considered unnecessary if it checks a boolean literal against any variable with just the `boolean` type.
@@ -23,8 +23,6 @@ used in the examples. However, the implementation of the rule does not
 distinguish between strict and loose equality. Any example below that uses
 `===` would be treated the same way if `==` was used, and any example below
 that uses `!==` would be treated the same way if `!=` was used.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

@@ -9,7 +9,7 @@ description: 'Require using `namespace` keyword over `module` keyword to declare
 In an effort to prevent further confusion between custom TypeScript modules and the new ES2015 modules, starting
 with TypeScript `v1.5` the keyword `namespace` is now the preferred way to declare custom TypeScript modules.
 
-## Rule Details
+## Examples
 
 This rule aims to standardize the way modules are declared.
 

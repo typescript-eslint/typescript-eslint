@@ -9,7 +9,7 @@ description: 'Require or disallow parameter properties in class constructors.'
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.
 
-## Rule Details
+## Examples
 
 This rule disallows the use of parameter properties in constructors, forcing the user to explicitly
 declare all properties in the class.

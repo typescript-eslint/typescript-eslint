@@ -6,7 +6,7 @@ description: 'Disallow members of unions and intersections that do nothing or ov
 >
 > See **https://typescript-eslint.io/rules/no-redundant-type-constituents** for documentation.
 
-## Rule Details
+## Examples
 
 Some types can override some other types ("constituents") in a union or intersection and/or be overridden by some other types.
 TypeScript's set theory of types includes cases where a constituent type might be useless in the parent union or intersection.
@@ -23,8 +23,6 @@ Within `&` intersections:
 - `unknown` is dropped from intersections
 - literal types "override" any primitive types in an intersection
 - literal types such as `""` "override" any of their primitive types such as `string`
-
-Examples of code for this rule:
 
 <!--tabs-->
 

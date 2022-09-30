@@ -8,12 +8,10 @@ description: "Require private members to be marked as `readonly` if they're neve
 
 This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.
 
-## Rule Details
+## Examples
 
 Member variables with the privacy `private` are never permitted to be modified outside of their declaring class.
 If that class never modifies their value, they may safely be marked as `readonly`.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

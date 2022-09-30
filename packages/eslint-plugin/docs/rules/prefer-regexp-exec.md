@@ -8,7 +8,7 @@ description: 'Enforce `RegExp#exec` over `String#match` if no global flag is pro
 
 As `String#match` is defined to be the same as `RegExp#exec` when the regular expression does not include the `g` flag, prefer a consistent usage.
 
-## Rule Details
+## Examples
 
 This rule is aimed at enforcing a consistent way to apply regular expressions to strings.
 
@@ -17,8 +17,6 @@ From [`String#match` on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaSc
 > If the regular expression does not include the g flag, returns the same result as `RegExp.exec()`.
 
 `RegExp#exec` may also be slightly faster than `String#match`; this is the reason to choose it as the preferred usage.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

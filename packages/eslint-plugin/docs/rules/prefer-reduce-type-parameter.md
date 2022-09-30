@@ -18,12 +18,10 @@ solution as casting has subtle effects on the underlying types that can allow bu
 A better (and lesser known) solution is to pass the type in as a generic parameter to `Array#reduce` explicitly.
 This means that TypeScript doesn't have to try to infer the type, and avoids the common pitfalls that come with casting.
 
-## Rule Details
+## Examples
 
 This rule looks for calls to `Array#reduce`, and warns if an initial value is being passed & casted,
 suggesting instead to pass the cast type to `Array#reduce` as its generic parameter.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

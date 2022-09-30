@@ -9,12 +9,10 @@ description: 'Disallow returning a value with type `any` from a function.'
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
 Returned `any` typed values are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
 
-## Rule Details
+## Examples
 
 This rule disallows returning `any` or `any[]` from a function.
 This rule also compares the return type to the function's declared/inferred return type to ensure you don't return an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you return `Set<any>` from a function declared as returning `Set<string>`.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

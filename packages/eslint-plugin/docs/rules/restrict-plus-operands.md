@@ -6,9 +6,7 @@ description: 'Require both operands of addition to have type `number` or `string
 >
 > See **https://typescript-eslint.io/rules/restrict-plus-operands** for documentation.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

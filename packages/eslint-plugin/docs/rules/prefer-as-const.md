@@ -8,9 +8,7 @@ description: 'Enforce the use of `as const` over literal type.'
 
 This rule recommends usage of `const` assertion when type primitive value is equal to type.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

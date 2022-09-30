@@ -13,8 +13,9 @@ Leaving off accessibility modifiers makes for less code to read and write.
 Members are `public` by default.
 
 However, adding in explicit accessibility modifiers can be helpful in codebases with many classes for enforcing proper privacy of members.
+Some developers also find it preferable for code readability to keep member publicity explicit.
 
-## Rule Details
+## Examples
 
 This rule aims to make code more readable and explicit about who can use
 which properties.

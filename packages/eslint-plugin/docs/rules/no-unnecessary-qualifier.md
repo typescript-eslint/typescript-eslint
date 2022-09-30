@@ -6,12 +6,10 @@ description: 'Disallow unnecessary namespace qualifiers.'
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-qualifier** for documentation.
 
-## Rule Details
+## Examples
 
 This rule aims to let users know when a namespace or enum qualifier is unnecessary,
 whether used for a type or for a value.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

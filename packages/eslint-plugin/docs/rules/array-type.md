@@ -10,8 +10,6 @@ TypeScript provides two equivalent ways to define an array type: `T[]` and `Arra
 The two styles are functionally equivalent.
 Using the same style consistently across your codebase makes it easier for developers to read and understand array types.
 
-## Rule Details
-
 ## Options
 
 The default config will enforce that all mutable and readonly arrays use the `'array'` syntax.

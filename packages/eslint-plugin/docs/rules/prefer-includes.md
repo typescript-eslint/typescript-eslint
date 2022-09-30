@@ -12,7 +12,7 @@ Until ES2015, we were using `Array#indexOf` method to check whether an array con
 ES2015 has added `String#includes` and ES2016 has added `Array#includes`.
 It makes code more understandable if we use those `includes` methods for the purpose.
 
-## Rule Details
+## Examples
 
 This rule is aimed at suggesting `includes` method if `indexOf` method was used to check whether an object contains an arbitrary value or not.
 
@@ -20,8 +20,6 @@ If the receiver object of the `indexOf` method call has `includes` method and th
 There are such types: `String`, `Array`, `ReadonlyArray`, and typed arrays.
 
 Additionally, this rule reports the tests of simple regular expressions in favor of `String#includes`.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

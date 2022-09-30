@@ -9,11 +9,9 @@ description: 'Enforce using `String#startsWith` and `String#endsWith` over other
 There are multiple ways to verify if a string starts or ends with a specific string, such as `foo.indexOf('bar') === 0`.
 Since ES2015 has added `String#startsWith` and `String#endsWith`, this rule reports other ways to be consistent.
 
-## Rule Details
+## Examples
 
 This rule is aimed at enforcing a consistent way to check whether a string starts or ends with a specific string.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

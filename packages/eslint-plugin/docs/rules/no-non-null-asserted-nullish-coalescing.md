@@ -6,12 +6,10 @@ description: 'Disallow non-null assertions in the left operand of a nullish coal
 >
 > See **https://typescript-eslint.io/rules/no-non-null-asserted-nullish-coalescing** for documentation.
 
-## Rule Details
+## Examples
 
 The nullish coalescing operator is designed to provide a default value when dealing with `null` or `undefined`.
 Using non-null assertions in the left operand of the nullish coalescing operator is redundant.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

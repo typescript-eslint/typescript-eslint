@@ -6,9 +6,7 @@ description: 'Enforce template literal expressions to be of `string` type.'
 >
 > See **https://typescript-eslint.io/rules/restrict-template-expressions** for documentation.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

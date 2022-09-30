@@ -16,11 +16,9 @@ To address this, TS3.9 ships with a new single-line comment directive: `// @ts-e
 
 This directive operates in the same manner as `@ts-ignore`, but will error if the line it's meant to be suppressing doesn't actually contain an error, making it a lot safer.
 
-## Rule Details
+## Examples
 
 This rule looks for usages of `@ts-ignore`, and flags them to be replaced with `@ts-expect-error`.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

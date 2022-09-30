@@ -6,11 +6,9 @@ description: 'Disallow non-null assertions using the `!` postfix operator.'
 >
 > See **https://typescript-eslint.io/rules/no-non-null-assertion** for documentation.
 
-## Rule Details
+## Examples
 
 Using non-null assertions cancels the benefits of the strict null-checking mode.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

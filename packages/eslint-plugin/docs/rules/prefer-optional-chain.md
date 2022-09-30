@@ -50,11 +50,9 @@ function myFunc(foo: T | null) {
 
 Because the optional chain operator _only_ chains when the property value is `null` or `undefined`, it is much safer than relying upon logical AND operator chaining `&&`; which chains on any _truthy_ value.
 
-## Rule Details
+## Examples
 
 This rule aims enforce the usage of the safer operator.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

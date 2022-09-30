@@ -9,7 +9,7 @@ description: 'Enforce consistent usage of type exports.'
 TypeScript allows specifying a `type` keyword on exports to indicate that the export exists only in the type system, not at runtime.
 This allows transpilers to drop exports without knowing the types of the dependencies.
 
-## Rule Details
+## Examples
 
 <!--tabs-->
 
@@ -21,9 +21,7 @@ interface ButtonProps {
 }
 
 class Button implements ButtonProps {
-  onClick() {
-    console.log('button!');
-  }
+  onClick = () => console.log('button!');
 }
 
 export { Button, ButtonProps };
@@ -35,11 +33,11 @@ export { Button, ButtonProps };
 interface ButtonProps {
   onClick: () => void;
 }
+
 class Button implements ButtonProps {
-  onClick() {
-    console.log('button!');
-  }
+  onClick = () => console.log('button!');
 }
+
 export { Button };
 export type { ButtonProps };
 ```

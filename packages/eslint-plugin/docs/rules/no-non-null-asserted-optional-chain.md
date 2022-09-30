@@ -6,12 +6,10 @@ description: 'Disallow non-null assertions after an optional chain expression.'
 >
 > See **https://typescript-eslint.io/rules/no-non-null-asserted-optional-chain** for documentation.
 
-## Rule Details
+## Examples
 
 Optional chain expressions are designed to return `undefined` if the optional property is nullish.
 Using non-null assertions after an optional chain expression is wrong, and introduces a serious type safety hole into your code.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

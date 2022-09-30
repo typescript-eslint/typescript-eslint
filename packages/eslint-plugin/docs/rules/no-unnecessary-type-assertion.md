@@ -8,11 +8,9 @@ description: 'Disallow type assertions that do not change the type of an express
 
 This rule prohibits using a type assertion that does not change the type of an expression.
 
-## Rule Details
+## Examples
 
 This rule aims to prevent unnecessary type assertions.
-
-Examples of code for this rule:
 
 <!--tabs-->
 
