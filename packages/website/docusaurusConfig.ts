@@ -141,7 +141,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
       },
     ],
     // style: 'primary',
-    copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with <a href="">Docusaurus</a>.`,
+    copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
   },
   prism: {
     theme: {
