@@ -32,6 +32,7 @@ export interface SandboxServices {
 export const useSandboxServices = (
   props: SandboxServicesProps,
 ): Error | SandboxServices | undefined => {
+  const { onLoaded } = props;
   const [services, setServices] = useState<Error | SandboxServices>();
   const [loadedTs, setLoadedTs] = useState<string>(props.ts);
   const { colorMode } = useColorMode();
@@ -109,7 +110,7 @@ export const useSandboxServices = (
 
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
-        props.onLoaded(
+        onLoaded(
           webLinter.ruleNames,
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
@@ -144,7 +145,7 @@ export const useSandboxServices = (
         model.dispose();
       }
     };
-  }, [props.ts]);
+  }, [props.ts, colorMode, props.jsx, onLoaded]);
 
   return services;
 };
