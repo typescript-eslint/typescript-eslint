@@ -7,7 +7,8 @@ description: 'Disallow the `any` type.'
 > See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.
 
 The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
-Using `any` disables many type checking rules and is generally considered only valid in rare edge cases or when prototyping code.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
+This rule reports on explicit uses of the `any` keyword as a type annotation.
 
 > TypeScript's `--noImplicitAny` compiler option prevents an implied `any`, but doesn't prevent `any` from being explicitly used the way this rule does.
 
@@ -159,6 +160,14 @@ interface Garply {
 
 If an unknown type or a library without typings is used
 and you want to be able to specify `any`.
+
+## Related To
+
+- [`no-unsafe-argument`](./no-unsafe-argument.md)
+- [`no-unsafe-assignment`](./no-unsafe-assignment.md)
+- [`no-unsafe-call`](./no-unsafe-call.md)
+- [`no-unsafe-member-access`](./no-unsafe-member-access.md)
+- [`no-unsafe-return`](./no-unsafe-return.md)
 
 ## Further Reading
 

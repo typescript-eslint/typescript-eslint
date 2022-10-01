@@ -12,22 +12,11 @@ Sorting union (`|`) and intersection (`&`) types can help:
 - find repeated types
 - reduce diff churn
 
+This rule reports on any types that aren't sorted alphabetically.
+
+> Types are sorted case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
+
 ## Examples
-
-Sorting within each group is done using the following code:
-
-```ts
-const collator = new Intl.Collator('en', {
-  sensitivity: 'base',
-  numeric: true,
-});
-
-function compare(a, b) {
-  return collator.compare(a, b) || (a < b ? -1 : a > b ? 1 : 0);
-}
-```
-
-In other words, the types are sorted alphabetically, case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
 
 <!--tabs-->
 

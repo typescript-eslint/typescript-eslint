@@ -1,10 +1,15 @@
 ---
-description: 'Require both operands of addition to have type `number` or `string`.'
+description: 'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/restrict-plus-operands** for documentation.
+
+TypeScript allows `+` adding together two values of any type(s).
+However, adding values that are not the same type and/or are not the same primitive type is often a sign of programmer error.
+
+This rule reports when a `+` operation combines two values of different types, or a type that is not `bigint`, `number`, or `string`.
 
 ## Examples
 
@@ -79,4 +84,15 @@ var fn = (a: any, b: bigint) => a + b;
 var fn = (a: any, b: number) => a + b;
 ```
 
-## How to Use
+## When Not To Use It
+
+If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
+
+## Related To
+
+- [`no-base-to-string`](./no-base-to-string.md)
+- [`restrict-template-expressions`](./restrict-template-expressions.md)
+
+## Further Reading
+
+- [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)

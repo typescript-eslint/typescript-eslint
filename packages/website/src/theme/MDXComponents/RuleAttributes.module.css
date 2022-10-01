@@ -1,3 +1,9 @@
 .features {
   display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.features + h2 {
+  margin-top: 1rem;
 }

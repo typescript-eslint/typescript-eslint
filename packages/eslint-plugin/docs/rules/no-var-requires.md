@@ -30,4 +30,8 @@ import foo from 'foo';
 
 ## When Not To Use It
 
-If you don't care about TypeScript module syntax, then you will not need this rule.
+If you don't care about using newer module syntax, then you will not need this rule.
+
+## Related To
+
+- [`no-require-imports`](./no-require-imports.md)

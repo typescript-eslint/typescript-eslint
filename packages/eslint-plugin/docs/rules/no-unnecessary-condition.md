@@ -6,7 +6,8 @@ description: 'Disallow conditionals where the type is always truthy or always fa
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-condition** for documentation.
 
-Any expression being used as a condition must be able to evaluate as truthy or falsy in order to be considered "necessary". Conversely, any expression that always evaluates to truthy or always evaluates to falsy, as determined by the type of the expression, is considered unnecessary and will be flagged by this rule.
+Any expression being used as a condition must be able to evaluate as truthy or falsy in order to be considered "necessary".
+Conversely, any expression that always evaluates to truthy or always evaluates to falsy, as determined by the type of the expression, is considered unnecessary and will be flagged by this rule.
 
 The following expressions are checked:
 

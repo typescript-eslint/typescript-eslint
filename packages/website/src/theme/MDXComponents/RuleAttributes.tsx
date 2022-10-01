@@ -28,15 +28,23 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
     features.push({
       children: (
         <>
-          Extend{' '}
-          <code className={styles.code}>
-            "plugin:@typescript-eslint/{recommendation}"
-          </code>{' '}
-          in an{' '}
-          <a href="https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files">
-            ESLint configuration file
+          Extending{' '}
+          <a
+            href={`http://localhost:3000/docs/linting/configs#${recommendation}`}
+            target="_blank"
+          >
+            <code className={styles.code}>
+              "plugin:@typescript-eslint/{recommendation}"
+            </code>
           </a>{' '}
-          to enable this rule.
+          in an{' '}
+          <a
+            href="https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files"
+            target="_blank"
+          >
+            ESLint configuration
+          </a>{' '}
+          enables this rule.
         </>
       ),
       emoji,
@@ -49,7 +57,10 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
         <>
           Some problems reported by this rule are automatically fixable by the{' '}
           <code>--fix</code>{' '}
-          <a href="https://eslint.org/docs/latest/user-guide/command-line-interface#--fix">
+          <a
+            href="https://eslint.org/docs/latest/user-guide/command-line-interface#--fix"
+            target="_blank"
+          >
             ESLint command line option
           </a>
           .
@@ -64,7 +75,10 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Some problems reported by this rule are manually fixable by editor{' '}
-          <a href="https://eslint.org/docs/latest/developer-guide/working-with-rules#providing-suggestions">
+          <a
+            href="https://eslint.org/docs/latest/developer-guide/working-with-rules#providing-suggestions"
+            target="_blank"
+          >
             suggestions
           </a>
           .
@@ -79,7 +93,10 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           This rule requires{' '}
-          <a href="/docs/linting/typed-linting">type information</a> to run.
+          <a href="/docs/linting/typed-linting" target="_blank">
+            type information
+          </a>{' '}
+          to run.
         </>
       ),
       emoji: '💭',
