@@ -30,7 +30,7 @@ export function ComplexItem({
         }
       }
     },
-    [data],
+    [data.model.range, onSelectNode],
   );
 
   useEffect(() => {
@@ -44,10 +44,10 @@ export function ComplexItem({
       level !== 'ast' && selected && !hasChildInRange(selection, data.model),
     );
 
-    if (selected && !isExpanded) {
+    if (selected) {
       setIsExpanded(selected);
     }
-  }, [selection, data]);
+  }, [selection, data, level]);
 
   return (
     <ItemGroup

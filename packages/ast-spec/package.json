@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "5.37.0",
+  "version": "5.38.1",
   "description": "TypeScript-ESTree AST spec",
   "private": true,
   "keywords": [

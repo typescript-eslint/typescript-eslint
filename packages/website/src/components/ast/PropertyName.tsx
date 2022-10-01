@@ -11,21 +11,23 @@ export interface PropertyNameProps {
 }
 
 export default function PropertyName(props: PropertyNameProps): JSX.Element {
+  const { onClick: onClickProps, onHover } = props;
+
   const onClick = useCallback(
     (e: MouseEvent<HTMLElement>) => {
       e.preventDefault();
-      props.onClick?.(e);
+      onClickProps?.(e);
     },
-    [props.onClick],
+    [onClickProps],
   );
 
   const onMouseEnter = useCallback(() => {
-    props.onHover?.(true);
-  }, [props.onHover]);
+    onHover?.(true);
+  }, [onHover]);
 
   const onMouseLeave = useCallback(() => {
-    props.onHover?.(false);
-  }, [props.onHover]);
+    onHover?.(false);
+  }, [onHover]);
 
   return props.onClick || props.onHover ? (
     <>

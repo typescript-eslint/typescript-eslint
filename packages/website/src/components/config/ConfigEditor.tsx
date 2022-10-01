@@ -89,26 +89,27 @@ function isDefault(value: unknown, defaults?: unknown[]): boolean {
 }
 
 function ConfigEditor(props: ConfigEditorProps): JSX.Element {
+  const { onClose: onCloseProps, isOpen, values } = props;
   const [filter, setFilter] = useState<string>('');
   const [config, setConfig] = useReducer(reducerObject, {});
   const [filterInput, setFilterFocus] = useFocus();
 
   const onClose = useCallback(() => {
-    props.onClose(config);
-  }, [props.onClose, config]);
+    onCloseProps(config);
+  }, [onCloseProps, config]);
 
   useEffect(() => {
-    setConfig({ type: 'init', config: props.values });
-  }, [props.values]);
+    setConfig({ type: 'init', config: values });
+  }, [values]);
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (isOpen) {
       setFilterFocus();
     }
-  }, [props.isOpen]);
+  }, [isOpen, setFilterFocus]);
 
   return (
-    <Modal header={props.header} isOpen={props.isOpen} onClose={onClose}>
+    <Modal header={props.header} isOpen={isOpen} onClose={onClose}>
       <div className={styles.searchBar}>
         <Text
           ref={filterInput}
