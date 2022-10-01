@@ -59,6 +59,7 @@
     "@types/marked": "*",
     "@types/prettier": "*",
     "chalk": "^5.0.1",
+    "grapheme-splitter": "^1.0.4",
     "json-schema": "*",
     "marked": "^4.0.15",
     "prettier": "*",
