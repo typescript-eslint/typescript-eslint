@@ -54,6 +54,7 @@ export = {
     '@typescript-eslint/no-dupe-class-members': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
     'no-duplicate-imports': 'off',
+    '@typescript-eslint/no-duplicate-type-union-intersection-members': 'error',
     '@typescript-eslint/no-dynamic-delete': 'error',
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
