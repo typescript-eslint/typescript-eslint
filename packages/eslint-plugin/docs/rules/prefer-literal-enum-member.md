@@ -67,7 +67,7 @@ Examples of code for the `{ "allowBitwiseExpressions": true }` option:
 
 <!--tabs-->
 
-#### ❌ Incorrect
+### ❌ Incorrect
 
 ```ts
 const x = 1;
@@ -82,7 +82,7 @@ enum Foo {
 }
 ```
 
-#### ✅ Correct
+### ✅ Correct
 
 ```ts
 enum Foo {
