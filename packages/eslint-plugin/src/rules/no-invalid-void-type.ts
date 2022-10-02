@@ -134,17 +134,12 @@ export default util.createRule<[Options], MessageIds>({
       node: TSESTree.TSVoidKeyword,
       parentNode: TSESTree.TSTypeParameter,
     ): void {
-      if (
-        parentNode.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword ||
-        parentNode.default?.range === node.range
-      ) {
-        return;
+      if (parentNode.default !== node) {
+        context.report({
+          messageId: 'invalidVoidNotReturnOrGeneric',
+          node,
+        });
       }
-
-      context.report({
-        messageId: 'invalidVoidNotReturnOrGeneric',
-        node: parentNode.constraint,
-      });
     }
 
     /**
