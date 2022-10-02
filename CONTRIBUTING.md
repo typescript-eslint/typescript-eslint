@@ -90,10 +90,6 @@ fix(scope-manager): correct handling for class static blocks
 docs: Fix links to getting started in README.md
 ```
 
-### Revert
-
-If the commit reverts a previous commit, it should begin with `revert:`, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
-
 ### Type
 
 Must be one of the following:
