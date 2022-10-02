@@ -1,0 +1,60 @@
+# Development
+
+Thank you for your interest in developing on TypeScript ESLint! ❤️‍🔥
+
+> See [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our general contribution flows.
+
+## Setup
+
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo):
+
+```shell
+git clone https://github.com/<your-name-here>/typescript-eslint
+cd typescript-eslint
+yarn
+yarn build
+```
+
+## Validating Changes
+
+The following checks are all run on pull requests automatically.
+You can also perform them locally.
+
+### Formatting
+
+We use [Prettier](https://prettier.io) to auto-format code.
+A Git pre-commit hook should apply it to all committed changes.
+ALternately, you can run `yarn format` in any package or in the root.
+
+### Linting
+
+All code changes must pass ESLint.
+You can run `yarn lint` in any package or in the root.
+
+### Proofreading
+
+Changes must pass two linters for documentation and naming, the commands for which may be run from the root:
+
+- `yarn check-spelling`: [CSpell](https://cspell.org), for all code
+- `yarn lint-markdown`: [Markdownlint](https://github.com/DavidAnson/markdownlint), for Markdown documentation
+
+### Tests
+
+All code changes should ideally be unit tested if possible.
+You can run `yarn test` in any package to run its tests.
+
+> [VS Code launch tasks](https://code.visualstudio.com/docs/editor/tasks) tasks are provided that allow [visual debugging](https://code.visualstudio.com/docs/editor/debugging) tests
+
+#### Code Coverage
+
+We aim for 100% code coverage in all PRs when possible, except in the `website/` package.
+Coverage reports are be generated locally whenever `yarn test` is run.
+
+The `codecov` bot should also comment on your PR with the percentage, as well as links to the line-by-line coverage of each file touched by your PR.
+
+### Type Checking
+
+All code should pass TypeScript type checking.
+You can run `yarn typecheck` in any package or in the root to run `tsc`.
+
+> Run `yarn typecheck -w` to start `tsc` in watch mode.
