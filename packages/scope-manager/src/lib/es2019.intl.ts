@@ -6,6 +6,6 @@
 import { ImplicitLibVariableOptions } from '../variable';
 import { TYPE_VALUE } from './base-config';
 
-export const esnext_intl = {
+export const es2019_intl = {
   Intl: TYPE_VALUE,
 } as Record<string, ImplicitLibVariableOptions>;

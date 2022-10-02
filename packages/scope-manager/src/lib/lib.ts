@@ -3,11 +3,11 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import type { ImplicitLibVariableOptions } from '../variable';
-import { dom } from './dom';
+import { ImplicitLibVariableOptions } from '../variable';
 import { es5 } from './es5';
-import { scripthost } from './scripthost';
+import { dom } from './dom';
 import { webworker_importscripts } from './webworker.importscripts';
+import { scripthost } from './scripthost';
 
 export const lib = {
   ...es5,

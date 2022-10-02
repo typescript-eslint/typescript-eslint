@@ -46,6 +46,7 @@ type Lib =
   | 'es2019.object'
   | 'es2019.string'
   | 'es2019.symbol'
+  | 'es2019.intl'
   | 'es2020.bigint'
   | 'es2020.date'
   | 'es2020.promise'

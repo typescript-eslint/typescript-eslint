@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import { ImplicitLibVariableOptions } from '../variable';
 import { TYPE, TYPE_VALUE } from './base-config';
 
 export const webworker = {
@@ -88,6 +88,7 @@ export const webworker = {
   QueuingStrategyInit: TYPE,
   RTCEncodedAudioFrameMetadata: TYPE,
   RTCEncodedVideoFrameMetadata: TYPE,
+  ReadableStreamGetReaderOptions: TYPE,
   ReadableStreamReadDoneResult: TYPE,
   ReadableStreamReadValueResult: TYPE,
   ReadableWritablePair: TYPE,
@@ -108,6 +109,8 @@ export const webworker = {
   TextDecoderOptions: TYPE,
   TextEncoderEncodeIntoResult: TYPE,
   Transformer: TYPE,
+  UnderlyingByteSource: TYPE,
+  UnderlyingDefaultSource: TYPE,
   UnderlyingSink: TYPE,
   UnderlyingSource: TYPE,
   VideoColorSpaceInit: TYPE,
@@ -157,6 +160,7 @@ export const webworker = {
   EXT_frag_depth: TYPE,
   EXT_sRGB: TYPE,
   EXT_shader_texture_lod: TYPE,
+  EXT_texture_compression_bptc: TYPE,
   EXT_texture_compression_rgtc: TYPE,
   EXT_texture_filter_anisotropic: TYPE,
   ErrorEvent: TYPE_VALUE,
@@ -431,6 +435,8 @@ export const webworker = {
   PremultiplyAlpha: TYPE,
   PushEncryptionKeyName: TYPE,
   RTCEncodedVideoFrameType: TYPE,
+  ReadableStreamReaderMode: TYPE,
+  ReadableStreamType: TYPE,
   ReferrerPolicy: TYPE,
   RequestCache: TYPE,
   RequestCredentials: TYPE,
