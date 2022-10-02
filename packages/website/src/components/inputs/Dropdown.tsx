@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from '../OptionsSelector.module.css';
 import clsx from 'clsx';
+import React from 'react';
+
+import styles from '../OptionsSelector.module.css';
 
 export interface DropdownOption<T> {
   readonly value: T;

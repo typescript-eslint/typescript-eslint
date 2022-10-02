@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
+import type { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
 type ObjectEntry<BaseType> = BaseType extends unknown
   ? [keyof BaseType, BaseType[keyof BaseType]]

@@ -1,7 +1,8 @@
 import ESLintReference from 'eslint-scope/lib/reference';
-import { TSESTree } from '../ts-estree';
-import { Scope } from './Scope';
-import { Variable } from './Variable';
+
+import type { TSESTree } from '../ts-estree';
+import type { Scope } from './Scope';
+import type { Variable } from './Variable';
 
 export type ReferenceFlag = 0x1 | 0x2 | 0x3;
 

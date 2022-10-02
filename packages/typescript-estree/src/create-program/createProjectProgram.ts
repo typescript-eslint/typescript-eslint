@@ -1,10 +1,12 @@
 import debug from 'debug';
 import path from 'path';
 import * as ts from 'typescript';
-import { getProgramsForProjects } from './createWatchProgram';
+
 import { firstDefined } from '../node-utils';
-import { Extra } from '../parser-options';
-import { ASTAndProgram, getAstFromProgram } from './shared';
+import type { Extra } from '../parser-options';
+import { getProgramsForProjects } from './createWatchProgram';
+import type { ASTAndProgram } from './shared';
+import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
 

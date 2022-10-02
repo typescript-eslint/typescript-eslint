@@ -1,14 +1,18 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import type {
+  FunctionExpression,
+  FunctionNode,
+} from '../util/explicitReturnTypeUtils';
 import {
+  ancestorHasReturnType,
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
   doesImmediatelyReturnFunctionExpression,
-  FunctionExpression,
-  FunctionNode,
   isTypedFunctionExpression,
-  ancestorHasReturnType,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [

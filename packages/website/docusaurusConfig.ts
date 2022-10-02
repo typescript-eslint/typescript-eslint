@@ -1,18 +1,18 @@
 import type { MDXPlugin } from '@docusaurus/mdx-loader';
 import type { Options as PluginContentDocsOptions } from '@docusaurus/plugin-content-docs';
 import type { Options as PresetClassicOptions } from '@docusaurus/preset-classic';
+import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-common';
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
-
-import { rulesMeta } from './rulesMeta';
-import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import tabsPlugin from 'remark-docusaurus-tabs';
+
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
+import { rulesMeta } from './rulesMeta';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
-const beforeDefaultRemarkPlugins: MDXPlugin[] = [[tabsPlugin, {}]];
+const beforeDefaultRemarkPlugins: MDXPlugin[] = [tabsPlugin];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
@@ -25,14 +25,12 @@ const presetClassicOptions: PresetClassicOptions = {
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     beforeDefaultRemarkPlugins: [
       ...beforeDefaultRemarkPlugins,
-      [generatedRuleDocs, {}],
+      generatedRuleDocs,
     ],
     remarkPlugins: remarkPlugins,
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },
-  // TODO enable this
-  blog: false,
   pages: {
     beforeDefaultRemarkPlugins,
     remarkPlugins,
@@ -86,6 +84,12 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         to: 'rules/',
         activeBasePath: 'rules',
         label: 'Rules',
+        position: 'left',
+      },
+      {
+        to: 'blog/',
+        activeBasePath: 'blog',
+        label: 'Blog',
         position: 'left',
       },
       {

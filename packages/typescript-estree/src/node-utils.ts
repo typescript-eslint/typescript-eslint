@@ -1,7 +1,9 @@
 import * as ts from 'typescript';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from './ts-estree';
-import { xhtmlEntities } from './jsx/xhtml-entities';
+
 import { getModifiers } from './getModifiers';
+import { xhtmlEntities } from './jsx/xhtml-entities';
+import type { TSESTree } from './ts-estree';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 

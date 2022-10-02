@@ -1,6 +1,6 @@
 import type { AssignmentOperator } from 'typescript';
 
-import { AssignmentOperatorToText } from '../src';
+import type { AssignmentOperatorToText } from '../src';
 
 type _Test = {
   readonly [T in AssignmentOperator]: AssignmentOperatorToText[T];

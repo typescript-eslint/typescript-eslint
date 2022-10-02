@@ -22,7 +22,6 @@ module.exports = {
     'react/jsx-no-target-blank': 'off',
     'react/no-unescaped-entities': 'off',
     '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
-    'react-hooks/exhaustive-deps': 'off', // TODO: enable it later
   },
   settings: {
     react: {
