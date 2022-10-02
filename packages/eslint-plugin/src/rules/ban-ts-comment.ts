@@ -11,9 +11,9 @@ function getStringLength(value: string): number {
   if (isASCII(value)) {
     return value.length;
   }
-  if (!splitter) {
-    splitter = new GraphemeSplitter();
-  }
+
+  splitter ??= new GraphemeSplitter();
+
   return splitter.countGraphemes(value);
 }
 
