@@ -136,7 +136,7 @@ export default util.createRule<[Options], MessageIds>({
     ): void {
       if (
         parentNode.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword ||
-       parentNode.default?.range === node.range
+        parentNode.default?.range === node.range
       ) {
         return;
       }
@@ -197,7 +197,7 @@ export default util.createRule<[Options], MessageIds>({
           isTSTypeParameter(node.parent) &&
           node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
         ) {
-          checkExtendedVoid(node, node.parent);
+          checkDefaultVoid(node, node.parent);
           return;
         }
 
