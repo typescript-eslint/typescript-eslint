@@ -85,7 +85,7 @@ Must be one of the following:
 - `feat` - for any new functionality additions
 - `fix` - for any bug fixes that don't add new functionality
 - `test` - if you only change tests, and not shipped code
-- `chore` - anything el se
+- `chore` - anything else
 
 #### package
 
