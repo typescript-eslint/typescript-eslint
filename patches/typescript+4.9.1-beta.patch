@@ -1,32 +1,18 @@
 diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
-index 0fd60ae..02f4fe7 100644
+index 0e6b255..92d7cf6 100644
 --- a/node_modules/typescript/lib/typescript.d.ts
 +++ b/node_modules/typescript/lib/typescript.d.ts
-@@ -425,8 +425,8 @@ declare namespace ts {
-         JSDocFunctionType = 317,
-         JSDocVariadicType = 318,
-         JSDocNamepathType = 319,
+@@ -428,8 +428,8 @@ declare namespace ts {
+         JSDocFunctionType = 320,
+         JSDocVariadicType = 321,
+         JSDocNamepathType = 322,
 +        /** @deprecated This was only added in 4.7 */
-         JSDoc = 320,
+         JSDoc = 323,
 -        /** @deprecated Use SyntaxKind.JSDoc */
-         JSDocComment = 320,
-         JSDocText = 321,
-         JSDocTypeLiteral = 322,
-@@ -4374,7 +4374,13 @@ declare namespace ts {
-     function symbolName(symbol: Symbol): string;
-     function getNameOfJSDocTypedef(declaration: JSDocTypedefTag): Identifier | PrivateIdentifier | undefined;
-     function getNameOfDeclaration(declaration: Declaration | Expression | undefined): DeclarationName | undefined;
-+    /**
-+     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getModifiers from `@typescript-eslint/type-utils`.
-+     */
-     function getDecorators(node: HasDecorators): readonly Decorator[] | undefined;
-+    /**
-+     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getDecorators from `@typescript-eslint/type-utils`.
-+     */
-     function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
-     /**
-      * Gets the JSDoc parameter tags for the node if present.
-@@ -4834,7 +4840,13 @@ declare namespace ts {
+         JSDocComment = 323,
+         JSDocText = 324,
+         JSDocTypeLiteral = 325,
+@@ -4857,7 +4857,13 @@ declare namespace ts {
  }
  declare namespace ts {
      function setTextRange<T extends TextRange>(range: T, location: TextRange | undefined): T;
@@ -40,7 +26,7 @@ index 0fd60ae..02f4fe7 100644
      function canHaveDecorators(node: Node): node is HasDecorators;
  }
  declare namespace ts {
-@@ -7924,7 +7936,7 @@ declare namespace ts {
+@@ -7951,7 +7957,7 @@ declare namespace ts {
           * const decorators = ts.canHaveDecorators(node) ? ts.getDecorators(node) : undefined;
           * ```
           */
