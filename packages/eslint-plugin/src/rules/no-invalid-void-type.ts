@@ -128,9 +128,9 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     /**
-     * @brief checks if the generic type parameter extends void
+     * @brief checks if the generic type parameter defaults to void
      */
-    function checkExtendedVoid(
+    function checkDefaultVoid(
       node: TSESTree.TSVoidKeyword,
       parentNode: TSESTree.TSTypeParameter,
     ): void {
