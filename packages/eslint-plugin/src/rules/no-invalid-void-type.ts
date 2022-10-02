@@ -148,15 +148,6 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     /**
-     * @brief checks if the type of given argument is TSESTree.TSTypeParameter
-     */
-    function isTSTypeParameter(
-      node: TSESTree.Node,
-    ): node is TSESTree.TSTypeParameter {
-      return node.type === AST_NODE_TYPES.TSTypeParameter;
-    }
-
-    /**
      * @brief checks that a union containing void is valid
      * @return true if every member of the union is specified as a valid type in
      * validUnionMembers, or is a valid generic type parametrized by void
@@ -194,7 +185,7 @@ export default util.createRule<[Options], MessageIds>({
         // allow <T = void> if allowInGenericTypeArguments is specified, and report if the generic type parameter extends void
         if (
           allowInGenericTypeArguments &&
-          isTSTypeParameter(node.parent) &&
+          node.parent.type === AST_NODE_TYPES.TSTypeParameter &&
           node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
         ) {
           checkDefaultVoid(node, node.parent);
