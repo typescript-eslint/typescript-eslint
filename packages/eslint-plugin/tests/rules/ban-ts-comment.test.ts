@@ -45,6 +45,14 @@ ruleTester.run('ts-expect-error', rule, {
         },
       ],
     },
+    {
+      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -279,6 +287,14 @@ ruleTester.run('ts-ignore', rule, {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
           minimumDescriptionLength: 10,
+        },
+      ],
+    },
+    {
+      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-ignore': 'allow-with-description',
         },
       ],
     },
@@ -530,6 +546,14 @@ ruleTester.run('ts-nocheck', rule, {
         },
       ],
     },
+    {
+      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-nocheck': 'allow-with-description',
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -745,6 +769,14 @@ ruleTester.run('ts-check', rule, {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
           minimumDescriptionLength: 10,
+        },
+      ],
+    },
+    {
+      code: noFormat`// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-check': 'allow-with-description',
         },
       ],
     },
