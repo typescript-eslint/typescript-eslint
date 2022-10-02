@@ -23,6 +23,9 @@ defaults:
 # 3) Run the steps that depend on the build
 #
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   install:
     name: Checkout and Install
@@ -170,6 +173,10 @@ jobs:
           retention-days: 1
 
   website_tests:
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      actions: read # to correctly identify workflow run (cypress-io/github-action)
+
     name: Website tests
     needs: [build]
     runs-on: ubuntu-latest
