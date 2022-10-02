@@ -31,7 +31,7 @@ import type {
   ParserWeakMapESTreeToTSNode,
 } from './parser-options';
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
-import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
+import { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 import { AST_NODE_TYPES } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
@@ -2951,6 +2951,14 @@ export class Converter {
           type: AST_NODE_TYPES.ImportAttribute,
           key: this.convertChild(node.name),
           value: this.convertChild(node.value),
+        });
+      }
+
+      case SyntaxKind.SatisfiesExpression: {
+        return this.createNode<TSESTree.TSSatisfiesExpression>(node, {
+          type: AST_NODE_TYPES.TSSatisfiesExpression,
+          expression: this.convertChild(node.expression),
+          typeAnnotation: this.convertChild(node.type),
         });
       }
 
