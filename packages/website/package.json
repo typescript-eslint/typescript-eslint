@@ -11,7 +11,8 @@
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "test": "cypress run",
-    "test:open": "cypress open"
+    "test:open": "cypress open",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",
