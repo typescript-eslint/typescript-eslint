@@ -136,7 +136,7 @@ export default util.createRule<[Options], MessageIds>({
     ): void {
       if (
         parentNode.constraint?.type !== AST_NODE_TYPES.TSVoidKeyword ||
-        JSON.stringify(parentNode.default?.range) !== JSON.stringify(node.range)
+       parentNode.default?.range === node.range
       ) {
         return;
       }
