@@ -31,7 +31,7 @@ import type {
   ParserWeakMapESTreeToTSNode,
 } from './parser-options';
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
-import { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
+import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 import { AST_NODE_TYPES } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
