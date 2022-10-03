@@ -1,0 +1,8 @@
+.summary {
+  cursor: pointer;
+  font-style: italic;
+}
+
+.configurationContents + p {
+  margin-top: 1rem;
+}

@@ -31,6 +31,7 @@
     "@typescript-eslint/visitor-keys": "5.38.1",
     "eslint": "*",
     "rollup": "^2.75.4",
+    "rollup-plugin-insert": "^1.3.2",
     "rollup-plugin-terser": "^7.0.2",
     "semver": "^7.3.7"
   }

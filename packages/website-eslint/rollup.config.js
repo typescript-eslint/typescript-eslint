@@ -1,9 +1,26 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+import { configs } from '@typescript-eslint/eslint-plugin';
+import { format } from 'prettier';
+import { append } from 'rollup-plugin-insert';
 import { terser } from 'rollup-plugin-terser';
 
 const replace = require('./rollup-plugin/replace');
+
+// Prettifying configs here means the website doesn't have to load Prettier
+const prettierConfigs = Object.fromEntries(
+  Object.entries(configs).map(([key, value]) => [
+    key,
+    format(
+      JSON.stringify(value).replaceAll(
+        `"./configs/`,
+        `"plugin:@typescript-eslint/`,
+      ),
+      { parser: 'json' },
+    ),
+  ]),
+);
 
 module.exports = {
   input: 'src/linter/linter.js',
@@ -16,6 +33,9 @@ module.exports = {
   },
   external: ['vs/language/typescript/tsWorker'],
   plugins: [
+    append(`
+      export const configs = ${JSON.stringify(prettierConfigs)};
+    `),
     terser({
       keep_classnames: true,
     }),
