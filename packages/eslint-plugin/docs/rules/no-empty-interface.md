@@ -6,12 +6,12 @@ description: 'Disallow the declaration of empty interfaces.'
 >
 > See **https://typescript-eslint.io/rules/no-empty-interface** for documentation.
 
-An empty interface is equivalent to its supertype. If the interface does not implement a supertype, then
-the interface is equivalent to an empty object (`{}`). In both cases it can be omitted.
-
-## Rule Details
+An empty interface in TypeScript does very little: any non-nullable value is assignable to `{}`.
+Using an empty interface is often a sign of programmer error, such as misunderstanding the concept of `{}` or forgetting to fill in fields.
 
 This rule aims to ensure that only meaningful interfaces are declared in the code.
+
+## Examples
 
 <!--tabs-->
 

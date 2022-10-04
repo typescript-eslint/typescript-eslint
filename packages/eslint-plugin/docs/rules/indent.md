@@ -14,7 +14,7 @@ Please read [Issue #1824: Problems with the indent rule](https://github.com/type
 
 :::
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/indent`](https://eslint.org/docs/rules/indent) rule.
 It adds support for TypeScript nodes.

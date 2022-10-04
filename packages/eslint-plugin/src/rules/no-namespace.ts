@@ -16,12 +16,12 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow custom TypeScript modules and namespaces',
+      description: 'Disallow TypeScript namespaces',
       recommended: 'error',
     },
     messages: {
       moduleSyntaxIsPreferred:
-        'ES2015 module syntax is preferred over custom TypeScript modules and namespaces.',
+        'ES2015 module syntax is preferred over namespaces.',
     },
     schema: [
       {
