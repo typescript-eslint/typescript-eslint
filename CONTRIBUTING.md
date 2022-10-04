@@ -14,6 +14,7 @@ Do:
 - Make sure you're using the [latest version of our packages](https://github.com/typescript-eslint/typescript-eslint/releases)
 - Search [all opened and closed issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+) to make sure your issue wouldn't be a duplicate
 - Fill out the [appropriate issue template](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose) completely
+- Provide as much information as you can
 
 ### Questions and Support Requests
 
@@ -34,8 +35,8 @@ Don't:
 - Leave useless comments such as _"+1"_ or _"when's this getting fixed?"_ that only act as spam
   - If you have nothing to add but enthusiasm and joy, add a reaction such as 👍
 - Bring up unrelated topics in existing issues: instead, file a new issue
-- Comment on closed PRs: instead, file a new issue
-- Comment on commits directly, as those comments are not searchable
+- Comment on closed PRs: instead, [file a new issue](#raising-issues)
+- Comment on commits directly, as those comments are not searchable: instead, file a new issue
 
 ## Pull Requests
 
@@ -52,6 +53,8 @@ Don't:
 
 - Force push after opening a PR
   - Reasoning: GitHub is not able to track changes across force pushes, which makes it take longer for us to perform incremental reviews
+- Comment asking for updates
+  - Reasoning: Your PR hasn't been forgotten! The volunteer maintainers have limited time to work on the project, and they will get to it as soon as they are able.
 
 ### Raising a PR
 
