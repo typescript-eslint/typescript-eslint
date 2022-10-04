@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.39.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.38.1...v5.39.0) (2022-10-03)
+
+
+### Features
+
+* **eslint-plugin:** allow using void as a default type for a generic argument if allowInGenericTypeArguments is specified ([#5671](https://github.com/typescript-eslint/typescript-eslint/issues/5671)) ([bb46ef0](https://github.com/typescript-eslint/typescript-eslint/commit/bb46ef0817fe03ef71f8e0f3df0cf96bc355e068))
+
+
+
+
+
 ## [5.38.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.38.0...v5.38.1) (2022-09-26)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-eslint
