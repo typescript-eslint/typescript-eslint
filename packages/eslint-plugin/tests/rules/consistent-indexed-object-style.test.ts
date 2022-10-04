@@ -39,7 +39,16 @@ interface Foo {
   [key: string]: Foo;
 }
     `,
-
+    `
+interface Foo<T> {
+  [key: string]: Foo<T>;
+}
+    `,
+    `
+interface Foo<T> {
+  [key: string]: Foo<T> | string;
+}
+`,
     // Type literal
     'type Foo = {};',
     `
@@ -325,6 +334,17 @@ type Foo<A, B> = Readonly<Record<A, B>>;
       code: 'type Foo = { [key: string]: string } | Foo;',
       output: 'type Foo = Record<string, string> | Foo;',
       errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
+    },
+    {
+      code: `
+interface Foo<T> {
+  [k: string]: T;
+}
+      `,
+      output: `
+type Foo<T> = Record<string, T>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
     {
       code: `
