@@ -12,7 +12,7 @@ It's generally better to structure program logic so that TypeScript understands 
 
 ## Examples
 
-<!-- Using non-null assertions cancels the benefits of the strict null-checking mode. -->
+Using non-null assertions cancels the benefits of the strict null-checking mode.
 
 <!--tabs-->
 
