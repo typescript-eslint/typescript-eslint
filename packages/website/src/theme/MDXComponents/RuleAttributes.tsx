@@ -29,10 +29,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Extending{' '}
-          <a
-            href={`http://localhost:3000/docs/linting/configs#${recommendation}`}
-            target="_blank"
-          >
+          <a href={`/docs/linting/configs#${recommendation}`} target="_blank">
             <code className={styles.code}>
               "plugin:@typescript-eslint/{recommendation}"
             </code>
@@ -56,12 +53,11 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Some problems reported by this rule are automatically fixable by the{' '}
-          <code>--fix</code>{' '}
           <a
             href="https://eslint.org/docs/latest/user-guide/command-line-interface#--fix"
             target="_blank"
           >
-            ESLint command line option
+            <code>--fix</code> ESLint command line option
           </a>
           .
         </>
