@@ -48,7 +48,7 @@ interface Foo<T> {
 interface Foo<T> {
   [key: string]: Foo<T> | string;
 }
-`,
+    `,
     // Type literal
     'type Foo = {};',
     `
