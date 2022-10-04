@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "5.38.1",
+  "version": "5.39.0",
   "private": true,
   "scripts": {
     "build": "docusaurus build",
@@ -11,17 +11,19 @@
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "test": "cypress run",
-    "test:open": "cypress open"
+    "test:open": "cypress open",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",
     "@docusaurus/core": "~2.0.1",
+    "@docusaurus/plugin-pwa": "~2.0.1",
     "@docusaurus/preset-classic": "~2.0.1",
     "@docusaurus/remark-plugin-npm2yarn": "~2.0.1",
     "@docusaurus/theme-common": "~2.0.1",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/parser": "5.38.1",
-    "@typescript-eslint/website-eslint": "5.38.1",
+    "@typescript-eslint/parser": "5.39.0",
+    "@typescript-eslint/website-eslint": "5.39.0",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json-schema": "^0.4.0",
@@ -45,7 +47,7 @@
     "@types/react": "^18.0.9",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
-    "@typescript-eslint/eslint-plugin": "5.38.1",
+    "@typescript-eslint/eslint-plugin": "5.39.0",
     "copy-webpack-plugin": "^11.0.0",
     "cypress": "8.3.0",
     "cypress-axe": "^0.14.0",
