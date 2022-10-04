@@ -486,6 +486,25 @@ function isFunctionParam(
   return false;
 }
 
+function checkThenableOrVoid(
+  checker: ts.TypeChecker,
+  node: ts.CallExpression | ts.NewExpression,
+  type: ts.Type,
+  index: number,
+  thenableReturnIndices: Set<number>,
+  voidReturnIndices: Set<number>,
+): void {
+  if (isThenableReturningFunctionType(checker, node.expression, type)) {
+    thenableReturnIndices.add(index);
+  } else if (isVoidReturningFunctionType(checker, node.expression, type)) {
+    // If a certain argument accepts both thenable and void returns,
+    // a promise-returning function is valid
+    if (!thenableReturnIndices.has(index)) {
+      voidReturnIndices.add(index);
+    }
+  }
+}
+
 // Get the positions of arguments which are void functions (and not also
 // thenable functions). These are the candidates for the void-return check at
 // the current call site.
@@ -496,6 +515,11 @@ function voidFunctionArguments(
   checker: ts.TypeChecker,
   node: ts.CallExpression | ts.NewExpression,
 ): Set<number> {
+  // 'new' can be used without any arguments, as in 'let b = new Object;'
+  // In this case, there are no argument positions to check, so return early.
+  if (!node.arguments) {
+    return new Set<number>();
+  }
   const thenableReturnIndices = new Set<number>();
   const voidReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
@@ -510,41 +534,59 @@ function voidFunctionArguments(
       : subType.getConstructSignatures();
     for (const signature of signatures) {
       for (const [index, parameter] of signature.parameters.entries()) {
-        const decl = parameter.getDeclarations()?.[0];
+        const decl = parameter.valueDeclaration;
         let type = checker.getTypeOfSymbolAtLocation(
           parameter,
           node.expression,
         );
 
-        const indices = [index];
-        // If this is a array 'rest' parameter, add all of the remaining parameter indices.
-        // Note - we currently do not support 'spread' arguments
-        if (
-          decl &&
-          ts.isParameter(decl) &&
-          decl.dotDotDotToken &&
-          checker.isArrayType(type) &&
-          node.arguments
-        ) {
-          for (let i = index + 1; i < node.arguments.length; i++) {
-            indices.push(i);
-          }
-          // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
-          // so that we'll handle it in the same way as a non-rest
-          // 'param: MaybeVoidFunction'
-          type = checker.getTypeArguments(type)[0];
-        }
-
-        if (isThenableReturningFunctionType(checker, node.expression, type)) {
-          indices.forEach(index => thenableReturnIndices.add(index));
-        } else if (
-          isVoidReturningFunctionType(checker, node.expression, type)
-        ) {
-          indices.forEach(index => {
-            if (!thenableReturnIndices.has(index)) {
-              voidReturnIndices.add(index);
+        // If this is a array 'rest' parameter, check all of the argument indicies
+        // from the current argument to the end.
+        // Note - we currently do not support 'spread' arguments - adding support for them
+        // is tracked in https://github.com/typescript-eslint/typescript-eslint/issues/5744
+        if (decl && ts.isParameter(decl) && decl.dotDotDotToken) {
+          if (checker.isArrayType(type)) {
+            // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
+            // so that we'll handle it in the same way as a non-rest
+            // 'param: MaybeVoidFunction'
+            type = checker.getTypeArguments(type)[0];
+            for (let i = index; i < node.arguments.length; i++) {
+              checkThenableOrVoid(
+                checker,
+                node,
+                type,
+                i,
+                thenableReturnIndices,
+                voidReturnIndices,
+              );
             }
-          });
+          } else if (checker.isTupleType(type)) {
+            // Check each type in the tuple - for example, [boolean, () => void] would
+            // add the index of the second tuple parameter to 'voidReturnIndices'
+            const typeArgs = checker.getTypeArguments(type);
+            for (let i = index; i < node.arguments.length; i++) {
+              checkThenableOrVoid(
+                checker,
+                node,
+                typeArgs[i - index],
+                i,
+                thenableReturnIndices,
+                voidReturnIndices,
+              );
+            }
+          } else {
+            // We must have an 'any' parameter (e.g. `...args: any`), as anything
+            // else would be invalid TypeScript. There's nothing for us to check.
+          }
+        } else {
+          checkThenableOrVoid(
+            checker,
+            node,
+            type,
+            index,
+            thenableReturnIndices,
+            voidReturnIndices,
+          );
         }
       }
     }

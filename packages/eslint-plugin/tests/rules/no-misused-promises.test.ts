@@ -373,6 +373,41 @@ console.log([...Promise.resolve(42)]);
       `,
       options: [{ checksSpreads: false }],
     },
+    `
+function spreadAny(..._args: any): void {}
+function spreadArrayAny(..._args: Array<any>): void {}
+function spreadArrayUnknown(..._args: Array<unknown>): void {}
+function spreadArrayFuncPromise(
+  ..._args: Array<() => Promise<undefined>>
+): void {}
+
+spreadAny(
+  true,
+  () => Promise.resolve(1),
+  () => Promise.resolve(false),
+);
+spreadArrayAny(
+  true,
+  () => Promise.resolve(1),
+  () => Promise.resolve(false),
+);
+spreadArrayUnknown(() => Promise.resolve(true), 1, 2);
+spreadArrayFuncPromise(
+  () => Promise.resolve(undefined),
+  () => Promise.resolve(undefined),
+);
+    `,
+    `
+class TakeCallbacks {
+  constructor(...callbacks: Array<() => void>) {}
+}
+
+new TakeCallbacks();
+new TakeCallbacks(
+  () => 1,
+  () => true,
+);
+    `,
   ],
 
   invalid: [
@@ -972,10 +1007,7 @@ console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
     },
     {
       code: `
-type MyUnion = (() => void) | boolean;
-
 function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
-function restUnion(first: string, ...callbacks: Array<MyUnion>): void {}
 
 restPromises(
   true,
@@ -984,15 +1016,67 @@ restPromises(
   () => true,
   () => Promise.resolve('Hello'),
 );
-
-restUnion('Testing', false, () => Promise.resolve(true));
       `,
       errors: [
+        { line: 6, messageId: 'voidReturnArgument' },
+        { line: 7, messageId: 'voidReturnArgument' },
         { line: 9, messageId: 'voidReturnArgument' },
-        { line: 10, messageId: 'voidReturnArgument' },
-        { line: 12, messageId: 'voidReturnArgument' },
-        { line: 15, messageId: 'voidReturnArgument' },
       ],
+    },
+    {
+      code: `
+type MyUnion = (() => void) | boolean;
+
+function restUnion(first: string, ...callbacks: Array<MyUnion>): void {}
+restUnion('Testing', false, () => Promise.resolve(true));
+      `,
+      errors: [{ line: 5, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTupleOne(first: string, ...callbacks: [() => void]): void {}
+
+function restTupleTwo(
+  first: boolean,
+  ...callbacks: [undefined, () => void, undefined]
+): void {}
+
+function restTupleFour(
+  first: number,
+  ...callbacks: [() => void, boolean, () => void, () => void]
+): void;
+
+restTupleOne('My string', () => Promise.resolve(1));
+restTupleTwo(true, undefined, () => Promise.resolve(true), undefined);
+restTupleFour(
+  1,
+  () => Promise.resolve(true),
+  false,
+  () => {},
+  () => Promise.resolve(1),
+);
+      `,
+      errors: [
+        { line: 14, messageId: 'voidReturnArgument' },
+        { line: 15, messageId: 'voidReturnArgument' },
+        { line: 18, messageId: 'voidReturnArgument' },
+        { line: 21, messageId: 'voidReturnArgument' },
+      ],
+    },
+    {
+      code: `
+class TakesVoidCb {
+  constructor(first: string, ...args: Array<() => void>);
+}
+
+new TakesVoidCb();
+new TakesVoidCb(
+  'Testing',
+  () => {},
+  () => Promise.resolve(true),
+);
+      `,
+      errors: [{ line: 10, messageId: 'voidReturnArgument' }],
     },
   ],
 });
