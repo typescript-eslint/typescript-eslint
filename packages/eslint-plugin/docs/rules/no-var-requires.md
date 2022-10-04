@@ -8,9 +8,7 @@ description: 'Disallow `require` statements except in import statements.'
 
 In other words, the use of forms such as `var foo = require("foo")` are banned. Instead use ES6 style imports or `import foo = require("foo")` imports.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -32,4 +30,8 @@ import foo from 'foo';
 
 ## When Not To Use It
 
-If you don't care about TypeScript module syntax, then you will not need this rule.
+If you don't care about using newer module syntax, then you will not need this rule.
+
+## Related To
+
+- [`no-require-imports`](./no-require-imports.md)
