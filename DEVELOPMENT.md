@@ -12,8 +12,17 @@ After [forking the repo from GitHub](https://help.github.com/articles/fork-a-rep
 git clone https://github.com/<your-name-here>/typescript-eslint
 cd typescript-eslint
 yarn
-yarn build
 ```
+
+Postinstall scripts will then fully build your repository locally with (`yarn build`).
+At this point, you're ready to develop! 🚀
+
+## Builds
+
+You can run `yarn build` in any package or in the root to build the package(s).
+
+Keep in mind that packages generally depend on each other's built outputs, and you'll need to `yarn build` dependents for their consumers to receive any new local changes.
+For example, if you make a change within `scope-manager` and want to use it in `eslint-plugin`, you'll need to `yarn build` either from the root or within `packages/scope-manager`.
 
 ## Validating Changes
 
