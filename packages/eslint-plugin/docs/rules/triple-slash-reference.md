@@ -6,9 +6,11 @@ description: 'Disallow certain triple slash directives in favor of ES6-style imp
 >
 > See **https://typescript-eslint.io/rules/triple-slash-reference** for documentation.
 
-## Rule Details
+TypeScript's `///` triple-slash references are a way to indicate that types from another module are available in a file.
+Use of triple-slash reference type directives is generally discouraged in favor of ECMAScript Module `import`s.
+This rule reports on the use of `/// <reference path="..." />`, `/// <reference types="..." />`, or `/// <reference lib="..." />` directives.
 
-Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
+## Examples
 
 ## Options
 

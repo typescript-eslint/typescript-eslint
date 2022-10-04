@@ -1,16 +1,14 @@
 ---
-description: 'Require using either `T[]` or `Array<T>` for arrays.'
+description: 'Require consistently using either `T[]` or `Array<T>` for arrays.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/array-type** for documentation.
 
-Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
-
-## Rule Details
-
-This rule aims to standardize usage of array types within your codebase.
+TypeScript provides two equivalent ways to define an array type: `T[]` and `Array<T>`.
+The two styles are functionally equivalent.
+Using the same style consistently across your codebase makes it easier for developers to read and understand array types.
 
 ## Options
 

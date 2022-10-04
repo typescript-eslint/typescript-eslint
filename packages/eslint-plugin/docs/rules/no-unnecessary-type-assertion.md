@@ -6,13 +6,11 @@ description: 'Disallow type assertions that do not change the type of an express
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-assertion** for documentation.
 
-This rule prohibits using a type assertion that does not change the type of an expression.
+TypeScript can be told an expression is a different type than expected using `as` type assertions.
+Leaving `as` assertions in the codebase increases visual clutter and harms code readability, so it's generally best practice to remove them if they don't change the type of an expression.
+This rule reports when a type assertion does not change the type of an expression.
 
-## Rule Details
-
-This rule aims to prevent unnecessary type assertions.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

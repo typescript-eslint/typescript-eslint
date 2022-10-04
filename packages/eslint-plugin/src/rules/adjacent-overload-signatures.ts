@@ -19,7 +19,7 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require that member overloads be consecutive',
+      description: 'Require that function overload signatures be consecutive',
       recommended: 'error',
     },
     schema: [],
