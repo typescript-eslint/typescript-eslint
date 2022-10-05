@@ -41,4 +41,38 @@ describe('RuleCreator', () => {
       type: 'problem',
     });
   });
+
+  it('should create rule correctly without providing defaultOptions', () => {
+    const rule = createRule({
+      name: 'test',
+      meta: {
+        docs: {
+          description: 'some description',
+          recommended: 'error',
+          requiresTypeChecking: true,
+        },
+        messages: {
+          foo: 'some message',
+        },
+        schema: [],
+        type: 'problem',
+      },
+      create() {
+        return {};
+      },
+    });
+    expect(rule.meta).toEqual({
+      docs: {
+        description: 'some description',
+        url: 'test/test',
+        recommended: 'error',
+        requiresTypeChecking: true,
+      },
+      messages: {
+        foo: 'some message',
+      },
+      schema: [],
+      type: 'problem',
+    });
+  });
 });
