@@ -40,10 +40,10 @@ type T4 = () => string | number;
 
 ## Options
 
-### `checkIntersections`
+### `ignoreIntersections`
 
-When set to false, duplicate checks on intersection type members are ignored.
+When set to true, duplicate checks on intersection type members are ignored.
 
-### `checkUnions`
+### `ignoreUnions`
 
-When set to false, duplicate checks on union type members are ignored.
+When set to true, duplicate checks on union type members are ignored.

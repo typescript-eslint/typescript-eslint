@@ -403,7 +403,7 @@ ruleTester.run('disallow-duplicate-union-intersection', rule, {
       code: 'type T = A | A;',
       options: [
         {
-          checkUnions: false,
+          ignoreUnions: true,
         },
       ],
     },
@@ -413,7 +413,7 @@ ruleTester.run('disallow-duplicate-union-intersection', rule, {
       code: 'type T = A & A;',
       options: [
         {
-          checkIntersections: false,
+          ignoreIntersections: true,
         },
       ],
     },

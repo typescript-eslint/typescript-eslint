@@ -5,8 +5,8 @@ import * as util from '../util';
 
 export type Options = [
   {
-    checkIntersections?: boolean;
-    checkUnions?: boolean;
+    ignoreIntersections?: boolean;
+    ignoreUnions?: boolean;
   },
 ];
 export type MessageIds = 'duplicate' | 'suggestFix';
@@ -29,10 +29,10 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          checkIntersections: {
+          ignoreIntersections: {
             type: 'boolean',
           },
-          checkUnions: {
+          ignoreUnions: {
             type: 'boolean',
           },
         },
@@ -41,11 +41,11 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      checkIntersections: true,
-      checkUnions: true,
+      ignoreIntersections: false,
+      ignoreUnions: false,
     },
   ],
-  create(context, [{ checkIntersections, checkUnions }]) {
+  create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const sourceCode = context.getSourceCode();
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
@@ -107,10 +107,10 @@ export default util.createRule<Options, MessageIds>({
       });
     }
     return {
-      ...(checkIntersections && {
+      ...(!ignoreIntersections && {
         TSIntersectionType: checkDuplicate,
       }),
-      ...(checkUnions && {
+      ...(!ignoreUnions && {
         TSUnionType: checkDuplicate,
       }),
     };
