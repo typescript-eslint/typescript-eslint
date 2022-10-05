@@ -22,7 +22,7 @@ export interface RuleCreateAndOptions<
     context: Readonly<RuleContext<TMessageIds, TOptions>>,
     optionsWithDefault: Readonly<TOptions>,
   ) => TRuleListener;
-  defaultOptions: Readonly<TOptions>;
+  defaultOptions?: Readonly<TOptions>;
 }
 
 export interface RuleWithMeta<
