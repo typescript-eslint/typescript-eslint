@@ -397,11 +397,13 @@ spreadArrayFuncPromise(
   () => Promise.resolve(undefined),
 );
     `,
+    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
 class TakeCallbacks {
   constructor(...callbacks: Array<() => void>) {}
 }
 
+new TakeCallbacks;
 new TakeCallbacks();
 new TakeCallbacks(
   () => 1,
@@ -1035,19 +1037,28 @@ restUnion('Testing', false, () => Promise.resolve(true));
     {
       code: `
 function restTupleOne(first: string, ...callbacks: [() => void]): void {}
-
+restTupleOne('My string', () => Promise.resolve(1));
+      `,
+      errors: [{ line: 3, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
 function restTupleTwo(
   first: boolean,
   ...callbacks: [undefined, () => void, undefined]
 ): void {}
 
+restTupleTwo(true, undefined, () => Promise.resolve(true), undefined);
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
 function restTupleFour(
   first: number,
   ...callbacks: [() => void, boolean, () => void, () => void]
 ): void;
 
-restTupleOne('My string', () => Promise.resolve(1));
-restTupleTwo(true, undefined, () => Promise.resolve(true), undefined);
 restTupleFour(
   1,
   () => Promise.resolve(true),
@@ -1057,18 +1068,18 @@ restTupleFour(
 );
       `,
       errors: [
-        { line: 14, messageId: 'voidReturnArgument' },
-        { line: 15, messageId: 'voidReturnArgument' },
-        { line: 18, messageId: 'voidReturnArgument' },
-        { line: 21, messageId: 'voidReturnArgument' },
+        { line: 9, messageId: 'voidReturnArgument' },
+        { line: 12, messageId: 'voidReturnArgument' },
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
 class TakesVoidCb {
   constructor(first: string, ...args: Array<() => void>);
 }
 
+new TakesVoidCb;
 new TakesVoidCb();
 new TakesVoidCb(
   'Testing',
@@ -1076,7 +1087,7 @@ new TakesVoidCb(
   () => Promise.resolve(true),
 );
       `,
-      errors: [{ line: 10, messageId: 'voidReturnArgument' }],
+      errors: [{ line: 11, messageId: 'voidReturnArgument' }],
     },
   ],
 });

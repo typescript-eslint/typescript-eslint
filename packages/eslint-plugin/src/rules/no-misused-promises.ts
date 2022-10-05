@@ -486,7 +486,7 @@ function isFunctionParam(
   return false;
 }
 
-function checkThenableOrVoid(
+function checkThenableOrVoidArgument(
   checker: ts.TypeChecker,
   node: ts.CallExpression | ts.NewExpression,
   type: ts.Type,
@@ -551,7 +551,7 @@ function voidFunctionArguments(
             // 'param: MaybeVoidFunction'
             type = checker.getTypeArguments(type)[0];
             for (let i = index; i < node.arguments.length; i++) {
-              checkThenableOrVoid(
+              checkThenableOrVoidArgument(
                 checker,
                 node,
                 type,
@@ -565,7 +565,7 @@ function voidFunctionArguments(
             // add the index of the second tuple parameter to 'voidReturnIndices'
             const typeArgs = checker.getTypeArguments(type);
             for (let i = index; i < node.arguments.length; i++) {
-              checkThenableOrVoid(
+              checkThenableOrVoidArgument(
                 checker,
                 node,
                 typeArgs[i - index],
@@ -574,12 +574,9 @@ function voidFunctionArguments(
                 voidReturnIndices,
               );
             }
-          } else {
-            // We must have an 'any' parameter (e.g. `...args: any`), as anything
-            // else would be invalid TypeScript. There's nothing for us to check.
           }
         } else {
-          checkThenableOrVoid(
+          checkThenableOrVoidArgument(
             checker,
             node,
             type,
