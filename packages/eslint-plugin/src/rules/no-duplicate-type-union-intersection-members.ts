@@ -108,14 +108,10 @@ export default util.createRule<Options, MessageIds>({
     }
     return {
       ...(checkIntersections && {
-        TSIntersectionType(node): void {
-          checkDuplicate(node);
-        },
+        TSIntersectionType: checkDuplicate,
       }),
       ...(checkUnions && {
-        TSUnionType(node): void {
-          checkDuplicate(node);
-        },
+        TSUnionType: checkDuplicate,
       }),
     };
   },
