@@ -8,12 +8,12 @@ import { deepMerge, isObjectNotArray } from './deepMerge';
  * @returns the options with defaults
  */
 function applyDefault<TUser extends readonly unknown[], TDefault extends TUser>(
-  defaultOptions: Readonly<TDefault> = [],
+  defaultOptions: Readonly<TDefault>,
   userOptions: Readonly<TUser> | null,
 ): TDefault {
   // clone defaults
   const options = JSON.parse(
-    JSON.stringify(defaultOptions),
+    JSON.stringify(defaultOptions ?? []),
   ) as AsMutable<TDefault>;
 
   if (userOptions === null || userOptions === undefined) {
