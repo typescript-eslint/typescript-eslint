@@ -26,7 +26,7 @@ export interface RuleCreateAndOptions<
 }
 
 export interface RuleWithMeta<
-  TOptions extends readonly unknown[],
+  TOptions extends readonly unknown[] | undefined,
   TMessageIds extends string,
   TRuleListener extends RuleListener,
 > extends RuleCreateAndOptions<TOptions, TMessageIds, TRuleListener> {
