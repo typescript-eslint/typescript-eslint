@@ -15,5 +15,3 @@ updates:
       day: monday
     ignore:
       - dependency-name: cypress
-      - dependency-name: typescript
-      - dependency-name: eslint
