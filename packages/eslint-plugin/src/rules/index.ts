@@ -19,6 +19,7 @@ import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
+import findLoopStyle from './find-loop-style';
 import funcCallSpacing from './func-call-spacing';
 import indent from './indent';
 import initDeclarations from './init-declarations';
@@ -148,6 +149,7 @@ export default {
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
+  'find-loop-style': findLoopStyle,
   'func-call-spacing': funcCallSpacing,
   indent: indent,
   'init-declarations': initDeclarations,
