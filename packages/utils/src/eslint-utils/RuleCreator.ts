@@ -14,7 +14,7 @@ export type NamedCreateRuleMeta<TMessageIds extends string> = {
 } & Omit<RuleMetaData<TMessageIds>, 'docs'>;
 
 export interface RuleCreateAndOptions<
-  TOptions extends readonly unknown[],
+  TOptions extends readonly unknown[] | undefined,
   TMessageIds extends string,
   TRuleListener extends RuleListener,
 > {
@@ -34,7 +34,7 @@ export interface RuleWithMeta<
 }
 
 export interface RuleWithMetaAndName<
-  TOptions extends readonly unknown[],
+  TOptions extends readonly unknown[] | undefined,
   TMessageIds extends string,
   TRuleListener extends RuleListener,
 > extends RuleCreateAndOptions<TOptions, TMessageIds, TRuleListener> {
@@ -52,7 +52,7 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
   // TODO - when the above PR lands; add type checking for the context.report `data` property
   return function createNamedRule<
-    TOptions extends readonly unknown[],
+    TOptions extends readonly unknown[] | undefined,
     TMessageIds extends string,
     TRuleListener extends RuleListener = RuleListener,
   >({
@@ -82,7 +82,7 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
  * @remarks It is generally better to provide a docs URL function to RuleCreator.
  */
 function createRule<
-  TOptions extends readonly unknown[],
+  TOptions extends readonly unknown[] | undefined,
   TMessageIds extends string,
   TRuleListener extends RuleListener = RuleListener,
 >({
