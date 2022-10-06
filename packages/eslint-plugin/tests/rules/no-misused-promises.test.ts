@@ -375,28 +375,37 @@ console.log([...Promise.resolve(42)]);
     },
     `
 function spreadAny(..._args: any): void {}
-function spreadArrayAny(..._args: Array<any>): void {}
-function spreadArrayUnknown(..._args: Array<unknown>): void {}
-function spreadArrayFuncPromise(
-  ..._args: Array<() => Promise<undefined>>
-): void {}
 
 spreadAny(
   true,
   () => Promise.resolve(1),
   () => Promise.resolve(false),
 );
+    `,
+    `
+function spreadArrayAny(..._args: Array<any>): void {}
+
 spreadArrayAny(
   true,
   () => Promise.resolve(1),
   () => Promise.resolve(false),
 );
+    `,
+    `
+function spreadArrayUnknown(..._args: Array<unknown>): void {}
+
 spreadArrayUnknown(() => Promise.resolve(true), 1, 2);
+
+function spreadArrayFuncPromise(
+  ..._args: Array<() => Promise<undefined>>
+): void {}
+
 spreadArrayFuncPromise(
   () => Promise.resolve(undefined),
   () => Promise.resolve(undefined),
 );
     `,
+    // Prettier adds a () but this tests arguments being undefined, not []
     // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
 class TakeCallbacks {
@@ -1073,6 +1082,7 @@ restTupleFour(
       ],
     },
     {
+      // Prettier adds a () but this tests arguments being undefined, not []
       // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
 class TakesVoidCb {
