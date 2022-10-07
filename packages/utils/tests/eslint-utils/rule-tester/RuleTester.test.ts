@@ -1,3 +1,4 @@
+import * as parser from '@typescript-eslint/parser';
 import eslintPackageJson from 'eslint/package.json';
 
 import * as dependencyConstraintsModule from '../../../src/eslint-utils/rule-tester/dependencyConstraints';
@@ -55,18 +56,30 @@ jest.mock('eslint/package.json', () => {
   };
 });
 
-const mockedDescribe = jest.fn();
-const mockedIt = jest.fn();
-const mockedItOnly = jest.fn();
-const mockedAfterAll = jest.fn();
+jest.mock('@typescript-eslint/parser', () => {
+  return {
+    __esModule: true,
+    clearCaches: jest.fn(),
+  };
+});
+
+/* eslint-disable jest/prefer-spy-on --
+     need to specifically assign to the properties or else it will use the
+     global value */
+RuleTester.afterAll = jest.fn();
+RuleTester.describe = jest.fn();
+RuleTester.it = jest.fn();
+RuleTester.itOnly = jest.fn();
+/* eslint-enable jest/prefer-spy-on */
+
+const mockedAfterAll = jest.mocked(RuleTester.afterAll);
+const _mockedDescribe = jest.mocked(RuleTester.describe);
+const _mockedIt = jest.mocked(RuleTester.it);
+const _mockedItOnly = jest.mocked(RuleTester.itOnly);
 const runSpy = jest.spyOn(BaseRuleTester.prototype, 'run');
+const mockedParserClearCaches = jest.mocked(parser.clearCaches);
 
 const eslintVersionSpy = jest.spyOn(eslintPackageJson, 'version', 'get');
-
-RuleTester.afterAll = mockedAfterAll;
-RuleTester.describe = mockedDescribe;
-RuleTester.it = mockedIt;
-RuleTester.itOnly = mockedItOnly;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -174,6 +187,51 @@ describe('RuleTester', () => {
     `);
   });
 
+  it('schedules the parser caches to be cleared afterAll', () => {
+    // it should schedule the afterAll
+    expect(mockedAfterAll).toHaveBeenCalledTimes(0);
+    const _ruleTester = new RuleTester({
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        project: 'tsconfig.json',
+        tsconfigRootDir: '/some/path/that/totally/exists/',
+      },
+    });
+    expect(mockedAfterAll).toHaveBeenCalledTimes(1);
+
+    // the provided callback should clear the caches
+    const callback = mockedAfterAll.mock.calls[0][0];
+    expect(typeof callback).toBe('function');
+    expect(mockedParserClearCaches).not.toHaveBeenCalled();
+    callback();
+    expect(mockedParserClearCaches).toHaveBeenCalledTimes(1);
+  });
+
+  it('throws an error if you attempt to set the parser to ts-eslint at the test level', () => {
+    const ruleTester = new RuleTester({
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        project: 'tsconfig.json',
+        tsconfigRootDir: '/some/path/that/totally/exists/',
+      },
+    });
+
+    expect(() =>
+      ruleTester.run('my-rule', NOOP_RULE, {
+        valid: [
+          {
+            code: 'object based valid test',
+            parser: '@typescript-eslint/parser',
+          },
+        ],
+
+        invalid: [],
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Do not set the parser at the test level unless you want to use a parser other than @typescript-eslint/parser"`,
+    );
+  });
+
   describe('checks dependencies as specified', () => {
     it('does not check dependencies if there are no dependency constraints', () => {
       const ruleTester = new RuleTester({
@@ -193,403 +251,299 @@ describe('RuleTester', () => {
       expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
     });
 
-    describe('at-least', () => {
-      it('correctly handles string-based at-least', () => {
+    describe('does not check dependencies if is an "only" manually set', () => {
+      it('in the valid section', () => {
         const ruleTester = new RuleTester({
           parser: '@typescript-eslint/parser',
         });
 
         ruleTester.run('my-rule', NOOP_RULE, {
-          invalid: [
+          valid: [
+            'const x = 1;',
+            { code: 'const x = 2;' },
             {
-              code: 'failing - major',
-              errors: [],
+              code: 'const x = 3;',
+              // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
+              only: true,
+            },
+            {
+              code: 'const x = 4;',
               dependencyConstraints: {
                 'totally-real-dependency': '999',
               },
             },
-            {
-              code: 'failing - major.minor',
-              errors: [],
-              dependencyConstraints: {
-                'totally-real-dependency': '999.0',
-              },
-            },
-            {
-              code: 'failing - major.minor.patch',
-              errors: [],
-              dependencyConstraints: {
-                'totally-real-dependency': '999.0.0',
-              },
-            },
           ],
-          valid: [
-            {
-              code: 'passing - major',
-              dependencyConstraints: {
-                'totally-real-dependency': '10',
-              },
-            },
-            {
-              code: 'passing - major.minor',
-              dependencyConstraints: {
-                'totally-real-dependency': '10.0',
-              },
-            },
-            {
-              code: 'passing - major.minor.patch',
-              dependencyConstraints: {
-                'totally-real-dependency': '10.0.0',
-              },
-            },
-          ],
+          invalid: [],
         });
 
-        expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
-          {
-            "invalid": [
-              {
-                "code": "failing - major",
-                "dependencyConstraints": {
-                  "totally-real-dependency": "999",
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-              {
-                "code": "failing - major.minor",
-                "dependencyConstraints": {
-                  "totally-real-dependency": "999.0",
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-              {
-                "code": "failing - major.minor.patch",
-                "dependencyConstraints": {
-                  "totally-real-dependency": "999.0.0",
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-            ],
-            "valid": [
-              {
-                "code": "passing - major",
-                "dependencyConstraints": {
-                  "totally-real-dependency": "10",
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-              {
-                "code": "passing - major.minor",
-                "dependencyConstraints": {
-                  "totally-real-dependency": "10.0",
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-              {
-                "code": "passing - major.minor.patch",
-                "dependencyConstraints": {
-                  "totally-real-dependency": "10.0.0",
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-            ],
-          }
-        `);
+        expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
       });
 
-      it('correctly handles object-based at-least', () => {
+      it('in the invalid section', () => {
         const ruleTester = new RuleTester({
           parser: '@typescript-eslint/parser',
         });
 
         ruleTester.run('my-rule', NOOP_RULE, {
-          invalid: [
+          valid: [
+            'const x = 1;',
+            { code: 'const x = 2;' },
             {
-              code: 'failing - major',
-              errors: [],
+              code: 'const x = 4;',
               dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'at-least',
-                  version: '999',
-                },
-              },
-            },
-            {
-              code: 'failing - major.minor',
-              errors: [],
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'at-least',
-                  version: '999.0',
-                },
-              },
-            },
-            {
-              code: 'failing - major.minor.patch',
-              errors: [],
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'at-least',
-                  version: '999.0.0',
-                },
+                'totally-real-dependency': '999',
               },
             },
           ],
-          valid: [
+          invalid: [
             {
-              code: 'passing - major',
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'at-least',
-                  version: '10',
-                },
-              },
-            },
-            {
-              code: 'passing - major.minor',
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'at-least',
-                  version: '10.0',
-                },
-              },
-            },
-            {
-              code: 'passing - major.minor.patch',
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'at-least',
-                  version: '10.0.0',
-                },
-              },
+              code: 'const x = 3;',
+              errors: [],
+              // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
+              only: true,
             },
           ],
         });
 
-        expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
-          {
-            "invalid": [
-              {
-                "code": "failing - major",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "type": "at-least",
-                    "version": "999",
-                  },
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-              {
-                "code": "failing - major.minor",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "type": "at-least",
-                    "version": "999.0",
-                  },
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-              {
-                "code": "failing - major.minor.patch",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "type": "at-least",
-                    "version": "999.0.0",
-                  },
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-            ],
-            "valid": [
-              {
-                "code": "passing - major",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "type": "at-least",
-                    "version": "10",
-                  },
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-              {
-                "code": "passing - major.minor",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "type": "at-least",
-                    "version": "10.0",
-                  },
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-              {
-                "code": "passing - major.minor.patch",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "type": "at-least",
-                    "version": "10.0.0",
-                  },
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-            ],
-          }
-        `);
+        expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
       });
     });
 
-    describe('semver', () => {
-      it('correctly handles object-based at-least', () => {
-        const ruleTester = new RuleTester({
-          parser: '@typescript-eslint/parser',
-        });
-
-        ruleTester.run('my-rule', NOOP_RULE, {
-          invalid: [
-            {
-              code: 'failing - major',
-              errors: [],
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'semver',
-                  range: '^999',
-                },
-              },
-            },
-            {
-              code: 'failing - major.minor',
-              errors: [],
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'semver',
-                  range: '>=999.0',
-                },
-              },
-            },
-
-            {
-              code: 'failing with options',
-              errors: [],
-              dependencyConstraints: {
-                'totally-real-dependency-prerelease': {
-                  type: 'semver',
-                  range: '^10',
-                  options: {
-                    includePrerelease: false,
-                  },
-                },
-              },
-            },
-          ],
-          valid: [
-            {
-              code: 'passing - major',
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'semver',
-                  range: '^10',
-                },
-              },
-            },
-            {
-              code: 'passing - major.minor',
-              dependencyConstraints: {
-                'totally-real-dependency': {
-                  type: 'semver',
-                  range: '<999',
-                },
-              },
-            },
-          ],
-        });
-
-        expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
-          {
-            "invalid": [
-              {
-                "code": "failing - major",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "range": "^999",
-                    "type": "semver",
-                  },
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-              {
-                "code": "failing - major.minor",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "range": ">=999.0",
-                    "type": "semver",
-                  },
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-              {
-                "code": "failing with options",
-                "dependencyConstraints": {
-                  "totally-real-dependency-prerelease": {
-                    "options": {
-                      "includePrerelease": false,
-                    },
-                    "range": "^10",
-                    "type": "semver",
-                  },
-                },
-                "errors": [],
-                "filename": "file.ts",
-                "only": false,
-              },
-            ],
-            "valid": [
-              {
-                "code": "passing - major",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "range": "^10",
-                    "type": "semver",
-                  },
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-              {
-                "code": "passing - major.minor",
-                "dependencyConstraints": {
-                  "totally-real-dependency": {
-                    "range": "<999",
-                    "type": "semver",
-                  },
-                },
-                "filename": "file.ts",
-                "only": true,
-              },
-            ],
-          }
-        `);
+    it('correctly handles string-based at-least', () => {
+      const ruleTester = new RuleTester({
+        parser: '@typescript-eslint/parser',
       });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'failing - major',
+            errors: [],
+            dependencyConstraints: {
+              'totally-real-dependency': '999',
+            },
+          },
+          {
+            code: 'failing - major.minor',
+            errors: [],
+            dependencyConstraints: {
+              'totally-real-dependency': '999.0',
+            },
+          },
+          {
+            code: 'failing - major.minor.patch',
+            errors: [],
+            dependencyConstraints: {
+              'totally-real-dependency': '999.0.0',
+            },
+          },
+        ],
+        valid: [
+          {
+            code: 'passing - major',
+            dependencyConstraints: {
+              'totally-real-dependency': '10',
+            },
+          },
+          {
+            code: 'passing - major.minor',
+            dependencyConstraints: {
+              'totally-real-dependency': '10.0',
+            },
+          },
+          {
+            code: 'passing - major.minor.patch',
+            dependencyConstraints: {
+              'totally-real-dependency': '10.0.0',
+            },
+          },
+        ],
+      });
+
+      expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
+        {
+          "invalid": [
+            {
+              "code": "failing - major",
+              "dependencyConstraints": {
+                "totally-real-dependency": "999",
+              },
+              "errors": [],
+              "filename": "file.ts",
+              "only": false,
+            },
+            {
+              "code": "failing - major.minor",
+              "dependencyConstraints": {
+                "totally-real-dependency": "999.0",
+              },
+              "errors": [],
+              "filename": "file.ts",
+              "only": false,
+            },
+            {
+              "code": "failing - major.minor.patch",
+              "dependencyConstraints": {
+                "totally-real-dependency": "999.0.0",
+              },
+              "errors": [],
+              "filename": "file.ts",
+              "only": false,
+            },
+          ],
+          "valid": [
+            {
+              "code": "passing - major",
+              "dependencyConstraints": {
+                "totally-real-dependency": "10",
+              },
+              "filename": "file.ts",
+              "only": true,
+            },
+            {
+              "code": "passing - major.minor",
+              "dependencyConstraints": {
+                "totally-real-dependency": "10.0",
+              },
+              "filename": "file.ts",
+              "only": true,
+            },
+            {
+              "code": "passing - major.minor.patch",
+              "dependencyConstraints": {
+                "totally-real-dependency": "10.0.0",
+              },
+              "filename": "file.ts",
+              "only": true,
+            },
+          ],
+        }
+      `);
+    });
+
+    it('correctly handles object-based semver', () => {
+      const ruleTester = new RuleTester({
+        parser: '@typescript-eslint/parser',
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'failing - major',
+            errors: [],
+            dependencyConstraints: {
+              'totally-real-dependency': {
+                range: '^999',
+              },
+            },
+          },
+          {
+            code: 'failing - major.minor',
+            errors: [],
+            dependencyConstraints: {
+              'totally-real-dependency': {
+                range: '>=999.0',
+              },
+            },
+          },
+
+          {
+            code: 'failing with options',
+            errors: [],
+            dependencyConstraints: {
+              'totally-real-dependency-prerelease': {
+                range: '^10',
+                options: {
+                  includePrerelease: false,
+                },
+              },
+            },
+          },
+        ],
+        valid: [
+          {
+            code: 'passing - major',
+            dependencyConstraints: {
+              'totally-real-dependency': {
+                range: '^10',
+              },
+            },
+          },
+          {
+            code: 'passing - major.minor',
+            dependencyConstraints: {
+              'totally-real-dependency': {
+                range: '<999',
+              },
+            },
+          },
+        ],
+      });
+
+      expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
+        {
+          "invalid": [
+            {
+              "code": "failing - major",
+              "dependencyConstraints": {
+                "totally-real-dependency": {
+                  "range": "^999",
+                },
+              },
+              "errors": [],
+              "filename": "file.ts",
+              "only": false,
+            },
+            {
+              "code": "failing - major.minor",
+              "dependencyConstraints": {
+                "totally-real-dependency": {
+                  "range": ">=999.0",
+                },
+              },
+              "errors": [],
+              "filename": "file.ts",
+              "only": false,
+            },
+            {
+              "code": "failing with options",
+              "dependencyConstraints": {
+                "totally-real-dependency-prerelease": {
+                  "options": {
+                    "includePrerelease": false,
+                  },
+                  "range": "^10",
+                },
+              },
+              "errors": [],
+              "filename": "file.ts",
+              "only": false,
+            },
+          ],
+          "valid": [
+            {
+              "code": "passing - major",
+              "dependencyConstraints": {
+                "totally-real-dependency": {
+                  "range": "^10",
+                },
+              },
+              "filename": "file.ts",
+              "only": true,
+            },
+            {
+              "code": "passing - major.minor",
+              "dependencyConstraints": {
+                "totally-real-dependency": {
+                  "range": "<999",
+                },
+              },
+              "filename": "file.ts",
+              "only": true,
+            },
+          ],
+        }
+      `);
     });
 
     it('tests without versions should always be run', () => {

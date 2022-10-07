@@ -9,6 +9,7 @@ import type { DependencyConstraint } from './dependencyConstraints';
 import { satisfiesAllDependencyConstraints } from './dependencyConstraints';
 
 const TS_ESLINT_PARSER = '@typescript-eslint/parser';
+const ERROR_MESSAGE = `Do not set the parser at the test level unless you want to use a parser other than ${TS_ESLINT_PARSER}`;
 
 type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
   parser: typeof TS_ESLINT_PARSER;
@@ -109,8 +110,6 @@ class RuleTester extends TSESLint.RuleTester {
     rule: TSESLint.RuleModule<TMessageIds, TOptions>,
     testsReadonly: RunTests<TMessageIds, TOptions>,
   ): void {
-    const errorMessage = `Do not set the parser at the test level unless you want to use a parser other than ${TS_ESLINT_PARSER}`;
-
     const tests = {
       // standardize the valid tests as objects
       valid: testsReadonly.valid.map(test => {
@@ -122,6 +121,18 @@ class RuleTester extends TSESLint.RuleTester {
         return test;
       }),
       invalid: testsReadonly.invalid,
+    };
+
+    // convenience iterator to make it easy to loop all tests without a concat
+    const allTestsIterator = {
+      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void, unknown> {
+        for (const test of tests.valid) {
+          yield test;
+        }
+        for (const test of tests.invalid) {
+          yield test;
+        }
+      },
     };
 
     /*
@@ -139,7 +150,7 @@ class RuleTester extends TSESLint.RuleTester {
       test: T,
     ): T => {
       if (test.parser === TS_ESLINT_PARSER) {
-        throw new Error(errorMessage);
+        throw new Error(ERROR_MESSAGE);
       }
       if (!test.filename) {
         return {
@@ -153,12 +164,7 @@ class RuleTester extends TSESLint.RuleTester {
     tests.invalid = tests.invalid.map(addFilename);
 
     const hasOnly = ((): boolean => {
-      for (const test of tests.valid) {
-        if (test.only) {
-          return true;
-        }
-      }
-      for (const test of tests.invalid) {
+      for (const test of allTestsIterator) {
         if (test.only) {
           return true;
         }
@@ -172,15 +178,7 @@ class RuleTester extends TSESLint.RuleTester {
       Automatically skip tests that don't satisfy the dependency constraints.
       */
       const hasConstraints = ((): boolean => {
-        for (const test of tests.valid) {
-          if (
-            test.dependencyConstraints &&
-            Object.keys(test.dependencyConstraints).length > 0
-          ) {
-            return true;
-          }
-        }
-        for (const test of tests.invalid) {
+        for (const test of allTestsIterator) {
           if (
             test.dependencyConstraints &&
             Object.keys(test.dependencyConstraints).length > 0
@@ -191,6 +189,7 @@ class RuleTester extends TSESLint.RuleTester {
         return false;
       })();
       if (hasConstraints) {
+        // The `only: boolean` test property was only added in ESLint v7.29.0.
         if (semver.satisfies(eslintVersion, '>=7.29.0')) {
           /*
           Mark all satisfactory tests as `only: true`, and all other tests as
@@ -225,10 +224,7 @@ class RuleTester extends TSESLint.RuleTester {
           tests.valid = tests.valid.map(maybeMarkAsOnly);
           tests.invalid = tests.invalid.map(maybeMarkAsOnly);
         } else {
-          /*
-          The `only: boolean` test property was only added in ESLint v7.29.0.
-          on older versions we just fallback to raw filtering like savages
-          */
+          // On older versions we just fallback to raw array filtering like SAVAGES
           tests.valid = tests.valid.filter(test =>
             satisfiesAllDependencyConstraints(test.dependencyConstraints),
           );

@@ -1,26 +1,20 @@
 import * as semver from 'semver';
 
 interface SemverVersionConstraint {
-  readonly type: 'semver';
   readonly range: string;
   readonly options?: Parameters<typeof semver.satisfies>[2];
 }
-interface AtLeastVersionConstraint {
-  readonly type: 'at-least';
-  readonly version:
-    | `${number}`
-    | `${number}.${number}`
-    | `${number}.${number}.${number}`
-    | `${number}.${number}.${number}-${string}`;
-}
+type AtLeastVersionConstraint =
+  | `${number}`
+  | `${number}.${number}`
+  | `${number}.${number}.${number}`
+  | `${number}.${number}.${number}-${string}`;
 type VersionConstraint = SemverVersionConstraint | AtLeastVersionConstraint;
 interface DependencyConstraint {
   /**
    * Passing a string for the value is shorthand for the 'at-least' constraint
    */
-  readonly [packageName: string]:
-    | VersionConstraint
-    | AtLeastVersionConstraint['version'];
+  readonly [packageName: string]: VersionConstraint;
 }
 
 const BASE_SATISFIES_OPTIONS: semver.RangeOptions = {
@@ -31,27 +25,19 @@ function satisfiesDependencyConstraint(
   packageName: string,
   constraintIn: DependencyConstraint[string],
 ): boolean {
-  const constraint: VersionConstraint =
+  const constraint: SemverVersionConstraint =
     typeof constraintIn === 'string'
       ? {
-          type: 'at-least',
-          version: constraintIn,
+          range: `>=${constraintIn}`,
         }
       : constraintIn;
 
-  const satisfiesArguments: [string, SemverVersionConstraint['options']] =
-    constraint.type === 'at-least'
-      ? [`>=${constraint.version}`, BASE_SATISFIES_OPTIONS]
-      : [
-          constraint.range,
-          typeof constraint.options === 'object'
-            ? { ...BASE_SATISFIES_OPTIONS, ...constraint.options }
-            : constraint.options,
-        ];
-
   return semver.satisfies(
     (require(`${packageName}/package.json`) as { version: string }).version,
-    ...satisfiesArguments,
+    constraint.range,
+    typeof constraint.options === 'object'
+      ? { ...BASE_SATISFIES_OPTIONS, ...constraint.options }
+      : constraint.options,
   );
 }
 
