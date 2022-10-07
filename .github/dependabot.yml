@@ -13,5 +13,3 @@ updates:
     schedule:
       interval: weekly
       day: monday
-    ignore:
-      - dependency-name: cypress
