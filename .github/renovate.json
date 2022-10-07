@@ -1,20 +1,8 @@
 {
   "automerge": true,
-  "enabledManagers": [
-    "github-actions",
-    "npm"
-  ],
-  "labels": [
-    "dependencies"
-  ],
-  "matchUpdateTypes": [
-    "minor",
-    "patch",
-    "pin",
-    "digest"
-  ],
+  "enabledManagers": ["github-actions", "npm"],
+  "labels": ["dependencies", "javascript"],
+  "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
   "stabilityDays": 3,
-  "ignoreDeps": [
-    "cypress"
-  ]
+  "ignoreDeps": ["cypress"]
 }
