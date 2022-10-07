@@ -30,7 +30,7 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
-This error will appear in the beginning of a source file from the combination two things:
+This error will appear in the beginning of a source file from the combination of two things:
 
 - The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
 - None of those TSConfig files includes the source file being linted
