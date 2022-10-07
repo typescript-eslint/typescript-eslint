@@ -35,7 +35,7 @@ jest.mock('../../src/create-program/shared', () => {
   };
 });
 
-// Tests in CI by default run with lowercased program file names,
+// Tests in CI by default run with lowercase program file names,
 // resulting in path.relative results starting with many "../"s
 jest.mock('typescript', () => {
   const ts = jest.requireActual('typescript');
