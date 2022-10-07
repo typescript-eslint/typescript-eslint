@@ -20,9 +20,7 @@ type Foo = {
 type Foo = Record<string, unknown>;
 ```
 
-## Rule Details
-
-This rule enforces a consistent way to define records.
+Keeping to one declaration form consistently improve code readability.
 
 ## Options
 

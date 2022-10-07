@@ -6,7 +6,7 @@ description: 'Disallow variable redeclaration.'
 >
 > See **https://typescript-eslint.io/rules/no-redeclare** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-redeclare`](https://eslint.org/docs/rules/no-redeclare) rule.
 It adds support for TypeScript function overloads, and declaration merging.

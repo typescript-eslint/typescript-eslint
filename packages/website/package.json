@@ -11,11 +11,13 @@
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "test": "cypress run",
-    "test:open": "cypress open"
+    "test:open": "cypress open",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",
     "@docusaurus/core": "~2.0.1",
+    "@docusaurus/plugin-pwa": "~2.1.0",
     "@docusaurus/preset-classic": "~2.0.1",
     "@docusaurus/remark-plugin-npm2yarn": "~2.0.1",
     "@docusaurus/theme-common": "~2.0.1",

@@ -6,7 +6,7 @@ description: 'Disallow the use of variables before they are defined.'
 >
 > See **https://typescript-eslint.io/rules/no-use-before-define** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-use-before-define`](https://eslint.org/docs/rules/no-use-before-define) rule.
 It adds support for `type`, `interface` and `enum` declarations.
