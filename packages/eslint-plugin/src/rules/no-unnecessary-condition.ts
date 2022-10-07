@@ -330,6 +330,7 @@ export default createRule<Options, MessageId>({
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
         const NULL = ts.TypeFlags.Null;
+        const VOID = ts.TypeFlags.Void;
         const isComparable = (type: ts.Type, flag: ts.TypeFlags): boolean => {
           // Allow comparison to `any`, `unknown` or a naked type parameter.
           flag |=
@@ -339,7 +340,7 @@ export default createRule<Options, MessageId>({
 
           // Allow loose comparison to nullish values.
           if (node.operator === '==' || node.operator === '!=') {
-            flag |= NULL | UNDEFINED;
+            flag |= NULL | UNDEFINED | VOID;
           }
 
           return isTypeFlagSet(type, flag);
@@ -347,9 +348,9 @@ export default createRule<Options, MessageId>({
 
         if (
           (leftType.flags === UNDEFINED &&
-            !isComparable(rightType, UNDEFINED)) ||
+            !isComparable(rightType, UNDEFINED | VOID)) ||
           (rightType.flags === UNDEFINED &&
-            !isComparable(leftType, UNDEFINED)) ||
+            !isComparable(leftType, UNDEFINED | VOID)) ||
           (leftType.flags === NULL && !isComparable(rightType, NULL)) ||
           (rightType.flags === NULL && !isComparable(leftType, NULL))
         ) {
