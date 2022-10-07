@@ -28,12 +28,43 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 > We release a new version our tooling every week.
 > _Please_ ensure that you [check our the latest list of "extension" rules](https://typescript-eslint.io/rules/#extension-rules) **_before_** filing an issue.
 
+## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
+
+This error will appear in the beginning of a source file from the combination two things:
+
+- The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
+- None of those TSConfig files includes the source file being linted
+
+When TSConfig files are specified for parsing a source file, `@typescript-eslint/parser` will use the first TSConfig that is able to include that source file (per [aka.ms/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)) to generate type information.
+However, if no specified TSConfig includes the source file, the parser won't be able to generate type information.
+
+This error most commonly happens on config files or similar that are not included in their project TSConfig(s).
+For example, many projects have files like:
+
+- An `.eslintrc.cjs` with `parserOptions.project: ["./tsconfig.json"]`
+- A `tsconfig.json` with `include: ["src"]`
+
+In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
+
+- If you **do not** want to lint the file:
+  - Use [one of the options ESLint offers](https://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
+- If you **do** want to lint the file:
+  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
+      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
+      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
+  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
+    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
+      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
+      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+
+See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for more information.
+
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
-This error means that the file that's being linted is not included in any of the TSConfig files you provided us.
-This happens when users have test files, config files, or similar that are not included.
-
-See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions.
+You're using an outdated version of `@typescript-eslint/parser`.
+Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 

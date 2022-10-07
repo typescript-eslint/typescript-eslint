@@ -240,7 +240,7 @@ describe('semanticInfo', () => {
         `function M() { return Base }`,
         createOptions('<input>'),
       ),
-    ).toThrow(/The file does not match your project config: estree.ts/);
+    ).toThrow(/ESLint was configured to run on estree\.ts using/);
   });
 
   it('non-existent project file', () => {
