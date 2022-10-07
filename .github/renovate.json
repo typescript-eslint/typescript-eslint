@@ -1,9 +1,22 @@
 {
   "automerge": true,
   "enabledManagers": ["github-actions", "npm"],
-  "ignoreDeps": ["cypress"],
   "internalChecksFilters": "strict",
-  "labels": ["dependencies", "javascript"],
-  "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "manager": "github-actions",
+      "addLabels": ["github-actions"]
+    },
+    {
+      "manager": "npm",
+      "addLabels": ["javascript"]
+    },
+    {
+      "matchPackageNames": ["cypress"],
+      "dependencyDashboardApproval": true
+    }
+  ],
+  "matchUpdateTypes": ["minor","patch","pin","digest"],
   "stabilityDays": 3
 }
