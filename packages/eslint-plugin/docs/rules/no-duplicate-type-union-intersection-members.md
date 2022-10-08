@@ -4,7 +4,7 @@ description: 'Disallow duplicate union/intersection type members.'
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> See **https://typescript-eslint.io/rules/no-duplicate-type-union-intersection-members** for documentation.
+> See **https://typescript-eslint.io/rules/no-duplicate-type-constituents** for documentation.
 
 Although TypeScript supports duplicate union and intersection member values, people usually expect members to have unique values within the same intersection and union. Duplicate values make the code redundant and generally reduce readability.
 

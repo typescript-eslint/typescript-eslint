@@ -3,8 +3,8 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import type {
   MessageIds,
   Options,
-} from '../../src/rules/no-duplicate-type-union-intersection-members';
-import rule from '../../src/rules/no-duplicate-type-union-intersection-members';
+} from '../../src/rules/no-duplicate-type-constituents';
+import rule from '../../src/rules/no-duplicate-type-constituents';
 import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({

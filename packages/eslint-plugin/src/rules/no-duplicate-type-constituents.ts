@@ -12,7 +12,7 @@ export type Options = [
 export type MessageIds = 'duplicate' | 'suggestFix';
 
 export default util.createRule<Options, MessageIds>({
-  name: 'no-duplicate-type-union-intersection-members',
+  name: 'no-duplicate-type-constituents',
   meta: {
     type: 'suggestion',
     docs: {
