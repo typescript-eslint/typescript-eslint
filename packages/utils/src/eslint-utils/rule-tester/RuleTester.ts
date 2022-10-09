@@ -208,16 +208,11 @@ class RuleTester extends TSESLint.RuleTester {
           >(
             test: T,
           ): T => {
-            if (satisfiesAllDependencyConstraints(test.dependencyConstraints)) {
-              return {
-                ...test,
-                only: true,
-              };
-            }
-
             return {
               ...test,
-              only: false,
+              only: satisfiesAllDependencyConstraints(
+                test.dependencyConstraints,
+              ),
             };
           };
 
