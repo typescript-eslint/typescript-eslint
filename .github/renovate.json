@@ -15,5 +15,6 @@
     }
   ],
   "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-  "stabilityDays": 3
+  "stabilityDays": 3,
+  "postUpdateOptions": ["yarnDedupeHighest"]
 }
