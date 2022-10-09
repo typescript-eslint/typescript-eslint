@@ -12,7 +12,7 @@ type AtLeastVersionConstraint =
 type VersionConstraint = SemverVersionConstraint | AtLeastVersionConstraint;
 interface DependencyConstraint {
   /**
-   * Passing a string for the value is shorthand for the 'at-least' constraint
+   * Passing a string for the value is shorthand for a '>=' constraint
    */
   readonly [packageName: string]: VersionConstraint;
 }
