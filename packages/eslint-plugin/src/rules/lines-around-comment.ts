@@ -334,12 +334,12 @@ export default util.createRule<Options, MessageIds>({
 
       const interfaceStartAllowed =
           Boolean(options.allowInterfaceStart) &&
-          isCommentAtInterfaceStart(token),
-        interfaceEndAllowed =
-          Boolean(options.allowInterfaceEnd) && isCommentAtInterfaceEnd(token),
-        typeStartAllowed =
-          Boolean(options.allowTypeStart) && isCommentAtTypeStart(token),
-        typeEndAllowed =
+          isCommentAtInterfaceStart(token);
+      const interfaceEndAllowed =
+          Boolean(options.allowInterfaceEnd) && isCommentAtInterfaceEnd(token);
+      const typeStartAllowed =
+          Boolean(options.allowTypeStart) && isCommentAtTypeStart(token);
+      const typeEndAllowed =
           Boolean(options.allowTypeEnd) && isCommentAtTypeEnd(token);
 
       const exceptionStartAllowed = interfaceStartAllowed || typeStartAllowed;
