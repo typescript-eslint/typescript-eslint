@@ -129,19 +129,19 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
 
     const state: Partial<ConfigModel> = {};
     if (hasOwnProperty('ts', config)) {
-      const ts: unknown = config.ts;
+      const ts = config.ts;
       if (typeof ts === 'string') {
         state.ts = ts;
       }
     }
     if (hasOwnProperty('jsx', config)) {
-      const jsx: unknown = config.jsx;
+      const jsx = config.jsx;
       if (typeof jsx === 'boolean') {
         state.jsx = jsx;
       }
     }
     if (hasOwnProperty('showAST', config)) {
-      const showAST: unknown = config.showAST;
+      const showAST = config.showAST;
       if (typeof showAST === 'boolean') {
         state.showAST = showAST;
       } else if (typeof showAST === 'string') {

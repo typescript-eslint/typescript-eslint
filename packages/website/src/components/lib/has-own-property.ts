@@ -1,4 +1,4 @@
-export function hasOwnProperty<X extends object, Y extends PropertyKey>(
+export function hasOwnProperty<Container extends object, Key extends PropertyKey>(
   property: Y,
   object: X,
 ): object is X & Record<Y, unknown> {
