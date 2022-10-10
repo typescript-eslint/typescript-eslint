@@ -12,7 +12,7 @@
     {
       "matchManagers": ["github-actions"],
       "addLabels": ["github-actions"]
-    },
+    }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
   "stabilityDays": 3
