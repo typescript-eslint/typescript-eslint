@@ -19,7 +19,7 @@
     "@docusaurus/core": "~2.0.1",
     "@docusaurus/plugin-pwa": "~2.1.0",
     "@docusaurus/preset-classic": "~2.0.1",
-    "@docusaurus/remark-plugin-npm2yarn": "~2.0.1",
+    "@docusaurus/remark-plugin-npm2yarn": "~2.1.0",
     "@docusaurus/theme-common": "~2.0.1",
     "@mdx-js/react": "1.6.22",
     "@typescript-eslint/parser": "5.39.0",
