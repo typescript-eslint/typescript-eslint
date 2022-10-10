@@ -96,7 +96,7 @@
     "lerna": "5.6.1",
     "lint-staged": "^13.0.0",
     "make-dir": "^3.1.0",
-    "markdownlint-cli": "^0.31.1",
+    "markdownlint-cli": "^0.32.0",
     "ncp": "^2.0.0",
     "patch-package": "^6.4.7",
     "prettier": "2.7.1",
