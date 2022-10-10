@@ -6,7 +6,7 @@ description: 'Disallow variable declarations from shadowing variables declared i
 >
 > See **https://typescript-eslint.io/rules/no-shadow** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-shadow`](https://eslint.org/docs/rules/no-shadow) rule.
 It adds support for TypeScript's `this` parameters and global augmentation, and adds options for TypeScript features.

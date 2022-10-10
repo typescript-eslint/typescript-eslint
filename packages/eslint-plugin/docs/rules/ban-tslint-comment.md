@@ -8,9 +8,9 @@ description: 'Disallow `// tslint:<rule-flag>` comments.'
 
 Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this rule helps locate TSLint annotations (e.g. `// tslint:disable`).
 
-## Rule Details
+> See the [TSLint rule flags docs](https://palantir.github.io/tslint/usage/rule-flags) for reference.
 
-All TSLint [rule flags](https://palantir.github.io/tslint/usage/rule-flags/)
+## Examples
 
 <!--tabs-->
 

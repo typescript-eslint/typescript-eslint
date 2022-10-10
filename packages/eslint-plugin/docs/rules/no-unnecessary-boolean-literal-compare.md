@@ -6,25 +6,20 @@ description: 'Disallow unnecessary equality comparisons against boolean literals
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare** for documentation.
 
-Comparing boolean values to boolean literals is unnecessary, those comparisons result in the same booleans. Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
-
-## Rule Details
+Comparing boolean values to boolean literals is unnecessary: those comparisons result in the same booleans.
+Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
 
 This rule ensures that you do not include unnecessary comparisons with boolean literals.
 A comparison is considered unnecessary if it checks a boolean literal against any variable with just the `boolean` type.
-A comparison is **_not_** considered unnecessary if the type is a union of booleans (`string | boolean`, `someObject | boolean`).
+A comparison is **_not_** considered unnecessary if the type is a union of booleans (`string | boolean`, `SomeObject | boolean`, etc.).
 
-**Warning**: Do not use this rule when `strictNullChecks` is disabled.
-ESLint is not able to distinguish between `false` and `undefined` or `null` values.
-This can cause unintended code changes when using autofix.
+## Examples
 
-**Note**: Throughout this page, only strict equality (`===` and `!==`) are
-used in the examples. However, the implementation of the rule does not
-distinguish between strict and loose equality. Any example below that uses
-`===` would be treated the same way if `==` was used, and any example below
-that uses `!==` would be treated the same way if `!=` was used.
-
-Examples of code for this rule:
+:::note
+Throughout this page, only strict equality (`===` and `!==`) are used in the examples.
+However, the implementation of the rule does not distinguish between strict and loose equality.
+Any example below that uses `===` would be treated the same way if `==` was used, and `!==` would be treated the same way if `!=` was used.
+:::
 
 <!--tabs-->
 
@@ -130,3 +125,9 @@ if (!(someNullCondition ?? true)) {
 | `nullableBooleanVar !== true`  | `!nullableBooleanVar`           | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
 | `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
+
+## Not To Use It
+
+Do not use this rule when `strictNullChecks` is disabled.
+ESLint is not able to distinguish between `false` and `undefined` or `null` values.
+This can cause unintended code changes when using autofix.

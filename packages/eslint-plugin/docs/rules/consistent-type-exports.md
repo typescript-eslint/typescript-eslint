@@ -6,14 +6,10 @@ description: 'Enforce consistent usage of type exports.'
 >
 > See **https://typescript-eslint.io/rules/consistent-type-exports** for documentation.
 
-Type-only exports allow you to specify that 1 or more named exports are exported as type-only. This allows
-transpilers to drop exports without knowing the types of the dependencies.
+TypeScript allows specifying a `type` keyword on exports to indicate that the export exists only in the type system, not at runtime.
+This allows transpilers to drop exports without knowing the types of the dependencies.
 
-## Rule Details
-
-This rule aims to standardize the use of type exports style.
-
-Given a class `Button`, and an interface `ButtonProps`, examples of code:
+## Examples
 
 <!--tabs-->
 
@@ -25,9 +21,7 @@ interface ButtonProps {
 }
 
 class Button implements ButtonProps {
-  onClick() {
-    console.log('button!');
-  }
+  onClick = () => console.log('button!');
 }
 
 export { Button, ButtonProps };
@@ -39,11 +33,11 @@ export { Button, ButtonProps };
 interface ButtonProps {
   onClick: () => void;
 }
+
 class Button implements ButtonProps {
-  onClick() {
-    console.log('button!');
-  }
+  onClick = () => console.log('button!');
 }
+
 export { Button };
 export type { ButtonProps };
 ```

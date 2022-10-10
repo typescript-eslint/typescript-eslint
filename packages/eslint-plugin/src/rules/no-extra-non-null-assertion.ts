@@ -7,7 +7,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow extra non-null assertion',
+      description: 'Disallow extra non-null assertions',
       recommended: 'error',
     },
     fixable: 'code',

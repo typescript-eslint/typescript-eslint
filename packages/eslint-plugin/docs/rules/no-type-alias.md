@@ -78,7 +78,7 @@ On the other hand, using a type alias as an interface can limit your ability to:
 Finally, mapping types is an advanced technique and leaving it open can quickly become a pain point
 in your application.
 
-## Rule Details
+## Examples
 
 This rule disallows the use of type aliases in favor of interfaces
 and simplified types (primitives, tuples, unions, intersections, etc).

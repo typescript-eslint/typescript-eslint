@@ -6,21 +6,14 @@ description: 'Disallow `void` type outside of generic or return types.'
 >
 > See **https://typescript-eslint.io/rules/no-invalid-void-type** for documentation.
 
-Disallows usage of `void` type outside of return types or generic type arguments.
-If `void` is used as return type, it shouldn’t be a part of intersection/union type with most other types.
+`void` in TypeScript refers to a function return that is meant to be ignored.
+Attempting to use a `void` type outside of a return type or generic type argument is often a sign of programmer error.
+`void` can also be misleading for other developers even if used correctly.
 
-## Rationale
+> The `void` type means cannot be mixed with any other types, other than `never`, which accepts all types.
+> If you think you need this then you probably want the `undefined` type instead.
 
-The `void` type means “nothing” or that a function does not return any value,
-in contrast with implicit `undefined` type which means that a function returns a value `undefined`.
-So “nothing” cannot be mixed with any other types, other than `never`, which accepts all types.
-If you need this - use the `undefined` type instead.
-
-## Rule Details
-
-This rule aims to ensure that the `void` type is only used in valid places.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
