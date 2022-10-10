@@ -2,19 +2,18 @@
   "automerge": true,
   "enabledManagers": ["github-actions", "npm"],
   "ignoreDeps": ["cypress"],
-  "internalChecksFilters": "strict",
+  "internalChecksFilter": "strict",
   "labels": ["dependencies"],
   "packageRules": [
     {
-      "addLabels": ["github-actions"],
-      "manager": "github-actions"
+      "matchManagers": ["npm"],
+      "addLabels": ["javascript"]
     },
     {
-      "addLabels": ["javascript"],
-      "manager": "npm"
+      "matchManagers": ["github-actions"],
+      "addLabels": ["github-actions"]
     }
   ],
-  "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-  "stabilityDays": 3,
-  "postUpdateOptions": ["yarnDedupeHighest"]
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "stabilityDays": 3
 }
