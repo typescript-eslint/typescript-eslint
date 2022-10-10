@@ -140,7 +140,6 @@ export default util.createRule<Options, MessageIds>({
     const comments = sourceCode.getAllComments();
 
     const lines = sourceCode.lines;
-    const numLines = lines.length + 1;
     const commentLines = getCommentLineNums(comments);
     const emptyLines = getEmptyLineNums(lines);
     const commentAndEmptyLines = new Set(commentLines.concat(emptyLines));
@@ -237,10 +236,7 @@ export default util.createRule<Options, MessageIds>({
       const parent = getParentNodeOfToken(token);
 
       if (parent && isParentNodeType(parent, nodeType)) {
-        const parentStartNodeOrToken =
-          parent.type === AST_NODE_TYPES.StaticBlock
-            ? sourceCode.getFirstToken(parent, { skip: 1 })! // opening brace of the static block
-            : parent;
+        const parentStartNodeOrToken = parent;
 
         return (
           token.loc.start.line - parentStartNodeOrToken.loc.start.line === 1
@@ -344,14 +340,6 @@ export default util.createRule<Options, MessageIds>({
 
       const exceptionStartAllowed = interfaceStartAllowed || typeStartAllowed;
       const exceptionEndAllowed = interfaceEndAllowed || typeEndAllowed;
-
-      // ignore top of the file and bottom of the file
-      if (prevLineNum < 1) {
-        before = false;
-      }
-      if (nextLineNum >= numLines) {
-        after = false;
-      }
 
       const previousTokenOrComment = sourceCode.getTokenBefore(token, {
         includeComments: true,

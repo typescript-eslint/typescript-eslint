@@ -1418,6 +1418,123 @@ foo;
       `,
       options: [{ applyDefaultIgnorePatterns: false, ignorePattern: 'pragma' }],
     },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* eslint */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* jshint foo */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* jslint foo */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* istanbul foo */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* globals foo */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* exported foo */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* jscs */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* this is pragmatic */
+}
+      `,
+      options: [{ ignorePattern: 'pragma' }],
+    },
+    {
+      code: `
+interface A {
+  foo: string;
+  /* this is pragmatic */
+}
+      `,
+      options: [{ applyDefaultIgnorePatterns: false, ignorePattern: 'pragma' }],
+    },
+    {
+      code: `
+interface A {
+  foo: string; // this is inline line comment
+}
+      `,
+      options: [{ beforeLineComment: true }],
+    },
+    {
+      code: `
+interface A {
+  foo: string /* this is inline block comment */;
+}
+      `,
+    },
+    {
+      code: `
+interface A {
+  /* this is inline block comment */ foo: string;
+}
+      `,
+    },
+    {
+      code: `
+interface A {
+  /* this is inline block comment */ foo: string /* this is inline block comment */;
+}
+      `,
+    },
+    {
+      code: `
+interface A {
+  /* this is inline block comment */ foo: string; // this is inline line comment ;
+}
+      `,
+    },
   ],
   invalid: [
     // default rules
