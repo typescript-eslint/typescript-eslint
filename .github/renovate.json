@@ -1,7 +1,6 @@
 {
   "automerge": true,
   "enabledManagers": ["github-actions", "npm"],
-  "ignoreDeps": ["cypress"],
   "internalChecksFilter": "strict",
   "labels": ["dependencies"],
   "packageRules": [
