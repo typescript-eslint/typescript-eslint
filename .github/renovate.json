@@ -13,22 +13,6 @@
       "matchManagers": ["github-actions"],
       "addLabels": ["github-actions"]
     },
-    {
-      "matchUpdateTypes": ["major"],
-      "addLabels": ["major"]
-    },
-    {
-      "matchUpdateTypes": ["pin"],
-      "addLabels": ["pin"]
-    },
-    {
-      "matchUpdateTypes": ["patch"],
-      "addLabels": ["patch"]
-    },
-    {
-      "matchUpdateTypes": ["digest"],
-      "addLabels": ["digest"]
-    }
   ],
   "postUpdateOptions": ["yarnDedupeHighest"],
   "stabilityDays": 3
