@@ -111,6 +111,18 @@ export default util.createRule<Options, MessageIds>({
             allowTypeEnd: {
               type: 'boolean',
             },
+            allowEnumStart: {
+              type: 'boolean',
+            },
+            allowEnumEnd: {
+              type: 'boolean',
+            },
+            allowModuleStart: {
+              type: 'boolean',
+            },
+            allowModuleEnd: {
+              type: 'boolean',
+            },
             ignorePattern: {
               type: 'string',
             },
@@ -278,12 +290,32 @@ export default util.createRule<Options, MessageIds>({
       return isCommentAtParentEnd(token, AST_NODE_TYPES.TSTypeLiteral);
     }
 
+    function isCommentAtEnumStart(token: TSESTree.Comment): boolean {
+      return isCommentAtParentStart(token, AST_NODE_TYPES.TSEnumDeclaration);
+    }
+
+    function isCommentAtEnumEnd(token: TSESTree.Comment): boolean {
+      return isCommentAtParentEnd(token, AST_NODE_TYPES.TSEnumDeclaration);
+    }
+
+    function isCommentAtModuleStart(token: TSESTree.Comment): boolean {
+      return isCommentAtParentStart(token, AST_NODE_TYPES.TSModuleBlock);
+    }
+
+    function isCommentAtModuleEnd(token: TSESTree.Comment): boolean {
+      return isCommentAtParentEnd(token, AST_NODE_TYPES.TSModuleBlock);
+    }
+
     function isCommentNearTSConstruct(token: TSESTree.Comment): boolean {
       return (
         isCommentAtInterfaceStart(token) ||
         isCommentAtInterfaceEnd(token) ||
         isCommentAtTypeStart(token) ||
-        isCommentAtTypeEnd(token)
+        isCommentAtTypeEnd(token) ||
+        isCommentAtEnumStart(token) ||
+        isCommentAtEnumEnd(token) ||
+        isCommentAtModuleStart(token) ||
+        isCommentAtModuleEnd(token)
       );
     }
 
@@ -316,17 +348,33 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const interfaceStartAllowed =
-          Boolean(options.allowInterfaceStart) &&
-          isCommentAtInterfaceStart(token),
-        interfaceEndAllowed =
-          Boolean(options.allowInterfaceEnd) && isCommentAtInterfaceEnd(token),
-        typeStartAllowed =
-          Boolean(options.allowTypeStart) && isCommentAtTypeStart(token),
-        typeEndAllowed =
-          Boolean(options.allowTypeEnd) && isCommentAtTypeEnd(token);
+        Boolean(options.allowInterfaceStart) &&
+        isCommentAtInterfaceStart(token);
+      const interfaceEndAllowed =
+        Boolean(options.allowInterfaceEnd) && isCommentAtInterfaceEnd(token);
+      const typeStartAllowed =
+        Boolean(options.allowTypeStart) && isCommentAtTypeStart(token);
+      const typeEndAllowed =
+        Boolean(options.allowTypeEnd) && isCommentAtTypeEnd(token);
+      const enumStartAllowed =
+        Boolean(options.allowEnumStart) && isCommentAtEnumStart(token);
+      const enumEndAllowed =
+        Boolean(options.allowEnumEnd) && isCommentAtEnumEnd(token);
+      const moduleStartAllowed =
+        Boolean(options.allowModuleStart) && isCommentAtModuleStart(token);
+      const moduleEndAllowed =
+        Boolean(options.allowModuleEnd) && isCommentAtModuleEnd(token);
 
-      const exceptionStartAllowed = interfaceStartAllowed || typeStartAllowed;
-      const exceptionEndAllowed = interfaceEndAllowed || typeEndAllowed;
+      const exceptionStartAllowed =
+        interfaceStartAllowed ||
+        typeStartAllowed ||
+        enumStartAllowed ||
+        moduleStartAllowed;
+      const exceptionEndAllowed =
+        interfaceEndAllowed ||
+        typeEndAllowed ||
+        enumEndAllowed ||
+        moduleEndAllowed;
 
       const previousTokenOrComment = sourceCode.getTokenBefore(token, {
         includeComments: true,

@@ -686,6 +686,10 @@ declare module 'eslint/lib/rules/lines-around-comment' {
         allowInterfaceEnd?: boolean;
         allowTypeStart?: boolean;
         allowTypeEnd?: boolean;
+        allowEnumStart?: boolean;
+        allowEnumEnd?: boolean;
+        allowModuleStart?: boolean;
+        allowModuleEnd?: boolean;
         ignorePattern?: string;
         applyDefaultIgnorePatterns?: boolean;
       }?,
