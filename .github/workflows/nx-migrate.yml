@@ -1,0 +1,85 @@
+# This workflow is used to augment the capabilities of the renovate GitHub app by running a full
+# `nx migrate` when renovate opens a PR to change the version of @nrwl/workspace.
+#
+# You will therefore also notice that in the renovate configuration, we ignore any packages which
+# Nx will manage for us as part of `nx migrate` such as the remaining @nrwl/* packages and jest.
+
+name: Nx Migrate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  maybe_nx_migrate:
+    # Only run if it was the renovate bot that triggered the workflow (otherwise we'll create a loop)
+    if: contains('["renovate[bot]"]', github.actor) == true
+    name: Run nx migrate if required
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # To allow us to perform the git diff we need the git history
+          fetch-depth: 0
+          # To ensure we can push from a different user (and therefore cause actions to rerun)
+          persist-credentials: false
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v3
+
+      - name: Check if @nrwl/workspace was changed as part of the latest commit on the PR
+        id: nrwl-workspace-package-check
+        run: |
+          git diff HEAD~1 -G"@nrwl/workspace" --exit-code package.json && echo "@nrwl/workspace unchanged" || echo "::set-output name=was-changed::true"
+
+      - name: Run nx migrate if @nrwl/workspace changed and commit the results
+        if: ${{ steps.nrwl-workspace-package-check.outputs.was-changed == 'true' }}
+        env:
+          # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
+          GITHUB_TOKEN: ${{ secrets.JAMES_HENRY_GITHUB_TOKEN }}
+          # We don't want to run any of our postinstall logic when Nx is invoking install behind the scenes
+          SKIP_POSTINSTALL: "true"
+        run: |
+          # Checkout the PR branch using the github CLI
+          gh pr checkout ${{ github.event.pull_request.number }}
+
+          # Get the version of Nx we are migrating to
+          NX_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@nrwl/workspace'])")
+
+          # Revert renovate's changes to package.json and yarn.lock so that it is a clean migrate from the status quo
+          git checkout HEAD~1 -- package.json yarn.lock
+
+          yarn --ignore-scripts
+
+          npx nx migrate @nrwl/workspace@$NX_VERSION
+
+          # Sometimes Nx can require config formatting changes after a migrate command
+          yarn --ignore-scripts
+          npx nx format
+
+          # migrations.json may or may not exist after running nx migrate
+          if [ -f migrations.json ]; then
+            # This will also invoke yarn automatically
+            npx nx migrate --run-migrations=migrations.json
+
+            # After we have run its migrations, we no longer need the migrations.json file
+            rm migrations.json
+          fi
+
+          # Ensure all the changed files are formatted appropriately
+          yarn format
+
+          # Commit all the changes to the PR (see note on not being able to use secrets.GITHUB_TOKEN for this)
+          git config --global user.email "james@henry.sc"
+          git config --global user.name "JamesHenry"
+          git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
+
+          git add --all
+          git commit -m "chore: run nx migrate for @nrwl/workspace v$NX_VERSION"
+          git push
