@@ -373,6 +373,52 @@ console.log([...Promise.resolve(42)]);
       `,
       options: [{ checksSpreads: false }],
     },
+    `
+function spreadAny(..._args: any): void {}
+
+spreadAny(
+  true,
+  () => Promise.resolve(1),
+  () => Promise.resolve(false),
+);
+    `,
+    `
+function spreadArrayAny(..._args: Array<any>): void {}
+
+spreadArrayAny(
+  true,
+  () => Promise.resolve(1),
+  () => Promise.resolve(false),
+);
+    `,
+    `
+function spreadArrayUnknown(..._args: Array<unknown>): void {}
+
+spreadArrayUnknown(() => Promise.resolve(true), 1, 2);
+
+function spreadArrayFuncPromise(
+  ..._args: Array<() => Promise<undefined>>
+): void {}
+
+spreadArrayFuncPromise(
+  () => Promise.resolve(undefined),
+  () => Promise.resolve(undefined),
+);
+    `,
+    // Prettier adds a () but this tests arguments being undefined, not []
+    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+    `
+class TakeCallbacks {
+  constructor(...callbacks: Array<() => void>) {}
+}
+
+new TakeCallbacks;
+new TakeCallbacks();
+new TakeCallbacks(
+  () => 1,
+  () => true,
+);
+    `,
   ],
 
   invalid: [
@@ -969,6 +1015,89 @@ console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
         { line: 6, messageId: 'spread' },
         { line: 7, messageId: 'spread' },
       ],
+    },
+    {
+      code: `
+function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
+
+restPromises(
+  true,
+  () => Promise.resolve(true),
+  () => Promise.resolve(null),
+  () => true,
+  () => Promise.resolve('Hello'),
+);
+      `,
+      errors: [
+        { line: 6, messageId: 'voidReturnArgument' },
+        { line: 7, messageId: 'voidReturnArgument' },
+        { line: 9, messageId: 'voidReturnArgument' },
+      ],
+    },
+    {
+      code: `
+type MyUnion = (() => void) | boolean;
+
+function restUnion(first: string, ...callbacks: Array<MyUnion>): void {}
+restUnion('Testing', false, () => Promise.resolve(true));
+      `,
+      errors: [{ line: 5, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTupleOne(first: string, ...callbacks: [() => void]): void {}
+restTupleOne('My string', () => Promise.resolve(1));
+      `,
+      errors: [{ line: 3, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTupleTwo(
+  first: boolean,
+  ...callbacks: [undefined, () => void, undefined]
+): void {}
+
+restTupleTwo(true, undefined, () => Promise.resolve(true), undefined);
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTupleFour(
+  first: number,
+  ...callbacks: [() => void, boolean, () => void, () => void]
+): void;
+
+restTupleFour(
+  1,
+  () => Promise.resolve(true),
+  false,
+  () => {},
+  () => Promise.resolve(1),
+);
+      `,
+      errors: [
+        { line: 9, messageId: 'voidReturnArgument' },
+        { line: 12, messageId: 'voidReturnArgument' },
+      ],
+    },
+    {
+      // Prettier adds a () but this tests arguments being undefined, not []
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+class TakesVoidCb {
+  constructor(first: string, ...args: Array<() => void>);
+}
+
+new TakesVoidCb;
+new TakesVoidCb();
+new TakesVoidCb(
+  'Testing',
+  () => {},
+  () => Promise.resolve(true),
+);
+      `,
+      errors: [{ line: 11, messageId: 'voidReturnArgument' }],
     },
   ],
 });
