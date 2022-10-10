@@ -3534,6 +3534,98 @@ module A {
       ],
       errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Block, line: 3 }],
     },
+
+    // multiple comments in one line
+    {
+      code: unIndent`
+interface A {
+  a: string;
+  /* block */ /* block */
+}
+`,
+      output: unIndent`
+interface A {
+  a: string;
+
+  /* block */ /* block */
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowInterfaceEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
+    {
+      code: unIndent`
+interface A {
+  a: string;
+  /* block */ // line
+}
+`,
+      output: unIndent`
+interface A {
+  a: string;
+
+  /* block */ // line
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowInterfaceEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
+    {
+      code: unIndent`
+interface A {
+  /* block */ /* block */
+  a: string;
+}
+`,
+      output: unIndent`
+interface A {
+  /* block */ /* block */
+
+  a: string;
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterBlockComment: true,
+          allowInterfaceStart: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Block, line: 2 }],
+    },
+    {
+      code: unIndent`
+interface A {
+  /* block */ // line
+  a: string;
+}
+`,
+      output: unIndent`
+interface A {
+  /* block */ // line
+
+  a: string;
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterLineComment: true,
+          allowInterfaceStart: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Line, line: 2 }],
+    },
     // ignorePattern
     {
       code:

@@ -193,15 +193,7 @@ export default util.createRule<Options, MessageIds>({
       parent: TSESTree.Node,
       nodeType: T,
     ): parent is Extract<TSESTree.Node, { type: T }> {
-      return (
-        parent.type === nodeType ||
-        ('body' in parent &&
-          !Array.isArray(parent.body) &&
-          parent.body?.type === nodeType) ||
-        ('consequent' in parent &&
-          !Array.isArray(parent.consequent) &&
-          parent.consequent.type === nodeType)
-      );
+      return parent.type === nodeType;
     }
 
     /**
