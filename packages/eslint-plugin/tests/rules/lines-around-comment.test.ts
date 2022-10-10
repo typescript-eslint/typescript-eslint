@@ -1383,12 +1383,14 @@ type A = {
     // ignorePattern
     {
       code:
-        'foo;\n\n' +
+        'interface A {' +
+        'foo: string;\n\n' +
         '/* eslint-disable no-underscore-dangle */\n\n' +
-        'this._values = values;\n' +
-        'this._values2 = true;\n' +
+        '_values: 2;\n' +
+        '_values2: true;\n' +
         '/* eslint-enable no-underscore-dangle */\n' +
-        'bar',
+        'bar: boolean' +
+        '}',
       options: [
         {
           beforeBlockComment: true,
@@ -1396,95 +1398,58 @@ type A = {
         },
       ],
     },
-    'foo;\n/* eslint */',
-    'foo;\n/* jshint */',
-    'foo;\n/* jslint */',
-    'foo;\n/* istanbul */',
-    'foo;\n/* global */',
-    'foo;\n/* globals */',
-    'foo;\n/* exported */',
-    'foo;\n/* jscs */',
-    {
-      code: `
-foo;
-/* this is pragmatic */
-      `,
-      options: [{ ignorePattern: 'pragma' }],
-    },
-    {
-      code: `
-foo;
-/* this is pragmatic */
-      `,
-      options: [{ applyDefaultIgnorePatterns: false, ignorePattern: 'pragma' }],
-    },
-    {
-      code: `
+    `
 interface A {
-  foo: string;
+  foo;
   /* eslint */
 }
-      `,
-      options: [{ applyDefaultIgnorePatterns: true }],
-    },
-    {
-      code: `
+    `,
+    `
 interface A {
-  foo: string;
-  /* jshint foo */
+  foo;
+  /* jshint */
 }
-      `,
-      options: [{ applyDefaultIgnorePatterns: true }],
-    },
-    {
-      code: `
+    `,
+    `
 interface A {
-  foo: string;
-  /* jslint foo */
+  foo;
+  /* jslint */
 }
-      `,
-      options: [{ applyDefaultIgnorePatterns: true }],
-    },
-    {
-      code: `
+    `,
+    `
 interface A {
-  foo: string;
-  /* istanbul foo */
+  foo;
+  /* istanbul */
 }
-      `,
-      options: [{ applyDefaultIgnorePatterns: true }],
-    },
-    {
-      code: `
+    `,
+    `
 interface A {
-  foo: string;
-  /* globals foo */
+  foo;
+  /* global */
 }
-      `,
-      options: [{ applyDefaultIgnorePatterns: true }],
-    },
-    {
-      code: `
+    `,
+    `
 interface A {
-  foo: string;
-  /* exported foo */
+  foo;
+  /* globals */
 }
-      `,
-      options: [{ applyDefaultIgnorePatterns: true }],
-    },
-    {
-      code: `
+    `,
+    `
 interface A {
-  foo: string;
+  foo;
+  /* exported */
+}
+    `,
+    `
+interface A {
+  foo;
   /* jscs */
 }
-      `,
-      options: [{ applyDefaultIgnorePatterns: true }],
-    },
+    `,
     {
       code: `
 interface A {
-  foo: string;
+  foo: boolean;
   /* this is pragmatic */
 }
       `,
@@ -1493,7 +1458,7 @@ interface A {
     {
       code: `
 interface A {
-  foo: string;
+  foo;
   /* this is pragmatic */
 }
       `,

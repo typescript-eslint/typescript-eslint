@@ -287,25 +287,12 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    function isCommentInsideTSConstruct(token: TSESTree.Comment): boolean {
-      const parent = getParentNodeOfToken(token);
-      if (
-        parent &&
-        (isParentNodeType(parent, AST_NODE_TYPES.TSInterfaceBody) ||
-          isParentNodeType(parent, AST_NODE_TYPES.TSTypeLiteral) ||
-          isParentNodeType(parent, AST_NODE_TYPES.TSModuleBlock))
-      ) {
-        return true;
-      }
-      return false;
-    }
-
     function checkForEmptyLine(
       token: TSESTree.Comment,
       { before, after }: { before?: boolean; after?: boolean },
     ): void {
-      // the base rule handles non-TS codes, we skip those
-      if (!isCommentInsideTSConstruct(token)) {
+      // the base rule handles comments away from TS constructs blocks correctly, we skip those
+      if (!isCommentNearTSConstruct(token)) {
         return;
       }
 
