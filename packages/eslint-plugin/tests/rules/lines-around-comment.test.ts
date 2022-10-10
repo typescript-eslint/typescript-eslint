@@ -1380,6 +1380,127 @@ type A = {
       ],
     },
 
+    // Enum
+    {
+      code: unIndent`
+enum A {
+  // line
+  a,
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowEnumStart: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+enum A {
+  /* block
+     comment */
+  a,
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowEnumStart: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+enum A {
+  a,
+  // line
+}
+`,
+      options: [
+        {
+          afterLineComment: true,
+          allowEnumEnd: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+enum A {
+  a,
+  /* block
+     comment */
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterBlockComment: true,
+          allowEnumEnd: true,
+        },
+      ],
+    },
+
+    // TS module
+    {
+      code: unIndent`
+declare module A {
+  // line
+  const a: string;
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowModuleStart: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+declare module A {
+  /* block
+     comment */
+  const a: string;
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowModuleStart: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+declare module A {
+  const a: string;
+  // line
+}
+`,
+      options: [
+        {
+          afterLineComment: true,
+          allowModuleEnd: true,
+        },
+      ],
+    },
+    {
+      code: unIndent`
+declare module A {
+  const a: string;
+  /* block
+     comment */
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterBlockComment: true,
+          allowModuleEnd: true,
+        },
+      ],
+    },
     // ignorePattern
     {
       code:
@@ -3132,6 +3253,287 @@ type A = {
       errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Block, line: 3 }],
     },
 
+    // Enum
+    {
+      code: unIndent`
+enum A {
+  a,
+  // line
+}
+`,
+      output: unIndent`
+enum A {
+  a,
+
+  // line
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowEnumStart: true,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Line, line: 3 }],
+    },
+    {
+      code: unIndent`
+enum A {
+  a,
+  /* block
+     comment */
+}
+`,
+      output: unIndent`
+enum A {
+  a,
+
+  /* block
+     comment */
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowEnumStart: true,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
+    {
+      code: unIndent`
+enum A {
+  // line
+  a,
+}
+`,
+      output: unIndent`
+enum A {
+
+  // line
+  a,
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowEnumStart: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Line, line: 2 }],
+    },
+    {
+      code: unIndent`
+enum A {
+  /* block
+     comment */
+  a,
+}
+`,
+      output: unIndent`
+enum A {
+
+  /* block
+     comment */
+  a,
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowEnumStart: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 2 }],
+    },
+    {
+      code: unIndent`
+enum A {
+  a,
+  // line
+}
+`,
+      output: unIndent`
+enum A {
+  a,
+  // line
+
+}
+`,
+      options: [
+        {
+          afterLineComment: true,
+          allowEnumEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Line, line: 3 }],
+    },
+    {
+      code: unIndent`
+enum A {
+  a,
+  /* block
+     comment */
+}
+`,
+      output: unIndent`
+enum A {
+  a,
+  /* block
+     comment */
+
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterBlockComment: true,
+          allowEnumEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
+
+    // TS module
+    {
+      code: unIndent`
+module A {
+  const a: string;
+  // line
+}
+`,
+      output: unIndent`
+module A {
+  const a: string;
+
+  // line
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowModuleStart: true,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Line, line: 3 }],
+    },
+    {
+      code: unIndent`
+module A {
+  const a: string;
+  /* block
+     comment */
+}
+`,
+      output: unIndent`
+module A {
+  const a: string;
+
+  /* block
+     comment */
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowModuleStart: true,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
+    {
+      code: unIndent`
+module A {
+  // line
+  const a: string;
+}
+`,
+      output: unIndent`
+module A {
+
+  // line
+  const a: string;
+}
+`,
+      options: [
+        {
+          beforeLineComment: true,
+          allowModuleStart: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Line, line: 2 }],
+    },
+    {
+      code: unIndent`
+module A {
+  /* block
+     comment */
+  const a: string;
+}
+`,
+      output: unIndent`
+module A {
+
+  /* block
+     comment */
+  const a: string;
+}
+`,
+      options: [
+        {
+          beforeBlockComment: true,
+          allowModuleStart: false,
+        },
+      ],
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block, line: 2 }],
+    },
+    {
+      code: unIndent`
+module A {
+  const a: string;
+  // line
+}
+`,
+      output: unIndent`
+module A {
+  const a: string;
+  // line
+
+}
+`,
+      options: [
+        {
+          afterLineComment: true,
+          allowModuleEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Line, line: 3 }],
+    },
+    {
+      code: unIndent`
+module A {
+  const a: string;
+  /* block
+     comment */
+}
+`,
+      output: unIndent`
+module A {
+  const a: string;
+  /* block
+     comment */
+
+}
+`,
+      options: [
+        {
+          beforeBlockComment: false,
+          afterBlockComment: true,
+          allowModuleEnd: false,
+        },
+      ],
+      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Block, line: 3 }],
+    },
     // ignorePattern
     {
       code:
