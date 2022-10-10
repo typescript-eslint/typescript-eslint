@@ -43,7 +43,7 @@
     "@typescript-eslint/scope-manager": "5.39.0",
     "@typescript-eslint/types": "5.39.0",
     "@typescript-eslint/typescript-estree": "5.39.0",
-    "eslint-scope": "^5.1.1",
+    "eslint-scope": "^7.0.0",
     "eslint-utils": "^3.0.0",
     "semver": "^7.3.7"
   },
