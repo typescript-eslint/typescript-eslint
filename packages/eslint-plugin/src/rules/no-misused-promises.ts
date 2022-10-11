@@ -564,7 +564,11 @@ function voidFunctionArguments(
             // Check each type in the tuple - for example, [boolean, () => void] would
             // add the index of the second tuple parameter to 'voidReturnIndices'
             const typeArgs = checker.getTypeArguments(type);
-            for (let i = index; i < node.arguments.length; i++) {
+            for (
+              let i = index;
+              i < node.arguments.length && i - index < typeArgs.length;
+              i++
+            ) {
               checkThenableOrVoidArgument(
                 checker,
                 node,
