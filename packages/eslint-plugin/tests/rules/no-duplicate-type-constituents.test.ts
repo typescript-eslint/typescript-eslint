@@ -396,7 +396,7 @@ const invalid = (
   ];
 };
 
-ruleTester.run('disallow-duplicate-union-intersection', rule, {
+ruleTester.run('no-duplicate-type-constituents', rule, {
   valid: [
     ...valid('|'),
     {
