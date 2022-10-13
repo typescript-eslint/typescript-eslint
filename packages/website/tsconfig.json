@@ -14,9 +14,14 @@
     "paths": {
       "@site/*": ["./*"]
     },
-    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
+    "types": [
+      "@docusaurus/module-type-aliases",
+      "@docusaurus/theme-classic",
+      "cypress"
+    ]
   },
   "include": [
+    "cypress/",
     "src/",
     "plugins/",
     "typings",
