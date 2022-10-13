@@ -9,6 +9,7 @@ module.exports = {
   overrides: [
     {
       files: [
+        './*.config.*',
         './src/pages/*.tsx',
         './src/components/**/*.tsx',
         './src/components/hooks/*.ts',
