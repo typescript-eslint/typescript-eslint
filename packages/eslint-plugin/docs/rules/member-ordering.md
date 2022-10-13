@@ -6,11 +6,8 @@ description: 'Require a consistent member declaration order.'
 >
 > See **https://typescript-eslint.io/rules/member-ordering** for documentation.
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate, and edit.
-
-## Rule Details
-
-This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
+This rule aims to standardize the way classes, interfaces, and type literals are structured and ordered.
+A consistent ordering of fields, methods and constructors can make code easier to read, navigate, and edit.
 
 ## Options
 

@@ -8,7 +8,7 @@ description: 'Require or disallow an empty line between class members.'
 
 This rule improves readability by enforcing lines between class members. It will not check empty lines before the first member and after the last member. This rule will require or disallow an empty line between class members.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/lines-between-class-members`](https://eslint.org/docs/rules/lines-between-class-members) rule.
 It adds support for ignoring overload methods in a class.

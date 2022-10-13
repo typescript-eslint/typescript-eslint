@@ -6,32 +6,14 @@ description: 'Require each enum member value to be explicitly initialized.'
 >
 > See **https://typescript-eslint.io/rules/prefer-enum-initializers** for documentation.
 
-This rule recommends having each `enum`s member value explicitly initialized.
+TypeScript `enum`s are a practical way to organize semantically related constant values.
+Members of `enum`s that don't have explicit values are by default given sequentially increasing numbers.
 
-`enum`s are a practical way to organize semantically related constant values. However, by implicitly defining values, `enum`s can lead to unexpected bugs if it's modified without paying attention to the order of its items.
+In projects where the value of `enum` members are important, allowing implicit values for enums can cause bugs if `enum`s are modified over time.
 
-## Rule Details
+This rule recommends having each `enum` member value explicitly initialized.
 
-`enum`s infers sequential numbers automatically when initializers are omitted:
-
-```ts
-enum Status {
-  Open, // infer 0
-  Closed, // infer 1
-}
-```
-
-If a new member is added to the top of `Status`, both `Open` and `Closed` would have its values altered:
-
-```ts
-enum Status {
-  Pending, // infer 0
-  Open, // infer 1
-  Closed, // infer 2
-}
-```
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

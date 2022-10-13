@@ -47,7 +47,7 @@ module.exports = {
           match: [
             /eslint\/lib\/(rule-tester|eslint|cli-engine|init)\//u,
             /eslint\/lib\/cli\.js$/,
-            /utils\/dist\/eslint-utils\/RuleTester\.js$/,
+            /utils\/dist\/eslint-utils\/rule-tester\/RuleTester\.js$/,
             /utils\/dist\/ts-eslint\/CLIEngine\.js$/,
             /utils\/dist\/ts-eslint\/RuleTester\.js$/,
             /typescript-estree\/dist\/create-program\/createWatchProgram\.js/,

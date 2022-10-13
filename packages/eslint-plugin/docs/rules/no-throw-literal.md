@@ -11,11 +11,9 @@ The fundamental benefit of `Error` objects is that they automatically keep track
 
 This rule restricts what can be thrown as an exception. When it was first created, it only prevented literals from being thrown (hence the name), but it has now been expanded to only allow expressions which have a possibility of being an `Error` object. With the `allowThrowingAny` and `allowThrowingUnknown`, it can be configured to only allow throwing values which are guaranteed to be an instance of `Error`.
 
-## Rule Details
+## Examples
 
 This rule is aimed at maintaining consistency when throwing exception by disallowing to throw literals and other expressions which cannot possibly be an `Error` object.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

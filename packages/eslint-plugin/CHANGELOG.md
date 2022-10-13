@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.40.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.39.0...v5.40.0) (2022-10-10)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-indexed-object-style] handle interface generic ([#5746](https://github.com/typescript-eslint/typescript-eslint/issues/5746)) ([7a8a0a3](https://github.com/typescript-eslint/typescript-eslint/commit/7a8a0a3c500ca726d2ab3bee0ae9f3fb9d8d39b8))
+* **eslint-plugin:** [no-unnecessary-condition] handle void ([#5766](https://github.com/typescript-eslint/typescript-eslint/issues/5766)) ([ac8f06b](https://github.com/typescript-eslint/typescript-eslint/commit/ac8f06b68dca7666bfb78fb38d6ccc07f676e435))
+
+
+### Features
+
+* **eslint-plugin:** Check 'rest' parameters in no-misused-promises ([#5731](https://github.com/typescript-eslint/typescript-eslint/issues/5731)) ([6477f38](https://github.com/typescript-eslint/typescript-eslint/commit/6477f3855627cc257edc021b859711d4a5847a12)), closes [#4015](https://github.com/typescript-eslint/typescript-eslint/issues/4015)
+* **utils:** add dependency constraint filtering for `RuleTester` ([#5750](https://github.com/typescript-eslint/typescript-eslint/issues/5750)) ([121f4c0](https://github.com/typescript-eslint/typescript-eslint/commit/121f4c0e7252def95d917e4734e933e53e29d501))
+
+
+
+
+
+# [5.39.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.38.1...v5.39.0) (2022-10-03)
+
+
+### Features
+
+* **eslint-plugin:** allow using void as a default type for a generic argument if allowInGenericTypeArguments is specified ([#5671](https://github.com/typescript-eslint/typescript-eslint/issues/5671)) ([bb46ef0](https://github.com/typescript-eslint/typescript-eslint/commit/bb46ef0817fe03ef71f8e0f3df0cf96bc355e068))
+
+
+
+
+
 ## [5.38.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.38.0...v5.38.1) (2022-09-26)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

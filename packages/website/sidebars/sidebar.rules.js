@@ -13,14 +13,19 @@ const rules = Object.entries(plugin.rules).map(([name, rule]) => {
 const deprecatedRules = new Set(rules.filter(rule => rule.meta.deprecated));
 
 const formattingRules = new Set(
+  rules.filter(rule => !rule.meta.deprecated && rule.meta.type === 'layout'),
+);
+
+const extensionRules = new Set(
   rules.filter(
-    rule => !rule.meta.deprecated && rule.meta.fixable === 'whitespace',
+    rule => rule.meta.docs?.extendsBaseRule && !formattingRules.has(rule),
   ),
 );
 
-const emphasizedRules = rules.filter(
+const typescriptRules = rules.filter(
   rule =>
     !rule.meta.deprecated &&
+    !extensionRules.has(rule) &&
     !deprecatedRules.has(rule) &&
     !formattingRules.has(rule),
 );
@@ -63,14 +68,17 @@ module.exports = {
   someSidebar: [
     'README',
     {
-      ...createCategory('Rules', emphasizedRules, [
-        createCategory('Formatting Rules', Array.from(formattingRules)),
-        createCategory('Deprecated Rules', [
-          ...Array.from(deprecatedRules),
-          ...paths,
-        ]),
-      ]),
+      ...createCategory('TypeScript Rules', Array.from(typescriptRules)),
       collapsed: false,
     },
+    {
+      ...createCategory('Extension Rules', Array.from(extensionRules)),
+      collapsed: false,
+    },
+    createCategory('Formatting Rules', Array.from(formattingRules)),
+    createCategory('Deprecated Rules', [
+      ...Array.from(deprecatedRules),
+      ...paths,
+    ]),
   ],
 };

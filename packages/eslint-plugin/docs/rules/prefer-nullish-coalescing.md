@@ -6,64 +6,12 @@ description: 'Enforce using the nullish coalescing operator instead of logical c
 >
 > See **https://typescript-eslint.io/rules/prefer-nullish-coalescing** for documentation.
 
-TypeScript 3.7 added support for the nullish coalescing operator.
-This operator allows you to safely cascade a value when dealing with `null` or `undefined`.
+The `??` nullish coalescing runtime operator allows providing a default value when dealing with `null` or `undefined`.
+Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`, which coalesces on any _falsy_ value.
 
-```ts
-function myFunc(foo: string | null) {
-  return foo ?? 'a string';
-}
-
-// is equivalent to
-
-function myFunc(foo: string | null) {
-  return foo !== null && foo !== undefined ? foo : 'a string';
-}
-```
-
-Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`; which coalesces on any _falsy_ value:
-
-```ts
-const emptyString = '';
-
-const nullish1 = emptyString ?? 'unsafe';
-const logical1 = emptyString || 'unsafe';
-
-// nullish1 === ''
-// logical1 === 'unsafe'
-
-declare const nullString: string | null;
-
-const nullish2 = nullString ?? 'safe';
-const logical2 = nullString || 'safe';
-
-// nullish2 === 'safe'
-// logical2 === 'safe'
-```
-
-## Rule Details
-
-This rule aims enforce the usage of the safer operator.
+This rule reports when an `||` operator can be safely replaced with a `??`.
 
 ## Options
-
-```ts
-type Options = [
-  {
-    ignoreTernaryTests?: boolean;
-    ignoreConditionalTests?: boolean;
-    ignoreMixedLogicalExpressions?: boolean;
-  },
-];
-
-const defaultOptions = [
-  {
-    ignoreTernaryTests: true;
-    ignoreConditionalTests: true,
-    ignoreMixedLogicalExpressions: true,
-  },
-];
-```
 
 ### `ignoreTernaryTests`
 
