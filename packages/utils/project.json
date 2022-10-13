@@ -1,5 +1,5 @@
 {
-  "root": "packages/utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
   "implicitDependencies": []
 }
