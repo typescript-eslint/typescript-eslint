@@ -58,7 +58,7 @@ function createProjectProgram(
       ? relativeProjects[0]
       : `\n${relativeProjects.map(project => `- ${project}`).join('\n')}`;
   const errorLines = [
-    `ESLint was configured to run on ${describedFilePath} using "parserOptions.project": ${describedPrograms}.`,
+    `ESLint was configured to run on \`${describedFilePath}\` using \`parserOptions.project\`: ${describedPrograms}.`,
   ];
   let hasMatchedAnError = false;
 

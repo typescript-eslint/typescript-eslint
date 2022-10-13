@@ -47,10 +47,10 @@ For example, many projects have files like:
 In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
 
 - If you **do not** want to lint the file:
-  - Use [one of the options ESLint offers](https://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
+  - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
   - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
       - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
       - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
   - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
