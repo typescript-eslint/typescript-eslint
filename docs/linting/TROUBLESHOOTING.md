@@ -30,10 +30,11 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
-This error will appear in the beginning of a source file from the combination of two things:
+This error may appear from the combination of two things:
 
 - The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
 - None of those TSConfig files includes the source file being linted
+  - Note that files with the same name and different extension may not be recognized by TypeScript: see [`parserOptions.project` docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject)
 
 When TSConfig files are specified for parsing a source file, `@typescript-eslint/parser` will use the first TSConfig that is able to include that source file (per [aka.ms/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)) to generate type information.
 However, if no specified TSConfig includes the source file, the parser won't be able to generate type information.
@@ -59,7 +60,7 @@ In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension wi
       - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
       - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
 
-See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for more information.
+See our docs on [type aware linting](./TYPED_LINTING.md) for more information.
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
