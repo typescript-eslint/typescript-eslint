@@ -2,6 +2,7 @@ import { toJsonConfig } from '@site/src/components/config/utils';
 import * as lz from 'lzstring.ts';
 import { useCallback, useEffect, useState } from 'react';
 
+import { hasOwnProperty } from '../lib/has-own-property';
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel } from '../types';
 
@@ -114,16 +115,69 @@ const writeStateToUrl = (newState: ConfigModel): string => {
   return '';
 };
 
+const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
+  try {
+    const configString = window.localStorage.getItem('config');
+    if (!configString) {
+      return undefined;
+    }
+
+    const config: unknown = JSON.parse(configString);
+    if (typeof config !== 'object' || !config) {
+      return undefined;
+    }
+
+    const state: Partial<ConfigModel> = {};
+    if (hasOwnProperty('ts', config)) {
+      const ts = config.ts;
+      if (typeof ts === 'string') {
+        state.ts = ts;
+      }
+    }
+    if (hasOwnProperty('jsx', config)) {
+      const jsx = config.jsx;
+      if (typeof jsx === 'boolean') {
+        state.jsx = jsx;
+      }
+    }
+    if (hasOwnProperty('showAST', config)) {
+      const showAST = config.showAST;
+      if (typeof showAST === 'boolean') {
+        state.showAST = showAST;
+      } else if (typeof showAST === 'string') {
+        state.showAST = readShowAST(showAST);
+      }
+    }
+
+    return state;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn(e);
+  }
+  return undefined;
+};
+
+const writeStateToLocalStorage = (newState: ConfigModel): void => {
+  const config: Partial<ConfigModel> = {
+    ts: newState.ts,
+    jsx: newState.jsx,
+    showAST: newState.showAST,
+  };
+  window.localStorage.setItem('config', JSON.stringify(config));
+};
+
 function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
   const [hash, setHash] = useState<string>(window.location.hash.slice(1));
   const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
+    ...retrieveStateFromLocalStorage(),
     ...parseStateFromUrl(window.location.hash.slice(1)),
   }));
   const [tmpState, setTmpState] = useState<Partial<ConfigModel>>(() => ({
     ...initialState,
+    ...retrieveStateFromLocalStorage(),
     ...parseStateFromUrl(window.location.hash.slice(1)),
   }));
 
@@ -141,6 +195,7 @@ function useHashState(
   useEffect(() => {
     const newState = { ...state, ...tmpState };
     if (!shallowEqual(newState, state)) {
+      writeStateToLocalStorage(newState);
       const newHash = writeStateToUrl(newState);
       setState(newState);
       setHash(newHash);

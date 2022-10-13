@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.40.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.39.0...v5.40.0) (2022-10-10)
+
+
+### Features
+
+* **utils:** add dependency constraint filtering for `RuleTester` ([#5750](https://github.com/typescript-eslint/typescript-eslint/issues/5750)) ([121f4c0](https://github.com/typescript-eslint/typescript-eslint/commit/121f4c0e7252def95d917e4734e933e53e29d501))
+
+
+
+
+
 # [5.39.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.38.1...v5.39.0) (2022-10-03)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
