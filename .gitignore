@@ -10,6 +10,7 @@ packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
 packages/website/playwright-report
+packages/website/playwright/.cache
 packages/website/static/sandbox
 packages/website/test-results
 

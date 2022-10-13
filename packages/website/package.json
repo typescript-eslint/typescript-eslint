@@ -10,7 +10,7 @@
     "serve": "docusaurus serve",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
-    "test": "playwright test --project=chromium",
+    "test": "playwright test",
     "typecheck": "tsc"
   },
   "dependencies": {
