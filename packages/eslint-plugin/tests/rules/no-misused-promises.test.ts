@@ -419,6 +419,14 @@ new TakeCallbacks(
   () => true,
 );
     `,
+    `
+function restTuple(...args: []): void;
+function restTuple(...args: [string]): void;
+function restTuple(..._args: string[]): void {}
+
+restTuple();
+restTuple('Hello');
+    `,
   ],
 
   invalid: [
@@ -1098,6 +1106,17 @@ new TakesVoidCb(
 );
       `,
       errors: [{ line: 11, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTuple(...args: []): void;
+function restTuple(...args: [boolean, () => void]): void;
+function restTuple(..._args: any[]): void {}
+
+restTuple();
+restTuple(true, () => Promise.resolve(1));
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
     },
   ],
 });
