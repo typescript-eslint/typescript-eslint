@@ -20,12 +20,5 @@
       "cypress"
     ]
   },
-  "include": [
-    "cypress/",
-    "src/",
-    "plugins/",
-    "typings",
-    "./docusaurusConfig.ts",
-    "./rulesMeta.ts"
-  ]
+  "include": ["cypress/", "src/", "plugins/", "typings", "./*.ts"]
 }
