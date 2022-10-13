@@ -31,7 +31,7 @@ export = {
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/explicit-member-accessibility': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'error',
-    '@typescript-eslint/for-loop-style': 'error',
+    '@typescript-eslint/find-loop-style': 'error',
     'func-call-spacing': 'off',
     '@typescript-eslint/func-call-spacing': 'error',
     indent: 'off',

@@ -14,7 +14,7 @@ export = {
     '@typescript-eslint/consistent-type-definitions': 'warn',
     'dot-notation': 'off',
     '@typescript-eslint/dot-notation': 'warn',
-    '@typescript-eslint/for-loop-style': 'warn',
+    '@typescript-eslint/find-loop-style': 'warn',
     '@typescript-eslint/no-base-to-string': 'warn',
     '@typescript-eslint/no-confusing-non-null-assertion': 'warn',
     '@typescript-eslint/no-duplicate-enum-values': 'warn',
