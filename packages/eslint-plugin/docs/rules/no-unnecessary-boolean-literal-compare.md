@@ -105,11 +105,11 @@ if (someNullCondition !== false) {
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
-if (someUndefinedCondition ?? true) {
+if (!(someNullCondition ?? true)) {
 }
 
 declare const someNullCondition: boolean | null;
-if (!(someNullCondition ?? true)) {
+if (someUndefinedCondition ?? true) {
 }
 ```
 
