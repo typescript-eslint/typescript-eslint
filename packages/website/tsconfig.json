@@ -17,8 +17,9 @@
     "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
   },
   "include": [
-    "src/",
-    "plugins/",
+    "src",
+    "tests",
+    "plugins",
     "typings",
     "./docusaurusConfig.ts",
     "./rulesMeta.ts"
