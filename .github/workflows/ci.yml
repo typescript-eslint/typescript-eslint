@@ -195,7 +195,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: yarn playwright test
+        run: yarn playwright test --reporter=list
         working-directory: packages/website
 
       - if: always()
