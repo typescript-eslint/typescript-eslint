@@ -26,13 +26,13 @@ runs:
     - name: Get yarn cache directory path
       shell: bash
       id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
+      run: echo "yarn_cache_dir=$(yarn cache dir)" >> $GITHUB_ENV
 
     - uses: actions/cache@v3
       id: yarn-cache
       with:
         path: |
-          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          ${{ env.yarn_cache_dir }}
           ~/.cache/Cypress
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
