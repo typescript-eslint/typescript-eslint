@@ -2,7 +2,11 @@ import { checkAccessibility } from '../utils';
 
 describe('Index', () => {
   it('has no accessibility issues detected by aXe', () => {
-    cy.visit('/');
+    cy.visit('/', {
+      headers: {
+        'Accept-Encoding': 'gzip, deflate, br',
+      },
+    });
     cy.injectAxe();
 
     // 1. Check accessibility in default, light mode
