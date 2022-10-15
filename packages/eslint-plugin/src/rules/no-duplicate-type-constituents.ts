@@ -42,9 +42,21 @@ const constituentsAreEqual = (
 
 const astIgnoreKeys = ['range', 'loc', 'parent'];
 
-const astNodesAreEquals = (
-  actualNode: unknown,
-  expectedNode: unknown,
+type NodeElementsType =
+  | number
+  | string
+  | bigint
+  | boolean
+  | null
+  | undefined
+  | RegExp
+  | TSESTree.BaseNode
+  | TSESTree.BaseNode[]
+  | [number, number];
+
+const astNodesAreEquals = <T extends NodeElementsType>(
+  actualNode: T,
+  expectedNode: T,
 ): boolean => {
   if (actualNode === expectedNode) {
     return true;
@@ -63,7 +75,7 @@ const astNodesAreEquals = (
         (nodeEle, index) => !astNodesAreEquals(nodeEle, expectedNode[index]),
       );
     }
-    if (isRecordType(actualNode) && isRecordType(expectedNode)) {
+    if (isAstNodeType(actualNode) && isAstNodeType(expectedNode)) {
       const actualNodeKeys = Object.keys(actualNode).filter(
         key => !astIgnoreKeys.includes(key),
       );
@@ -84,10 +96,8 @@ const astNodesAreEquals = (
   return false;
 };
 
-const isRecordType = (
-  object: object,
-): object is Record<string | symbol, unknown> => {
-  return object.constructor === Object;
+const isAstNodeType = (node: object): node is Record<string, TSESTree.Node> => {
+  return node.constructor === Object;
 };
 
 export type Options = [
