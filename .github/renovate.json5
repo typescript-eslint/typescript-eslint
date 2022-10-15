@@ -56,6 +56,11 @@
       matchPackagePrefixes: ['@types/jest'],
       groupName: 'jest',
     },
+    {
+      matchPackagePrefixes: ['@rollup', 'rollup-'],
+      matchPackageNames: ['rollup'],
+      groupName: 'rollup',
+    },
   ],
   postUpdateOptions: [
     // run yarn dedupe to cleanup the lockfile after updates
