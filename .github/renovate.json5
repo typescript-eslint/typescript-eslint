@@ -57,11 +57,6 @@
       groupName: 'jest',
     },
     {
-      matchPackageNames: ['cypress', 'cypress-axe'],
-      matchUpdateTypes: ['minor', 'patch', 'pin', 'digest'],
-      groupName: 'cypress',
-    },
-    {
       matchPackagePrefixes: ['@rollup', 'rollup-'],
       matchPackageNames: ['rollup'],
       groupName: 'rollup',
