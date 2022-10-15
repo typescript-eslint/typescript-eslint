@@ -49,10 +49,16 @@ const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
     code: `type T = { a: string } ${operator} { b: string };`,
   },
   {
+    code: `type T = { a: string, b: number } ${operator} { b: number, a: string };`,
+  },
+  {
     code: `type T = { a: string ${operator} number };`,
   },
   {
     code: `type T = [1, 2, 3] ${operator} [1, 2, 4];`,
+  },
+  {
+    code: `type T = [1, 2, 3] ${operator} [1, 2, 3, 4];`,
   },
   {
     code: `type T = (() => string) ${operator} (() => void);`,
@@ -180,7 +186,7 @@ const invalid = (
     },
     {
       code: noFormat`type T = (A) ${operator} (A);`,
-      output: noFormat`type T = A;`,
+      output: noFormat`type T = (A);`,
       errors: [
         {
           messageId: 'duplicate',
@@ -200,6 +206,19 @@ const invalid = (
           data: {
             type,
             name: '{ a: string }',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = { a: string, b: number } ${operator} { a: string, b: number };`,
+      output: `type T = { a: string, b: number };`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: '{ a: string, b: number }',
           },
         },
       ],
@@ -232,7 +251,7 @@ const invalid = (
     },
     {
       code: `type T = (() => string) ${operator} (() => string);`,
-      output: `type T = () => string;`,
+      output: `type T = (() => string);`,
       errors: [
         {
           messageId: 'duplicate',
@@ -369,7 +388,7 @@ const invalid = (
     },
     {
       code: `type T = (A | B) ${operator} (A | B);`,
-      output: `type T = A | B;`,
+      output: `type T = (A | B);`,
       errors: [
         {
           messageId: 'duplicate',

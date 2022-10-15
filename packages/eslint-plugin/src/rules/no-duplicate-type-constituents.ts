@@ -29,6 +29,7 @@ const constituentsAreEqual = (
     case AST_NODE_TYPES.TSRestType:
     case AST_NODE_TYPES.TSStaticKeyword:
     case AST_NODE_TYPES.TSTypePredicate:
+      /* istanbul ignore next */
       throw new Error(`Unexpected Type ${expectedTypeNode.type}`);
 
     default:
@@ -54,9 +55,6 @@ const astNodesAreEquals = (
     typeof actualNode == 'object' &&
     typeof expectedNode == 'object'
   ) {
-    if (actualNode.constructor !== expectedNode.constructor) {
-      return false;
-    }
     if (Array.isArray(actualNode) && Array.isArray(expectedNode)) {
       if (actualNode.length != expectedNode.length) {
         return false;
@@ -65,38 +63,23 @@ const astNodesAreEquals = (
         (nodeEle, index) => !astNodesAreEquals(nodeEle, expectedNode[index]),
       );
     }
-    if (!isRecordType(actualNode) || !isRecordType(expectedNode)) {
-      return false;
+    if (isRecordType(actualNode) && isRecordType(expectedNode)) {
+      const actualNodeKeys = Object.keys(actualNode).filter(
+        key => !astIgnoreKeys.includes(key),
+      );
+      const expectedNodeKeys = Object.keys(expectedNode).filter(
+        key => !astIgnoreKeys.includes(key),
+      );
+      if (actualNodeKeys.length === expectedNodeKeys.length) {
+        return !actualNodeKeys.some(
+          actualNodeKey =>
+            !astNodesAreEquals(
+              actualNode[actualNodeKey],
+              expectedNode[actualNodeKey],
+            ),
+        );
+      }
     }
-    const actualNodeKeys = Object.keys(actualNode).filter(
-      key => !astIgnoreKeys.includes(key),
-    );
-    const expectedNodeKeys = Object.keys(expectedNode).filter(
-      key => !astIgnoreKeys.includes(key),
-    );
-    if (actualNodeKeys.length !== expectedNodeKeys.length) {
-      return false;
-    }
-    if (
-      actualNodeKeys.some(
-        actualNodeKey =>
-          !Object.prototype.hasOwnProperty.call(expectedNode, actualNodeKey),
-      )
-    ) {
-      return false;
-    }
-    if (
-      actualNodeKeys.some(
-        actualNodeKey =>
-          !astNodesAreEquals(
-            actualNode[actualNodeKey],
-            expectedNode[actualNodeKey],
-          ),
-      )
-    ) {
-      return false;
-    }
-    return true;
   }
   return false;
 };
@@ -113,6 +96,7 @@ export type Options = [
     ignoreUnions?: boolean;
   },
 ];
+
 export type MessageIds = 'duplicate' | 'suggestFix';
 
 export default util.createRule<Options, MessageIds>({
@@ -120,14 +104,15 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow duplicate union/intersection type members',
+      description: 'Disallow duplicate union/intersection type constituents',
       recommended: false,
     },
     fixable: 'code',
     hasSuggestions: true,
     messages: {
       duplicate: '{{type}} type member {{name}} is duplicated.',
-      suggestFix: 'Delete duplicated members of type (removes all comments).',
+      suggestFix:
+        'Delete duplicated constituents of type (removes all comments).',
     },
     schema: [
       {
@@ -154,18 +139,18 @@ export default util.createRule<Options, MessageIds>({
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const duplicateMembers: TSESTree.TypeNode[] = [];
+      const duplicateConstituents: {
+        node: TSESTree.TypeNode;
+        index: number;
+      }[] = [];
 
-      const uniqueMembers = node.types.reduce<TSESTree.TypeNode[]>(
-        (acc, cur) => {
-          if (acc.some(ele => constituentsAreEqual(ele, cur))) {
-            duplicateMembers.push(cur);
-            return acc;
-          }
-          return [...acc, cur];
-        },
-        [],
-      );
+      node.types.reduce<TSESTree.TypeNode[]>((acc, cur, index) => {
+        if (acc.some(ele => constituentsAreEqual(ele, cur))) {
+          duplicateConstituents.push({ node: cur, index });
+          return acc;
+        }
+        return [...acc, cur];
+      }, []);
 
       const hasComments = node.types.some(type => {
         const count =
@@ -175,16 +160,23 @@ export default util.createRule<Options, MessageIds>({
       });
 
       const fix: TSESLint.ReportFixFunction = fixer => {
-        const result = [
-          ...uniqueMembers.map(member => sourceCode.getText(member)),
-        ].join(node.type === AST_NODE_TYPES.TSIntersectionType ? ' & ' : ' | ');
-        return fixer.replaceText(node, result);
+        return duplicateConstituents.map(duplicateConstituent => {
+          const parent = duplicateConstituent.node.parent as
+            | TSESTree.TSUnionType
+            | TSESTree.TSIntersectionType;
+          const delteRangeStart =
+            parent.types[duplicateConstituent.index - 1].range[1];
+          return fixer.removeRange([
+            delteRangeStart,
+            duplicateConstituent.node.range[1],
+          ]);
+        });
       };
 
-      duplicateMembers.forEach(duplicateMember => {
+      duplicateConstituents.forEach(duplicateConstituent => {
         context.report({
           data: {
-            name: sourceCode.getText(duplicateMember),
+            name: sourceCode.getText(duplicateConstituent.node),
             type:
               node.type === AST_NODE_TYPES.TSIntersectionType
                 ? 'Intersection'
@@ -202,7 +194,9 @@ export default util.createRule<Options, MessageIds>({
                   },
                 ],
               }
-            : { fix }),
+            : {
+                fix,
+              }),
         });
       });
     }
