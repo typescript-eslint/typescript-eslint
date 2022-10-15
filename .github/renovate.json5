@@ -56,11 +56,6 @@
       matchPackagePrefixes: ['@types/jest'],
       groupName: 'jest',
     },
-    {
-      matchPackageNames: ['cypress', 'cypress-axe'],
-      matchUpdateTypes: ['minor', 'patch', 'pin', 'digest'],
-      groupName: 'cypress',
-    },
   ],
   postUpdateOptions: [
     // run yarn dedupe to cleanup the lockfile after updates

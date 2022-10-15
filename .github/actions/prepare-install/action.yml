@@ -33,7 +33,6 @@ runs:
       with:
         path: |
           ${{ env.yarn_cache_dir }}
-          ~/.cache/Cypress
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
