@@ -175,7 +175,6 @@ jobs:
   website_tests:
     permissions:
       contents: read # to fetch code (actions/checkout)
-      actions: read # to correctly identify workflow run (cypress-io/github-action)
 
     name: Website tests
     needs: [build]
@@ -192,23 +191,18 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      - name: Install Cypress
-        run: yarn cypress install
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
-      - env:
-          DEBUG: '@cypress/github-action'
-        name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          project: ./packages/website
-          start: yarn start
+      - name: Run Playwright tests
+        run: yarn playwright test --reporter=list
+        working-directory: packages/website
 
-      - uses: actions/upload-artifact@v3
+      - if: always()
+        uses: actions/upload-artifact@v3
         with:
-          name: screenshots
-          path: |
-            packages/website/cypress/screenshots/
-            packages/website/cypress/videos/
+          name: playwright-report
+          path: packages/website/playwright-report
 
   upload_coverage:
     name: Upload Codecov Coverage
