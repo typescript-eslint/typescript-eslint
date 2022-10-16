@@ -114,15 +114,14 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow duplicate union/intersection type constituents',
+      description: 'Disallow duplicate union/intersection type members',
       recommended: false,
     },
     fixable: 'code',
     hasSuggestions: true,
     messages: {
       duplicate: '{{type}} type member {{name}} is duplicated.',
-      suggestFix:
-        'Delete duplicated constituents of type (removes all comments).',
+      suggestFix: 'Delete duplicated members of type (removes all comments).',
     },
     schema: [
       {
