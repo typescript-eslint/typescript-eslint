@@ -32,7 +32,7 @@
       "dependsOn": ["^build"]
     },
     "test": {
-      "outputs": ["packages/*/coverage"]
+      "outputs": ["{projectRoot}/coverage"]
     }
   }
 }
