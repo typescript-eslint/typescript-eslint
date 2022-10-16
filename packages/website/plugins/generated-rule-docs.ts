@@ -198,9 +198,11 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
-  // Note: you must disable the base rule as it can report incorrect errors
-  "${extendsBaseRuleName}": "off",
-  "@typescript-eslint/${file.stem}": "${optionLevel}"
+  "rules": {
+    // Note: you must disable the base rule as it can report incorrect errors
+    "${extendsBaseRuleName}": "off",
+    "@typescript-eslint/${file.stem}": "${optionLevel}"
+  }
 };`,
       } as mdast.Code);
     } else {
