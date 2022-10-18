@@ -3,15 +3,13 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-const SyntaxKind = ts.SyntaxKind;
-
 export default util.createRule({
   name: 'no-unsafe-declaration-merging',
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow unsafe declaration merging',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
@@ -29,27 +27,25 @@ export default util.createRule({
       node: TSESTree.Identifier,
       unsafeKind: ts.SyntaxKind,
     ): void {
-      if (node.parent) {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const type = checker.getTypeAtLocation(tsNode);
-        const symbol = type.getSymbol();
-        if (symbol?.declarations?.some(decl => decl.kind === unsafeKind)) {
-          context.report({
-            node: node.parent,
-            messageId: 'unsafeMerging',
-          });
-        }
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const type = checker.getTypeAtLocation(tsNode);
+      const symbol = type.getSymbol();
+      if (symbol?.declarations?.some(decl => decl.kind === unsafeKind)) {
+        context.report({
+          node,
+          messageId: 'unsafeMerging',
+        });
       }
     }
 
     return {
       ClassDeclaration(node): void {
         if (node.id) {
-          checkUnsafeDeclaration(node.id, SyntaxKind.InterfaceDeclaration);
+          checkUnsafeDeclaration(node.id, ts.SyntaxKind.InterfaceDeclaration);
         }
       },
       TSInterfaceDeclaration(node): void {
-        checkUnsafeDeclaration(node.id, SyntaxKind.ClassDeclaration);
+        checkUnsafeDeclaration(node.id, ts.SyntaxKind.ClassDeclaration);
       },
     };
   },

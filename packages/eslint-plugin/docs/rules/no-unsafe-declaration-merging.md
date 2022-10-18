@@ -6,10 +6,10 @@ description: 'Disallow unsafe declaration merging.'
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-declaration-merging** for documentation.
 
-TypeScript's "declaration merging" supports merging separate declarations with the same name. We can merges
+TypeScript's "declaration merging" supports merging separate declarations with the same name.
 
 Declaration merging between classes and interfaces is unsafe.
-TypeScript compiler doesn't check whether properties are initialized or not, possibly making runtime errors.
+TypeScript compiler doesn't check whether properties are initialized, which can cause lead to TypeScript not detecting code that will cause runtime errors.
 
 ```ts
 interface Foo {

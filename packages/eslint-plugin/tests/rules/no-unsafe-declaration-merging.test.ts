@@ -33,6 +33,31 @@ function Foo() {}
     `
 const Foo = class {};
     `,
+    `
+interface Foo {
+  props: string;
+}
+
+function bar() {
+  return class Foo {};
+}
+    `,
+    `
+interface Foo {
+  props: string;
+}
+
+(function bar() {
+  class Foo {}
+})();
+    `,
+    `
+declare global {
+  interface Foo {}
+}
+
+class Foo {}
+    `,
   ],
   invalid: [
     {
@@ -43,9 +68,13 @@ class Foo {}
       errors: [
         {
           messageId: 'unsafeMerging',
+          line: 2,
+          column: 11,
         },
         {
           messageId: 'unsafeMerging',
+          line: 3,
+          column: 7,
         },
       ],
     },
@@ -61,9 +90,33 @@ namespace Foo {
       errors: [
         {
           messageId: 'unsafeMerging',
+          line: 3,
+          column: 20,
         },
         {
           messageId: 'unsafeMerging',
+          line: 6,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare global {
+  interface Foo {}
+  class Foo {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeMerging',
+          line: 3,
+          column: 13,
+        },
+        {
+          messageId: 'unsafeMerging',
+          line: 4,
+          column: 9,
         },
       ],
     },
