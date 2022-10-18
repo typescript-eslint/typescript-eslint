@@ -94,6 +94,9 @@ function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
   return propName ? propName.name : '(index signature)';
 }
 
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
+  Required<Pick<Base, Key>>;
+
 enum MemberNameType {
   Private = 1,
   Quoted = 2,
@@ -191,6 +194,7 @@ export {
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  MakeRequired,
   MemberNameType,
   RequireKeys,
   upperCaseFirst,

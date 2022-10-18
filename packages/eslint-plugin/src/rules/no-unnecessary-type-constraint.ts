@@ -5,10 +5,7 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
-  Required<Pick<Base, Key>>;
-
-type TypeParameterWithConstraint = MakeRequired<
+type TypeParameterWithConstraint = util.MakeRequired<
   TSESTree.TSTypeParameter,
   'constraint'
 >;
