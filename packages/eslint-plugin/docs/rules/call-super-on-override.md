@@ -38,7 +38,6 @@ class Foo2 extends Foo1 {
 }
 ```
 
-
 ## When Not To Use It
 
 When you are using TypeScript < 4.3 or you did not set `noImplicitOverride: true` in `CompilerOptions`
