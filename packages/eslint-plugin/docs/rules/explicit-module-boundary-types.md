@@ -7,10 +7,10 @@ description: "Require explicit return and argument types on exported functions' 
 > See **https://typescript-eslint.io/rules/explicit-module-boundary-types** for documentation.
 
 Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.
+Adding explicit type annotations for those types can help improve code readability.
+It can also improve TypeScript type checking performance on larger codebases.
 
-## Rule Details
-
-This rule aims to ensure that the values returned from a module are of the expected type.
+## Examples
 
 <!--tabs-->
 

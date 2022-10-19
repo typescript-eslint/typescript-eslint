@@ -19,11 +19,9 @@ The `noImplicitAny` flag in TypeScript does not cover this for backwards compati
 
 ## DEPRECATED
 
-## Rule Details
+## Examples
 
 This rule requires an explicit type to be declared on a catch clause variable.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

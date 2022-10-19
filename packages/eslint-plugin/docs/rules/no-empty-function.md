@@ -6,7 +6,7 @@ description: 'Disallow empty functions.'
 >
 > See **https://typescript-eslint.io/rules/no-empty-function** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-empty-function`](https://eslint.org/docs/rules/no-empty-function) rule.
 It adds support for handling TypeScript specific code that would otherwise trigger the rule.

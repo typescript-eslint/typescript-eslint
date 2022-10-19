@@ -9,10 +9,10 @@ description: 'Disallow certain types.'
 Some built-in types have aliases, while some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.
 
-## Rule Details
-
 This rule bans specific types and can suggest alternatives.
 Note that it does not ban the corresponding runtime objects from being used.
+
+## Examples
 
 Examples of code with the default options:
 

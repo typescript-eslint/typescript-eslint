@@ -21,8 +21,6 @@ The following nodes are considered boolean expressions and their type is checked
 
 ## Examples
 
-Examples of code for this rule:
-
 <!--tabs-->
 
 ### ❌ Incorrect

@@ -6,7 +6,7 @@ description: 'Enforce type definitions to consistently use either `interface` or
 >
 > See **https://typescript-eslint.io/rules/consistent-type-definitions** for documentation.
 
-There are two ways to define a type.
+TypeScript provides two common ways to define an object type: `interface` and `type`.
 
 ```ts
 // type alias
@@ -21,6 +21,9 @@ interface T2 {
   b: number;
 }
 ```
+
+The two are generally very similar, and can often be used interchangeably.
+Using the same type declaration style consistently helps with code readability.
 
 ## Options
 

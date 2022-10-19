@@ -90,7 +90,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require using either `T[]` or `Array<T>` for arrays',
+      description:
+        'Require consistently using either `T[]` or `Array<T>` for arrays',
       recommended: 'strict',
     },
     fixable: 'code',

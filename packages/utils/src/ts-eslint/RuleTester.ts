@@ -125,6 +125,11 @@ interface TestCaseError<TMessageIds extends string> {
   // readonly message?: string | RegExp;
 }
 
+type RuleTesterTestFrameworkFunction = (
+  text: string,
+  callback: () => void,
+) => void;
+
 interface RunTests<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>,
@@ -164,7 +169,7 @@ declare class RuleTesterBase {
    * @param text a string describing the rule
    * @param callback the test callback
    */
-  static describe?: (text: string, callback: () => void) => void;
+  static describe?: RuleTesterTestFrameworkFunction;
 
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
@@ -172,7 +177,15 @@ declare class RuleTesterBase {
    * @param text a string describing the test case
    * @param callback the test callback
    */
-  static it?: (text: string, callback: () => void) => void;
+  static it?: RuleTesterTestFrameworkFunction;
+
+  /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   * @param text a string describing the test case
+   * @param callback the test callback
+   */
+  static itOnly?: RuleTesterTestFrameworkFunction;
 
   /**
    * Define a rule for one particular run of tests.
@@ -194,6 +207,7 @@ export {
   SuggestionOutput,
   RuleTester,
   RuleTesterConfig,
+  RuleTesterTestFrameworkFunction,
   RunTests,
   TestCaseError,
   ValidTestCase,

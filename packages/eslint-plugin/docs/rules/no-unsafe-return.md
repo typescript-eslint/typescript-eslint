@@ -6,15 +6,18 @@ description: 'Disallow returning a value with type `any` from a function.'
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-return** for documentation.
 
-Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Returned `any` typed values are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 
-## Rule Details
+Despite your best intentions, the `any` type can sometimes leak into your codebase.
+Returning an an `any`-typed value from a function creates a potential type safety hole and source of bugs in your codebase.
 
 This rule disallows returning `any` or `any[]` from a function.
-This rule also compares the return type to the function's declared/inferred return type to ensure you don't return an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you return `Set<any>` from a function declared as returning `Set<string>`.
 
-Examples of code for this rule:
+This rule also compares generic type argument types to ensure you don't return an unsafe `any` in a generic position to a function that's expecting a specific type.
+For example, it will error if you return `Set<any>` from a function declared as returning `Set<string>`.
+
+## Examples
 
 <!--tabs-->
 
@@ -83,7 +86,7 @@ const assignability2: TAssign = () => new Set(['foo']);
 
 There are cases where the rule allows to return `any` to `unknown`.
 
-Examples of `any` to `unknown` return that are allowed.
+Examples of `any` to `unknown` return that are allowed:
 
 ```ts
 function foo1(): unknown {
