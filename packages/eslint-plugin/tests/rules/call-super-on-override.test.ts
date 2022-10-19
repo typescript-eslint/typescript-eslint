@@ -20,6 +20,24 @@ class ValidSample {
     {
       code: `
 class ValidSample {
+  override ['x-y']() {
+    super['x-y']();
+  }
+  override ['z']() {
+    super.z();
+  }
+  override h() {
+    super['h']()
+  }
+  override [M]() {
+    super[M]();
+  }
+}
+      `,
+    },
+    {
+      code: `
+class ValidSample {
   override x() {
     super.x();
     this.y();
@@ -27,7 +45,7 @@ class ValidSample {
 }
       `,
       options: [
-        // raise for ordering
+        // ordering
         {
           topLevel: true,
         },
@@ -39,7 +57,7 @@ class ValidSample {
   override x() {
     p();
     l();
-    super.x();
+    super['x']();
     this.y();
   }
 }
@@ -63,7 +81,29 @@ class InvalidSample {
   }
 }
       `,
-      errors: [{ messageId: 'missingSuperMethodCall' }],
+      errors: [
+        {
+          messageId: 'missingSuperMethodCall',
+          data: { property: '.x', parameterTuple: '()' },
+        },
+      ],
+    },
+    {
+      code: `
+class InvalidSample {
+  override ['x-y-z']() {
+    this['x-y-z']();
+    super['x-y-z'] = () => void 0;
+    super['x-y-z'];
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingSuperMethodCall',
+          data: { property: "['x-y-z']", parameterTuple: '()' },
+        },
+      ],
     },
     {
       code: `
@@ -85,6 +125,19 @@ class InvalidSample {
     },
     {
       code: `
+class InvalidSample {
+  override x(y: number, z: string) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingSuperMethodCall',
+          data: { property: '.x', parameterTuple: '(y, z)' },
+        },
+      ],
+    },
+    {
+      code: `
 class ValidSample {
   override x() {
     this.x.y.z.c.v.b.n.l();
@@ -99,6 +152,39 @@ class ValidSample {
         },
       ],
       errors: [{ messageId: 'topLevelSuperMethodCall' }],
+    },
+    {
+      code: `
+class InvalidSample {
+  override [M]() {
+    super.M()
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingSuperMethodCall',
+          data: { property: '[M]', parameterTuple: '()' },
+        },
+      ],
+    },
+    {
+      code: `
+class InvalidSample {
+  override [null]() {}
+  override ['null']() {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingSuperMethodCall',
+          data: { property: '[null]', parameterTuple: '()' },
+        },
+        {
+          messageId: 'missingSuperMethodCall',
+          data: { property: "['null']", parameterTuple: '()' },
+        },
+      ],
     },
   ],
 });

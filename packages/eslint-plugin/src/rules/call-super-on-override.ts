@@ -21,7 +21,7 @@ export default utils.createRule<Options, MessageIds>({
     },
     messages: {
       missingSuperMethodCall:
-        "Use 'super.{{property}}{{parameterTuple}}' to avoid missing super class method implementations",
+        "Use 'super{{property}}{{parameterTuple}}' to avoid missing super class method implementations",
       topLevelSuperMethodCall:
         "super method must be called before accessing 'this' in the overridden method of a derived class.",
     },
@@ -48,7 +48,21 @@ export default utils.createRule<Options, MessageIds>({
       'MethodDefinition[override=true][kind="method"]'(
         node: TSESTree.MethodDefinition,
       ): void {
-        const { name: methodName } = node.key as TSESTree.Identifier,
+        let methodName = '',
+          methodNameIsLiteral = false,
+          methodNameIsNull = false; // don't add quotes for error message on [null] case
+
+        if (node.key.type === AST_NODE_TYPES.Identifier) {
+          methodName = node.key.name;
+        } else {
+          methodNameIsLiteral = true;
+          // null & undefined can be used as property names, undefined counted as Identifier & null as Literal
+          methodName =
+            (node.key as TSESTree.Literal).value?.toString() || 'null';
+          methodNameIsNull = (node.key as TSESTree.Literal).value == null;
+        }
+
+        const { computed: isComputed } = node,
           bodyStatements = node.value.body!.body;
 
         // Search for super method call
@@ -58,7 +72,13 @@ export default utils.createRule<Options, MessageIds>({
             thisWasAccessed = true;
           }
 
-          if (isSuperMethodCall(statement, methodName)) {
+          if (
+            isSuperMethodCall(
+              statement,
+              methodName,
+              !methodNameIsLiteral && isComputed,
+            )
+          ) {
             if (topLevel && thisWasAccessed) {
               context.report({
                 messageId: 'topLevelSuperMethodCall',
@@ -66,7 +86,7 @@ export default utils.createRule<Options, MessageIds>({
               });
             }
 
-            return; // We are done here, missingSuperMethodCall error
+            return; // We are done here, no missingSuperMethodCall error
           }
         }
 
@@ -75,7 +95,13 @@ export default utils.createRule<Options, MessageIds>({
           messageId: 'missingSuperMethodCall',
           node: node,
           data: {
-            property: methodName,
+            property: isComputed
+              ? `[${
+                  methodNameIsLiteral && !methodNameIsNull
+                    ? `'${methodName}'`
+                    : methodName
+                }]`
+              : `.${methodName}`,
             parameterTuple: `(${node.value.params
               .map(p => (p as TSESTree.Identifier).name)
               .join(', ')})`,
@@ -89,13 +115,31 @@ export default utils.createRule<Options, MessageIds>({
 const isSuperMethodCall = (
   statement: TSESTree.Statement | undefined,
   methodName: string,
-): boolean =>
-  statement?.type === AST_NODE_TYPES.ExpressionStatement &&
-  statement.expression.type === AST_NODE_TYPES.CallExpression &&
-  statement.expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-  statement.expression.callee.object.type === AST_NODE_TYPES.Super &&
-  statement.expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-  statement.expression.callee.property.name === methodName;
+  methodIsComputedIdentifier: boolean,
+): boolean => {
+  // for edge cases like this -> override [X]() { super.X() }
+  // we make sure that computed identifier should have computed callback
+  let calleeIsComputedIdentifier = false,
+    calleeNameIsComputed = false;
+
+  const calleeName =
+    statement?.type === AST_NODE_TYPES.ExpressionStatement &&
+    statement.expression.type === AST_NODE_TYPES.CallExpression &&
+    statement.expression.callee.type === AST_NODE_TYPES.MemberExpression &&
+    statement.expression.callee.object.type === AST_NODE_TYPES.Super &&
+    (statement.expression.callee.property.type === AST_NODE_TYPES.Identifier
+      ? ((calleeIsComputedIdentifier = statement.expression.callee.computed),
+        statement.expression.callee.property.name)
+      : statement.expression.callee.property.type === AST_NODE_TYPES.Literal
+      ? statement.expression.callee.property.value?.toString() || 'null'
+      : undefined);
+
+  return methodIsComputedIdentifier
+    ? calleeIsComputedIdentifier
+      ? methodName === calleeName
+      : false
+    : methodName === calleeName;
+};
 
 const isThisAccess = (statement: TSESTree.Statement): boolean => {
   if (!isCallExpression(statement)) {
