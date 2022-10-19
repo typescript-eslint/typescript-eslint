@@ -3,7 +3,6 @@ import * as utils from '../util';
 
 type Options = [
   {
-    ignoreMethods: boolean;
     topLevel: boolean;
   },
 ];
@@ -31,9 +30,6 @@ export default utils.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          ignoreMethods: {
-            type: 'boolean',
-          },
           topLevel: {
             type: 'boolean',
           },
@@ -44,19 +40,14 @@ export default utils.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreMethods: false,
       topLevel: false,
     },
   ],
-  create(context, [{ ignoreMethods, topLevel }]) {
+  create(context, [{ topLevel }]) {
     return {
       'MethodDefinition[override=true][kind="method"]'(
         node: TSESTree.MethodDefinition,
       ): void {
-        if (ignoreMethods) {
-          return;
-        }
-
         const { name: methodName } = node.key as TSESTree.Identifier,
           bodyStatements = node.value.body!.body;
 

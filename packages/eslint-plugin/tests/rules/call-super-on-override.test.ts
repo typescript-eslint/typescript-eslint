@@ -10,33 +10,12 @@ ruleTester.run('call-super-on-override', rule, {
     {
       code: `
 class ValidSample {
-  override x() {}
-}
-      `,
-      options: [
-        // off
-        {
-          ignoreMethods: true,
-          topLevel: false,
-        },
-      ],
-    },
-    {
-      code: `
-class ValidSample {
   override x() {
     this.y();
     super.x();
   }
 }
       `,
-      options: [
-        // raise only for super absence
-        {
-          ignoreMethods: false,
-          topLevel: false,
-        },
-      ],
     },
     {
       code: `
@@ -50,7 +29,6 @@ class ValidSample {
       options: [
         // raise for ordering
         {
-          ignoreMethods: false,
           topLevel: true,
         },
       ],
@@ -69,7 +47,6 @@ class ValidSample {
       options: [
         // not raise for ordering
         {
-          ignoreMethods: false,
           topLevel: true,
         },
       ],
@@ -86,13 +63,6 @@ class InvalidSample {
   }
 }
       `,
-      options: [
-        // raise only for super call absence
-        {
-          ignoreMethods: false,
-          topLevel: false,
-        },
-      ],
       errors: [{ messageId: 'missingSuperMethodCall' }],
     },
     {
@@ -108,7 +78,6 @@ class InvalidSample {
       options: [
         // raise only for top level super call absence
         {
-          ignoreMethods: false,
           topLevel: true,
         },
       ],
@@ -124,9 +93,8 @@ class ValidSample {
 }
       `,
       options: [
-        // not raise for ordering
+        // raise only for top level super call absence (deep case)
         {
-          ignoreMethods: false,
           topLevel: true,
         },
       ],
@@ -134,3 +102,5 @@ class ValidSample {
     },
   ],
 });
+
+// TODO needs test cases for Literal method name instead of Just Identifier
