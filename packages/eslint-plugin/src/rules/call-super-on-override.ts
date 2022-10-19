@@ -99,8 +99,7 @@ const isSuperMethodCall = (
   statement: TSESTree.Statement | undefined,
   methodName: string,
 ): boolean =>
-  statement != null &&
-  statement.type === AST_NODE_TYPES.ExpressionStatement &&
+  statement?.type === AST_NODE_TYPES.ExpressionStatement &&
   statement.expression.type === AST_NODE_TYPES.CallExpression &&
   statement.expression.callee.type === AST_NODE_TYPES.MemberExpression &&
   statement.expression.callee.object.type === AST_NODE_TYPES.Super &&
