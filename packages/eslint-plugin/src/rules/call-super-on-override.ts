@@ -17,7 +17,7 @@ export default utils.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require overridden methods to call super.method in their body',
-      recommended: 'warn',
+      recommended: false,
       requiresTypeChecking: false,
     },
     messages: {
