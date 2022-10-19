@@ -38,27 +38,6 @@ class Foo2 extends Foo1 {
 }
 ```
 
-### Note
-
-Class properties that have `function` value are not considered as real method override and cause `SyntaxError` on super calls:
-
-```ts
-class Foo1 {
-  bar1 = function () {};
-
-  bar2 = () => {};
-}
-
-class Foo2 extends Foo1 {
-  override bar1 = function () {
-    super.bar1(); // SyntaxError: 'super' keyword unexpected here
-  };
-
-  override bar2 = () => {
-    super.bar2(); // SyntaxError: 'super' keyword unexpected here
-  };
-}
-```
 
 ## When Not To Use It
 
