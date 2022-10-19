@@ -1,4 +1,5 @@
 {
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "typescript-eslint",
   "implicitDependencies": {
     "package.json": {
@@ -26,12 +27,12 @@
       }
     }
   },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ]
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "outputs": ["{projectRoot}/coverage"]
+    }
   }
 }
