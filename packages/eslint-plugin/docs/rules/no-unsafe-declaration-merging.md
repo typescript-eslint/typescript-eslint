@@ -9,7 +9,7 @@ description: 'Disallow unsafe declaration merging.'
 TypeScript's "declaration merging" supports merging separate declarations with the same name.
 
 Declaration merging between classes and interfaces is unsafe.
-TypeScript compiler doesn't check whether properties are initialized, which can cause lead to TypeScript not detecting code that will cause runtime errors.
+The TypeScript compiler doesn't check whether properties are initialized, which can cause lead to TypeScript not detecting code that will cause runtime errors.
 
 ```ts
 interface Foo {
@@ -39,7 +39,7 @@ class Foo {}
 
 ```ts
 interface Foo {}
-class Bar extends Foo {}
+class Bar implements Foo {}
 
 namespace Baz {}
 namespace Baz {}
