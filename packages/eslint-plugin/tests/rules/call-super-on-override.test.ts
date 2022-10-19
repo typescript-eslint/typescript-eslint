@@ -1,5 +1,5 @@
-import { RuleTester } from '../RuleTester';
 import rule from '../../src/rules/call-super-on-override';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -27,47 +27,13 @@ class ValidSample {
     super.z();
   }
   override h() {
-    super['h']()
+    super['h']();
   }
   override [M]() {
     super[M]();
   }
 }
       `,
-    },
-    {
-      code: `
-class ValidSample {
-  override x() {
-    super.x();
-    this.y();
-  }
-}
-      `,
-      options: [
-        // ordering
-        {
-          topLevel: true,
-        },
-      ],
-    },
-    {
-      code: `
-class ValidSample {
-  override x() {
-    p();
-    l();
-    super['x']();
-    this.y();
-  }
-}
-      `,
-      options: [
-        // not raise for ordering
-        {
-          topLevel: true,
-        },
-      ],
     },
   ],
   invalid: [
@@ -108,24 +74,6 @@ class InvalidSample {
     {
       code: `
 class InvalidSample {
-  override x() {
-    super.x = () => void 0;
-    this.x();
-    super.x();
-  }
-}
-      `,
-      options: [
-        // raise only for top level super call absence
-        {
-          topLevel: true,
-        },
-      ],
-      errors: [{ messageId: 'topLevelSuperMethodCall' }],
-    },
-    {
-      code: `
-class InvalidSample {
   override x(y: number, z: string) {}
 }
       `,
@@ -138,26 +86,9 @@ class InvalidSample {
     },
     {
       code: `
-class ValidSample {
-  override x() {
-    this.x.y.z.c.v.b.n.l();
-    super.x();
-  }
-}
-      `,
-      options: [
-        // raise only for top level super call absence (deep case)
-        {
-          topLevel: true,
-        },
-      ],
-      errors: [{ messageId: 'topLevelSuperMethodCall' }],
-    },
-    {
-      code: `
 class InvalidSample {
   override [M]() {
-    super.M()
+    super.M();
   }
 }
       `,
@@ -188,5 +119,3 @@ class InvalidSample {
     },
   ],
 });
-
-// TODO needs test cases for Literal method name instead of Just Identifier
