@@ -3,10 +3,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type ObjectPatternWithTypeAnnotation = util.MakeRequired<
-  TSESTree.ObjectPattern,
-  'typeAnnotation'
->;
+type ObjectPatternWithTypeAnnotation = TSESTree.ObjectPattern & {
+  typeAnnotation: {
+    typeAnnotation: {
+      type: AST_NODE_TYPES.TSTypeLiteral;
+    };
+  };
+};
 
 export default util.createRule({
   name: 'no-unused-type-properties',
@@ -25,17 +28,9 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     return {
-      'ObjectPattern[typeAnnotation]'(
+      "ObjectPattern[typeAnnotation.typeAnnotation.type='TSTypeLiteral']"(
         node: ObjectPatternWithTypeAnnotation,
       ): void {
-        // TODO: move into the esquery query??
-        if (
-          node.typeAnnotation.typeAnnotation.type !==
-          AST_NODE_TYPES.TSTypeLiteral
-        ) {
-          return;
-        }
-
         const usedNames = new Set<string>();
 
         for (const property of node.properties) {
@@ -43,9 +38,10 @@ export default util.createRule({
             return;
           }
 
-          // TODO: allow keys like ['ab']: ... that aren't identifiers
           if (property.key.type === AST_NODE_TYPES.Identifier) {
             usedNames.add(property.key.name);
+          } else if (property.key.type === AST_NODE_TYPES.Literal) {
+            usedNames.add(`${property.key.value}`);
           }
         }
 
