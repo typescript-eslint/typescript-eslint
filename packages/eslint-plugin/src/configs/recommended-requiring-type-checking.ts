@@ -10,6 +10,7 @@ export = {
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
+    '@typescript-eslint/no-in-array': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     '@typescript-eslint/no-unsafe-argument': 'error',

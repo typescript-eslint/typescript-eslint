@@ -70,6 +70,7 @@ export = {
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
+    '@typescript-eslint/no-in-array': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     'no-invalid-this': 'off',
     '@typescript-eslint/no-invalid-this': 'error',
