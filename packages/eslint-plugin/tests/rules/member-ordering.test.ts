@@ -14,21 +14,46 @@ const grouped: TSESLint.RunTests<MessageIds, Options> = {
 // no accessibility === public
 interface Foo {
     [Z: string]: any;
+    F: string;
     A: string;
     B: string;
     C: string;
     D: string;
     E: string;
-    F: string;
     new();
+    L();
     G();
     H();
     I();
     J();
     K();
-    L();
 }
         `,
+    {
+      name: 'default member types with alphabetically order',
+      code: `
+          // no accessibility === public
+          interface Foo {
+              [Z: string]: any;
+              A: string;
+              B: string;
+              C: string;
+              D: string;
+              E: string;
+              F: string;
+              new();
+              G();
+              H();
+              I();
+              J();
+              K();
+              L();
+          }
+        `,
+      options: [
+        { default: { memberTypes: 'default', order: 'alphabetically' } },
+      ],
+    },
     {
       code: `
 // no accessibility === public
@@ -50,6 +75,28 @@ interface Foo {
 }
             `,
       options: [{ default: 'never' }],
+    },
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+    A: string;
+    J();
+    K();
+    D: string;
+    E: string;
+    F: string;
+    new();
+    G();
+    H();
+    [Z: string]: any;
+    B: string;
+    C: string;
+    I();
+    L();
+}
+            `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
     {
       code: `
@@ -1549,6 +1596,41 @@ interface Foo {
           line: 17,
           column: 5,
         },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+    [Z: string]: any;
+    E: string;
+    F: string;
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+    L();
+    G(); 
+    J();
+    H();
+    I();
+    K();
+    new();
+}
+            `,
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'new',
+            rank: 'method',
+          },
+          line: 17,
+          column: 5,
+        },
+      ],
+      options: [
+        { default: { memberTypes: 'default', order: 'alphabetically' } },
       ],
     },
     {

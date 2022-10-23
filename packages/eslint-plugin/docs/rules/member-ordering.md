@@ -23,7 +23,7 @@ interface Options {
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 
 interface SortedOrderConfig {
-  memberTypes?: MemberType[] | 'never';
+  memberTypes?: MemberType[] | 'never' | 'default';
   order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written';
 }
 
@@ -41,7 +41,7 @@ You can configure `OrderConfig` options for:
 
 The `OrderConfig` settings for each kind of construct may configure sorting on one or both two levels:
 
-- **`memberTypes`**: organizing on member type groups such as methods vs. properties
+- **`memberTypes`**: organizing on member type groups such as methods vs. properties. If `'default'` - use a default member types.
 - **`order`**: organizing based on member names, such as alphabetically
 
 ### Groups

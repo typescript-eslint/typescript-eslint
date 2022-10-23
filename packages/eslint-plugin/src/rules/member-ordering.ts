@@ -40,7 +40,7 @@ type Order =
   | 'as-written';
 
 interface SortedOrderConfig {
-  memberTypes?: MemberType[] | 'never';
+  memberTypes?: MemberType[] | 'never' | 'default';
   order: Order;
 }
 
@@ -60,6 +60,11 @@ export type Options = [
 const neverConfig: JSONSchema.JSONSchema4 = {
   type: 'string',
   enum: ['never'],
+};
+
+const defaultConfig: JSONSchema.JSONSchema4 = {
+  type: 'string',
+  enum: ['default'],
 };
 
 const arrayConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
@@ -83,7 +88,7 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
   type: 'object',
   properties: {
     memberTypes: {
-      oneOf: [arrayConfig(memberTypes), neverConfig],
+      oneOf: [arrayConfig(memberTypes), neverConfig, defaultConfig],
     },
     order: {
       type: 'string',
@@ -689,6 +694,12 @@ export default util.createRule<Options, MessageIds>({
       } else {
         order = orderConfig.order;
         memberTypes = orderConfig.memberTypes;
+        if (memberTypes === 'never') {
+          return;
+        }
+        if (memberTypes === 'default') {
+          memberTypes = defaultOrder;
+        }
       }
 
       const hasAlphaSort = order?.startsWith('alphabetically');
