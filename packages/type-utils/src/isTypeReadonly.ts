@@ -113,6 +113,10 @@ function isTypeReadonlyObject(
         return Readonlyness.Mutable;
       }
 
+      if (indexInfo.type === type) {
+        return Readonlyness.Readonly;
+      }
+
       return isTypeReadonlyRecurser(
         checker,
         indexInfo.type,
