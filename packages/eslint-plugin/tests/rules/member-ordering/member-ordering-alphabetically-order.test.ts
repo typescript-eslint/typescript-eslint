@@ -1,8 +1,8 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import type { MessageIds, Options } from '../../src/rules/member-ordering';
-import rule, { defaultOrder } from '../../src/rules/member-ordering';
-import { RuleTester } from '../RuleTester';
+import type { MessageIds, Options } from '../../../src/rules/member-ordering';
+import rule, { defaultOrder } from '../../../src/rules/member-ordering';
+import { RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
