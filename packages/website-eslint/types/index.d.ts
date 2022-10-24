@@ -11,5 +11,3 @@ export interface LintUtils {
   astConverter: typeof astConverter;
   getScriptKind: typeof getScriptKind;
 }
-
-export const configs: Record<string, string>;

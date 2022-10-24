@@ -39,11 +39,11 @@ These rules are those whose reports are almost always for a bad practice and/or 
 }
 ```
 
-:::tip
-We strongly recommend all TypeScript projects extend from this configuration.
-:::
+See [`configs/recommended.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended.ts) for the exact contents of this config.
 
-<configuration-contents name="recommended" />
+:::tip
+We strongly recommend all TypeScript projects extend from `plugin:@typescript-eslint/recommended`.
+:::
 
 ### `recommended-requiring-type-checking`
 
@@ -59,12 +59,12 @@ Rules in this configuration are similarly useful to those in `recommended`.
 }
 ```
 
+See [`configs/recommended-requiring-type-checking.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended-requiring-type-checking.ts) for the exact contents of this config.
+
 :::tip
-We recommend all TypeScript projects extend from this configuration, with the caveat that rules using type information take longer to run.
+We recommend all TypeScript projects extend from `plugin:@typescript-eslint/recommended-requiring-type-checking`, with the caveat that rules using type information take longer to run.
 See [Linting with Type Information](/docs/linting/typed-linting) for more details.
 :::
-
-<configuration-contents name="recommended-requiring-type-checking" />
 
 ### `strict`
 
@@ -80,11 +80,11 @@ Additional strict rules that can also catch bugs but are more opinionated than r
 }
 ```
 
-:::caution
-We recommend a TypeScript project extend from this configuration only if a nontrivial percentage of its developers are highly proficient in TypeScript.
-:::
+See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts) for the exact contents of this config.
 
-<configuration-contents name="strict" />
+:::caution
+We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
 
 ## Other Configurations
 
@@ -96,7 +96,7 @@ We don't recommend using these directly; instead, extend from an earlier recomme
 Enables each the rules provided as a part of TypeScript ESLint.
 Note that many rules are not applicable in all codebases, or are meant to be configured.
 
-<configuration-contents name="all" />
+See [`configs/all.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/all.ts) for the exact contents of this config.
 
 ### `base`
 
@@ -123,7 +123,7 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 
 This config is automatically included if you use any of the recommended configurations.
 
-<configuration-contents name="eslint-recommended" />
+See [`configs/eslint-recommended.ts``](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslint-recommended.ts) for the exact contents of this config.
 
 ## Suggesting Configuration Changes
 
