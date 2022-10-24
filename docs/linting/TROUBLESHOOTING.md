@@ -30,6 +30,23 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
+### Fixing the Error
+
+- If you **do not** want to lint the file:
+  - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
+- If you **do** want to lint the file:
+  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
+      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
+      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
+  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
+    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
+      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
+      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+
+### More Details
+
 This error may appear from the combination of two things:
 
 - The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
@@ -46,19 +63,6 @@ For example, many projects have files like:
 - A `tsconfig.json` with `include: ["src"]`
 
 In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
-
-- If you **do not** want to lint the file:
-  - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
-- If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
-      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
-      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
-  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
-    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
-      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
-      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
 
 See our docs on [type aware linting](./TYPED_LINTING.md) for more information.
 

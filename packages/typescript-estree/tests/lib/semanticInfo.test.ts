@@ -240,7 +240,9 @@ describe('semanticInfo', () => {
         `function M() { return Base }`,
         createOptions('<input>'),
       ),
-    ).toThrow(/ESLint was configured to run on `estree\.ts` using/);
+    ).toThrow(
+      /ESLint was configured to run on `<tsconfigRootDir>\/estree\.ts` using/,
+    );
   });
 
   it('non-existent project file', () => {
