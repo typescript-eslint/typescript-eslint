@@ -48,9 +48,6 @@ export default util.createRule<Options, MessageIds>({
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
           },
-          forceSuggestionFixer: {
-            type: 'boolean',
-          },
         },
         additionalProperties: false,
       },

@@ -11,6 +11,8 @@
     '@nrwl/jest',
     '@nrwl/nx-cloud',
     '@nrwl/tao',
+    '@nrwl/workspace',
+    'nx',
   ],
   ignorePaths: [
     // integration test package.json's should never be updated as they're purposely fixed tests
@@ -55,6 +57,11 @@
       matchPackageNames: ['ts-jest', 'pretty-format'],
       matchPackagePrefixes: ['@types/jest'],
       groupName: 'jest',
+    },
+    {
+      matchPackagePrefixes: ['@rollup', 'rollup-'],
+      matchPackageNames: ['rollup'],
+      groupName: 'rollup',
     },
   ],
   postUpdateOptions: [
