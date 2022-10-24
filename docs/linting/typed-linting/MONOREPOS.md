@@ -64,7 +64,8 @@ module.exports = {
 
 ### Wide globs in `parserOptions.project`
 
-Using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
+Using wide globs `**` in your `parserOptions.project` may degrade linting performance.
+Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
 
 ```js title=".eslintrc.js"
 module.exports = {
