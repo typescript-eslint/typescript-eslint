@@ -48,8 +48,13 @@ function createProjectProgram(
     return astAndProgram;
   }
 
-  const describeFilePath = (filePath: string): string =>
-    path.relative(extra.tsconfigRootDir || process.cwd(), filePath);
+  const describeFilePath = (filePath: string): string => {
+    const relative = path.relative(extra.tsconfigRootDir || process.cwd(), filePath);
+    if (extra.tsconfigRootDir) {
+      return `<tsconfigRootDir>/${relative}`;
+    }
+    return `<cwd>/${relative}`;
+  };
 
   const describedFilePath = describeFilePath(extra.filePath);
   const relativeProjects = extra.projects.map(describeFilePath);
@@ -67,29 +72,29 @@ function createProjectProgram(
   extraFileExtensions.forEach(extraExtension => {
     if (!extraExtension.startsWith('.')) {
       errorLines.push(
-        `Found unexpected extension "${extraExtension}" specified with the "extraFileExtensions" option. Did you mean ".${extraExtension}"?`,
+        `Found unexpected extension \`${extraExtension}\` specified with the \`parserOptions.extraFileExtensions\` option. Did you mean \`.${extraExtension}\`?`,
       );
     }
     if (DEFAULT_EXTRA_FILE_EXTENSIONS.includes(extraExtension)) {
       errorLines.push(
-        `You unnecessarily included the extension "${extraExtension}" with the "extraFileExtensions" option. This extension is already handled by the parser by default.`,
+        `You unnecessarily included the extension \`${extraExtension}\` with the \`parserOptions.extraFileExtensions\` option. This extension is already handled by the parser by default.`,
       );
     }
   });
 
   const fileExtension = path.extname(extra.filePath);
   if (!DEFAULT_EXTRA_FILE_EXTENSIONS.includes(fileExtension)) {
-    const nonStandardExt = `The extension for the file (${fileExtension}) is non-standard`;
+    const nonStandardExt = `The extension for the file (\`${fileExtension}\`) is non-standard`;
     if (extraFileExtensions.length > 0) {
       if (!extraFileExtensions.includes(fileExtension)) {
         errorLines.push(
-          `${nonStandardExt}. It should be added to your existing "parserOptions.extraFileExtensions".`,
+          `${nonStandardExt}. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
         );
         hasMatchedAnError = true;
       }
     } else {
       errorLines.push(
-        `${nonStandardExt}. You should add "parserOptions.extraFileExtensions" to your config.`,
+        `${nonStandardExt}. You should add \`parserOptions.extraFileExtensions\` to your config.`,
       );
       hasMatchedAnError = true;
     }
