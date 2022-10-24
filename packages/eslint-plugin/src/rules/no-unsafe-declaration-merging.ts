@@ -1,5 +1,6 @@
+import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
@@ -10,7 +11,7 @@ export default util.createRule({
     docs: {
       description: 'Disallow unsafe declaration merging',
       recommended: 'strict',
-      requiresTypeChecking: true,
+      requiresTypeChecking: false,
     },
     messages: {
       unsafeMerging:
@@ -20,17 +21,22 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
-
     function checkUnsafeDeclaration(
+      scope: Scope,
       node: TSESTree.Identifier,
-      unsafeKind: ts.SyntaxKind,
+      unsafeKind: AST_NODE_TYPES,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode);
-      const symbol = type.getSymbol();
-      if (symbol?.declarations?.some(decl => decl.kind === unsafeKind)) {
+      const variable = scope.set.get(node.name);
+      if (!variable) {
+        return;
+      }
+
+      const defs = variable.defs;
+      if (defs.length <= 1) {
+        return;
+      }
+
+      if (defs.some(def => def.node.type === unsafeKind)) {
         context.report({
           node,
           messageId: 'unsafeMerging',
@@ -41,11 +47,26 @@ export default util.createRule({
     return {
       ClassDeclaration(node): void {
         if (node.id) {
-          checkUnsafeDeclaration(node.id, ts.SyntaxKind.InterfaceDeclaration);
+          // by default eslint returns the inner class scope for the ClassDeclaration node
+          // but we want the outer scope within which merged variables will sit
+          const currentScope = context.getScope().upper;
+          if (currentScope == null) {
+            return;
+          }
+
+          checkUnsafeDeclaration(
+            currentScope,
+            node.id,
+            AST_NODE_TYPES.TSInterfaceDeclaration,
+          );
         }
       },
       TSInterfaceDeclaration(node): void {
-        checkUnsafeDeclaration(node.id, ts.SyntaxKind.ClassDeclaration);
+        checkUnsafeDeclaration(
+          context.getScope(),
+          node.id,
+          AST_NODE_TYPES.ClassDeclaration,
+        );
       },
     };
   },
