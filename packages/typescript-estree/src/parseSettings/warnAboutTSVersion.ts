@@ -1,7 +1,7 @@
 import semver from 'semver';
 import * as ts from 'typescript';
 
-import type { ParseSettings } from './parseSettings';
+import type { ParseSettings } from './index';
 /**
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo

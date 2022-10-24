@@ -6,10 +6,7 @@ import { getScriptKind } from './getScriptKind';
 
 const log = debug('typescript-eslint:typescript-estree:createSourceFile');
 
-function createSourceFile(
-  code: string,
-  parseSettings: ParseSettings,
-): ts.SourceFile {
+function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
   log(
     'Getting AST without type information in %s mode for: %s',
     parseSettings.jsx ? 'TSX' : 'TS',
@@ -18,7 +15,7 @@ function createSourceFile(
 
   return ts.createSourceFile(
     parseSettings.filePath,
-    code,
+    parseSettings.code,
     ts.ScriptTarget.Latest,
     /* setParentNodes */ true,
     getScriptKind(parseSettings.filePath, parseSettings.jsx),

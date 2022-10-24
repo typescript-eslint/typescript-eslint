@@ -1,3 +1,4 @@
+import debug from 'debug';
 import type * as ts from 'typescript';
 
 import { astConverter } from './ast-converter';
@@ -11,12 +12,13 @@ import {
   createProgramFromConfigFile,
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
-import { log } from './log';
 import type { ParserServices, TSESTreeOptions } from './parser-options';
 import type { ParseSettings } from './parseSettings';
-import { createParseSettings } from './parseSettings';
+import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree } from './ts-estree';
+
+const log = debug('typescript-eslint:typescript-estree:parser');
 
 /**
  * Cache existing programs for the single run use-case.
@@ -94,7 +96,7 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Create a ts.SourceFile directly, no ts.Program is needed for a simple parse
    */
-  const ast = createSourceFile(parseSettings.code, parseSettings);
+  const ast = createSourceFile(parseSettings);
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
