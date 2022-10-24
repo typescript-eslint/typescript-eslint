@@ -98,6 +98,11 @@ Note that many rules are not applicable in all codebases, or are meant to be con
 
 See [`configs/all.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/all.ts) for the exact contents of this config.
 
+:::warning
+We do not recommend a TypeScript projects extend from `plugin:@typescript-eslint/all`.
+Many rules conflict with each other and/or are intended to be configured per-project.
+:::
+
 ### `base`
 
 A minimal ruleset that sets only the required parser and plugin options needed to run TypeScript ESLint.
