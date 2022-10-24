@@ -134,6 +134,13 @@ describe('isTypeReadonly', () => {
           );
         });
 
+        describe('is readonly circular', () => {
+          const runTests = runTestIsReadonly;
+
+          it('handles circular readonly PropertySignature inside a readonly IndexSignature', () =>
+            runTests('interface Test { readonly [key: string]: Test };'));
+        });
+
         describe('is not readonly', () => {
           const runTests = runTestIsNotReadonly;
 
@@ -144,6 +151,13 @@ describe('isTypeReadonly', () => {
             'handles mutable PropertySignature inside a readonly IndexSignature',
             runTests,
           );
+        });
+
+        describe('is not readonly circular', () => {
+          const runTests = runTestIsNotReadonly;
+
+          it('handles circular mutable PropertySignature inside a readonly IndexSignature', () =>
+            runTests('interface Test { [key: string]: Test };'));
         });
       });
 
