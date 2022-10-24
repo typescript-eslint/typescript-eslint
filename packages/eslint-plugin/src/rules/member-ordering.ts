@@ -1,5 +1,6 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import naturalCompare from 'natural-compare-lite';
 
 import * as util from '../util';
 
@@ -34,10 +35,13 @@ type BaseMemberType =
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
-type Order =
+type AlphabeticalOrder =
   | 'alphabetically'
   | 'alphabetically-case-insensitive'
-  | 'as-written';
+  | 'natural'
+  | 'natural-case-insensitive';
+
+type Order = AlphabeticalOrder | 'as-written';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
@@ -87,7 +91,13 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
     },
     order: {
       type: 'string',
-      enum: ['alphabetically', 'alphabetically-case-insensitive', 'as-written'],
+      enum: [
+        'alphabetically',
+        'alphabetically-case-insensitive',
+        'as-written',
+        'natural',
+        'natural-case-insensitive',
+      ],
     },
   },
   additionalProperties: false,
@@ -629,7 +639,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkAlphaSort(
       members: Member[],
-      caseSensitive: boolean,
+      order: AlphabeticalOrder,
     ): boolean {
       let previousName = '';
       let isCorrectlySorted = true;
@@ -640,11 +650,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Note: Not all members have names
         if (name) {
-          if (
-            caseSensitive
-              ? name < previousName
-              : name.toLowerCase() < previousName.toLowerCase()
-          ) {
+          if (naturalOutOfOrder(name, previousName, order)) {
             context.report({
               node: member,
               messageId: 'incorrectOrder',
@@ -664,6 +670,25 @@ export default util.createRule<Options, MessageIds>({
       return isCorrectlySorted;
     }
 
+    function naturalOutOfOrder(
+      name: string,
+      previousName: string,
+      order: AlphabeticalOrder,
+    ): boolean {
+      switch (order) {
+        case 'alphabetically':
+          return name < previousName;
+        case 'alphabetically-case-insensitive':
+          return name.toLowerCase() < previousName.toLowerCase();
+        case 'natural':
+          return naturalCompare(name, previousName) !== 1;
+        case 'natural-case-insensitive':
+          return (
+            naturalCompare(name.toLowerCase(), previousName.toLowerCase()) !== 1
+          );
+      }
+    }
+
     /**
      * Validates if all members are correctly sorted.
      *
@@ -681,7 +706,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       // Standardize config
-      let order: Order | null = null;
+      let order: Order | undefined;
       let memberTypes;
 
       if (Array.isArray(orderConfig)) {
@@ -691,9 +716,7 @@ export default util.createRule<Options, MessageIds>({
         memberTypes = orderConfig.memberTypes;
       }
 
-      const hasAlphaSort = order?.startsWith('alphabetically');
-      const alphaSortIsCaseSensitive =
-        order !== 'alphabetically-case-insensitive';
+      const hasAlphaSort = !!(order && order !== 'as-written');
 
       // Check order
       if (Array.isArray(memberTypes)) {
@@ -706,11 +729,11 @@ export default util.createRule<Options, MessageIds>({
         if (hasAlphaSort) {
           grouped.some(
             groupMember =>
-              !checkAlphaSort(groupMember, alphaSortIsCaseSensitive),
+              !checkAlphaSort(groupMember, order as AlphabeticalOrder),
           );
         }
       } else if (hasAlphaSort) {
-        checkAlphaSort(members, alphaSortIsCaseSensitive);
+        checkAlphaSort(members, order as AlphabeticalOrder);
       }
     }
 

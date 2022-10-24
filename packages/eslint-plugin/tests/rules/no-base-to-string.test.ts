@@ -113,6 +113,9 @@ tag\`\${{}}\`;
         return \`\${v}\`;
       }
     `,
+    "'' += new Error();",
+    "'' += new URL();",
+    "'' += new URLSearchParams();",
   ],
   invalid: [
     {
