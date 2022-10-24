@@ -48,7 +48,7 @@ When we do do a major release, we release a release candidate version to the `rc
 1. Prepare the release notes. Lerna will automatically generate the release notes on GitHub, however this will be disorganized and unhelpful for users. We need to reorganize the release notes so that breaking changes are placed at the top to make them most visible. If any migrations are required, we must list the steps to make it easy for users.
 1. Finally, tweet the release on the `@tseslint` twitter with a link to the GitHub release. Make sure you include additional information about the highlights of the release!
 
-<details>
+</details>
 
 ### Out-of-Band
 
