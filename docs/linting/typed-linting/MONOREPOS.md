@@ -62,6 +62,32 @@ module.exports = {
 };
 ```
 
+### Wide globs in `parserOptions.project`
+
+Using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    // Remove this line
+    project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
+    // Add this line
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+  },
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+```
+
+See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
+
 ### Important note regarding large (> 10) multi-package monorepos
 
 We've had reports that for sufficiently large and/or interdependent projects, you may run into OOMs using this approach.
