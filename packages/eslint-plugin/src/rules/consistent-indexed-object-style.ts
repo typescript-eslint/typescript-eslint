@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 type MessageIds = 'preferRecord' | 'preferIndexSignature';
@@ -65,7 +67,7 @@ export default createRule<Options, MessageIds>({
 
       if (parentId) {
         const scope = context.getScope();
-        const superVar = scope.set.get(parentId.name);
+        const superVar = ASTUtils.findVariable(scope, parentId.name);
         if (superVar) {
           const isCircular = superVar.references.some(
             item =>

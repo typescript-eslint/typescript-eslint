@@ -6,15 +6,22 @@ description: 'Enforce consistent usage of type assertions.'
 >
 > See **https://typescript-eslint.io/rules/consistent-type-assertions** for documentation.
 
-## Rule Details
+TypeScript provides two syntaxes for "type assertions":
+
+- Angle brackets: `<Type>value`
+- As: `value as Type`
 
 This rule aims to standardize the use of type assertion style across the codebase.
+Keeping to one syntax consistently helps with code readability.
 
-Type assertions are also commonly referred as "type casting" in TypeScript (even though it is technically slightly different to what is understood by type casting in other languages), so you can think of type assertions and type casting referring to the same thing. It is essentially you saying to the TypeScript compiler, "in this case, I know better than you!".
+:::note
+Type assertions are also commonly referred as "type casting" in TypeScript.
+However, that term is technically slightly different to what is understood by type casting in other languages.
+Type assertions are a way to say to the TypeScript compiler, _"I know better than you, it's actually this different type!"_.
+:::
 
-In addition to ensuring that type assertions are written in a consistent way, this rule also helps make your codebase more type-safe.
-
-[`const` assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) are always allowed by this rule. Examples of them include `let x = "hello" as const;` and `let x = <const>"hello";`.
+[`const` assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) are always allowed by this rule.
+Examples of them include `let x = "hello" as const;` and `let x = <const>"hello";`.
 
 ## Options
 

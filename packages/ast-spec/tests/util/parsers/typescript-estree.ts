@@ -1,5 +1,6 @@
+import type { Fixture, ParserResponse } from './parser-types';
+import { ParserResponseType } from './parser-types';
 import { parse } from './typescript-estree-import';
-import { ParserResponseType, Fixture, ParserResponse } from './parser-types';
 
 export function parseTSESTree(
   fixture: Fixture,

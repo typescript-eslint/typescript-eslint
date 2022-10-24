@@ -7,9 +7,9 @@ description: 'Require Promise-like statements to be handled appropriately.'
 > See **https://typescript-eslint.io/rules/no-floating-promises** for documentation.
 
 A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
-
 Floating Promises can cause several issues, such as improperly sequenced operations, ignored Promise rejections, and more.
 
+This rule reports when a Promise is created and not properly handled.
 Valid ways of handling a Promise-valued statement include:
 
 - `await`ing it
@@ -22,9 +22,7 @@ Valid ways of handling a Promise-valued statement include:
 See [`no-misused-promises`](./no-misused-promises.md) for detecting code that provides Promises to _logical_ locations such as if statements.
 :::
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

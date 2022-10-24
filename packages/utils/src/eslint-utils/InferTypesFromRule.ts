@@ -1,4 +1,4 @@
-import { RuleCreateFunction, RuleModule } from '../ts-eslint';
+import type { RuleCreateFunction, RuleModule } from '../ts-eslint';
 
 /**
  * Uses type inference to fetch the TOptions type from the given RuleModule

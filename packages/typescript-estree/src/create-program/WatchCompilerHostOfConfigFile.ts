@@ -2,7 +2,7 @@
 // They have been trimmed down to only include the relevant bits
 // We use some special internal TS apis to help us do our parsing flexibly
 
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 // https://github.com/microsoft/TypeScript/blob/b84e65db4ea5c39dbaa2ccd6594efe4653318251/src/compiler/watchUtilities.ts#L6-L18
 interface DirectoryStructureHost {

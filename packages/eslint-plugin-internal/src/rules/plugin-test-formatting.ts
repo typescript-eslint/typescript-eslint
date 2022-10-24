@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { format, resolveConfig } from 'prettier';
+
 import { createRule } from '../util';
 
 /*
@@ -157,7 +159,7 @@ export default createRule<Options, MessageIds>({
         return format(code, {
           ...prettierConfig,
           parser: 'typescript',
-        }).trimRight(); // prettier will insert a new line at the end of the code
+        }).trimEnd(); // prettier will insert a new line at the end of the code
       } catch (ex) {
         // adapted from https://github.com/prettier/eslint-plugin-prettier/blob/185b1064d3dd674538456fb2fad97fbfcde49e0d/eslint-plugin-prettier.js#L242-L257
         if (!(ex instanceof SyntaxError)) {
@@ -282,9 +284,9 @@ export default createRule<Options, MessageIds>({
       const lines = text.split('\n');
       const lastLine = lines[lines.length - 1];
       // prettier will trim out the end of line on save, but eslint will check before then
-      const isStartEmpty = lines[0].trimRight() === '';
+      const isStartEmpty = lines[0].trimEnd() === '';
       // last line can be indented
-      const isEndEmpty = lastLine.trimLeft() === '';
+      const isEndEmpty = lastLine.trimStart() === '';
       if (!isStartEmpty || !isEndEmpty) {
         // multiline template strings must have an empty first/last line
         return context.report({

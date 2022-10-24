@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
 import styles from './ASTViewer.module.css';
-
-import type { SelectedPosition, ASTViewerProps } from './types';
-
 import { ElementItem } from './Elements';
+import type { ASTViewerProps, SelectedPosition } from './types';
 
 function ASTViewer({
   position,

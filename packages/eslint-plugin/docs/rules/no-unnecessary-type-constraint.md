@@ -6,17 +6,11 @@ description: 'Disallow unnecessary constraints on generic types.'
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-constraint** for documentation.
 
-## Rule Details
+Generic type parameters (`<T>`) in TypeScript may be "constrained" with an [`extends` keyword](https://www.typescriptlang.org/docs/handbook/generics.html#generic-constraints).
+When no `extends` is provided, type parameters default a constraint to `any`.
+It is therefore redundant to `extend` from `any`.
 
-Type parameters (`<T>`) may be "constrained" with an `extends` keyword ([docs](https://www.typescriptlang.org/docs/handbook/generics.html#generic-constraints)).
-When not provided, type parameters happen to default to:
-
-- As of TypeScript 3.9: `unknown` ([docs](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#type-parameters-that-extend-any-no-longer-act-as-any))
-- Before that, as of 3.5: `any` ([docs](https://devblogs.microsoft.com/typescript/announcing-typescript-3-5/#breaking-changes))
-
-It is therefore redundant to `extend` from these types in later versions of TypeScript.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -24,24 +18,16 @@ Examples of code for this rule:
 
 ```ts
 interface FooAny<T extends any> {}
-interface FooUnknown<T extends unknown> {}
 
 type BarAny<T extends any> = {};
-type BarUnknown<T extends unknown> = {};
 
 class BazAny<T extends any> {
-  quxUnknown<U extends unknown>() {}
-}
-
-class BazUnknown<T extends unknown> {
-  quxUnknown<U extends unknown>() {}
+  quxAny<U extends any>() {}
 }
 
 const QuuxAny = <T extends any>() => {};
-const QuuxUnknown = <T extends unknown>() => {};
 
 function QuuzAny<T extends any>() {}
-function QuuzUnknown<T extends unknown>() {}
 ```
 
 ### ✅ Correct
@@ -52,7 +38,7 @@ interface Foo<T> {}
 type Bar<T> = {};
 
 class Baz<T> {
-    qux<U> { }
+  qux<U> { }
 }
 
 const Quux = <T>() => {};

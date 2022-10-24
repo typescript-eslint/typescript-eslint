@@ -3,13 +3,14 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { TSESLint } from '@typescript-eslint/utils';
-import { RuleTester } from '../RuleTester';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/type-annotation-spacing';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;

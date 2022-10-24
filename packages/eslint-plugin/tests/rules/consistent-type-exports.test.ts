@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-exports';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 

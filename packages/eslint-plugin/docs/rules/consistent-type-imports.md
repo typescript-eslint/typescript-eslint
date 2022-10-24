@@ -6,11 +6,8 @@ description: 'Enforce consistent usage of type imports.'
 >
 > See **https://typescript-eslint.io/rules/consistent-type-imports** for documentation.
 
-Type-only imports allow you to specify that an import can only be used in a type location, allowing certain optimizations within compilers.
-
-## Rule Details
-
-This rule aims to standardize the use of type imports style.
+TypeScript allows specifying a `type` keyword on imports to indicate that the export exists only in the type system, not at runtime.
+This allows transpilers to drop imports without knowing the types of the dependencies.
 
 ## Options
 
