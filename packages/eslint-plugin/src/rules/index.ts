@@ -115,7 +115,7 @@ import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
-import sortTypeUnionIntersectionMembers from './sort-type-union-intersection-members';
+import sortTypeConstituents from './sort-type-constituents';
 import spaceBeforeBlocks from './space-before-blocks';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import spaceInfixOps from './space-infix-ops';
@@ -245,7 +245,7 @@ export default {
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
   semi: semi,
-  'sort-type-union-intersection-members': sortTypeUnionIntersectionMembers,
+  'sort-type-constituents': sortTypeConstituents,
   'space-before-blocks': spaceBeforeBlocks,
   'space-before-function-paren': spaceBeforeFunctionParen,
   'space-infix-ops': spaceInfixOps,

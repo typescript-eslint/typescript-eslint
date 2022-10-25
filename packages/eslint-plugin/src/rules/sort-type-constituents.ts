@@ -112,20 +112,20 @@ export type Options = [
 export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 
 export default util.createRule<Options, MessageIds>({
-  name: 'sort-type-union-intersection-members',
+  name: 'sort-type-constituents',
   meta: {
     type: 'suggestion',
     docs: {
       description:
-        'Enforce members of a type union/intersection to be sorted alphabetically',
+        'Enforce constituents of a type union/intersection to be sorted alphabetically',
       recommended: false,
     },
     fixable: 'code',
     hasSuggestions: true,
     messages: {
-      notSorted: '{{type}} type members must be sorted.',
-      notSortedNamed: '{{type}} type {{name}} members must be sorted.',
-      suggestFix: 'Sort members of type (removes all comments).',
+      notSorted: '{{type}} type constituents must be sorted.',
+      notSortedNamed: '{{type}} type {{name}} constituents must be sorted.',
+      suggestFix: 'Sort constituents of type (removes all comments).',
     },
     schema: [
       {

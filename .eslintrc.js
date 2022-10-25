@@ -308,7 +308,7 @@ module.exports = {
       rules: {
         // disallow ALL unused vars
         '@typescript-eslint/no-unused-vars': 'error',
-        '@typescript-eslint/sort-type-union-intersection-members': 'error',
+        '@typescript-eslint/sort-type-constituents': 'error',
       },
     },
     {
