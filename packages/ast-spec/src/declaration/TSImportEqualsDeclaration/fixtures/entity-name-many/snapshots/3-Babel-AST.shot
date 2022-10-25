@@ -17,7 +17,6 @@ Program {
         },
       },
       importKind: "value",
-      isExport: false,
       moduleReference: TSQualifiedName {
         type: "TSQualifiedName",
         left: TSQualifiedName {

@@ -4,26 +4,80 @@ exports[`typescript basics import-export-equal-type-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "id": Object {
+      "assertions": Array [],
+      "declaration": Object {
+        "id": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 22,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 19,
+              "line": 1,
+            },
+          },
+          "name": "foo",
+          "range": Array [
+            19,
+            22,
+          ],
+          "type": "Identifier",
+        },
+        "importKind": "type",
         "loc": Object {
           "end": Object {
-            "column": 22,
+            "column": 40,
             "line": 1,
           },
           "start": Object {
-            "column": 19,
+            "column": 7,
             "line": 1,
           },
         },
-        "name": "foo",
+        "moduleReference": Object {
+          "expression": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 38,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 33,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              33,
+              38,
+            ],
+            "raw": "'bar'",
+            "type": "Literal",
+            "value": "bar",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 39,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 25,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            25,
+            39,
+          ],
+          "type": "TSExternalModuleReference",
+        },
         "range": Array [
-          19,
-          22,
+          7,
+          40,
         ],
-        "type": "Identifier",
+        "type": "TSImportEqualsDeclaration",
       },
-      "importKind": "type",
-      "isExport": true,
+      "exportKind": "value",
       "loc": Object {
         "end": Object {
           "column": 40,
@@ -34,47 +88,13 @@ Object {
           "line": 1,
         },
       },
-      "moduleReference": Object {
-        "expression": Object {
-          "loc": Object {
-            "end": Object {
-              "column": 38,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 33,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            33,
-            38,
-          ],
-          "raw": "'bar'",
-          "type": "Literal",
-          "value": "bar",
-        },
-        "loc": Object {
-          "end": Object {
-            "column": 39,
-            "line": 1,
-          },
-          "start": Object {
-            "column": 25,
-            "line": 1,
-          },
-        },
-        "range": Array [
-          25,
-          39,
-        ],
-        "type": "TSExternalModuleReference",
-      },
       "range": Array [
         0,
         40,
       ],
-      "type": "TSImportEqualsDeclaration",
+      "source": null,
+      "specifiers": Array [],
+      "type": "ExportNamedDeclaration",
     },
   ],
   "comments": Array [],
