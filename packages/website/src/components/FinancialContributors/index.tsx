@@ -50,7 +50,7 @@ export function FinancialContributors(): JSX.Element {
           <Link
             className="button button--info button--outline"
             title="Sponsorship docs"
-            to="https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/SPONSORS.md"
+            to="https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/SPONSORSHIPS.md"
             target="_blank"
           >
             Docs
