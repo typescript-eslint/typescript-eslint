@@ -111,7 +111,7 @@ export interface MutableParseSettings {
   singleRun: boolean;
 
   /**
-   * If the `cotokensmment` parse option is enabled, retrieved tokens.
+   * If the `tokens` parse option is enabled, retrieved tokens.
    */
   tokens: null | TSESTree.Token[];
 
