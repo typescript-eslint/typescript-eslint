@@ -1,7 +1,8 @@
-import rule, {
+import type {
   MessageId,
   Options,
 } from '../../src/rules/no-confusing-void-expression';
+import rule from '../../src/rules/no-confusing-void-expression';
 import {
   batchedSingleLineTests,
   getFixturesRootDir,
@@ -89,17 +90,17 @@ ruleTester.run('no-confusing-void-expression', rule, {
     {
       code: "() => console.log('foo');",
       errors: [{ line: 1, column: 7, messageId: 'invalidVoidExprArrow' }],
-      output: noFormat`() => { console.log('foo'); };`,
+      output: `() => { console.log('foo'); };`,
     },
     {
       code: 'foo => foo && console.log(foo);',
       errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
-      output: noFormat`foo => { foo && console.log(foo); };`,
+      output: `foo => { foo && console.log(foo); };`,
     },
     {
       code: 'foo => foo || console.log(foo);',
       errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
-      output: noFormat`foo => { foo || console.log(foo); };`,
+      output: `foo => { foo || console.log(foo); };`,
     },
     {
       code: 'foo => (foo ? console.log(true) : console.log(false));',
@@ -107,7 +108,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         { line: 1, column: 15, messageId: 'invalidVoidExprArrow' },
         { line: 1, column: 35, messageId: 'invalidVoidExprArrow' },
       ],
-      output: noFormat`foo => { foo ? console.log(true) : console.log(false); };`,
+      output: `foo => { foo ? console.log(true) : console.log(false); };`,
     },
     {
       code: `
@@ -117,7 +118,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         }
       `,
       errors: [{ line: 3, column: 18, messageId: 'invalidVoidExprReturn' }],
-      output: noFormat`
+      output: `
         function f() {
           console.log('foo'); return;
           console.log('bar');
@@ -133,7 +134,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         }
       `,
       errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturn' }],
-      output: noFormat`
+      output: `
         function f() {
           console.log('foo')
           ;['bar', 'baz'].forEach(console.log); return;
@@ -164,7 +165,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         }
       `,
       errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturnLast' }],
-      output: noFormat`
+      output: `
         function f() {
           console.log('foo')
           ;['bar', 'baz'].forEach(console.log);
@@ -181,7 +182,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         };
       `,
       errors: [{ line: 4, column: 20, messageId: 'invalidVoidExprReturn' }],
-      output: noFormat`
+      output: `
         const f = () => {
           if (cond) {
             console.error('foo'); return;
@@ -198,7 +199,7 @@ ruleTester.run('no-confusing-void-expression', rule, {
         };
       `,
       errors: [{ line: 3, column: 28, messageId: 'invalidVoidExprReturn' }],
-      output: noFormat`
+      output: `
         const f = function () {
           if (cond) { console.error('foo'); return; }
           console.log('bar');

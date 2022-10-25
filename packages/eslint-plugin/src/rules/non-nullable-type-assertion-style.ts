@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -11,7 +12,6 @@ export default util.createRule({
       description: 'Enforce non-null assertions over explicit type casts',
       recommended: 'strict',
       requiresTypeChecking: true,
-      suggestion: true,
     },
     fixable: 'code',
     messages: {

@@ -1,9 +1,11 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, {
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type {
   MessageIds,
   Options,
 } from '../../src/rules/prefer-nullish-coalescing';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import rule from '../../src/rules/prefer-nullish-coalescing';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -29,16 +31,18 @@ function typeValidTest(
     ...types.map(type => cb(type, '=')),
   ];
 }
+
 function nullishTypeValidTest(
   cb: (
     nullish: string,
     type: string,
+    equals: string,
   ) => TSESLint.ValidTestCase<Options> | string,
 ): (TSESLint.ValidTestCase<Options> | string)[] {
   return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
     (acc, nullish) => {
       types.forEach(type => {
-        acc.push(cb(nullish, type));
+        acc.push(cb(nullish, type, ''), cb(nullish, type, '='));
       });
       return acc;
     },
@@ -71,30 +75,82 @@ x ||${equals} 'foo';
       `,
     ),
     ...nullishTypeValidTest(
-      (nullish, type) => `
+      (nullish, type, equals) => `
 declare let x: ${type} | ${nullish};
-x ?? 'foo';
-      `,
-    ),
-    ...nullishTypeValidTest(
-      (nullish, type) => `
-declare let x: ${type} | ${nullish};
-x ??= 'foo';
+x ??${equals} 'foo';
       `,
     ),
 
-    // ignoreConditionalTests
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-x || 'foo' ? null : null;
+    {
+      code: 'x !== undefined && x !== null ? x : y;',
+      options: [{ ignoreTernaryTests: true }],
+    },
+
+    ...[
+      'x !== undefined && x !== null ? "foo" : "bar";',
+      'x !== null && x !== undefined && x !== 5 ? x : y',
+      'x === null || x === undefined || x === 5 ? x : y',
+      'x === undefined && x !== null ? x : y;',
+      'x === undefined && x === null ? x : y;',
+      'x !== undefined && x === null ? x : y;',
+      'x === undefined || x !== null ? x : y;',
+      'x === undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? y : x;',
+      'x === null || x === null ? y : x;',
+      'x === undefined || x === undefined ? y : x;',
+      'x == null ? x : y;',
+      'undefined == null ? x : y;',
+      'undefined != z ? x : y;',
+      'x == undefined ? x : y;',
+      'x != null ? y : x;',
+      'x != undefined ? y : x;',
+      'null == x ? x : y;',
+      'undefined == x ? x : y;',
+      'null != x ? y : x;',
+      'undefined != x ? y : x;',
+      `
+declare let x: string;
+x === null ? x : y;
       `,
-      options: [{ ignoreConditionalTests: true }],
+      `
+declare let x: string | undefined;
+x === null ? x : y;
+      `,
+      `
+declare let x: string | null;
+x === undefined ? x : y;
+      `,
+      `
+declare let x: string | undefined | null;
+x !== undefined ? x : y;
+      `,
+      `
+declare let x: string | undefined | null;
+x !== null ? x : y;
+      `,
+      `
+declare let x: string | null | any;
+x === null ? x : y;
+      `,
+      `
+declare let x: string | null | unknown;
+x === null ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+x === null ? x : y;
+      `,
+    ].map(code => ({
+      code,
+      options: [{ ignoreTernaryTests: false }] as const,
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+
+    // ignoreConditionalTests
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-(x ||= 'foo') ? null : null;
+x ||${equals} 'foo' ? null : null;
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
@@ -102,13 +158,6 @@ declare let x: ${type} | ${nullish};
       code: `
 declare let x: ${type} | ${nullish};
 if (x || 'foo') {}
-      `,
-      options: [{ ignoreConditionalTests: true }],
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-if (x ||= 'foo') {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
@@ -149,27 +198,8 @@ a || b && c;
 declare let a: ${type} | ${nullish};
 declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
-a ||= b && c;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
 declare let d: ${type} | ${nullish};
 a || b || c && d;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a ||= b || c && d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
@@ -189,72 +219,174 @@ a && b || c || d;
       code: `
 declare let x: ${type} | ${nullish};
 x || 'foo';
-      `.trimEnd(),
+      `,
       output: null,
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 3,
           endLine: 3,
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 x ?? 'foo';
-              `.trimEnd(),
+      `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-x ||= 'foo';
-      `.trimEnd(),
+
+    ...[
+      'x !== undefined && x !== null ? x : y;',
+      'x !== null && x !== undefined ? x : y;',
+      'x === undefined || x === null ? y : x;',
+      'x === null || x === undefined ? y : x;',
+      'undefined !== x && x !== null ? x : y;',
+      'null !== x && x !== undefined ? x : y;',
+      'undefined === x || x === null ? y : x;',
+      'null === x || x === undefined ? y : x;',
+      'x !== undefined && null !== x ? x : y;',
+      'x !== null && undefined !== x ? x : y;',
+      'x === undefined || null === x ? y : x;',
+      'x === null || undefined === x ? y : x;',
+      'undefined !== x && null !== x ? x : y;',
+      'null !== x && undefined !== x ? x : y;',
+      'undefined === x || null === x ? y : x;',
+      'null === x || undefined === x ? y : x;',
+      'x != undefined && x != null ? x : y;',
+      'x == undefined || x == null ? y : x;',
+      'x != undefined && x !== null ? x : y;',
+      'x == undefined || x === null ? y : x;',
+      'x !== undefined && x != null ? x : y;',
+      'undefined != x ? x : y;',
+      'null != x ? x : y;',
+      'undefined == x ? y : x;',
+      'null == x ? y : x;',
+      'x != undefined ? x : y;',
+      'x != null ? x : y;',
+      'x == undefined  ? y : x;',
+      'x == null ? y : x;',
+    ].flatMap(code => [
+      {
+        code,
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x ?? y;',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]'),
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]')
+              .length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x.z[1][this[this.o]]["3"][a.b.c] ?? y;',
+              },
+            ],
+          },
+        ],
+      },
+    ]),
+
+    {
+      code: 'this != undefined ? this : y;',
       output: null,
+      options: [{ ignoreTernaryTests: false }] as const,
       errors: [
         {
-          messageId: 'preferNullishAssignment',
-          line: 3,
-          column: 3,
-          endLine: 3,
-          endColumn: 6,
+          messageId: 'preferNullishOverTernary' as const,
+          line: 1,
+          column: 1,
+          endLine: 1,
+          endColumn: 29,
           suggestions: [
             {
-              messageId: 'suggestNullishAssignment',
-              output: `
-declare let x: ${type} | ${nullish};
-x ??= 'foo';
-              `.trimEnd(),
+              messageId: 'suggestNullish' as const,
+              output: 'this ?? y;',
             },
           ],
         },
       ],
-    })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-x ||= 'foo' ? null : null;
-      `.trimEnd(),
+    },
+
+    ...[
+      `
+declare let x: string | undefined;
+x !== undefined ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+undefined !== x ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+undefined === x ? y : x;
+      `,
+      `
+declare let x: string | undefined;
+undefined === x ? y : x;
+      `,
+      `
+declare let x: string | null;
+x !== null ? x : y;
+      `,
+      `
+declare let x: string | null;
+null !== x ? x : y;
+      `,
+      `
+declare let x: string | null;
+null === x ? y : x;
+      `,
+      `
+declare let x: string | null;
+null === x ? y : x;
+      `,
+    ].map(code => ({
+      code,
       output: null,
+      options: [{ ignoreTernaryTests: false }] as const,
       errors: [
         {
-          messageId: 'preferNullishAssignment',
+          messageId: 'preferNullishOverTernary' as const,
           line: 3,
-          column: 3,
+          column: 1,
           endLine: 3,
-          endColumn: 6,
+          endColumn: code.split('\n')[2].length,
           suggestions: [
             {
-              messageId: 'suggestNullishAssignment',
+              messageId: 'suggestNullish' as const,
               output: `
-declare let x: ${type} | ${nullish};
-x ??= 'foo' ? null : null;
-              `.trimEnd(),
+${code.split('\n')[1]}
+x ?? y;
+      `,
             },
           ],
         },
@@ -266,23 +398,23 @@ x ??= 'foo' ? null : null;
       code: `
 declare let x: ${type} | ${nullish};
 x || 'foo' ? null : null;
-      `.trimEnd(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 3,
           endLine: 3,
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 x ?? 'foo' ? null : null;
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -292,49 +424,23 @@ x ?? 'foo' ? null : null;
       code: `
 declare let x: ${type} | ${nullish};
 if (x || 'foo') {}
-      `.trimEnd(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 7,
           endLine: 3,
           endColumn: 9,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 if (x ?? 'foo') {}
-              `.trimEnd(),
-            },
-          ],
-        },
-      ],
-    })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-if (x ||= 'foo') {}
-      `.trimEnd(),
-      output: null,
-      options: [{ ignoreConditionalTests: false }],
-      errors: [
-        {
-          messageId: 'preferNullishAssignment',
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 10,
-          suggestions: [
-            {
-              messageId: 'suggestNullishAssignment',
-              output: `
-declare let x: ${type} | ${nullish};
-if (x ??= 'foo') {}
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -344,49 +450,23 @@ if (x ??= 'foo') {}
       code: `
 declare let x: ${type} | ${nullish};
 do {} while (x || 'foo')
-      `.trimEnd(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 16,
           endLine: 3,
           endColumn: 18,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 do {} while (x ?? 'foo')
-              `.trimEnd(),
-            },
-          ],
-        },
-      ],
-    })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-do {} while (x ||= 'foo')
-      `.trimEnd(),
-      output: null,
-      options: [{ ignoreConditionalTests: false }],
-      errors: [
-        {
-          messageId: 'preferNullishAssignment',
-          line: 3,
-          column: 16,
-          endLine: 3,
-          endColumn: 19,
-          suggestions: [
-            {
-              messageId: 'suggestNullishAssignment',
-              output: `
-declare let x: ${type} | ${nullish};
-do {} while (x ??= 'foo')
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -396,23 +476,23 @@ do {} while (x ??= 'foo')
       code: `
 declare let x: ${type} | ${nullish};
 for (;x || 'foo';) {}
-      `.trimEnd(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 9,
           endLine: 3,
           endColumn: 11,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 for (;x ?? 'foo';) {}
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -422,23 +502,23 @@ for (;x ?? 'foo';) {}
       code: `
 declare let x: ${type} | ${nullish};
 while (x || 'foo') {}
-      `.trimEnd(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 10,
           endLine: 3,
           endColumn: 12,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 while (x ?? 'foo') {}
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -452,53 +532,24 @@ declare let a: ${type} | ${nullish};
 declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 a || b && c;
-      `.trimEnd(),
+      `,
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 5,
           column: 3,
           endLine: 5,
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let a: ${type} | ${nullish};
 declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 a ?? b && c;
-              `.trimEnd(),
-            },
-          ],
-        },
-      ],
-    })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
-      code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a ||= b && c;
-      `.trimEnd(),
-      options: [{ ignoreMixedLogicalExpressions: false }],
-      errors: [
-        {
-          messageId: 'preferNullishAssignment',
-          line: 5,
-          column: 3,
-          endLine: 5,
-          endColumn: 6,
-          suggestions: [
-            {
-              messageId: 'suggestNullishAssignment',
-              output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a ??= b && c;
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -511,94 +562,44 @@ declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 declare let d: ${type} | ${nullish};
 a || b || c && d;
-      `.trimEnd(),
+      `,
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 3,
           endLine: 6,
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let a: ${type} | ${nullish};
 declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 declare let d: ${type} | ${nullish};
 (a ?? b) || c && d;
-              `.trimEnd(),
+      `,
             },
           ],
         },
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 8,
           endLine: 6,
           endColumn: 10,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let a: ${type} | ${nullish};
 declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 declare let d: ${type} | ${nullish};
 a || b ?? c && d;
-              `.trimEnd(),
-            },
-          ],
-        },
-      ],
-    })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
-      code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a ||= b || c && d;
-      `.trimEnd(),
-      options: [{ ignoreMixedLogicalExpressions: false }],
-      errors: [
-        {
-          messageId: 'preferNullishAssignment',
-          line: 6,
-          column: 3,
-          endLine: 6,
-          endColumn: 6,
-          suggestions: [
-            {
-              messageId: 'suggestNullishAssignment',
-              output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a ??= b || c && d;
-              `.trimEnd(),
-            },
-          ],
-        },
-        {
-          messageId: 'preferNullishLogical',
-          line: 6,
-          column: 9,
-          endLine: 6,
-          endColumn: 11,
-          suggestions: [
-            {
-              messageId: 'suggestNullishLogical',
-              output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a ||= b ?? c && d;
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -611,44 +612,44 @@ declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 declare let d: ${type} | ${nullish};
 a && b || c || d;
-      `.trimEnd(),
+      `,
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 8,
           endLine: 6,
           endColumn: 10,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let a: ${type} | ${nullish};
 declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 declare let d: ${type} | ${nullish};
 a && (b ?? c) || d;
-              `.trimEnd(),
+      `,
             },
           ],
         },
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 6,
           column: 13,
           endLine: 6,
           endColumn: 15,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let a: ${type} | ${nullish};
 declare let b: ${type} | ${nullish};
 declare let c: ${type} | ${nullish};
 declare let d: ${type} | ${nullish};
 a && b || c ?? d;
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -660,23 +661,23 @@ a && b || c ?? d;
       code: `
 declare let x: ${type} | ${nullish};
 if (() => x || 'foo') {}
-      `.trimEnd(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 13,
           endLine: 3,
           endColumn: 15,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 if (() => x ?? 'foo') {}
-              `.trimEnd(),
+      `,
             },
           ],
         },
@@ -686,29 +687,28 @@ if (() => x ?? 'foo') {}
       code: `
 declare let x: ${type} | ${nullish};
 if (function werid() { return x || 'foo' }) {}
-      `.trimEnd(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 3,
           column: 33,
           endLine: 3,
           endColumn: 35,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
 if (function werid() { return x ?? 'foo' }) {}
-              `.trimEnd(),
+      `,
             },
           ],
         },
       ],
     })),
-
     // https://github.com/typescript-eslint/typescript-eslint/issues/1290
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
@@ -716,24 +716,24 @@ declare let a: ${type} | ${nullish};
 declare let b: ${type};
 declare let c: ${type};
 a || b || c;
-      `.trimEnd(),
+      `,
       output: null,
       errors: [
         {
-          messageId: 'preferNullishLogical',
+          messageId: 'preferNullishOverOr',
           line: 5,
           column: 3,
           endLine: 5,
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'suggestNullishLogical',
+              messageId: 'suggestNullish',
               output: `
 declare let a: ${type} | ${nullish};
 declare let b: ${type};
 declare let c: ${type};
 (a ?? b) || c;
-              `.trimEnd(),
+      `,
             },
           ],
         },

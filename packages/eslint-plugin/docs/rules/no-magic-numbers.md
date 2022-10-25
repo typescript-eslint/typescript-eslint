@@ -1,8 +1,12 @@
-# `no-magic-numbers`
+---
+description: 'Disallow magic numbers.'
+---
 
-Disallows magic numbers.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-magic-numbers** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers) rule.
 It adds support for:
@@ -11,24 +15,8 @@ It adds support for:
 - `enum` members (`enum Foo { bar = 1 }`),
 - `readonly` class properties (`class Foo { readonly bar = 1 }`).
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-magic-numbers": "off",
-  "@typescript-eslint/no-magic-numbers": [
-    "error",
-    {
-      /* options */
-    }
-  ]
-}
-```
-
 ## Options
 
-See [`eslint/no-magic-numbers` options](https://eslint.org/docs/rules/no-magic-numbers#options).
 This rule adds the following options:
 
 ```ts
@@ -141,9 +129,3 @@ Examples of **correct** code for the `{ "ignoreTypeIndexes": true }` option:
 type Foo = Bar[0];
 type Baz = Parameters<Foo>[2];
 ```
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-magic-numbers.md)
-
-</sup>

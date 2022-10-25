@@ -1,8 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "CommonJS",
+    "moduleResolution": "NodeNext",
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "react",
@@ -16,5 +16,5 @@
     },
     "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
   },
-  "include": ["src/", "plugins/", "typings", "./docusaurusConfig.ts"]
+  "include": ["src", "tests", "plugins", "typings", "./*.ts"]
 }

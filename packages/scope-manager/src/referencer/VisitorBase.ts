@@ -1,5 +1,5 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { visitorKeys, VisitorKeys } from '@typescript-eslint/visitor-keys';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import { VisitorKeys, visitorKeys } from '@typescript-eslint/visitor-keys';
 
 interface VisitorOptions {
   childVisitorKeys?: VisitorKeys | null;

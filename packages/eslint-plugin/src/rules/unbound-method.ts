@@ -1,7 +1,10 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
+import { getModifiers } from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -142,6 +145,8 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreStatic: {
+            description:
+              'Whether to skip checking whether `static` methods are correctly bound.',
             type: 'boolean',
           },
         },
@@ -283,7 +288,7 @@ function checkMethod(
           !(
             ignoreStatic &&
             tsutils.hasModifier(
-              valueDeclaration.modifiers,
+              getModifiers(valueDeclaration),
               ts.SyntaxKind.StaticKeyword,
             )
           ),

@@ -1,6 +1,8 @@
-import { TSESTree, TSESLint, AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as semver from 'semver';
+import * as ts from 'typescript';
+
 import * as util from '../util';
 
 const is3dot9 = semver.satisfies(
@@ -19,7 +21,6 @@ export default util.createRule({
       description:
         'Disallow non-null assertions after an optional chain expression',
       recommended: 'error',
-      suggestion: true,
     },
     hasSuggestions: true,
     messages: {

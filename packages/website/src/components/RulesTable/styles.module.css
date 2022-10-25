@@ -1,0 +1,134 @@
+:root {
+  --gray-border: var(--ifm-color-secondary-dark);
+  --gray-border-shadow: var(--ifm-color-secondary-dark);
+  --blue-bg: rgba(148, 197, 225, 0.25);
+  --blue-border: var(--ifm-color-primary-lighter);
+  --blue-border-shadow: var(--ifm-color-primary-lightest);
+  --red-bg: rgba(250, 56, 62, 0.25);
+  --red-border: rgba(198, 10, 10, 0.4);
+  --red-border-shadow: rgba(255, 0, 0, 0.4);
+}
+
+[data-theme='dark'] {
+  --gray-border-shadow: var(--ifm-color-secondary);
+  --blue-bg: rgba(35, 78, 128, 0.5);
+  --blue-border: var(--ifm-color-primary-dark);
+  --red-border: rgba(255, 0, 0, 0.3);
+  --red-border-shadow: rgb(235, 107, 107);
+}
+
+.checkboxList {
+  flex-wrap: wrap;
+}
+
+.checkboxListItem {
+  user-select: none;
+  white-space: nowrap;
+  height: 32px;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: inline-flex;
+  margin-right: 0.5rem;
+}
+
+.checkboxListItem:last-child {
+  margin-right: 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  line-height: 1.5;
+  border-radius: 4px;
+  padding: 0.275rem 0.8rem;
+  opacity: 0.85;
+  transition: opacity 200ms ease-out;
+  border: 2px solid var(--gray-border);
+  background-color: var(--ifm-background-color);
+}
+
+[data-theme='dark'] .checkboxLabel {
+  border: 2px solid #666666;
+}
+
+.checkboxLabel:hover {
+  opacity: 1;
+  box-shadow: 0 0 2px 1px var(--gray-border-shadow);
+}
+
+[data-theme='dark'] .checkboxLabel:hover {
+  box-shadow: 0 0 2px 0 var(--gray-border-shadow);
+}
+
+.checkboxLabel:focus-visible {
+  outline: 2px solid currentColor;
+}
+
+.checkboxLabel.activated {
+  opacity: 0.9;
+  background-color: var(--blue-bg);
+  border: 2px solid var(--blue-border);
+}
+
+.checkboxLabel.activated:hover {
+  opacity: 0.75;
+  box-shadow: 0 0 2px 1px var(--blue-border-shadow);
+}
+
+.checkboxLabel.deactivated {
+  opacity: 0.9;
+  background-color: var(--red-bg);
+  border: 2px solid var(--red-border);
+}
+
+.checkboxLabel.deactivated:hover {
+  opacity: 0.75;
+  box-shadow: 0 0 2px 1px var(--red-border-shadow);
+}
+
+.visual::after {
+  content: '✖';
+  display: inline-block;
+  margin-left: 0;
+  opacity: 0;
+  width: 0;
+  transition: margin-left var(--ifm-transition-fast),
+    opacity var(--ifm-transition-fast), width var(--ifm-transition-fast);
+}
+
+.visual.visual-exclude::after,
+.visual.visual-include::after {
+  margin-left: -0.5rem;
+  opacity: 1;
+  width: 1rem;
+}
+
+.visual.visual-include::after {
+  content: '✔';
+}
+
+.rulesTable,
+.ruleCol {
+  width: 100%;
+  overflow: visible;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.rulesTable thead {
+  background-color: #f7f7f7;
+  position: sticky;
+  top: var(--ifm-navbar-height);
+  box-shadow: 0 5px 5px var(--gray-border-shadow);
+}
+
+[data-theme='dark'] .rulesTable th {
+  background-color: #2b2b2d;
+}
+
+.attrCol {
+  min-width: 2.5em;
+  text-align: center;
+  cursor: default;
+}

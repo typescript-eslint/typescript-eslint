@@ -1,4 +1,4 @@
-import * as TSESTree from './generated/ast-spec';
+import type * as TSESTree from './generated/ast-spec';
 
 // augment to add the parent property, which isn't part of the spec
 declare module './generated/ast-spec' {

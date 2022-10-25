@@ -1,7 +1,8 @@
-import React from 'react';
-import type { TabType } from './types';
-import styles from './Playground.module.css';
 import EditIcon from '@site/src/icons/edit.svg';
+import React from 'react';
+
+import styles from './Playground.module.css';
+import type { TabType } from './types';
 
 export interface FileTabsProps {
   readonly tabs: TabType[];

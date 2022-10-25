@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule, { phrases } from '../../src/rules/prefer-function-type';
 import { noFormat, RuleTester } from '../RuleTester';
 
@@ -82,12 +83,7 @@ export default interface Foo {
           },
         },
       ],
-      output: `
-export default interface Foo {
-  /** comment */
-  (): string;
-}
-      `,
+      output: null,
     },
     {
       code: `
@@ -364,7 +360,7 @@ interface Foo {
           },
         },
       ],
-      output: noFormat`
+      output: `
 // isn't actually valid ts but want to not give message saying it refers to Foo.
 type Foo = () => {
     a: {
@@ -390,7 +386,7 @@ type X = {} | { (): void; }
           },
         },
       ],
-      output: noFormat`
+      output: `
 type X = {} | (() => void)
       `,
     },
@@ -407,7 +403,7 @@ type X = {} & { (): void; };
           },
         },
       ],
-      output: noFormat`
+      output: `
 type X = {} & (() => void);
       `,
     },
