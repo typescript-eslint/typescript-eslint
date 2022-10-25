@@ -1,4 +1,5 @@
 import semver from 'semver';
+
 import * as parser from '../../src/parser';
 
 jest.mock('semver');

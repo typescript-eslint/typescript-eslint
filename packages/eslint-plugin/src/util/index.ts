@@ -7,11 +7,11 @@ export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
 export * from './getThisExpression';
 export * from './getWrappingFixer';
-export * from './misc';
-export * from './objectIterators';
+export * from './isNodeEqual';
 export * from './isNullLiteral';
 export * from './isUndefinedIdentifier';
-export * from './isNodeEqual';
+export * from './misc';
+export * from './objectIterators';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';

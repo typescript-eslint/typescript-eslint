@@ -1,4 +1,6 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Modifier =
@@ -36,32 +38,40 @@ export default util.createRule<Options, MessageIds>({
       preferParameterProperty:
         'Property {{parameter}} should be declared as a parameter property.',
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allow: {
-            type: 'array',
-            items: {
-              enum: [
-                'readonly',
-                'private',
-                'protected',
-                'public',
-                'private readonly',
-                'protected readonly',
-                'public readonly',
-              ],
-            },
-            minItems: 1,
-          },
-          prefer: {
-            enum: ['class-property', 'parameter-property'],
-          },
+    schema: {
+      $defs: {
+        modifier: {
+          enum: [
+            'readonly',
+            'private',
+            'protected',
+            'public',
+            'private readonly',
+            'protected readonly',
+            'public readonly',
+          ],
         },
-        additionalProperties: false,
       },
-    ],
+      prefixItems: [
+        {
+          type: 'object',
+          properties: {
+            allow: {
+              type: 'array',
+              items: {
+                $ref: '#/$defs/modifier',
+              },
+              minItems: 1,
+            },
+            prefer: {
+              enum: ['class-property', 'parameter-property'],
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [
     {

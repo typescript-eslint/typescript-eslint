@@ -1,27 +1,20 @@
+---
+description: 'Disallow empty functions.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-empty-function** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-empty-function`](https://eslint.org/docs/rules/no-empty-function) rule.
 It adds support for handling TypeScript specific code that would otherwise trigger the rule.
 
 One example of valid TypeScript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-empty-function": "off",
-  "@typescript-eslint/no-empty-function": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/no-empty-function` options](https://eslint.org/docs/rules/no-empty-function#options).
 This rule adds the following options:
 
 ```ts
@@ -93,19 +86,3 @@ class Foo extends Base {
   protected override greet(): void {}
 }
 ```
-
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-empty-function": "off",
-  "@typescript-eslint/no-empty-function": ["error"]
-}
-```
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-empty-function.md)
-
-</sup>

@@ -1,12 +1,16 @@
+---
+description: "Require explicit return and argument types on exported functions' and classes' public class methods."
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/explicit-module-boundary-types** for documentation.
 
 Explicit types for function return values and arguments makes it clear to any calling code what is the module boundary's input and output.
+Adding explicit type annotations for those types can help improve code readability.
+It can also improve TypeScript type checking performance on larger codebases.
 
-## Rule Details
-
-This rule aims to ensure that the values returned from a module are of the expected type.
+## Examples
 
 <!--tabs-->
 
@@ -68,46 +72,6 @@ class Test {
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  /**
-   * If true, the rule will not report for arguments that are explicitly typed as `any`
-   */
-  allowArgumentsExplicitlyTypedAsAny?: boolean;
-  /**
-   * If true, body-less arrow functions that return an `as const` type assertion will not
-   * require an explicit return value annotation.
-   * You must still type the parameters of the function.
-   */
-  allowDirectConstAssertionInArrowFunctions?: boolean;
-  /**
-   * An array of function/method names that will not have their arguments or their return values checked.
-   */
-  allowedNames?: string[];
-  /**
-   * If true, functions immediately returning another function expression will not
-   * require an explicit return value annotation.
-   * You must still type the parameters of the function.
-   */
-  allowHigherOrderFunctions?: boolean;
-  /**
-   * If true, type annotations are also allowed on the variable of a function expression
-   * rather than on the function arguments/return value directly.
-   */
-  allowTypedFunctionExpressions?: boolean;
-};
-
-const defaults = {
-  allowArgumentsExplicitlyTypedAsAny: false,
-  allowDirectConstAssertionInArrowFunctions: true,
-  allowedNames: [],
-  allowHigherOrderFunctions: true,
-  allowTypedFunctionExpressions: true,
-};
-```
-
 ### Configuring in a mixed JS/TS codebase
 
 If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.mjs`/`.cjs`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.mts`/`.cts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.mjs`/`.cjs`/`.jsx` files.
@@ -123,7 +87,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": ["error"]
+        "@typescript-eslint/explicit-module-boundary-types": "error"
       }
     }
   ]

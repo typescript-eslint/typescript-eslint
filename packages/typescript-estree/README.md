@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](https://typescript-eslint.io/docs/linting)**
+**[You can find our Getting Started docs here](https://typescript-eslint.io/docs)**
 
 ## About
 

@@ -1,8 +1,14 @@
+---
+description: 'Require all enum members to be literal values.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-literal-enum-member** for documentation.
 
-TypeScript allows the value of an enum member to be many different kinds of valid JavaScript expressions. However, because enums create their own scope whereby each enum member becomes a variable in that scope, unexpected values could be used at runtime. Example:
+TypeScript allows the value of an enum member to be many different kinds of valid JavaScript expressions.
+However, because enums create their own scope whereby each enum member becomes a variable in that scope, developers are often surprised at the resultant values.
+For example:
 
 ```ts
 const imOutside = 2;
@@ -17,17 +23,12 @@ enum Foo {
 }
 ```
 
-The answer is that `Foo.c` will be `1` at runtime. The [playground](https://www.typescriptlang.org/play/#src=const%20imOutside%20%3D%202%3B%0D%0Aconst%20b%20%3D%202%3B%0D%0Aenum%20Foo%20%7B%0D%0A%20%20%20%20outer%20%3D%20imOutside%2C%0D%0A%20%20%20%20a%20%3D%201%2C%0D%0A%20%20%20%20b%20%3D%20a%2C%0D%0A%20%20%20%20c%20%3D%20b%2C%0D%0A%20%20%20%20%2F%2F%20does%20c%20%3D%3D%20Foo.b%20%3D%3D%20Foo.c%20%3D%3D%201%3F%0D%0A%20%20%20%20%2F%2F%20or%20does%20c%20%3D%3D%20b%20%3D%3D%202%3F%0D%0A%7D) illustrates this quite nicely.
+> The answer is that `Foo.c` will be `1` at runtime [[TypeScript playground](https://www.typescriptlang.org/play/#src=const%20imOutside%20%3D%202%3B%0D%0Aconst%20b%20%3D%202%3B%0D%0Aenum%20Foo%20%7B%0D%0A%20%20%20%20outer%20%3D%20imOutside%2C%0D%0A%20%20%20%20a%20%3D%201%2C%0D%0A%20%20%20%20b%20%3D%20a%2C%0D%0A%20%20%20%20c%20%3D%20b%2C%0D%0A%20%20%20%20%2F%2F%20does%20c%20%3D%3D%20Foo.b%20%3D%3D%20Foo.c%20%3D%3D%201%3F%0D%0A%20%20%20%20%2F%2F%20or%20does%20c%20%3D%3D%20b%20%3D%3D%202%3F%0D%0A%7D)].
 
-## Rule Details
+Therefore, it's often better to prevent unexpected results in code by requiring the use of literal values as enum members.
+This rule reports when an enum member is given a value that is not a literal.
 
-This rule is meant to prevent unexpected results in code by requiring the use of literal values as enum members to prevent unexpected runtime behavior. Template literals, arrays, objects, constructors, and all other expression types can end up using a variable from its scope or the parent scope, which can result in the same unexpected behavior at runtime.
-
-## Options
-
-- `allowBitwiseExpressions` set to `true` will allow you to use bitwise expressions in enum initializer (Default: `false`).
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -58,13 +59,15 @@ enum Valid {
 
 <!--/tabs-->
 
-### `allowBitwiseExpressions`
+## Options
+
+- `allowBitwiseExpressions` set to `true` will allow you to use bitwise expressions in enum initializer (Default: `false`).
 
 Examples of code for the `{ "allowBitwiseExpressions": true }` option:
 
 <!--tabs-->
 
-#### ❌ Incorrect
+### ❌ Incorrect
 
 ```ts
 const x = 1;
@@ -79,7 +82,7 @@ enum Foo {
 }
 ```
 
-#### ✅ Correct
+### ✅ Correct
 
 ```ts
 enum Foo {

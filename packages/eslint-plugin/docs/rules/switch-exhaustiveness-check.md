@@ -1,12 +1,17 @@
+---
+description: 'Require switch-case statements to be exhaustive with union type.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.
 
-Union type may have a lot of parts. It's easy to forget to consider all cases in switch. This rule reminds which parts are missing. If domain of the problem requires to have only a partial switch, developer may _explicitly_ add a default clause.
+When working with union types in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union).
+However, if the union type changes, it's easy to forget to modify the cases to account for any new types.
 
-## Rule Details
+This rule reports when a `switch` statement over a value typed as a union of literals is missing a case for any of those literal types and does not have a `default` clause.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -26,10 +31,9 @@ const day = 'Monday' as Day;
 let result = 0;
 
 switch (day) {
-  case 'Monday': {
+  case 'Monday':
     result = 1;
     break;
-  }
 }
 ```
 
@@ -49,34 +53,27 @@ const day = 'Monday' as Day;
 let result = 0;
 
 switch (day) {
-  case 'Monday': {
+  case 'Monday':
     result = 1;
     break;
-  }
-  case 'Tuesday': {
+  case 'Tuesday':
     result = 2;
     break;
-  }
-  case 'Wednesday': {
+  case 'Wednesday':
     result = 3;
     break;
-  }
-  case 'Thursday': {
+  case 'Thursday':
     result = 4;
     break;
-  }
-  case 'Friday': {
+  case 'Friday':
     result = 5;
     break;
-  }
-  case 'Saturday': {
+  case 'Saturday':
     result = 6;
     break;
-  }
-  case 'Sunday': {
+  case 'Sunday':
     result = 7;
     break;
-  }
 }
 ```
 
@@ -96,29 +93,14 @@ const day = 'Monday' as Day;
 let result = 0;
 
 switch (day) {
-  case 'Monday': {
+  case 'Monday':
     result = 1;
     break;
-  }
-  default: {
+  default:
     result = 42;
-  }
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/switch-exhaustiveness-check": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 
-If program doesn't have union types with many parts. Downside of this rule is the need for type information, so it's slower than regular rules.
+If you don't frequently `switch` over union types with many parts, or intentionally wish to leave out some parts.

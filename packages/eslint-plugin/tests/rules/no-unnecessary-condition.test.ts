@@ -1,13 +1,15 @@
-import {
-  TestCaseError,
+import type {
   InvalidTestCase,
+  TestCaseError,
 } from '@typescript-eslint/utils/dist/ts-eslint';
 import * as path from 'path';
-import rule, {
-  Options,
+
+import type {
   MessageId,
+  Options,
 } from '../../src/rules/no-unnecessary-condition';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
+import rule from '../../src/rules/no-unnecessary-condition';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -43,7 +45,7 @@ const unnecessaryConditionTest = (
   errors: [ruleError(4, 12, messageId)],
 });
 
-ruleTester.run('no-unnecessary-conditionals', rule, {
+ruleTester.run('no-unnecessary-condition', rule, {
   valid: [
     `
 declare const b1: boolean;
@@ -65,6 +67,11 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+    `,
+    `
+declare function foo(): number | void;
+const result1 = foo() === undefined;
+const result2 = foo() == null;
     `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
@@ -914,7 +921,7 @@ foo ?.
 foo
   ?. bar;
       `,
-      output: noFormat`
+      output: `
 let foo = { bar: true };
 foo.bar;
 foo . bar;

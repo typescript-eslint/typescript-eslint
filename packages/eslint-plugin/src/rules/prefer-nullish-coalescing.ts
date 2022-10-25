@@ -1,11 +1,8 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
-import * as util from '../util';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
+import * as util from '../util';
 
 export type Options = [
   {
@@ -28,7 +25,6 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Enforce using the nullish coalescing operator instead of logical chaining',
       recommended: 'strict',
-      suggestion: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -50,9 +46,6 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
           },
           ignoreMixedLogicalExpressions: {
-            type: 'boolean',
-          },
-          forceSuggestionFixer: {
             type: 'boolean',
           },
         },

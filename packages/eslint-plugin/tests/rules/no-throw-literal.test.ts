@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-throw-literal';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {

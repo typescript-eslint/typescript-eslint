@@ -1,9 +1,9 @@
-name: "✨ Propose a New Rule"
-description: "Propose a new lint rule"
-title: "Rule proposal: <a short description of my proposal>"
+name: '✨ Propose a New Rule'
+description: 'Propose a new lint rule'
+title: 'Rule proposal: <a short description of my proposal>'
 labels:
-  - "enhancement: new plugin rule"
-  - "package: eslint-plugin"
+  - 'enhancement: new plugin rule'
+  - 'package: eslint-plugin'
   - triage
 body:
   - type: checkboxes

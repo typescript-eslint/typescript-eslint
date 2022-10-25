@@ -1,31 +1,20 @@
+---
+description: 'Disallow unnecessary namespace qualifiers.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-qualifier** for documentation.
 
-## Rule Details
+Members of TypeScript enums and namespaces are generally retrieved as qualified property lookups: e.g. `Enum.member`.
+However, when accessed within their parent enum or namespace, the qualifier is unnecessary: e.g. just `member` instead of `Enum.member`.
+This rule reports when an enum or namespace qualifier is unnecessary.
 
-This rule aims to let users know when a namespace or enum qualifier is unnecessary,
-whether used for a type or for a value.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
 ### ❌ Incorrect
-
-```ts
-namespace A {
-  export type B = number;
-  const x: A.B = 3;
-}
-```
-
-```ts
-namespace A {
-  export const x = 3;
-  export const y = A.x;
-}
-```
 
 ```ts
 enum A {
@@ -36,59 +25,27 @@ enum A {
 
 ```ts
 namespace A {
-  export namespace B {
-    export type T = number;
-    const x: A.B.T = 3;
-  }
+  export type B = number;
+  const x: A.B = 3;
 }
 ```
 
 ### ✅ Correct
 
 ```ts
-namespace X {
-  export type T = number;
-}
-
-namespace Y {
-  export const x: X.T = 3;
-}
-```
-
-```ts
 enum A {
-  X,
-  Y,
-}
-
-enum B {
-  Z = A.X,
+  B,
+  C = B,
 }
 ```
 
 ```ts
-namespace X {
-  export type T = number;
-  namespace Y {
-    type T = string;
-    const x: X.T = 0;
-  }
+namespace A {
+  export type B = number;
+  const x: B = 3;
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unnecessary-qualifier": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 
-If you don't care about having unneeded namespace or enum qualifiers, then you don't need to use this rule.
+If you don't care about having unneeded enum or namespace qualifiers, then you don't need to use this rule.
