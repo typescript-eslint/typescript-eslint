@@ -1,5 +1,5 @@
-import { createSerializer } from './baseSerializer';
 import { Reference } from '../../../src/referencer/Reference';
+import { createSerializer } from './baseSerializer';
 
 const serializer = createSerializer(Reference, [
   'identifier',

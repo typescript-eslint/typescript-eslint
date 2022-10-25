@@ -1,5 +1,6 @@
-import type { ASTViewerModel, Serializer } from '../types';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import type { ASTViewerModel, Serializer } from '../types';
 import { isRecord } from '../utils';
 
 export const propsToFilter = ['parent', 'comments', 'tokens'];

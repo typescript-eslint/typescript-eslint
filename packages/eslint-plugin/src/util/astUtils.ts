@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { escapeRegExp } from './escapeRegExp';
 import * as ts from 'typescript';
+
+import { escapeRegExp } from './escapeRegExp';
 
 // deeply re-export, for convenience
 export * from '@typescript-eslint/utils/dist/ast-utils';

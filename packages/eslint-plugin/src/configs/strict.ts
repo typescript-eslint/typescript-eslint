@@ -61,6 +61,7 @@ export = {
     '@typescript-eslint/no-unsafe-argument': 'error',
     '@typescript-eslint/no-unsafe-assignment': 'error',
     '@typescript-eslint/no-unsafe-call': 'error',
+    '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
     'no-unused-vars': 'off',

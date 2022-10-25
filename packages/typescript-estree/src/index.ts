@@ -13,6 +13,8 @@ export * from './ts-estree';
 export { clearWatchCaches as clearCaches } from './create-program/createWatchProgram';
 export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
 export * from './create-program/getScriptKind';
+export { typescriptVersionIsAtLeast } from './version-check';
+export * from './getModifiers';
 
 // re-export for backwards-compat
 export { visitorKeys } from '@typescript-eslint/visitor-keys';

@@ -60,62 +60,6 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
-      "decorators": Array [
-        Object {
-          "expression": Object {
-            "arguments": Array [],
-            "callee": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 5,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 1,
-                  "line": 1,
-                },
-              },
-              "name": "deco",
-              "range": Array [
-                1,
-                5,
-              ],
-              "type": "Identifier",
-            },
-            "loc": Object {
-              "end": Object {
-                "column": 7,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 1,
-                "line": 1,
-              },
-            },
-            "optional": false,
-            "range": Array [
-              1,
-              7,
-            ],
-            "type": "CallExpression",
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 7,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 0,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            0,
-            7,
-          ],
-          "type": "Decorator",
-        },
-      ],
       "kind": "const",
       "loc": Object {
         "end": Object {

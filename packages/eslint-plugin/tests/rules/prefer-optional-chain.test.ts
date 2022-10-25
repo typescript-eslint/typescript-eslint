@@ -1,10 +1,11 @@
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/prefer-optional-chain';
-import { RuleTester, noFormat } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/utils';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -249,7 +250,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo?.bar?.baz || baz && baz.bar && baz.bar.foo`,
+              output: `foo?.bar?.baz || baz && baz.bar && baz.bar.foo`,
             },
           ],
         },
@@ -258,7 +259,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo && foo.bar && foo.bar.baz || baz?.bar?.foo`,
+              output: `foo && foo.bar && foo.bar.baz || baz?.bar?.foo`,
             },
           ],
         },
@@ -340,7 +341,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo?.["some long string"]?.baz`,
+              output: `foo?.["some long string"]?.baz`,
             },
           ],
         },
@@ -355,7 +356,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo?.[\`some long string\`]?.baz`,
+              output: `foo?.[\`some long string\`]?.baz`,
             },
           ],
         },
@@ -382,7 +383,7 @@ ruleTester.run('prefer-optional-chain', rule, {
 foo && foo.bar(/* comment */a,
   // comment2
   b, );
-      `.trimRight(),
+      `,
       output: null,
       errors: [
         {
@@ -390,11 +391,11 @@ foo && foo.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`
+              output: `
 foo?.bar(/* comment */a,
   // comment2
   b, );
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -712,7 +713,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo) { foo?.bar; }`,
+              output: `if (foo) { foo?.bar; }`,
             },
           ],
         },
@@ -728,7 +729,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo?.bar) { foo.bar; }`,
+              output: `if (foo?.bar) { foo.bar; }`,
             },
           ],
         },
@@ -945,7 +946,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo) { foo?.bar; }`,
+              output: `if (foo) { foo?.bar; }`,
             },
           ],
         },
@@ -961,7 +962,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo?.bar) { foo.bar; }`,
+              output: `if (foo?.bar) { foo.bar; }`,
             },
           ],
         },
@@ -1009,7 +1010,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`((typeof x) as string)?.bar;`,
+              output: `((typeof x) as string)?.bar;`,
             },
           ],
         },

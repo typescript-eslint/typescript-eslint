@@ -1,9 +1,9 @@
-name: "🐛 Report a Bug With a Rule"
-description: "Report a bug you encountered with a lint rule"
-title: "Bug: [rule name here] <short description of the issue>"
+name: '🐛 Report a Bug With a Rule'
+description: 'Report a bug you encountered with a lint rule'
+title: 'Bug: [rule name here] <short description of the issue>'
 labels:
   - bug
-  - "package: eslint-plugin"
+  - 'package: eslint-plugin'
   - triage
 body:
   - type: checkboxes

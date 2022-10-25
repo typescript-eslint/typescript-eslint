@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { RuleDetails, RuleEntry, ConfigModel, EslintRC } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
+import type { ConfigModel, EslintRC, RuleDetails, RuleEntry } from '../types';
+import type { ConfigOptionsType } from './ConfigEditor';
+import ConfigEditor from './ConfigEditor';
 import { parseESLintRC, toJson } from './utils';
 
 export interface ConfigEslintProps {
@@ -27,20 +28,21 @@ function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
 }
 
 function ConfigEslint(props: ConfigEslintProps): JSX.Element {
+  const { isOpen, config, onClose: onCloseProps, ruleOptions } = props;
   const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
   const [configObject, updateConfigObject] = useState<EslintRC>();
 
   useEffect(() => {
-    if (props.isOpen) {
-      updateConfigObject(parseESLintRC(props.config));
+    if (isOpen) {
+      updateConfigObject(parseESLintRC(config));
     }
-  }, [props.isOpen, props.config]);
+  }, [isOpen, config]);
 
   useEffect(() => {
     updateOptions([
       {
         heading: 'Rules',
-        fields: props.ruleOptions
+        fields: ruleOptions
           .filter(item => item.name.startsWith('@typescript'))
           .map(item => ({
             key: item.name,
@@ -51,7 +53,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
       },
       {
         heading: 'Core rules',
-        fields: props.ruleOptions
+        fields: ruleOptions
           .filter(item => !item.name.startsWith('@typescript'))
           .map(item => ({
             key: item.name,
@@ -61,7 +63,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
           })),
       },
     ]);
-  }, [props.ruleOptions]);
+  }, [ruleOptions]);
 
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
@@ -75,14 +77,14 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
           .filter(checkOptions),
       );
       if (!shallowEqual(cfg, configObject?.rules)) {
-        props.onClose({
+        onCloseProps({
           eslintrc: toJson({ ...(configObject ?? {}), rules: cfg }),
         });
       } else {
-        props.onClose();
+        onCloseProps();
       }
     },
-    [props.onClose, configObject],
+    [onCloseProps, configObject],
   );
 
   return (
@@ -90,7 +92,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
       header="Eslint Config"
       options={options}
       values={configObject?.rules ?? {}}
-      isOpen={props.isOpen}
+      isOpen={isOpen}
       onClose={onClose}
     />
   );

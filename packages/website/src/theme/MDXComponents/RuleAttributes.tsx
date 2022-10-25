@@ -1,73 +1,109 @@
-import React from 'react';
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import React from 'react';
 
+import type { FeatureProps } from './Feature';
+import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
-export function RuleAttributes({ name }: { name: string }): JSX.Element | null {
+const getRecommendation = (docs: RuleMetaDataDocs): [string, string] => {
+  return docs.recommended === 'strict'
+    ? ['🔒', 'strict']
+    : docs.requiresTypeChecking
+    ? ['🧠', 'recommended-requiring-type-checking']
+    : ['✅', 'recommended'];
+};
+
+export function RuleAttributes({ name }: { name: string }): React.ReactNode {
   const rules = useRulesMeta();
   const rule = rules.find(rule => rule.name === name);
-  if (!rule) {
+  if (!rule?.docs) {
     return null;
   }
+
+  const features: FeatureProps[] = [];
+
+  if (rule.docs.recommended) {
+    const [emoji, recommendation] = getRecommendation(rule.docs);
+    features.push({
+      children: (
+        <>
+          Extending{' '}
+          <a href={`/docs/linting/configs#${recommendation}`} target="_blank">
+            <code className={styles.code}>
+              "plugin:@typescript-eslint/{recommendation}"
+            </code>
+          </a>{' '}
+          in an{' '}
+          <a
+            href="https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files"
+            target="_blank"
+          >
+            ESLint configuration
+          </a>{' '}
+          enables this rule.
+        </>
+      ),
+      emoji,
+    });
+  }
+
+  if (rule.fixable) {
+    features.push({
+      children: (
+        <>
+          Some problems reported by this rule are automatically fixable by the{' '}
+          <a
+            href="https://eslint.org/docs/latest/user-guide/command-line-interface#--fix"
+            target="_blank"
+          >
+            <code>--fix</code> ESLint command line option
+          </a>
+          .
+        </>
+      ),
+      emoji: '🛠',
+    });
+  }
+
+  if (rule.hasSuggestions) {
+    features.push({
+      children: (
+        <>
+          Some problems reported by this rule are manually fixable by editor{' '}
+          <a
+            href="https://eslint.org/docs/latest/developer-guide/working-with-rules#providing-suggestions"
+            target="_blank"
+          >
+            suggestions
+          </a>
+          .
+        </>
+      ),
+      emoji: '💡',
+    });
+  }
+
+  if (rule.docs.requiresTypeChecking) {
+    features.push({
+      children: (
+        <>
+          This rule requires{' '}
+          <a href="/docs/linting/typed-linting" target="_blank">
+            type information
+          </a>{' '}
+          to run.
+        </>
+      ),
+      emoji: '💭',
+    });
+  }
+
   return (
-    <>
-      <h2 id="attributes">Attributes</h2>
-      <ul className={styles.taskList}>
-        <li>
-          <input type="checkbox" disabled checked={!!rule.docs?.recommended} />
-          Included in configs
-          <ul className={styles.taskList}>
-            <li>
-              <input
-                type="checkbox"
-                disabled
-                checked={(
-                  ['error', 'warn'] as (
-                    | TSESLint.RuleRecommendation
-                    | undefined
-                  )[]
-                ).includes(rule.docs?.recommended)}
-              />
-              ✅ Recommended
-            </li>
-            <li>
-              <input
-                type="checkbox"
-                disabled
-                checked={rule.docs?.recommended === 'strict'}
-              />
-              🔒 Strict
-            </li>
-          </ul>
-        </li>
-        <li>
-          <input
-            type="checkbox"
-            disabled
-            checked={!!rule.fixable || rule.hasSuggestions}
-          />
-          Fixable
-          <ul className={styles.taskList}>
-            <li>
-              <input type="checkbox" disabled checked={!!rule.fixable} />
-              🔧 Automated Fixer
-            </li>
-            <li>
-              <input type="checkbox" disabled checked={!!rule.hasSuggestions} />
-              🛠 Suggestion Fixer
-            </li>
-          </ul>
-        </li>
-        <li>
-          <input
-            type="checkbox"
-            disabled
-            checked={!!rule.docs?.requiresTypeChecking}
-          />
-          💭 Requires type information
-        </li>
-      </ul>
-    </>
+    <div className={styles.features}>
+      {features.map(feature => (
+        <Feature {...feature} key={feature.emoji} />
+      ))}
+    </div>
   );
 }

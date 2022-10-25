@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = ['fields' | 'getters'];
@@ -15,7 +17,7 @@ const printNodeModifiers = (
 ): string =>
   `${node.accessibility ?? ''}${
     node.static ? ' static' : ''
-  } ${final} `.trimLeft();
+  } ${final} `.trimStart();
 
 const isSupportedLiteral = (
   node: TSESTree.Node,

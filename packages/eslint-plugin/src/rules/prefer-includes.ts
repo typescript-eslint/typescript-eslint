@@ -1,11 +1,14 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { AST as RegExpAST } from 'regexpp';
+import { parseRegExpLiteral } from 'regexpp';
 import * as ts from 'typescript';
+
 import {
   createRule,
+  getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
-  getConstrainedTypeAtLocation,
 } from '../util';
 
 export default createRule({

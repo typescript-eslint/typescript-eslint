@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type MessageIds =
@@ -56,9 +58,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowComparingNullableBooleansToTrue: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `true`.',
             type: 'boolean',
           },
           allowComparingNullableBooleansToFalse: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `false`.',
             type: 'boolean',
           },
         },

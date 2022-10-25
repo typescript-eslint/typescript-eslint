@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-dynamic-delete';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -68,10 +68,7 @@ const container: { [i: string]: 0 } = {};
 delete container['aa' + 'b'];
       `,
       errors: [{ messageId: 'dynamicDelete' }],
-      output: `
-const container: { [i: string]: 0 } = {};
-delete container['aa' + 'b'];
-      `,
+      output: null,
     },
     {
       code: `
@@ -90,10 +87,7 @@ const container: { [i: string]: 0 } = {};
 delete container[-Infinity];
       `,
       errors: [{ messageId: 'dynamicDelete' }],
-      output: `
-const container: { [i: string]: 0 } = {};
-delete container[-Infinity];
-      `,
+      output: null,
     },
     {
       code: `
@@ -101,10 +95,7 @@ const container: { [i: string]: 0 } = {};
 delete container[+Infinity];
       `,
       errors: [{ messageId: 'dynamicDelete' }],
-      output: `
-const container: { [i: string]: 0 } = {};
-delete container[+Infinity];
-      `,
+      output: null,
     },
     {
       code: `
@@ -112,10 +103,7 @@ const container: { [i: string]: 0 } = {};
 delete container[NaN];
       `,
       errors: [{ messageId: 'dynamicDelete' }],
-      output: `
-const container: { [i: string]: 0 } = {};
-delete container[NaN];
-      `,
+      output: null,
     },
     {
       code: `
@@ -135,11 +123,7 @@ const name = 'name';
 delete container[name];
       `,
       errors: [{ messageId: 'dynamicDelete' }],
-      output: `
-const container: { [i: string]: 0 } = {};
-const name = 'name';
-delete container[name];
-      `,
+      output: null,
     },
     {
       code: `
@@ -147,11 +131,7 @@ const container: { [i: string]: 0 } = {};
 const getName = () => 'aaa';
 delete container[getName()];
       `,
-      output: `
-const container: { [i: string]: 0 } = {};
-const getName = () => 'aaa';
-delete container[getName()];
-      `,
+      output: null,
       errors: [{ messageId: 'dynamicDelete' }],
     },
     {
@@ -160,11 +140,7 @@ const container: { [i: string]: 0 } = {};
 const name = { foo: { bar: 'bar' } };
 delete container[name.foo.bar];
       `,
-      output: `
-const container: { [i: string]: 0 } = {};
-const name = { foo: { bar: 'bar' } };
-delete container[name.foo.bar];
-      `,
+      output: null,
       errors: [{ messageId: 'dynamicDelete' }],
     },
   ],

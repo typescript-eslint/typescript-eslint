@@ -1,4 +1,5 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type Options = [
@@ -32,6 +33,8 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreStringArrays: {
+            description:
+              'Whether to ignore arrays in which all elements are strings.',
             type: 'boolean',
           },
         },
