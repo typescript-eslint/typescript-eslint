@@ -2,8 +2,8 @@
 // https://developer.github.com/v3/repos/#list-contributors
 // this endpoint returns a list of contributors sorted by number of contributions
 
-import * as fs from 'fs';
 import fetch from 'cross-fetch';
+import * as fs from 'fs';
 import * as path from 'path';
 
 const IGNORED_USERS = new Set([

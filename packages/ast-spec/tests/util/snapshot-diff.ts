@@ -1,5 +1,6 @@
 import { diff } from 'jest-diff';
 import defaultPrinter from 'pretty-format';
+
 import * as NodeSerializer from './serializers/Node';
 import * as StringSerializer from './serializers/string';
 

@@ -1,4 +1,6 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type RuleNode =
@@ -17,7 +19,7 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require that member overloads be consecutive',
+      description: 'Require that function overload signatures be consecutive',
       recommended: 'error',
     },
     schema: [],

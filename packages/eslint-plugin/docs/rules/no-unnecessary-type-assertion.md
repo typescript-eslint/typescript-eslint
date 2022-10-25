@@ -1,14 +1,16 @@
+---
+description: 'Disallow type assertions that do not change the type of an expression.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-assertion** for documentation.
 
-This rule prohibits using a type assertion that does not change the type of an expression.
+TypeScript can be told an expression is a different type than expected using `as` type assertions.
+Leaving `as` assertions in the codebase increases visual clutter and harms code readability, so it's generally best practice to remove them if they don't change the type of an expression.
+This rule reports when a type assertion does not change the type of an expression.
 
-## Rule Details
-
-This rule aims to prevent unnecessary type assertions.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -61,9 +63,9 @@ function foo(x: number | undefined): number {
 
 ## Options
 
-This rule optionally takes an object with a single property `typesToIgnore`, which can be set to a list of type names to ignore.
+### `typesToIgnore`
 
-For example, with `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
+With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
 
 ```ts
 type Foo = 3;

@@ -1,8 +1,8 @@
-name: "🏗 Suggest an Improvement with Repository Maintenance"
+name: '🏗 Suggest an Improvement with Repository Maintenance'
 description: Report a bug or request a feature related to developing the typescript-eslint monorepo
-title: "Repo: <short description of the issue>"
+title: 'Repo: <short description of the issue>'
 labels:
-  - "repo maintenance"
+  - 'repo maintenance'
   - triage
 body:
   - type: markdown

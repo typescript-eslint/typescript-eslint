@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-generic-constructors';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -100,7 +100,7 @@ class Foo {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Map<string, number>();`,
+      output: `const a = new Map<string, number>();`,
     },
     {
       code: noFormat`const a: Map< string, number > = new Map();`,
@@ -109,7 +109,7 @@ class Foo {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Map< string, number >();`,
+      output: `const a = new Map< string, number >();`,
     },
     {
       code: noFormat`const a: Map<string, number> = new Map ();`,
@@ -118,7 +118,7 @@ class Foo {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Map<string, number> ();`,
+      output: `const a = new Map<string, number> ();`,
     },
     {
       code: noFormat`const a: Foo<number> = new Foo;`,
@@ -127,7 +127,7 @@ class Foo {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Foo<number>();`,
+      output: `const a = new Foo<number>();`,
     },
     {
       code: 'const a: /* comment */ Foo/* another */ <string> = new Foo();',
@@ -136,7 +136,7 @@ class Foo {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Foo/* comment *//* another */<string>();`,
+      output: `const a = new Foo/* comment *//* another */<string>();`,
     },
     {
       code: 'const a: Foo/* comment */ <string> = new Foo /* another */();',
@@ -145,7 +145,7 @@ class Foo {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new Foo/* comment */<string> /* another */();`,
+      output: `const a = new Foo/* comment */<string> /* another */();`,
     },
     {
       code: noFormat`const a: Foo<string> = new \n Foo \n ();`,
@@ -154,7 +154,7 @@ class Foo {
           messageId: 'preferConstructor',
         },
       ],
-      output: noFormat`const a = new \n Foo<string> \n ();`,
+      output: `const a = new \n Foo<string> \n ();`,
     },
     {
       code: `
@@ -218,7 +218,7 @@ class Foo {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Map<string, number> = new Map  ();`,
+      output: `const a: Map<string, number> = new Map  ();`,
     },
     {
       code: noFormat`const a = new Map< string, number >();`,
@@ -228,7 +228,7 @@ class Foo {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Map< string, number > = new Map();`,
+      output: `const a: Map< string, number > = new Map();`,
     },
     {
       code: noFormat`const a = new \n Foo<string> \n ();`,
@@ -238,7 +238,7 @@ class Foo {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Foo<string> = new \n Foo \n ();`,
+      output: `const a: Foo<string> = new \n Foo \n ();`,
     },
     {
       code: 'const a = new Foo/* comment */ <string> /* another */();',
@@ -248,7 +248,7 @@ class Foo {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Foo<string> = new Foo/* comment */  /* another */();`,
+      output: `const a: Foo<string> = new Foo/* comment */  /* another */();`,
     },
     {
       code: 'const a = new Foo</* comment */ string, /* another */ number>();',
@@ -258,7 +258,7 @@ class Foo {
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: noFormat`const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
+      output: `const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
     },
     {
       code: `

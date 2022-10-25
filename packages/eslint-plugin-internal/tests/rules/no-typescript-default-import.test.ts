@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-typescript-default-import';
-import { RuleTester, batchedSingleLineTests } from '../RuleTester';
+import { batchedSingleLineTests, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

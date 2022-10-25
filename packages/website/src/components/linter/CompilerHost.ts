@@ -1,5 +1,5 @@
-import type { System, SourceFile, CompilerHost } from 'typescript';
 import type { LintUtils } from '@typescript-eslint/website-eslint';
+import type { CompilerHost, SourceFile, System } from 'typescript';
 
 /**
  * Creates an in-memory CompilerHost -which is essentially an extra wrapper to System

@@ -1,11 +1,12 @@
 module.exports = {
   docs: [
     {
-      collapsed: false,
+      collapsible: false,
       items: [
         {
           label: 'Linting with Type Information',
           items: ['linting/typed-linting/monorepos'],
+          collapsible: false,
           link: {
             id: 'linting/typed-linting',
             type: 'doc',
@@ -19,6 +20,7 @@ module.exports = {
             id: 'linting/troubleshooting',
             type: 'doc',
           },
+          collapsible: false,
           type: 'category',
           items: [
             'linting/troubleshooting/formatting',
@@ -36,11 +38,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Development',
-      collapsed: false,
+      collapsible: false,
       items: [
         {
           label: 'Architecture',
           type: 'category',
+          collapsible: false,
           items: [
             'development/architecture/asts',
             'development/architecture/packages',

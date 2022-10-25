@@ -1,8 +1,9 @@
-import { TSESTree } from '@typescript-eslint/types';
-import { Definition } from '../definition';
+import type { TSESTree } from '@typescript-eslint/types';
+
+import type { Definition } from '../definition';
 import { createIdGenerator } from '../ID';
-import { Reference } from '../referencer/Reference';
-import { Scope } from '../scope';
+import type { Reference } from '../referencer/Reference';
+import type { Scope } from '../scope';
 
 const generator = createIdGenerator();
 

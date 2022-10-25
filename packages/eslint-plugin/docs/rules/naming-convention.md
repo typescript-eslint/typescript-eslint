@@ -1,3 +1,7 @@
+---
+description: 'Enforce naming conventions for everything across a codebase.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/naming-convention** for documentation.
@@ -5,9 +9,7 @@
 Enforcing naming conventions helps keep the codebase consistent, and reduces overhead when thinking about how to name a variable.
 Additionally, a well-designed style guide can help communicate intent, such as by enforcing all private properties begin with an `_`, and all global-level constants are written in `UPPER_CASE`.
 
-There are many different rules that have existed over time, but they have had the problem of not having enough granularity, meaning it was hard to have a well defined style guide, and most of the time you needed 3 or more rules at once to enforce different conventions, hoping they didn't conflict.
-
-## Rule Details
+## Examples
 
 This rule allows you to enforce conventions for any identifier, using granular selectors to create a fine-grained style guide.
 

@@ -3,7 +3,7 @@ id: typed-linting
 title: Linting with Type Information
 ---
 
-Some typescript-eslint rules tap utilize the awesome power of TypeScript's type checking APIs to provide much deeper insights into your code.
+Some typescript-eslint rules utilize the awesome power of TypeScript's type checking APIs to provide much deeper insights into your code.
 To tap into TypeScript's additional powers, there are two small changes you need to make to your config file:
 
 ```js title=".eslintrc.js"
@@ -52,23 +52,8 @@ This means that generally they usually only run a complete lint before a push, o
 
 ### I get errors telling me "The file must be included in at least one of the projects provided"
 
-This error means that the file that's being linted is not included in any of the tsconfig files you provided us.
-A lot of the time this happens when users have test files or similar that are not included in their normal tsconfigs.
-
-Depending on what you want to achieve:
-
-- If you **do not** want to lint the file:
-  - Use [one of the options ESLint offers](https://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories) to ignore files, like a `.eslintignore` file, or `ignorePatterns` config.
-- If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
-      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
-      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
-  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
-    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
-    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
-      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
-      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+You're using an outdated version of `@typescript-eslint/parser`.
+Update to the latest version to see a more informative version of this error message, explained [Troubleshooting and FAQs](./TROUBLESHOOTING.md##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 
 ## Troubleshooting
 

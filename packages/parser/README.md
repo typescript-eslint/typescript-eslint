@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](https://typescript-eslint.io/docs/linting)**
+**[You can find our Getting Started docs here](https://typescript-eslint.io/docs)**
 
 These docs walk you through setting up ESLint, this parser, and our plugin. If you know what you're doing and just want to quick start, read on...
 

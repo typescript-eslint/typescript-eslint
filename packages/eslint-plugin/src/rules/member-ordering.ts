@@ -1,9 +1,7 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-  JSONSchema,
-} from '@typescript-eslint/utils';
+import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import naturalCompare from 'natural-compare-lite';
+
 import * as util from '../util';
 
 export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
@@ -15,7 +13,8 @@ type MemberKind =
   | 'get'
   | 'method'
   | 'set'
-  | 'signature';
+  | 'signature'
+  | 'static-initialization';
 
 type DecoratedMemberKind = 'field' | 'method' | 'get' | 'set';
 
@@ -25,7 +24,10 @@ type MemberScope = 'static' | 'instance' | 'abstract';
 
 type BaseMemberType =
   | MemberKind
-  | `${TSESTree.Accessibility}-${Exclude<MemberKind, 'signature'>}`
+  | `${TSESTree.Accessibility}-${Exclude<
+      MemberKind,
+      'signature' | 'static-initialization'
+    >}`
   | `${TSESTree.Accessibility}-decorated-${DecoratedMemberKind}`
   | `decorated-${DecoratedMemberKind}`
   | `${TSESTree.Accessibility}-${MemberScope}-${NonCallableMemberKind}`
@@ -33,10 +35,13 @@ type BaseMemberType =
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
-type Order =
+type AlphabeticalOrder =
   | 'alphabetically'
   | 'alphabetically-case-insensitive'
-  | 'as-written';
+  | 'natural'
+  | 'natural-case-insensitive';
+
+type Order = AlphabeticalOrder | 'as-written';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
@@ -86,7 +91,13 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
     },
     order: {
       type: 'string',
-      enum: ['alphabetically', 'alphabetically-case-insensitive', 'as-written'],
+      enum: [
+        'alphabetically',
+        'alphabetically-case-insensitive',
+        'as-written',
+        'natural',
+        'natural-case-insensitive',
+      ],
     },
   },
   additionalProperties: false,
@@ -125,6 +136,9 @@ export const defaultOrder: MemberType[] = [
   'decorated-field',
 
   'field',
+
+  // Static initialization
+  'static-initialization',
 
   // Constructors
   'public-constructor',
@@ -231,12 +245,13 @@ const allMemberTypes = Array.from(
       'constructor',
       'get',
       'set',
+      'static-initialization',
     ] as const
   ).reduce<Set<MemberType>>((all, type) => {
     all.add(type);
 
     (['public', 'protected', 'private'] as const).forEach(accessibility => {
-      if (type !== 'signature') {
+      if (type !== 'signature' && type !== 'static-initialization') {
         all.add(`${accessibility}-${type}`); // e.g. `public-field`
       }
 
@@ -295,6 +310,8 @@ function getNodeType(node: Member): MemberKind | null {
       return 'field';
     case AST_NODE_TYPES.TSIndexSignature:
       return 'signature';
+    case AST_NODE_TYPES.StaticBlock:
+      return 'static-initialization';
     default:
       return null;
   }
@@ -352,6 +369,8 @@ function getMemberName(
       return 'call';
     case AST_NODE_TYPES.TSIndexSignature:
       return util.getNameFromIndexSignature(node);
+    case AST_NODE_TYPES.StaticBlock:
+      return 'static block';
     default:
       return null;
   }
@@ -438,7 +457,7 @@ function getRank(
       memberGroups.push(`decorated-${type}`);
     }
 
-    if (type !== 'signature') {
+    if (type !== 'signature' && type !== 'static-initialization') {
       if (type !== 'constructor') {
         // Constructors have no scope
         memberGroups.push(`${accessibility}-${scope}-${type}`);
@@ -620,7 +639,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkAlphaSort(
       members: Member[],
-      caseSensitive: boolean,
+      order: AlphabeticalOrder,
     ): boolean {
       let previousName = '';
       let isCorrectlySorted = true;
@@ -631,11 +650,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Note: Not all members have names
         if (name) {
-          if (
-            caseSensitive
-              ? name < previousName
-              : name.toLowerCase() < previousName.toLowerCase()
-          ) {
+          if (naturalOutOfOrder(name, previousName, order)) {
             context.report({
               node: member,
               messageId: 'incorrectOrder',
@@ -655,6 +670,25 @@ export default util.createRule<Options, MessageIds>({
       return isCorrectlySorted;
     }
 
+    function naturalOutOfOrder(
+      name: string,
+      previousName: string,
+      order: AlphabeticalOrder,
+    ): boolean {
+      switch (order) {
+        case 'alphabetically':
+          return name < previousName;
+        case 'alphabetically-case-insensitive':
+          return name.toLowerCase() < previousName.toLowerCase();
+        case 'natural':
+          return naturalCompare(name, previousName) !== 1;
+        case 'natural-case-insensitive':
+          return (
+            naturalCompare(name.toLowerCase(), previousName.toLowerCase()) !== 1
+          );
+      }
+    }
+
     /**
      * Validates if all members are correctly sorted.
      *
@@ -672,7 +706,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       // Standardize config
-      let order: Order | null = null;
+      let order: Order | undefined;
       let memberTypes;
 
       if (Array.isArray(orderConfig)) {
@@ -682,9 +716,7 @@ export default util.createRule<Options, MessageIds>({
         memberTypes = orderConfig.memberTypes;
       }
 
-      const hasAlphaSort = order?.startsWith('alphabetically');
-      const alphaSortIsCaseSensitive =
-        order !== 'alphabetically-case-insensitive';
+      const hasAlphaSort = !!(order && order !== 'as-written');
 
       // Check order
       if (Array.isArray(memberTypes)) {
@@ -697,11 +729,11 @@ export default util.createRule<Options, MessageIds>({
         if (hasAlphaSort) {
           grouped.some(
             groupMember =>
-              !checkAlphaSort(groupMember, alphaSortIsCaseSensitive),
+              !checkAlphaSort(groupMember, order as AlphabeticalOrder),
           );
         }
       } else if (hasAlphaSort) {
-        checkAlphaSort(members, alphaSortIsCaseSensitive);
+        checkAlphaSort(members, order as AlphabeticalOrder);
       }
     }
 

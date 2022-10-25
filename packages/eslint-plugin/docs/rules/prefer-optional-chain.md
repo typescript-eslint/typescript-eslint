@@ -1,56 +1,18 @@
+---
+description: 'Enforce using concise optional chain expressions instead of chained logical ands.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-optional-chain** for documentation.
 
-TypeScript 3.7 added support for the optional chain operator.
-This operator allows you to safely access properties and methods on objects when they are potentially `null` or `undefined`.
-
-```ts
-type T = {
-  a?: {
-    b?: {
-      c: string;
-      method?: () => void;
-    };
-  };
-};
-
-function myFunc(foo: T | null) {
-  return foo?.a?.b?.c;
-}
-// is roughly equivalent to
-function myFunc(foo: T | null) {
-  return foo && foo.a && foo.a.b && foo.a.b.c;
-}
-// or
-function myFunc(foo: T | null) {
-  return (((foo || {}).a || {}).b || {}).c;
-}
-
-function myFunc(foo: T | null) {
-  return foo?.['a']?.b?.c;
-}
-// is roughly equivalent to
-function myFunc(foo: T | null) {
-  return foo && foo['a'] && foo['a'].b && foo['a'].b.c;
-}
-
-function myFunc(foo: T | null) {
-  return foo?.a?.b?.method?.();
-}
-// is roughly equivalent to
-function myFunc(foo: T | null) {
-  return foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
-}
-```
-
+`?.` optional chain expressions provide `undefined` if an object is `null` or `undefined`.
 Because the optional chain operator _only_ chains when the property value is `null` or `undefined`, it is much safer than relying upon logical AND operator chaining `&&`; which chains on any _truthy_ value.
+It is also often less code to use `?.` optional chaining than `&&` truthiness checks.
 
-## Rule Details
+This rule reports on code where an `&&` operator can be safely replaced with `?.` optional chaining.
 
-This rule aims enforce the usage of the safer operator.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -83,24 +45,15 @@ foo?.a?.b?.method?.();
 foo?.a?.b?.c?.d?.e;
 ```
 
-**Note:** there are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
+<!--/tabs-->
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-optional-chain": "warn"
-  }
-}
-```
-
-This rule is not configurable.
+:::note
+There are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
+:::
 
 ## When Not To Use It
 
-If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
+If you don't mind using more explicit `&&`s, you don't need this rule.
 
 ## Further Reading
 

@@ -4,7 +4,7 @@
 /* eslint-enable eslint-comments/no-use */
 
 import rule from '../../src/rules/no-extra-parens';
-import { RuleTester, batchedSingleLineTests } from '../RuleTester';
+import { batchedSingleLineTests, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -19,6 +19,8 @@ ruleTester.run('no-extra-parens', rule, {
   valid: [
     ...batchedSingleLineTests({
       code: `
+async function f(arg: any) { await (arg as Promise<void>); }
+async function f(arg: Promise<any>) { await arg; }
 (0).toString();
 (function(){}) ? a() : b();
 (/^a$/).test(x);
@@ -225,6 +227,17 @@ switch (foo) { case 1: case (<2>2): break; default: break; }
         },
       ],
     }),
+    ...batchedSingleLineTests({
+      code: `
+declare const f: <T>(x: T) => any
+f<(number | string)[]>(['a', 1])
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    }),
   ],
 
   invalid: [
@@ -238,6 +251,9 @@ for (a of (b));
 typeof (a);
 a<import('')>((1));
 new a<import('')>((1));
+a<(A)>((1));
+async function f(arg: Promise<any>) { await (arg); }
+async function f(arg: any) { await ((arg as Promise<void>)); }
       `,
       output: `
 a = b * c;
@@ -248,7 +264,9 @@ for (a of b);
 typeof a;
 a<import('')>(1);
 new a<import('')>(1);
-a<(A)>((1));
+a<(A)>(1);
+async function f(arg: Promise<any>) { await arg; }
+async function f(arg: any) { await (arg as Promise<void>); }
       `,
       errors: [
         {
@@ -295,6 +313,16 @@ a<(A)>((1));
           messageId: 'unexpected',
           line: 10,
           column: 8,
+        },
+        {
+          messageId: 'unexpected',
+          line: 11,
+          column: 45,
+        },
+        {
+          messageId: 'unexpected',
+          line: 12,
+          column: 37,
         },
       ],
     }),

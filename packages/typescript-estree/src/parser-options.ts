@@ -1,7 +1,8 @@
-import { DebugLevel } from '@typescript-eslint/types';
-import * as ts from 'typescript';
-import { CanonicalPath } from './create-program/shared';
-import { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
+import type { DebugLevel } from '@typescript-eslint/types';
+import type * as ts from 'typescript';
+
+import type { CanonicalPath } from './create-program/shared';
+import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
 

@@ -1,8 +1,10 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, {
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type {
   MessageIds,
   Options,
 } from '../../src/rules/sort-type-union-intersection-members';
+import rule from '../../src/rules/sort-type-union-intersection-members';
 import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -127,7 +129,7 @@ const invalid = (
     },
     {
       code: noFormat`type T = (B) ${operator} (A);`,
-      output: noFormat`type T = A ${operator} B;`,
+      output: `type T = A ${operator} B;`,
       errors: [
         {
           messageId: 'notSortedNamed',
@@ -225,7 +227,7 @@ type T =
   ${operator} string
   ${operator} any;
       `,
-      output: noFormat`
+      output: `
 type T =
   A ${operator} B ${operator} number[] ${operator} string[] ${operator} any ${operator} string ${operator} readonly number[] ${operator} readonly string[] ${operator} 'a' ${operator} 'b' ${operator} "a" ${operator} "b" ${operator} (() => string) ${operator} (() => void) ${operator} { a: string } ${operator} { b: string } ${operator} [1, 2, 3] ${operator} [1, 2, 4] ${operator} null ${operator} undefined;
       `,

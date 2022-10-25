@@ -1,6 +1,8 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-useless-constructor');
 
@@ -31,14 +33,13 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
 }
 
 /**
- * Check if method is not unless due to typescript parameter properties
+ * Check if method is not useless due to typescript parameter properties and decorators
  */
 function checkParams(node: TSESTree.MethodDefinition): boolean {
-  return (
-    !node.value.params ||
-    !node.value.params.some(
-      param => param.type === AST_NODE_TYPES.TSParameterProperty,
-    )
+  return !node.value.params.some(
+    param =>
+      param.type === AST_NODE_TYPES.TSParameterProperty ||
+      param.decorators?.length,
   );
 }
 

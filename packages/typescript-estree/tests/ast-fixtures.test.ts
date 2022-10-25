@@ -3,6 +3,7 @@ import glob from 'glob';
 import { addSerializer } from 'jest-specific-snapshot';
 import makeDir from 'make-dir';
 import path from 'path';
+
 import { parseAndGenerateServices } from '../src/parser';
 import { isJSXFileType } from '../tools/test-utils';
 import { serializer } from '../tools/tserror-serializer';

@@ -1,28 +1,18 @@
+---
+description: 'Disallow two overloads that could be unified into one with a union or an optional/rest parameter.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/unified-signatures** for documentation.
 
-## Rule Details
+Function overload signatures are a TypeScript way to define a function that can be called in multiple very different ways.
+Overload signatures add syntax and theoretical bloat, so it's generally best to avoid using them when possible.
+Switching to union types and/or optional or rest parameters can often avoid the need for overload signatures.
 
-This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
+This rule reports when function overload signatures can be replaced by a single function signature.
 
-## Options
-
-```ts
-type Options = {
-  ignoreDifferentlyNamedParameters?: boolean;
-};
-
-const defaultOptions: Options = {
-  ignoreDifferentlyNamedParameters: false,
-};
-```
-
-The rule accepts an options object with the following property:
-
-- `ignoreDifferentlyNamedParameters`: whether two parameters with different names at the same index should be considered different even if their types are the same.
-
-Examples of code for this rule with the default options:
+## Examples
 
 <!--tabs-->
 
@@ -47,6 +37,10 @@ function x(x: number | string): void;
 ```ts
 function y(...x: number[]): void;
 ```
+
+## Options
+
+### `ignoreDifferentlyNamedParameters`
 
 Examples of code for this rule with `ignoreDifferentlyNamedParameters`:
 
@@ -75,3 +69,5 @@ function f(b: string): void;
 function f(...a: number[]): void;
 function f(...a: string[]): void;
 ```
+
+## Options

@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { ClassNameDefinition, ParameterDefinition } from '../definition';
-import { Referencer } from './Referencer';
+import type { Referencer } from './Referencer';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
@@ -358,6 +360,14 @@ class ClassVisitor extends Visitor {
 
   protected PrivateIdentifier(): void {
     // intentionally skip
+  }
+
+  protected StaticBlock(node: TSESTree.StaticBlock): void {
+    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
+
+    node.body.forEach(b => this.visit(b));
+
+    this.#referencer.close(node);
   }
 }
 

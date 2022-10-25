@@ -1,3 +1,7 @@
+---
+description: 'Enforce using type parameter when calling `Array#reduce` instead of casting.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-reduce-type-parameter** for documentation.
@@ -8,18 +12,16 @@ Since these values are empty, their types are not usable:
 - `[]` has type `never[]`, which can't have items pushed into it as nothing is type `never`
 - `{}` has type `{}`, which doesn't have an index signature and so can't have properties added to it
 
-A common solution to this problem is to cast the initial value. While this will work, it's not the most optimal
-solution as casting has subtle effects on the underlying types that can allow bugs to slip in.
+A common solution to this problem is to use an `as` assertion on the initial value.
+While this will work, it's not the most optimal solution as type assertions have subtle effects on the underlying types that can allow bugs to slip in.
 
-A better (and lesser known) solution is to pass the type in as a generic parameter to `Array#reduce` explicitly.
+A better solution is to pass the type in as a generic type argument to `Array#reduce` explicitly.
 This means that TypeScript doesn't have to try to infer the type, and avoids the common pitfalls that come with casting.
 
-## Rule Details
+This rule looks for calls to `Array#reduce`, and reports if an initial value is being passed & asserted.
+It will suggest instead pass the asserted type to `Array#reduce` as a generic type argument.
 
-This rule looks for calls to `Array#reduce`, and warns if an initial value is being passed & casted,
-suggesting instead to pass the cast type to `Array#reduce` as its generic parameter.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -50,19 +52,6 @@ Examples of code for this rule:
   {},
 );
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-reduce-type-parameter": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

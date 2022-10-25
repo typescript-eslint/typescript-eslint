@@ -1,6 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-unnecessary-qualifier';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
