@@ -28,7 +28,6 @@ interface ScopeManagerOptions {
   globalReturn?: boolean;
   sourceType?: 'module' | 'script';
   impliedStrict?: boolean;
-  ecmaVersion?: number;
 }
 
 class ScopeManager {
@@ -76,13 +75,6 @@ class ScopeManager {
 
   public isImpliedStrict(): boolean {
     return this.#options.impliedStrict === true;
-  }
-  public isStrictModeSupported(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 5;
-  }
-
-  public isES6(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 6;
   }
 
   /**
