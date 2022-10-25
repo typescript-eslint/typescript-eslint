@@ -7,7 +7,7 @@ import { createESTreeSerializer } from './ast/serializer/serializerESTree';
 import type { ASTViewerBaseProps } from './ast/types';
 
 export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
-  readonly value: TSESTree.BaseNode;
+  readonly value: TSESTree.BaseNode | TSESTree.Program;
 }
 
 export default function ASTViewerESTree({
