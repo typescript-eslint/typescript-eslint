@@ -53,12 +53,14 @@ function nullishTypeInvalidTest(
   cb: (
     nullish: string,
     type: string,
+    equals: string,
   ) => TSESLint.InvalidTestCase<MessageIds, Options>,
 ): TSESLint.InvalidTestCase<MessageIds, Options>[] {
   return nullishTypes.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
     (acc, nullish) => {
       types.forEach(type => {
-        acc.push(cb(nullish, type));
+        acc.push(cb(nullish, type, ''));
+        acc.push(cb(nullish, type, '='));
       });
       return acc;
     },
@@ -71,7 +73,7 @@ ruleTester.run('prefer-nullish-coalescing', rule, {
     ...typeValidTest(
       (type, equals) => `
 declare let x: ${type};
-x ||${equals} 'foo';
+(x ||${equals} 'foo');
       `,
     ),
     ...nullishTypeValidTest(
@@ -150,35 +152,35 @@ x === null ? x : y;
     ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-x ||${equals} 'foo' ? null : null;
+(x ||${equals} 'foo') ? null : null;
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-if (x || 'foo') {}
+if ((x ||${equals} 'foo')) {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-do {} while (x || 'foo')
+do {} while ((x ||${equals} 'foo'))
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-for (;x || 'foo';) {}
+for (;(x ||${equals} 'foo';)) {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-while (x || 'foo') {}
+while ((x ||${equals} 'foo')) {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
@@ -215,10 +217,10 @@ a && b || c || d;
     })),
   ],
   invalid: [
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-x || 'foo';
+(x ||${equals} 'foo');
       `,
       output: null,
       errors: [
@@ -233,7 +235,7 @@ x || 'foo';
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-x ?? 'foo';
+(x ??${equals} 'foo');
       `,
             },
           ],
@@ -394,10 +396,10 @@ x ?? y;
     })),
 
     // ignoreConditionalTests
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-x || 'foo' ? null : null;
+(x ||${equals} 'foo') ? null : null;
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -413,17 +415,17 @@ x || 'foo' ? null : null;
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-x ?? 'foo' ? null : null;
+(x ??${equals} 'foo') ? null : null;
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-if (x || 'foo') {}
+if ((x ||${equals} 'foo')) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -439,17 +441,17 @@ if (x || 'foo') {}
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-if (x ?? 'foo') {}
+if (x ??${equals} 'foo') {}
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-do {} while (x || 'foo')
+do {} while ((x ||${equals} 'foo'))
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -465,17 +467,17 @@ do {} while (x || 'foo')
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-do {} while (x ?? 'foo')
+do {} while (x ??${equals} 'foo')
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-for (;x || 'foo';) {}
+for (;(x ||${equals} 'foo';)) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -491,17 +493,17 @@ for (;x || 'foo';) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-for (;x ?? 'foo';) {}
+for (;(x ??${equals} 'foo');) {}
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-while (x || 'foo') {}
+while ((x ||${equals} 'foo')) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -517,7 +519,7 @@ while (x || 'foo') {}
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-while (x ?? 'foo') {}
+while (x ??${equals} 'foo') {}
       `,
             },
           ],
@@ -657,10 +659,10 @@ a && b || c ?? d;
     })),
 
     // should not false positive for functions inside conditional tests
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-if (() => x || 'foo') {}
+if (() => (x ||${equals} 'foo')) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
@@ -668,25 +670,25 @@ if (() => x || 'foo') {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 13,
+          column: 14 + equals.length,
           endLine: 3,
-          endColumn: 15,
+          endColumn: 15 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-if (() => x ?? 'foo') {}
+if (() => (x ??${equals} 'foo')) {}
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-if (function werid() { return x || 'foo' }) {}
+if (function weird() { return (x ||${equals} 'foo') }) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
@@ -694,15 +696,15 @@ if (function werid() { return x || 'foo' }) {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 33,
+          column: 34,
           endLine: 3,
-          endColumn: 35,
+          endColumn: 36 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-if (function werid() { return x ?? 'foo' }) {}
+if (function weird() { return (x ??${equals} 'foo') }) {}
       `,
             },
           ],
