@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type MessageIds = 'unusedVar';
@@ -422,10 +424,15 @@ export default util.createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
+            const writeReferences = unusedVar.references.filter(
+              ref =>
+                ref.isWrite() &&
+                ref.from.variableScope === unusedVar.scope.variableScope,
+            );
+
             context.report({
-              node: unusedVar.references.length
-                ? unusedVar.references[unusedVar.references.length - 1]
-                    .identifier
+              node: writeReferences.length
+                ? writeReferences[writeReferences.length - 1].identifier
                 : unusedVar.identifiers[0],
               messageId: 'unusedVar',
               data: unusedVar.references.some(ref => ref.isWrite())

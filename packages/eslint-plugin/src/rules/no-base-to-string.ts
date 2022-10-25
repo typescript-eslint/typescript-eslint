@@ -1,4 +1,5 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -27,7 +28,7 @@ export default util.createRule<Options, MessageIds>({
     },
     messages: {
       baseToString:
-        "'{{name}} {{certainty}} evaluate to '[object Object]' when stringified.",
+        "'{{name}}' {{certainty}} evaluate to '[object Object]' when stringified.",
     },
     schema: [
       {
@@ -47,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoredTypeNames: ['RegExp'],
+      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
   create(context, [option]) {

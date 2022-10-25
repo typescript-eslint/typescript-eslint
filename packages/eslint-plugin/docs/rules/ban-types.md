@@ -1,33 +1,135 @@
-# `ban-types`
+---
+description: 'Disallow certain types.'
+---
 
-Disallows certain types.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/ban-types** for documentation.
 
-Some builtin types have aliases, some types are considered dangerous or harmful.
+Some built-in types have aliases, while some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.
-
-## Rule Details
 
 This rule bans specific types and can suggest alternatives.
 Note that it does not ban the corresponding runtime objects from being used.
 
-## Options
+## Examples
+
+Examples of code with the default options:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
-type Options = {
-  types?: {
-    [typeName: string]:
-      | false
-      | string
-      | {
-          message: string;
-          fixWith?: string;
-        };
-  };
-  extendDefaults?: boolean;
+// use lower-case primitives for consistency
+const str: String = 'foo';
+const bool: Boolean = true;
+const num: Number = 1;
+const symb: Symbol = Symbol('foo');
+const bigInt: BigInt = 1n;
+
+// use a proper function type
+const func: Function = () => 1;
+
+// use safer object types
+const lowerObj: Object = {};
+const capitalObj: Object = { a: 'string' };
+
+const curly1: {} = 1;
+const curly2: {} = { a: 'string' };
+```
+
+### ✅ Correct
+
+```ts
+// use lower-case primitives for consistency
+const str: string = 'foo';
+const bool: boolean = true;
+const num: number = 1;
+const symb: symbol = Symbol('foo');
+const bigInt: bigint = 1n;
+
+// use a proper function type
+const func: () => number = () => 1;
+
+// use safer object types
+const lowerObj: object = {};
+const capitalObj: { a: string } = { a: 'string' };
+
+const curly1: number = 1;
+const curly2: Record<'a', string> = { a: 'string' };
+```
+
+## Options
+
+The default options provide a set of "best practices", intended to provide safety and standardization in your codebase:
+
+- Don't use the upper-case primitive types, you should use the lower-case types for consistency.
+- Avoid the `Function` type, as it provides little safety for the following reasons:
+  - It provides no type safety when calling the value, which means it's easy to provide the wrong arguments.
+  - It accepts class declarations, which will fail when called, as they are called without the `new` keyword.
+- Avoid the `Object` and `{}` types, as they mean "any non-nullish value".
+  - This is a point of confusion for many developers, who think it means "any object type".
+  - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
+
+:::important
+
+The default options suggest using `Record<string, unknown>`; this was a stylistic decision, as the built-in `Record` type is considered to look cleaner.
+
+:::
+
+<details>
+<summary>Default Options</summary>
+
+```ts
+const defaultTypes = {
+  String: {
+    message: 'Use string instead',
+    fixWith: 'string',
+  },
+  Boolean: {
+    message: 'Use boolean instead',
+    fixWith: 'boolean',
+  },
+  Number: {
+    message: 'Use number instead',
+    fixWith: 'number',
+  },
+  Symbol: {
+    message: 'Use symbol instead',
+    fixWith: 'symbol',
+  },
+  BigInt: {
+    message: 'Use bigint instead',
+    fixWith: 'bigint',
+  },
+  Function: {
+    message: [
+      'The `Function` type accepts any function-like value.',
+      'It provides no type safety when calling the function, which can be a common source of bugs.',
+      'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
+      'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
+    ].join('\n'),
+  },
+  // object typing
+  Object: {
+    message: [
+      'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
+      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any value", you probably want `unknown` instead.',
+    ].join('\n'),
+  },
+  '{}': {
+    message: [
+      '`{}` actually means "any non-nullish value".',
+      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any value", you probably want `unknown` instead.',
+    ].join('\n'),
+  },
 };
 ```
 
-The rule accepts a single object as options.
+</details>
 
 ### `types`
 
@@ -73,127 +175,4 @@ Example configuration:
     }
   ]
 }
-```
-
-### Default Options
-
-The default options provide a set of "best practices", intended to provide safety and standardization in your codebase:
-
-- Don't use the upper-case primitive types, you should use the lower-case types for consistency.
-- Avoid the `Function` type, as it provides little safety for the following reasons:
-  - It provides no type safety when calling the value, which means it's easy to provide the wrong arguments.
-  - It accepts class declarations, which will fail when called, as they are called without the `new` keyword.
-- Avoid the `Object` and `{}` types, as they mean "any non-nullish value".
-  - This is a point of confusion for many developers, who think it means "any object type".
-  - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
-
-:::important
-
-The default options suggest using `Record<string, unknown>`; this was a stylistic decision, as the built-in `Record` type is considered to look cleaner.
-
-:::
-
-<details>
-<summary>Default Options</summary>
-
-```ts
-const defaultTypes = {
-  String: {
-    message: 'Use string instead',
-    fixWith: 'string',
-  },
-  Boolean: {
-    message: 'Use boolean instead',
-    fixWith: 'boolean',
-  },
-  Number: {
-    message: 'Use number instead',
-    fixWith: 'number',
-  },
-  Symbol: {
-    message: 'Use symbol instead',
-    fixWith: 'symbol',
-  },
-  BigInt: {
-    message: 'Use bigint instead',
-    fixWith: 'bigint',
-  },
-
-  Function: {
-    message: [
-      'The `Function` type accepts any function-like value.',
-      'It provides no type safety when calling the function, which can be a common source of bugs.',
-      'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
-      'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
-    ].join('\n'),
-  },
-
-  // object typing
-  Object: {
-    message: [
-      'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
-      '- If you want a type meaning "any value", you probably want `unknown` instead.',
-    ].join('\n'),
-  },
-  '{}': {
-    message: [
-      '`{}` actually means "any non-nullish value".',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
-      '- If you want a type meaning "any value", you probably want `unknown` instead.',
-    ].join('\n'),
-  },
-};
-```
-
-</details>
-
-### Examples
-
-Examples of code with the default options:
-
-<!--tabs-->
-
-#### ❌ Incorrect
-
-```ts
-// use lower-case primitives for consistency
-const str: String = 'foo';
-const bool: Boolean = true;
-const num: Number = 1;
-const symb: Symbol = Symbol('foo');
-const bigInt: BigInt = 1n;
-
-// use a proper function type
-const func: Function = () => 1;
-
-// use safer object types
-const capitalObj1: Object = 1;
-const capitalObj2: Object = { a: 'string' };
-
-const curly1: {} = 1;
-const curly2: {} = { a: 'string' };
-```
-
-#### ✅ Correct
-
-```ts
-// use lower-case primitives for consistency
-const str: string = 'foo';
-const bool: boolean = true;
-const num: number = 1;
-const symb: symbol = Symbol('foo');
-const bigInt: bigint = 1n;
-
-// use a proper function type
-const func: () => number = () => 1;
-
-// use safer object types
-const lowerObj: object = {};
-
-const capitalObj1: number = 1;
-const capitalObj2: { a: string } = { a: 'string' };
-
-const curly1: number = 1;
-const curly2: Record<'a', string> = { a: 'string' };
 ```

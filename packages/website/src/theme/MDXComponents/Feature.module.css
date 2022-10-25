@@ -1,0 +1,22 @@
+.feature {
+  background-color: var(--token-background);
+  border-radius: var(--ifm-code-border-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
+  color: var(--token-color) !important;
+  display: flex;
+  flex-basis: 30%;
+  flex-grow: 1;
+  flex-shrink: 3;
+  font-size: 0.8rem;
+  margin: 0 0 1rem;
+  min-width: 15rem;
+  padding: 0.75rem 1rem;
+}
+
+.emoji {
+  margin-right: 0.5rem;
+}
+
+.children {
+  margin: 0;
+}

@@ -1,30 +1,28 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
-  TSESTree,
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/utils';
-import * as ts from 'typescript';
-import {
-  unionTypeParts,
-  isFalsyType,
-  isBooleanLiteralType,
-  isLiteralType,
   getCallSignaturesOfType,
+  isBooleanLiteralType,
+  isFalsyType,
+  isLiteralType,
   isStrictCompilerOptionEnabled,
+  unionTypeParts,
 } from 'tsutils';
+import * as ts from 'typescript';
+
 import {
-  isTypeFlagSet,
   createRule,
-  getParserServices,
   getConstrainedTypeAtLocation,
+  getParserServices,
+  getTypeName,
   getTypeOfPropertyOfName,
+  isIdentifier,
   isNullableType,
+  isTypeAnyType,
+  isTypeFlagSet,
+  isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
-  isIdentifier,
-  isTypeAnyType,
-  isTypeUnknownType,
-  getTypeName,
 } from '../util';
 
 // Truthiness utilities
@@ -98,9 +96,13 @@ export default createRule<Options, MessageId>({
         type: 'object',
         properties: {
           allowConstantLoopConditions: {
+            description:
+              'Whether to ignore constant loop conditions, such as `while (true)`.',
             type: 'boolean',
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            description:
+              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
             type: 'boolean',
           },
         },
@@ -328,6 +330,7 @@ export default createRule<Options, MessageId>({
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
         const NULL = ts.TypeFlags.Null;
+        const VOID = ts.TypeFlags.Void;
         const isComparable = (type: ts.Type, flag: ts.TypeFlags): boolean => {
           // Allow comparison to `any`, `unknown` or a naked type parameter.
           flag |=
@@ -337,7 +340,7 @@ export default createRule<Options, MessageId>({
 
           // Allow loose comparison to nullish values.
           if (node.operator === '==' || node.operator === '!=') {
-            flag |= NULL | UNDEFINED;
+            flag |= NULL | UNDEFINED | VOID;
           }
 
           return isTypeFlagSet(type, flag);
@@ -345,9 +348,9 @@ export default createRule<Options, MessageId>({
 
         if (
           (leftType.flags === UNDEFINED &&
-            !isComparable(rightType, UNDEFINED)) ||
+            !isComparable(rightType, UNDEFINED | VOID)) ||
           (rightType.flags === UNDEFINED &&
-            !isComparable(leftType, UNDEFINED)) ||
+            !isComparable(leftType, UNDEFINED | VOID)) ||
           (leftType.flags === NULL && !isComparable(rightType, NULL)) ||
           (rightType.flags === NULL && !isComparable(leftType, NULL))
         ) {

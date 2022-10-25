@@ -1,9 +1,5 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  ASTUtils,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 interface WrappingFixerParams {
   /** Source code. */

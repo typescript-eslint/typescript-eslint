@@ -3,8 +3,10 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, { MessageIds, Options } from '../../src/rules/semi';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/semi';
+import rule from '../../src/rules/semi';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({

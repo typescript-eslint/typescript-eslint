@@ -1,15 +1,15 @@
-name: "Prepare: Build"
-description: "Prepares the repo for a job by running the build"
+name: 'Prepare: Build'
+description: 'Prepares the repo for a job by running the build'
 # inputs:  - no inputs
 # outputs: - no outputs
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - uses: actions/cache@v3
       id: build-cache
       with:
-        path: "**/dist/**"
+        path: '**/dist/**'
         key: ${{ runner.os }}-build-${{ github.ref }}
         restore-keys: |
           ${{ runner.os }}-build-

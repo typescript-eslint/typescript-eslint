@@ -1,8 +1,14 @@
 'use strict';
 
 // @ts-check
+
+const baseConfig = require('../../jest.config.base.js');
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  ...require('../../jest.config.base.js'),
-  setupFilesAfterEnv: ['./tests/util/serializers/index.ts'],
+  ...baseConfig,
+  setupFilesAfterEnv: [
+    ...baseConfig.setupFilesAfterEnv,
+    './tests/util/serializers/index.ts',
+  ],
 };

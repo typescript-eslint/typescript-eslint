@@ -1,10 +1,8 @@
-import {
-  AST_NODE_TYPES,
-  ParserServices,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { ParserServices, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export type Options = [
@@ -166,16 +164,16 @@ export default util.createRule<Options, MessageId>({
       });
     }
 
-    const checkedNodes = new Set<TSESTree.Node>();
+    const traversedNodes = new Set<TSESTree.Node>();
 
     return {
-      ConditionalExpression: checkTestExpression,
-      DoWhileStatement: checkTestExpression,
-      ForStatement: checkTestExpression,
-      IfStatement: checkTestExpression,
-      WhileStatement: checkTestExpression,
-      'LogicalExpression[operator!="??"]': checkNode,
-      'UnaryExpression[operator="!"]': checkUnaryLogicalExpression,
+      ConditionalExpression: traverseTestExpression,
+      DoWhileStatement: traverseTestExpression,
+      ForStatement: traverseTestExpression,
+      IfStatement: traverseTestExpression,
+      WhileStatement: traverseTestExpression,
+      'LogicalExpression[operator!="??"]': traverseLogicalExpression,
+      'UnaryExpression[operator="!"]': traverseUnaryLogicalExpression,
     };
 
     type TestExpression =
@@ -185,45 +183,81 @@ export default util.createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
-    function checkTestExpression(node: TestExpression): void {
+    /**
+     * Inspects condition of a test expression. (`if`, `while`, `for`, etc.)
+     */
+    function traverseTestExpression(node: TestExpression): void {
       if (node.test == null) {
         return;
       }
-      checkNode(node.test, true);
-    }
-
-    function checkUnaryLogicalExpression(node: TSESTree.UnaryExpression): void {
-      checkNode(node.argument, true);
+      traverseNode(node.test, true);
     }
 
     /**
-     * This function analyzes the type of a node and checks if it is allowed in a boolean context.
-     * It can recurse when checking nested logical operators, so that only the outermost operands are reported.
-     * The right operand of a logical expression is ignored unless it's a part of a test expression (if/while/ternary/etc).
-     * @param node The AST node to check.
-     * @param isTestExpr Whether the node is a descendant of a test expression.
+     * Inspects the argument of a unary logical expression (`!`).
      */
-    function checkNode(node: TSESTree.Node, isTestExpr = false): void {
+    function traverseUnaryLogicalExpression(
+      node: TSESTree.UnaryExpression,
+    ): void {
+      traverseNode(node.argument, true);
+    }
+
+    /**
+     * Inspects the arguments of a logical expression (`&&`, `||`).
+     *
+     * If the logical expression is a descendant of a test expression,
+     * the `isCondition` flag should be set to true.
+     * Otherwise, if the logical expression is there on it's own,
+     * it's used for control flow and is not a condition itself.
+     */
+    function traverseLogicalExpression(
+      node: TSESTree.LogicalExpression,
+      isCondition = false,
+    ): void {
+      // left argument is always treated as a condition
+      traverseNode(node.left, true);
+      // if the logical expression is used for control flow,
+      // then it's right argument is used for it's side effects only
+      traverseNode(node.right, isCondition);
+    }
+
+    /**
+     * Inspects any node.
+     *
+     * If it's a logical expression then it recursively traverses its arguments.
+     * If it's any other kind of node then it's type is finally checked against the rule,
+     * unless `isCondition` flag is set to false, in which case
+     * it's assumed to be used for side effects only and is skipped.
+     */
+    function traverseNode(node: TSESTree.Node, isCondition: boolean): void {
       // prevent checking the same node multiple times
-      if (checkedNodes.has(node)) {
+      if (traversedNodes.has(node)) {
         return;
       }
-      checkedNodes.add(node);
+      traversedNodes.add(node);
 
       // for logical operator, we check its operands
       if (
         node.type === AST_NODE_TYPES.LogicalExpression &&
         node.operator !== '??'
       ) {
-        checkNode(node.left, isTestExpr);
-
-        // we ignore the right operand when not in a context of a test expression
-        if (isTestExpr) {
-          checkNode(node.right, isTestExpr);
-        }
+        traverseLogicalExpression(node, isCondition);
         return;
       }
 
+      // skip if node is not a condition
+      if (!isCondition) {
+        return;
+      }
+
+      checkNode(node);
+    }
+
+    /**
+     * This function does the actual type check on a node.
+     * It analyzes the type of a node and checks if it is allowed in a boolean context.
+     */
+    function checkNode(node: TSESTree.Node): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));

@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -9,7 +11,7 @@ export default util.createRule({
       description: 'Disallow duplicate enum member values',
       recommended: 'strict',
     },
-    hasSuggestions: true,
+    hasSuggestions: false,
     messages: {
       duplicateValue: 'Duplicate enum member value {{value}}.',
     },

@@ -1,4 +1,6 @@
-import { TSESLint, TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Delimiter = 'comma' | 'none' | 'semi';
@@ -133,13 +135,13 @@ const makeFixFunction = ({
 export default util.createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
-    type: 'suggestion',
+    type: 'layout',
     docs: {
       description:
         'Require a specific member delimiter style for interfaces and type literals',
       recommended: false,
     },
-    fixable: 'code',
+    fixable: 'whitespace',
     messages: {
       unexpectedComma: 'Unexpected separator (,).',
       unexpectedSemi: 'Unexpected separator (;).',

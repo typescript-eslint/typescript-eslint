@@ -1,4 +1,5 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type DirectiveConfig =
@@ -14,24 +15,6 @@ interface Options {
   minimumDescriptionLength?: number;
 }
 
-const directiveConfigSchema = {
-  oneOf: [
-    {
-      type: 'boolean',
-      default: true,
-    },
-    {
-      enum: ['allow-with-description'],
-    },
-    {
-      type: 'object',
-      properties: {
-        descriptionFormat: { type: 'string' },
-      },
-    },
-  ],
-};
-
 export const defaultMinimumDescriptionLength = 3;
 
 type MessageIds =
@@ -45,7 +28,7 @@ export default util.createRule<[Options], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Disallow `@ts-<directive>` comments or require descriptions after directive',
+        'Disallow `@ts-<directive>` comments or require descriptions after directives',
       recommended: 'error',
     },
     messages: {
@@ -56,22 +39,45 @@ export default util.createRule<[Options], MessageIds>({
       tsDirectiveCommentDescriptionNotMatchPattern:
         'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          'ts-expect-error': directiveConfigSchema,
-          'ts-ignore': directiveConfigSchema,
-          'ts-nocheck': directiveConfigSchema,
-          'ts-check': directiveConfigSchema,
-          minimumDescriptionLength: {
-            type: 'number',
-            default: defaultMinimumDescriptionLength,
-          },
+    schema: {
+      $defs: {
+        directiveConfigSchema: {
+          oneOf: [
+            {
+              type: 'boolean',
+              default: true,
+            },
+            {
+              enum: ['allow-with-description'],
+            },
+            {
+              type: 'object',
+              properties: {
+                descriptionFormat: { type: 'string' },
+              },
+            },
+          ],
         },
-        additionalProperties: false,
       },
-    ],
+      prefixItems: [
+        {
+          properties: {
+            'ts-expect-error': {
+              $ref: '#/$defs/directiveConfigSchema',
+            },
+            'ts-ignore': { $ref: '#/$defs/directiveConfigSchema' },
+            'ts-nocheck': { $ref: '#/$defs/directiveConfigSchema' },
+            'ts-check': { $ref: '#/$defs/directiveConfigSchema' },
+            minimumDescriptionLength: {
+              type: 'number',
+              default: defaultMinimumDescriptionLength,
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [
     {

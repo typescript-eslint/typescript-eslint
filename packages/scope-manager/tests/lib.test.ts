@@ -1,5 +1,5 @@
-import { parseAndAnalyze } from './util';
 import { ImplicitLibVariable } from '../src';
+import { parseAndAnalyze } from './util';
 
 describe('implicit lib definitions', () => {
   it('should define no implicit variables if provided an empty array', () => {

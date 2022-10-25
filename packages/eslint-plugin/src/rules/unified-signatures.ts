@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 interface Failure {
@@ -81,6 +83,8 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           ignoreDifferentlyNamedParameters: {
+            description:
+              'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
             type: 'boolean',
           },
         },

@@ -1,10 +1,12 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
-import {
-  InferOptionsTypeFromRule,
-  createRule,
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
+import type {
   InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
 } from '../util';
+import { createRule } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-invalid-this');
 

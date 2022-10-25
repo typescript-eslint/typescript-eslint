@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-meaningless-void-operator';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -67,7 +67,7 @@ foo();
 function bar(x: never) {
   void x;
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'meaninglessVoidOperator',
@@ -80,7 +80,7 @@ function bar(x: never) {
 function bar(x: never) {
   x;
 }
-              `.trimRight(),
+      `,
             },
           ],
         },

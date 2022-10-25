@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import path from 'path';
+
 import * as parser from '../../src';
 import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
 import { serializer } from '../../tools/tserror-serializer';
