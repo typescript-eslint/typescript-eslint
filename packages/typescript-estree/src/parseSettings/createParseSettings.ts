@@ -7,9 +7,9 @@ import {
   ensureAbsolutePath,
   getCanonicalFileName,
 } from '../create-program/shared';
-import { inferSingleRun } from '../inferSingleRun';
 import type { TSESTreeOptions } from '../parser-options';
 import type { MutableParseSettings } from './index';
+import { inferSingleRun } from './inferSingleRun';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
 
 const log = debug(

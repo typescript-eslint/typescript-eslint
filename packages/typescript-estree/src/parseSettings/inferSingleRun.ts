@@ -1,6 +1,6 @@
 import { normalize } from 'path';
 
-import type { TSESTreeOptions } from './parser-options';
+import type { TSESTreeOptions } from '../parser-options';
 
 /**
  * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
