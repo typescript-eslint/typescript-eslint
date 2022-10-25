@@ -93,10 +93,10 @@ function ErrorBlock({
 
 function SuccessBlock(): JSX.Element {
   return (
-    <div className={`admonition alert alert--success`}>
+    <div className="admonition alert alert--success">
       <div className="admonition-content">
-        <div className={clsx(styles.fixerContainer)}>
-          <div>There are no errors</div>
+        <div className={styles.fixerContainer}>
+          <div>All is ok!</div>
         </div>
       </div>
     </div>
