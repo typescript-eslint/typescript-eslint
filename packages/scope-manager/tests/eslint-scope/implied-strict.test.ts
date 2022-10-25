@@ -8,7 +8,7 @@ import {
 } from '../util';
 
 describe('impliedStrict option', () => {
-  it('ensures all user scopes are strict if ecmaVersion >= 5', () => {
+  it('ensures all user scopes are strict', () => {
     const { scopeManager } = parseAndAnalyze(
       `
         function foo() {
@@ -18,7 +18,6 @@ describe('impliedStrict option', () => {
         }
       `,
       {
-        ecmaVersion: 5,
         impliedStrict: true,
       },
     );
@@ -48,7 +47,6 @@ describe('impliedStrict option', () => {
         function foo() {}
       `,
       {
-        ecmaVersion: 5,
         globalReturn: true,
         impliedStrict: true,
       },
@@ -75,7 +73,6 @@ describe('impliedStrict option', () => {
 
   it('omits a module global scope when ensuring all user scopes are strict', () => {
     const { scopeManager } = parseAndAnalyze('function foo() {}', {
-      ecmaVersion: 6,
       impliedStrict: true,
       sourceType: 'module',
     });
