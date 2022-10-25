@@ -1,27 +1,21 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useCallback, useState } from 'react';
-
-import ConfigEslint from './config/ConfigEslint';
-import ConfigTypeScript from './config/ConfigTypeScript';
-import Expander from './layout/Expander';
-import Dropdown from './inputs/Dropdown';
-import Checkbox from './inputs/Checkbox';
-import Tooltip from './inputs/Tooltip';
-import EditIcon from '@site/src/icons/edit.svg';
+import {
+  NavbarSecondaryMenuFiller,
+  useWindowSize,
+} from '@docusaurus/theme-common';
 import CopyIcon from '@site/src/icons/copy.svg';
+import React, { useCallback } from 'react';
 
 import useDebouncedToggle from './hooks/useDebouncedToggle';
-
-import { createMarkdown } from './lib/markdown';
-
-import type { RuleDetails } from './types';
-
+import Checkbox from './inputs/Checkbox';
+import Dropdown from './inputs/Dropdown';
+import Tooltip from './inputs/Tooltip';
+import Expander from './layout/Expander';
+import { createMarkdown, createMarkdownParams } from './lib/markdown';
 import styles from './OptionsSelector.module.css';
-
-import type { CompilerFlags, ConfigModel, RulesRecord } from './types';
+import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {
-  readonly ruleOptions: RuleDetails[];
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
@@ -35,15 +29,12 @@ const ASTOptions = [
   { value: 'scope', label: 'Scope' },
 ] as const;
 
-function OptionsSelector({
-  ruleOptions,
+function OptionsSelectorContent({
   state,
   setState,
   tsVersions,
   isLoading,
 }: OptionsSelectorParams): JSX.Element {
-  const [eslintModal, setEslintModal] = useState<boolean>(false);
-  const [typeScriptModal, setTypeScriptModal] = useState<boolean>(false);
   const [copyLink, setCopyLink] = useDebouncedToggle<boolean>(false);
   const [copyMarkdown, setCopyMarkdown] = useDebouncedToggle<boolean>(false);
 
@@ -54,33 +45,13 @@ function OptionsSelector({
     [setState],
   );
 
-  const updateRules = useCallback(
-    (rules?: RulesRecord) => {
-      if (rules) {
-        setState({ rules: rules });
-      }
-      setEslintModal(false);
-    },
-    [setState],
-  );
-
-  const updateTsConfig = useCallback(
-    (config?: CompilerFlags) => {
-      if (config) {
-        setState({ tsConfig: config });
-      }
-      setTypeScriptModal(false);
-    },
-    [setState],
-  );
-
   const copyLinkToClipboard = useCallback(() => {
     void navigator.clipboard
       .writeText(document.location.toString())
       .then(() => {
         setCopyLink(true);
       });
-  }, []);
+  }, [setCopyLink]);
 
   const copyMarkdownToClipboard = useCallback(() => {
     if (isLoading) {
@@ -89,7 +60,7 @@ function OptionsSelector({
     void navigator.clipboard.writeText(createMarkdown(state)).then(() => {
       setCopyMarkdown(true);
     });
-  }, [state, isLoading]);
+  }, [isLoading, state, setCopyMarkdown]);
 
   const openIssue = useCallback(() => {
     if (isLoading) {
@@ -97,8 +68,8 @@ function OptionsSelector({
     }
     window
       .open(
-        `https://github.com/typescript-eslint/typescript-eslint/issues/new?body=${encodeURIComponent(
-          createMarkdown(state),
+        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${createMarkdownParams(
+          state,
         )}`,
         '_blank',
       )
@@ -107,19 +78,6 @@ function OptionsSelector({
 
   return (
     <>
-      {state.rules && ruleOptions.length > 0 && (
-        <ConfigEslint
-          isOpen={eslintModal}
-          ruleOptions={ruleOptions}
-          rules={state.rules}
-          onClose={updateRules}
-        />
-      )}
-      <ConfigTypeScript
-        isOpen={typeScriptModal}
-        config={state.tsConfig}
-        onClose={updateTsConfig}
-      />
       <Expander label="Info">
         <label className={styles.optionLabel}>
           TypeScript
@@ -127,10 +85,9 @@ function OptionsSelector({
             name="ts"
             className="text--right"
             value={state.ts}
+            disabled={!tsVersions.length}
             onChange={updateTS}
-            options={((tsVersions.length && tsVersions) || [state.ts]).filter(
-              item => parseFloat(item) >= 3.3,
-            )}
+            options={(tsVersions.length && tsVersions) || [state.ts]}
           />
         </label>
         <label className={styles.optionLabel}>
@@ -170,20 +127,6 @@ function OptionsSelector({
             options={['script', 'module']}
           />
         </label>
-        <button
-          className={styles.optionLabel}
-          onClick={(): void => setEslintModal(true)}
-        >
-          Eslint Config
-          <EditIcon />
-        </button>
-        <button
-          className={styles.optionLabel}
-          onClick={(): void => setTypeScriptModal(true)}
-        >
-          TypeScript Config
-          <EditIcon />
-        </button>
       </Expander>
       <Expander label="Actions">
         <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
@@ -202,12 +145,25 @@ function OptionsSelector({
           </Tooltip>
         </button>
         <button className={styles.optionLabel} onClick={openIssue}>
-          Report Issue
+          Report as Issue
           <CopyIcon />
         </button>
       </Expander>
     </>
   );
+}
+
+function OptionsSelector(props: OptionsSelectorParams): JSX.Element {
+  const windowSize = useWindowSize();
+  if (windowSize === 'mobile') {
+    return (
+      <NavbarSecondaryMenuFiller
+        component={OptionsSelectorContent}
+        props={props}
+      />
+    );
+  }
+  return <OptionsSelectorContent {...props} />;
 }
 
 export default OptionsSelector;

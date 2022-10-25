@@ -1,9 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -12,7 +9,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Consistent with type definition either `interface` or `type`',
+        'Enforce type definitions to consistently use either `interface` or `type`',
       recommended: 'strict',
     },
     messages: {

@@ -8,7 +8,7 @@
     "**/*.{json,snap}",
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
-    "**/**/ROADMAP.md",
+    "**/**/TSLINT_RULE_ALTERNATIVES.md",
     "**/coverage/**",
     "**/dist/**",
     "**/fixtures/**",
@@ -52,6 +52,7 @@
     "bivariant",
     "blockless",
     "camelcase",
+    "Cena",
     "codebases",
     "Codecov",
     "contravariant",
@@ -59,6 +60,7 @@
     "declarators",
     "destructure",
     "destructured",
+    "dprint",
     "errored",
     "erroring",
     "ESLint",
@@ -73,8 +75,10 @@
     "linebreaks",
     "lzstring",
     "markdownlint",
+    "metastring",
     "necroing",
     "nocheck",
+    "noninteractive",
     "nullish",
     "OOM",
     "OOMs",
@@ -86,6 +90,7 @@
     "preact",
     "Premade",
     "prettier's",
+    "Quickstart",
     "recurse",
     "redeclaration",
     "redeclarations",
@@ -110,11 +115,12 @@
     "unoptimized",
     "unprefixed",
     "upsert",
-    "Zacher"
+    "Zacher",
+    "tseslint"
   ],
   "overrides": [
     {
-      "filename": "**/*.{ts,js,tsx,jsx}",
+      "filename": "**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}",
       "ignoreRegExpList": ["/@[a-z]+/", "/#(end)?region/"],
       "includeRegExpList": [
         "/\\/\\*[\\s\\S]*?\\*\\/|([^\\\\:]|^)\\/\\/.*$/",

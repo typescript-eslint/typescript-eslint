@@ -1,5 +1,8 @@
-import { ASTUtils, TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { Definition, DefinitionType } from '@typescript-eslint/scope-manager';
+import type { Definition } from '@typescript-eslint/scope-manager';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 function hasAssignmentBeforeNode(
@@ -34,7 +37,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description:
-        'Disallows using a non-null assertion in the left operand of the nullish coalescing operator',
+        'Disallow non-null assertions in the left operand of a nullish coalescing operator',
       recommended: 'strict',
     },
     messages: {

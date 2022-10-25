@@ -2,7 +2,9 @@ import fs from 'fs';
 import glob from 'glob';
 import makeDir from 'make-dir';
 import path from 'path';
-import { parseAndAnalyze, AnalyzeOptions } from './util';
+
+import type { AnalyzeOptions } from './util';
+import { parseAndAnalyze } from './util';
 
 // Assign a segment set to this variable to limit the test to only this segment
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output
@@ -13,7 +15,9 @@ const ONLY = [].join(path.sep);
 const FIXTURES_DIR = path.resolve(__dirname, 'fixtures');
 
 const fixtures = glob
-  .sync(`${FIXTURES_DIR}/**/*.{js,ts,jsx,tsx}`, {
+  .sync('**/*.{js,ts,jsx,tsx}', {
+    cwd: FIXTURES_DIR,
+    absolute: true,
     ignore: ['fixtures.test.ts'],
   })
   .map(absolute => {

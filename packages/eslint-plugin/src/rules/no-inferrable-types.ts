@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -16,7 +18,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Disallows explicit type declarations for variables or parameters initialized to a number, string, or boolean',
+        'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
       recommended: 'error',
     },
     fixable: 'code',
@@ -46,6 +48,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
+    const sourceCode = context.getSourceCode();
+
     function isFunctionCall(
       init: TSESTree.Expression,
       callName: string,
@@ -215,7 +219,16 @@ export default util.createRule<Options, MessageIds>({
         data: {
           type,
         },
-        fix: fixer => fixer.remove(typeNode),
+        *fix(fixer) {
+          if (
+            (node.type === AST_NODE_TYPES.AssignmentPattern &&
+              node.left.optional) ||
+            (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
+          ) {
+            yield fixer.remove(sourceCode.getTokenBefore(typeNode)!);
+          }
+          yield fixer.remove(typeNode);
+        },
       });
     }
 

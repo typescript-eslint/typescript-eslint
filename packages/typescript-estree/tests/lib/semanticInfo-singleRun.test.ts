@@ -1,11 +1,12 @@
 import glob from 'glob';
 import * as path from 'path';
+
+import { getCanonicalFileName } from '../../src/create-program/shared';
 import {
+  clearParseAndGenerateServicesCalls,
   clearProgramCache,
   parseAndGenerateServices,
-  clearParseAndGenerateServicesCalls,
 } from '../../src/parser';
-import { getCanonicalFileName } from '../../src/create-program/shared';
 
 const mockProgram = {
   getSourceFile(): void {

@@ -1,9 +1,6 @@
-import {
-  TSESLint,
-  TSESTree,
-  AST_TOKEN_TYPES,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Prefer = 'type-imports' | 'no-type-imports';
@@ -56,7 +53,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces consistent usage of type imports',
+      description: 'Enforce consistent usage of type imports',
       recommended: false,
     },
     messages: {

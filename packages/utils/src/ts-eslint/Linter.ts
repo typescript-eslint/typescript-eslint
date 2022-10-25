@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { Linter as ESLintLinter } from 'eslint';
-import { TSESTree, ParserServices } from '../ts-estree';
-import { ParserOptions as TSParserOptions } from './ParserOptions';
-import {
+
+import type { ParserServices, TSESTree } from '../ts-estree';
+import type { ParserOptions as TSParserOptions } from './ParserOptions';
+import type {
   RuleCreateFunction,
   RuleFix,
   RuleModule,
   SharedConfigurationSettings,
 } from './Rule';
-import { Scope } from './Scope';
-import { SourceCode } from './SourceCode';
+import type { Scope } from './Scope';
+import type { SourceCode } from './SourceCode';
 
 declare class LinterBase {
   /**
@@ -76,7 +77,7 @@ declare class LinterBase {
 
   /**
    * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
-   * @param text The source text to apply fixes to.
+   * @param code The source text to apply fixes to.
    * @param config The ESLint config object to use.
    * @param options The ESLint options object to use.
    * @returns The result of the fix operation as returned from the SourceCodeFixer.
@@ -316,7 +317,7 @@ namespace Linter {
 
   export interface ESLintParseResult {
     ast: TSESTree.Program;
-    parserServices?: ParserServices;
+    services?: ParserServices;
     scopeManager?: Scope.ScopeManager;
     visitorKeys?: SourceCode.VisitorKeys;
   }

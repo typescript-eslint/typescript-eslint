@@ -1,19 +1,25 @@
-name: "Lock threads"
+name: 'Lock threads'
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: '0 0 * * *'
+
+permissions: {}
 
 jobs:
   lock:
+    permissions:
+      issues: write # to lock issues (dessant/lock-threads)
+      pull-requests: write # to lock PRs (dessant/lock-threads)
+
     runs-on: ubuntu-latest
     steps:
       - uses: dessant/lock-threads@v3
         with:
           github-token: ${{ github.token }}
-          issue-inactive-days: "30"
-          issue-lock-reason: "resolved"
-          issue-comment: ""
-          pr-inactive-days: "30"
-          pr-lock-reason: "resolved"
-          pr-comment: ""
+          issue-inactive-days: '30'
+          issue-lock-reason: 'resolved'
+          issue-comment: ''
+          pr-inactive-days: '30'
+          pr-lock-reason: 'resolved'
+          pr-comment: ''

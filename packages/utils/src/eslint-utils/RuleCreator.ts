@@ -1,8 +1,8 @@
-import {
+import type {
+  RuleContext,
+  RuleListener,
   RuleMetaData,
   RuleMetaDataDocs,
-  RuleListener,
-  RuleContext,
   RuleModule,
 } from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';
@@ -90,13 +90,14 @@ function createRule<
   TOptions
 > {
   return {
-    meta,
     create(
       context: Readonly<RuleContext<TMessageIds, TOptions>>,
     ): RuleListener {
       const optionsWithDefault = applyDefault(defaultOptions, context.options);
       return create(context, optionsWithDefault);
     },
+    defaultOptions,
+    meta,
   };
 }
 

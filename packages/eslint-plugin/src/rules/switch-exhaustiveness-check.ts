@@ -1,5 +1,7 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -8,16 +10,15 @@ import {
   isOpeningBraceToken,
   requiresQuoting,
 } from '../util';
-import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 
 export default createRule({
   name: 'switch-exhaustiveness-check',
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Exhaustiveness checking in switch with union type',
+      description:
+        'Require switch-case statements to be exhaustive with union type',
       recommended: false,
-      suggestion: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

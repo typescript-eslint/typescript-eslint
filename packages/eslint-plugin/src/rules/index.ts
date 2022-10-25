@@ -8,6 +8,7 @@ import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
+import consistentGenericConstructors from './consistent-generic-constructors';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
@@ -77,6 +78,7 @@ import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
+import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnusedExpressions from './no-unused-expressions';
@@ -136,6 +138,7 @@ export default {
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,
   'comma-spacing': commaSpacing,
+  'consistent-generic-constructors': consistentGenericConstructors,
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
@@ -205,6 +208,7 @@ export default {
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
+  'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unused-expressions': noUnusedExpressions,

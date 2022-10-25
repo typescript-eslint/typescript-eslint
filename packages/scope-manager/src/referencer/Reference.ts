@@ -1,7 +1,8 @@
-import { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+
 import { createIdGenerator } from '../ID';
-import { Scope } from '../scope';
-import { Variable } from '../variable';
+import type { Scope } from '../scope';
+import type { Variable } from '../variable';
 
 enum ReferenceFlag {
   Read = 0x1,

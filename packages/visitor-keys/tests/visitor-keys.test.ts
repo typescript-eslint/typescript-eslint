@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { visitorKeys } from '../src';
 
 const types = new Set(Object.keys(AST_NODE_TYPES));

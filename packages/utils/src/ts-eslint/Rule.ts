@@ -434,6 +434,11 @@ interface RuleModule<
   TRuleListener extends RuleListener = RuleListener,
 > {
   /**
+   * Default options the rule will be run with
+   */
+  defaultOptions: TOptions;
+
+  /**
    * Metadata about the rule
    */
   meta: RuleMetaData<TMessageIds>;

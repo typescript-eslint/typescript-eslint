@@ -1,0 +1,2 @@
+@sealed
+export class Qux {}

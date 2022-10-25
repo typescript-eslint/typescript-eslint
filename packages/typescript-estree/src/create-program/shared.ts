@@ -1,7 +1,9 @@
 import path from 'path';
+import type { Program } from 'typescript';
 import * as ts from 'typescript';
-import { Program } from 'typescript';
-import { Extra, ModuleResolver } from '../parser-options';
+
+import type { ModuleResolver } from '../parser-options';
+import type { ParseSettings } from '../parseSettings';
 
 interface ASTAndProgram {
   ast: ts.SourceFile;
@@ -32,9 +34,9 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
 };
 
 function createDefaultCompilerOptionsFromExtra(
-  extra: Extra,
+  parseSettings: ParseSettings,
 ): ts.CompilerOptions {
-  if (extra.debugLevel.has('typescript')) {
+  if (parseSettings.debugLevel.has('typescript')) {
     return {
       ...DEFAULT_COMPILER_OPTIONS,
       extendedDiagnostics: true,
@@ -62,60 +64,41 @@ function getCanonicalFileName(filePath: string): CanonicalPath {
   return correctPathCasing(normalized) as CanonicalPath;
 }
 
-function ensureAbsolutePath(p: string, extra: Extra): string {
+function ensureAbsolutePath(p: string, tsconfigRootDir: string): string {
   return path.isAbsolute(p)
     ? p
-    : path.join(extra.tsconfigRootDir || process.cwd(), p);
+    : path.join(tsconfigRootDir || process.cwd(), p);
 }
 
 function canonicalDirname(p: CanonicalPath): CanonicalPath {
   return path.dirname(p) as CanonicalPath;
 }
 
-function getScriptKind(
-  extra: Extra,
-  filePath: string = extra.filePath,
-): ts.ScriptKind {
-  const extension = path.extname(filePath).toLowerCase();
-  // note - we respect the user's extension when it is known  we could override it and force it to match their
-  // jsx setting, but that could create weird situations where we throw parse errors when TSC doesn't
-  switch (extension) {
-    case '.ts':
-      return ts.ScriptKind.TS;
-
-    case '.tsx':
-      return ts.ScriptKind.TSX;
-
-    case '.js':
-      return ts.ScriptKind.JS;
-
-    case '.jsx':
-      return ts.ScriptKind.JSX;
-
-    case '.json':
-      return ts.ScriptKind.JSON;
-
-    default:
-      // unknown extension, force typescript to ignore the file extension, and respect the user's setting
-      return extra.jsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
-  }
-}
-
+const DEFINITION_EXTENSIONS = [
+  ts.Extension.Dts,
+  ts.Extension.Dcts,
+  ts.Extension.Dmts,
+] as const;
 function getExtension(fileName: string | undefined): string | null {
   if (!fileName) {
     return null;
   }
-  return fileName.endsWith('.d.ts') ? '.d.ts' : path.extname(fileName);
+
+  return (
+    DEFINITION_EXTENSIONS.find(definitionExt =>
+      fileName.endsWith(definitionExt),
+    ) ?? path.extname(fileName)
+  );
 }
 
 function getAstFromProgram(
   currentProgram: Program,
-  extra: Extra,
+  parseSettings: ParseSettings,
 ): ASTAndProgram | undefined {
-  const ast = currentProgram.getSourceFile(extra.filePath);
+  const ast = currentProgram.getSourceFile(parseSettings.filePath);
 
   // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
-  const expectedExt = getExtension(extra.filePath);
+  const expectedExt = getExtension(parseSettings.filePath);
   const returnedExt = getExtension(ast?.fileName);
   if (expectedExt !== returnedExt) {
     return undefined;
@@ -149,7 +132,6 @@ export {
   createDefaultCompilerOptionsFromExtra,
   ensureAbsolutePath,
   getCanonicalFileName,
-  getScriptKind,
   getAstFromProgram,
   getModuleResolver,
 };

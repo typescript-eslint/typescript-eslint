@@ -1,6 +1,7 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { RuleTester } from '../RuleTester';
+
 import rule from '../../src/rules/no-redeclare';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {

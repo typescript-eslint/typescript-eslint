@@ -1,4 +1,6 @@
-import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { ASTUtils } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -6,7 +8,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows invocation of `require()`',
+      description: 'Disallow invocation of `require()`',
       recommended: false,
     },
     schema: [],

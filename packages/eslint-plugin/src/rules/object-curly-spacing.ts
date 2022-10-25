@@ -1,17 +1,17 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
-import {
-  createRule,
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
+} from '../util';
+import {
+  createRule,
   isClosingBraceToken,
   isClosingBracketToken,
   isTokenOnSameLine,
 } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('object-curly-spacing');
 
@@ -20,6 +20,7 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
   name: 'object-curly-spacing',
+  // eslint-disable-next-line eslint-plugin/prefer-message-ids,eslint-plugin/require-meta-type,eslint-plugin/require-meta-schema,eslint-plugin/require-meta-fixable -- all in base rule - https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/274
   meta: {
     ...baseRule.meta,
     docs: {

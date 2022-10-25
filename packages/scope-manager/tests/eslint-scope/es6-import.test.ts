@@ -1,4 +1,3 @@
-import { parseAndAnalyze } from '../util/parse';
 import {
   expectToBeGlobalScope,
   expectToBeImportBindingDefinition,
@@ -6,6 +5,7 @@ import {
   expectToBeVariableDefinition,
   getRealVariables,
 } from '../util';
+import { parseAndAnalyze } from '../util/parse';
 
 describe('import declaration', () => {
   // http://people.mozilla.org/~jorendorff/es6-draft.html#sec-static-and-runtme-semantics-module-records

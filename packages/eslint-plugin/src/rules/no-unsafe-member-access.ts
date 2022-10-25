@@ -1,5 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+
 import * as util from '../util';
 import { getThisExpression } from '../util';
 
@@ -13,7 +15,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows member access on any typed variables',
+      description: 'Disallow member access on a value with type `any`',
       recommended: 'error',
       requiresTypeChecking: true,
     },

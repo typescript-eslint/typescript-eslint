@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type MessageIds =
@@ -134,7 +136,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows calling a function with an any type value',
+      description: 'Disallow calling a function with a value with type `any`',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -142,7 +144,7 @@ export default util.createRule<[], MessageIds>({
       unsafeArgument:
         'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
       unsafeTupleSpread:
-        'Unsafe spread of a tuple type. The {{index}} element is of type `{{sender}}` and is assigned to a parameter of type `{{reciever}}`.',
+        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
       unsafeArraySpread: 'Unsafe spread of an `any` array type.',
       unsafeSpread: 'Unsafe spread of an `any` type.',
     },

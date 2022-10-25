@@ -1,12 +1,20 @@
-# `non-nullable-type-assertion-style`
+---
+description: 'Enforce non-null assertions over explicit type casts.'
+---
 
-Prefers a non-null assertion over explicit type cast when possible.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/non-nullable-type-assertion-style** for documentation.
 
-This rule detects when an `as` cast is doing the same job as a `!` would, and suggests fixing the code to be an `!`.
+There are two common ways to assert to TypeScript that a value is its type without `null` or `undefined`:
 
-## Rule Details
+- `!`: Non-null assertion
+- `as`: Traditional type assertion with a coincidentally equivalent type
 
-Examples of code for this rule:
+`!` non-null assertions are generally preferred for requiring less code and being harder to fall out of sync as types change.
+This rule reports when an `as` cast is doing the same job as a `!` would, and suggests fixing the code to be an `!`.
+
+## Examples
 
 <!--tabs-->
 
@@ -28,27 +36,6 @@ const definitely = maybe!;
 const alsoDefinitely = maybe!;
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/non-nullable-type-assertion-style": "warn"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## When Not To Use It
 
 If you don't mind having unnecessarily verbose type casts, you can avoid this rule.
-
-## Attributes
-
-- Configs:
-  - [ ] ✅ Recommended
-  - [x] 🔒 Strict
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

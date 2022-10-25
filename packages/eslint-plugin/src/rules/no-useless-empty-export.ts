@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 function isEmptyExport(
@@ -28,10 +30,9 @@ export default util.createRule({
       description:
         "Disallow empty exports that don't change anything in a module file",
       recommended: false,
-      suggestion: true,
     },
     fixable: 'code',
-    hasSuggestions: true,
+    hasSuggestions: false,
     messages: {
       uselessExport: 'Empty export does nothing and can be removed.',
     },

@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
+
 import * as util from '../util';
 
 interface ScopeInfo {
@@ -104,7 +106,7 @@ export default util.createRule({
      * function and the delegate is `true`
      */
     function markAsHasDelegateGen(node: TSESTree.YieldExpression): void {
-      if (!scopeInfo || !scopeInfo.isGen || !node.argument) {
+      if (!scopeInfo?.isGen || !node.argument) {
         return;
       }
 

@@ -1,4 +1,5 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 // tslint regex
@@ -19,7 +20,7 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans `// tslint:<rule-flag>` comments from being used',
+      description: 'Disallow `// tslint:<rule-flag>` comments',
       recommended: 'strict',
     },
     messages: {

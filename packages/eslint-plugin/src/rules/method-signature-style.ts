@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type Options = [('property' | 'method')?];
@@ -9,7 +11,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces using a particular method signature syntax',
+      description: 'Enforce using a particular method signature syntax',
       recommended: false,
     },
     fixable: 'code',
