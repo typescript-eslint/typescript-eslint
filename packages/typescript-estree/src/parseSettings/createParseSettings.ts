@@ -13,7 +13,7 @@ import { inferSingleRun } from './inferSingleRun';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings/createParseSettings',
+  'typescript-eslint:typescript-estree:parser:parseSettings:createParseSettings',
 );
 
 export function createParseSettings(
