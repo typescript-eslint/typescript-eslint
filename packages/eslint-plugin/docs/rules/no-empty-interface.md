@@ -48,7 +48,7 @@ interface Baz extends Foo, Bar {}
 
 <!--/tabs-->
 
-### Options
+## Options
 
 This rule accepts a single object option with the following default configuration:
 
