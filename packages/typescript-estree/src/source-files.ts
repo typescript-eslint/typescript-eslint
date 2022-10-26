@@ -1,11 +1,14 @@
 import * as ts from 'typescript';
 
 export function isSourceFile(code: unknown): code is ts.SourceFile {
+  if (typeof code !== 'object' || code == null) {
+    return false;
+  }
+
+  const maybeSourceFile = code as Partial<ts.SourceFile>;
   return (
-    typeof code !== 'string' &&
-    (code as Partial<ts.SourceFile> | undefined)?.kind ===
-      ts.SyntaxKind.SourceFile &&
-    !!(code as Partial<ts.SourceFile>).getFullText
+    maybeSourceFile.kind === ts.SyntaxKind.SourceFile &&
+    typeof maybeSourceFile.getFullText === 'function'
   );
 }
 
