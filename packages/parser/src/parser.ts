@@ -105,6 +105,7 @@ function parseForESLint(
     jsx: validateBoolean(options.ecmaFeatures.jsx),
   });
   const analyzeOptions: AnalyzeOptions = {
+    ecmaVersion: options.ecmaVersion === 'latest' ? 1e8 : options.ecmaVersion,
     globalReturn: options.ecmaFeatures.globalReturn,
     jsxPragma: options.jsxPragma,
     jsxFragmentName: options.jsxFragmentName,
