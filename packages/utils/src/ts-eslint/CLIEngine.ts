@@ -4,7 +4,7 @@
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
 
 import type { Linter } from './Linter';
-import type { RuleListener, RuleMetaData, RuleModule } from './Rule';
+import type { RuleMetaData, RuleModule } from './Rule';
 
 declare class CLIEngineBase {
   /**
@@ -72,9 +72,7 @@ declare class CLIEngineBase {
   getRules<
     TMessageIds extends string = string,
     TOptions extends readonly unknown[] = unknown[],
-    // for extending base rules
-    TRuleListener extends RuleListener = RuleListener,
-  >(): Map<string, RuleModule<TMessageIds, TOptions, TRuleListener>>;
+  >(): Map<string, RuleModule<TMessageIds, TOptions>>;
 
   ////////////////////
   // static members //

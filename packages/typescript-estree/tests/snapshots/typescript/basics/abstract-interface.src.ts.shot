@@ -6,7 +6,6 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
-        "abstract": true,
         "body": Object {
           "body": Array [],
           "loc": Object {

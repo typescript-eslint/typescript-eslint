@@ -111,10 +111,6 @@ export class WebLinter {
     );
 
     const scopeManager = this.lintUtils.analyze(ast, {
-      ecmaVersion:
-        eslintOptions.ecmaVersion === 'latest'
-          ? 1e8
-          : eslintOptions.ecmaVersion,
       globalReturn: eslintOptions.ecmaFeatures?.globalReturn ?? false,
       sourceType: eslintOptions.sourceType ?? 'script',
     });

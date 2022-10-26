@@ -371,9 +371,7 @@ class Referencer extends Visitor {
   }
 
   protected BlockStatement(node: TSESTree.BlockStatement): void {
-    if (this.scopeManager.isES6()) {
-      this.scopeManager.nestBlockScope(node);
-    }
+    this.scopeManager.nestBlockScope(node);
 
     this.visitChildren(node);
 
@@ -487,7 +485,7 @@ class Referencer extends Visitor {
 
   protected ImportDeclaration(node: TSESTree.ImportDeclaration): void {
     assert(
-      this.scopeManager.isES6() && this.scopeManager.isModule(),
+      this.scopeManager.isModule(),
       'ImportDeclaration should appear when the mode is ES6 and in the module context.',
     );
 
@@ -579,14 +577,11 @@ class Referencer extends Visitor {
       this.scopeManager.nestFunctionScope(node, false);
     }
 
-    if (this.scopeManager.isES6() && this.scopeManager.isModule()) {
+    if (this.scopeManager.isModule()) {
       this.scopeManager.nestModuleScope(node);
     }
 
-    if (
-      this.scopeManager.isStrictModeSupported() &&
-      this.scopeManager.isImpliedStrict()
-    ) {
+    if (this.scopeManager.isImpliedStrict()) {
       this.currentScope().isStrict = true;
     }
 
@@ -601,9 +596,7 @@ class Referencer extends Visitor {
   protected SwitchStatement(node: TSESTree.SwitchStatement): void {
     this.visit(node.discriminant);
 
-    if (this.scopeManager.isES6()) {
-      this.scopeManager.nestSwitchScope(node);
-    }
+    this.scopeManager.nestSwitchScope(node);
 
     for (const switchCase of node.cases) {
       this.visit(switchCase);
