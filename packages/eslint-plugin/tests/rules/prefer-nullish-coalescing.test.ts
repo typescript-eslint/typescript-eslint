@@ -173,7 +173,7 @@ do {} while ((x ||${equals} 'foo'))
     ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-for (;(x ||${equals} 'foo';)) {}
+for (;(x ||${equals} 'foo');) {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
@@ -227,9 +227,9 @@ declare let x: ${type} | ${nullish};
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 3,
+          column: 4,
           endLine: 3,
-          endColumn: 5,
+          endColumn: 6 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
@@ -407,9 +407,9 @@ declare let x: ${type} | ${nullish};
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 3,
+          column: 4,
           endLine: 3,
-          endColumn: 5,
+          endColumn: 6 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
@@ -433,15 +433,15 @@ if ((x ||${equals} 'foo')) {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 7,
+          column: 8,
           endLine: 3,
-          endColumn: 9,
+          endColumn: 10 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-if (x ??${equals} 'foo') {}
+if ((x ??${equals} 'foo')) {}
       `,
             },
           ],
@@ -459,15 +459,15 @@ do {} while ((x ||${equals} 'foo'))
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 16,
+          column: 17,
           endLine: 3,
-          endColumn: 18,
+          endColumn: 19 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-do {} while (x ??${equals} 'foo')
+do {} while ((x ??${equals} 'foo'))
       `,
             },
           ],
@@ -477,7 +477,7 @@ do {} while (x ??${equals} 'foo')
     ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
 declare let x: ${type} | ${nullish};
-for (;(x ||${equals} 'foo';)) {}
+for (;(x ||${equals} 'foo');) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -485,9 +485,9 @@ for (;(x ||${equals} 'foo';)) {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 9,
+          column: 10,
           endLine: 3,
-          endColumn: 11,
+          endColumn: 12 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
@@ -511,15 +511,15 @@ while ((x ||${equals} 'foo')) {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 10,
+          column: 11,
           endLine: 3,
-          endColumn: 12,
+          endColumn: 13 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
 declare let x: ${type} | ${nullish};
-while (x ??${equals} 'foo') {}
+while ((x ??${equals} 'foo')) {}
       `,
             },
           ],
@@ -670,9 +670,9 @@ if (() => (x ||${equals} 'foo')) {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 14 + equals.length,
+          column: 14,
           endLine: 3,
-          endColumn: 15 + equals.length,
+          endColumn: 16 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
