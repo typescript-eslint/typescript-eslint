@@ -1,6 +1,7 @@
+import type { EcmaVersion, Lib, TSESTree } from '@typescript-eslint/types';
+
 import { analyze } from '../../src/analyze';
 import { Referencer } from '../../src/referencer';
-import { TSESTree, EcmaVersion, Lib } from '@typescript-eslint/types';
 
 jest.mock('../../src/referencer');
 jest.mock('../../src/ScopeManager');
@@ -31,9 +32,14 @@ describe('ecma version mapping', () => {
   it("should map to 'es2018' when undefined", () => {
     expectMapping(undefined, 'es2018');
   });
+
+  it("should map to 'esnext' when 'latest'", () => {
+    // `'latest'` is converted to 1e8 at parser.
+    expectMapping(1e8, 'esnext');
+  });
 });
 
-const fakeNode = ({} as unknown) as TSESTree.Node;
+const fakeNode = {} as unknown as TSESTree.Node;
 
 function expectMapping(ecmaVersion: number | undefined, lib: Lib): void {
   (Referencer as jest.Mock).mockClear();

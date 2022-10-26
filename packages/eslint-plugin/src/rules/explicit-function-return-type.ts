@@ -1,11 +1,11 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 import {
+  ancestorHasReturnType,
   checkFunctionReturnType,
-  checkFunctionExpressionReturnType,
+  isValidFunctionExpressionReturnType,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -15,6 +15,7 @@ type Options = [
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+    allowedNames?: string[];
   },
 ];
 type MessageIds = 'missingReturnType';
@@ -26,7 +27,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit return types on functions and class methods',
-      category: 'Stylistic Issues',
       recommended: false,
     },
     messages: {
@@ -36,20 +36,38 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowExpressions: {
+          allowConciseArrowFunctionExpressionsStartingWithVoid: {
+            description:
+              'Whether to allow arrow functions that start with the `void` keyword.',
             type: 'boolean',
           },
-          allowTypedFunctionExpressions: {
+          allowExpressions: {
+            description:
+              'Whether to ignore function expressions (functions which are not part of a declaration).',
             type: 'boolean',
           },
           allowHigherOrderFunctions: {
+            description:
+              'Whether to ignore functions immediately returning another function expression.',
+            type: 'boolean',
+          },
+          allowTypedFunctionExpressions: {
+            description:
+              'Whether to ignore type annotations on the variable of function expressions.',
             type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
+            description:
+              'Whether to ignore arrow functions immediately returning a `as const` value.',
             type: 'boolean',
           },
-          allowConciseArrowFunctionExpressionsStartingWithVoid: {
-            type: 'boolean',
+          allowedNames: {
+            description:
+              'An array of function/method names that will not have their arguments or return values checked.',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
           },
         },
         additionalProperties: false,
@@ -63,11 +81,64 @@ export default util.createRule<Options, MessageIds>({
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+      allowedNames: [],
     },
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
+    function isAllowedName(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
+    ): boolean {
+      if (!options.allowedNames?.length) {
+        return false;
+      }
 
+      if (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        node.type === AST_NODE_TYPES.FunctionExpression
+      ) {
+        const parent = node.parent;
+        let funcName;
+        if (node.id?.name) {
+          funcName = node.id.name;
+        } else if (parent) {
+          switch (parent.type) {
+            case AST_NODE_TYPES.VariableDeclarator: {
+              if (parent.id.type === AST_NODE_TYPES.Identifier) {
+                funcName = parent.id.name;
+              }
+              break;
+            }
+            case AST_NODE_TYPES.MethodDefinition:
+            case AST_NODE_TYPES.PropertyDefinition:
+            case AST_NODE_TYPES.Property: {
+              if (
+                parent.key.type === AST_NODE_TYPES.Identifier &&
+                parent.computed === false
+              ) {
+                funcName = parent.key.name;
+              }
+              break;
+            }
+          }
+        }
+        if (!!funcName && !!options.allowedNames.includes(funcName)) {
+          return true;
+        }
+      }
+      if (
+        node.type === AST_NODE_TYPES.FunctionDeclaration &&
+        node.id &&
+        node.id.type === AST_NODE_TYPES.Identifier &&
+        !!options.allowedNames.includes(node.id.name)
+      ) {
+        return true;
+      }
+      return false;
+    }
     return {
       'ArrowFunctionExpression, FunctionExpression'(
         node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
@@ -82,7 +153,19 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionExpressionReturnType(node, options, sourceCode, loc =>
+        if (isAllowedName(node)) {
+          return;
+        }
+
+        if (
+          options.allowTypedFunctionExpressions &&
+          (isValidFunctionExpressionReturnType(node, options) ||
+            ancestorHasReturnType(node))
+        ) {
+          return;
+        }
+
+        checkFunctionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,
             loc,
@@ -91,6 +174,13 @@ export default util.createRule<Options, MessageIds>({
         );
       },
       FunctionDeclaration(node): void {
+        if (isAllowedName(node)) {
+          return;
+        }
+        if (options.allowTypedFunctionExpressions && node.returnType) {
+          return;
+        }
+
         checkFunctionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,

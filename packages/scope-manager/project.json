@@ -1,0 +1,82 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/scope-manager/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "packages/scope-manager/dist",
+        "packages/scope-manager/_ts3.4"
+      ],
+      "options": {
+        "parallel": false,
+        "cwd": "packages/scope-manager",
+        "commands": [
+          "rimraf _ts3.4",
+          "tsc -b tsconfig.build.json",
+          "downlevel-dts dist _ts3.4/dist"
+        ]
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": true,
+        "cwd": "packages/scope-manager",
+        "commands": [
+          "tsc -p tsconfig.build.json --noEmit",
+          "tsc -p tsconfig.spec.json --noEmit"
+        ]
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": "packages/scope-manager",
+        "commands": [
+          "tsc -b tsconfig.build.json --clean",
+          "rimraf dist",
+          "rimraf _ts3.4",
+          "rimraf coverage"
+        ]
+      }
+    },
+    "clean-fixtures": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": "packages/scope-manager",
+        "commands": ["rimraf -g \"./src/**/fixtures/**/snapshots\""]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/scope-manager/**/*.{ts,js}"],
+        "ignorePath": ".eslintignore"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["packages/scope-manager/coverage"],
+      "options": {
+        "jestConfig": "packages/scope-manager/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "generate-lib": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": "packages/scope-manager",
+        "commands": [
+          "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-lib.ts"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

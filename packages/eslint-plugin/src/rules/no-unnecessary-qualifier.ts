@@ -1,17 +1,15 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export default util.createRule({
   name: 'no-unnecessary-qualifier',
   meta: {
     docs: {
-      category: 'Best Practices',
-      description: 'Warns when a namespace qualifier is unnecessary',
+      description: 'Disallow unnecessary namespace qualifiers',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -170,12 +168,16 @@ export default util.createRule({
     return {
       TSModuleDeclaration: enterDeclaration,
       TSEnumDeclaration: enterDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]': enterDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]': enterDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
+        enterDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]':
+        enterDeclaration,
       'TSModuleDeclaration:exit': exitDeclaration,
       'TSEnumDeclaration:exit': exitDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]:exit': exitDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]:exit': exitDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]:exit':
+        exitDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]:exit':
+        exitDeclaration,
       TSQualifiedName(node: TSESTree.TSQualifiedName): void {
         visitNamespaceAccess(node, node.left, node.right);
       },

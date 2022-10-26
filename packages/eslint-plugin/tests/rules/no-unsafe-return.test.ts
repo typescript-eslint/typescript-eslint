@@ -1,15 +1,15 @@
 import rule from '../../src/rules/no-unsafe-return';
 import {
-  RuleTester,
   batchedSingleLineTests,
   getFixturesRootDir,
   noFormat,
+  RuleTester,
 } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -40,6 +40,18 @@ function foo() {
     `
 function foo() {
   return [];
+}
+    `,
+    // explicit any return type is allowed, if you want to be unsafe like that
+    `
+function foo(): any {
+  return {} as any;
+}
+    `,
+    // explicit any array return type is allowed, if you want to be unsafe like that
+    `
+function foo(): any[] {
+  return [] as any[];
 }
     `,
     // explicit any generic return type is allowed, if you want to be unsafe like that
@@ -90,6 +102,12 @@ function foo(): Set<number> {
     `
       function fn<T extends any>(x: T): Set<unknown> {
         return x as Set<any>;
+      }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    `
+      function test(): Map<string, string> {
+        return new Map();
       }
     `,
   ],
@@ -290,6 +308,31 @@ receiver(function test() {
             sender: 'Set<any>',
             receiver: 'Set<string>',
           },
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  return this;
+}
+
+function bar() {
+  return () => this;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturnThis',
+          line: 3,
+          column: 3,
+          endColumn: 15,
+        },
+        {
+          messageId: 'unsafeReturnThis',
+          line: 7,
+          column: 16,
+          endColumn: 20,
         },
       ],
     },

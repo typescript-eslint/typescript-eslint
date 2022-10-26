@@ -4,6 +4,7 @@ exports[`typescript errorRecovery enum-with-keywords.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "id": Object {
           "loc": Object {
@@ -50,7 +51,6 @@ Object {
               7,
               14,
             ],
-            "transformFlags": 1,
             "type": "TSPrivateKeyword",
           },
           Object {
@@ -68,7 +68,6 @@ Object {
               15,
               21,
             ],
-            "transformFlags": 1,
             "type": "TSPublicKeyword",
           },
           Object {
@@ -86,7 +85,6 @@ Object {
               22,
               31,
             ],
-            "transformFlags": 1,
             "type": "TSProtectedKeyword",
           },
           Object {
@@ -104,7 +102,6 @@ Object {
               32,
               38,
             ],
-            "transformFlags": 256,
             "type": "TSStaticKeyword",
           },
           Object {
@@ -122,7 +119,6 @@ Object {
               39,
               47,
             ],
-            "transformFlags": 1,
             "type": "TSReadonlyKeyword",
           },
           Object {
@@ -157,7 +153,6 @@ Object {
               57,
               62,
             ],
-            "transformFlags": 96,
             "type": "TSAsyncKeyword",
           },
         ],

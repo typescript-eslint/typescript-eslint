@@ -1,9 +1,10 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-unused-expressions';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-unused-expressions');
 
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
@@ -14,11 +15,12 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow unused expressions',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
     messages: baseRule.meta.messages ?? {
       unusedExpression:
         'Expected an assignment or function call and instead saw an expression.',
@@ -31,9 +33,8 @@ export default util.createRule<Options, MessageIds>({
       allowTaggedTemplates: false,
     },
   ],
-  create(context, options) {
+  create(context, [{ allowShortCircuit = false, allowTernary = false }]) {
     const rules = baseRule.create(context);
-    const { allowShortCircuit = false, allowTernary = false } = options[0];
 
     function isValidExpression(node: TSESTree.Node): boolean {
       if (allowShortCircuit && node.type === AST_NODE_TYPES.LogicalExpression) {

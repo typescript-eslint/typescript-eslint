@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "NodeNext",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["DOM", "ESNext"],
+    "noEmit": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"]
+    },
+    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
+  },
+  "include": ["src", "tests", "plugins", "typings", "./*.ts"]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
-  "version": "4.15.2",
+  "version": "5.41.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "description": "TSLint wrapper plugin for ESLint",
@@ -11,7 +11,7 @@
     "tslint"
   ],
   "engines": {
-    "node": "^10.12.0 || >=12.0.0"
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "files": [
     "dist",
@@ -31,23 +31,23 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "postclean": "rimraf dist && rimraf coverage",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "eslint . --ignore-path='../../.eslintignore'",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "4.15.2",
-    "lodash": "^4.17.15"
+    "@typescript-eslint/utils": "5.41.0",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
-    "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0",
+    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0",
     "tslint": "^5.0.0 || ^6.0.0",
     "typescript": "*"
   },
   "devDependencies": {
     "@types/lodash": "*",
-    "@typescript-eslint/parser": "4.15.2"
+    "@typescript-eslint/parser": "5.41.0"
   }
 }

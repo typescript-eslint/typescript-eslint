@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 interface VisitorKeys {
@@ -16,8 +16,8 @@ type AdditionalKeys = {
 };
 
 const additionalKeys: AdditionalKeys = {
-  // ES2020
-  ImportExpression: ['source'],
+  // Stage 3 Import Assertions
+  ImportAttribute: ['key', 'value'],
 
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
@@ -42,14 +42,20 @@ const additionalKeys: AdditionalKeys = {
     'implements',
     'body',
   ],
+  ExportAllDeclaration: ['exported', 'source', 'assertions'],
+  ExportNamedDeclaration: ['declaration', 'specifiers', 'source', 'assertions'],
   FunctionDeclaration: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   FunctionExpression: ['id', 'typeParameters', 'params', 'returnType', 'body'],
   Identifier: ['decorators', 'typeAnnotation'],
-  MethodDefinition: ['decorators', 'key', 'value'],
+  ImportDeclaration: ['specifiers', 'source', 'assertions'],
+  ImportExpression: ['source', 'attributes'],
+  MethodDefinition: ['decorators', 'key', 'value', 'typeParameters'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
+  PropertyDefinition: ['decorators', 'key', 'typeAnnotation', 'value'],
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
   TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
+  StaticBlock: ['body'],
 
   // JSX
   JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
@@ -58,13 +64,12 @@ const additionalKeys: AdditionalKeys = {
   JSXSpreadChild: ['expression'],
 
   // Additional Nodes.
-  ClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   Decorator: ['expression'],
 
   // TS-prefixed nodes
-  TSAbstractClassProperty: ['decorators', 'key', 'typeAnnotation', 'value'],
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
+  TSAbstractPropertyDefinition: ['decorators', 'key', 'typeAnnotation'],
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
   TSAsExpression: ['expression', 'typeAnnotation'],
@@ -95,6 +100,7 @@ const additionalKeys: AdditionalKeys = {
   TSIndexedAccessType: ['indexType', 'objectType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],
+  TSInstantiationExpression: ['expression', 'typeParameters'],
   TSInterfaceBody: ['body'],
   TSInterfaceDeclaration: ['id', 'typeParameters', 'extends', 'body'],
   TSInterfaceHeritage: ['expression', 'typeParameters'],
@@ -105,7 +111,7 @@ const additionalKeys: AdditionalKeys = {
   TSMethodSignature: ['typeParameters', 'key', 'params', 'returnType'],
   TSModuleBlock: ['body'],
   TSModuleDeclaration: ['id', 'body'],
-  TSNamedTupleMember: ['elementType'],
+  TSNamedTupleMember: ['label', 'elementType'],
   TSNamespaceExportDeclaration: ['id'],
   TSNeverKeyword: [],
   TSNonNullExpression: ['expression'],
@@ -114,7 +120,6 @@ const additionalKeys: AdditionalKeys = {
   TSObjectKeyword: [],
   TSOptionalType: ['typeAnnotation'],
   TSParameterProperty: ['decorators', 'parameter'],
-  TSParenthesizedType: ['typeAnnotation'],
   TSPrivateKeyword: [],
   TSPropertySignature: ['typeAnnotation', 'key', 'initializer'],
   TSProtectedKeyword: [],
@@ -137,7 +142,7 @@ const additionalKeys: AdditionalKeys = {
   TSTypeParameterDeclaration: ['params'],
   TSTypeParameterInstantiation: ['params'],
   TSTypePredicate: ['typeAnnotation', 'parameterName'],
-  TSTypeQuery: ['exprName'],
+  TSTypeQuery: ['exprName', 'typeParameters'],
   TSTypeReference: ['typeName', 'typeParameters'],
   TSUndefinedKeyword: [],
   TSUnionType: ['types'],

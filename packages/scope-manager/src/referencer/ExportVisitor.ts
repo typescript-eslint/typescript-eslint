@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-import { Referencer } from './Referencer';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
+import type { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
 
 type ExportNode =
@@ -24,6 +26,7 @@ class ExportVisitor extends Visitor {
 
   protected Identifier(node: TSESTree.Identifier): void {
     if (this.#exportNode.exportKind === 'type') {
+      // export type { T };
       // type exports can only reference types
       this.#referencer.currentScope().referenceType(node);
     } else {
@@ -65,7 +68,16 @@ class ExportVisitor extends Visitor {
   }
 
   protected ExportSpecifier(node: TSESTree.ExportSpecifier): void {
-    this.visit(node.local);
+    if (node.exportKind === 'type') {
+      // export { type T };
+      // type exports can only reference types
+      //
+      // we can't let this fall through to the Identifier selector because the exportKind is on this node
+      // and we don't have access to the `.parent` during scope analysis
+      this.#referencer.currentScope().referenceType(node.local);
+    } else {
+      this.visit(node.local);
+    }
   }
 }
 

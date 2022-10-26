@@ -1,4 +1,5 @@
 import path from 'path';
+
 import rule from '../../src/rules/non-nullable-type-assertion-style';
 import { RuleTester } from '../RuleTester';
 
@@ -7,7 +8,7 @@ const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
     tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+    project: './tsconfig.noUncheckedIndexedAccess.json',
   },
   parser: '@typescript-eslint/parser',
 });
@@ -53,6 +54,42 @@ const y = x as NonNullable<T>;
     `,
     `
 const foo = [] as const;
+    `,
+    `
+const x = 1 as 1;
+    `,
+    `
+declare function foo<T = any>(): T;
+const bar = foo() as number;
+    `,
+    `
+function first<T>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | null>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | undefined>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | null | undefined>(
+  array: ArrayLike<T>,
+): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+type A = 'a' | 'A';
+type B = 'b' | 'B';
+function first<T extends A | B | null>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
     `,
   ],
 
@@ -190,6 +227,25 @@ type T = string | null | undefined;
 declare const x: T;
 
 const y = x!;
+      `,
+    },
+    {
+      code: `
+function first<T extends string | number>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+      `,
+      errors: [
+        {
+          column: 30,
+          line: 3,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+function first<T extends string | number>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0]!) : null;
+}
       `,
     },
   ],

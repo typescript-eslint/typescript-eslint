@@ -1,7 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -17,23 +16,25 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Disallow the use of custom TypeScript modules and namespaces',
-      category: 'Best Practices',
+      description: 'Disallow TypeScript namespaces',
       recommended: 'error',
     },
     messages: {
       moduleSyntaxIsPreferred:
-        'ES2015 module syntax is preferred over custom TypeScript modules and namespaces.',
+        'ES2015 module syntax is preferred over namespaces.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           allowDeclarations: {
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces.',
             type: 'boolean',
           },
           allowDefinitionFiles: {
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces inside definition files.',
             type: 'boolean',
           },
         },
@@ -50,12 +51,15 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
     const filename = context.getFilename();
 
-    function isDeclaration(node: TSESTree.TSModuleDeclaration): boolean {
-      return (
-        node.declare === true ||
-        (node.parent!.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
-          isDeclaration(node.parent!.parent))
-      );
+    function isDeclaration(node: TSESTree.Node): boolean {
+      if (
+        node.type === AST_NODE_TYPES.TSModuleDeclaration &&
+        node.declare === true
+      ) {
+        return true;
+      }
+
+      return node.parent != null && isDeclaration(node.parent);
     }
 
     return {

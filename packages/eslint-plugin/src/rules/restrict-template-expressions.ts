@@ -1,8 +1,7 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type Options = [
@@ -11,6 +10,7 @@ type Options = [
     allowBoolean?: boolean;
     allowAny?: boolean;
     allowNullish?: boolean;
+    allowRegExp?: boolean;
   },
 ];
 
@@ -21,8 +21,8 @@ export default util.createRule<Options, MessageId>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce template literal expressions to be of string type',
-      category: 'Best Practices',
+      description:
+        'Enforce template literal expressions to be of `string` type',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -33,10 +33,31 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          allowNumber: { type: 'boolean' },
-          allowBoolean: { type: 'boolean' },
-          allowAny: { type: 'boolean' },
-          allowNullish: { type: 'boolean' },
+          allowNumber: {
+            description:
+              'Whether to allow `number` typed values in template expressions.',
+            type: 'boolean',
+          },
+          allowBoolean: {
+            description:
+              'Whether to allow `boolean` typed values in template expressions.',
+            type: 'boolean',
+          },
+          allowAny: {
+            description:
+              'Whether to allow `any` typed values in template expressions.',
+            type: 'boolean',
+          },
+          allowNullish: {
+            description:
+              'Whether to allow `nullish` typed values in template expressions.',
+            type: 'boolean',
+          },
+          allowRegExp: {
+            description:
+              'Whether to allow `regexp` typed values in template expressions.',
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -73,6 +94,13 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (options.allowAny && util.isTypeAnyType(type)) {
+        return true;
+      }
+
+      if (
+        options.allowRegExp &&
+        util.getTypeName(typeChecker, type) === 'RegExp'
+      ) {
         return true;
       }
 

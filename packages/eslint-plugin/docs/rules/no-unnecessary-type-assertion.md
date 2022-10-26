@@ -1,12 +1,20 @@
-# Warns if a type assertion does not change the type of an expression (`no-unnecessary-type-assertion`)
+---
+description: 'Disallow type assertions that do not change the type of an expression.'
+---
 
-This rule prohibits using a type assertion that does not change the type of an expression.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-type-assertion** for documentation.
 
-## Rule Details
+TypeScript can be told an expression is a different type than expected using `as` type assertions.
+Leaving `as` assertions in the codebase increases visual clutter and harms code readability, so it's generally best practice to remove them if they don't change the type of an expression.
+This rule reports when a type assertion does not change the type of an expression.
 
-This rule aims to prevent unnecessary type assertions.
+## Examples
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const foo = 3;
@@ -33,7 +41,7 @@ function foo(x: number): number {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const foo = <number>3;
@@ -53,11 +61,11 @@ function foo(x: number | undefined): number {
 }
 ```
 
-### Options
+## Options
 
-This rule optionally takes an object with a single property `typesToIgnore`, which can be set to a list of type names to ignore.
+### `typesToIgnore`
 
-For example, with `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
+With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
 
 ```ts
 type Foo = 3;
@@ -67,7 +75,3 @@ const foo: Foo = 3;
 ## When Not To Use It
 
 If you don't care about having no-op type assertions in your code, then you can turn off this rule.
-
-## Related to
-
-- TSLint: ['no-unnecessary-type-assertion`](https://palantir.github.io/tslint/rules/no-unnecessary-type-assertion/)

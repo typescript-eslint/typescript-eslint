@@ -28,8 +28,7 @@ ruleTester.run('no-loss-of-precision', rule, {
       errors: [{ messageId: 'noLossOfPrecision' }],
     },
     {
-      code:
-        'const x = 0b100_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_001;',
+      code: 'const x = 0b100_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_001;',
       errors: [{ messageId: 'noLossOfPrecision' }],
     },
   ],

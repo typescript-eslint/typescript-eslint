@@ -1,15 +1,16 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
 import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
 import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
-import * as util from '.';
+import type { TSESTree } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  ASTUtils,
+  ESLintUtils,
+  TSESLint,
+} from '@typescript-eslint/utils';
 
 class UnusedVarsVisitor<
   TMessageIds extends string,
-  TOptions extends readonly unknown[]
+  TOptions extends readonly unknown[],
 > extends Visitor {
   private static readonly RESULTS_CACHE = new WeakMap<
     TSESTree.Program,
@@ -24,7 +25,7 @@ class UnusedVarsVisitor<
       visitChildrenEvenIfSelectorExists: true,
     });
 
-    this.#scopeManager = util.nullThrows(
+    this.#scopeManager = ESLintUtils.nullThrows(
       context.getSourceCode().scopeManager,
       'Missing required scope manager',
     );
@@ -32,7 +33,7 @@ class UnusedVarsVisitor<
 
   public static collectUnusedVariables<
     TMessageIds extends string,
-    TOptions extends readonly unknown[]
+    TOptions extends readonly unknown[],
   >(
     context: TSESLint.RuleContext<TMessageIds, TOptions>,
   ): ReadonlySet<TSESLint.Scope.Variable> {
@@ -318,7 +319,7 @@ class UnusedVarsVisitor<
   protected TSMethodSignature = this.visitFunctionTypeSignature;
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
-    // global augmentation can be in any file, and they do not need exports
+    // -- global augmentation can be in any file, and they do not need exports
     if (node.global === true) {
       this.markVariableAsUsed('global', node.parent!);
     }
@@ -545,11 +546,11 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     function isInLoop(node: TSESTree.Node): boolean {
       let currentNode: TSESTree.Node | undefined = node;
       while (currentNode) {
-        if (util.isFunction(currentNode)) {
+        if (ASTUtils.isFunction(currentNode)) {
           break;
         }
 
-        if (util.isLoop(currentNode)) {
+        if (ASTUtils.isLoop(currentNode)) {
           return true;
         }
 
@@ -620,7 +621,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
       function getUpperFunction(node: TSESTree.Node): TSESTree.Node | null {
         let currentNode: TSESTree.Node | undefined = node;
         while (currentNode) {
-          if (util.isFunction(currentNode)) {
+          if (ASTUtils.isFunction(currentNode)) {
             return currentNode;
           }
           currentNode = currentNode.parent;
@@ -747,7 +748,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
  */
 function collectUnusedVariables<
   TMessageIds extends string,
-  TOptions extends readonly unknown[]
+  TOptions extends readonly unknown[],
 >(
   context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
 ): ReadonlySet<TSESLint.Scope.Variable> {

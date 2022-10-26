@@ -1,92 +1,27 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE } from './base-config';
 
 export const webworker_iterable = {
-  Cache: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Cache',
-  },
-  CanvasPathDrawingStyles: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'CanvasPathDrawingStyles',
-  },
-  DOMStringList: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'DOMStringList',
-  },
-  FileList: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'FileList',
-  },
-  FormData: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'FormData',
-  },
-  Headers: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Headers',
-  },
-  IDBDatabase: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'IDBDatabase',
-  },
-  IDBObjectStore: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'IDBObjectStore',
-  },
-  URLSearchParams: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'URLSearchParams',
-  },
-  WEBGL_draw_buffers: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WEBGL_draw_buffers',
-  },
-  WebGL2RenderingContextBase: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WebGL2RenderingContextBase',
-  },
-  WebGL2RenderingContextOverloads: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WebGL2RenderingContextOverloads',
-  },
-  WebGLRenderingContextBase: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WebGLRenderingContextBase',
-  },
-  WebGLRenderingContextOverloads: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WebGLRenderingContextOverloads',
-  },
+  Cache: TYPE,
+  DOMStringList: TYPE,
+  FileList: TYPE,
+  FontFaceSet: TYPE,
+  FormData: TYPE,
+  Headers: TYPE,
+  IDBDatabase: TYPE,
+  IDBObjectStore: TYPE,
+  MessageEvent: TYPE,
+  SubtleCrypto: TYPE,
+  URLSearchParams: TYPE,
+  WEBGL_draw_buffers: TYPE,
+  WEBGL_multi_draw: TYPE,
+  WebGL2RenderingContextBase: TYPE,
+  WebGL2RenderingContextOverloads: TYPE,
+  WebGLRenderingContextBase: TYPE,
+  WebGLRenderingContextOverloads: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

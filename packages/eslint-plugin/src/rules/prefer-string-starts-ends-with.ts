@@ -1,9 +1,8 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import { AST as RegExpAST, RegExpParser } from 'regexpp';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { AST as RegExpAST } from 'regexpp';
+import { RegExpParser } from 'regexpp';
+
 import {
   createRule,
   getParserServices,
@@ -26,9 +25,8 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings',
-      category: 'Best Practices',
-      recommended: false,
+        'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
@@ -287,7 +285,9 @@ export default createRule({
       return { isEndsWith, isStartsWith, text };
     }
 
-    function getLeftNode(node: TSESTree.Expression): TSESTree.MemberExpression {
+    function getLeftNode(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+    ): TSESTree.MemberExpression {
       if (node.type === AST_NODE_TYPES.ChainExpression) {
         return getLeftNode(node.expression);
       }

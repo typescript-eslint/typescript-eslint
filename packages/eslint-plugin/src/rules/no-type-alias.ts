@@ -1,7 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Values =
@@ -27,6 +26,7 @@ type Options = [
     allowLiterals?: Values;
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
+    allowGenerics?: 'always' | 'never';
   },
 ];
 type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
@@ -44,8 +44,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow the use of type aliases',
-      category: 'Stylistic Issues',
+      description: 'Disallow type aliases',
       // too opinionated to be recommended
       recommended: false,
     },
@@ -59,25 +58,37 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowAliases: {
+            description: 'Whether to allow direct one-to-one type aliases.',
             enum: enumValues,
           },
           allowCallbacks: {
+            description: 'Whether to allow type aliases for callbacks.',
             enum: ['always', 'never'],
           },
           allowConditionalTypes: {
+            description: 'Whether to allow type aliases for conditional types.',
             enum: ['always', 'never'],
           },
           allowConstructors: {
+            description: 'Whether to allow type aliases with constructors.',
             enum: ['always', 'never'],
           },
           allowLiterals: {
+            description:
+              'Whether to allow type aliases with object literal types.',
             enum: enumValues,
           },
           allowMappedTypes: {
+            description: 'Whether to allow type aliases with mapped types.',
             enum: enumValues,
           },
           allowTupleTypes: {
+            description: 'Whether to allow type aliases with tuple types.',
             enum: enumValues,
+          },
+          allowGenerics: {
+            description: 'Whether to allow type aliases with generic types.',
+            enum: ['always', 'never'],
           },
         },
         additionalProperties: false,
@@ -93,6 +104,7 @@ export default util.createRule<Options, MessageIds>({
       allowLiterals: 'never',
       allowMappedTypes: 'never',
       allowTupleTypes: 'never',
+      allowGenerics: 'never',
     },
   ],
   create(
@@ -106,6 +118,7 @@ export default util.createRule<Options, MessageIds>({
         allowLiterals,
         allowMappedTypes,
         allowTupleTypes,
+        allowGenerics,
       },
     ],
   ) {
@@ -122,10 +135,12 @@ export default util.createRule<Options, MessageIds>({
     ];
     const aliasTypes = new Set([
       AST_NODE_TYPES.TSArrayType,
+      AST_NODE_TYPES.TSImportType,
       AST_NODE_TYPES.TSTypeReference,
       AST_NODE_TYPES.TSLiteralType,
       AST_NODE_TYPES.TSTypeQuery,
       AST_NODE_TYPES.TSIndexedAccessType,
+      AST_NODE_TYPES.TSTemplateLiteralType,
     ]);
 
     /**
@@ -202,6 +217,13 @@ export default util.createRule<Options, MessageIds>({
       return false;
     };
 
+    const isValidGeneric = (type: TypeWithLabel): boolean => {
+      return (
+        type.node.type === AST_NODE_TYPES.TSTypeReference &&
+        type.node.typeParameters !== undefined
+      );
+    };
+
     const checkAndReport = (
       optionValue: Values,
       isTopLevel: boolean,
@@ -259,14 +281,18 @@ export default util.createRule<Options, MessageIds>({
       } else if (isValidTupleType(type)) {
         // tuple types
         checkAndReport(allowTupleTypes!, isTopLevel, type, 'Tuple Types');
+      } else if (isValidGeneric(type)) {
+        if (allowGenerics === 'never') {
+          reportError(type.node, type.compositionType, isTopLevel, 'Generics');
+        }
       } else if (
-        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-        type.node.type.endsWith('Keyword') ||
+        type.node.type.endsWith(AST_TOKEN_TYPES.Keyword) ||
         aliasTypes.has(type.node.type) ||
         (type.node.type === AST_NODE_TYPES.TSTypeOperator &&
-          type.node.operator === 'readonly' &&
-          type.node.typeAnnotation &&
-          aliasTypes.has(type.node.typeAnnotation.type))
+          (type.node.operator === 'keyof' ||
+            (type.node.operator === 'readonly' &&
+              type.node.typeAnnotation &&
+              aliasTypes.has(type.node.typeAnnotation.type))))
       ) {
         // alias / keyword
         checkAndReport(allowAliases!, isTopLevel, type, 'Aliases');
@@ -291,9 +317,6 @@ export default util.createRule<Options, MessageIds>({
           acc.push(...getTypes(type, node.type));
           return acc;
         }, []);
-      }
-      if (node.type === AST_NODE_TYPES.TSParenthesizedType) {
-        return getTypes(node.typeAnnotation, compositionType);
       }
       return [{ node, compositionType }];
     }

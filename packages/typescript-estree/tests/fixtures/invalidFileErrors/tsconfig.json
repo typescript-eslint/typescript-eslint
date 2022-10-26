@@ -3,10 +3,10 @@
     "allowJs": true
   },
   "include": [
-    "ts/included.ts",
-    "ts/included.tsx",
-    "js/included.js",
-    "js/included.jsx",
+    "ts/included01.ts",
+    "ts/included02.tsx",
+    "js/included01.js",
+    "js/included02.jsx",
     "other/included.vue"
   ]
 }

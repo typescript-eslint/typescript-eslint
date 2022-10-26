@@ -1,7 +1,6 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 /*
@@ -22,7 +21,6 @@ export default createRule({
     docs: {
       description:
         "Enforces that packages rules don't do `import ts from 'typescript';`",
-      category: 'Possible Errors',
       recommended: 'error',
     },
     fixable: 'code',

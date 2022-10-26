@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vue-sfc should lint successfully 1`] = `
+[
+  {
+    "errorCount": 1,
+    "fatalErrorCount": 1,
+    "filePath": "<root>/Hello.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "fatal": true,
+        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "ruleId": null,
+        "severity": 2,
+      },
+    ],
+    "source": "<!-- Hello.vue -->
+<template>
+  <div>
+    <div>
+      <!-- !!!!! expected error !!!!! -->
+      Hello {{ name as any }}{{ exclamationMarks }}
+    </div>
+    <button @click="decrement">-</button>
+    <button @click="increment">+</button>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({
+  props: ['name', 'initialEnthusiasm'],
+  data() {
+    return {
+      enthusiasm: this.initialEnthusiasm,
+    };
+  },
+  methods: {
+    increment() {
+      this.enthusiasm++;
+    },
+    decrement() {
+      if (this.enthusiasm > 1) {
+        this.enthusiasm--;
+      }
+    },
+  },
+  computed: {
+    exclamationMarks(): any {
+      // !!!!! expected error !!!!!
+      return Array(this.enthusiasm + 1).join('!');
+    },
+  },
+});
+</script>
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "fatalErrorCount": 1,
+    "filePath": "<root>/Utility.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "fatal": true,
+        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "ruleId": null,
+        "severity": 2,
+      },
+    ],
+    "source": "<script lang="ts">
+/* https://github.com/typescript-eslint/typescript-eslint/issues/2591 */
+/* eslint-disable class-methods-use-this */
+export default class Utility {
+  get a() {
+    const list: Array<string> = [];
+    return list;
+  }
+
+  get b() {
+    const a = this.a as Array<string>;
+    return a;
+  }
+}
+</script>
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "fatalErrorCount": 1,
+    "filePath": "<root>/World.vue",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "fatal": true,
+        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "ruleId": null,
+        "severity": 2,
+      },
+    ],
+    "source": "<!-- World.vue -->
+<template>
+  <div>
+    <div :id="name">
+      {{ enthusiasm }}
+    </div>
+    <button @click="decrement">-</button>
+    <button @click="increment">+</button>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+export default Vue.extend({
+  props: ['name', 'initialEnthusiasm'],
+  data() {
+    return {
+      enthusiasm: this.initialEnthusiasm,
+    };
+  },
+  methods: {
+    increment() {
+      this.enthusiasm++;
+    },
+    decrement() {
+      if (this.enthusiasm > 1) {
+        this.enthusiasm--;
+      }
+    },
+  },
+});
+</script>
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+]
+`;

@@ -1,14 +1,14 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import { AST as RegExpAST, parseRegExpLiteral } from 'regexpp';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { AST as RegExpAST } from 'regexpp';
+import { parseRegExpLiteral } from 'regexpp';
 import * as ts from 'typescript';
+
 import {
   createRule,
+  getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
-  getConstrainedTypeAtLocation,
 } from '../util';
 
 export default createRule({
@@ -19,8 +19,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
-      category: 'Best Practices',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -125,66 +124,81 @@ export default createRule({
       );
     }
 
-    return {
-      [[
-        // a.indexOf(b) !== 1
-        "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]",
-        // a?.indexOf(b) !== 1
-        "BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name='indexOf'][computed=false]",
-      ].join(', ')](node: TSESTree.MemberExpression): void {
-        // Check if the comparison is equivalent to `includes()`.
-        const callNode = node.parent as TSESTree.CallExpression;
-        const compareNode = (callNode.parent?.type ===
-        AST_NODE_TYPES.ChainExpression
+    function checkArrayIndexOf(
+      node: TSESTree.MemberExpression,
+      allowFixing: boolean,
+    ): void {
+      // Check if the comparison is equivalent to `includes()`.
+      const callNode = node.parent as TSESTree.CallExpression;
+      const compareNode = (
+        callNode.parent?.type === AST_NODE_TYPES.ChainExpression
           ? callNode.parent.parent
-          : callNode.parent) as TSESTree.BinaryExpression;
-        const negative = isNegativeCheck(compareNode);
-        if (!negative && !isPositiveCheck(compareNode)) {
-          return;
-        }
+          : callNode.parent
+      ) as TSESTree.BinaryExpression;
+      const negative = isNegativeCheck(compareNode);
+      if (!negative && !isPositiveCheck(compareNode)) {
+        return;
+      }
 
-        // Get the symbol of `indexOf` method.
-        const tsNode = services.esTreeNodeToTSNodeMap.get(node.property);
-        const indexofMethodDeclarations = types
-          .getSymbolAtLocation(tsNode)
+      // Get the symbol of `indexOf` method.
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node.property);
+      const indexofMethodDeclarations = types
+        .getSymbolAtLocation(tsNode)
+        ?.getDeclarations();
+      if (
+        indexofMethodDeclarations == null ||
+        indexofMethodDeclarations.length === 0
+      ) {
+        return;
+      }
+
+      // Check if every declaration of `indexOf` method has `includes` method
+      // and the two methods have the same parameters.
+      for (const instanceofMethodDecl of indexofMethodDeclarations) {
+        const typeDecl = instanceofMethodDecl.parent;
+        const type = types.getTypeAtLocation(typeDecl);
+        const includesMethodDecl = type
+          .getProperty('includes')
           ?.getDeclarations();
         if (
-          indexofMethodDeclarations == null ||
-          indexofMethodDeclarations.length === 0
+          includesMethodDecl == null ||
+          !includesMethodDecl.some(includesMethodDecl =>
+            hasSameParameters(includesMethodDecl, instanceofMethodDecl),
+          )
         ) {
           return;
         }
+      }
 
-        // Check if every declaration of `indexOf` method has `includes` method
-        // and the two methods have the same parameters.
-        for (const instanceofMethodDecl of indexofMethodDeclarations) {
-          const typeDecl = instanceofMethodDecl.parent;
-          const type = types.getTypeAtLocation(typeDecl);
-          const includesMethodDecl = type
-            .getProperty('includes')
-            ?.getDeclarations();
-          if (
-            includesMethodDecl == null ||
-            !includesMethodDecl.some(includesMethodDecl =>
-              hasSameParameters(includesMethodDecl, instanceofMethodDecl),
-            )
-          ) {
-            return;
-          }
-        }
-
-        // Report it.
-        context.report({
-          node: compareNode,
-          messageId: 'preferIncludes',
-          *fix(fixer) {
+      // Report it.
+      context.report({
+        node: compareNode,
+        messageId: 'preferIncludes',
+        ...(allowFixing && {
+          *fix(fixer): Generator<TSESLint.RuleFix> {
             if (negative) {
               yield fixer.insertTextBefore(callNode, '!');
             }
             yield fixer.replaceText(node.property, 'includes');
             yield fixer.removeRange([callNode.range[1], compareNode.range[1]]);
           },
-        });
+        }),
+      });
+    }
+
+    return {
+      // a.indexOf(b) !== 1
+      "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]"(
+        node: TSESTree.MemberExpression,
+      ): void {
+        checkArrayIndexOf(node, /* allowFixing */ true);
+      },
+
+      // a?.indexOf(b) !== 1
+      "BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name='indexOf'][computed=false]"(
+        node: TSESTree.MemberExpression,
+      ): void {
+        checkArrayIndexOf(node, /* allowFixing */ false);
       },
 
       // /bar/.test(foo)
@@ -229,7 +243,7 @@ export default createRule({
             }
             yield fixer.insertTextAfter(
               argNode,
-              `${node.optional ? '?.' : '.'}includes(${JSON.stringify(text)}`,
+              `${node.optional ? '?.' : '.'}includes('${text}'`,
             );
           },
         });

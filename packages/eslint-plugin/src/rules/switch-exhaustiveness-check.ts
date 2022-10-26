@@ -1,5 +1,7 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -8,19 +10,18 @@ import {
   isOpeningBraceToken,
   requiresQuoting,
 } from '../util';
-import { isTypeFlagSet, unionTypeParts } from 'tsutils';
 
 export default createRule({
   name: 'switch-exhaustiveness-check',
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Exhaustiveness checking in switch with union type',
-      category: 'Best Practices',
+      description:
+        'Require switch-case statements to be exhaustive with union type',
       recommended: false,
-      suggestion: true,
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     schema: [],
     messages: {
       switchIsNotExhaustive:
@@ -144,7 +145,7 @@ export default createRule({
             missingBranches: missingBranchTypes
               .map(missingType =>
                 isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.getSymbol()?.escapedName}`
+                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
                   : checker.typeToString(missingType),
               )
               .join(' | '),

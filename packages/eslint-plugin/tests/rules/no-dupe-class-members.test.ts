@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-dupe-class-members';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -165,6 +165,28 @@ class A {
       code: `
 class A {
   set foo(value) {}
+  foo() {}
+}
+      `,
+      errors: [
+        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo;
+  foo = 42;
+}
+      `,
+      errors: [
+        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo;
   foo() {}
 }
       `,

@@ -1,8 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -11,9 +9,8 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated',
-      category: 'Stylistic Issues',
-      recommended: false,
+        'Enforce the use of `for-of` loop over the standard `for` loop where possible',
+      recommended: 'strict',
     },
     messages: {
       preferForOf:
@@ -34,7 +31,10 @@ export default util.createRule({
       );
     }
 
-    function isLiteral(node: TSESTree.Expression, value: number): boolean {
+    function isLiteral(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+      value: number,
+    ): boolean {
       return node.type === AST_NODE_TYPES.Literal && node.value === value;
     }
 
@@ -43,7 +43,7 @@ export default util.createRule({
     }
 
     function isMatchingIdentifier(
-      node: TSESTree.Expression,
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
       name: string,
     ): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;
@@ -172,6 +172,7 @@ export default util.createRule({
           !contains(body, id) ||
           (node !== undefined &&
             node.type === AST_NODE_TYPES.MemberExpression &&
+            node.object.type !== AST_NODE_TYPES.ThisExpression &&
             node.property === id &&
             sourceCode.getText(node.object) === arrayText &&
             !isAssignee(node))

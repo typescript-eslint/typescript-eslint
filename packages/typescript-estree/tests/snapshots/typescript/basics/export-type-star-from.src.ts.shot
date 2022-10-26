@@ -4,6 +4,7 @@ exports[`typescript basics export-type-star-from.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "exportKind": "type",
       "exported": null,
       "loc": Object {

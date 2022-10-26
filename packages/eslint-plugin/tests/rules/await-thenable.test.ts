@@ -1,5 +1,5 @@
 import rule from '../../src/rules/await-thenable';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const messageId = 'await';
@@ -176,6 +176,26 @@ async function test() {
   await bluebird;
 }
     `,
+    `
+const doSomething = async (
+  obj1: { a?: { b?: { c?: () => Promise<void> } } },
+  obj2: { a?: { b?: { c: () => Promise<void> } } },
+  obj3: { a?: { b: { c?: () => Promise<void> } } },
+  obj4: { a: { b: { c?: () => Promise<void> } } },
+  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
+  obj6?: { a: { b: { c?: () => Promise<void> } } },
+  callback?: () => Promise<void>,
+): Promise<void> => {
+  await obj1.a?.b?.c?.();
+  await obj2.a?.b?.c();
+  await obj3.a?.b.c?.();
+  await obj4.a.b.c?.();
+  await obj5.a?.().b?.c?.();
+  await obj6?.a.b.c?.();
+
+  await callback?.();
+};
+    `,
   ],
 
   invalid: [
@@ -224,6 +244,58 @@ async function test() {
       errors: [
         {
           line: 8,
+          messageId,
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (
+  obj1: { a?: { b?: { c?: () => void } } },
+  obj2: { a?: { b?: { c: () => void } } },
+  obj3: { a?: { b: { c?: () => void } } },
+  obj4: { a: { b: { c?: () => void } } },
+  obj5: { a?: () => { b?: { c?: () => void } } },
+  obj6?: { a: { b: { c?: () => void } } },
+  callback?: () => void,
+): Promise<void> => {
+  await obj1.a?.b?.c?.();
+  await obj2.a?.b?.c();
+  await obj3.a?.b.c?.();
+  await obj4.a.b.c?.();
+  await obj5.a?.().b?.c?.();
+  await obj6?.a.b.c?.();
+
+  await callback?.();
+};
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId,
+        },
+        {
+          line: 12,
+          messageId,
+        },
+        {
+          line: 13,
+          messageId,
+        },
+        {
+          line: 14,
+          messageId,
+        },
+        {
+          line: 15,
+          messageId,
+        },
+        {
+          line: 16,
+          messageId,
+        },
+        {
+          line: 18,
           messageId,
         },
       ],

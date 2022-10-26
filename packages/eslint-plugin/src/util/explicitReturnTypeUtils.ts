@@ -1,75 +1,13 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-  TSESLint,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
-import { nullThrows, NullThrowsReasons } from './nullThrows';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+
+import { isConstructor, isSetter, isTypeAssertion } from './astUtils';
+import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 
 type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
 type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
-
-/**
- * Creates a report location for the given function.
- * The location only encompasses the "start" of the function, and not the body
- *
- * eg.
- * function foo(args) {}
- * ^^^^^^^^^^^^^^^^^^
- *
- * get y(args) {}
- * ^^^^^^^^^^^
- *
- * const x = (args) => {}
- *           ^^^^^^^^^
- */
-function getReporLoc(
-  node: FunctionNode,
-  sourceCode: TSESLint.SourceCode,
-): TSESTree.SourceLocation {
-  /**
-   * Returns start column position
-   * @param node
-   */
-  function getLocStart(): TSESTree.LineAndColumnData {
-    /* highlight method name */
-    const parent = node.parent;
-    if (
-      parent &&
-      (parent.type === AST_NODE_TYPES.MethodDefinition ||
-        (parent.type === AST_NODE_TYPES.Property && parent.method))
-    ) {
-      return parent.loc.start;
-    }
-
-    return node.loc.start;
-  }
-
-  /**
-   * Returns end column position
-   * @param node
-   */
-  function getLocEnd(): TSESTree.LineAndColumnData {
-    /* highlight `=>` */
-    if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-      return sourceCode.getTokenBefore(
-        node.body,
-        token =>
-          token.type === AST_TOKEN_TYPES.Punctuator && token.value === '=>',
-      )!.loc.end;
-    }
-
-    return sourceCode.getTokenBefore(node.body)!.loc.end;
-  }
-
-  return {
-    start: getLocStart(),
-    end: getLocEnd(),
-  };
-}
 
 /**
  * Checks if a node is a variable declarator with a type annotation.
@@ -91,10 +29,12 @@ function isVariableDeclaratorWithTypeAnnotation(
  * public x: Foo = ...
  * ```
  */
-function isClassPropertyWithTypeAnnotation(
+function isPropertyDefinitionWithTypeAnnotation(
   node: TSESTree.Node,
-): node is TSESTree.ClassProperty {
-  return node.type === AST_NODE_TYPES.ClassProperty && !!node.typeAnnotation;
+): node is TSESTree.PropertyDefinition {
+  return (
+    node.type === AST_NODE_TYPES.PropertyDefinition && !!node.typeAnnotation
+  );
 }
 
 /**
@@ -111,11 +51,12 @@ function isConstructorArgument(
 }
 
 /**
- * Checks if a node belongs to:
+ * Checks if a node is a property or a nested property of a typed object:
  * ```
  * const x: Foo = { prop: () => {} }
  * const x = { prop: () => {} } as Foo
  * const x = <Foo>{ prop: () => {} }
+ * const x: Foo = { bar: { prop: () => {} } }
  * ```
  */
 function isPropertyOfObjectWithType(
@@ -139,9 +80,10 @@ function isPropertyOfObjectWithType(
 
   return (
     isTypeAssertion(parent) ||
-    isClassPropertyWithTypeAnnotation(parent) ||
+    isPropertyDefinitionWithTypeAnnotation(parent) ||
     isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isFunctionArgument(parent)
+    isFunctionArgument(parent) ||
+    isPropertyOfObjectWithType(parent)
   );
 }
 
@@ -242,7 +184,10 @@ function isTypedFunctionExpression(
   node: FunctionExpression,
   options: Options,
 ): boolean {
-  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+  const parent = ESLintUtils.nullThrows(
+    node.parent,
+    ESLintUtils.NullThrowsReasons.MissingParent,
+  );
 
   if (!options.allowTypedFunctionExpressions) {
     return false;
@@ -251,7 +196,7 @@ function isTypedFunctionExpression(
   return (
     isTypeAssertion(parent) ||
     isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isClassPropertyWithTypeAnnotation(parent) ||
+    isPropertyDefinitionWithTypeAnnotation(parent) ||
     isPropertyOfObjectWithType(parent) ||
     isFunctionArgument(parent, node) ||
     isConstructorArgument(parent)
@@ -270,27 +215,26 @@ function isValidFunctionExpressionReturnType(
     return true;
   }
 
-  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+  const parent = ESLintUtils.nullThrows(
+    node.parent,
+    ESLintUtils.NullThrowsReasons.MissingParent,
+  );
   if (
     options.allowExpressions &&
     parent.type !== AST_NODE_TYPES.VariableDeclarator &&
     parent.type !== AST_NODE_TYPES.MethodDefinition &&
     parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
-    parent.type !== AST_NODE_TYPES.ClassProperty
+    parent.type !== AST_NODE_TYPES.PropertyDefinition
   ) {
     return true;
   }
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/653
-  if (
-    options.allowDirectConstAssertionInArrowFunctions &&
+  return (
+    options.allowDirectConstAssertionInArrowFunctions === true &&
     node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     returnsConstAssertionDirectly(node)
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 /**
@@ -307,11 +251,11 @@ function isValidFunctionReturnType(
     return true;
   }
 
-  if (node.returnType || isConstructor(node.parent) || isSetter(node.parent)) {
-    return true;
-  }
-
-  return false;
+  return (
+    node.returnType != null ||
+    isConstructor(node.parent) ||
+    isSetter(node.parent)
+  );
 }
 
 /**
@@ -327,7 +271,7 @@ function checkFunctionReturnType(
     return;
   }
 
-  report(getReporLoc(node, sourceCode));
+  report(getFunctionHeadLoc(node, sourceCode));
 }
 
 /**
@@ -346,6 +290,50 @@ function checkFunctionExpressionReturnType(
   checkFunctionReturnType(node, options, sourceCode, report);
 }
 
+/**
+ * Check whether any ancestor of the provided function has a valid return type.
+ */
+function ancestorHasReturnType(node: FunctionNode): boolean {
+  let ancestor = node.parent;
+
+  if (ancestor?.type === AST_NODE_TYPES.Property) {
+    ancestor = ancestor.value;
+  }
+
+  // if the ancestor is not a return, then this function was not returned at all, so we can exit early
+  const isReturnStatement = ancestor?.type === AST_NODE_TYPES.ReturnStatement;
+  const isBodylessArrow =
+    ancestor?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    ancestor.body.type !== AST_NODE_TYPES.BlockStatement;
+  if (!isReturnStatement && !isBodylessArrow) {
+    return false;
+  }
+
+  while (ancestor) {
+    switch (ancestor.type) {
+      case AST_NODE_TYPES.ArrowFunctionExpression:
+      case AST_NODE_TYPES.FunctionExpression:
+      case AST_NODE_TYPES.FunctionDeclaration:
+        if (ancestor.returnType) {
+          return true;
+        }
+        break;
+
+      // const x: Foo = () => {};
+      // Assume that a typed variable types the function expression
+      case AST_NODE_TYPES.VariableDeclarator:
+        if (ancestor.id.typeAnnotation) {
+          return true;
+        }
+        break;
+    }
+
+    ancestor = ancestor.parent;
+  }
+
+  return false;
+}
+
 export {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
@@ -353,4 +341,6 @@ export {
   FunctionExpression,
   FunctionNode,
   isTypedFunctionExpression,
+  isValidFunctionExpressionReturnType,
+  ancestorHasReturnType,
 };

@@ -1,6 +1,8 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule, { MessageIds, Options } from '../../src/rules/unbound-method';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/unbound-method';
+import rule from '../../src/rules/unbound-method';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -42,7 +44,7 @@ function addContainsMethodsClassInvalid(
     errors: [
       {
         line: 18,
-        messageId: 'unbound',
+        messageId: 'unboundWithoutThisAnnotation',
       },
     ],
   }));
@@ -265,6 +267,22 @@ class Foo {
 }
 const { bound } = new Foo();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    `
+class BaseClass {
+  x: number = 42;
+  logThis() {}
+}
+class OtherClass extends BaseClass {
+  superLogThis: any;
+  constructor() {
+    super();
+    this.superLogThis = super.logThis;
+  }
+}
+const oc = new OtherClass();
+oc.superLogThis();
+    `,
   ],
   invalid: [
     {
@@ -282,7 +300,7 @@ Promise.resolve().then(console.log);
       errors: [
         {
           line: 10,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -294,7 +312,7 @@ const x = console.log;
       errors: [
         {
           line: 3,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -309,15 +327,15 @@ function foo(arg: ContainsMethods | null) {
       errors: [
         {
           line: 20,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
         {
           line: 21,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
         {
           line: 22,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -359,7 +377,7 @@ ContainsMethods.unboundStatic;
       errors: [
         {
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -374,7 +392,7 @@ const x = CommunicationError.prototype.foo;
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -384,7 +402,7 @@ const x = CommunicationError.prototype.foo;
       errors: [
         {
           line: 1,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -403,7 +421,7 @@ instance.unbound = x; // THIS SHOULD NOT
       errors: [
         {
           line: 9,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -431,7 +449,7 @@ const { unbound } = new Foo();
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -460,7 +478,7 @@ let unbound;
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -489,7 +507,7 @@ const { foo } = CommunicationError.prototype;
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -504,7 +522,7 @@ let foo;
       errors: [
         {
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -516,7 +534,7 @@ const { log } = console;
       errors: [
         {
           line: 3,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -525,7 +543,50 @@ const { log } = console;
       errors: [
         {
           line: 1,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    {
+      code: `
+class BaseClass {
+  logThis() {}
+}
+class OtherClass extends BaseClass {
+  constructor() {
+    super();
+    const x = super.logThis;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 8,
+          column: 15,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1866
+    {
+      code: `
+class BaseClass {
+  logThis() {}
+}
+class OtherClass extends BaseClass {
+  constructor() {
+    super();
+    let x;
+    x = super.logThis;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          column: 9,
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },

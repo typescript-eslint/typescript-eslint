@@ -111,72 +111,55 @@ Object {
                     "typeAnnotation": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 42,
+                          "column": 41,
                           "line": 1,
                         },
                         "start": Object {
-                          "column": 25,
+                          "column": 26,
                           "line": 1,
                         },
                       },
                       "range": Array [
-                        25,
-                        42,
+                        26,
+                        41,
                       ],
-                      "type": "TSParenthesizedType",
-                      "typeAnnotation": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 41,
-                            "line": 1,
+                      "type": "TSUnionType",
+                      "types": Array [
+                        Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 32,
+                              "line": 1,
+                            },
+                            "start": Object {
+                              "column": 26,
+                              "line": 1,
+                            },
                           },
-                          "start": Object {
-                            "column": 26,
-                            "line": 1,
-                          },
+                          "range": Array [
+                            26,
+                            32,
+                          ],
+                          "type": "TSStringKeyword",
                         },
-                        "range": Array [
-                          26,
-                          41,
-                        ],
-                        "type": "TSUnionType",
-                        "types": Array [
-                          Object {
-                            "loc": Object {
-                              "end": Object {
-                                "column": 32,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 26,
-                                "line": 1,
-                              },
+                        Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 41,
+                              "line": 1,
                             },
-                            "range": Array [
-                              26,
-                              32,
-                            ],
-                            "type": "TSStringKeyword",
-                          },
-                          Object {
-                            "loc": Object {
-                              "end": Object {
-                                "column": 41,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 35,
-                                "line": 1,
-                              },
+                            "start": Object {
+                              "column": 35,
+                              "line": 1,
                             },
-                            "range": Array [
-                              35,
-                              41,
-                            ],
-                            "type": "TSNumberKeyword",
                           },
-                        ],
-                      },
+                          "range": Array [
+                            35,
+                            41,
+                          ],
+                          "type": "TSNumberKeyword",
+                        },
+                      ],
                     },
                   },
                 ],

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-unnecessary-boolean-literal-compare';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -221,6 +221,40 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         declare const varTrueOrFalseOrUndefined: true | false | undefined;
         declare const otherBoolean: boolean;
         if ((varTrueOrFalseOrUndefined ?? true) && !otherBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (false !== varBoolean) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (varBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (true !== varBoolean) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (!varBoolean) {
         }
       `,
     },

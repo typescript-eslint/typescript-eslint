@@ -1,29 +1,43 @@
-# When adding two variables, operands must both be of type number or of type string (`restrict-plus-operands`)
+---
+description: 'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`.'
+---
 
-Examples of **correct** code:
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/restrict-plus-operands** for documentation.
 
-```ts
-var foo = parseInt('5.5', 10) + 10;
-var foo = 1n + 1n;
-```
+TypeScript allows `+` adding together two values of any type(s).
+However, adding values that are not the same type and/or are not the same primitive type is often a sign of programmer error.
 
-Examples of **incorrect** code:
+This rule reports when a `+` operation combines two values of different types, or a type that is not `bigint`, `number`, or `string`.
+
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 var foo = '5.5' + 5;
 var foo = 1n + 1;
 ```
 
+### ✅ Correct
+
+```ts
+var foo = parseInt('5.5', 10) + 10;
+var foo = 1n + 1n;
+```
+
 ## Options
-
-This rule has an object option:
-
-- `"checkCompoundAssignments": false`: (default) does not check compound assignments (`+=`)
-- `"checkCompoundAssignments": true`
 
 ### `checkCompoundAssignments`
 
-Examples of **incorrect** code for the `{ "checkCompoundAssignments": true }` option:
+Examples of code for this rule with `{ checkCompoundAssignments: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 /*eslint @typescript-eslint/restrict-plus-operands: ["error", { "checkCompoundAssignments": true }]*/
@@ -35,7 +49,7 @@ let bar: string = '';
 bar += 0;
 ```
 
-Examples of **correct** code for the `{ "checkCompoundAssignments": true }` option:
+#### ✅ Correct
 
 ```ts
 /*eslint @typescript-eslint/restrict-plus-operands: ["error", { "checkCompoundAssignments": true }]*/
@@ -47,12 +61,38 @@ let bar = '';
 bar += 'test';
 ```
 
-```json
-{
-  "@typescript-eslint/restrict-plus-operands": "error"
-}
+### `allowAny`
+
+Examples of code for this rule with `{ allowAny: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+var fn = (a: any, b: boolean) => a + b;
+var fn = (a: any, b: []) => a + b;
+var fn = (a: any, b: {}) => a + b;
 ```
 
-## Compatibility
+#### ✅ Correct
 
-- TSLint: [restrict-plus-operands](https://palantir.github.io/tslint/rules/restrict-plus-operands/)
+```ts
+var fn = (a: any, b: any) => a + b;
+var fn = (a: any, b: string) => a + b;
+var fn = (a: any, b: bigint) => a + b;
+var fn = (a: any, b: number) => a + b;
+```
+
+## When Not To Use It
+
+If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
+
+## Related To
+
+- [`no-base-to-string`](./no-base-to-string.md)
+- [`restrict-template-expressions`](./restrict-template-expressions.md)
+
+## Further Reading
+
+- [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)

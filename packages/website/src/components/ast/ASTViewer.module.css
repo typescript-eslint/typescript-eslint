@@ -1,0 +1,85 @@
+.list {
+  font-family: var(--ifm-font-family-monospace);
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0;
+  font-feature-settings: 'liga' 0, 'calt' 0;
+}
+
+.list,
+.subList {
+  box-sizing: border-box;
+  white-space: break-spaces;
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.selected {
+  background: var(--code-line-decoration);
+}
+
+.nonExpand,
+.expand {
+  border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
+}
+
+.expand.open::before {
+  content: '+';
+}
+
+.expand::before {
+  content: '-';
+  margin-left: -1rem;
+  width: 1rem;
+  display: inline-block;
+}
+
+.valueBody {
+  min-width: 300px;
+  width: fit-content;
+}
+
+.tokenName {
+  color: var(--token-color-class-name);
+}
+
+.propName {
+  color: var(--token-color-property);
+}
+
+.propNumber {
+  color: var(--token-color-number);
+}
+
+.propEmpty {
+  color: var(--token-color-comment);
+}
+
+.propRegExp {
+  color: var(--token-color-regexp);
+}
+
+.propClass {
+  color: var(--token-color-class-name);
+}
+
+.propBoolean {
+  color: var(--token-color-boolean);
+}
+
+.propString {
+  color: var(--token-color-string);
+}
+
+.hidden {
+  color: var(--token-color-comment);
+  max-width: 40%;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}

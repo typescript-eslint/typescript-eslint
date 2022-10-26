@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportAllDeclaration unnamed TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [0, 6],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 6, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "*",
+
+    range: [7, 8],
+    loc: {
+      start: { column: 7, line: 1 },
+      end: { column: 8, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "from",
+
+    range: [9, 13],
+    loc: {
+      start: { column: 9, line: 1 },
+      end: { column: 13, line: 1 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'my-module'",
+
+    range: [14, 25],
+    loc: {
+      start: { column: 14, line: 1 },
+      end: { column: 25, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [25, 26],
+    loc: {
+      start: { column: 25, line: 1 },
+      end: { column: 26, line: 1 },
+    },
+  },
+]
+`;

@@ -3,16 +3,15 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
-import { RuleTester } from '../../RuleTester';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../../src/rules/indent';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../../src/util';
+import { RuleTester } from '../../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -39,7 +38,7 @@ abstract class Foo {
     ],
   },
   {
-    node: AST_NODE_TYPES.TSAbstractClassProperty,
+    node: AST_NODE_TYPES.TSAbstractPropertyDefinition,
     code: [
       `
 class Foo {
@@ -448,29 +447,6 @@ class Foo {
         console.log('foo')
     }
 }
-            `,
-    ],
-  },
-  {
-    node: AST_NODE_TYPES.TSParenthesizedType,
-    code: [
-      `
-const x: Array<(
-    | {
-        __typename: "Foo",
-    }
-    | {
-        __typename: "Baz",
-    }
-    | (
-        | {
-            __typename: "Baz",
-        }
-        | {
-            __typename: "Buzz",
-        }
-    )
-)>;
             `,
     ],
   },

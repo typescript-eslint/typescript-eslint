@@ -1,6 +1,13 @@
-# Prevents conditionals where the type is always truthy or always falsy (`no-unnecessary-condition`)
+---
+description: 'Disallow conditionals where the type is always truthy or always falsy.'
+---
 
-Any expression being used as a condition must be able to evaluate as truthy or falsy in order to be considered "necessary". Conversely, any expression that always evaluates to truthy or always evaluates to falsy, as determined by the type of the expression, is considered unnecessary and will be flagged by this rule.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-condition** for documentation.
+
+Any expression being used as a condition must be able to evaluate as truthy or falsy in order to be considered "necessary".
+Conversely, any expression that always evaluates to truthy or always evaluates to falsy, as determined by the type of the expression, is considered unnecessary and will be flagged by this rule.
 
 The following expressions are checked:
 
@@ -8,7 +15,11 @@ The following expressions are checked:
 - Conditions for `if`, `for`, `while`, and `do-while` statements
 - Base values of optional chain expressions
 
-Examples of **incorrect** code for this rule:
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 function head<T>(items: T[]) {
@@ -36,7 +47,7 @@ function bar<T>(arg: string) {
 ].filter(t => t); // number[] is always truthy
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 function head<T>(items: T[]) {
@@ -61,20 +72,6 @@ function bar(arg?: string | null) {
 ```
 
 ## Options
-
-```ts
-type Options = {
-  // if true, the rule will ignore constant loop conditions
-  allowConstantLoopConditions?: boolean;
-  // if true, the rule will not error when running with a tsconfig that has strictNullChecks turned **off**
-  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
-};
-
-const defaultOptions: Options = {
-  allowConstantLoopConditions: false,
-  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-};
-```
 
 ### `allowConstantLoopConditions`
 
@@ -103,5 +100,4 @@ The main downside to using this rule is the need for type information.
 ## Related To
 
 - ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - `no-unnecessary-condition` is essentially a stronger version of `no-constant-condition`, but requires type information.
-
 - [strict-boolean-expressions](./strict-boolean-expressions.md) - a more opinionated version of `no-unnecessary-condition`. `strict-boolean-expressions` enforces a specific code style, while `no-unnecessary-condition` is about correctness.

@@ -1,8 +1,7 @@
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferRecord' | 'preferIndexSignature';
 type Options = ['record' | 'index-signature'];
@@ -12,13 +11,11 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforce or disallow the use of the record type',
-      category: 'Stylistic Issues',
-      // too opinionated to be recommended
-      recommended: false,
+      description: 'Require or disallow the `Record` type',
+      recommended: 'strict',
     },
     messages: {
-      preferRecord: 'A record is preferred over an index signature',
+      preferRecord: 'A record is preferred over an index signature.',
       preferIndexSignature: 'An index signature is preferred over a record.',
     },
     fixable: 'code',
@@ -29,43 +26,16 @@ export default createRule<Options, MessageIds>({
     ],
   },
   defaultOptions: ['record'],
-  create(context) {
+  create(context, [mode]) {
     const sourceCode = context.getSourceCode();
-
-    if (context.options[0] === 'index-signature') {
-      return {
-        TSTypeReference(node): void {
-          const typeName = node.typeName;
-          if (typeName.type !== AST_NODE_TYPES.Identifier) {
-            return;
-          }
-          if (typeName.name !== 'Record') {
-            return;
-          }
-
-          const params = node.typeParameters?.params;
-          if (params?.length !== 2) {
-            return;
-          }
-
-          context.report({
-            node,
-            messageId: 'preferIndexSignature',
-            fix(fixer) {
-              const key = sourceCode.getText(params[0]);
-              const type = sourceCode.getText(params[1]);
-              return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
-            },
-          });
-        },
-      };
-    }
 
     function checkMembers(
       members: TSESTree.TypeElement[],
-      node: TSESTree.Node,
+      node: TSESTree.TSTypeLiteral | TSESTree.TSInterfaceDeclaration,
+      parentId: TSESTree.Identifier | undefined,
       prefix: string,
       postfix: string,
+      safeFix = true,
     ): void {
       if (members.length !== 1) {
         return;
@@ -95,41 +65,101 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (parentId) {
+        const scope = context.getScope();
+        const superVar = ASTUtils.findVariable(scope, parentId.name);
+        if (superVar) {
+          const isCircular = superVar.references.some(
+            item =>
+              item.isTypeReference &&
+              node.range[0] <= item.identifier.range[0] &&
+              node.range[1] >= item.identifier.range[1],
+          );
+          if (isCircular) {
+            return;
+          }
+        }
+      }
+
       context.report({
         node,
         messageId: 'preferRecord',
-        fix(fixer) {
-          const key = sourceCode.getText(keyType.typeAnnotation);
-          const value = sourceCode.getText(valueType.typeAnnotation);
-          const record = member.readonly
-            ? `Readonly<Record<${key}, ${value}>>`
-            : `Record<${key}, ${value}>`;
-          return fixer.replaceText(node, `${prefix}${record}${postfix}`);
-        },
+        fix: safeFix
+          ? (fixer): TSESLint.RuleFix => {
+              const key = sourceCode.getText(keyType.typeAnnotation);
+              const value = sourceCode.getText(valueType.typeAnnotation);
+              const record = member.readonly
+                ? `Readonly<Record<${key}, ${value}>>`
+                : `Record<${key}, ${value}>`;
+              return fixer.replaceText(node, `${prefix}${record}${postfix}`);
+            }
+          : null,
       });
     }
 
     return {
-      TSTypeLiteral(node): void {
-        checkMembers(node.members, node, '', '');
-      },
+      ...(mode === 'index-signature' && {
+        TSTypeReference(node): void {
+          const typeName = node.typeName;
+          if (typeName.type !== AST_NODE_TYPES.Identifier) {
+            return;
+          }
+          if (typeName.name !== 'Record') {
+            return;
+          }
 
-      TSInterfaceDeclaration(node): void {
-        let genericTypes = '';
+          const params = node.typeParameters?.params;
+          if (params?.length !== 2) {
+            return;
+          }
 
-        if ((node.typeParameters?.params ?? []).length > 0) {
-          genericTypes = `<${node.typeParameters?.params
-            .map(p => p.name.name)
-            .join(', ')}>`;
-        }
+          context.report({
+            node,
+            messageId: 'preferIndexSignature',
+            fix(fixer) {
+              const key = sourceCode.getText(params[0]);
+              const type = sourceCode.getText(params[1]);
+              return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
+            },
+          });
+        },
+      }),
+      ...(mode === 'record' && {
+        TSTypeLiteral(node): void {
+          const parent = findParentDeclaration(node);
+          checkMembers(node.members, node, parent?.id, '', '');
+        },
+        TSInterfaceDeclaration(node): void {
+          let genericTypes = '';
 
-        checkMembers(
-          node.body.body,
-          node,
-          `type ${node.id.name}${genericTypes} = `,
-          ';',
-        );
-      },
+          if ((node.typeParameters?.params ?? []).length > 0) {
+            genericTypes = `<${node.typeParameters?.params
+              .map(p => sourceCode.getText(p))
+              .join(', ')}>`;
+          }
+
+          checkMembers(
+            node.body.body,
+            node,
+            node.id,
+            `type ${node.id.name}${genericTypes} = `,
+            ';',
+            !node.extends?.length,
+          );
+        },
+      }),
     };
   },
 });
+
+function findParentDeclaration(
+  node: TSESTree.Node,
+): TSESTree.TSTypeAliasDeclaration | undefined {
+  if (node.parent && node.parent.type !== AST_NODE_TYPES.TSTypeAnnotation) {
+    if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
+      return node.parent;
+    }
+    return findParentDeclaration(node.parent);
+  }
+  return undefined;
+}

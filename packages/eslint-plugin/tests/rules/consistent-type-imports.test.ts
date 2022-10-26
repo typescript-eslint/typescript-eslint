@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-imports';
-import { RuleTester, noFormat, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -12,6 +12,10 @@ const ruleTester = new RuleTester({
 const withMetaParserOptions = {
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
+};
+
+const withMetaConfigParserOptions = {
+  emitDecoratorMetadata: true,
 };
 
 ruleTester.run('consistent-type-imports', rule, {
@@ -114,6 +118,11 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       options: [{ prefer: 'no-type-imports' }],
     },
+    `
+      import { type A, B } from 'foo';
+      type T = A;
+      const b = B;
+    `,
     // exports
     `
       import Type from 'foo';
@@ -341,6 +350,113 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       parserOptions: withMetaParserOptions,
     },
+    {
+      code: `
+        import Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          foo: Foo;
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          foo(foo: Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          foo(): Foo {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          foo(@deco foo: Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          set foo(value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          get foo() {}
+
+          set foo(value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import Foo from 'foo';
+        class A {
+          @deco
+          get foo() {}
+
+          set ['foo'](value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import type { Foo } from 'foo';
+        const key = 'k';
+        class A {
+          @deco
+          get [key]() {}
+
+          set [key](value: Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import * as foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: foo.Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+
     // https://github.com/typescript-eslint/typescript-eslint/issues/2989
     `
 import type * as constants from './constants';
@@ -545,7 +661,7 @@ let bar: B;
 import { A, B } from 'foo';
 const foo: A = B();
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B } from 'foo';
 const foo: A = B();
@@ -653,7 +769,7 @@ type T = A;
         import type { Already2 } from 'bar';
         type T = { b: B; c: C; d: D };
       `,
-      output: noFormat`
+      output: `
         import type Already1Def from 'foo';
         import type { Already1 , B } from 'foo';
         import A from 'foo';
@@ -701,7 +817,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = A | D;
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B, C } from 'foo';
 import type { D} from 'bar';
@@ -729,7 +845,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = B | E;
       `,
-      output: noFormat`
+      output: `
 import type { B} from 'foo';
 import { A, C } from 'foo';
 import type { E} from 'bar';
@@ -757,7 +873,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = C | F;
       `,
-      output: noFormat`
+      output: `
 import type { C } from 'foo';
 import { A, B } from 'foo';
 import type { F} from 'bar';
@@ -828,7 +944,7 @@ import Value3, { Type3 } from 'default_import2';
 import Type4, { Type5, Value4 } from 'default_and_named_import';
 type T = Type1 | Type2 | Type3 | Type4 | Type5;
       `,
-      output: noFormat`
+      output: `
 import type { Type1 } from 'named_import';
 import { Value1 } from 'named_import';
 import type Type2 from 'default_import';
@@ -1208,7 +1324,7 @@ import type /*comment*/ { Type } from 'foo';
 type T = { a: AllType; b: DefType; c: Type };
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
+      output: `
 import /*comment*/ * as AllType from 'foo';
 import // comment
 DefType from 'foo';
@@ -1321,7 +1437,7 @@ import Default /*comment1*/, /*comment2*/ { Data } from 'module';
 const a: Default = '';
       `,
       options: [{ prefer: 'type-imports' }],
-      output: noFormat`
+      output: `
 import type Default /*comment1*/ from 'module';
 import /*comment2*/ { Data } from 'module';
 const a: Default = '';
@@ -1365,7 +1481,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import Foo from 'foo';
         @deco
         class A {
@@ -1390,7 +1506,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { Foo } from 'foo';
         @deco
         class A {
@@ -1417,7 +1533,7 @@ const a: Default = '';
         }
         type T = Bar;
       `,
-      output: noFormat`
+      output: `
         import type { Type , Bar } from 'foo';
         import { Foo } from 'foo';
         @deco
@@ -1446,7 +1562,7 @@ const a: Default = '';
           foo(@deco bar: Bar) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { V , Foo, Bar} from 'foo';
         import type { T } from 'foo';
         @deco
@@ -1474,7 +1590,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import type { T } from 'foo';
         import { V , Foo} from 'foo';
         @deco
@@ -1500,7 +1616,7 @@ const a: Default = '';
           constructor(foo: Type.Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import * as Type from 'foo';
         @deco
         class A {
@@ -1516,6 +1632,206 @@ const a: Default = '';
         },
       ],
       parserOptions: withMetaParserOptions,
+    },
+    {
+      code: `
+        import type Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: `
+        import Foo from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import type { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: `
+        import { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: noFormat`
+        import type { Type } from 'foo';
+        import { Foo, Bar } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+        type T = Bar;
+      `,
+      output: `
+        import type { Type , Bar } from 'foo';
+        import { Foo } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+        type T = Bar;
+      `,
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          data: { typeImports: '"Bar"' },
+          line: 3,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import { V } from 'foo';
+        import type { Foo, Bar, T } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+          foo(@deco bar: Bar) {}
+        }
+      `,
+      output: `
+        import { V , Foo, Bar} from 'foo';
+        import type { T } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+          foo(@deco bar: Bar) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'someImportsInDecoMeta',
+          data: { typeImports: '"Foo" and "Bar"' },
+          line: 3,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import type { Foo, T } from 'foo';
+        import { V } from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      output: `
+        import type { T } from 'foo';
+        import { V , Foo} from 'foo';
+        @deco
+        class A {
+          constructor(foo: Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Foo"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+        import type * as Type from 'foo';
+        @deco
+        class A {
+          constructor(foo: Type.Foo) {}
+        }
+      `,
+      output: `
+        import * as Type from 'foo';
+        @deco
+        class A {
+          constructor(foo: Type.Foo) {}
+        }
+      `,
+      errors: [
+        {
+          messageId: 'aImportInDecoMeta',
+          data: { typeImports: '"Type"' },
+          line: 2,
+          column: 9,
+        },
+      ],
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+import { type A, B } from 'foo';
+type T = A;
+const b = B;
+      `,
+      output: `
+import { A, B } from 'foo';
+type T = A;
+const b = B;
+      `,
+      options: [{ prefer: 'no-type-imports' }],
+      errors: [
+        {
+          messageId: 'valueOverType',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+import { A, B, type C } from 'foo';
+type T = A | C;
+const b = B;
+      `,
+      output: `
+import type { A} from 'foo';
+import { B, type C } from 'foo';
+type T = A | C;
+const b = B;
+      `,
+      options: [{ prefer: 'type-imports' }],
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          data: { typeImports: '"A"' },
+          line: 2,
+        },
+      ],
     },
   ],
 });

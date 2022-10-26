@@ -4,6 +4,7 @@ exports[`javascript modules invalid-await.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "declarations": Array [
           Object {

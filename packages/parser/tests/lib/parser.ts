@@ -1,6 +1,7 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
 import * as scopeManager from '@typescript-eslint/scope-manager/dist/analyze';
+import type { ParserOptions } from '@typescript-eslint/types';
+import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
+
 import { parse, parseForESLint } from '../../src/parser';
 
 describe('parser', () => {
@@ -18,10 +19,15 @@ describe('parser', () => {
     expect(() => parseForESLint(code, null)).not.toThrow();
   });
 
+  it("parseForESLint() should work if options.ecmaVersion is `'latest'`", () => {
+    const code = 'const valid = true;';
+    expect(() => parseForESLint(code, { ecmaVersion: 'latest' })).not.toThrow();
+  });
+
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    const config: TSESLint.ParserOptions = {
+    const config: ParserOptions = {
       loc: false,
       comment: false,
       range: false,
@@ -35,7 +41,6 @@ describe('parser', () => {
       // ts-estree specific
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-      useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',
@@ -57,7 +62,6 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true,
       warnOnUnsupportedTypeScriptVersion: true,
     });
     spy.mockClear();
@@ -66,7 +70,6 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
-      useJSXTextNode: true,
       loggerFn: false,
       warnOnUnsupportedTypeScriptVersion: false,
     });
@@ -75,7 +78,7 @@ describe('parser', () => {
   it('analyze() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(scopeManager, 'analyze');
-    const config: TSESLint.ParserOptions = {
+    const config: ParserOptions = {
       loc: false,
       comment: false,
       range: false,
@@ -93,7 +96,6 @@ describe('parser', () => {
       // ts-estree specific
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-      useJSXTextNode: false,
       errorOnUnknownASTType: false,
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',

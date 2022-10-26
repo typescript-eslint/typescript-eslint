@@ -120,6 +120,15 @@ qux() { }
         { exceptAfterOverload: true, exceptAfterSingleLine: true },
       ],
     },
+    {
+      code: `
+abstract class foo {
+abstract bar(a: string): void;
+abstract bar(a: string, b: string): void;
+};
+      `,
+      options: ['always'],
+    },
   ],
   invalid: [
     {

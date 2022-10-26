@@ -1,9 +1,11 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 // tslint regex
 // https://github.com/palantir/tslint/blob/95d9d958833fd9dc0002d18cbe34db20d0fbf437/src/enableDisableRules.ts#L32
-const ENABLE_DISABLE_REGEX = /^\s*tslint:(enable|disable)(?:-(line|next-line))?(:|\s|$)/;
+const ENABLE_DISABLE_REGEX =
+  /^\s*tslint:(enable|disable)(?:-(line|next-line))?(:|\s|$)/;
 
 const toText = (
   text: string,
@@ -18,9 +20,8 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans `// tslint:<rule-flag>` comments from being used',
-      category: 'Stylistic Issues',
-      recommended: false,
+      description: 'Disallow `// tslint:<rule-flag>` comments',
+      recommended: 'strict',
     },
     messages: {
       commentDetected: 'tslint comment detected: "{{ text }}"',

@@ -1,14 +1,12 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
 
 type MessageIds = 'preferReadonly';
-
 type Options = [
   {
     onlyInlineLambdas?: boolean;
@@ -27,8 +25,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        "Requires that private members are marked as `readonly` if they're never modified outside of the constructor",
-      category: 'Best Practices',
+        "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -135,15 +132,6 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
-    function isConstructor(
-      node: TSESTree.Node,
-    ): node is TSESTree.MethodDefinition {
-      return (
-        node.type === AST_NODE_TYPES.MethodDefinition &&
-        node.kind === 'constructor'
-      );
-    }
-
     function isFunctionScopeBoundaryInStack(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -200,9 +188,8 @@ export default util.createRule<Options, MessageIds>({
         const sourceCode = context.getSourceCode();
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
-          const { esNode, nameNode } = getEsNodesFromViolatingNode(
-            violatingNode,
-          );
+          const { esNode, nameNode } =
+            getEsNodesFromViolatingNode(violatingNode);
           context.report({
             data: {
               name: sourceCode.getText(nameNode),
@@ -232,7 +219,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.FunctionExpression
           | TSESTree.MethodDefinition,
       ): void {
-        if (isConstructor(node)) {
+        if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
             parserServices.esTreeNodeToTSNodeMap.get(node),
           );
@@ -247,7 +234,7 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.FunctionExpression
           | TSESTree.MethodDefinition,
       ): void {
-        if (isConstructor(node)) {
+        if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].exitConstructor();
         } else if (isFunctionScopeBoundaryInStack(node)) {
           classScopeStack[classScopeStack.length - 1].exitNonConstructor();
@@ -285,8 +272,12 @@ class ClassScope {
     classNode: ts.ClassLikeDeclaration,
     private readonly onlyInlineLambdas?: boolean,
   ) {
-    this.checker = checker;
-    this.classType = checker.getTypeAtLocation(classNode);
+    const classType = checker.getTypeAtLocation(classNode);
+    if (tsutils.isIntersectionType(classType)) {
+      this.classType = classType.types[0];
+    } else {
+      this.classType = classType;
+    }
 
     for (const member of classNode.members) {
       if (ts.isPropertyDeclaration(member)) {

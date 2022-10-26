@@ -1,7 +1,8 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-const version = require('../../package.json').version;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const version: string = require('../../package.json');
 
 const createRule = ESLintUtils.RuleCreator(
   name =>

@@ -1,26 +1,13 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE } from './base-config';
 
 export const es2019_array = {
-  FlatArray: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'FlatArray',
-  },
-  ReadonlyArray: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ReadonlyArray',
-  },
-  Array: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Array',
-  },
+  FlatArray: TYPE,
+  ReadonlyArray: TYPE,
+  Array: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

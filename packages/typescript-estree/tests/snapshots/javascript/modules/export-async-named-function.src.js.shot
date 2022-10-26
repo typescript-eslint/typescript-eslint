@@ -4,6 +4,7 @@ exports[`javascript modules export-async-named-function.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "async": true,
         "body": Object {

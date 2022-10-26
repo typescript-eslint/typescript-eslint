@@ -1,11 +1,19 @@
-# Disallow generic `Array` constructors (`no-array-constructor`)
+---
+description: 'Disallow generic `Array` constructors.'
+---
 
-## Rule Details
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-array-constructor** for documentation.
+
+## Examples
 
 This rule extends the base [`eslint/no-array-constructor`](https://eslint.org/docs/rules/no-array-constructor) rule.
 It adds support for the generically typed `Array` constructor (`new Array<Foo>()`).
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /*eslint no-array-constructor: "error"*/
@@ -14,7 +22,7 @@ Array(0, 1, 2);
 new Array(0, 1, 2);
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /*eslint no-array-constructor: "error"*/
@@ -25,19 +33,3 @@ new Array<Foo>(x, y, z);
 Array(500);
 new Array(someOtherArray.length);
 ```
-
-## How to use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-array-constructor": "off",
-  "@typescript-eslint/no-array-constructor": ["error"]
-}
-```
-
-## Options
-
-See [`eslint/no-array-constructor` options](https://eslint.org/docs/rules/no-array-constructor#options).
-
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-array-constructor.md)</sup>

@@ -1,21 +1,17 @@
-# Enforces consistent returning of awaited values (`return-await`)
+---
+description: 'Enforce consistent returning of awaited values.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/return-await** for documentation.
 
 Returning an awaited promise can make sense for better stack trace information as well as for consistent error handling (returned promises will not be caught in an async function try/catch).
 
-## Rule Details
+## Examples
 
 This rule builds on top of the [`eslint/no-return-await`](https://eslint.org/docs/rules/no-return-await) rule.
 It expands upon the base rule to add support for optionally requiring `return await` in certain cases.
-
-## How to use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-return-await": "off",
-  "@typescript-eslint/return-await": "error"
-}
-```
 
 ## Options
 
@@ -35,7 +31,11 @@ Specifically:
 - if you `return` a promise within a `catch`, and there **_is a_** `finally`, then it **_must_** be `await`ed.
 - if you `return` a promise within a `finally`, then it **_must not_** be `await`ed.
 
-Examples of **incorrect** code with `in-try-catch`:
+Examples of code with `in-try-catch`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 async function invalidInTryCatch1() {
@@ -81,7 +81,7 @@ async function invalidInTryCatch6() {
 }
 ```
 
-Examples of **correct** code with `in-try-catch`:
+#### ✅ Correct
 
 ```ts
 async function validInTryCatch1() {
@@ -131,7 +131,11 @@ async function validInTryCatch6() {
 
 Requires that all returned promises are `await`ed.
 
-Examples of **incorrect** code with `always`:
+Examples of code with `always`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 async function invalidAlways1() {
@@ -149,7 +153,7 @@ async function invalidAlways3() {
 }
 ```
 
-Examples of **correct** code with `always`:
+#### ✅ Correct
 
 ```ts
 async function validAlways1() {
@@ -171,7 +175,11 @@ async function validAlways3() {
 
 Disallows all `await`ing any returned promises.
 
-Examples of **incorrect** code with `never`:
+Examples of code with `never`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 async function invalidNever1() {
@@ -189,7 +197,7 @@ async function invalidNever3() {
 }
 ```
 
-Examples of **correct** code with `never`:
+#### ✅ Correct
 
 ```ts
 async function validNever1() {

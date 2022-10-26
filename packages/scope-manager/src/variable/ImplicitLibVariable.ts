@@ -1,12 +1,11 @@
+import type { Scope } from '../scope';
 import { ESLintScopeVariable } from './ESLintScopeVariable';
-import { Variable } from './Variable';
-import { Scope } from '../scope';
+import type { Variable } from './Variable';
 
 interface ImplicitLibVariableOptions {
   readonly eslintImplicitGlobalSetting?: ESLintScopeVariable['eslintImplicitGlobalSetting'];
   readonly isTypeVariable?: boolean;
   readonly isValueVariable?: boolean;
-  readonly name: string;
   readonly writeable?: boolean;
 }
 
@@ -26,10 +25,10 @@ class ImplicitLibVariable extends ESLintScopeVariable implements Variable {
 
   public constructor(
     scope: Scope,
+    name: string,
     {
       isTypeVariable,
       isValueVariable,
-      name,
       writeable,
       eslintImplicitGlobalSetting,
     }: ImplicitLibVariableOptions,

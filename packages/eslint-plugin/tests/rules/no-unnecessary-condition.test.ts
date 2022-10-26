@@ -1,13 +1,15 @@
-import {
-  TestCaseError,
+import type {
   InvalidTestCase,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint';
+  TestCaseError,
+} from '@typescript-eslint/utils/dist/ts-eslint';
 import * as path from 'path';
-import rule, {
-  Options,
+
+import type {
   MessageId,
+  Options,
 } from '../../src/rules/no-unnecessary-condition';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
+import rule from '../../src/rules/no-unnecessary-condition';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -43,7 +45,7 @@ const unnecessaryConditionTest = (
   errors: [ruleError(4, 12, messageId)],
 });
 
-ruleTester.run('no-unnecessary-conditionals', rule, {
+ruleTester.run('no-unnecessary-condition', rule, {
   valid: [
     `
 declare const b1: boolean;
@@ -65,6 +67,11 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+    `,
+    `
+declare function foo(): number | void;
+const result1 = foo() === undefined;
+const result2 = foo() == null;
     `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
@@ -315,6 +322,11 @@ returnsArr?.()[42]?.toUpperCase();
     `
 declare const arr: string[][];
 arr[x] ?? [];
+    `,
+    // nullish + optional array index
+    `
+declare const arr: { foo: number }[];
+const bar = arr[42]?.foo ?? 0;
     `,
     // Doesn't check the right-hand side of a logical expression
     //  in a non-conditional context
@@ -755,10 +767,27 @@ function test(a: string | false) {
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
+    // nullish + array index without optional chaining
+    {
+      code: `
+function test(a: { foo: string }[]) {
+  return a[0].foo ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
     {
       code: `
 function test(a: null) {
   return a ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
+    {
+      code: `
+function test(a: null[]) {
+  return a[0] ?? 'default';
 }
       `,
       errors: [ruleError(3, 10, 'alwaysNullish')],
@@ -892,7 +921,7 @@ foo ?.
 foo
   ?. bar;
       `,
-      output: noFormat`
+      output: `
 let foo = { bar: true };
 foo.bar;
 foo . bar;
@@ -1312,6 +1341,17 @@ foo?.fooOrBar.baz?.qux;
           endColumn: 16,
         },
       ],
+    },
+    {
+      code: `
+declare const x: { a: { b: number } }[];
+x[0].a?.b;
+      `,
+      output: `
+declare const x: { a: { b: number } }[];
+x[0].a.b;
+      `,
+      errors: [ruleError(3, 7, 'neverOptionalChain')],
     },
     {
       code: `

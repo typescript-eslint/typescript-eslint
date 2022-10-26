@@ -1,5 +1,7 @@
-import { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+
 import { assert } from './assert';
+import type { Scope } from './scope';
 import {
   BlockScope,
   CatchScope,
@@ -12,15 +14,15 @@ import {
   GlobalScope,
   MappedTypeScope,
   ModuleScope,
-  Scope,
   SwitchScope,
   TSEnumScope,
   TSModuleScope,
   TypeScope,
   WithScope,
 } from './scope';
-
-import { Variable } from './variable';
+import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
+import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
+import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
@@ -130,17 +132,9 @@ class ScopeManager {
           return scope;
         }
       }
-    } else {
-      for (let i = 0; i < scopes.length; ++i) {
-        const scope = scopes[i];
-
-        if (predicate(scope)) {
-          return scope;
-        }
-      }
+      return null;
     }
-
-    return null;
+    return scopes.find(predicate) ?? null;
   }
 
   protected nestScope<T extends Scope>(scope: T): T;
@@ -166,6 +160,24 @@ class ScopeManager {
   public nestClassScope(node: ClassScope['block']): ClassScope {
     assert(this.currentScope);
     return this.nestScope(new ClassScope(this, this.currentScope, node));
+  }
+
+  public nestClassFieldInitializerScope(
+    node: ClassFieldInitializerScope['block'],
+  ): ClassFieldInitializerScope {
+    assert(this.currentScope);
+    return this.nestScope(
+      new ClassFieldInitializerScope(this, this.currentScope, node),
+    );
+  }
+
+  public nestClassStaticBlockScope(
+    node: ClassStaticBlockScope['block'],
+  ): ClassStaticBlockScope {
+    assert(this.currentScope);
+    return this.nestScope(
+      new ClassStaticBlockScope(this, this.currentScope, node),
+    );
   }
 
   public nestConditionalTypeScope(

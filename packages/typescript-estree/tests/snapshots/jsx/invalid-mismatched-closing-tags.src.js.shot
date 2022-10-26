@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx invalid-mismatched-closing-tags.src 1`] = `
-Object {
+TSError {
   "column": 1,
   "index": 1,
   "lineNumber": 1,

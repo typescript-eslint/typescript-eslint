@@ -1,7 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [];
@@ -12,9 +11,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Disallows the use of require statements except in import statements',
-      category: 'Best Practices',
+      description: 'Disallow `require` statements except in import statements',
       recommended: 'error',
     },
     messages: {
@@ -25,25 +22,33 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [],
   create(context) {
     return {
-      CallExpression(node: TSESTree.CallExpression): void {
+      'CallExpression[callee.name="require"]'(
+        node: TSESTree.CallExpression,
+      ): void {
         const parent =
           node.parent?.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent
             : node.parent;
+
         if (
-          node.callee.type === AST_NODE_TYPES.Identifier &&
-          node.callee.name === 'require' &&
           parent &&
-          (parent.type === AST_NODE_TYPES.VariableDeclarator ||
-            parent.type === AST_NODE_TYPES.CallExpression ||
-            parent.type === AST_NODE_TYPES.TSAsExpression ||
-            parent.type === AST_NODE_TYPES.TSTypeAssertion ||
-            parent.type === AST_NODE_TYPES.MemberExpression)
+          [
+            AST_NODE_TYPES.CallExpression,
+            AST_NODE_TYPES.MemberExpression,
+            AST_NODE_TYPES.NewExpression,
+            AST_NODE_TYPES.TSAsExpression,
+            AST_NODE_TYPES.TSTypeAssertion,
+            AST_NODE_TYPES.VariableDeclarator,
+          ].includes(parent.type)
         ) {
-          context.report({
-            node,
-            messageId: 'noVarReqs',
-          });
+          const variable = ASTUtils.findVariable(context.getScope(), 'require');
+
+          if (!variable?.identifiers.length) {
+            context.report({
+              node,
+              messageId: 'noVarReqs',
+            });
+          }
         }
       },
     };

@@ -1,0 +1,59 @@
+{
+  "name": "@typescript-eslint/ast-spec",
+  "version": "5.41.0",
+  "description": "TypeScript-ESTree AST spec",
+  "private": true,
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
+  "engines": {
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/ast-spec"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json && api-extractor run --local",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf .rollup.cache && rimraf coverage",
+    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "eslint . --ignore-path='../../.eslintignore'",
+    "test": "jest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/typescript-eslint"
+  },
+  "devDependencies": {
+    "@babel/core": "*",
+    "@babel/eslint-parser": "*",
+    "@babel/parser": "*",
+    "@microsoft/api-extractor": "^7.23.2",
+    "@types/babel__core": "*",
+    "glob": "*",
+    "jest-diff": "*",
+    "jest-snapshot": "*",
+    "jest-specific-snapshot": "*",
+    "make-dir": "*",
+    "pretty-format": "*",
+    "typescript": "*"
+  }
+}

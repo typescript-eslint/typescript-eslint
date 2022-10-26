@@ -1,19 +1,23 @@
-# Requires that `.toString()` is only called on objects which provide useful information when stringified (`no-base-to-string`)
+---
+description: 'Require `.toString()` to only be called on objects which provide useful information when stringified.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-base-to-string** for documentation.
 
 JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
+The default Object `.toString()` returns `"[object Object]"`, which is often not what was intended.
+This rule reports on stringified values that aren't primitives and don't define a more useful `.toString()` method.
 
-The default Object `.toString()` returns `"[object Object]"`, so this rule requires stringified objects define a more useful `.toString()` method.
+> Note that `Function` provides its own `.toString()` that returns the function's code.
+> Functions are not flagged by this rule.
 
-Note that `Function` provides its own `.toString()` that returns the function's code.
-Functions are not flagged by this rule.
+## Examples
 
-This rule has some overlap with [`restrict-plus-operands`](./restrict-plus-operands.md) and [`restrict-template-expressions`](./restrict-template-expressions.md).
+<!--tabs-->
 
-## Rule Details
-
-This rule prevents accidentally defaulting to the base Object `.toString()` method.
-
-Examples of **incorrect** code for this rule:
+### ❌ Incorrect
 
 ```ts
 // Passing an object or class instance to string concatenation:
@@ -28,7 +32,7 @@ value + '';
 ({}.toString());
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 // These types all have useful .toString()s
@@ -54,16 +58,6 @@ const literalWithToString = {
 
 ## Options
 
-```ts
-type Options = {
-  ignoredTypeNames?: string[];
-};
-
-const defaultOptions: Options = {
-  ignoredTypeNames: ['RegExp'],
-};
-```
-
 ### `ignoredTypeNames`
 
 A string array of type names to ignore, this is useful for types missing `toString()` (but actually has `toString()`).
@@ -83,5 +77,12 @@ let text = `${value}`;
 ## When Not To Use It
 
 If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
+
+## Related To
+
+- [`restrict-plus-operands`](./restrict-plus-operands.md)
+- [`restrict-template-expressions`](./restrict-template-expressions.md)
+
+## Further Reading
 
 - [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)

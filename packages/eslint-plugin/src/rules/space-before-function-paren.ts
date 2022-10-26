@@ -1,7 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Option = 'never' | 'always';
@@ -22,8 +21,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'Enforces consistent spacing before function parenthesis',
-      category: 'Stylistic Issues',
+      description: 'Enforce consistent spacing before function parenthesis',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -59,12 +57,10 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['always'],
 
-  create(context) {
+  create(context, [firstOption]) {
     const sourceCode = context.getSourceCode();
-    const baseConfig =
-      typeof context.options[0] === 'string' ? context.options[0] : 'always';
-    const overrideConfig =
-      typeof context.options[0] === 'object' ? context.options[0] : {};
+    const baseConfig = typeof firstOption === 'string' ? firstOption : 'always';
+    const overrideConfig = typeof firstOption === 'object' ? firstOption : {};
 
     /**
      * Determines whether a function has a name.
@@ -152,6 +148,7 @@ export default util.createRule<Options, MessageIds>({
         rightToken = sourceCode.getFirstToken(node, util.isOpeningParenToken)!;
         leftToken = sourceCode.getTokenBefore(rightToken)!;
       }
+      // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
       const hasSpacing = sourceCode.isSpaceBetweenTokens(leftToken, rightToken);
 
       if (hasSpacing && functionConfig === 'never') {

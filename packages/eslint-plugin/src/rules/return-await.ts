@@ -1,32 +1,33 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
-import * as util from '../util';
 
-interface ScopeInfo {
-  hasAsync: boolean;
-}
+import * as util from '../util';
+import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
   | TSESTree.ArrowFunctionExpression;
 
+interface ScopeInfo {
+  hasAsync: boolean;
+  owningFunc: FunctionNode;
+}
+
 export default util.createRule({
   name: 'return-await',
   meta: {
     docs: {
-      description: 'Enforces consistent returning of awaited values',
-      category: 'Best Practices',
+      description: 'Enforce consistent returning of awaited values',
       recommended: false,
       requiresTypeChecking: true,
       extendsBaseRule: 'no-return-await',
     },
     fixable: 'code',
+    hasSuggestions: true,
     type: 'problem',
     messages: {
       nonPromiseAwait:
@@ -49,19 +50,24 @@ export default util.createRule({
     const checker = parserServices.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
-    let scopeInfo: ScopeInfo | null = null;
+    const scopeInfoStack: ScopeInfo[] = [];
 
     function enterFunction(node: FunctionNode): void {
-      scopeInfo = {
+      scopeInfoStack.push({
         hasAsync: node.async,
-      };
+        owningFunc: node,
+      });
+    }
+
+    function exitFunction(): void {
+      scopeInfoStack.pop();
     }
 
     function inTry(node: ts.Node): boolean {
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (tsutils.isTryStatement(ancestor)) {
+        if (ts.isTryStatement(ancestor)) {
           return true;
         }
 
@@ -75,7 +81,7 @@ export default util.createRule({
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (tsutils.isCatchClause(ancestor)) {
+        if (ts.isCatchClause(ancestor)) {
           return true;
         }
 
@@ -90,8 +96,8 @@ export default util.createRule({
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (
-          tsutils.isTryStatement(ancestor.parent) &&
-          tsutils.isBlock(ancestor) &&
+          ts.isTryStatement(ancestor.parent) &&
+          ts.isBlock(ancestor) &&
           ancestor.parent.end === ancestor.end
         ) {
           return true;
@@ -106,7 +112,7 @@ export default util.createRule({
       let ancestor = node.parent;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
-        if (tsutils.isTryStatement(ancestor)) {
+        if (ts.isTryStatement(ancestor)) {
           return !!ancestor.finallyBlock;
         }
         ancestor = ancestor.parent;
@@ -147,14 +153,34 @@ export default util.createRule({
     function insertAwait(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
-    ): TSESLint.RuleFix | null {
-      return fixer.insertTextBefore(node, 'await ');
+      isHighPrecendence: boolean,
+    ): TSESLint.RuleFix | TSESLint.RuleFix[] {
+      if (isHighPrecendence) {
+        return fixer.insertTextBefore(node, 'await ');
+      } else {
+        return [
+          fixer.insertTextBefore(node, 'await ('),
+          fixer.insertTextAfter(node, ')'),
+        ];
+      }
+    }
+
+    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
+      const operator = isBinaryExpression(node)
+        ? node.operatorToken.kind
+        : ts.SyntaxKind.Unknown;
+      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
+      const awaitPrecedence = getOperatorPrecedence(
+        ts.SyntaxKind.AwaitExpression,
+        ts.SyntaxKind.Unknown,
+      );
+      return nodePrecedence > awaitPrecedence;
     }
 
     function test(node: TSESTree.Expression, expression: ts.Node): void {
       let child: ts.Node;
 
-      const isAwait = tsutils.isAwaitExpression(expression);
+      const isAwait = ts.isAwaitExpression(expression);
 
       if (isAwait) {
         child = expression.getChildAt(1);
@@ -199,7 +225,8 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            fix: fixer =>
+              insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression)),
           });
         }
 
@@ -238,7 +265,8 @@ export default util.createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            fix: fixer => insertAwait(fixer, node),
+            fix: fixer =>
+              insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression)),
           });
         }
 
@@ -263,6 +291,11 @@ export default util.createRule({
       FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
 
+      'FunctionDeclaration:exit': exitFunction,
+      'FunctionExpression:exit': exitFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
+
+      // executes after less specific handler, so exitFunction is called
       'ArrowFunctionExpression[async = true]:exit'(
         node: TSESTree.ArrowFunctionExpression,
       ): void {
@@ -274,7 +307,8 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
-        if (!scopeInfo || !scopeInfo.hasAsync || !node.argument) {
+        const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
+        if (!scopeInfo?.hasAsync || !node.argument) {
           return;
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {

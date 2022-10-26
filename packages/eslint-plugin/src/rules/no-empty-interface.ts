@@ -1,5 +1,6 @@
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import * as util from '../util';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 type Options = [
   {
@@ -14,11 +15,10 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the declaration of empty interfaces',
-      category: 'Best Practices',
       recommended: 'error',
-      suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       noEmpty: 'An empty interface is equivalent to `{}`.',
       noEmptyWithSuper:

@@ -1,24 +1,24 @@
-# Disallow the use of custom TypeScript modules and namespaces (`no-namespace`)
+---
+description: 'Disallow TypeScript namespaces.'
+---
 
-Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
-ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-namespace** for documentation.
 
-This rule still allows the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
+TypeScript historically allowed a form of code organization called "custom modules" (`module Example {}`), later renamed to "namespaces" (`namespace Example`).
+Namespaces are an outdated way to organize TypeScript code.
+ES2015 module syntax is now preferred (`import`/`export`).
 
-## Rule Details
+> This rule does not report on the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
 
-This rule aims to standardize the way modules are declared.
+## Examples
 
-## Options
+Examples of code with the default options:
 
-This rule, in its default state, does not require any argument. If you would like to enable one
-or more of the following you may pass an object with the options set as follows:
+<!--tabs-->
 
-- `allowDeclarations` set to `true` will allow you to `declare` custom TypeScript modules and namespaces (Default: `false`).
-- `allowDefinitionFiles` set to `true` will allow you to `declare` and use custom TypeScript modules and namespaces
-  inside definition files (Default: `true`).
-
-Examples of **incorrect** code for the default `{ "allowDeclarations": false, "allowDefinitionFiles": true }` options:
+### ❌ Incorrect
 
 ```ts
 module foo {}
@@ -28,7 +28,7 @@ declare module foo {}
 declare namespace foo {}
 ```
 
-Examples of **correct** code for the default `{ "allowDeclarations": false, "allowDefinitionFiles": true }` options:
+### ✅ Correct
 
 ```ts
 declare module 'foo' {}
@@ -36,16 +36,24 @@ declare module 'foo' {}
 // anything inside a d.ts file
 ```
 
+<!--/tabs-->
+
+## Options
+
 ### `allowDeclarations`
 
-Examples of **incorrect** code for the `{ "allowDeclarations": true }` option:
+Examples of code with the `{ "allowDeclarations": true }` option:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 module foo {}
 namespace foo {}
 ```
 
-Examples of **correct** code for the `{ "allowDeclarations": true }` option:
+#### ✅ Correct
 
 ```ts
 declare module 'foo' {}
@@ -61,7 +69,13 @@ declare module foo {
 }
 ```
 
-Examples of **incorrect** code for the `{ "allowDeclarations": false }` option:
+<!--/tabs-->
+
+Examples of code for the `{ "allowDeclarations": false }` option:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 module foo {}
@@ -70,7 +84,7 @@ declare module foo {}
 declare namespace foo {}
 ```
 
-Examples of **correct** code for the `{ "allowDeclarations": false }` option:
+#### ✅ Correct
 
 ```ts
 declare module 'foo' {}
@@ -78,7 +92,11 @@ declare module 'foo' {}
 
 ### `allowDefinitionFiles`
 
-Examples of **incorrect** code for the `{ "allowDefinitionFiles": true }` option:
+Examples of code for the `{ "allowDefinitionFiles": true }` option:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 // if outside a d.ts file
@@ -92,7 +110,7 @@ declare module foo {}
 declare namespace foo {}
 ```
 
-Examples of **correct** code for the `{ "allowDefinitionFiles": true }` option:
+#### ✅ Correct
 
 ```ts
 declare module 'foo' {}
@@ -109,7 +127,3 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 - [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
 - [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
 - [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
-
-## Compatibility
-
-- TSLint: [no-namespace](https://palantir.github.io/tslint/rules/no-namespace/)

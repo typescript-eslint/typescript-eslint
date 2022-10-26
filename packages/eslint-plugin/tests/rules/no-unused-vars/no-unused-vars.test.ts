@@ -559,11 +559,8 @@ export interface IFoo {
     `
 import * as fastify from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
-const server: fastify.FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify({});
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> =
+  fastify({});
 server.get('/ping');
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/61
@@ -690,6 +687,13 @@ export namespace Foo {
   export const item: Foo = 1;
 }
     `,
+    `
+export namespace foo.bar {
+  export interface User {
+    name: string;
+  }
+}
+    `,
     // exported self-referencing types
     `
 export interface Foo {
@@ -735,6 +739,15 @@ export function foo() {
   return new Promise<Foo>();
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5152
+    {
+      code: noFormat`
+function foo<T>(value: T): T {
+  return { value };
+}
+export type Foo<T> = typeof foo<T>;
+      `,
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2331
     {
       code: `
@@ -909,6 +922,15 @@ export declare namespace Foo {
   }
 }
     `,
+    noFormat`
+class Foo<T> {
+    value: T;
+}
+class Bar<T> {
+    foo = Foo<T>;
+}
+new Bar();
+    `,
     {
       code: `
 declare namespace A {
@@ -996,6 +1018,27 @@ export class TestClass {
       `,
       parserOptions: withMetaParserOptions,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5577
+    `
+function foo() {}
+
+export class Foo {
+  constructor() {
+    foo();
+  }
+}
+    `,
+    `
+function foo() {}
+
+export class Foo {
+  static {}
+
+  constructor() {
+    foo();
+  }
+}
+    `,
   ],
 
   invalid: [
@@ -1445,8 +1488,8 @@ namespace Foo {
             action: 'defined',
             additional: '',
           },
-          line: 4,
-          column: 15,
+          line: 2,
+          column: 11,
         },
       ],
     },
@@ -1477,8 +1520,8 @@ namespace Foo {
             action: 'defined',
             additional: '',
           },
-          line: 5,
-          column: 17,
+          line: 3,
+          column: 13,
         },
       ],
     },
@@ -1493,7 +1536,8 @@ interface Foo {
       errors: [
         {
           messageId: 'unusedVar',
-          line: 4,
+          line: 2,
+          column: 11,
           data: {
             varName: 'Foo',
             action: 'defined',
@@ -1510,6 +1554,7 @@ type Foo = Array<Foo>;
         {
           messageId: 'unusedVar',
           line: 2,
+          column: 6,
           data: {
             varName: 'Foo',
             action: 'defined',
@@ -1537,6 +1582,7 @@ export const ComponentFoo = () => {
         {
           messageId: 'unusedVar',
           line: 3,
+          column: 10,
           data: {
             varName: 'Fragment',
             action: 'defined',
@@ -1564,6 +1610,35 @@ export const ComponentFoo = () => {
         {
           messageId: 'unusedVar',
           line: 2,
+          column: 8,
+          data: {
+            varName: 'React',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3303
+    {
+      code: `
+import React from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: null,
+      },
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          column: 8,
           data: {
             varName: 'React',
             action: 'defined',
@@ -1584,6 +1659,7 @@ declare module 'foo' {
         {
           messageId: 'unusedVar',
           line: 3,
+          column: 8,
           data: {
             varName: 'Test',
             action: 'defined',
@@ -1609,6 +1685,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 4,
+          column: 13,
           data: {
             varName: 'Bar',
             action: 'defined',
@@ -1618,6 +1695,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 5,
+          column: 15,
           data: {
             varName: 'Baz',
             action: 'defined',
@@ -1627,6 +1705,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 6,
+          column: 17,
           data: {
             varName: 'Bam',
             action: 'defined',
@@ -1636,6 +1715,7 @@ export namespace Foo {
         {
           messageId: 'unusedVar',
           line: 7,
+          column: 15,
           data: {
             varName: 'x',
             action: 'assigned a value',
@@ -1656,10 +1736,29 @@ interface Foo {
       errors: [
         {
           messageId: 'unusedVar',
-          line: 6,
+          line: 2,
+          column: 11,
           data: {
             varName: 'Foo',
             action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+let x = null;
+x = foo(x);
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          column: 1,
+          data: {
+            varName: 'x',
+            action: 'assigned a value',
             additional: '',
           },
         },

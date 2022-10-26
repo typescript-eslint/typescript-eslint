@@ -1,25 +1,29 @@
-# Requires `Array#sort` calls to always provide a `compareFunction` (`require-array-sort-compare`)
+---
+description: 'Require `Array#sort` calls to always provide a `compareFunction`.'
+---
 
-This rule prevents invoking the `Array#sort()` method without providing a `compare` argument.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/require-array-sort-compare** for documentation.
 
-When called without a compare function, `Array#sort()` converts all non-undefined array elements into strings and then compares said strings based off their UTF-16 code units.
+When called without a compare function, `Array#sort()` converts all non-undefined array elements into strings and then compares said strings based off their UTF-16 code units [[ECMA specification](https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare)].
 
 The result is that elements are sorted alphabetically, regardless of their type.
-When sorting numbers, this results in the classic "10 before 2" order:
+For example, when sorting numbers, this results in a "10 before 2" order:
 
 ```ts
 [1, 2, 3, 10, 20, 30].sort(); //→ [1, 10, 2, 20, 3, 30]
 ```
 
-This also means that `Array#sort` does not always sort consistently, as elements may have custom `#toString` implementations that are not deterministic; this trap is noted in the noted in the language specification thusly:
+This rule reports on any call to the `Array#sort()` method that doesn't provide a `compare` argument.
 
-> NOTE 2: Method calls performed by the `ToString` abstract operations in steps 5 and 7 have the potential to cause `SortCompare` to not behave as a consistent comparison function.<br> > https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare
-
-## Rule Details
+## Examples
 
 This rule aims to ensure all calls of the native `Array#sort` method provide a `compareFunction`, while ignoring calls to user-defined `sort` methods.
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const array: any[];
@@ -31,7 +35,7 @@ array.sort();
 stringArray.sort();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const array: any[];
@@ -45,24 +49,13 @@ userDefinedType.sort();
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  /**
-   * If true, an array which all elements are string is ignored.
-   */
-  ignoreStringArrays?: boolean;
-};
-
-const defaults = {
-  ignoreStringArrays: false,
-};
-```
-
 ### `ignoreStringArrays`
 
-Examples of **incorrect** code for this rule with `{ ignoreStringArrays: true }`:
+Examples of code for this rule with `{ ignoreStringArrays: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const one = 1;
@@ -71,7 +64,7 @@ const three = 3;
 [one, two, three].sort();
 ```
 
-Examples of **correct** code for this rule with `{ ignoreStringArrays: true }`:
+#### ✅ Correct
 
 ```ts
 const one = '1';
@@ -82,4 +75,4 @@ const three = '3';
 
 ## When Not To Use It
 
-If you understand the language specification enough, you can turn this rule off safely.
+If you understand the language specification enough, and/or only ever sort arrays in a string-like manner, you can turn this rule off safely.

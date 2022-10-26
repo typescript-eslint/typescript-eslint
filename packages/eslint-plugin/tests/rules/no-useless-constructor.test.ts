@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-useless-constructor';
 import { RuleTester } from '../RuleTester';
 
@@ -206,6 +207,20 @@ class A extends B {
     `
 class A {
   constructor(foo);
+}
+    `,
+    `
+class A extends Object {
+  constructor(@Foo foo: string) {
+    super(foo);
+  }
+}
+    `,
+    `
+class A extends Object {
+  constructor(foo: string, @Bar() bar) {
+    super(foo, bar);
+  }
 }
     `,
   ],

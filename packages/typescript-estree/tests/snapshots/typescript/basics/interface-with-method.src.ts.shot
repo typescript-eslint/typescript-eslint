@@ -26,6 +26,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "method",
             "loc": Object {
               "end": Object {
                 "column": 23,
@@ -150,6 +151,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "method",
             "loc": Object {
               "end": Object {
                 "column": 18,
@@ -306,6 +308,7 @@ Object {
                 Object {
                   "constraint": undefined,
                   "default": undefined,
+                  "in": false,
                   "loc": Object {
                     "end": Object {
                       "column": 5,
@@ -334,6 +337,7 @@ Object {
                     ],
                     "type": "Identifier",
                   },
+                  "out": false,
                   "range": Array [
                     45,
                     46,

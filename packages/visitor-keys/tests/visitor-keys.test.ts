@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { visitorKeys } from '../src';
 
 const types = new Set(Object.keys(AST_NODE_TYPES));
@@ -16,11 +17,15 @@ describe('Every ast node type should have a visitor key defined', () => {
 const IGNORED_KEYS = new Set([
   'ExperimentalRestProperty',
   'ExperimentalSpreadProperty',
-  'JSXNamespacedName',
 ]);
 describe('Every visitor key should have an ast node type defined', () => {
   for (const key of keys) {
     if (IGNORED_KEYS.has(key)) {
+      if (types.has(key)) {
+        it(`${key} should not be ignored as it has an AST_NODE_TYPE defined`, () => {
+          expect(true).toBeFalsy();
+        });
+      }
       continue;
     }
 

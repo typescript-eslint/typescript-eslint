@@ -1,13 +1,14 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
 import { es5 } from './es5';
-import { es2015_core } from './es2015.core';
 import { es2015_collection } from './es2015.collection';
-import { es2015_iterable } from './es2015.iterable';
+import { es2015_core } from './es2015.core';
 import { es2015_generator } from './es2015.generator';
+import { es2015_iterable } from './es2015.iterable';
 import { es2015_promise } from './es2015.promise';
 import { es2015_proxy } from './es2015.proxy';
 import { es2015_reflect } from './es2015.reflect';

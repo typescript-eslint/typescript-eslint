@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](../../docs/getting-started/linting/README.md)**
+**[You can find our Getting Started docs here](https://typescript-eslint.io/docs)**
 
 ## About
 
@@ -69,10 +69,10 @@ interface ParseOptions {
    * Enable parsing of JSX.
    * For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
    *
-   * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
+   * NOTE: this setting does not effect known file types (.js, .cjs, .mjs, .jsx, .ts, .mts, .cts, .tsx, .json) because the
    * TypeScript compiler has its own internal handling for known file extensions.
    *
-   * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#parseroptionsecmafeaturesjsx
+   * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsecmafeaturesjsx
    */
   jsx?: boolean;
 
@@ -101,14 +101,6 @@ interface ParseOptions {
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
-
-  /*
-   * The JSX AST changed the node type for string literals
-   * inside a JSX Element from `Literal` to `JSXText`.
-   * When value is `true`, these nodes will be parsed as type `JSXText`.
-   * When value is `false`, these nodes will be parsed as type `Literal`.
-   */
-  useJSXTextNode?: boolean;
 }
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {
@@ -120,7 +112,6 @@ const PARSE_DEFAULT_OPTIONS: ParseOptions = {
   loggerFn: undefined,
   range: false,
   tokens: false,
-  useJSXTextNode: false,
 };
 
 declare function parse(
@@ -209,6 +200,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   tsconfigRootDir?: string;
 
   /**
+   * An array of one or more instances of TypeScript Program objects to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program(s).
+   */
+  programs?: Program[];
+
+  /**
    ***************************************************************************************
    * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
    ***************************************************************************************
@@ -218,6 +216,25 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * it will not error, but will instead parse the file and its dependencies in a new program.
    */
   createDefaultProgram?: boolean;
+
+  /**
+   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+   * on a file in an IDE).
+   *
+   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+   * is important because there is significant overhead to managing the so called Watch Programs
+   * needed for the long-running use-case.
+   *
+   * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
+   * whether or not ESLint is being used as part of a single run.
+   */
+  allowAutomaticSingleRunInference?: boolean;
+
+  /**
+   * Path to a file exporting a custom ModuleResolver.
+   */
+  moduleResolver?: string;
 }
 
 interface ParserServices {
@@ -303,6 +320,34 @@ Types for the AST produced by the parse functions.
 - `AST_NODE_TYPES` is an enum which provides the values for every single AST node's `type` property.
 - `AST_TOKEN_TYPES` is an enum which provides the values for every single AST token's `type` property.
 
+### Utilities
+
+#### `createProgram(configFile, projectDirectory)`
+
+This serves as a utility method for users of the `ParseOptions.programs` feature to create a TypeScript program instance from a config file.
+
+```ts
+declare function createProgram(
+  configFile: string,
+  projectDirectory: string = process.cwd(),
+): import('typescript').Program;
+```
+
+Example usage:
+
+```js
+const tsESTree = require('@typescript-eslint/typescript-estree');
+
+const program = tsESTree.createProgram('tsconfig.json');
+const code = `const hello: string = 'world';`;
+const { ast, services } = parseAndGenerateServices(code, {
+  filePath: '/some/path/to/file/foo.ts',
+  loc: true,
+  program,
+  range: true,
+});
+```
+
 ## Supported TypeScript Version
 
 See the [Supported TypeScript Version](../../README.md#supported-typescript-version) section in the project root.
@@ -322,7 +367,7 @@ Please check the current list of open and known issues and ensure the issue has 
 
 A couple of years after work on this parser began, the TypeScript Team at Microsoft began [officially supporting TypeScript parsing via Babel](https://blogs.msdn.microsoft.com/typescript/2018/08/27/typescript-and-babel-7/).
 
-I work closely with the TypeScript Team and we are gradually aligning the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see [the code](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/typescript-estree/tests/ast-alignment) for more details.
+I work closely with the TypeScript Team and we are gradually aligning the AST of this project with the one produced by Babel's parser. To that end, I have created a full test harness to compare the ASTs of the two projects which runs on every PR, please see [the code](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/typescript-estree/tests/ast-alignment) for more details.
 
 ## Debugging
 

@@ -2,6 +2,8 @@ enum ScopeType {
   block = 'block',
   catch = 'catch',
   class = 'class',
+  classFieldInitializer = 'class-field-initializer',
+  classStaticBlock = 'class-static-block',
   conditionalType = 'conditionalType',
   for = 'for',
   function = 'function',

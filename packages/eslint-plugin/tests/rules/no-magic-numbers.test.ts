@@ -53,9 +53,68 @@ class Foo {
   static readonly D = 1;
   readonly E = -1;
   readonly F = +1;
+  private readonly G = 100n;
 }
       `,
       options: [{ ignoreReadonlyClassProperties: true }],
+    },
+    {
+      code: 'type Foo = Bar[0];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[-1];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[0xab];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[5.6e1];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[10n];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[1 | -2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[1 & -2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[1 & number];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[((1 & -2) | 3) | 4];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Parameters<Bar>[2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: "type Foo = Bar['baz'];",
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: "type Foo = Bar['baz'];",
+      options: [{ ignoreTypeIndexes: false }],
+    },
+    {
+      code: `
+type Others = [['a'], ['b']];
+
+type Foo = {
+  [K in keyof Others[0]]: Others[K];
+};
+      `,
+      options: [{ ignoreTypeIndexes: true }],
     },
   ],
 
@@ -204,6 +263,7 @@ class Foo {
   static readonly D = 4;
   readonly E = -5;
   readonly F = +6;
+  private readonly G = 100n;
 }
       `,
       options: [{ ignoreReadonlyClassProperties: false }],
@@ -255,6 +315,286 @@ class Foo {
           },
           line: 8,
           column: 17,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '100n',
+          },
+          line: 9,
+          column: 24,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[0];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[-1];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-1',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[0xab];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0xab',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[5.6e1];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '5.6e1',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[10n];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '10n',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[1 | -2];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 1,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-2',
+          },
+          line: 1,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[1 & -2];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 1,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-2',
+          },
+          line: 1,
+          column: 20,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[1 & number];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[((1 & -2) | 3) | 4];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 1,
+          column: 18,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-2',
+          },
+          line: 1,
+          column: 22,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '3',
+          },
+          line: 1,
+          column: 28,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '4',
+          },
+          line: 1,
+          column: 33,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Parameters<Bar>[2];',
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '2',
+          },
+          line: 1,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: `
+type Others = [['a'], ['b']];
+
+type Foo = {
+  [K in keyof Others[0]]: Others[K];
+};
+      `,
+      options: [{ ignoreTypeIndexes: false }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0',
+          },
+          line: 5,
+          column: 22,
+        },
+      ],
+    },
+    {
+      code: `
+type Other = {
+  [0]: 3;
+};
+
+type Foo = {
+  [K in keyof Other]: \`\${K & number}\`;
+};
+      `,
+      options: [{ ignoreTypeIndexes: true }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0',
+          },
+          line: 3,
+          column: 4,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '3',
+          },
+          line: 3,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  [K in 0 | 1 | 2]: 0;
+};
+      `,
+      options: [{ ignoreTypeIndexes: true }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0',
+          },
+          line: 3,
+          column: 9,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 3,
+          column: 13,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '2',
+          },
+          line: 3,
+          column: 17,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0',
+          },
+          line: 3,
+          column: 21,
         },
       ],
     },

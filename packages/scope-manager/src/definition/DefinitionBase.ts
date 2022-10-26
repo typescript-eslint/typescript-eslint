@@ -1,6 +1,7 @@
-import { TSESTree } from '@typescript-eslint/types';
-import { DefinitionType } from './DefinitionType';
+import type { TSESTree } from '@typescript-eslint/types';
+
 import { createIdGenerator } from '../ID';
+import type { DefinitionType } from './DefinitionType';
 
 const generator = createIdGenerator();
 
@@ -8,7 +9,7 @@ abstract class DefinitionBase<
   TType extends DefinitionType,
   TNode extends TSESTree.Node,
   TParent extends TSESTree.Node | null,
-  TName extends TSESTree.Node = TSESTree.BindingName
+  TName extends TSESTree.Node = TSESTree.BindingName,
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing

@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-extraneous-class';
 import { RuleTester } from '../RuleTester';
 
@@ -76,6 +77,19 @@ class Foo {}
       `,
       options: [{ allowWithDecorator: true }],
     },
+    {
+      code: `
+@FooDecorator
+class Foo {
+  constructor(foo: Foo) {
+    foo.subscribe(a => {
+      console.log(a);
+    });
+  }
+}
+      `,
+      options: [{ allowWithDecorator: true }],
+    },
   ],
 
   invalid: [
@@ -147,6 +161,24 @@ class Foo {}
       errors: [
         {
           messageId: 'empty',
+        },
+      ],
+    },
+    {
+      code: `
+@FooDecorator
+class Foo {
+  constructor(foo: Foo) {
+    foo.subscribe(a => {
+      console.log(a);
+    });
+  }
+}
+      `,
+      options: [{ allowWithDecorator: false }],
+      errors: [
+        {
+          messageId: 'onlyConstructor',
         },
       ],
     },

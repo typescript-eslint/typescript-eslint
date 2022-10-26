@@ -1,9 +1,9 @@
+import { DefinitionType } from '../../src/definition';
 import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
 } from '../util';
-import { DefinitionType } from '../../src/definition';
 
 describe('implicit global reference', () => {
   it('assignments global scope', () => {

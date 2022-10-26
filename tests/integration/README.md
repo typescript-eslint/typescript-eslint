@@ -2,19 +2,30 @@
 
 We have a set of integration tests defined in this project to help ensure we don't inadvertently break downstream packages that depend on us.
 
-These tests are setup to run within docker containers to ensure that each test is completely isolated; we don't want them to affect our local environment, and similarly we don't want them to be effected by our local environment.
+These tests are setup to run within temporary folders to ensure that each test is isolated from the project.
 
 ## Adding a new integration test
 
-1. [Install docker for your platform](https://docs.docker.com/v17.09/engine/installation/#supported-platforms).
 1. Add a new folder in `/tests/integration/fixtures`
-1. Add a `.eslintrc.yml`, and a `tsconfig.json` to your folder, with the config required.
+1. Add a `package.json` to your folder.
+1. List the required dependencies under `devDependencies`.
+   - Use `latest` for the dependency to ensure we are testing against the newest versions of the package.
+   - If you have no dependencies, just add `"devDependencies": {}`.
+1. Add a `.eslintrc.js`, and a `tsconfig.json` to your folder, with all of the config required.
 1. Create the necessary files to test the integration.
-1. Copy+paste the `Dockerfile` from an existing fixture (they are all the same).
-1. Copy+paste the `test.sh` from an existing fixture, and adjust the `eslint` command as required.
-1. Add a new entry to `docker-compose.yml` by copy+pasting an existing section, and changing the name to match your new folder.
-1. Add a new entry to `run-all-tests.sh` by copy+pasting an existing command, and changing the name to match your new folder.
-1. Run your integration test by running the single command you copied in the previous step.
-   - If your test finishes successfully, a `test.js.snap` will be created.
+   - Your test should have a lint error in it in an appropriate location.
+     This is so that we can be certain the setup actually works correctly.
+1. Add a test to `/tests/integration/tests` named the same as your folder.
+1. Paste the following content into your test:
 
-If you run your test and see the test fail with `Cannot find module './lint-output.json' from 'test.js'`, this means that ESLint errored whilst attempting to run the lint command.
+   ```ts
+   import { integrationTest } from '../integration-test-base';
+
+   integrationTest(
+     __filename,
+     '*.ts' /* UPDATE THIS TO THE EXTENSION(s) TO LINT */,
+   );
+   ```
+
+1. Run your integration test with `yarn test-integration ./tests/integration/tests/your-file.test.ts`
+   - This will generate your snapshot output for the lint run which is a JSON representation of your ESLint run.

@@ -1,9 +1,10 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
-import baseRule from 'eslint/lib/rules/comma-dangle';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('comma-dangle');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -42,13 +43,12 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'Require or disallow trailing comma',
-      category: 'Stylistic Issues',
+      description: 'Require or disallow trailing commas',
       recommended: false,
       extendsBaseRule: true,
     },
     schema: {
-      definitions: {
+      $defs: {
         value: {
           enum: OPTION_VALUE_SCHEME,
         },
@@ -61,27 +61,29 @@ export default util.createRule<Options, MessageIds>({
         {
           oneOf: [
             {
-              $ref: '#/definitions/value',
+              $ref: '#/$defs/value',
             },
             {
               type: 'object',
               properties: {
-                arrays: { $ref: '#/definitions/valueWithIgnore' },
-                objects: { $ref: '#/definitions/valueWithIgnore' },
-                imports: { $ref: '#/definitions/valueWithIgnore' },
-                exports: { $ref: '#/definitions/valueWithIgnore' },
-                functions: { $ref: '#/definitions/valueWithIgnore' },
-                enums: { $ref: '#/definitions/valueWithIgnore' },
-                generics: { $ref: '#/definitions/valueWithIgnore' },
-                tuples: { $ref: '#/definitions/valueWithIgnore' },
+                arrays: { $ref: '#/$defs/valueWithIgnore' },
+                objects: { $ref: '#/$defs/valueWithIgnore' },
+                imports: { $ref: '#/$defs/valueWithIgnore' },
+                exports: { $ref: '#/$defs/valueWithIgnore' },
+                functions: { $ref: '#/$defs/valueWithIgnore' },
+                enums: { $ref: '#/$defs/valueWithIgnore' },
+                generics: { $ref: '#/$defs/valueWithIgnore' },
+                tuples: { $ref: '#/$defs/valueWithIgnore' },
               },
               additionalProperties: false,
             },
           ],
         },
       ],
+      additionalProperties: false,
     },
     fixable: 'code',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
   },
   defaultOptions: ['never'],

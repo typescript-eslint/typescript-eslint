@@ -1,13 +1,14 @@
 // The following code is adapted from the the code in eslint.
 // License: https://github.com/eslint/eslint/blob/48700fc8408f394887cdedd071b22b757700fdcb/LICENSE
 
-import {
+import type {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   TSESLint,
-} from '@typescript-eslint/experimental-utils';
-import rule from '../../../src/rules/indent';
-import { InferMessageIdsTypeFromRule } from '../../../src/util';
+} from '@typescript-eslint/utils';
+
+import type rule from '../../../src/rules/indent';
+import type { InferMessageIdsTypeFromRule } from '../../../src/util';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 

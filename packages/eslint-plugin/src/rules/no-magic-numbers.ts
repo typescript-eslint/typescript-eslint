@@ -1,16 +1,37 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-magic-numbers';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-magic-numbers');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const baseRuleSchema = Array.isArray(baseRule.meta.schema)
-  ? baseRule.meta.schema[0]
-  : baseRule.meta.schema;
+// Extend base schema with additional property to ignore TS numeric literal types
+const schema = util.deepMerge(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
+  Array.isArray(baseRule.meta.schema)
+    ? baseRule.meta.schema[0]
+    : baseRule.meta.schema,
+  {
+    properties: {
+      ignoreNumericLiteralTypes: {
+        type: 'boolean',
+      },
+      ignoreEnums: {
+        type: 'boolean',
+      },
+      ignoreReadonlyClassProperties: {
+        type: 'boolean',
+      },
+      ignoreTypeIndexes: {
+        type: 'boolean',
+      },
+    },
+  },
+);
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
@@ -18,32 +39,11 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow magic numbers',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
-    // Extend base schema with additional property to ignore TS numeric literal types
-    schema: [
-      {
-        ...baseRuleSchema,
-        properties: {
-          ...baseRuleSchema.properties,
-          ignoreNumericLiteralTypes: {
-            type: 'boolean',
-          },
-          ignoreEnums: {
-            type: 'boolean',
-          },
-          ignoreReadonlyClassProperties: {
-            type: 'boolean',
-          },
-        },
-      },
-    ],
-    messages: baseRule.meta.messages ?? {
-      useConst: "Number constants declarations must use 'const'.",
-      noMagic: 'No magic number: {{raw}}.',
-    },
+    schema: [schema],
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {
@@ -61,32 +61,42 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       Literal(node): void {
+        // If it’s not a numeric literal we’re not interested
+        if (typeof node.value !== 'number' && typeof node.value !== 'bigint') {
+          return;
+        }
+
+        // This will be `true` if we’re configured to ignore this case (eg. it’s
+        // an enum and `ignoreEnums` is `true`). It will be `false` if we’re not
+        // configured to ignore this case. It will remain `undefined` if this is
+        // not one of our exception cases, and we’ll fall back to the base rule.
+        let isAllowed: boolean | undefined;
+
         // Check if the node is a TypeScript enum declaration
-        if (options.ignoreEnums && isParentTSEnumDeclaration(node)) {
-          return;
+        if (isParentTSEnumDeclaration(node)) {
+          isAllowed = options.ignoreEnums === true;
         }
-
         // Check TypeScript specific nodes for Numeric Literal
-        if (
-          options.ignoreNumericLiteralTypes &&
-          typeof node.value === 'number' &&
-          isTSNumericLiteralType(node)
-        ) {
-          return;
+        else if (isTSNumericLiteralType(node)) {
+          isAllowed = options.ignoreNumericLiteralTypes === true;
+        }
+        // Check if the node is a type index
+        else if (isAncestorTSIndexedAccessType(node)) {
+          isAllowed = options.ignoreTypeIndexes === true;
+        }
+        // Check if the node is a readonly class property
+        else if (isParentTSReadonlyPropertyDefinition(node)) {
+          isAllowed = options.ignoreReadonlyClassProperties === true;
         }
 
-        // Check if the node is a readonly class property
-        if (
-          typeof node.value === 'number' &&
-          isParentTSReadonlyClassProperty(node)
-        ) {
-          if (options.ignoreReadonlyClassProperties) {
-            return;
-          }
-
-          let fullNumberNode:
-            | TSESTree.Literal
-            | TSESTree.UnaryExpression = node;
+        // If we’ve hit a case where the ignore option is true we can return now
+        if (isAllowed === true) {
+          return;
+        }
+        // If the ignore option is *not* set we can report it now
+        else if (isAllowed === false) {
+          let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
+            node;
           let raw = node.raw;
 
           if (
@@ -213,12 +223,34 @@ function isTSNumericLiteralType(node: TSESTree.Node): boolean {
  * @returns true if the node parent is a readonly class property
  * @private
  */
-function isParentTSReadonlyClassProperty(node: TSESTree.Literal): boolean {
+function isParentTSReadonlyPropertyDefinition(node: TSESTree.Literal): boolean {
   const parent = getLiteralParent(node);
 
-  if (parent?.type === AST_NODE_TYPES.ClassProperty && parent.readonly) {
+  if (parent?.type === AST_NODE_TYPES.PropertyDefinition && parent.readonly) {
     return true;
   }
 
   return false;
+}
+
+/**
+ * Checks if the node is part of a type indexed access (eg. Foo[4])
+ * @param node the node to be validated.
+ * @returns true if the node is part of an indexed access
+ * @private
+ */
+function isAncestorTSIndexedAccessType(node: TSESTree.Literal): boolean {
+  // Handle unary expressions (eg. -4)
+  let ancestor = getLiteralParent(node);
+
+  // Go up another level while we’re part of a type union (eg. 1 | 2) or
+  // intersection (eg. 1 & 2)
+  while (
+    ancestor?.parent?.type === AST_NODE_TYPES.TSUnionType ||
+    ancestor?.parent?.type === AST_NODE_TYPES.TSIntersectionType
+  ) {
+    ancestor = ancestor.parent;
+  }
+
+  return ancestor?.parent?.type === AST_NODE_TYPES.TSIndexedAccessType;
 }

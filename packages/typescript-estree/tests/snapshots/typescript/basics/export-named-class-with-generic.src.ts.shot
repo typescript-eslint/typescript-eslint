@@ -4,6 +4,7 @@ exports[`typescript basics export-named-class-with-generic.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "body": Object {
           "body": Array [],
@@ -72,6 +73,7 @@ Object {
             Object {
               "constraint": undefined,
               "default": undefined,
+              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -100,6 +102,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
+              "out": false,
               "range": Array [
                 17,
                 18,

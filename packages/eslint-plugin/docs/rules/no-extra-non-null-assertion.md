@@ -1,8 +1,19 @@
-# Disallow extra non-null assertion (`no-extra-non-null-assertion`)
+---
+description: 'Disallow extra non-null assertions.'
+---
 
-## Rule Details
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-extra-non-null-assertion** for documentation.
 
-Examples of **incorrect** code for this rule:
+The `!` non-null assertion operator in TypeScript is used to assert that a value's type does not include `null` or `undefined`.
+Using the operator any more than once on a single value does nothing.
+
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const foo: { bar: number } | null = null;
@@ -21,7 +32,7 @@ function foo(bar?: { n: number }) {
 }
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const foo: { bar: number } | null = null;
@@ -37,13 +48,5 @@ function foo(bar: number | undefined) {
 ```ts
 function foo(bar?: { n: number }) {
   return bar?.n;
-}
-```
-
-## How to use
-
-```json
-{
-  "@typescript-eslint/no-extra-non-null-assertion": ["error"]
 }
 ```

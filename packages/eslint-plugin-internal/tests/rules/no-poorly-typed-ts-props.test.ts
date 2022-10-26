@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import rule from '../../src/rules/no-poorly-typed-ts-props';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -31,7 +32,7 @@ baz.symbol.name;
 import ts from 'typescript';
 declare const thing: ts.Symbol;
 thing.declarations.map(decl => {});
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'doNotUseWithFixer',
@@ -52,7 +53,7 @@ thing.declarations.map(decl => {});
 import ts from 'typescript';
 declare const thing: ts.Symbol;
 thing.getDeclarations().map(decl => {});
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -63,7 +64,7 @@ thing.getDeclarations().map(decl => {});
 import ts from 'typescript';
 declare const thing: ts.Type;
 thing.symbol;
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'doNotUseWithFixer',
@@ -84,7 +85,7 @@ thing.symbol;
 import ts from 'typescript';
 declare const thing: ts.Type;
 thing.getSymbol();
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -95,7 +96,7 @@ thing.getSymbol();
 import ts from 'typescript';
 declare const thing: ts.Type;
 thing?.symbol;
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'doNotUseWithFixer',
@@ -116,7 +117,7 @@ thing?.symbol;
 import ts from 'typescript';
 declare const thing: ts.Type;
 thing?.getSymbol();
-              `.trimRight(),
+      `,
             },
           ],
         },

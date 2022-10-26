@@ -1,8 +1,10 @@
 // babel types are something we don't really care about
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
+import type { File, Identifier, Program, TSTypeQuery } from '@babel/types';
+
+import type { TSESTree } from '../../src/ts-estree';
+import { AST_NODE_TYPES } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';
-import * as BabelTypes from '@babel/types';
 
 /**
  * Common predicates for Babylon AST preprocessing
@@ -18,8 +20,8 @@ const ifNumber = (val: unknown): boolean => typeof val === 'number';
  * @param ast raw babylon AST
  * @returns processed babylon AST
  */
-export function preprocessBabylonAST(ast: BabelTypes.File): any {
-  return omitDeep<any>(
+export function preprocessBabylonAST(ast: File): any {
+  return omitDeep<Program>(
     ast.program,
     [
       {
@@ -63,7 +65,8 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
     ],
     {
       /**
-       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/13709
        */
       TSCallSignatureDeclaration(node) {
         if (node.typeAnnotation) {
@@ -76,7 +79,8 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       /**
-       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/13709
        */
       TSConstructSignatureDeclaration(node) {
         if (node.typeAnnotation) {
@@ -89,7 +93,8 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       /**
-       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/13709
        */
       TSFunctionType(node) {
         if (node.typeAnnotation) {
@@ -102,7 +107,8 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       /**
-       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/13709
        */
       TSConstructorType(node) {
         if (node.typeAnnotation) {
@@ -115,7 +121,8 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         }
       },
       /**
-       * Awaiting feedback on Babel issue https://github.com/babel/babel/issues/9231
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/13709
        */
       TSMethodSignature(node) {
         if (node.typeAnnotation) {
@@ -150,32 +157,16 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
             type: AST_NODE_TYPES.Identifier,
           };
         }
-      },
-      TSImportType(node: any) {
-        if (!node.typeParameters) {
-          node.typeParameters = null;
-        }
-        if (!node.qualifier) {
-          node.qualifier = null;
-        }
         /**
-         * https://github.com/babel/babel/issues/12833
+         * TS 4.7: optional variance
+         * babel: sets in/out property as true/undefined
+         * ts-estree: sets in/out property as true/false
          */
-        if (node.argument) {
-          node.argument = {
-            type: AST_NODE_TYPES.TSLiteralType,
-            literal: node.argument,
-            loc: {
-              start: { ...node.argument.loc.start },
-              end: { ...node.argument.loc.end },
-            },
-            range: [...node.argument.range],
-          };
+        if (!node.in) {
+          node.in = false;
         }
-      },
-      TSTypePredicate(node) {
-        if (!node.typeAnnotation) {
-          node.typeAnnotation = null;
+        if (!node.out) {
+          node.out = false;
         }
       },
       MethodDefinition(node) {
@@ -187,15 +178,24 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
           node.type = AST_NODE_TYPES.TSAbstractMethodDefinition;
           delete node.abstract;
         }
+        /**
+         * TS 4.3: overrides on class members
+         * babel: sets override property as true/undefined
+         * ts-estree: sets override property as true/false
+         */
+        if (node.override == null) {
+          node.override = false;
+        }
       },
-      ClassProperty(node) {
+      PropertyDefinition(node) {
         /**
          * Babel: ClassProperty + abstract: true
          * ts-estree: TSAbstractClassProperty
          */
         if (node.abstract) {
-          node.type = AST_NODE_TYPES.TSAbstractClassProperty;
+          node.type = AST_NODE_TYPES.TSAbstractPropertyDefinition;
           delete node.abstract;
+          node.value = null;
         }
         /**
          * TS 3.7: declare class properties
@@ -205,8 +205,19 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
         if (!node.declare) {
           node.declare = false;
         }
+        /**
+         * TS 4.3: overrides on class members
+         * Babel doesn't ever emit a false override flag
+         */
+        if (node.override == null) {
+          node.override = false;
+        }
       },
       TSExpressionWithTypeArguments(node, parent: any) {
+        /**
+         * Babel: TSExpressionWithTypeArguments
+         * ts-estree: TSClassImplements or TSInterfaceHeritage
+         */
         if (parent.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
           node.type = AST_NODE_TYPES.TSInterfaceHeritage;
         } else if (
@@ -247,11 +258,10 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
       /**
        * Template strings seem to also be affected by the difference in opinion between different parsers in
        * @see https://github.com/babel/babel/issues/6681
-       * @see https://github.com/babel/babel-eslint/blob/master/lib/babylon-to-espree/convertAST.js#L81-L96
+       * @see https://github.com/babel/babel/blob/381277a/eslint/babel-eslint-parser/src/convert/convertAST.cjs#L81-L102
        */
       TemplateLiteral(node: any) {
-        for (let j = 0; j < node.quasis.length; j++) {
-          const q = node.quasis[j];
+        for (const q of node.quasis) {
           q.range[0] -= 1;
           q.loc.start.column -= 1;
           if (q.tail) {
@@ -261,6 +271,76 @@ export function preprocessBabylonAST(ast: BabelTypes.File): any {
             q.range[1] += 2;
             q.loc.end.column += 2;
           }
+        }
+      },
+      /**
+       * Remove TSParenthesizedType from babel AST. Babel 8 will stop generating the TSParenthesizedType.
+       * Once we use babel 8, this can be removed.
+       * @see https://github.com/babel/babel/pull/12608
+       */
+      TSParenthesizedType(node) {
+        const { typeAnnotation } = node;
+        Object.keys(node).forEach(key => delete node[key]);
+        Object.assign(node, typeAnnotation);
+      },
+      /**
+       * babel 7.17.x introduced index property to location data to 2 node types
+       * @see https://github.com/babel/babel/issues/14590
+       */
+      TSEnumDeclaration(node: any) {
+        if (node.loc?.start?.index) {
+          delete node.loc.start.index;
+        }
+      },
+      TSImportType(node: any) {
+        if (!node.typeParameters) {
+          node.typeParameters = null;
+        }
+        if (!node.qualifier) {
+          node.qualifier = null;
+        }
+        /**
+         * https://github.com/babel/babel/issues/12833
+         */
+        if (node.argument) {
+          node.argument = {
+            type: AST_NODE_TYPES.TSLiteralType,
+            literal: node.argument,
+            loc: {
+              start: { ...node.argument.loc.start },
+              end: { ...node.argument.loc.end },
+            },
+            range: [...node.argument.range],
+          };
+        }
+      },
+      TSTypePredicate(node: any) {
+        if (node.loc?.start?.index) {
+          delete node.loc.start.index;
+        }
+      },
+      /**
+       * ts-estree: `this` in `typeof this` has been converted from `Identifier` to `ThisExpression`
+       * @see https://github.com/typescript-eslint/typescript-eslint/pull/4382
+       */
+      TSTypeQuery(node: any) {
+        const { exprName } = node as TSTypeQuery;
+        let identifier: Identifier;
+        if (exprName.type === AST_NODE_TYPES.TSImportType) {
+          return;
+        } else if (exprName.type === AST_NODE_TYPES.TSQualifiedName) {
+          let iter = exprName;
+          while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
+            iter = iter.left;
+          }
+          identifier = iter.left;
+        } else {
+          identifier = exprName;
+        }
+
+        if (identifier.name === 'this') {
+          (identifier.type as string) = AST_NODE_TYPES.ThisExpression;
+          delete (identifier as { name?: string }).name;
         }
       },
     },

@@ -1,28 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`convert deeplyCopy should convert array of nodes 1`] = `
-Object {
-  "amdDependencies": Array [],
-  "bindDiagnostics": Array [],
+{
+  "amdDependencies": [],
+  "bindDiagnostics": [],
   "bindSuggestionDiagnostics": undefined,
   "checkJsDirective": undefined,
   "commentDirectives": undefined,
-  "endOfFileToken": Object {
-    "loc": Object {
-      "end": Object {
+  "endOfFileToken": {
+    "loc": {
+      "end": {
         "column": 12,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 12,
         "line": 1,
       },
     },
-    "range": Array [
+    "range": [
       12,
       12,
     ],
-    "transformFlags": 0,
     "type": "TSEndOfFileToken",
   },
   "externalModuleIndicator": undefined,
@@ -36,107 +35,108 @@ Object {
   "isDeclarationFile": false,
   "languageVariant": 1,
   "languageVersion": 99,
-  "libReferenceDirectives": Array [],
-  "lineMap": Array [
+  "libReferenceDirectives": [],
+  "lineMap": [
     null,
   ],
-  "loc": Object {
-    "end": Object {
+  "loc": {
+    "end": {
       "column": 12,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "nodeCount": 7,
-  "parseDiagnostics": Array [],
+  "nodeCount": 8,
+  "parseDiagnostics": [],
   "pragmas": Map {},
-  "range": Array [
+  "range": [
     0,
     12,
   ],
-  "referencedFiles": Array [],
+  "referencedFiles": [],
   "scriptKind": 4,
-  "statements": Array [
-    Object {
-      "expression": Object {
-        "arguments": Array [],
-        "callee": Object {
-          "loc": Object {
-            "end": Object {
+  "setExternalModuleIndicator": [Function],
+  "statements": [
+    {
+      "expression": {
+        "arguments": [],
+        "callee": {
+          "loc": {
+            "end": {
               "column": 7,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 4,
               "line": 1,
             },
           },
           "name": "foo",
-          "range": Array [
+          "range": [
             4,
             7,
           ],
           "type": "Identifier",
         },
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 12,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           0,
           12,
         ],
         "type": "NewExpression",
-        "typeParameters": Object {
-          "loc": Object {
-            "end": Object {
+        "typeParameters": {
+          "loc": {
+            "end": {
               "column": 10,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 7,
               "line": 1,
             },
           },
-          "params": Array [
-            Object {
-              "loc": Object {
-                "end": Object {
+          "params": [
+            {
+              "loc": {
+                "end": {
                   "column": 9,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 8,
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 8,
                 9,
               ],
               "type": "TSTypeReference",
-              "typeName": Object {
-                "loc": Object {
-                  "end": Object {
+              "typeName": {
+                "loc": {
+                  "end": {
                     "column": 9,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 8,
                     "line": 1,
                   },
                 },
                 "name": "T",
-                "range": Array [
+                "range": [
                   8,
                   9,
                 ],
@@ -145,24 +145,24 @@ Object {
               "typeParameters": undefined,
             },
           ],
-          "range": Array [
+          "range": [
             7,
             10,
           ],
           "type": "TSTypeParameterInstantiation",
         },
       },
-      "loc": Object {
-        "end": Object {
+      "loc": {
+        "end": {
           "column": 12,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         12,
       ],
@@ -170,72 +170,64 @@ Object {
     },
   ],
   "text": "new foo<T>()",
-  "transformFlags": 9,
   "type": "TSSourceFile",
-  "typeReferenceDirectives": Array [],
+  "typeReferenceDirectives": [],
 }
 `;
 
 exports[`convert deeplyCopy should convert node correctly 1`] = `
-Object {
-  "body": Array [
-    Object {
-      "loc": Object {
-        "end": Object {
+{
+  "body": [
+    {
+      "loc": {
+        "end": {
           "column": 35,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "localSymbol": undefined,
-      "locals": undefined,
-      "modifiers": undefined,
-      "name": Object {
+      "name": {
         "escapedText": "foo",
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 8,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 5,
             "line": 1,
           },
         },
         "originalKeywordKind": undefined,
-        "range": Array [
+        "range": [
           5,
           8,
         ],
-        "transformFlags": 0,
         "type": "TSUnparsedPrologue",
       },
-      "nextContainer": undefined,
-      "range": Array [
+      "range": [
         0,
         35,
       ],
-      "symbol": undefined,
-      "transformFlags": 1,
       "type": "TSUnparsedPrologue",
       "typeAnnotation": null,
       "typeParameters": null,
     },
   ],
-  "loc": Object {
-    "end": Object {
+  "loc": {
+    "end": {
       "column": 35,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "range": Array [
+  "range": [
     0,
     35,
   ],
@@ -245,167 +237,159 @@ Object {
 `;
 
 exports[`convert deeplyCopy should convert node with decorators correctly 1`] = `
-Object {
-  "decorators": Array [
-    Object {
-      "expression": Object {
-        "loc": Object {
-          "end": Object {
+{
+  "decorators": [
+    {
+      "expression": {
+        "loc": {
+          "end": {
             "column": 5,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 1,
             "line": 1,
           },
         },
         "name": "test",
-        "range": Array [
+        "range": [
           1,
           5,
         ],
         "type": "Identifier",
       },
-      "loc": Object {
-        "end": Object {
+      "loc": {
+        "end": {
           "column": 5,
           "line": 1,
         },
-        "start": Object {
+        "start": {
           "column": 0,
           "line": 1,
         },
       },
-      "range": Array [
+      "range": [
         0,
         5,
       ],
       "type": "Decorator",
     },
   ],
-  "heritageClauses": undefined,
-  "loc": Object {
-    "end": Object {
+  "loc": {
+    "end": {
       "column": 18,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "localSymbol": undefined,
-  "locals": undefined,
-  "members": Array [],
-  "modifiers": undefined,
-  "name": Object {
-    "loc": Object {
-      "end": Object {
+  "members": [],
+  "name": {
+    "loc": {
+      "end": {
         "column": 15,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 12,
         "line": 1,
       },
     },
     "name": "foo",
-    "range": Array [
+    "range": [
       12,
       15,
     ],
     "type": "Identifier",
   },
-  "nextContainer": undefined,
-  "range": Array [
+  "range": [
     0,
     18,
   ],
-  "symbol": undefined,
-  "transformFlags": 2305,
   "type": "TSClassDeclaration",
   "typeParameters": null,
 }
 `;
 
 exports[`convert deeplyCopy should convert node with type arguments correctly 1`] = `
-Object {
-  "arguments": Array [],
-  "expression": Object {
-    "loc": Object {
-      "end": Object {
+{
+  "arguments": [],
+  "expression": {
+    "loc": {
+      "end": {
         "column": 7,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 4,
         "line": 1,
       },
     },
     "name": "foo",
-    "range": Array [
+    "range": [
       4,
       7,
     ],
     "type": "Identifier",
   },
-  "loc": Object {
-    "end": Object {
+  "loc": {
+    "end": {
       "column": 12,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "range": Array [
+  "range": [
     0,
     12,
   ],
-  "transformFlags": 9,
   "type": "TSNewExpression",
-  "typeParameters": Object {
-    "loc": Object {
-      "end": Object {
+  "typeParameters": {
+    "loc": {
+      "end": {
         "column": 10,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 7,
         "line": 1,
       },
     },
-    "params": Array [
-      Object {
-        "loc": Object {
-          "end": Object {
+    "params": [
+      {
+        "loc": {
+          "end": {
             "column": 9,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 8,
             "line": 1,
           },
         },
-        "range": Array [
+        "range": [
           8,
           9,
         ],
         "type": "TSTypeReference",
-        "typeName": Object {
-          "loc": Object {
-            "end": Object {
+        "typeName": {
+          "loc": {
+            "end": {
               "column": 9,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 8,
               "line": 1,
             },
           },
           "name": "T",
-          "range": Array [
+          "range": [
             8,
             9,
           ],
@@ -414,7 +398,7 @@ Object {
         "typeParameters": undefined,
       },
     ],
-    "range": Array [
+    "range": [
       7,
       10,
     ],
@@ -424,99 +408,94 @@ Object {
 `;
 
 exports[`convert deeplyCopy should convert node with type parameters correctly 1`] = `
-Object {
-  "heritageClauses": undefined,
-  "loc": Object {
-    "end": Object {
+{
+  "loc": {
+    "end": {
       "column": 15,
       "line": 1,
     },
-    "start": Object {
+    "start": {
       "column": 0,
       "line": 1,
     },
   },
-  "localSymbol": undefined,
-  "locals": undefined,
-  "members": Array [],
-  "modifiers": undefined,
-  "name": Object {
-    "loc": Object {
-      "end": Object {
+  "members": [],
+  "name": {
+    "loc": {
+      "end": {
         "column": 9,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 6,
         "line": 1,
       },
     },
     "name": "foo",
-    "range": Array [
+    "range": [
       6,
       9,
     ],
     "type": "Identifier",
   },
-  "nextContainer": undefined,
-  "range": Array [
+  "range": [
     0,
     15,
   ],
-  "symbol": undefined,
-  "transformFlags": 257,
   "type": "TSClassDeclaration",
-  "typeParameters": Object {
-    "loc": Object {
-      "end": Object {
+  "typeParameters": {
+    "loc": {
+      "end": {
         "column": 12,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 9,
         "line": 1,
       },
     },
-    "params": Array [
-      Object {
+    "params": [
+      {
         "constraint": undefined,
         "default": undefined,
-        "loc": Object {
-          "end": Object {
+        "in": false,
+        "loc": {
+          "end": {
             "column": 11,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 10,
             "line": 1,
           },
         },
-        "name": Object {
-          "loc": Object {
-            "end": Object {
+        "name": {
+          "loc": {
+            "end": {
               "column": 11,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 10,
               "line": 1,
             },
           },
           "name": "T",
-          "range": Array [
+          "range": [
             10,
             11,
           ],
           "type": "Identifier",
         },
-        "range": Array [
+        "out": false,
+        "range": [
           10,
           11,
         ],
         "type": "TSTypeParameter",
       },
     ],
-    "range": Array [
+    "range": [
       9,
       12,
     ],

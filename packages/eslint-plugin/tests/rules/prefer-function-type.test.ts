@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule, { phrases } from '../../src/rules/prefer-function-type';
 import { noFormat, RuleTester } from '../RuleTester';
 
@@ -63,6 +64,109 @@ interface Foo {
       ],
       output: `
 type Foo = () => string;
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3004
+    {
+      code: `
+export default interface Foo {
+  /** comment */
+  (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  // comment
+  (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: `
+// comment
+type Foo = () => string;
+      `,
+    },
+    {
+      code: `
+export interface Foo {
+  /** comment */
+  (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: `
+/** comment */
+export type Foo = () => string;
+      `,
+    },
+    {
+      code: `
+export interface Foo {
+  // comment
+  (): string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
+          },
+        },
+      ],
+      output: `
+// comment
+export type Foo = () => string;
+      `,
+    },
+    {
+      code: `
+function foo(bar: { /* comment */ (s: string): number } | undefined): number {
+  return bar('hello');
+}
+      `,
+      errors: [
+        {
+          messageId: 'functionTypeOverCallableType',
+          type: AST_NODE_TYPES.TSCallSignatureDeclaration,
+          data: {
+            literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
+          },
+        },
+      ],
+      output: `
+function foo(bar: /* comment */ ((s: string) => number) | undefined): number {
+  return bar('hello');
+}
       `,
     },
     {
@@ -234,8 +338,8 @@ interface Foo {
     },
     {
       code: `
+// isn't actually valid ts but want to not give message saying it refers to Foo.
 interface Foo {
-  // isn't actually valid ts but want to not give message saying it refers to Foo.
   (): {
     a: {
       nested: this;
@@ -256,7 +360,8 @@ interface Foo {
           },
         },
       ],
-      output: noFormat`
+      output: `
+// isn't actually valid ts but want to not give message saying it refers to Foo.
 type Foo = () => {
     a: {
       nested: this;
@@ -281,7 +386,7 @@ type X = {} | { (): void; }
           },
         },
       ],
-      output: noFormat`
+      output: `
 type X = {} | (() => void)
       `,
     },
@@ -298,7 +403,7 @@ type X = {} & { (): void; };
           },
         },
       ],
-      output: noFormat`
+      output: `
 type X = {} & (() => void);
       `,
     },

@@ -1,10 +1,10 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-loop-func';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-loop-func');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -16,15 +16,12 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: [],
-    messages: baseRule?.meta.messages ?? {
-      unsafeRefs:
-        'Function declared in a loop contains unsafe references to variable(s) {{ varNames }}.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {

@@ -1,24 +1,29 @@
-# Flags unnecessary equality comparisons against boolean literals (`no-unnecessary-boolean-literal-compare`)
+---
+description: 'Disallow unnecessary equality comparisons against boolean literals.'
+---
 
-Comparing boolean values to boolean literals is unnecessary, those comparisons result in the same booleans. Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare** for documentation.
 
-## Rule Details
+Comparing boolean values to boolean literals is unnecessary: those comparisons result in the same booleans.
+Using the boolean values directly, or via a unary negation (`!value`), is more concise and clearer.
 
 This rule ensures that you do not include unnecessary comparisons with boolean literals.
 A comparison is considered unnecessary if it checks a boolean literal against any variable with just the `boolean` type.
-A comparison is **_not_** considered unnecessary if the type is a union of booleans (`string | boolean`, `someObject | boolean`).
+A comparison is **_not_** considered unnecessary if the type is a union of booleans (`string | boolean`, `SomeObject | boolean`, etc.).
 
-**Warning**: Do not use this rule when `strictNullChecks` is disabled.
-ESLint is not able to distinguish between `false` and `undefined` or `null` values.
-This can cause unintended code changes when using autofix.
+## Examples
 
-**Note**: Throughout this page, only strict equality (`===` and `!==`) are
-used in the examples. However, the implementation of the rule does not
-distinguish between strict and loose equality. Any example below that uses
-`===` would be treated the same way if `==` was used, and any example below
-that uses `!==` would be treated the same way if `!=` was used.
+:::note
+Throughout this page, only strict equality (`===` and `!==`) are used in the examples.
+However, the implementation of the rule does not distinguish between strict and loose equality.
+Any example below that uses `===` would be treated the same way if `==` was used, and `!==` would be treated the same way if `!=` was used.
+:::
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare const someCondition: boolean;
@@ -26,7 +31,7 @@ if (someCondition === true) {
 }
 ```
 
-Examples of **correct** code for this rule
+### ✅ Correct
 
 ```ts
 declare const someCondition: boolean;
@@ -44,33 +49,17 @@ if (someStringBoolean === true) {
 
 ## Options
 
-The rule accepts an options object with the following properties.
-
-```ts
-type Options = {
-  // if false, comparisons between a nullable boolean variable to `true` will be checked and fixed
-  allowComparingNullableBooleansToTrue?: boolean;
-  // if false, comparisons between a nullable boolean variable to `false` will be checked and fixed
-  allowComparingNullableBooleansToFalse?: boolean;
-};
-```
-
-### Defaults
-
 This rule always checks comparisons between a boolean variable and a boolean
 literal. Comparisons between nullable boolean variables and boolean literals
 are **not** checked by default.
 
-```ts
-const defaults = {
-  allowComparingNullableBooleansToTrue: true,
-  allowComparingNullableBooleansToFalse: true,
-};
-```
-
 ### `allowComparingNullableBooleansToTrue`
 
-Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
+Examples of code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -82,7 +71,7 @@ if (someNullCondition !== true) {
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowComparingNullableBooleansToTrue: false }`:
+#### ✅ Correct
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -96,7 +85,11 @@ if (!someNullCondition) {
 
 ### `allowComparingNullableBooleansToFalse`
 
-Examples of **incorrect** code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+Examples of code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -108,7 +101,7 @@ if (someNullCondition !== false) {
 }
 ```
 
-Examples of **correct** code for this rule with `{ allowComparingNullableBooleansToFalse: false }`:
+#### ✅ Correct
 
 ```ts
 declare const someUndefinedCondition: boolean | undefined;
@@ -124,15 +117,17 @@ if (!(someNullCondition ?? true)) {
 
 |           Comparison           | Fixer Output                    | Notes                                                                               |
 | :----------------------------: | ------------------------------- | ----------------------------------------------------------------------------------- |
-|     `booleanVar === true`      | `booleanLiteral`                |                                                                                     |
-|     `booleanVar !== true`      | `!booleanLiteral`               |                                                                                     |
-|     `booleanVar === false`     | `!booleanLiteral`               |                                                                                     |
-|     `booleanVar !== false`     | `booleanLiteral`                |                                                                                     |
+|     `booleanVar === true`      | `booleanVar`                    |                                                                                     |
+|     `booleanVar !== true`      | `!booleanVar`                   |                                                                                     |
+|     `booleanVar === false`     | `!booleanVar`                   |                                                                                     |
+|     `booleanVar !== false`     | `booleanVar`                    |                                                                                     |
 | `nullableBooleanVar === true`  | `nullableBooleanVar`            | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
 | `nullableBooleanVar !== true`  | `!nullableBooleanVar`           | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
 | `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
-## Related to
+## Not To Use It
 
-- TSLint: [no-boolean-literal-compare](https://palantir.github.io/tslint/rules/no-boolean-literal-compare)
+Do not use this rule when `strictNullChecks` is disabled.
+ESLint is not able to distinguish between `false` and `undefined` or `null` values.
+This can cause unintended code changes when using autofix.

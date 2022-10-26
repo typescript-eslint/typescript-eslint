@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class expression private-identifier 1`] = `
+ScopeManager {
+  variables: Array [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: Array [
+        VariableDefinition$1 {
+          name: Identifier<"Foo">,
+          node: VariableDeclarator$1,
+        },
+      ],
+      name: "Foo",
+      references: Array [
+        Reference$1 {
+          identifier: Identifier<"Foo">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$2,
+          writeExpr: ClassExpression$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: Array [],
+      name: "arguments",
+      references: Array [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: Array [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: Array [
+        Reference$1,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Foo" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: Array [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassExpression$2,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "class",
+      upper: GlobalScope$1,
+      variables: Array [],
+    },
+    FunctionScope$3 {
+      block: FunctionExpression$4,
+      isStrict: true,
+      references: Array [],
+      set: Map {
+        "arguments" => Variable$3,
+      },
+      type: "function",
+      upper: ClassScope$2,
+      variables: Array [
+        Variable$3,
+      ],
+    },
+  ],
+}
+`;

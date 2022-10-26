@@ -1,13 +1,14 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-invalid-this';
-import {
-  InferOptionsTypeFromRule,
-  createRule,
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
+import type {
   InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
 } from '../util';
+import { createRule } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-invalid-this');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -19,13 +20,14 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow `this` keywords outside of classes or class-like objects',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
     messages: baseRule.meta.messages ?? {
       unexpectedThis: "Unexpected 'this'.",
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
   },
   defaultOptions: [{ capIsConstructor: true }],
@@ -50,10 +52,10 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      ClassProperty(): void {
+      PropertyDefinition(): void {
         thisIsValidStack.push(true);
       },
-      'ClassProperty:exit'(): void {
+      'PropertyDefinition:exit'(): void {
         thisIsValidStack.pop();
       },
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
@@ -64,12 +66,12 @@ export default createRule<Options, MessageIds>({
           ),
         );
         // baseRule's work
-        rules.FunctionDeclaration(node);
+        rules.FunctionDeclaration?.(node);
       },
       'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void {
         thisIsValidStack.pop();
         // baseRule's work
-        rules['FunctionDeclaration:exit'](node);
+        rules['FunctionDeclaration:exit']?.(node);
       },
       FunctionExpression(node: TSESTree.FunctionExpression): void {
         thisIsValidStack.push(
@@ -79,12 +81,12 @@ export default createRule<Options, MessageIds>({
           ),
         );
         // baseRule's work
-        rules.FunctionExpression(node);
+        rules.FunctionExpression?.(node);
       },
       'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void {
         thisIsValidStack.pop();
         // baseRule's work
-        rules['FunctionExpression:exit'](node);
+        rules['FunctionExpression:exit']?.(node);
       },
       ThisExpression(node: TSESTree.ThisExpression): void {
         const thisIsValidHere = thisIsValidStack[thisIsValidStack.length - 1];

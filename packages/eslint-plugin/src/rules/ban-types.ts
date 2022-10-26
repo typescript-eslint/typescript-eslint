@@ -1,8 +1,6 @@
-import {
-  TSESLint,
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Types = Record<
@@ -25,7 +23,7 @@ export type Options = [
 export type MessageIds = 'bannedTypeMessage';
 
 function removeSpaces(str: string): string {
-  return str.replace(/ /g, '');
+  return str.replace(/\s/g, '');
 }
 
 function stringifyNode(
@@ -70,6 +68,10 @@ const defaultTypes: Types = {
     message: 'Use symbol instead',
     fixWith: 'symbol',
   },
+  BigInt: {
+    message: 'Use bigint instead',
+    fixWith: 'bigint',
+  },
 
   Function: {
     message: [
@@ -96,12 +98,6 @@ const defaultTypes: Types = {
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
     ].join('\n'),
   },
-  object: {
-    message: [
-      'The `object` type is currently hard to use ([see this issue](https://github.com/microsoft/TypeScript/issues/21732)).',
-      'Consider using `Record<string, unknown>` instead, as it allows you to more easily inspect and use the keys.',
-    ].join('\n'),
-  },
 };
 
 export const TYPE_KEYWORDS = {
@@ -123,8 +119,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans specific types from being used',
-      category: 'Best Practices',
+      description: 'Disallow certain types',
       recommended: 'error',
     },
     fixable: 'code',

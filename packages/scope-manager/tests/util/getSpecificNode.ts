@@ -1,13 +1,13 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 
 function getSpecificNode<
   TSelector extends AST_NODE_TYPES,
-  TNode extends Extract<TSESTree.Node, { type: TSelector }>
+  TNode extends Extract<TSESTree.Node, { type: TSelector }>,
 >(ast: TSESTree.Node, selector: TSelector): TNode;
 function getSpecificNode<
   TSelector extends AST_NODE_TYPES,
-  TNode extends Extract<TSESTree.Node, { type: TSelector }>
+  TNode extends Extract<TSESTree.Node, { type: TSelector }>,
 >(
   ast: TSESTree.Node,
   selector: TSelector,
@@ -16,7 +16,7 @@ function getSpecificNode<
 function getSpecificNode<
   TSelector extends AST_NODE_TYPES,
   TNode extends Extract<TSESTree.Node, { type: TSelector }>,
-  TReturnType extends TSESTree.Node
+  TReturnType extends TSESTree.Node,
 >(
   ast: TSESTree.Node,
   selector: TSelector,

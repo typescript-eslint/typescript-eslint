@@ -1,12 +1,20 @@
-# Require that member overloads be consecutive (`adjacent-overload-signatures`)
+---
+description: 'Require that function overload signatures be consecutive.'
+---
 
-Grouping overloaded members together can improve readability of the code.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/adjacent-overload-signatures** for documentation.
 
-## Rule Details
+Function overload signatures represent multiple ways a function can be called, potentially with different return types.
+It's typical for an interface or type alias describing a function to place all overload signatures next to each other.
+If Signatures placed elsewhere in the type are easier to be missed by future developers reading the code.
 
-This rule aims to standardize the way overloaded members are organized.
+## Examples
 
-The following patterns are considered warnings:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare namespace Foo {
@@ -43,7 +51,7 @@ export function bar(): void;
 export function foo(sn: string | number): void;
 ```
 
-The following patterns are not warnings:
+### ✅ Correct
 
 ```ts
 declare namespace Foo {
@@ -83,7 +91,3 @@ export function foo(sn: string | number): void;
 ## When Not To Use It
 
 If you don't care about the general structure of the code, then you will not need this rule.
-
-## Compatibility
-
-- TSLint: [adjacent-overload-signatures](https://palantir.github.io/tslint/rules/adjacent-overload-signatures/)

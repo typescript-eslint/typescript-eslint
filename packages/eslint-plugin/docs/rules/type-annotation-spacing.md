@@ -1,4 +1,10 @@
-# Require consistent spacing around type annotations (`type-annotation-spacing`)
+---
+description: 'Require consistent spacing around type annotations.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/type-annotation-spacing** for documentation.
 
 Spacing around type annotations improves readability of the code. Although the most commonly used style guideline for type annotations in TypeScript prescribes adding a space after the colon, but not before it, it is subjective to the preferences of a project. For example:
 
@@ -29,23 +35,17 @@ type Foo = (string: name)=> string;
 type Foo = (string: name) =>string;
 ```
 
-## Rule Details
+## Examples
 
 This rule aims to enforce specific spacing patterns around type annotations and function types in type literals.
 
 ## Options
 
-This rule has an object option:
+Examples of code for this rule with no options at all:
 
-- `"before": false`, (default for colon) disallows spaces before the colon/arrow.
-- `"before": true`, (default for arrow) requires a space before the colon/arrow.
-- `"after": true`, (default) requires a space after the colon/arrow.
-- `"after": false`, disallows spaces after the colon/arrow.
-- `"overrides"`, overrides the default options for type annotations with `colon` (e.g. `const foo: string`) and function types with `arrow` (e.g. `type Foo = () => {}`). Additionally allows granular overrides for `variable` (`const foo: string`),`parameter` (`function foo(bar: string) {...}`),`property` (`interface Foo { bar: string }`) and `returnType` (`function foo(): string {...}`) annotations.
+<!--tabs-->
 
-### defaults
-
-Examples of **incorrect** code for this rule with no options at all:
+### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -74,7 +74,7 @@ type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
-Examples of **correct** code for this rule with no options at all:
+### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -91,7 +91,11 @@ type Foo = () => {};
 
 ### after
 
-Examples of **incorrect** code for this rule with `{ "before": false, "after": true }`:
+Examples of code for this rule with `{ "before": false, "after": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -120,7 +124,7 @@ type Foo = () =>{};
 type Foo = () => {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": false, "after": true }`:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -137,7 +141,11 @@ type Foo = ()=> {};
 
 ### before
 
-Examples of **incorrect** code for this rule with `{ "before": true, "after": true }` options:
+Examples of code for this rule with `{ "before": true, "after": true }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -166,7 +174,7 @@ type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": true, "after": true }` options:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -183,7 +191,11 @@ type Foo = () => {};
 
 ### overrides - colon
 
-Examples of **incorrect** code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+Examples of code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -212,7 +224,7 @@ type Foo = ()=> {};
 type Foo = () => {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -233,7 +245,11 @@ type Foo = ()=>{};
 
 ### overrides - arrow
 
-Examples of **incorrect** code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+Examples of code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -262,7 +278,7 @@ type Foo = () =>{};
 type Foo = ()=> {};
 ```
 
-Examples of **correct** code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+#### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts
@@ -285,7 +301,3 @@ If you don't want to enforce spacing for your type annotations, you can safely t
 
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
-
-## Compatibility
-
-- TSLint: [`typedef-whitespace`](https://palantir.github.io/tslint/rules/typedef-whitespace/)

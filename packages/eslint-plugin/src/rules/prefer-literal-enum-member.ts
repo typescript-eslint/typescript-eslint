@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 export default createRule({
@@ -6,19 +7,31 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Require that all enum members be literal values to prevent unintended enum member name shadow issues',
-      category: 'Best Practices',
-      recommended: false,
+      description: 'Require all enum members to be literal values',
+      recommended: 'strict',
       requiresTypeChecking: false,
     },
     messages: {
       notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowBitwiseExpressions: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allowBitwiseExpressions: false,
+    },
+  ],
+  create(context, [{ allowBitwiseExpressions }]) {
     return {
       TSEnumMember(node): void {
         // If there is no initializer, then this node is just the name of the member, so ignore.
@@ -39,8 +52,21 @@ export default createRule({
         // -1 and +1
         if (
           node.initializer.type === AST_NODE_TYPES.UnaryExpression &&
-          ['+', '-'].includes(node.initializer.operator) &&
-          node.initializer.argument.type === AST_NODE_TYPES.Literal
+          node.initializer.argument.type === AST_NODE_TYPES.Literal &&
+          (['+', '-'].includes(node.initializer.operator) ||
+            (allowBitwiseExpressions && node.initializer.operator === '~'))
+        ) {
+          return;
+        }
+
+        if (
+          allowBitwiseExpressions &&
+          node.initializer.type === AST_NODE_TYPES.BinaryExpression &&
+          ['|', '&', '^', '<<', '>>', '>>>'].includes(
+            node.initializer.operator,
+          ) &&
+          node.initializer.left.type === AST_NODE_TYPES.Literal &&
+          node.initializer.right.type === AST_NODE_TYPES.Literal
         ) {
           return;
         }

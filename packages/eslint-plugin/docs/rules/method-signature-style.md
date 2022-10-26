@@ -1,18 +1,24 @@
-# Enforces using a particular method signature syntax. (`method-signature-style`)
+---
+description: 'Enforce using a particular method signature syntax.'
+---
 
-There are two ways to define an object/interface function property.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/method-signature-style** for documentation.
+
+TypeScript provides two ways to define an object/interface function property:
 
 ```ts
-// method shorthand syntax
-interface T1 {
+interface Example {
+  // method shorthand syntax
   func(arg: string): number;
-}
 
-// regular property with function type
-interface T2 {
+  // regular property with function type
   func: (arg: string) => number;
 }
 ```
+
+The two are very similar; most of the time it doesn't matter which one you use.
 
 A good practice is to use the TypeScript's `strict` option (which implies `strictFunctionTypes`) which enables correct typechecking for function properties only (method signatures get old behavior).
 
@@ -32,9 +38,13 @@ This rule accepts one string option:
 
 The default is `"property"`.
 
-## Rule Details
+### `property`
 
-Examples of **incorrect** code with `property` option.
+Examples of code with `property` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface T1 {
@@ -50,7 +60,7 @@ interface T3 {
 }
 ```
 
-Examples of **correct** code with `property` option.
+#### ✅ Correct
 
 ```ts
 interface T1 {
@@ -67,7 +77,13 @@ interface T3 {
 }
 ```
 
-Examples of **incorrect** code with `method` option.
+### `method`
+
+Examples of code with `method` option.
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface T1 {
@@ -78,7 +94,7 @@ type T2 = {
 };
 ```
 
-Examples of **correct** code with `method` option.
+#### ✅ Correct
 
 ```ts
 interface T1 {

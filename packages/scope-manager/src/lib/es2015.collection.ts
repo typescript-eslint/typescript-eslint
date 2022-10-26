@@ -1,68 +1,20 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE, TYPE_VALUE } from './base-config';
 
 export const es2015_collection = {
-  Map: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'Map',
-  },
-  MapConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'MapConstructor',
-  },
-  ReadonlyMap: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ReadonlyMap',
-  },
-  WeakMap: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'WeakMap',
-  },
-  WeakMapConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WeakMapConstructor',
-  },
-  Set: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'Set',
-  },
-  SetConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'SetConstructor',
-  },
-  ReadonlySet: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ReadonlySet',
-  },
-  WeakSet: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'WeakSet',
-  },
-  WeakSetConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'WeakSetConstructor',
-  },
+  Map: TYPE_VALUE,
+  MapConstructor: TYPE,
+  ReadonlyMap: TYPE,
+  WeakMap: TYPE_VALUE,
+  WeakMapConstructor: TYPE,
+  Set: TYPE_VALUE,
+  SetConstructor: TYPE,
+  ReadonlySet: TYPE,
+  WeakSet: TYPE_VALUE,
+  WeakSetConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

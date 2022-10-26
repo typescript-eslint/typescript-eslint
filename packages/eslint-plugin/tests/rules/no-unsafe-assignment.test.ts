@@ -1,15 +1,16 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-unsafe-assignment';
-import {
-  RuleTester,
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-} from '../RuleTester';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import {
+  batchedSingleLineTests,
+  getFixturesRootDir,
+  noFormat,
+  RuleTester,
+} from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -68,7 +69,7 @@ function assignmentTest(
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -112,7 +113,7 @@ class Foo {
     'const x = new Set<any>();',
     'const x = { y: 1 };',
     'const x = { y = 1 };',
-    'const x = { y(); };',
+    noFormat`const x = { y(); };`,
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
     'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
@@ -141,6 +142,8 @@ declare function Foo(props: { a: string }): never;
     'const x: unknown = y as any;',
     'const x: unknown[] = y as any[];',
     'const x: Set<unknown> = y as Set<any>;',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    'const x: Map<string, string> = new Map();',
   ],
   invalid: [
     ...batchedSingleLineTests({
@@ -344,6 +347,21 @@ declare function Foo(props: Props): never;
           line: 4,
           column: 9,
           endColumn: 17,
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  const bar = this;
+}
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignmentThis',
+          line: 3,
+          column: 9,
+          endColumn: 19,
         },
       ],
     },

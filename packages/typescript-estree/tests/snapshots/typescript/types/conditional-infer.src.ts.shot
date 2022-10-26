@@ -78,38 +78,34 @@ Object {
           "elementType": Object {
             "loc": Object {
               "end": Object {
-                "column": 37,
+                "column": 36,
                 "line": 1,
               },
               "start": Object {
-                "column": 28,
+                "column": 29,
                 "line": 1,
               },
             },
             "range": Array [
-              28,
-              37,
+              29,
+              36,
             ],
-            "type": "TSParenthesizedType",
-            "typeAnnotation": Object {
+            "type": "TSInferType",
+            "typeParameter": Object {
+              "constraint": undefined,
+              "default": undefined,
+              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 36,
                   "line": 1,
                 },
                 "start": Object {
-                  "column": 29,
+                  "column": 35,
                   "line": 1,
                 },
               },
-              "range": Array [
-                29,
-                36,
-              ],
-              "type": "TSInferType",
-              "typeParameter": Object {
-                "constraint": undefined,
-                "default": undefined,
+              "name": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 36,
@@ -120,30 +116,19 @@ Object {
                     "line": 1,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 36,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 35,
-                      "line": 1,
-                    },
-                  },
-                  "name": "U",
-                  "range": Array [
-                    35,
-                    36,
-                  ],
-                  "type": "Identifier",
-                },
+                "name": "U",
                 "range": Array [
                   35,
                   36,
                 ],
-                "type": "TSTypeParameter",
+                "type": "Identifier",
               },
+              "out": false,
+              "range": Array [
+                35,
+                36,
+              ],
+              "type": "TSTypeParameter",
             },
           },
           "loc": Object {
@@ -265,6 +250,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -293,6 +279,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               13,
               14,

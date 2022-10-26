@@ -1,9 +1,6 @@
-import {
-  TSESLint,
-  TSESTree,
-  AST_TOKEN_TYPES,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Prefer = 'type-imports' | 'no-type-imports';
@@ -28,16 +25,17 @@ interface ReportValueImport {
   typeSpecifiers: TSESTree.ImportClause[]; // It has at least one element.
   valueSpecifiers: TSESTree.ImportClause[];
   unusedSpecifiers: TSESTree.ImportClause[];
+  inlineTypeSpecifiers: TSESTree.ImportSpecifier[];
 }
 
 function isImportToken(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.KeywordToken & { value: 'import' } {
   return token.type === AST_TOKEN_TYPES.Keyword && token.value === 'import';
 }
 
 function isTypeToken(
-  token: TSESTree.Token | TSESTree.Comment,
+  token: TSESTree.Token,
 ): token is TSESTree.IdentifierToken & { value: 'type' } {
   return token.type === AST_TOKEN_TYPES.Identifier && token.value === 'type';
 }
@@ -55,19 +53,19 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces consistent usage of type imports',
-      category: 'Stylistic Issues',
+      description: 'Enforce consistent usage of type imports',
       recommended: false,
     },
     messages: {
       typeOverValue:
-        'All imports in the declaration are only used as types. Use `import type`',
-      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as types',
-      aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types',
+        'All imports in the declaration are only used as types. Use `import type`.',
+      someImportsAreOnlyTypes:
+        'Imports {{typeImports}} are only used as types.',
+      aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types.',
       someImportsInDecoMeta:
-        'Type imports {{typeImports}} are used by decorator metadata',
+        'Type imports {{typeImports}} are used by decorator metadata.',
       aImportInDecoMeta:
-        'Type import {{typeImports}} is used by decorator metadata',
+        'Type import {{typeImports}} is used by decorator metadata.',
       valueOverType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
     },
@@ -106,8 +104,8 @@ export default util.createRule<Options, MessageIds>({
       ...(prefer === 'type-imports'
         ? {
             // prefer type imports
-            ImportDeclaration(node: TSESTree.ImportDeclaration): void {
-              const source = node.source.value as string;
+            ImportDeclaration(node): void {
+              const source = node.source.value;
               const sourceImports =
                 sourceImportsMap[source] ??
                 (sourceImportsMap[source] = {
@@ -139,9 +137,18 @@ export default util.createRule<Options, MessageIds>({
               }
 
               const typeSpecifiers: TSESTree.ImportClause[] = [];
+              const inlineTypeSpecifiers: TSESTree.ImportSpecifier[] = [];
               const valueSpecifiers: TSESTree.ImportClause[] = [];
               const unusedSpecifiers: TSESTree.ImportClause[] = [];
               for (const specifier of node.specifiers) {
+                if (
+                  specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+                  specifier.importKind === 'type'
+                ) {
+                  inlineTypeSpecifiers.push(specifier);
+                  continue;
+                }
+
                 const [variable] = context.getDeclaredVariables(specifier);
                 if (variable.references.length === 0) {
                   unusedSpecifiers.push(specifier);
@@ -229,6 +236,7 @@ export default util.createRule<Options, MessageIds>({
                   typeSpecifiers,
                   valueSpecifiers,
                   unusedSpecifiers,
+                  inlineTypeSpecifiers,
                 });
               }
             },
@@ -247,24 +255,30 @@ export default util.createRule<Options, MessageIds>({
                       node: report.node,
                       messageId: 'typeOverValue',
                       *fix(fixer) {
-                        yield* fixToTypeImport(fixer, report, sourceImports);
+                        yield* fixToTypeImportDeclaration(
+                          fixer,
+                          report,
+                          sourceImports,
+                        );
                       },
                     });
                   } else {
                     const isTypeImport = report.node.importKind === 'type';
 
                     // we have a mixed type/value import, so we need to split them out into multiple exports
-                    const importNames = (isTypeImport
-                      ? report.valueSpecifiers
-                      : report.typeSpecifiers
+                    const importNames = (
+                      isTypeImport
+                        ? report.valueSpecifiers
+                        : report.typeSpecifiers
                     ).map(specifier => `"${specifier.local.name}"`);
 
                     const message = ((): {
                       messageId: MessageIds;
                       data: Record<string, unknown>;
                     } => {
+                      const typeImports = util.formatWordList(importNames);
+
                       if (importNames.length === 1) {
-                        const typeImports = importNames[0];
                         if (isTypeImport) {
                           return {
                             messageId: 'aImportInDecoMeta',
@@ -277,10 +291,6 @@ export default util.createRule<Options, MessageIds>({
                           };
                         }
                       } else {
-                        const typeImports = [
-                          importNames.slice(0, -1).join(', '),
-                          importNames.slice(-1)[0],
-                        ].join(' and ');
                         if (isTypeImport) {
                           return {
                             messageId: 'someImportsInDecoMeta',
@@ -300,13 +310,17 @@ export default util.createRule<Options, MessageIds>({
                       ...message,
                       *fix(fixer) {
                         if (isTypeImport) {
-                          yield* fixToValueImportInDecoMeta(
+                          yield* fixToValueImportDeclaration(
                             fixer,
                             report,
                             sourceImports,
                           );
                         } else {
-                          yield* fixToTypeImport(fixer, report, sourceImports);
+                          yield* fixToTypeImportDeclaration(
+                            fixer,
+                            report,
+                            sourceImports,
+                          );
                         }
                       },
                     });
@@ -324,7 +338,21 @@ export default util.createRule<Options, MessageIds>({
                 node,
                 messageId: 'valueOverType',
                 fix(fixer) {
-                  return fixToValueImport(fixer, node);
+                  return fixRemoveTypeSpecifierFromImportDeclaration(
+                    fixer,
+                    node,
+                  );
+                },
+              });
+            },
+            'ImportSpecifier[importKind = "type"]'(
+              node: TSESTree.ImportSpecifier,
+            ): void {
+              context.report({
+                node,
+                messageId: 'valueOverType',
+                fix(fixer) {
+                  return fixRemoveTypeSpecifierFromImportSpecifier(fixer, node);
                 },
               });
             },
@@ -342,23 +370,21 @@ export default util.createRule<Options, MessageIds>({
         : {}),
     };
 
-    function classifySpecifier(
-      node: TSESTree.ImportDeclaration,
-    ): {
+    function classifySpecifier(node: TSESTree.ImportDeclaration): {
       defaultSpecifier: TSESTree.ImportDefaultSpecifier | null;
       namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null;
       namedSpecifiers: TSESTree.ImportSpecifier[];
     } {
-      const defaultSpecifier: TSESTree.ImportDefaultSpecifier | null =
+      const defaultSpecifier =
         node.specifiers[0].type === AST_NODE_TYPES.ImportDefaultSpecifier
           ? node.specifiers[0]
           : null;
-      const namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null =
+      const namespaceSpecifier =
         node.specifiers.find(
           (specifier): specifier is TSESTree.ImportNamespaceSpecifier =>
             specifier.type === AST_NODE_TYPES.ImportNamespaceSpecifier,
         ) ?? null;
-      const namedSpecifiers: TSESTree.ImportSpecifier[] = node.specifiers.filter(
+      const namedSpecifiers = node.specifiers.filter(
         (specifier): specifier is TSESTree.ImportSpecifier =>
           specifier.type === AST_NODE_TYPES.ImportSpecifier,
       );
@@ -390,7 +416,6 @@ export default util.createRule<Options, MessageIds>({
       const typeNamedSpecifiersTexts: string[] = [];
       const removeTypeNamedSpecifiers: TSESLint.RuleFix[] = [];
       if (typeNamedSpecifiers.length === allNamedSpecifiers.length) {
-        // e.g.
         // import Foo, {Type1, Type2} from 'foo'
         // import DefType, {Type1, Type2} from 'foo'
         const openingBraceToken = util.nullThrows(
@@ -499,7 +524,7 @@ export default util.createRule<Options, MessageIds>({
      * import type { Already, Type1, Type2 } from 'foo'
      *                        ^^^^^^^^^^^^^ insert
      */
-    function insertToNamedImport(
+    function fixInsertNamedSpecifiersInNamedSpecifierList(
       fixer: TSESLint.RuleFixer,
       target: TSESTree.ImportDeclaration,
       insertText: string,
@@ -514,28 +539,24 @@ export default util.createRule<Options, MessageIds>({
       );
       const before = sourceCode.getTokenBefore(closingBraceToken)!;
       if (!util.isCommaToken(before) && !util.isOpeningBraceToken(before)) {
-        insertText = ',' + insertText;
+        insertText = `,${insertText}`;
       }
-      return fixer.insertTextBefore(closingBraceToken, insertText);
+      return fixer.insertTextBefore(closingBraceToken, `${insertText}`);
     }
 
-    function* fixToTypeImport(
+    function* fixToTypeImportDeclaration(
       fixer: TSESLint.RuleFixer,
       report: ReportValueImport,
       sourceImports: SourceImports,
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const {
-        defaultSpecifier,
-        namespaceSpecifier,
-        namedSpecifiers,
-      } = classifySpecifier(node);
+      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
+        classifySpecifier(node);
 
       if (namespaceSpecifier && !defaultSpecifier) {
-        // e.g.
         // import * as types from 'foo'
-        yield* fixToTypeImportByInsertType(fixer, node, false);
+        yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
         return;
       } else if (defaultSpecifier) {
         if (
@@ -543,9 +564,8 @@ export default util.createRule<Options, MessageIds>({
           namedSpecifiers.length === 0 &&
           !namespaceSpecifier
         ) {
-          // e.g.
           // import Type from 'foo'
-          yield* fixToTypeImportByInsertType(fixer, node, true);
+          yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, true);
           return;
         }
       } else {
@@ -555,9 +575,8 @@ export default util.createRule<Options, MessageIds>({
           ) &&
           !namespaceSpecifier
         ) {
-          // e.g.
           // import {Type1, Type2} from 'foo'
-          yield* fixToTypeImportByInsertType(fixer, node, false);
+          yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
           return;
         }
       }
@@ -575,11 +594,12 @@ export default util.createRule<Options, MessageIds>({
       const afterFixes: TSESLint.RuleFix[] = [];
       if (typeNamedSpecifiers.length) {
         if (sourceImports.typeOnlyNamedImport) {
-          const insertTypeNamedSpecifiers = insertToNamedImport(
-            fixer,
-            sourceImports.typeOnlyNamedImport,
-            fixesNamedSpecifiers.typeNamedSpecifiersText,
-          );
+          const insertTypeNamedSpecifiers =
+            fixInsertNamedSpecifiersInNamedSpecifierList(
+              fixer,
+              sourceImports.typeOnlyNamedImport,
+              fixesNamedSpecifiers.typeNamedSpecifiersText,
+            );
           if (sourceImports.typeOnlyNamedImport.range[1] <= node.range[0]) {
             yield insertTypeNamedSpecifiers;
           } else {
@@ -600,7 +620,6 @@ export default util.createRule<Options, MessageIds>({
         namespaceSpecifier &&
         report.typeSpecifiers.includes(namespaceSpecifier)
       ) {
-        // e.g.
         // import Foo, * as Type from 'foo'
         // import DefType, * as Type from 'foo'
         // import DefType, * as Type from 'foo'
@@ -671,7 +690,7 @@ export default util.createRule<Options, MessageIds>({
       yield* afterFixes;
     }
 
-    function* fixToTypeImportByInsertType(
+    function* fixInsertTypeSpecifierForImportDeclaration(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.ImportDeclaration,
       isDefaultImport: boolean,
@@ -728,34 +747,39 @@ export default util.createRule<Options, MessageIds>({
           }
         }
       }
+
+      // make sure we don't do anything like `import type {type T} from 'foo';`
+      for (const specifier of node.specifiers) {
+        if (
+          specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+          specifier.importKind === 'type'
+        ) {
+          yield* fixRemoveTypeSpecifierFromImportSpecifier(fixer, specifier);
+        }
+      }
     }
 
-    function* fixToValueImportInDecoMeta(
+    function* fixToValueImportDeclaration(
       fixer: TSESLint.RuleFixer,
       report: ReportValueImport,
       sourceImports: SourceImports,
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const {
-        defaultSpecifier,
-        namespaceSpecifier,
-        namedSpecifiers,
-      } = classifySpecifier(node);
+      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
+        classifySpecifier(node);
 
       if (namespaceSpecifier) {
-        // e.g.
         // import type * as types from 'foo'
-        yield* fixToValueImport(fixer, node);
+        yield* fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
         return;
       } else if (defaultSpecifier) {
         if (
           report.valueSpecifiers.includes(defaultSpecifier) &&
           namedSpecifiers.length === 0
         ) {
-          // e.g.
           // import type Type from 'foo'
-          yield* fixToValueImport(fixer, node);
+          yield* fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
           return;
         }
       } else {
@@ -764,9 +788,8 @@ export default util.createRule<Options, MessageIds>({
             report.valueSpecifiers.includes(specifier),
           )
         ) {
-          // e.g.
           // import type {Type1, Type2} from 'foo'
-          yield* fixToValueImport(fixer, node);
+          yield* fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
           return;
         }
       }
@@ -784,11 +807,12 @@ export default util.createRule<Options, MessageIds>({
       const afterFixes: TSESLint.RuleFix[] = [];
       if (valueNamedSpecifiers.length) {
         if (sourceImports.valueOnlyNamedImport) {
-          const insertTypeNamedSpecifiers = insertToNamedImport(
-            fixer,
-            sourceImports.valueOnlyNamedImport,
-            fixesNamedSpecifiers.typeNamedSpecifiersText,
-          );
+          const insertTypeNamedSpecifiers =
+            fixInsertNamedSpecifiersInNamedSpecifierList(
+              fixer,
+              sourceImports.valueOnlyNamedImport,
+              fixesNamedSpecifiers.typeNamedSpecifiersText,
+            );
           if (sourceImports.valueOnlyNamedImport.range[1] <= node.range[0]) {
             yield insertTypeNamedSpecifiers;
           } else {
@@ -809,7 +833,7 @@ export default util.createRule<Options, MessageIds>({
       yield* afterFixes;
     }
 
-    function* fixToValueImport(
+    function* fixRemoveTypeSpecifierFromImportDeclaration(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.ImportDeclaration,
     ): IterableIterator<TSESLint.RuleFix> {
@@ -825,6 +849,21 @@ export default util.createRule<Options, MessageIds>({
           node.specifiers[0]?.local ?? node.source,
           isTypeToken,
         ),
+        util.NullThrowsReasons.MissingToken('type', node.type),
+      );
+      const afterToken = util.nullThrows(
+        sourceCode.getTokenAfter(typeToken, { includeComments: true }),
+        util.NullThrowsReasons.MissingToken('any token', node.type),
+      );
+      yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
+    }
+
+    function* fixRemoveTypeSpecifierFromImportSpecifier(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.ImportSpecifier,
+    ): IterableIterator<TSESLint.RuleFix> {
+      const typeToken = util.nullThrows(
+        sourceCode.getFirstToken(node, isTypeToken),
         util.NullThrowsReasons.MissingToken('type', node.type),
       );
       const afterToken = util.nullThrows(

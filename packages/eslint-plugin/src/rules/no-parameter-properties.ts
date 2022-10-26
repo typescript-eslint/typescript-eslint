@@ -1,7 +1,6 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Modifier =
@@ -22,11 +21,12 @@ type MessageIds = 'noParamProp';
 export default util.createRule<Options, MessageIds>({
   name: 'no-parameter-properties',
   meta: {
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/parameter-properties'],
     type: 'problem',
     docs: {
       description:
         'Disallow the use of parameter properties in class constructors',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },

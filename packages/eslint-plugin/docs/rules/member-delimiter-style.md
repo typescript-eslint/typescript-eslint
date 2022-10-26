@@ -1,98 +1,58 @@
-# Require a specific member delimiter style for interfaces and type literals (`member-delimiter-style`)
+---
+description: 'Require a specific member delimiter style for interfaces and type literals.'
+---
 
-Enforces a consistent member delimiter style in interfaces and type literals. There are three member delimiter styles primarily used in TypeScript:
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/member-delimiter-style** for documentation.
 
-- Semicolon style (default, preferred in TypeScript).
+TypeScript allows three delimiters between members in interfaces and type aliases:
 
 <!-- prettier-ignore -->
 ```ts
 interface Foo {
+    // Semicolons (default, preferred in TypeScript):
     name: string;
-    greet(): void;
-}
 
-type Bar = {
-    name: string;
-    greet(): void;
-}
-```
-
-- Comma style (JSON style).
-
-<!-- prettier-ignore -->
-```ts
-interface Foo {
+    // Commas (JSON-like):
     name: string,
-    greet(): void,
-}
 
-type Bar = {
-    name: string,
-    greet(): void,
+    // Line breaks (none):
+    name: string
 }
 ```
 
-- Line break (none) style.
+For code readability, it's generally best to use the same style consistently in your codebase.
 
-<!-- prettier-ignore -->
-```ts
-interface Foo {
-    name: string
-    greet(): void
-}
-
-type Bar = {
-    name: string
-    greet(): void
-}
-```
-
-The rule also enforces the presence (or absence) of the delimiter in the last member of the interface and/or type literal.
-Finally, this rule can enforce separate delimiter syntax for single line declarations.
-
-## Rule Details
-
-This rule aims to standardize the way interface and type literal members are delimited.
+This rule enforces keeping to one configurable code style.
+It can also standardize the presence (or absence) of a delimiter in the last member of a construct, as well as a separate delimiter syntax for single line declarations.
 
 ## Options
 
-```ts
-interface BaseConfig {
-  multiline?: {
-    delimiter?: 'none' | 'semi' | 'comma';
-    requireLast?: boolean;
-  };
-  singleline?: {
-    delimiter?: 'semi' | 'comma';
-    requireLast?: boolean;
-  };
-}
-type Config = BaseConfig & {
-  overrides?: {
-    interface?: BaseConfig;
-    typeLiteral?: BaseConfig;
-  };
-};
-```
-
 Default config:
 
-```JSON
+```json
 {
-    "multiline": {
-        "delimiter": "semi",
-        "requireLast": true
-    },
-    "singleline": {
-        "delimiter": "semi",
-        "requireLast": false
-    }
+  "multiline": {
+    "delimiter": "semi",
+    "requireLast": true
+  },
+  "singleline": {
+    "delimiter": "semi",
+    "requireLast": false
+  },
+  "multilineDetection": "brackets"
 }
 ```
 
 `multiline` config only applies to multiline `interface`/`type` definitions.
 `singleline` config only applies to single line `interface`/`type` definitions.
 The two configs are entirely separate, and do not effect one another.
+
+`multilineDetection` determines what counts as multiline
+
+- `"brackets"` (default) any newlines in the type or interface make it multiline.
+- `"last-member"` if the last member of the interface is on the same line as the last bracket, it is counted as a single line.
 
 ### `delimiter`
 
@@ -101,7 +61,10 @@ Accepts three values (or two for `singleline`):
 - `comma` - each member should be delimited with a comma (`,`).
 - `semi` - each member should be delimited with a semicolon (`;`).
 - `none` - each member should be delimited with nothing.
-  - NOTE - this is not an option for `singleline` because having no delimiter between members on a single line is a syntax error in TS.
+
+:::note
+`none` is not an option for `singleline` because having no delimiter between members on a single line is a syntax error in TS.
+:::
 
 ### `requireLast`
 
@@ -116,30 +79,34 @@ Allows you to specify options specifically for either `interface`s or `type` def
 
 For example, to require commas for `type`s, and semicolons for multiline `interface`s:
 
-```JSON
+```json
 {
-    "multiline": {
-        "delimiter": "comma",
+  "multiline": {
+    "delimiter": "comma",
+    "requireLast": true
+  },
+  "singleline": {
+    "delimiter": "comma",
+    "requireLast": true
+  },
+  "overrides": {
+    "interface": {
+      "multiline": {
+        "delimiter": "semi",
         "requireLast": true
-    },
-    "singleline": {
-        "delimiter": "comma",
-        "requireLast": true
-    },
-    "overrides": {
-        "interface": {
-            "multiline": {
-                "delimiter": "semi",
-                "requireLast": true
-            }
-        }
+      }
     }
+  }
 }
 ```
 
 ## Examples
 
-Examples of **incorrect** code for this rule with the default config:
+Examples of code for this rule with the default config:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 <!-- prettier-ignore -->
 ```ts
@@ -168,7 +135,7 @@ type FooBar = { name: string, greet(): string }
 type FooBar = { name: string; greet(): string; }
 ```
 
-Examples of **correct** code for this rule with the default config:
+### ✅ Correct
 
 <!-- prettier-ignore -->
 ```ts

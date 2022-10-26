@@ -1,30 +1,28 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
-  TSESTree,
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
-import {
-  unionTypeParts,
-  isFalsyType,
-  isBooleanLiteralType,
-  isLiteralType,
   getCallSignaturesOfType,
+  isBooleanLiteralType,
+  isFalsyType,
+  isLiteralType,
   isStrictCompilerOptionEnabled,
+  unionTypeParts,
 } from 'tsutils';
+import * as ts from 'typescript';
+
 import {
-  isTypeFlagSet,
   createRule,
-  getParserServices,
   getConstrainedTypeAtLocation,
-  isNullableType,
-  nullThrows,
-  NullThrowsReasons,
-  isIdentifier,
-  isTypeAnyType,
-  isTypeUnknownType,
+  getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
+  isIdentifier,
+  isNullableType,
+  isTypeAnyType,
+  isTypeFlagSet,
+  isTypeUnknownType,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 // Truthiness utilities
@@ -89,9 +87,8 @@ export default createRule<Options, MessageId>({
     type: 'suggestion',
     docs: {
       description:
-        'Prevents conditionals where the type is always truthy or always falsy',
-      category: 'Best Practices',
-      recommended: false,
+        'Disallow conditionals where the type is always truthy or always falsy',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     schema: [
@@ -99,9 +96,13 @@ export default createRule<Options, MessageId>({
         type: 'object',
         properties: {
           allowConstantLoopConditions: {
+            description:
+              'Whether to ignore constant loop conditions, such as `while (true)`.',
             type: 'boolean',
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            description:
+              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
             type: 'boolean',
           },
         },
@@ -121,11 +122,11 @@ export default createRule<Options, MessageId>({
       alwaysNullish:
         'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
       literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values',
+        'Unnecessary conditional, both sides of the expression are literal values.',
       noOverlapBooleanExpression:
-        'Unnecessary conditional, the types have no overlap',
-      never: 'Unnecessary conditional, value is `never`',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value',
+        'Unnecessary conditional, the types have no overlap.',
+      never: 'Unnecessary conditional, value is `never`.',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
@@ -167,7 +168,7 @@ export default createRule<Options, MessageId>({
       });
     }
 
-    function getNodeType(node: TSESTree.Expression): ts.Type {
+    function getNodeType(node: TSESTree.Node): ts.Type {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       return getConstrainedTypeAtLocation(checker, tsNode);
     }
@@ -261,12 +262,6 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
-      // Since typescript array index signature types don't represent the
-      //  possibility of out-of-bounds access, if we're indexing into an array
-      //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(node)) {
-        return;
-      }
       const type = getNodeType(node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
@@ -277,7 +272,19 @@ export default createRule<Options, MessageId>({
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
       } else if (!isPossiblyNullish(type)) {
-        messageId = 'neverNullish';
+        // Since typescript array index signature types don't represent the
+        //  possibility of out-of-bounds access, if we're indexing into an array
+        //  just skip the check, to avoid false positives
+        if (
+          !isArrayIndexExpression(node) &&
+          !(
+            node.type === AST_NODE_TYPES.ChainExpression &&
+            node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
+            optionChainContainsOptionArrayIndex(node.expression)
+          )
+        ) {
+          messageId = 'neverNullish';
+        }
       } else if (isAlwaysNullish(type)) {
         messageId = 'alwaysNullish';
       }
@@ -323,6 +330,7 @@ export default createRule<Options, MessageId>({
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
         const NULL = ts.TypeFlags.Null;
+        const VOID = ts.TypeFlags.Void;
         const isComparable = (type: ts.Type, flag: ts.TypeFlags): boolean => {
           // Allow comparison to `any`, `unknown` or a naked type parameter.
           flag |=
@@ -332,7 +340,7 @@ export default createRule<Options, MessageId>({
 
           // Allow loose comparison to nullish values.
           if (node.operator === '==' || node.operator === '!=') {
-            flag |= NULL | UNDEFINED;
+            flag |= NULL | UNDEFINED | VOID;
           }
 
           return isTypeFlagSet(type, flag);
@@ -340,9 +348,9 @@ export default createRule<Options, MessageId>({
 
         if (
           (leftType.flags === UNDEFINED &&
-            !isComparable(rightType, UNDEFINED)) ||
+            !isComparable(rightType, UNDEFINED | VOID)) ||
           (rightType.flags === UNDEFINED &&
-            !isComparable(leftType, UNDEFINED)) ||
+            !isComparable(leftType, UNDEFINED | VOID)) ||
           (leftType.flags === NULL && !isComparable(rightType, NULL)) ||
           (rightType.flags === NULL && !isComparable(leftType, NULL))
         ) {
@@ -443,9 +451,9 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
         // Otherwise just do type analysis on the function as a whole.
-        const returnTypes = getCallSignaturesOfType(
-          getNodeType(callback),
-        ).map(sig => sig.getReturnType());
+        const returnTypes = getCallSignaturesOfType(getNodeType(callback)).map(
+          sig => sig.getReturnType(),
+        );
         /* istanbul ignore if */ if (returnTypes.length === 0) {
           // Not a callable function
           return;
@@ -477,19 +485,19 @@ export default createRule<Options, MessageId>({
     //    ?.x // type is {y: "z"}
     //    ?.y // This access is considered "unnecessary" according to the types
     //  ```
-    function optionChainContainsArrayIndex(
+    function optionChainContainsOptionArrayIndex(
       node: TSESTree.MemberExpression | TSESTree.CallExpression,
     ): boolean {
       const lhsNode =
         node.type === AST_NODE_TYPES.CallExpression ? node.callee : node.object;
-      if (isArrayIndexExpression(lhsNode)) {
+      if (node.optional && isArrayIndexExpression(lhsNode)) {
         return true;
       }
       if (
         lhsNode.type === AST_NODE_TYPES.MemberExpression ||
         lhsNode.type === AST_NODE_TYPES.CallExpression
       ) {
-        return optionChainContainsArrayIndex(lhsNode);
+        return optionChainContainsOptionArrayIndex(lhsNode);
       }
       return false;
     }
@@ -584,7 +592,7 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (optionChainContainsArrayIndex(node)) {
+      if (optionChainContainsOptionArrayIndex(node)) {
         return;
       }
 

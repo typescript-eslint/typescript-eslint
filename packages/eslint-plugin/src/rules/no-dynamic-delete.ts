@@ -1,18 +1,16 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+
 import * as util from '../util';
 
 export default util.createRule({
   name: 'no-dynamic-delete',
   meta: {
     docs: {
-      category: 'Best Practices',
-      description: 'Disallow the delete operator with computed key expressions',
-      recommended: false,
+      description:
+        'Disallow using the `delete` operator on computed key expressions',
+      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

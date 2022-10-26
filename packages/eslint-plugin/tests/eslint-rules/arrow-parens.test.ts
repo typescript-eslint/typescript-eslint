@@ -1,5 +1,7 @@
-import rule from 'eslint/lib/rules/arrow-parens';
-import { RuleTester, noFormat } from '../RuleTester';
+import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
+import { noFormat, RuleTester } from '../RuleTester';
+
+const rule = getESLintCoreRule('arrow-parens');
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

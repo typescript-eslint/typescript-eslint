@@ -9,7 +9,7 @@
 This package exists to help us reduce cycles and provide lighter-weight packages at runtime.
 You probably don't want to use it directly.
 
-If you're building an ESLint plugin, consider using [`@typescript-eslint/experimental-utils`](../experimental-utils).
+If you're building an ESLint plugin, consider using [`@typescript-eslint/utils`](../utils).
 If you're parsing TypeScript code, consider using [`@typescript-eslint/typescript-estree`](../typescript-estree).
 
 ## Contributing

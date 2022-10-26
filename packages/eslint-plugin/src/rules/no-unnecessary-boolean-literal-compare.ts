@@ -1,9 +1,8 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type MessageIds =
@@ -21,7 +20,7 @@ type Options = [
 ];
 
 interface BooleanComparison {
-  expression: TSESTree.Expression;
+  expression: TSESTree.Expression | TSESTree.PrivateIdentifier;
   literalBooleanInComparison: boolean;
   forTruthy: boolean;
   negated: boolean;
@@ -37,9 +36,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Flags unnecessary equality comparisons against boolean literals',
-      category: 'Stylistic Issues',
-      recommended: false,
+        'Disallow unnecessary equality comparisons against boolean literals',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -60,9 +58,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowComparingNullableBooleansToTrue: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `true`.',
             type: 'boolean',
           },
           allowComparingNullableBooleansToFalse: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `false`.',
             type: 'boolean',
           },
         },
@@ -159,7 +161,7 @@ export default util.createRule<Options, MessageIds>({
     function deconstructComparison(
       node: TSESTree.BinaryExpression,
     ): BooleanComparison | undefined {
-      const comparisonType = util.getEqualsKind(node.operator);
+      const comparisonType = getEqualsKind(node.operator);
       if (!comparisonType) {
         return undefined;
       }
@@ -186,7 +188,7 @@ export default util.createRule<Options, MessageIds>({
           range:
             expression.range[0] < against.range[0]
               ? [expression.range[1], against.range[1]]
-              : [against.range[1], expression.range[1]],
+              : [against.range[0], expression.range[0]],
         };
       }
 
@@ -276,3 +278,39 @@ export default util.createRule<Options, MessageIds>({
     };
   },
 });
+
+interface EqualsKind {
+  isPositive: boolean;
+  isStrict: boolean;
+}
+
+function getEqualsKind(operator: string): EqualsKind | undefined {
+  switch (operator) {
+    case '==':
+      return {
+        isPositive: true,
+        isStrict: false,
+      };
+
+    case '===':
+      return {
+        isPositive: true,
+        isStrict: true,
+      };
+
+    case '!=':
+      return {
+        isPositive: false,
+        isStrict: false,
+      };
+
+    case '!==':
+      return {
+        isPositive: false,
+        isStrict: true,
+      };
+
+    default:
+      return undefined;
+  }
+}

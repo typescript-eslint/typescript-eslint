@@ -1,13 +1,24 @@
-# Disallows member access on any typed variables (`no-unsafe-member-access`)
+---
+description: 'Disallow member access on a value with type `any`.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-member-access** for documentation.
+
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Member access on `any` typed variables is not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
-
-## Rule Details
+Accessing a member of an `any`-typed value creates a potential type safety hole and source of bugs in your codebase.
 
 This rule disallows member access on any variable that is typed as `any`.
 
-Examples of **incorrect** code for this rule:
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 declare const anyVar: any;
@@ -30,7 +41,7 @@ arr[anyVar];
 nestedAny[anyVar];
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 declare const properlyTyped: { prop: { a: string } };
@@ -48,7 +59,6 @@ arr[idx];
 arr[idx++];
 ```
 
-## Related to
+## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
-- TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)

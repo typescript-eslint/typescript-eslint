@@ -1,9 +1,10 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-duplicate-imports';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-duplicate-imports');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -11,20 +12,22 @@ type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 export default util.createRule<Options, MessageIds>({
   name: 'no-duplicate-imports',
   meta: {
+    deprecated: true,
+    replacedBy: ['import/no-duplicates'],
     type: 'problem',
     docs: {
       description: 'Disallow duplicate imports',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: {
       ...baseRule.meta.messages,
-      importType: '{{module}} type import is duplicated',
-      importTypeAs: '{{module}} type import is duplicated as type export',
-      exportType: '{{module}} type export is duplicated',
-      exportTypeAs: '{{module}} type export is duplicated as type import',
+      importType: '{{module}} type import is duplicated.',
+      importTypeAs: '{{module}} type import is duplicated as type export.',
+      exportType: '{{module}} type export is duplicated.',
+      exportTypeAs: '{{module}} type export is duplicated as type import.',
     },
   },
   defaultOptions: [
@@ -32,9 +35,8 @@ export default util.createRule<Options, MessageIds>({
       includeExports: false,
     },
   ],
-  create(context, [option]) {
+  create(context, [{ includeExports }]) {
     const rules = baseRule.create(context);
-    const includeExports = option.includeExports;
     const typeMemberImports = new Set();
     const typeDefaultImports = new Set();
     const typeExports = new Set();
@@ -53,16 +55,6 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    function isStringLiteral(
-      node: TSESTree.Node | null,
-    ): node is TSESTree.StringLiteral {
-      return (
-        !!node &&
-        node.type === AST_NODE_TYPES.Literal &&
-        typeof node.value === 'string'
-      );
-    }
-
     function isAllMemberImport(node: TSESTree.ImportDeclaration): boolean {
       return node.specifiers.every(
         specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
@@ -70,7 +62,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkTypeImport(node: TSESTree.ImportDeclaration): void {
-      if (isStringLiteral(node.source)) {
+      if (node.source) {
         const value = node.source.value;
         const isMemberImport = isAllMemberImport(node);
         if (
@@ -95,7 +87,7 @@ export default util.createRule<Options, MessageIds>({
     function checkTypeExport(
       node: TSESTree.ExportNamedDeclaration | TSESTree.ExportAllDeclaration,
     ): void {
-      if (isStringLiteral(node.source)) {
+      if (node.source) {
         const value = node.source.value;
         if (typeExports.has(value)) {
           report('exportType', node, value);

@@ -3,7 +3,8 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/object-curly-spacing';
 import { RuleTester } from '../RuleTester';
 
@@ -570,6 +571,70 @@ ruleTester.run('object-curly-spacing', rule, {
       code: 'const x:{[key: string]: [number]}',
     },
 
+    // default - mapped types
+    {
+      code: "const x:{[k in 'union']: number}",
+    },
+    {
+      code: "const x:{ // line-comment\n[k in 'union']: number\n}",
+    },
+    {
+      code: "const x:{// line-comment\n[k in 'union']: number\n}",
+    },
+    {
+      code: "const x:{/* inline-comment */[k in 'union']: number/* inline-comment */}",
+    },
+    {
+      code: "const x:{\n[k in 'union']: number\n}",
+    },
+    {
+      code: "const x:{[k in 'union']: {[k in 'union']: number}}",
+    },
+    {
+      code: "const x:{[k in 'union']: [number]}",
+    },
+    {
+      code: "const x:{[k in 'union']: value}",
+    },
+
+    // never - mapped types
+    {
+      code: "const x:{[k in 'union']: {[k in 'union']: number} }",
+      options: ['never', { objectsInObjects: true }],
+    },
+    {
+      code: "const x:{[k in 'union']: {[k in 'union']: number}}",
+      options: ['never', { objectsInObjects: false }],
+    },
+    {
+      code: "const x:{[k in 'union']: () => {[k in 'union']: number} }",
+      options: ['never', { objectsInObjects: true }],
+    },
+    {
+      code: "const x:{[k in 'union']: () => {[k in 'union']: number}}",
+      options: ['never', { objectsInObjects: false }],
+    },
+    {
+      code: "const x:{[k in 'union']: [ number ]}",
+      options: ['never', { arraysInObjects: false }],
+    },
+    {
+      code: "const x:{ [k in 'union']: value}",
+      options: ['never', { arraysInObjects: true }],
+    },
+    {
+      code: "const x:{[k in 'union']: value}",
+      options: ['never', { arraysInObjects: false }],
+    },
+    {
+      code: "const x:{ [k in 'union']: [number] }",
+      options: ['never', { arraysInObjects: true }],
+    },
+    {
+      code: "const x:{[k in 'union']: [number]}",
+      options: ['never', { arraysInObjects: false }],
+    },
+
     // never - object literal types
     {
       code: 'const x:{f: {g: number} }',
@@ -612,6 +677,68 @@ ruleTester.run('object-curly-spacing', rule, {
       options: ['never', { arraysInObjects: false }],
     },
 
+    // always - mapped types
+    {
+      code: "const x:{ [k in 'union']: number }",
+      options: ['always'],
+    },
+    {
+      code: "const x:{ // line-comment\n[k in 'union']: number\n}",
+      options: ['always'],
+    },
+    {
+      code: "const x:{ /* inline-comment */ [k in 'union']: number /* inline-comment */ }",
+      options: ['always'],
+    },
+    {
+      code: "const x:{\n[k in 'union']: number\n}",
+      options: ['always'],
+    },
+    {
+      code: "const x:{ [k in 'union']: [number] }",
+      options: ['always'],
+    },
+
+    // always - mapped types - objectsInObjects
+    {
+      code: "const x:{ [k in 'union']: { [k in 'union']: number } }",
+      options: ['always', { objectsInObjects: true }],
+    },
+    {
+      code: "const x:{ [k in 'union']: { [k in 'union']: number }}",
+      options: ['always', { objectsInObjects: false }],
+    },
+    {
+      code: "const x:{ [k in 'union']: () => { [k in 'union']: number } }",
+      options: ['always', { objectsInObjects: true }],
+    },
+    {
+      code: "const x:{ [k in 'union']: () => { [k in 'union']: number }}",
+      options: ['always', { objectsInObjects: false }],
+    },
+
+    // always - mapped types - arraysInObjects
+    {
+      code: "type x = { [k in 'union']: number }",
+      options: ['always'],
+    },
+    {
+      code: "const x:{ [k in 'union']: [number] }",
+      options: ['always', { arraysInObjects: true }],
+    },
+    {
+      code: "const x:{ [k in 'union']: value }",
+      options: ['always', { arraysInObjects: true }],
+    },
+    {
+      code: "const x:{[k in 'union']: value }",
+      options: ['always', { arraysInObjects: false }],
+    },
+    {
+      code: "const x:{[k in 'union']: [number]}",
+      options: ['always', { arraysInObjects: false }],
+    },
+
     // always - object literal types
     {
       code: 'const x:{}',
@@ -642,7 +769,7 @@ ruleTester.run('object-curly-spacing', rule, {
       options: ['always'],
     },
 
-    // always - objectsInObjects
+    // always - literal types - objectsInObjects
     {
       code: 'const x:{ f: { g: number } }',
       options: ['always', { objectsInObjects: true }],
@@ -660,7 +787,7 @@ ruleTester.run('object-curly-spacing', rule, {
       options: ['always', { objectsInObjects: false }],
     },
 
-    // always - arraysInObjects
+    // always - literal types - arraysInObjects
     {
       code: 'const x:{ f: [number] }',
       options: ['always', { arraysInObjects: true }],
@@ -1912,6 +2039,7 @@ ruleTester.run('object-curly-spacing', rule, {
     },
 
     // object literal types
+    // never - literal types
     {
       code: 'type x = { f: number }',
       output: 'type x = {f: number}',
@@ -1930,6 +2058,7 @@ ruleTester.run('object-curly-spacing', rule, {
       output: 'type x = {f: number}',
       errors: [{ messageId: 'unexpectedSpaceBefore' }],
     },
+    // always - literal types
     {
       code: 'type x = {f: number}',
       output: 'type x = { f: number }',
@@ -1950,6 +2079,59 @@ ruleTester.run('object-curly-spacing', rule, {
       output: 'type x = { f: number }',
       options: ['always'],
       errors: [{ messageId: 'requireSpaceBefore' }],
+    },
+
+    // never - mapped types
+    {
+      code: "type x = { [k in 'union']: number }",
+      output: "type x = {[k in 'union']: number}",
+      errors: [
+        { messageId: 'unexpectedSpaceAfter' },
+        { messageId: 'unexpectedSpaceBefore' },
+      ],
+    },
+    {
+      code: "type x = { [k in 'union']: number}",
+      output: "type x = {[k in 'union']: number}",
+      errors: [{ messageId: 'unexpectedSpaceAfter' }],
+    },
+    {
+      code: "type x = {[k in 'union']: number }",
+      output: "type x = {[k in 'union']: number}",
+      errors: [{ messageId: 'unexpectedSpaceBefore' }],
+    },
+    // always - mapped types
+    {
+      code: "type x = {[k in 'union']: number}",
+      output: "type x = { [k in 'union']: number }",
+      options: ['always'],
+      errors: [
+        { messageId: 'requireSpaceAfter' },
+        { messageId: 'requireSpaceBefore' },
+      ],
+    },
+    {
+      code: "type x = {[k in 'union']: number }",
+      output: "type x = { [k in 'union']: number }",
+      options: ['always'],
+      errors: [{ messageId: 'requireSpaceAfter' }],
+    },
+    {
+      code: "type x = { [k in 'union']: number}",
+      output: "type x = { [k in 'union']: number }",
+      options: ['always'],
+      errors: [{ messageId: 'requireSpaceBefore' }],
+    },
+    // Mapped and literal types mix
+    {
+      code: "type x = { [k in 'union']: { [k: string]: number } }",
+      output: "type x = {[k in 'union']: {[k: string]: number}}",
+      errors: [
+        { messageId: 'unexpectedSpaceAfter' },
+        { messageId: 'unexpectedSpaceAfter' },
+        { messageId: 'unexpectedSpaceBefore' },
+        { messageId: 'unexpectedSpaceBefore' },
+      ],
     },
   ],
 });

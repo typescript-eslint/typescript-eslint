@@ -1,8 +1,10 @@
-import { TSESTree, EcmaVersion, Lib } from '@typescript-eslint/types';
+import type { EcmaVersion, Lib, TSESTree } from '@typescript-eslint/types';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
-import { Referencer, ReferencerOptions } from './referencer';
-import { ScopeManager } from './ScopeManager';
+
 import { lib as TSLibraries } from './lib';
+import type { ReferencerOptions } from './referencer';
+import { Referencer } from './referencer';
+import { ScopeManager } from './ScopeManager';
 
 ////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE README //
@@ -17,8 +19,9 @@ interface AnalyzeOptions {
   /**
    * Which ECMAScript version is considered.
    * Defaults to `2018`.
+   * `'latest'` is converted to 1e8 at parser.
    */
-  ecmaVersion?: EcmaVersion;
+  ecmaVersion?: EcmaVersion | 1e8;
 
   /**
    * Whether the whole script is executed under node.js environment.
@@ -38,7 +41,7 @@ interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
    * Defaults to `"React"`.
    */
-  jsxPragma?: string;
+  jsxPragma?: string | null;
 
   /**
    * The identifier that's used for JSX fragment elements (after transpilation).
@@ -81,7 +84,11 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   emitDecoratorMetadata: false,
 };
 
-function mapEcmaVersion(version: EcmaVersion | undefined): Lib {
+/**
+ * Convert ecmaVersion to lib.
+ * `'latest'` is converted to 1e8 at parser.
+ */
+function mapEcmaVersion(version: EcmaVersion | 1e8 | undefined): Lib {
   if (version == null || version === 3 || version === 5) {
     return 'es5';
   }
@@ -108,7 +115,10 @@ function analyze(
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:
       providedOptions?.impliedStrict ?? DEFAULT_OPTIONS.impliedStrict,
-    jsxPragma: providedOptions?.jsxPragma ?? DEFAULT_OPTIONS.jsxPragma,
+    jsxPragma:
+      providedOptions?.jsxPragma === undefined
+        ? DEFAULT_OPTIONS.jsxPragma
+        : providedOptions.jsxPragma,
     jsxFragmentName:
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,

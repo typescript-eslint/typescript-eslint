@@ -1,17 +1,22 @@
-# Disallow usage of the `any` type (`no-explicit-any`)
+---
+description: 'Disallow the `any` type.'
+---
 
-Using the `any` type defeats the purpose of using TypeScript.
-When `any` is used, all compiler type checks around that value are ignored.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.
 
-## Rule Details
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
+This rule reports on explicit uses of the `any` keyword as a type annotation.
 
-This rule doesn't allow `any` types to be defined.
-It aims to keep TypeScript maximally useful.
-TypeScript has a compiler flag for `--noImplicitAny` that will prevent
-an `any` type from being implied by the compiler, but doesn't prevent
-`any` from being explicitly used.
+> TypeScript's `--noImplicitAny` compiler option prevents an implied `any`, but doesn't prevent `any` from being explicitly used the way this rule does.
 
-The following patterns are considered warnings:
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const age: any = 'seventeen';
@@ -49,7 +54,7 @@ function greet(param: Array<any>): string {}
 function greet(param: Array<any>): Array<any> {}
 ```
 
-The following patterns are not warnings:
+### ✅ Correct
 
 ```ts
 const age: number = 17;
@@ -88,22 +93,6 @@ function greet(param: Array<string>): Array<string> {}
 ```
 
 ## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, auto-fixing will be made available in which the "any" type is converted to an "unknown" type
-  fixToUnknown: boolean;
-  // specify if arrays from the rest operator are considered okay
-  ignoreRestArgs: boolean;
-};
-
-const defaults = {
-  fixToUnknown: false,
-  ignoreRestArgs: false,
-};
-```
 
 ### `ignoreRestArgs`
 
@@ -172,10 +161,14 @@ interface Garply {
 If an unknown type or a library without typings is used
 and you want to be able to specify `any`.
 
+## Related To
+
+- [`no-unsafe-argument`](./no-unsafe-argument.md)
+- [`no-unsafe-assignment`](./no-unsafe-assignment.md)
+- [`no-unsafe-call`](./no-unsafe-call.md)
+- [`no-unsafe-member-access`](./no-unsafe-member-access.md)
+- [`no-unsafe-return`](./no-unsafe-return.md)
+
 ## Further Reading
 
 - TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
-
-## Compatibility
-
-- TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)

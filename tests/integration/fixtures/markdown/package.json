@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "eslint-plugin-markdown": "latest"
+  }
+}

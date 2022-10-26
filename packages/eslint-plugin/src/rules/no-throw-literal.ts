@@ -1,29 +1,54 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
-import * as util from '../util';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
 
-export default util.createRule({
+import * as util from '../util';
+
+type MessageIds = 'object' | 'undef';
+
+type Options = [
+  {
+    allowThrowingAny?: boolean;
+    allowThrowingUnknown?: boolean;
+  },
+];
+
+export default util.createRule<Options, MessageIds>({
   name: 'no-throw-literal',
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow throwing literals as exceptions',
-      category: 'Best Practices',
-      recommended: false,
+      recommended: 'strict',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowThrowingAny: {
+            type: 'boolean',
+          },
+          allowThrowingUnknown: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: {
       object: 'Expected an error object to be thrown.',
       undef: 'Do not throw undefined.',
     },
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allowThrowingAny: true,
+      allowThrowingUnknown: true,
+    },
+  ],
+  create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const program = parserServices.program;
     const checker = program.getTypeChecker();
@@ -78,11 +103,15 @@ export default util.createRule({
         return;
       }
 
-      if (
-        util.isTypeAnyType(type) ||
-        util.isTypeUnknownType(type) ||
-        isErrorLike(type)
-      ) {
+      if (options.allowThrowingAny && util.isTypeAnyType(type)) {
+        return;
+      }
+
+      if (options.allowThrowingUnknown && util.isTypeUnknownType(type)) {
+        return;
+      }
+
+      if (isErrorLike(type)) {
         return;
       }
 

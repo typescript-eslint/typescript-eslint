@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx embedded-tags.src 1`] = `
-Object {
-  "column": 16,
-  "index": 16,
+TSError {
+  "column": 40,
+  "index": 40,
   "lineNumber": 1,
-  "message": "'{' expected.",
+  "message": "Unexpected token. Did you mean \`{'>'}\` or \`&gt;\`?",
 }
 `;

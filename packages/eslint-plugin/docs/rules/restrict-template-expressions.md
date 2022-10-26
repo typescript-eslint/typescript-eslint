@@ -1,6 +1,30 @@
-# Enforce template literal expressions to be of string type (`restrict-template-expressions`)
+---
+description: 'Enforce template literal expressions to be of `string` type.'
+---
 
-Examples of **correct** code:
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/restrict-template-expressions** for documentation.
+
+JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
+The default Object `.toString()` returns `"[object Object]"`, which is often not what was intended.
+This rule reports on values used in a template literal string that aren't primitives and don't define a more useful `.toString()` method.
+
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+const arg1 = [1, 2];
+const msg1 = `arg1 = ${arg1}`;
+
+const arg2 = { name: 'Foo' };
+const msg2 = `arg2 = ${arg2 || null}`;
+```
+
+### ✅ Correct
 
 ```ts
 const arg = 'foo';
@@ -11,39 +35,7 @@ const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 ```
 
-Examples of **incorrect** code:
-
-```ts
-const arg1 = [1, 2];
-const msg1 = `arg1 = ${arg1}`;
-
-const arg2 = { name: 'Foo' };
-const msg2 = `arg2 = ${arg2 || null}`;
-```
-
 ## Options
-
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, also allow number type in template expressions
-  allowNumber?: boolean;
-  // if true, also allow boolean type in template expressions
-  allowBoolean?: boolean;
-  // if true, also allow any in template expressions
-  allowAny?: boolean;
-  // if true, also allow null and undefined in template expressions
-  allowNullish?: boolean;
-};
-
-const defaults = {
-  allowNumber: true,
-  allowBoolean: false,
-  allowAny: false,
-  allowNullish: false,
-};
-```
 
 ### `allowNumber`
 
@@ -83,3 +75,22 @@ Examples of additional **correct** code for this rule with `{ allowNullish: true
 const arg = condition ? 'ok' : null;
 const msg1 = `arg = ${arg}`;
 ```
+
+### `allowRegExp`
+
+Examples of additional **correct** code for this rule with `{ allowRegExp: true }`:
+
+```ts
+const arg = new RegExp('foo');
+const msg1 = `arg = ${arg}`;
+```
+
+```ts
+const arg = /foo/;
+const msg1 = `arg = ${arg}`;
+```
+
+## Related To
+
+- [`no-base-to-string`](./no-base-to-string.md)
+- [`restrict-plus-operands`](./restrict-plus-operands.md)

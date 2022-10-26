@@ -431,6 +431,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "method",
             "loc": Object {
               "end": Object {
                 "column": 16,
@@ -502,6 +503,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "method",
             "loc": Object {
               "end": Object {
                 "column": 24,
@@ -629,6 +631,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "method",
             "loc": Object {
               "end": Object {
                 "column": 26,
@@ -756,6 +759,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "method",
             "loc": Object {
               "end": Object {
                 "column": 26,
@@ -876,6 +880,7 @@ Object {
                 Object {
                   "constraint": undefined,
                   "default": undefined,
+                  "in": false,
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -904,6 +909,7 @@ Object {
                     ],
                     "type": "Identifier",
                   },
+                  "out": false,
                   "range": Array [
                     194,
                     195,
@@ -1112,6 +1118,7 @@ Object {
                 Object {
                   "constraint": undefined,
                   "default": undefined,
+                  "in": false,
                   "loc": Object {
                     "end": Object {
                       "column": 10,
@@ -1140,6 +1147,7 @@ Object {
                     ],
                     "type": "Identifier",
                   },
+                  "out": false,
                   "range": Array [
                     247,
                     248,

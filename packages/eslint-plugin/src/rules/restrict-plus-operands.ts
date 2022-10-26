@@ -1,13 +1,20 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type Options = [
   {
     checkCompoundAssignments?: boolean;
+    allowAny?: boolean;
   },
 ];
-type MessageIds = 'notNumbers' | 'notStrings' | 'notBigInts';
+type MessageIds =
+  | 'notNumbers'
+  | 'notStrings'
+  | 'notBigInts'
+  | 'notValidAnys'
+  | 'notValidTypes';
 
 export default util.createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',
@@ -15,8 +22,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'When adding two variables, operands must both be of type number or of type string',
-      category: 'Best Practices',
+        'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -26,6 +32,10 @@ export default util.createRule<Options, MessageIds>({
       notStrings:
         "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
       notBigInts: "Operands of '+' operation must be both bigints.",
+      notValidAnys:
+        "Operands of '+' operation with any is possible only with string, number, bigint or any",
+      notValidTypes:
+        "Operands of '+' operation must either be one of string, number, bigint or any (if allowed by option)",
     },
     schema: [
       {
@@ -33,6 +43,11 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           checkCompoundAssignments: {
+            description: 'Whether to check compound assignments such as `+=`.',
+            type: 'boolean',
+          },
+          allowAny: {
+            description: 'Whether to allow `any` typed values.',
             type: 'boolean',
           },
         },
@@ -42,13 +57,14 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       checkCompoundAssignments: false,
+      allowAny: false,
     },
   ],
-  create(context, [{ checkCompoundAssignments }]) {
+  create(context, [{ checkCompoundAssignments, allowAny }]) {
     const service = util.getParserServices(context);
     const typeChecker = service.program.getTypeChecker();
 
-    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid';
+    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid' | 'any';
 
     /**
      * Helper function to get base type of node
@@ -57,7 +73,10 @@ export default util.createRule<Options, MessageIds>({
       if (type.isNumberLiteral()) {
         return 'number';
       }
-      if (type.isStringLiteral()) {
+      if (
+        type.isStringLiteral() ||
+        util.isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral)
+      ) {
         return 'string';
       }
       // is BigIntLiteral
@@ -72,7 +91,20 @@ export default util.createRule<Options, MessageIds>({
 
       if (type.isIntersection()) {
         const types = type.types.map(getBaseTypeOfLiteralType);
-        return types.some(value => value === 'string') ? 'string' : 'invalid';
+
+        if (types.some(value => value === 'string')) {
+          return 'string';
+        }
+
+        if (types.some(value => value === 'number')) {
+          return 'number';
+        }
+
+        if (types.some(value => value === 'bigint')) {
+          return 'bigint';
+        }
+
+        return 'invalid';
       }
 
       const stringType = typeChecker.typeToString(type);
@@ -80,7 +112,8 @@ export default util.createRule<Options, MessageIds>({
       if (
         stringType === 'number' ||
         stringType === 'string' ||
-        stringType === 'bigint'
+        stringType === 'bigint' ||
+        stringType === 'any'
       ) {
         return stringType;
       }
@@ -91,7 +124,9 @@ export default util.createRule<Options, MessageIds>({
      * Helper function to get base type of node
      * @param node the node to be evaluated.
      */
-    function getNodeType(node: TSESTree.Expression): BaseLiteral {
+    function getNodeType(
+      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+    ): BaseLiteral {
       const tsNode = service.esTreeNodeToTSNodeMap.get(node);
       const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
 
@@ -104,37 +139,64 @@ export default util.createRule<Options, MessageIds>({
       const leftType = getNodeType(node.left);
       const rightType = getNodeType(node.right);
 
-      if (
-        leftType === 'invalid' ||
-        rightType === 'invalid' ||
-        leftType !== rightType
-      ) {
-        if (leftType === 'string' || rightType === 'string') {
+      if (leftType === rightType) {
+        if (leftType === 'invalid') {
           context.report({
             node,
-            messageId: 'notStrings',
-          });
-        } else if (leftType === 'bigint' || rightType === 'bigint') {
-          context.report({
-            node,
-            messageId: 'notBigInts',
-          });
-        } else {
-          context.report({
-            node,
-            messageId: 'notNumbers',
+            messageId: 'notValidTypes',
           });
         }
+
+        if (!allowAny && leftType === 'any') {
+          context.report({
+            node,
+            messageId: 'notValidAnys',
+          });
+        }
+
+        return;
+      }
+
+      if (leftType === 'any' || rightType === 'any') {
+        if (!allowAny || leftType === 'invalid' || rightType === 'invalid') {
+          context.report({
+            node,
+            messageId: 'notValidAnys',
+          });
+        }
+
+        return;
+      }
+
+      if (leftType === 'string' || rightType === 'string') {
+        return context.report({
+          node,
+          messageId: 'notStrings',
+        });
+      }
+
+      if (leftType === 'bigint' || rightType === 'bigint') {
+        return context.report({
+          node,
+          messageId: 'notBigInts',
+        });
+      }
+
+      if (leftType === 'number' || rightType === 'number') {
+        return context.report({
+          node,
+          messageId: 'notNumbers',
+        });
       }
     }
 
     return {
       "BinaryExpression[operator='+']": checkPlusOperands,
-      "AssignmentExpression[operator='+=']"(node): void {
-        if (checkCompoundAssignments) {
+      ...(checkCompoundAssignments && {
+        "AssignmentExpression[operator='+=']"(node): void {
           checkPlusOperands(node);
-        }
-      },
+        },
+      }),
     };
   },
 });

@@ -3,4 +3,4 @@
 import type { T } from 'foo';
 
 type Ref = T;
-const unresovled = T;
+const unresolved = T;

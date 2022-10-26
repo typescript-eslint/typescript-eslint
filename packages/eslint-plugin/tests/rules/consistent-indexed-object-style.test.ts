@@ -30,7 +30,25 @@ interface Foo {
   bar: string;
 }
     `,
-
+    // circular
+    'type Foo = { [key: string]: string | Foo };',
+    'type Foo = { [key: string]: Foo };',
+    'type Foo = { [key: string]: Foo } | Foo;',
+    `
+interface Foo {
+  [key: string]: Foo;
+}
+    `,
+    `
+interface Foo<T> {
+  [key: string]: Foo<T>;
+}
+    `,
+    `
+interface Foo<T> {
+  [key: string]: Foo<T> | string;
+}
+    `,
     // Type literal
     'type Foo = {};',
     `
@@ -76,7 +94,6 @@ interface Foo {
   [];
 }
     `,
-
     // 'index-signature'
     // Unhandled type
     {
@@ -166,6 +183,29 @@ type Foo<A> = Record<string, A>;
       errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
+    // Interface with generic parameter and default value
+    {
+      code: `
+interface Foo<A = any> {
+  [key: string]: A;
+}
+      `,
+      output: `
+type Foo<A = any> = Record<string, A>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+
+    // Interface with extends
+    {
+      code: `
+interface B extends A {
+  [index: number]: unknown;
+}
+      `,
+      output: null,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
     // Readonly interface with generic parameter
     {
       code: `
@@ -272,6 +312,63 @@ type Foo<A, B> = Readonly<Record<A, B>>;
       options: ['index-signature'],
       output: 'type Foo<T> = { [key: string]: T };',
       errors: [{ messageId: 'preferIndexSignature', line: 1, column: 15 }],
+    },
+
+    // Circular
+    {
+      code: 'type Foo = { [k: string]: A.Foo };',
+      output: 'type Foo = Record<string, A.Foo>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
+    },
+    {
+      code: 'type Foo = { [key: string]: AnotherFoo };',
+      output: 'type Foo = Record<string, AnotherFoo>;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
+    },
+    {
+      code: 'type Foo = { [key: string]: { [key: string]: Foo } };',
+      output: 'type Foo = { [key: string]: Record<string, Foo> };',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 29 }],
+    },
+    {
+      code: 'type Foo = { [key: string]: string } | Foo;',
+      output: 'type Foo = Record<string, string> | Foo;',
+      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
+    },
+    {
+      code: `
+interface Foo<T> {
+  [k: string]: T;
+}
+      `,
+      output: `
+type Foo<T> = Record<string, T>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+    {
+      code: `
+interface Foo {
+  [k: string]: A.Foo;
+}
+      `,
+      output: `
+type Foo = Record<string, A.Foo>;
+      `,
+      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
+    },
+    {
+      code: `
+interface Foo {
+  [k: string]: { [key: string]: Foo };
+}
+      `,
+      output: `
+interface Foo {
+  [k: string]: Record<string, Foo>;
+}
+      `,
+      errors: [{ messageId: 'preferRecord', line: 3, column: 16 }],
     },
 
     // Generic

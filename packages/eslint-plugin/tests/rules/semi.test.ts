@@ -3,8 +3,10 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule, { MessageIds, Options } from '../../src/rules/semi';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/semi';
+import rule from '../../src/rules/semi';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -302,7 +304,46 @@ class PanCamera extends FreeCamera {
       options: ['always', { omitLastInOneLineBlock: true }],
       errors: [extraSemicolon],
     },
+    {
+      code: `
+        class A {
+          method(): void
+          method(arg?: any): void {
 
+          }
+        }
+      `,
+      output: `
+        class A {
+          method(): void;
+          method(arg?: any): void {
+
+          }
+        }
+      `,
+      options: ['always'],
+      errors: [missingSemicolon],
+    },
+    {
+      code: `
+        class A {
+          method(): void;
+          method(arg?: any): void {
+
+          }
+        }
+      `,
+      output: `
+        class A {
+          method(): void
+          method(arg?: any): void {
+
+          }
+        }
+      `,
+      options: ['never'],
+      errors: [extraSemicolon],
+    },
     {
       code: `
         import a from "a"

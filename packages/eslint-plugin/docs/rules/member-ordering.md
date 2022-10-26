@@ -1,197 +1,76 @@
-# Require a consistent member declaration order (`member-ordering`)
+---
+description: 'Require a consistent member declaration order.'
+---
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate and edit.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/member-ordering** for documentation.
 
-## Rule Details
-
-This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
-
-### Grouping and sorting member groups
-
-It allows to group members by their type (e.g. `public-static-field`, `protected-static-field`, `private-static-field`, `public-instance-field`, ...) and enforce a certain order for these groups. By default, their order is the same inside `classes`, `classExpressions`, `interfaces` and `typeLiterals` (note: not all member types apply to `interfaces` and `typeLiterals`). It is possible to define the order for any of those individually or to change the default order for all of them by setting the `default` option.
-
-### Sorting members
-
-Besides grouping the members and sorting their groups, this rule also allows to sort the members themselves (e.g. `a`, `b`, `c`, ...). You have 2 options: Sort all of them while ignoring their type or sort them while respecting their types (e.g. sort all fields in an interface alphabetically).
+This rule aims to standardize the way classes, interfaces, and type literals are structured and ordered.
+A consistent ordering of fields, methods and constructors can make code easier to read, navigate, and edit.
 
 ## Options
 
-These options allow to specify how to group the members and sort their groups.
-
-- Sort groups, don't enforce member order: Use `memberTypes`
-- Sort members, don't enforce group order: Use `order`
-- Sort members within groups: Use `memberTypes` and `order`
-
 ```ts
-type TypeOptions<T> =
-  | {
-    memberTypes: Array<T> | 'never',
-    order?: 'alphabetically' | 'as-written',
-  }
-  | {
-    order: 'alphabetically',
-  };
-
-{
-  default?: TypeOptions<MemberTypes>,
-
-  classes?: TypeOptions<MemberTypes>,
-  classExpressions?: TypeOptions<MemberTypes>,
-
-  interfaces?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
-  typeLiterals?: TypeOptions<'signature' | 'field' | 'method' | 'constructor'>,
+interface Options {
+  default?: OrderConfig;
+  classes?: OrderConfig;
+  classExpressions?: OrderConfig;
+  interfaces?: OrderConfig;
+  typeLiterals?: OrderConfig;
 }
+
+type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
+
+interface SortedOrderConfig {
+  memberTypes?: MemberType[] | 'never';
+  order:
+    | 'alphabetically'
+    | 'alphabetically-case-insensitive'
+    | 'as-written'
+    | 'natural'
+    | 'natural-case-insensitive';
+}
+
+// See below for the more specific MemberType strings
+type MemberType = string | string[];
 ```
 
-See below for the possible definitions of `MemberType`.
+You can configure `OrderConfig` options for:
 
-### Deprecated syntax
+- **`default`**: all constructs (used as a fallback)
+- **`classes`**?: override ordering specifically for classes
+- **`classExpressions`**?: override ordering specifically for class expressions
+- **`interfaces`**?: override ordering specifically for interfaces
+- **`typeLiterals`**?: override ordering specifically for type literals
 
-Note: There is a deprecated syntax to specify the member types as an array.
+The `OrderConfig` settings for each kind of construct may configure sorting on one or both two levels:
 
-### Member types (granular form)
+- **`memberTypes`**: organizing on member type groups such as methods vs. properties
+- **`order`**: organizing based on member names, such as alphabetically
 
-There are multiple ways to specify the member types. The most explicit and granular form is the following:
+### Groups
 
-```jsonc
-[
-  // Index signature
-  "signature",
+You can define many different groups based on different attributes of members.
+The supported member attributes are, in order:
 
-  // Fields
-  "public-static-field",
-  "protected-static-field",
-  "private-static-field",
-  "public-decorated-field",
-  "protected-decorated-field",
-  "private-decorated-field",
-  "public-instance-field",
-  "protected-instance-field",
-  "private-instance-field",
-  "public-abstract-field",
-  "protected-abstract-field",
-  "private-abstract-field",
+- **Accessibility** (`'public' | 'protected' | 'private'`)
+- **Decoration** (`'decorated'`): Whether the member has an explicit accessibility decorator
+- **Kind** (`'call-signature' | 'constructor' | 'field' | 'get' | 'method' | 'set' | 'signature'`)
 
-  // Constructors
-  "public-constructor",
-  "protected-constructor",
-  "private-constructor",
+Member attributes may be joined with a `'-'` to combine into more specific groups.
+For example, `'public-field'` would come before `'private-field'`.
 
-  // Methods
-  "public-static-method",
-  "protected-static-method",
-  "private-static-method",
-  "public-decorated-method",
-  "protected-decorated-method",
-  "private-decorated-method",
-  "public-instance-method",
-  "protected-instance-method",
-  "private-instance-method",
-  "public-abstract-method",
-  "protected-abstract-method",
-  "private-abstract-method"
-]
-```
+### Orders
 
-Note: If you only specify some of the possible types, the non-specified ones can have any particular order. This means that they can be placed before, within or after the specified types and the linter won't complain about it.
+The `order` value specifies what order members should be within a group.
+It defaults to `as-written`, meaning any order is fine.
+Other allowed values are:
 
-### Member group types (with accessibility, ignoring scope)
-
-It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
-
-```jsonc
-[
-  // Index signature
-  // No accessibility for index signature. See above.
-
-  // Fields
-  "public-field", // = ["public-static-field", "public-instance-field"]
-  "protected-field", // = ["protected-static-field", "protected-instance-field"]
-  "private-field", // = ["private-static-field", "private-instance-field"]
-
-  // Constructors
-  // Only the accessibility of constructors is configurable. See below.
-
-  // Methods
-  "public-method", // = ["public-static-method", "public-instance-method"]
-  "protected-method", // = ["protected-static-method", "protected-instance-method"]
-  "private-method" // = ["private-static-method", "private-instance-method"]
-]
-```
-
-### Member group types (with accessibility and a decorator)
-
-It is also possible to group methods or fields with a decorator separately, optionally specifying
-their accessibility.
-
-```jsonc
-[
-  // Index signature
-  // No decorators for index signature.
-
-  // Fields
-  "public-decorated-field",
-  "protected-decorated-field",
-  "private-decorated-field",
-
-  "decorated-field", // = ["public-decorated-field", "protected-decorated-field", "private-decorated-field"]
-
-  // Constructors
-  // There are no decorators for constructors.
-
-  "public-decorated-method",
-  "protected-decorated-method",
-  "private-decorated-method",
-
-  "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
-]
-```
-
-### Member group types (with scope, ignoring accessibility)
-
-Another option is to group the member types by their scope (`public`, `protected`, `private`), ignoring their accessibility.
-
-```jsonc
-[
-  // Index signature
-  // No scope for index signature. See above.
-
-  // Fields
-  "static-field", // = ["public-static-field", "protected-static-field", "private-static-field"]
-  "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
-  "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
-
-  // Constructors
-  "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
-
-  // Methods
-  "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
-  "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
-  "abstract-method" // = ["public-abstract-method", "protected-abstract-method", "private-abstract-method"]
-]
-```
-
-### Member group types (with scope and accessibility)
-
-The third grouping option is to ignore both scope and accessibility.
-
-```jsonc
-[
-  // Index signature
-  // No grouping for index signature. See above.
-
-  // Fields
-  "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
-  //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
-
-  // Constructors
-  // Only the accessibility of constructors is configurable. See above.
-
-  // Methods
-  "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
-  //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"]
-]
-```
+- `alphabetically`: Sorted in a-z alphabetical order, directly using string `<` comparison (so `B` comes before `a`)
+- `alphabetically-case-insensitive`: Sorted in a-z alphabetical order, ignoring case (so `a` comes before `B`)
+- `natural`: Same as `alphabetically`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
+- `natural-case-insensitive`: Same as `alphabetically-case-insensitive`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
 
 ### Default configuration
 
@@ -232,12 +111,73 @@ The default configuration looks as follows:
 
     "field",
 
+    // Static initialization
+    "static-initialization",
+
     // Constructors
     "public-constructor",
     "protected-constructor",
     "private-constructor",
 
     "constructor",
+
+    // Getters
+    "public-static-get",
+    "protected-static-get",
+    "private-static-get",
+
+    "public-decorated-get",
+    "protected-decorated-get",
+    "private-decorated-get",
+
+    "public-instance-get",
+    "protected-instance-get",
+    "private-instance-get",
+
+    "public-abstract-get",
+    "protected-abstract-get",
+    "private-abstract-get",
+
+    "public-get",
+    "protected-get",
+    "private-get",
+
+    "static-get",
+    "instance-get",
+    "abstract-get",
+
+    "decorated-get",
+
+    "get",
+
+    // Setters
+    "public-static-set",
+    "protected-static-set",
+    "private-static-set",
+
+    "public-decorated-set",
+    "protected-decorated-set",
+    "private-decorated-set",
+
+    "public-instance-set",
+    "protected-instance-set",
+    "private-instance-set",
+
+    "public-abstract-set",
+    "protected-abstract-set",
+    "private-abstract-set",
+
+    "public-set",
+    "protected-set",
+    "private-set",
+
+    "static-set",
+    "instance-set",
+    "abstract-set",
+
+    "decorated-set",
+
+    "set",
 
     // Methods
     "public-static-method",
@@ -271,19 +211,39 @@ The default configuration looks as follows:
 }
 ```
 
-Note: The default configuration contains member group types which contain other member types (see above). This is intentional to provide better error messages.
+:::note
+The default configuration contains member group types which contain other member types.
+This is intentional to provide better error messages.
+:::
 
-Note: By default, the members are not sorted. If you want to sort them alphabetically, you have to provide a custom configuration.
+:::tip
+By default, the members are not sorted.
+If you want to sort them alphabetically, you have to provide a custom configuration.
+:::
 
 ## Examples
 
-### Custom `default` configuration
+### General Order on All Constructs
 
-Note: The `default` options are overwritten in these examples.
+This config specifies the order for all constructs.
+It ignores member types other than signatures, methods, constructors, and fields.
+It also ignores accessibility and scope.
 
-#### Configuration: `{ "default": ["signature", "method", "constructor", "field"] }`
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "default": ["signature", "method", "constructor", "field"] }
+    ]
+  }
+}
+```
 
-##### Incorrect examples
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -296,8 +256,6 @@ interface Foo {
   [Z: string]: any; // -> signature
 }
 ```
-
-Note: Wrong order.
 
 ```ts
 type Foo = {
@@ -311,8 +269,6 @@ type Foo = {
 };
 ```
 
-Note: Not all specified member types have to exist.
-
 ```ts
 class Foo {
   private C: string; // -> field
@@ -327,8 +283,6 @@ class Foo {
   [Z: string]: any; // -> signature
 }
 ```
-
-Note: Accessibility or scope are ignored with this configuration.
 
 ```ts
 const Foo = class {
@@ -346,9 +300,7 @@ const Foo = class {
 };
 ```
 
-Note: Not all members have to be grouped to find rule violations.
-
-##### Correct examples
+#### ✅ Correct
 
 ```ts
 interface Foo {
@@ -404,11 +356,29 @@ const Foo = class {
 };
 ```
 
-#### Configuration: `{ "default": ["public-instance-method", "public-static-field"] }`
+### Classes
 
-Note: This configuration does not apply to interfaces/type literals as accessibility and scope are not part of interfaces/type literals.
+#### Public Instance Methods Before Public Static Fields
 
-##### Incorrect examples
+This config specifies that public instance methods should come first before public static fields.
+Everything else can be placed anywhere.
+It doesn't apply to interfaces or type literals as accessibility and scope are not part of them.
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "default": ["public-instance-method", "public-static-field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -427,8 +397,6 @@ class Foo {
   public B(): void {} // -> public instance method
 }
 ```
-
-Note: Public instance methods should come first before public static fields. Everything else can be placed anywhere.
 
 ```ts
 const Foo = class {
@@ -448,9 +416,7 @@ const Foo = class {
 };
 ```
 
-Note: Public instance methods should come first before public static fields. Everything else can be placed anywhere.
-
-##### Correct examples
+##### ✅ Correct
 
 ```ts
 class Foo {
@@ -488,11 +454,25 @@ const Foo = class {
 };
 ```
 
-#### Configuration: `{ "default": ["public-static-field", "static-field", "instance-field"] }`
+#### Static Fields Before Instance Fields
 
-Note: This configuration does not apply to interfaces/type literals as accessibility and scope are not part of interfaces/type literals.
+This config specifies that static fields should come before instance fields, with public static fields first.
+It doesn't apply to interfaces or type literals as accessibility and scope are not part of them.
 
-##### Incorrect examples
+```jsonc
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "default": ["public-static-field", "static-field", "instance-field"] }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -508,50 +488,48 @@ class Foo {
 }
 ```
 
-Note: Public static fields should come first, followed by static fields and instance fields.
-
 ```ts
 const foo = class {
-  public T(): void {} // (irrelevant)
+  public T(): void {} // method (irrelevant)
 
   private static B: string; // -> static field
 
-  constructor() {} // (irrelevant)
+  constructor() {} // constructor (irrelevant)
 
   private E: string; // -> instance field
 
   protected static C: string; // -> static field
   private static D: string; // -> static field
+
+  [Z: string]: any; // signature (irrelevant)
+
+  public static A: string; // -> public static field
+};
+```
+
+##### ✅ Correct
+
+```ts
+class Foo {
+  public static A: string; // -> public static field
+
+  private static B: string; // -> static field
+  protected static C: string; // -> static field
+  private static D: string; // -> static field
+
+  private E: string; // -> instance field
 
   [Z: string]: any; // (irrelevant)
-
-  public static A: string; // -> public static field
-};
-```
-
-Note: Public static fields should come first, followed by static fields and instance fields.
-
-##### Correct examples
-
-```ts
-class Foo {
-  public static A: string; // -> public static field
-
-  private static B: string; // -> static field
-  protected static C: string; // -> static field
-  private static D: string; // -> static field
-
-  private E: string; // -> instance field
 }
 ```
 
 ```ts
 const foo = class {
-  [Z: string]: any; // -> signature
+  [Z: string]: any; // -> signature (irrelevant)
 
   public static A: string; // -> public static field
 
-  constructor() {} // -> constructor
+  constructor() {} // -> constructor (irrelevant)
 
   private static B: string; // -> static field
   protected static C: string; // -> static field
@@ -559,19 +537,31 @@ const foo = class {
 
   private E: string; // -> instance field
 
-  public T(): void {} // -> method
+  public T(): void {} // -> method (irrelevant)
 };
 ```
 
-### Custom `classes` configuration
+#### Class Declarations
 
-Note: If this is not set, the `default` will automatically be applied to classes as well. If a `classes` configuration is provided, only this configuration will be used for `classes` (i.e. nothing will be merged with `default`).
+This config only specifies an order for classes: methods, then the constructor, then fields.
+It does not apply to class expressions (use `classExpressions` for them).
+Default settings will be used for class declarations and all other syntax constructs other than class declarations.
 
-Note: The configuration for `classes` does not apply to class expressions (use `classExpressions` for them).
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "classes": ["method", "constructor", "field"] }
+    ]
+  }
+}
+```
 
-#### Configuration: `{ "classes": ["method", "constructor", "field"] }`
+<!--tabs-->
 
-##### Incorrect example
+##### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -586,7 +576,7 @@ class Foo {
 }
 ```
 
-##### Correct example
+##### ✅ Correct
 
 ```ts
 class Foo {
@@ -601,53 +591,27 @@ class Foo {
 }
 ```
 
-#### Configuration: `{ "classes": ["public-instance-method", "public-static-field"] }`
+#### Class Expressions
 
-##### Incorrect example
+This config only specifies an order for classes expressions: methods, then the constructor, then fields.
+It does not apply to class declarations (use `classes` for them).
+Default settings will be used for class declarations and all other syntax constructs other than class expressions.
 
-```ts
-class Foo {
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public static E: string; // -> public static field
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  public B(): void {} // -> public instance method
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "classExpressions": ["method", "constructor", "field"] }
+    ]
+  }
 }
 ```
 
-##### Correct example
+<!--tabs-->
 
-```ts
-class Foo {
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public B(): void {} // -> public instance method
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  public static E: string; // -> public static field
-}
-```
-
-### Custom `classExpressions` configuration
-
-Note: If this is not set, the `default` will automatically be applied to classes expressions as well. If a `classExpressions` configuration is provided, only this configuration will be used for `classExpressions` (i.e. nothing will be merged with `default`).
-
-Note: The configuration for `classExpressions` does not apply to classes (use `classes` for them).
-
-#### Configuration: `{ "classExpressions": ["method", "constructor", "field"] }`
-
-##### Incorrect example
+##### ❌ Incorrect
 
 ```ts
 const foo = class {
@@ -662,7 +626,7 @@ const foo = class {
 };
 ```
 
-##### Correct example
+##### ✅ Correct
 
 ```ts
 const foo = class {
@@ -677,55 +641,31 @@ const foo = class {
 };
 ```
 
-#### Configuration: `{ "classExpressions": ["public-instance-method", "public-static-field"] }`
+### Interfaces
 
-##### Incorrect example
+This config only specifies an order for interfaces: signatures, then methods, then constructors, then fields.
+It does not apply to type literals (use `typeLiterals` for them).
+Default settings will be used for type literals and all other syntax constructs other than class expressions.
 
-```ts
-const foo = class {
-  private C: string; // (irrelevant)
+:::note
+These member types are the only ones allowed for `interfaces`.
+:::
 
-  public D: string; // (irrelevant)
-
-  public static E: string; // -> public static field
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-
-  public B(): void {} // -> public instance method
-};
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "interfaces": ["signature", "method", "constructor", "field"] }
+    ]
+  }
+}
 ```
 
-##### Correct example
+<!--tabs-->
 
-```ts
-const foo = class {
-  private C: string; // (irrelevant)
-
-  public D: string; // (irrelevant)
-
-  public B(): void {} // -> public instance method
-
-  public static E: string; // -> public static field
-
-  constructor() {} // (irrelevant)
-
-  public static A(): void {} // (irrelevant)
-};
-```
-
-### Custom `interfaces` configuration
-
-Note: If this is not set, the `default` will automatically be applied to classes expressions as well. If a `interfaces` configuration is provided, only this configuration will be used for `interfaces` (i.e. nothing will be merged with `default`).
-
-Note: The configuration for `interfaces` only allows a limited set of member types: `signature`, `field`, `constructor` and `method`.
-
-Note: The configuration for `interfaces` does not apply to type literals (use `typeLiterals` for them).
-
-#### Configuration: `{ "interfaces": ["signature", "method", "constructor", "field"] }`
-
-##### Incorrect example
+#### ❌ Incorrect
 
 ```ts
 interface Foo {
@@ -739,7 +679,7 @@ interface Foo {
 }
 ```
 
-##### Correct example
+#### ✅ Correct
 
 ```ts
 interface Foo {
@@ -753,17 +693,31 @@ interface Foo {
 }
 ```
 
-### Custom `typeLiterals` configuration
+### Type Literals
 
-Note: If this is not set, the `default` will automatically be applied to classes expressions as well. If a `typeLiterals` configuration is provided, only this configuration will be used for `typeLiterals` (i.e. nothing will be merged with `default`).
+This config only specifies an order for type literals: signatures, then methods, then constructors, then fields.
+It does not apply to interfaces (use `interfaces` for them).
+Default settings will be used for interfaces and all other syntax constructs other than class expressions.
 
-Note: The configuration for `typeLiterals` only allows a limited set of member types: `signature`, `field`, `constructor` and `method`.
+:::note
+These member types are the only ones allowed for `typeLiterals`.
+:::
 
-Note: The configuration for `typeLiterals` does not apply to interfaces (use `interfaces` for them).
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "typeLiterals": ["signature", "method", "constructor", "field"] }
+    ]
+  }
+}
+```
 
-#### Configuration: `{ "typeLiterals": ["signature", "method", "constructor", "field"] }`
+<!--tabs-->
 
-##### Incorrect example
+#### ❌ Incorrect
 
 ```ts
 type Foo = {
@@ -777,7 +731,7 @@ type Foo = {
 };
 ```
 
-##### Correct example
+#### ✅ Correct
 
 ```ts
 type Foo = {
@@ -791,64 +745,142 @@ type Foo = {
 };
 ```
 
-### Sorting alphabetically within member groups
+### Sorting Options
 
-It is possible to sort all members within a group alphabetically.
+#### Sorting Alphabetically Within Member Groups
 
-#### Configuration: `{ "default": { "memberTypes": <Default Order>, "order": "alphabetically" } }`
+This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
+You can copy and paste the default order from [Default Configuration](#default-configuration).
 
-This will apply the default order (see above) and enforce an alphabetic order within each group.
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      {
+        "default": {
+          "memberTypes": [
+            /* <Default Order> */
+          ],
+          "order": "alphabetically"
+        }
+      }
+    ]
+  }
+}
+```
 
-##### Incorrect examples
+<!--tabs-->
+
+##### ❌ Incorrect
 
 ```ts
 interface Foo {
   a: x;
-  b: x;
+  B: x;
   c: x;
 
-  new (): Bar;
-  (): Baz;
-
-  a(): void;
-  b(): void;
+  B(): void;
   c(): void;
-
-  // Wrong group order, should be placed before all field definitions
-  [a: string]: number;
+  a(): void;
 }
 ```
 
+##### ✅ Correct
+
 ```ts
 interface Foo {
-  [a: string]: number;
-
+  B: x;
   a: x;
-  b: x;
   c: x;
 
-  new (): Bar;
-  (): Baz;
-
-  // Wrong alphabetic order within group
+  B(): void;
+  a(): void;
   c(): void;
-  b(): void;
+}
+```
+
+#### Sorting Alphabetically Case Insensitive Within Member Groups
+
+This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
+You can copy and paste the default order from [Default Configuration](#default-configuration).
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      {
+        "default": {
+          "memberTypes": [
+            /* <Default Order> */
+          ],
+          "order": "alphabetically-case-insensitive"
+        }
+      }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+interface Foo {
+  B: x;
+  a: x;
+  c: x;
+
+  B(): void;
+  c(): void;
   a(): void;
 }
 ```
 
-### Sorting alphabetically while ignoring member groups
-
-It is also possible to sort all members and ignore the member groups completely.
-
-#### Configuration: `{ "default": { "memberTypes": "never", "order": "alphabetically" } }`
-
-##### Incorrect example
+##### ✅ Correct
 
 ```ts
 interface Foo {
+  a: x;
+  B: x;
+  c: x;
+
+  a(): void;
+  B(): void;
+  c(): void;
+}
+```
+
+#### Sorting Alphabetically Ignoring Member Groups
+
+This config specifies that members are all sorted in an alphabetic case-sensitive order.
+It ignores any member group types completely by specifying `"never"` for `memberTypes`.
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "default": { "memberTypes": "never", "order": "alphabetically" } }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+interface Foo {
+  static c = 0;
   b(): void;
-  a: b;
+  a: boolean;
 
   [a: string]: number; // Order doesn't matter (no sortable identifier)
   new (): Bar; // Order doesn't matter (no sortable identifier)
@@ -856,12 +888,312 @@ interface Foo {
 }
 ```
 
-Note: Wrong alphabetic order `b(): void` should come after `a: b`.
+##### ✅ Correct
+
+```ts
+interface Foo {
+  a: boolean;
+  b(): void;
+  static c = 0;
+
+  [a: string]: number; // Order doesn't matter (no sortable identifier)
+  new (): Bar; // Order doesn't matter (no sortable identifier)
+  (): Baz; // Order doesn't matter (no sortable identifier)
+}
+```
+
+## All Supported Options
+
+### Member Types (Granular Form)
+
+There are multiple ways to specify the member types.
+The most explicit and granular form is the following:
+
+```jsonc
+[
+  // Index signature
+  "signature",
+
+  // Fields
+  "public-static-field",
+  "protected-static-field",
+  "private-static-field",
+  "public-decorated-field",
+  "protected-decorated-field",
+  "private-decorated-field",
+  "public-instance-field",
+  "protected-instance-field",
+  "private-instance-field",
+  "public-abstract-field",
+  "protected-abstract-field",
+  "private-abstract-field",
+
+  // Static initialization
+  "static-initialization",
+
+  // Constructors
+  "public-constructor",
+  "protected-constructor",
+  "private-constructor",
+
+  // Getters
+  "public-static-get",
+  "protected-static-get",
+  "private-static-get",
+
+  "public-decorated-get",
+  "protected-decorated-get",
+  "private-decorated-get",
+
+  "public-instance-get",
+  "protected-instance-get",
+  "private-instance-get",
+
+  "public-abstract-get",
+  "protected-abstract-get",
+  "private-abstract-get",
+
+  "public-get",
+  "protected-get",
+  "private-get",
+
+  "static-get",
+  "instance-get",
+  "abstract-get",
+
+  "decorated-get",
+
+  "get",
+
+  // Setters
+  "public-static-set",
+  "protected-static-set",
+  "private-static-set",
+
+  "public-decorated-set",
+  "protected-decorated-set",
+  "private-decorated-set",
+
+  "public-instance-set",
+  "protected-instance-set",
+  "private-instance-set",
+
+  "public-abstract-set",
+  "protected-abstract-set",
+  "private-abstract-set",
+
+  "public-set",
+  "protected-set",
+  "private-set",
+
+  "static-set",
+  "instance-set",
+  "abstract-set",
+
+  "decorated-set",
+
+  "set",
+
+  // Methods
+  "public-static-method",
+  "protected-static-method",
+  "private-static-method",
+  "public-decorated-method",
+  "protected-decorated-method",
+  "private-decorated-method",
+  "public-instance-method",
+  "protected-instance-method",
+  "private-instance-method",
+  "public-abstract-method",
+  "protected-abstract-method",
+  "private-abstract-method"
+]
+```
+
+:::note
+If you only specify some of the possible types, the non-specified ones can have any particular order.
+This means that they can be placed before, within or after the specified types and the linter won't complain about it.
+:::
+
+### Member Group Types (With Accessibility, Ignoring Scope)
+
+It is also possible to group member types by their accessibility (`static`, `instance`, `abstract`), ignoring their scope.
+
+```jsonc
+[
+  // Index signature
+  // No accessibility for index signature.
+
+  // Fields
+  "public-field", // = ["public-static-field", "public-instance-field"]
+  "protected-field", // = ["protected-static-field", "protected-instance-field"]
+  "private-field", // = ["private-static-field", "private-instance-field"]
+
+  // Static initialization
+  // No accessibility for static initialization.
+
+  // Constructors
+  // Only the accessibility of constructors is configurable. See below.
+
+  // Getters
+  "public-get", // = ["public-static-get", "public-instance-get"]
+  "protected-get", // = ["protected-static-get", "protected-instance-get"]
+  "private-get", // = ["private-static-get", "private-instance-get"]
+
+  // Setters
+  "public-set", // = ["public-static-set", "public-instance-set"]
+  "protected-set", // = ["protected-static-set", "protected-instance-set"]
+  "private-set", // = ["private-static-set", "private-instance-set"]
+
+  // Methods
+  "public-method", // = ["public-static-method", "public-instance-method"]
+  "protected-method", // = ["protected-static-method", "protected-instance-method"]
+  "private-method" // = ["private-static-method", "private-instance-method"]
+]
+```
+
+### Member Group Types (With Accessibility and a Decorator)
+
+It is also possible to group methods or fields with a decorator separately, optionally specifying
+their accessibility.
+
+```jsonc
+[
+  // Index signature
+  // No decorators for index signature.
+
+  // Fields
+  "public-decorated-field",
+  "protected-decorated-field",
+  "private-decorated-field",
+
+  "decorated-field", // = ["public-decorated-field", "protected-decorated-field", "private-decorated-field"]
+
+  // Static initialization
+  // No decorators for static initialization.
+
+  // Constructors
+  // There are no decorators for constructors.
+
+  // Getters
+  "public-decorated-get",
+  "protected-decorated-get",
+  "private-decorated-get",
+
+  "decorated-get", // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
+
+  // Setters
+  "public-decorated-set",
+  "protected-decorated-set",
+  "private-decorated-set",
+
+  "decorated-set", // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
+
+  // Methods
+  "public-decorated-method",
+  "protected-decorated-method",
+  "private-decorated-method",
+
+  "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
+]
+```
+
+### Member Group Types (With Scope, Ignoring Accessibility)
+
+Another option is to group the member types by their scope (`public`, `protected`, `private`), ignoring their accessibility.
+
+```jsonc
+[
+  // Index signature
+  // No scope for index signature.
+
+  // Fields
+  "static-field", // = ["public-static-field", "protected-static-field", "private-static-field"]
+  "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
+  "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
+
+  // Static initialization
+  // No scope for static initialization.
+
+  // Constructors
+  "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
+
+  // Getters
+  "static-get", // = ["public-static-get", "protected-static-get", "private-static-get"]
+  "instance-get", // = ["public-instance-get", "protected-instance-get", "private-instance-get"]
+  "abstract-get", // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+
+  // Setters
+  "static-set", // = ["public-static-set", "protected-static-set", "private-static-set"]
+  "instance-set", // = ["public-instance-set", "protected-instance-set", "private-instance-set"]
+  "abstract-set", // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+
+  // Methods
+  "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
+  "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
+  "abstract-method" // = ["public-abstract-method", "protected-abstract-method", "private-abstract-method"]
+]
+```
+
+### Member Group Types (With Scope and Accessibility)
+
+The third grouping option is to ignore both scope and accessibility.
+
+```jsonc
+[
+  // Index signature
+  // No grouping for index signature.
+
+  // Fields
+  "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
+  //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
+
+  // Static initialization
+  // No grouping for static initialization.
+
+  // Constructors
+  // Only the accessibility of constructors is configurable.
+
+  // Getters
+  "get", // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
+  //                "public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+
+  // Setters
+  "set", // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
+  //                "public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+
+  // Methods
+  "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
+  //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"]
+]
+```
+
+### Grouping Different Member Types at the Same Rank
+
+It is also possible to group different member types at the same rank.
+
+```jsonc
+[
+  // Index signature
+  "signature",
+
+  // Fields
+  "field",
+
+  // Static initialization
+  "static-initialization",
+
+  // Constructors
+  "constructor",
+
+  // Getters and Setters at the same rank
+  ["get", "set"],
+
+  // Methods
+  "method"
+]
+```
 
 ## When Not To Use It
 
-If you don't care about the general structure of your classes and interfaces, then you will not need this rule.
-
-## Compatibility
-
-- TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
+If you don't care about the general order of your members, then you will not need this rule.

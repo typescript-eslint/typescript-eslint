@@ -1,6 +1,7 @@
 import path from 'path';
+
 import rule from '../../src/rules/no-unnecessary-type-assertion';
-import { RuleTester, noFormat } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
@@ -15,7 +16,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     `
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/utils';
 declare const member: TSESTree.TSEnumMember;
 if (
   member.id.type === AST_NODE_TYPES.Literal &&
@@ -186,6 +187,28 @@ const c = <const>[...a, ...b];
     {
       code: "const a = <const>{ foo: 'foo' };",
     },
+    {
+      code: `
+let a: number | undefined;
+let b: number | undefined;
+let c: number;
+a = b;
+c = b!;
+a! -= 1;
+      `,
+    },
+    {
+      code: `
+let a: { b?: string } | undefined;
+a!.b = '';
+      `,
+    },
+    `
+let value: number | undefined;
+let values: number[] = [];
+
+value = values.pop()!;
+    `,
   ],
 
   invalid: [
@@ -210,7 +233,7 @@ const bar = foo;
       code: `
 const foo = (3 + 5) as number;
       `,
-      output: noFormat`
+      output: `
 const foo = (3 + 5);
       `,
       errors: [
@@ -225,7 +248,7 @@ const foo = (3 + 5);
       code: `
 const foo = <number>(3 + 5);
       `,
-      output: noFormat`
+      output: `
 const foo = (3 + 5);
       `,
       errors: [
@@ -241,7 +264,7 @@ const foo = (3 + 5);
 type Foo = number;
 const foo = (3 + 5) as Foo;
       `,
-      output: noFormat`
+      output: `
 type Foo = number;
 const foo = (3 + 5);
       `,
@@ -258,7 +281,7 @@ const foo = (3 + 5);
 type Foo = number;
 const foo = <Foo>(3 + 5);
       `,
-      output: noFormat`
+      output: `
 type Foo = number;
 const foo = (3 + 5);
       `,
@@ -332,6 +355,22 @@ function foo<T extends string>(bar: T) {
 function foo<T extends string>(bar: T) {
   return bar;
 }
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Foo;
+const bar = <Foo>foo;
+      `,
+      output: `
+declare const foo: Foo;
+const bar = foo;
       `,
       errors: [
         {
@@ -450,6 +489,26 @@ function Test(props: { id?: string | number }) {
         },
       ],
       filename: 'react.tsx',
+    },
+    {
+      code: `
+let x: number | undefined;
+let y: number | undefined;
+y = x!;
+y! = 0;
+      `,
+      output: `
+let x: number | undefined;
+let y: number | undefined;
+y = x!;
+y = 0;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 5,
+        },
+      ],
     },
   ],
 });

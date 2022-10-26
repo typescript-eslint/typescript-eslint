@@ -1,28 +1,33 @@
-# Enforce `includes` method over `indexOf` method (`prefer-includes`)
+---
+description: 'Enforce `includes` method over `indexOf` method.'
+---
 
-Until ES5, we were using `String#indexOf` method to check whether a string contains an arbitrary substring or not.
-Until ES2015, we were using `Array#indexOf` method to check whether an array contains an arbitrary value or not.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-includes** for documentation.
 
-ES2015 has added `String#includes` and ES2016 has added `Array#includes`.
-It makes code more understandable if we use those `includes` methods for the purpose.
+Prior to ES2015, `Array#indexOf` and `String#indexOf` comparisons against `-1` were the standard ways to check whether a value exists in an array or string, respectively.
+Alternatives that are easier to read and write now exist: ES2015 added `String#includes` and ES2016 added `Array#includes`.
 
-## Rule Details
-
-This rule is aimed at suggesting `includes` method if `indexOf` method was used to check whether an object contains an arbitrary value or not.
-
-If the receiver object of the `indexOf` method call has `includes` method and the two methods have the same parameters, this rule does suggestion.
-There are such types: `String`, `Array`, `ReadonlyArray`, and typed arrays.
-
+This rule reports when an `.indexOf` call can be replaced with an `.includes`.
 Additionally, this rule reports the tests of simple regular expressions in favor of `String#includes`.
 
-Examples of **incorrect** code for this rule:
+> This rule will report on any receiver object of an `indexOf` method call that has an `includes` method where the two methods have the same parameters.
+> Matching types include: `String`, `Array`, `ReadonlyArray`, and typed arrays.
+
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
-let str: string;
-let array: any[];
-let readonlyArray: ReadonlyArray<any>;
-let typedArray: UInt8Array;
-let userDefined: {
+const str: string;
+const array: any[];
+const readonlyArray: ReadonlyArray<any>;
+const typedArray: UInt8Array;
+const maybe: string;
+const userDefined: {
   indexOf(x: any): number;
   includes(x: any): boolean;
 };
@@ -31,24 +36,22 @@ str.indexOf(value) !== -1;
 array.indexOf(value) !== -1;
 readonlyArray.indexOf(value) === -1;
 typedArray.indexOf(value) > -1;
+maybe?.indexOf('') !== -1;
 userDefined.indexOf(value) >= 0;
 
-// simple RegExp test
-/foo/.test(str);
+/example/.test(str);
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
-let array: any[];
-let readonlyArray: ReadonlyArray<any>;
-let typedArray: UInt8Array;
-let userDefined: {
+const str: string;
+const array: any[];
+const readonlyArray: ReadonlyArray<any>;
+const typedArray: UInt8Array;
+const maybe: string;
+const userDefined: {
   indexOf(x: any): number;
-  includes(x: any): boolean;
-};
-let mismatchExample: {
-  indexOf(x: any, fromIndex?: number): number;
   includes(x: any): boolean;
 };
 
@@ -56,15 +59,18 @@ str.includes(value);
 array.includes(value);
 readonlyArray.includes(value);
 typedArray.includes(value);
+maybe?.includes('');
 userDefined.includes(value);
 
-// the two methods have different parameters.
+str.includes('example');
+
+// The two methods have different parameters.
+declare const mismatchExample: {
+  indexOf(x: unknown, fromIndex?: number): number;
+  includes(x: unknown): boolean;
+};
 mismatchExample.indexOf(value) >= 0;
 ```
-
-## Options
-
-There are no options.
 
 ## When Not To Use It
 

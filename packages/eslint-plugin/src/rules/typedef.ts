@@ -1,7 +1,6 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 const enum OptionKeys {
@@ -23,8 +22,7 @@ export default util.createRule<[Options], MessageIds>({
   name: 'typedef',
   meta: {
     docs: {
-      description: 'Requires type annotations to exist',
-      category: 'Stylistic Issues',
+      description: 'Require type annotations in certain places',
       recommended: false,
     },
     messages: {
@@ -60,7 +58,21 @@ export default util.createRule<[Options], MessageIds>({
       [OptionKeys.VariableDeclarationIgnoreFunction]: false,
     },
   ],
-  create(context, [options]) {
+  create(
+    context,
+    [
+      {
+        arrayDestructuring,
+        arrowParameter,
+        memberVariableDeclaration,
+        objectDestructuring,
+        parameter,
+        propertyDeclaration,
+        variableDeclaration,
+        variableDeclarationIgnoreFunction,
+      },
+    ],
+  ) {
     function report(location: TSESTree.Node, name?: string): void {
       context.report({
         node: location,
@@ -133,86 +145,112 @@ export default util.createRule<[Options], MessageIds>({
 
     function isVariableDeclarationIgnoreFunction(node: TSESTree.Node): boolean {
       return (
-        !!options[OptionKeys.VariableDeclarationIgnoreFunction] &&
-        (node.type === AST_NODE_TYPES.FunctionExpression ||
-          node.type === AST_NODE_TYPES.ArrowFunctionExpression)
+        variableDeclarationIgnoreFunction === true &&
+        (node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          node.type === AST_NODE_TYPES.FunctionExpression)
       );
     }
 
-    return {
-      ArrayPattern(node): void {
+    function isAncestorHasTypeAnnotation(
+      node: TSESTree.ObjectPattern | TSESTree.ArrayPattern,
+    ): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor) {
         if (
-          node.parent?.type === AST_NODE_TYPES.RestElement &&
-          node.parent.typeAnnotation
+          (ancestor.type === AST_NODE_TYPES.ObjectPattern ||
+            ancestor.type === AST_NODE_TYPES.ArrayPattern) &&
+          ancestor.typeAnnotation
         ) {
-          return;
-        }
-        if (
-          options[OptionKeys.ArrayDestructuring] &&
-          !node.typeAnnotation &&
-          !isForOfStatementContext(node)
-        ) {
-          report(node);
-        }
-      },
-      ArrowFunctionExpression(node): void {
-        if (options[OptionKeys.ArrowParameter]) {
-          checkParameters(node.params);
-        }
-      },
-      ClassProperty(node): void {
-        if (node.value && isVariableDeclarationIgnoreFunction(node.value)) {
-          return;
+          return true;
         }
 
-        if (
-          options[OptionKeys.MemberVariableDeclaration] &&
-          !node.typeAnnotation
-        ) {
-          report(
-            node,
-            node.key.type === AST_NODE_TYPES.Identifier
-              ? node.key.name
-              : undefined,
-          );
-        }
-      },
-      'FunctionDeclaration, FunctionExpression'(
-        node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-      ): void {
-        if (options[OptionKeys.Parameter]) {
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
+
+    return {
+      ...(arrayDestructuring && {
+        ArrayPattern(node): void {
+          if (
+            node.parent?.type === AST_NODE_TYPES.RestElement &&
+            node.parent.typeAnnotation
+          ) {
+            return;
+          }
+
+          if (
+            !node.typeAnnotation &&
+            !isForOfStatementContext(node) &&
+            !isAncestorHasTypeAnnotation(node) &&
+            node.parent?.type !== AST_NODE_TYPES.AssignmentExpression
+          ) {
+            report(node);
+          }
+        },
+      }),
+      ...(arrowParameter && {
+        ArrowFunctionExpression(node): void {
           checkParameters(node.params);
-        }
-      },
-      ObjectPattern(node): void {
-        if (
-          options[OptionKeys.ObjectDestructuring] &&
-          !node.typeAnnotation &&
-          !isForOfStatementContext(node)
-        ) {
-          report(node);
-        }
-      },
-      'TSIndexSignature, TSPropertySignature'(
-        node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
-      ): void {
-        if (options[OptionKeys.PropertyDeclaration] && !node.typeAnnotation) {
-          report(
-            node,
-            node.type === AST_NODE_TYPES.TSPropertySignature
-              ? getNodeName(node.key)
-              : undefined,
-          );
-        }
-      },
+        },
+      }),
+      ...(memberVariableDeclaration && {
+        PropertyDefinition(node): void {
+          if (
+            !(node.value && isVariableDeclarationIgnoreFunction(node.value)) &&
+            !node.typeAnnotation
+          ) {
+            report(
+              node,
+              node.key.type === AST_NODE_TYPES.Identifier
+                ? node.key.name
+                : undefined,
+            );
+          }
+        },
+      }),
+      ...(parameter && {
+        'FunctionDeclaration, FunctionExpression'(
+          node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+        ): void {
+          checkParameters(node.params);
+        },
+      }),
+      ...(objectDestructuring && {
+        ObjectPattern(node): void {
+          if (
+            !node.typeAnnotation &&
+            !isForOfStatementContext(node) &&
+            !isAncestorHasTypeAnnotation(node)
+          ) {
+            report(node);
+          }
+        },
+      }),
+      ...(propertyDeclaration && {
+        'TSIndexSignature, TSPropertySignature'(
+          node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
+        ): void {
+          if (!node.typeAnnotation) {
+            report(
+              node,
+              node.type === AST_NODE_TYPES.TSPropertySignature
+                ? getNodeName(node.key)
+                : undefined,
+            );
+          }
+        },
+      }),
       VariableDeclarator(node): void {
         if (
-          !options[OptionKeys.VariableDeclaration] ||
+          !variableDeclaration ||
           node.id.typeAnnotation ||
           (node.id.type === AST_NODE_TYPES.ArrayPattern &&
-            !options[OptionKeys.ArrayDestructuring]) ||
+            !arrayDestructuring) ||
           (node.id.type === AST_NODE_TYPES.ObjectPattern &&
-            !options[OptionKeys.ObjectDestructuring]) ||
+            !objectDestructuring) ||
           (node.init && isVariableDeclarationIgnoreFunction(node.init))
         ) {
           return;

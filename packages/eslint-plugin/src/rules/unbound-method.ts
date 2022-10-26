@@ -1,10 +1,10 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
+import { getModifiers } from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -16,7 +16,7 @@ interface Config {
 
 export type Options = [Config];
 
-export type MessageIds = 'unbound';
+export type MessageIds = 'unbound' | 'unboundWithoutThisAnnotation';
 
 /**
  * The following is a list of exceptions to the rule
@@ -121,25 +121,32 @@ const getNodeName = (node: TSESTree.Node): string | null =>
 const getMemberFullName = (node: TSESTree.MemberExpression): string =>
   `${getNodeName(node.object)}.${getNodeName(node.property)}`;
 
+const BASE_MESSAGE =
+  'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
+
 export default util.createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
-        'Enforces unbound methods are called with their expected scope',
+        'Enforce unbound methods are called with their expected scope',
       recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
-      unbound:
-        'Avoid referencing unbound methods which may cause unintentional scoping of `this`.',
+      unbound: BASE_MESSAGE,
+      unboundWithoutThisAnnotation:
+        BASE_MESSAGE +
+        '\n' +
+        'If your function does not access `this`, you can annotate it with `this: void`, or consider using an arrow function instead.',
     },
     schema: [
       {
         type: 'object',
         properties: {
           ignoreStatic: {
+            description:
+              'Whether to skip checking whether `static` methods are correctly bound.',
             type: 'boolean',
           },
         },
@@ -160,6 +167,26 @@ export default util.createRule<Options, MessageIds>({
       context.getFilename(),
     );
 
+    function checkMethodAndReport(
+      node: TSESTree.Node,
+      symbol: ts.Symbol | undefined,
+    ): void {
+      if (!symbol) {
+        return;
+      }
+
+      const { dangerous, firstParamIsThis } = checkMethod(symbol, ignoreStatic);
+      if (dangerous) {
+        context.report({
+          messageId:
+            firstParamIsThis === false
+              ? 'unboundWithoutThisAnnotation'
+              : 'unbound',
+          node,
+        });
+      }
+    }
+
     return {
       MemberExpression(node: TSESTree.MemberExpression): void {
         if (isSafeUse(node)) {
@@ -179,14 +206,8 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const symbol = checker.getSymbolAtLocation(originalNode);
 
-        if (symbol && isDangerousMethod(symbol, ignoreStatic)) {
-          context.report({
-            messageId: 'unbound',
-            node,
-          });
-        }
+        checkMethodAndReport(node, checker.getSymbolAtLocation(originalNode));
       },
       'VariableDeclarator, AssignmentExpression'(
         node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
@@ -219,13 +240,10 @@ export default util.createRule<Options, MessageIds>({
                 return;
               }
 
-              const symbol = initTypes.getProperty(property.key.name);
-              if (symbol && isDangerousMethod(symbol, ignoreStatic)) {
-                context.report({
-                  messageId: 'unbound',
-                  node,
-                });
-              }
+              checkMethodAndReport(
+                node,
+                initTypes.getProperty(property.key.name),
+              );
             }
           });
         }
@@ -234,44 +252,52 @@ export default util.createRule<Options, MessageIds>({
   },
 });
 
-function isDangerousMethod(symbol: ts.Symbol, ignoreStatic: boolean): boolean {
+function checkMethod(
+  symbol: ts.Symbol,
+  ignoreStatic: boolean,
+): { dangerous: boolean; firstParamIsThis?: boolean } {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
-    return false;
+    return { dangerous: false };
   }
 
   switch (valueDeclaration.kind) {
     case ts.SyntaxKind.PropertyDeclaration:
-      return (
-        (valueDeclaration as ts.PropertyDeclaration).initializer?.kind ===
-        ts.SyntaxKind.FunctionExpression
-      );
+      return {
+        dangerous:
+          (valueDeclaration as ts.PropertyDeclaration).initializer?.kind ===
+          ts.SyntaxKind.FunctionExpression,
+      };
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
       const decl = valueDeclaration as
         | ts.MethodDeclaration
         | ts.MethodSignature;
       const firstParam = decl.parameters[0];
-      const thisArgIsVoid =
+      const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
-        firstParam?.name.escapedText === 'this' &&
+        firstParam?.name.escapedText === 'this';
+      const thisArgIsVoid =
+        firstParamIsThis &&
         firstParam?.type?.kind === ts.SyntaxKind.VoidKeyword;
 
-      return (
-        !thisArgIsVoid &&
-        !(
-          ignoreStatic &&
-          tsutils.hasModifier(
-            valueDeclaration.modifiers,
-            ts.SyntaxKind.StaticKeyword,
-          )
-        )
-      );
+      return {
+        dangerous:
+          !thisArgIsVoid &&
+          !(
+            ignoreStatic &&
+            tsutils.hasModifier(
+              getModifiers(valueDeclaration),
+              ts.SyntaxKind.StaticKeyword,
+            )
+          ),
+        firstParamIsThis,
+      };
     }
   }
 
-  return false;
+  return { dangerous: false };
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {
@@ -305,7 +331,14 @@ function isSafeUse(node: TSESTree.Node): boolean {
       return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
 
     case AST_NODE_TYPES.AssignmentExpression:
-      return parent.operator === '=' && node === parent.left;
+      return (
+        parent.operator === '=' &&
+        (node === parent.left ||
+          (node.type === AST_NODE_TYPES.MemberExpression &&
+            node.object.type === AST_NODE_TYPES.Super &&
+            parent.left.type === AST_NODE_TYPES.MemberExpression &&
+            parent.left.object.type === AST_NODE_TYPES.ThisExpression))
+      );
 
     case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.TSNonNullExpression:

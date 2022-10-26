@@ -1,60 +1,38 @@
-# Disallow aliasing `this` (`no-this-alias`)
+---
+description: 'Disallow aliasing `this`.'
+---
 
-This rule prohibits assigning variables to `this`.
-
-## Rule Details
-
-Rationale from TSLint:
-
-> Assigning a variable to `this` instead of properly using arrow lambdas may be a symptom of pre-ES6 practices
-> or not managing scope well.
+> 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> Instead of storing a reference to `this` and using it inside a `function () {`:
->
-> ```js
-> const self = this;
->
-> setTimeout(function () {
->   self.doWork();
-> });
-> ```
->
-> Use `() =>` arrow lambdas, as they preserve `this` scope for you:
->
-> ```js
-> setTimeout(() => {
->   this.doWork();
-> });
-> ```
+> See **https://typescript-eslint.io/rules/no-this-alias** for documentation.
 
-Examples of **incorrect** code for this rule:
+Assigning a variable to `this` instead of properly using arrow lambdas may be a symptom of pre-ES6 practices
+or not managing scope well.
 
-(see the rationale above)
+## Examples
 
-Examples of **correct** code for this rule:
+<!--tabs-->
 
-(see the rationale above)
+### ❌ Incorrect
 
-### Options
+```js
+const self = this;
 
-You can pass an object option:
-
-```jsonc
-{
-  "@typescript-eslint/no-this-alias": [
-    "error",
-    {
-      "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
-      "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
-    }
-  ]
-}
+setTimeout(function () {
+  self.doWork();
+});
 ```
+
+### ✅ Correct
+
+```js
+setTimeout(() => {
+  this.doWork();
+});
+```
+
+## Options
 
 ## When Not To Use It
 
 If you need to assign `this` to variables, you shouldn’t use this rule.
-
-## Related to
-
-- TSLint: [`no-this-assignment`](https://palantir.github.io/tslint/rules/no-this-assignment/)

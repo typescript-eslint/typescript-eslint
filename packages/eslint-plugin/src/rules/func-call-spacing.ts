@@ -1,4 +1,5 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type Options = [
@@ -19,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow spacing between function identifiers and their invocations',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },

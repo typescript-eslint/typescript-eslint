@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-floating-promises';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -335,6 +335,28 @@ async function test() {
   return returnsPromise();
 }
     `,
+    `
+const doSomething = async (
+  obj1: { a?: { b?: { c?: () => Promise<void> } } },
+  obj2: { a?: { b?: { c: () => Promise<void> } } },
+  obj3: { a?: { b: { c?: () => Promise<void> } } },
+  obj4: { a: { b: { c?: () => Promise<void> } } },
+  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
+  obj6?: { a: { b: { c?: () => Promise<void> } } },
+  callback?: () => Promise<void>,
+): Promise<void> => {
+  await obj1.a?.b?.c?.();
+  await obj2.a?.b?.c();
+  await obj3.a?.b.c?.();
+  await obj4.a.b.c?.();
+  await obj5.a?.().b?.c?.();
+  await obj6?.a.b.c?.();
+
+  return callback?.();
+};
+
+void doSomething();
+    `,
     // ignoreIIFE
     {
       code: `
@@ -415,12 +437,70 @@ async function test() {
       ],
     },
     {
+      code: `
+const doSomething = async (
+  obj1: { a?: { b?: { c?: () => Promise<void> } } },
+  obj2: { a?: { b?: { c: () => Promise<void> } } },
+  obj3: { a?: { b: { c?: () => Promise<void> } } },
+  obj4: { a: { b: { c?: () => Promise<void> } } },
+  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
+  obj6?: { a: { b: { c?: () => Promise<void> } } },
+  callback?: () => Promise<void>,
+): Promise<void> => {
+  obj1.a?.b?.c?.();
+  obj2.a?.b?.c();
+  obj3.a?.b.c?.();
+  obj4.a.b.c?.();
+  obj5.a?.().b?.c?.();
+  obj6?.a.b.c?.();
+
+  callback?.();
+};
+
+doSomething();
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 12,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 13,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 14,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 15,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 16,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 18,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 21,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
       options: [{ ignoreVoid: true }],
       code: `
 async function test() {
   Promise.resolve('value');
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           line: 3,
@@ -432,7 +512,7 @@ async function test() {
 async function test() {
   void Promise.resolve('value');
 }
-              `.trimRight(),
+      `,
             },
           ],
         },

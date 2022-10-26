@@ -1,7 +1,16 @@
-# Requires type annotations to exist (`typedef`)
+---
+description: 'Require type annotations in certain places.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/typedef** for documentation.
 
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.
+
+This rule can enforce type annotations in locations regardless of whether they're required.
+This is typically used to maintain consistency for element types that sometimes require them.
 
 ```ts
 class ContainsText {
@@ -16,43 +25,18 @@ class ContainsText {
 }
 ```
 
-**_Note:_** requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
+> To enforce type definitions existing on call signatures, use [`explicit-function-return-type`](./explicit-function-return-type.md), or [`explicit-module-boundary-types`](./explicit-module-boundary-types.md).
+
+:::caution
+
+Requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
 TypeScript is often better at inferring types than easily written type annotations would allow.
 
 **Instead of enabling `typedef`, it is generally recommended to use the `--noImplicitAny` and `--strictPropertyInitialization` compiler options to enforce type annotations only when useful.**
 
-## Rule Details
-
-This rule can enforce type annotations in locations regardless of whether they're required.
-This is typically used to maintain consistency for element types that sometimes require them.
-
-> To enforce type definitions existing on call signatures as per TSLint's `arrow-call-signature` and `call-signature` options, use `explicit-function-return-type`, or `explicit-module-boundary-types`.
+:::
 
 ## Options
-
-```ts
-type Options = {
-  arrayDestructuring?: boolean;
-  arrowParameter?: boolean;
-  memberVariableDeclaration?: boolean;
-  objectDestructuring?: boolean;
-  parameter?: boolean;
-  propertyDeclaration?: boolean;
-  variableDeclaration?: boolean;
-  variableDeclarationIgnoreFunction?: boolean;
-};
-
-const defaultOptions: Options = {
-  arrayDestructuring: false,
-  arrowParameter: false,
-  memberVariableDeclaration: false,
-  objectDestructuring: false,
-  parameter: false,
-  propertyDeclaration: false,
-  variableDeclaration: false,
-  variableDeclarationIgnoreFunction: false,
-};
-```
 
 For example, with the following configuration:
 
@@ -77,14 +61,18 @@ For example, with the following configuration:
 
 Whether to enforce type annotations on variables declared using array destructuring.
 
-Examples of **incorrect** code with `{ "arrayDestructuring": true }`:
+Examples of code with `{ "arrayDestructuring": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const [a] = [1];
 const [b, c] = [1, 2];
 ```
 
-Examples of **correct** code with `{ "arrayDestructuring": true }`:
+#### ✅ Correct
 
 ```ts
 const [a]: number[] = [1];
@@ -99,7 +87,11 @@ for (const [key, val] of new Map([['key', 1]])) {
 
 Whether to enforce type annotations for parameters of arrow functions.
 
-Examples of **incorrect** code with `{ "arrowParameter": true }`:
+Examples of code with `{ "arrowParameter": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const logsSize = size => console.log(size);
@@ -111,10 +103,10 @@ const mapper = {
 };
 ```
 
-Examples of **correct** code with `{ "arrowParameter": true }`:
+#### ✅ Correct
 
 ```ts
-const logsSize = (size: number) => console.log(text);
+const logsSize = (size: number) => console.log(size);
 
 ['hello', 'world'].map((text: string) => text.length);
 
@@ -127,7 +119,11 @@ const mapper = {
 
 Whether to enforce type annotations on member variables of classes.
 
-Examples of **incorrect** code with `{ "memberVariableDeclaration": true }`:
+Examples of code with `{ "memberVariableDeclaration": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class ContainsText {
@@ -136,7 +132,7 @@ class ContainsText {
 }
 ```
 
-Examples of **correct** code with `{ "memberVariableDeclaration": true }`:
+#### ✅ Correct
 
 ```ts
 class ContainsText {
@@ -149,14 +145,18 @@ class ContainsText {
 
 Whether to enforce type annotations on variables declared using object destructuring.
 
-Examples of **incorrect** code with `{ "objectDestructuring": true }`:
+Examples of code with `{ "objectDestructuring": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const { length } = 'text';
 const [b, c] = Math.random() ? [1, 2] : [3, 4];
 ```
 
-Examples of **correct** code with `{ "objectDestructuring": true }`:
+#### ✅ Correct
 
 ```ts
 const { length }: { length: number } = 'text';
@@ -170,7 +170,11 @@ for (const { key, val } of [{ key: 'key', val: 1 }]) {
 
 Whether to enforce type annotations for parameters of functions and methods.
 
-Examples of **incorrect** code with `{ "parameter": true }`:
+Examples of code with `{ "parameter": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 function logsSize(size): void {
@@ -198,7 +202,7 @@ class Logger {
 }
 ```
 
-Examples of **correct** code with `{ "parameter": true }`:
+#### ✅ Correct
 
 ```ts
 function logsSize(size: number): void {
@@ -230,7 +234,11 @@ class Logger {
 
 Whether to enforce type annotations for properties of interfaces and types.
 
-Examples of **incorrect** code with `{ "propertyDeclaration": true }`:
+Examples of code with `{ "propertyDeclaration": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 type Members = {
@@ -239,7 +247,7 @@ type Members = {
 };
 ```
 
-Examples of **correct** code with `{ "propertyDeclaration": true }`:
+#### ✅ Correct
 
 ```ts
 type Members = {
@@ -252,7 +260,11 @@ type Members = {
 
 Whether to enforce type annotations for variable declarations, excluding array and object destructuring.
 
-Examples of **incorrect** code with `{ "variableDeclaration": true }`:
+Examples of code with `{ "variableDeclaration": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const text = 'text';
@@ -260,7 +272,7 @@ let initialText = 'text';
 let delayedText;
 ```
 
-Examples of **correct** code with `{ "variableDeclaration": true }`:
+#### ✅ Correct
 
 ```ts
 const text: string = 'text';
@@ -272,13 +284,17 @@ let delayedText: string;
 
 Ignore variable declarations for non-arrow and arrow functions.
 
-Examples of **incorrect** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+Examples of code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 const text = 'text';
 ```
 
-Examples of **correct** code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
+#### ✅ Correct
 
 ```ts
 const a = (): void => {};
@@ -302,7 +318,3 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
-
-## Compatibility
-
-- TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)

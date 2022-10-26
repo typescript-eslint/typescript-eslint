@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
-import { clearCaches, parseAndGenerateServices } from '../../src';
+
+import { clearWatchCaches } from '../../src/create-program/createWatchProgram';
+import { parseAndGenerateServices } from '../../src/parser';
 
 const CONTENTS = {
   foo: 'console.log("foo")',
@@ -17,7 +19,7 @@ const cwdCopy = process.cwd();
 const tmpDirs = new Set<tmp.DirResult>();
 afterEach(() => {
   // stop watching the files and folders
-  clearCaches();
+  clearWatchCaches();
 
   // clean up the temporary files and folders
   tmpDirs.forEach(t => t.removeCallback());
@@ -192,7 +194,7 @@ function baseTests(
     writeFile(PROJECT_DIR, 'bar');
 
     // make sure that file is correctly created
-    expect(existsSync('bar', PROJECT_DIR)).toEqual(true);
+    expect(existsSync('bar', PROJECT_DIR)).toBe(true);
 
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR, true)).not.toThrow();
@@ -212,8 +214,8 @@ function baseTests(
     writeFile(PROJECT_DIR, 'bar');
 
     // make sure that file is correctly created
-    expect(existsSync('bar')).toEqual(true);
-    expect(existsSync('bar', PROJECT_DIR)).toEqual(true);
+    expect(existsSync('bar')).toBe(true);
+    expect(existsSync('bar', PROJECT_DIR)).toBe(true);
 
     // both files should parse fine now
     expect(() => parseFile('foo', PROJECT_DIR, true, true)).not.toThrow();

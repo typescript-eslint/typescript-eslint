@@ -3,21 +3,22 @@
  * This is due to some really funky type conversions between different node types.
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment  */
 
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/indent';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('indent');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const KNOWN_NODES = new Set([
   // Class properties aren't yet supported by eslint...
-  AST_NODE_TYPES.ClassProperty,
+  AST_NODE_TYPES.PropertyDefinition,
 
   // ts keywords
   AST_NODE_TYPES.TSAbstractKeyword,
@@ -33,7 +34,7 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSNullKeyword,
 
   // ts specific nodes we want to support
-  AST_NODE_TYPES.TSAbstractClassProperty,
+  AST_NODE_TYPES.TSAbstractPropertyDefinition,
   AST_NODE_TYPES.TSAbstractMethodDefinition,
   AST_NODE_TYPES.TSArrayType,
   AST_NODE_TYPES.TSAsExpression,
@@ -65,7 +66,6 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.TSNonNullExpression,
   AST_NODE_TYPES.TSParameterProperty,
-  AST_NODE_TYPES.TSParenthesizedType,
   'TSPlusToken',
   AST_NODE_TYPES.TSPropertySignature,
   AST_NODE_TYPES.TSQualifiedName,
@@ -90,17 +90,14 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      wrongIndentation:
-        'Expected indentation of {{expected}} but found {{actual}}.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     // typescript docs and playground use 4 space indent
@@ -138,7 +135,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.TSEnumMember
         | TSESTree.TypeElement,
       type:
-        | AST_NODE_TYPES.ClassProperty
+        | AST_NODE_TYPES.PropertyDefinition
         | AST_NODE_TYPES.Property = AST_NODE_TYPES.Property,
     ): TSESTree.Node | null {
       const base = {
@@ -170,7 +167,7 @@ export default util.createRule<Options, MessageIds>({
           readonly: false,
           declare: false,
           ...base,
-        } as TSESTree.ClassProperty;
+        } as TSESTree.PropertyDefinition;
       }
     }
 
@@ -241,10 +238,9 @@ export default util.createRule<Options, MessageIds>({
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
           type: AST_NODE_TYPES.ObjectExpression,
-          properties: (node.members as (
-            | TSESTree.TSEnumMember
-            | TSESTree.TypeElement
-          )[]).map(
+          properties: (
+            node.members as (TSESTree.TSEnumMember | TSESTree.TypeElement)[]
+          ).map(
             member =>
               TSPropertySignatureToProperty(member) as TSESTree.Property,
           ),
@@ -333,8 +329,8 @@ export default util.createRule<Options, MessageIds>({
             p =>
               TSPropertySignatureToProperty(
                 p,
-                AST_NODE_TYPES.ClassProperty,
-              ) as TSESTree.ClassProperty,
+                AST_NODE_TYPES.PropertyDefinition,
+              ) as TSESTree.PropertyDefinition,
           ),
 
           // location data
@@ -396,7 +392,7 @@ export default util.createRule<Options, MessageIds>({
               computed: false,
               method: false,
               shorthand: false,
-            } as any,
+            },
           ],
 
           // location data

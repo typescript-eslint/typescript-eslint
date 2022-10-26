@@ -1,12 +1,6 @@
-import { AST_NODE_TYPES, Lib, TSESTree } from '@typescript-eslint/types';
-import { ClassVisitor } from './ClassVisitor';
-import { ExportVisitor } from './ExportVisitor';
-import { ImportVisitor } from './ImportVisitor';
-import { PatternVisitor } from './PatternVisitor';
-import { ReferenceFlag, ReferenceImplicitGlobal } from './Reference';
-import { ScopeManager } from '../ScopeManager';
-import { TypeVisitor } from './TypeVisitor';
-import { Visitor, VisitorOptions } from './Visitor';
+import type { Lib, TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { assert } from '../assert';
 import {
   CatchClauseDefinition,
@@ -19,10 +13,20 @@ import {
   VariableDefinition,
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
-import { Scope, GlobalScope } from '../scope';
+import type { GlobalScope, Scope } from '../scope';
+import type { ScopeManager } from '../ScopeManager';
+import { ClassVisitor } from './ClassVisitor';
+import { ExportVisitor } from './ExportVisitor';
+import { ImportVisitor } from './ImportVisitor';
+import { PatternVisitor } from './PatternVisitor';
+import type { ReferenceImplicitGlobal } from './Reference';
+import { ReferenceFlag } from './Reference';
+import { TypeVisitor } from './TypeVisitor';
+import type { VisitorOptions } from './Visitor';
+import { Visitor } from './Visitor';
 
 interface ReferencerOptions extends VisitorOptions {
-  jsxPragma: string;
+  jsxPragma: string | null;
   jsxFragmentName: string | null;
   lib: Lib[];
   emitDecoratorMetadata: boolean;
@@ -30,7 +34,7 @@ interface ReferencerOptions extends VisitorOptions {
 
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
-  #jsxPragma: string;
+  #jsxPragma: string | null;
   #jsxFragmentName: string | null;
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
@@ -87,14 +91,13 @@ class Referencer extends Visitor {
       /* istanbul ignore if */ if (!variables) {
         throw new Error(`Invalid value for lib provided: ${lib}`);
       }
-      for (const variable of Object.values(variables)) {
-        globalScope.defineImplicitVariable(variable);
+      for (const [name, variable] of Object.entries(variables)) {
+        globalScope.defineImplicitVariable(name, variable);
       }
     }
 
     // for const assertions (`{} as const` / `<const>{}`)
-    globalScope.defineImplicitVariable({
-      name: 'const',
+    globalScope.defineImplicitVariable('const', {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: true,
       isValueVariable: false,
@@ -121,7 +124,7 @@ class Referencer extends Visitor {
   }
 
   private referenceJsxPragma(): void {
-    if (this.#hasReferencedJsxFactory) {
+    if (this.#jsxPragma === null || this.#hasReferencedJsxFactory) {
       return;
     }
     this.#hasReferencedJsxFactory = this.referenceInSomeUpperScope(
@@ -320,7 +323,7 @@ class Referencer extends Visitor {
       case AST_NODE_TYPES.TSAsExpression:
       case AST_NODE_TYPES.TSTypeAssertion:
         // explicitly visit the type annotation
-        this.visit(left.typeAnnotation);
+        this.visitType(left.typeAnnotation);
       // intentional fallthrough
       case AST_NODE_TYPES.TSNonNullExpression:
         // unwrap the expression
@@ -510,17 +513,27 @@ class Referencer extends Visitor {
   }
 
   protected JSXMemberExpression(node: TSESTree.JSXMemberExpression): void {
-    this.visit(node.object);
+    if (node.object.type !== AST_NODE_TYPES.JSXIdentifier) {
+      this.visit(node.object);
+    } else {
+      if (node.object.name !== 'this') {
+        this.visit(node.object);
+      }
+    }
     // we don't ever reference the property as it's always going to be a property on the thing
   }
-
   protected JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
     this.referenceJsxPragma();
     if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
-      if (node.name.name[0].toUpperCase() === node.name.name[0]) {
+      if (
+        node.name.name[0].toUpperCase() === node.name.name[0] ||
+        node.name.name === 'this'
+      ) {
         // lower cased component names are always treated as "intrinsic" names, and are converted to a string,
         // not a variable by JSX transforms:
         // <div /> => React.createElement("div", null)
+
+        // the only case we want to visit a lower-cased component has its name as "this",
         this.visit(node.name);
       }
     } else {
@@ -550,6 +563,10 @@ class Referencer extends Visitor {
   protected NewExpression(node: TSESTree.NewExpression): void {
     this.visitChildren(node, ['typeParameters']);
     this.visitType(node.typeParameters);
+  }
+
+  protected PrivateIdentifier(): void {
+    // private identifiers are members on classes and thus have no variables to to reference
   }
 
   protected Program(node: TSESTree.Program): void {
@@ -679,6 +696,13 @@ class Referencer extends Visitor {
     this.close(node);
   }
 
+  protected TSInstantiationExpression(
+    node: TSESTree.TSInstantiationExpression,
+  ): void {
+    this.visitChildren(node, ['typeParameters']);
+    this.visitType(node.typeParameters);
+  }
+
   protected TSInterfaceDeclaration(
     node: TSESTree.TSInterfaceDeclaration,
   ): void {
@@ -774,6 +798,10 @@ class Referencer extends Visitor {
     this.visit(node.body);
 
     this.close(node);
+  }
+
+  protected ImportAttribute(): void {
+    // import assertions are module metadata and thus have no variables to reference
   }
 }
 

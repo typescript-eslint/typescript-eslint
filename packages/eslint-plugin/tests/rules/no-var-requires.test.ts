@@ -10,6 +10,11 @@ ruleTester.run('no-var-requires', rule, {
     "import foo = require('foo');",
     "require('foo');",
     "require?.('foo');",
+    `
+import { createRequire } from 'module';
+const require = createRequire('foo');
+const json = require('./some.json');
+    `,
   ],
   invalid: [
     {
@@ -129,6 +134,25 @@ ruleTester.run('no-var-requires', rule, {
           messageId: 'noVarReqs',
           line: 1,
           column: 18,
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3883
+      code: `
+const configValidator = new Validator(require('./a.json'));
+configValidator.addSchema(require('./a.json'));
+      `,
+      errors: [
+        {
+          messageId: 'noVarReqs',
+          line: 2,
+          column: 39,
+        },
+        {
+          messageId: 'noVarReqs',
+          line: 3,
+          column: 27,
         },
       ],
     },

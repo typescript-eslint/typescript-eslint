@@ -1,6 +1,9 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/keyword-spacing';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('keyword-spacing');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -11,18 +14,13 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after keywords',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      expectedBefore: 'Expected space(s) before "{{value}}".',
-      expectedAfter: 'Expected space(s) after "{{value}}".',
-      unexpectedBefore: 'Unexpected space(s) before "{{value}}".',
-      unexpectedAfter: 'Unexpected space(s) after "{{value}}".',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [{}],
 

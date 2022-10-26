@@ -1,9 +1,10 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-useless-constructor';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-useless-constructor');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -32,14 +33,13 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
 }
 
 /**
- * Check if method is not unless due to typescript parameter properties
+ * Check if method is not useless due to typescript parameter properties and decorators
  */
 function checkParams(node: TSESTree.MethodDefinition): boolean {
-  return (
-    !node.value.params ||
-    !node.value.params.some(
-      param => param.type === AST_NODE_TYPES.TSParameterProperty,
-    )
+  return !node.value.params.some(
+    param =>
+      param.type === AST_NODE_TYPES.TSParameterProperty ||
+      param.decorators?.length,
   );
 }
 
@@ -49,11 +49,12 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary constructors',
-      category: 'Best Practices',
-      recommended: false,
+      recommended: 'strict',
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
+    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
     messages: baseRule.meta.messages ?? {
       noUselessConstructor: 'Useless constructor.',
     },

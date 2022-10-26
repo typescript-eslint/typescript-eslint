@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`javascript modules invalid-import-missing-module-specifier.src 1`] = `
-Object {
+TSError {
   "column": 0,
   "index": 20,
   "lineNumber": 2,

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "4.15.2",
+  "version": "5.41.0",
   "description": "TypeScript scope analyser for ESLint",
   "keywords": [
     "eslint",
@@ -8,7 +8,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "files": [
     "dist",
@@ -28,28 +28,27 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts3.4/dist",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
-    "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-lib.ts",
-    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
-    "test": "jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "build": "cd ../../ && nx build @typescript-eslint/scope-manager",
+    "clean": "cd ../../ && nx clean @typescript-eslint/scope-manager",
+    "clean-fixtures": "cd ../../ && nx clean-fixtures @typescript-eslint/scope-manager",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "generate:lib": "cd ../../ && nx generate-lib @typescript-eslint/scope-manager",
+    "lint": "cd ../../ && nx lint @typescript-eslint/scope-manager",
+    "test": "cd ../../ && nx test @typescript-eslint/scope-manager --code-coverage",
+    "typecheck": "cd ../../ && nx typecheck @typescript-eslint/scope-manager"
   },
   "dependencies": {
-    "@typescript-eslint/types": "4.15.2",
-    "@typescript-eslint/visitor-keys": "4.15.2"
+    "@typescript-eslint/types": "5.41.0",
+    "@typescript-eslint/visitor-keys": "5.41.0"
   },
   "devDependencies": {
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "4.15.2",
+    "@typescript-eslint/typescript-estree": "5.41.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "*",
-    "pretty-format": "^26.4.2",
+    "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*"
   },

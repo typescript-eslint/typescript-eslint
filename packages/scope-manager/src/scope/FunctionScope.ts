@@ -1,10 +1,12 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { Scope } from './Scope';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
+import type { Reference } from '../referencer/Reference';
+import type { ScopeManager } from '../ScopeManager';
+import type { Variable } from '../variable';
+import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
-import { Reference } from '../referencer/Reference';
-import { ScopeManager } from '../ScopeManager';
-import { Variable } from '../variable';
 
 class FunctionScope extends ScopeBase<
   ScopeType.function,
@@ -44,7 +46,7 @@ class FunctionScope extends ScopeBase<
   //         console.log(a)
   //     }
   protected isValidResolution(ref: Reference, variable: Variable): boolean {
-    // If `options.gloablReturn` is true, `this.block` becomes a Program node.
+    // If `options.globalReturn` is true, `this.block` becomes a Program node.
     if (this.block.type === AST_NODE_TYPES.Program) {
       return true;
     }

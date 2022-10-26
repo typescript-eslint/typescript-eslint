@@ -290,18 +290,15 @@ ruleTester.run('quotes', rule, {
       options: ['backtick'],
     },
     {
-      code:
-        'function foo() { "use strict"; "use strong"; "use asm"; var foo = `backtick`; }',
+      code: 'function foo() { "use strict"; "use strong"; "use asm"; var foo = `backtick`; }',
       options: ['backtick'],
     },
     {
-      code:
-        "(function() { 'use strict'; 'use strong'; 'use asm'; var foo = `backtick`; })();",
+      code: "(function() { 'use strict'; 'use strong'; 'use asm'; var foo = `backtick`; })();",
       options: ['backtick'],
     },
     {
-      code:
-        '(() => { "use strict"; "use strong"; "use asm"; var foo = `backtick`; })();',
+      code: '(() => { "use strict"; "use strong"; "use asm"; var foo = `backtick`; })();',
       options: ['backtick'],
     },
 
@@ -426,7 +423,7 @@ interface Foo {
       options: ['backtick'],
     },
 
-    // ClassProperty
+    // PropertyDefinition
     {
       code: `
 class Foo {
@@ -454,20 +451,20 @@ class Foo {
       options: ['backtick'],
     },
 
-    // TSAbstractClassProperty
+    // TSAbstractPropertyDefinition
     {
       code: `
 abstract class Foo {
-  public abstract a = "";
-  public abstract "a-b" = "";
+  public abstract a: "";
+  public abstract "a-b": "";
 }
       `,
     },
     {
       code: `
 abstract class Foo {
-  public abstract a = '';
-  public abstract 'a-b' = '';
+  public abstract a: '';
+  public abstract 'a-b': '';
 }
       `,
       options: ['single'],
@@ -475,8 +472,8 @@ abstract class Foo {
     {
       code: `
 abstract class Foo {
-  public abstract a = \`\`;
-  public abstract 'a-b' = \`\`;
+  public abstract a: \`\`;
+  public abstract 'a-b': \`\`;
 }
       `,
       options: ['backtick'],
@@ -954,7 +951,7 @@ interface Foo {
       options: ['single'],
     },
 
-    // ClassProperty
+    // PropertyDefinition
     {
       code: `
 class Foo {
@@ -1046,25 +1043,25 @@ class Foo {
       options: ['backtick'],
     },
 
-    // TSAbstractClassProperty
+    // TSAbstractPropertyDefinition
     {
       code: `
 abstract class Foo {
-  public abstract a = '';
-  public abstract 'a-b' = '';
+  public abstract a: '';
+  public abstract 'a-b': '';
 }
       `,
       output: `
 abstract class Foo {
-  public abstract a = "";
-  public abstract "a-b" = "";
+  public abstract a: "";
+  public abstract "a-b": "";
 }
       `,
       errors: [
         {
           ...useDoubleQuote,
           line: 3,
-          column: 23,
+          column: 22,
         },
         {
           ...useDoubleQuote,
@@ -1074,28 +1071,28 @@ abstract class Foo {
         {
           ...useDoubleQuote,
           line: 4,
-          column: 27,
+          column: 26,
         },
       ],
     },
     {
       code: `
 abstract class Foo {
-  public abstract a = "";
-  public abstract "a-b" = "";
+  public abstract a: "";
+  public abstract "a-b": "";
 }
       `,
       output: `
 abstract class Foo {
-  public abstract a = '';
-  public abstract 'a-b' = '';
+  public abstract a: '';
+  public abstract 'a-b': '';
 }
       `,
       errors: [
         {
           ...useSingleQuote,
           line: 3,
-          column: 23,
+          column: 22,
         },
         {
           ...useSingleQuote,
@@ -1105,37 +1102,10 @@ abstract class Foo {
         {
           ...useSingleQuote,
           line: 4,
-          column: 27,
+          column: 26,
         },
       ],
       options: ['single'],
-    },
-    {
-      code: `
-abstract class Foo {
-  public abstract a = "";
-  public abstract "a-b" = "";
-}
-      `,
-      output: `
-abstract class Foo {
-  public abstract a = \`\`;
-  public abstract "a-b" = \`\`;
-}
-      `,
-      errors: [
-        {
-          ...useBacktick,
-          line: 3,
-          column: 23,
-        },
-        {
-          ...useBacktick,
-          line: 4,
-          column: 27,
-        },
-      ],
-      options: ['backtick'],
     },
 
     // TSAbstractMethodDefinition

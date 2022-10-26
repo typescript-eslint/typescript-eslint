@@ -1,7 +1,5 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -10,8 +8,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Require the use of the `namespace` keyword instead of the `module` keyword to declare custom TypeScript modules',
-      category: 'Best Practices',
+        'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules',
       recommended: 'error',
     },
     fixable: 'code',

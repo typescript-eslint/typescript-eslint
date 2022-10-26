@@ -1,8 +1,7 @@
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
-import {
-  TSESLint,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
 
 export type Options = [
   {
@@ -17,17 +16,17 @@ export type MessageIds =
 export default util.createRule<Options, MessageIds>({
   name: 'no-implicit-any-catch',
   meta: {
+    deprecated: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow usage of the implicit `any` type in catch clauses',
-      category: 'Best Practices',
       recommended: false,
-      suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
-      implicitAnyInCatch: 'Implicit any in catch clause',
-      explicitAnyInCatch: 'Explicit any in catch clause',
+      implicitAnyInCatch: 'Implicit any in catch clause.',
+      explicitAnyInCatch: 'Explicit any in catch clause.',
       suggestExplicitUnknown:
         'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
     },
@@ -37,6 +36,8 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowExplicitAny: {
+            description:
+              'Whether to disallow specifying `: any` as the error type as well. See also `no-explicit-any`.',
             type: 'boolean',
           },
         },

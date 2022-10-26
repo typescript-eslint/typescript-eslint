@@ -17,6 +17,11 @@ ruleTester.run('no-require-imports', rule, {
     'import lib9 = lib2.anotherSubImport;',
     "import lib10 from 'lib10';",
     "var lib3 = load?.('not_an_import');",
+    `
+import { createRequire } from 'module';
+const require = createRequire();
+require('remark-preset-prettier');
+    `,
   ],
   invalid: [
     {

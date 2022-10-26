@@ -1,7 +1,6 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -10,7 +9,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
-      category: 'Stylistic Issues',
       recommended: 'error',
       extendsBaseRule: true,
     },

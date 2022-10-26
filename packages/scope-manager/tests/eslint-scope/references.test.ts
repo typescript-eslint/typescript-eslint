@@ -18,7 +18,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -96,7 +96,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -147,7 +147,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBeNull();
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -254,7 +254,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[1]);
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -311,7 +311,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[1]);
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -364,7 +364,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -385,7 +385,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -406,7 +406,7 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).not.toBeUndefined();
+      expect(reference.writeExpr).toBeDefined();
       expect(reference.isWrite()).toBeTruthy();
       expect(reference.isRead()).toBeFalsy();
     });
@@ -643,6 +643,7 @@ describe('References:', () => {
       expect(constructorParamTypeRef1.isValueReference).toBe(true);
 
       const setterParamTypeRef3 = classBScope.childScopes[1].references[0];
+      // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
       expect(setterParamTypeRef3.identifier.name).toBe('Type');
       expect(setterParamTypeRef3.isTypeReference).toBe(true);
       expect(setterParamTypeRef3.isValueReference).toBe(false);

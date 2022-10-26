@@ -1,9 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-  AST_TOKEN_TYPES,
-  TSESLint,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type AccessibilityLevel =
@@ -25,18 +22,36 @@ interface Config {
 
 type Options = [Config];
 
-type MessageIds = 'unwantedPublicAccessibility' | 'missingAccessibility';
+type MessageIds =
+  | 'unwantedPublicAccessibility'
+  | 'missingAccessibility'
+  | 'addExplicitAccessibility';
 
-const accessibilityLevel = { enum: ['explicit', 'no-public', 'off'] };
+const accessibilityLevel = {
+  oneOf: [
+    {
+      const: 'explicit',
+      description: 'Always require an accessor.',
+    },
+    {
+      const: 'no-public',
+      description: 'Require an accessor except when public.',
+    },
+    {
+      const: 'off',
+      description: 'Never check whether there is an accessor.',
+    },
+  ],
+};
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
+    hasSuggestions: true,
     type: 'problem',
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
-      category: 'Stylistic Issues',
       // too opinionated to be recommended
       recommended: false,
     },
@@ -46,34 +61,43 @@ export default util.createRule<Options, MessageIds>({
         'Missing accessibility modifier on {{type}} {{name}}.',
       unwantedPublicAccessibility:
         'Public accessibility modifier on {{type}} {{name}}.',
+      addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          accessibility: accessibilityLevel,
-          overrides: {
-            type: 'object',
-            properties: {
-              accessors: accessibilityLevel,
-              constructors: accessibilityLevel,
-              methods: accessibilityLevel,
-              properties: accessibilityLevel,
-              parameterProperties: accessibilityLevel,
-            },
-
-            additionalProperties: false,
-          },
-          ignoredMethodNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        },
-        additionalProperties: false,
+    schema: {
+      $defs: {
+        accessibilityLevel,
       },
-    ],
+      prefixItems: [
+        {
+          type: 'object',
+          properties: {
+            accessibility: { $ref: '#/$defs/accessibilityLevel' },
+            overrides: {
+              type: 'object',
+              properties: {
+                accessors: { $ref: '#/$defs/accessibilityLevel' },
+                constructors: { $ref: '#/$defs/accessibilityLevel' },
+                methods: { $ref: '#/$defs/accessibilityLevel' },
+                properties: { $ref: '#/$defs/accessibilityLevel' },
+                parameterProperties: {
+                  $ref: '#/$defs/accessibilityLevel',
+                },
+              },
+
+              additionalProperties: false,
+            },
+            ignoredMethodNames: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+            },
+          },
+          additionalProperties: false,
+        },
+      ],
+      type: 'array',
+    },
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
@@ -86,26 +110,6 @@ export default util.createRule<Options, MessageIds>({
     const propCheck = overrides.properties ?? baseCheck;
     const paramPropCheck = overrides.parameterProperties ?? baseCheck;
     const ignoredMethodNames = new Set(option.ignoredMethodNames ?? []);
-    /**
-     * Generates the report for rule violations
-     */
-    function reportIssue(
-      messageId: MessageIds,
-      nodeType: string,
-      node: TSESTree.Node,
-      nodeName: string,
-      fix: TSESLint.ReportFixFunction | null = null,
-    ): void {
-      context.report({
-        node: node,
-        messageId: messageId,
-        data: {
-          type: nodeType,
-          name: nodeName,
-        },
-        fix: fix,
-      });
-    }
 
     /**
      * Checks if a method declaration has an accessibility modifier.
@@ -114,6 +118,10 @@ export default util.createRule<Options, MessageIds>({
     function checkMethodAccessibilityModifier(
       methodDefinition: TSESTree.MethodDefinition,
     ): void {
+      if (methodDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return;
+      }
+
       let nodeType = 'method definition';
       let check = baseCheck;
       switch (methodDefinition.kind) {
@@ -130,7 +138,10 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const methodName = util.getNameFromMember(methodDefinition, sourceCode);
+      const { name: methodName } = util.getNameFromMember(
+        methodDefinition,
+        sourceCode,
+      );
 
       if (check === 'off' || ignoredMethodNames.has(methodName)) {
         return;
@@ -140,20 +151,25 @@ export default util.createRule<Options, MessageIds>({
         check === 'no-public' &&
         methodDefinition.accessibility === 'public'
       ) {
-        reportIssue(
-          'unwantedPublicAccessibility',
-          nodeType,
-          methodDefinition,
-          methodName,
-          getUnwantedPublicAccessibilityFixer(methodDefinition),
-        );
+        context.report({
+          node: methodDefinition,
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: nodeType,
+            name: methodName,
+          },
+          fix: getUnwantedPublicAccessibilityFixer(methodDefinition),
+        });
       } else if (check === 'explicit' && !methodDefinition.accessibility) {
-        reportIssue(
-          'missingAccessibility',
-          nodeType,
-          methodDefinition,
-          methodName,
-        );
+        context.report({
+          node: methodDefinition,
+          messageId: 'missingAccessibility',
+          data: {
+            type: nodeType,
+            name: methodName,
+          },
+          suggest: getMissingAccessibilitySuggestions(methodDefinition),
+        });
       }
     }
 
@@ -163,7 +179,9 @@ export default util.createRule<Options, MessageIds>({
     function getUnwantedPublicAccessibilityFixer(
       node:
         | TSESTree.MethodDefinition
-        | TSESTree.ClassProperty
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
     ): TSESLint.ReportFixFunction {
       return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
@@ -175,9 +193,8 @@ export default util.createRule<Options, MessageIds>({
             token.type === AST_TOKEN_TYPES.Keyword &&
             token.value === 'public'
           ) {
-            const commensAfterPublicKeyword = sourceCode.getCommentsAfter(
-              token,
-            );
+            const commensAfterPublicKeyword =
+              sourceCode.getCommentsAfter(token);
             if (commensAfterPublicKeyword.length) {
               // public /* Hi there! */ static foo()
               // ^^^^^^^
@@ -199,33 +216,92 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Creates a fixer that adds a "public" keyword with following spaces
+     */
+    function getMissingAccessibilitySuggestions(
+      node:
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition
+        | TSESTree.TSParameterProperty,
+    ): TSESLint.ReportSuggestionArray<MessageIds> {
+      function fix(
+        accessibility: TSESTree.Accessibility,
+        fixer: TSESLint.RuleFixer,
+      ): TSESLint.RuleFix | null {
+        if (node?.decorators?.length) {
+          const lastDecorator = node.decorators[node.decorators.length - 1];
+          const nextToken = sourceCode.getTokenAfter(lastDecorator)!;
+          return fixer.insertTextBefore(nextToken, `${accessibility} `);
+        }
+        return fixer.insertTextBefore(node, `${accessibility} `);
+      }
+
+      return [
+        {
+          messageId: 'addExplicitAccessibility',
+          data: { type: 'public' },
+          fix: fixer => fix('public', fixer),
+        },
+        {
+          messageId: 'addExplicitAccessibility',
+          data: { type: 'private' },
+          fix: fixer => fix('private', fixer),
+        },
+        {
+          messageId: 'addExplicitAccessibility',
+          data: { type: 'protected' },
+          fix: fixer => fix('protected', fixer),
+        },
+      ];
+    }
+
+    /**
      * Checks if property has an accessibility modifier.
-     * @param classProperty The node representing a ClassProperty.
+     * @param propertyDefinition The node representing a PropertyDefinition.
      */
     function checkPropertyAccessibilityModifier(
-      classProperty: TSESTree.ClassProperty,
+      propertyDefinition:
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractPropertyDefinition,
     ): void {
+      if (propertyDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return;
+      }
+
       const nodeType = 'class property';
 
-      const propertyName = util.getNameFromMember(classProperty, sourceCode);
+      const { name: propertyName } = util.getNameFromMember(
+        propertyDefinition,
+        sourceCode,
+      );
       if (
         propCheck === 'no-public' &&
-        classProperty.accessibility === 'public'
+        propertyDefinition.accessibility === 'public'
       ) {
-        reportIssue(
-          'unwantedPublicAccessibility',
-          nodeType,
-          classProperty,
-          propertyName,
-          getUnwantedPublicAccessibilityFixer(classProperty),
-        );
-      } else if (propCheck === 'explicit' && !classProperty.accessibility) {
-        reportIssue(
-          'missingAccessibility',
-          nodeType,
-          classProperty,
-          propertyName,
-        );
+        context.report({
+          node: propertyDefinition,
+          messageId: 'unwantedPublicAccessibility',
+          data: {
+            type: nodeType,
+            name: propertyName,
+          },
+          fix: getUnwantedPublicAccessibilityFixer(propertyDefinition),
+        });
+      } else if (
+        propCheck === 'explicit' &&
+        !propertyDefinition.accessibility
+      ) {
+        context.report({
+          node: propertyDefinition,
+          messageId: 'missingAccessibility',
+          data: {
+            type: nodeType,
+            name: propertyName,
+          },
+          suggest: getMissingAccessibilitySuggestions(propertyDefinition),
+        });
       }
     }
 
@@ -254,19 +330,29 @@ export default util.createRule<Options, MessageIds>({
       switch (paramPropCheck) {
         case 'explicit': {
           if (!node.accessibility) {
-            reportIssue('missingAccessibility', nodeType, node, nodeName);
+            context.report({
+              node,
+              messageId: 'missingAccessibility',
+              data: {
+                type: nodeType,
+                name: nodeName,
+              },
+              suggest: getMissingAccessibilitySuggestions(node),
+            });
           }
           break;
         }
         case 'no-public': {
           if (node.accessibility === 'public' && node.readonly) {
-            reportIssue(
-              'unwantedPublicAccessibility',
-              nodeType,
+            context.report({
               node,
-              nodeName,
-              getUnwantedPublicAccessibilityFixer(node),
-            );
+              messageId: 'unwantedPublicAccessibility',
+              data: {
+                type: nodeType,
+                name: nodeName,
+              },
+              fix: getUnwantedPublicAccessibilityFixer(node),
+            });
           }
           break;
         }
@@ -274,9 +360,11 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
+      'MethodDefinition, TSAbstractMethodDefinition':
+        checkMethodAccessibilityModifier,
+      'PropertyDefinition, TSAbstractPropertyDefinition':
+        checkPropertyAccessibilityModifier,
       TSParameterProperty: checkParameterPropertyAccessibilityModifier,
-      ClassProperty: checkPropertyAccessibilityModifier,
-      MethodDefinition: checkMethodAccessibilityModifier,
     };
   },
 });

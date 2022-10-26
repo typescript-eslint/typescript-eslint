@@ -1,8 +1,6 @@
-import {
-  TSESTree,
-  TSESLint,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type MessageIds = 'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax';
@@ -19,7 +17,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow variable redeclaration',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },
@@ -63,10 +60,12 @@ export default util.createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSModuleDeclaration,
       AST_NODE_TYPES.FunctionDeclaration,
     ]);
+    const ENUM_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
+      AST_NODE_TYPES.TSEnumDeclaration,
+      AST_NODE_TYPES.TSModuleDeclaration,
+    ]);
 
-    function* iterateDeclarations(
-      variable: TSESLint.Scope.Variable,
-    ): Generator<
+    function* iterateDeclarations(variable: TSESLint.Scope.Variable): Generator<
       {
         type: 'builtin' | 'syntax' | 'comment';
         node?: TSESTree.Identifier | TSESTree.Comment;
@@ -166,8 +165,29 @@ export default util.createRule<Options, MessageIds>({
             return;
           }
 
-          // there's more than one class declaration, which needs to be reported
+          // there's more than one function declaration, which needs to be reported
           for (const { identifier } of functionDecls) {
+            yield { type: 'syntax', node: identifier, loc: identifier.loc };
+          }
+          return;
+        }
+
+        if (
+          // enum + namespace merging
+          identifiers.every(({ parent }) =>
+            ENUM_DECLARATION_MERGE_NODES.has(parent.type),
+          )
+        ) {
+          const enumDecls = identifiers.filter(
+            ({ parent }) => parent.type === AST_NODE_TYPES.TSEnumDeclaration,
+          );
+          if (enumDecls.length === 1) {
+            // safe declaration merging
+            return;
+          }
+
+          // there's more than one enum declaration, which needs to be reported
+          for (const { identifier } of enumDecls) {
             yield { type: 'syntax', node: identifier, loc: identifier.loc };
           }
           return;
@@ -181,9 +201,8 @@ export default util.createRule<Options, MessageIds>({
 
     function findVariablesInScope(scope: TSESLint.Scope.Scope): void {
       for (const variable of scope.variables) {
-        const [declaration, ...extraDeclarations] = iterateDeclarations(
-          variable,
-        );
+        const [declaration, ...extraDeclarations] =
+          iterateDeclarations(variable);
 
         if (extraDeclarations.length === 0) {
           continue;

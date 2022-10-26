@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/utils/src/eslint-utils';
+
 import rule from '../../src/rules/promise-function-async';
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
@@ -611,6 +613,60 @@ async function foo(): Promise<string> | SPromise<boolean> {
   return Math.random() > 0.5
     ? Promise.resolve('value')
     : Promise.resolve(false);
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  @decorator
+  public test() {
+    return Promise.resolve(123);
+  }
+}
+      `,
+      errors: [{ line: 4, column: 3, messageId }],
+      output: `
+class Test {
+  @decorator
+  public async test() {
+    return Promise.resolve(123);
+  }
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  @decorator(async () => {})
+  static protected[(1)]() {
+    return Promise.resolve(1);
+  }
+  public'bar'() {
+    return Promise.resolve(2);
+  }
+  private['baz']() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      errors: [
+        { line: 4, column: 3, messageId },
+        { line: 7, column: 3, messageId },
+        { line: 10, column: 3, messageId },
+      ],
+      output: `
+class Test {
+  @decorator(async () => {})
+  static protected async [(1)]() {
+    return Promise.resolve(1);
+  }
+  public async 'bar'() {
+    return Promise.resolve(2);
+  }
+  private async ['baz']() {
+    return Promise.resolve(3);
+  }
 }
       `,
     },

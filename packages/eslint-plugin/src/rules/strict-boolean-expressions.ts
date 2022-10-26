@@ -1,9 +1,8 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
+import type { ParserServices, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export type Options = [
@@ -30,15 +29,27 @@ export type MessageId =
   | 'conditionErrorNullableNumber'
   | 'conditionErrorObject'
   | 'conditionErrorNullableObject'
-  | 'noStrictNullCheck';
+  | 'noStrictNullCheck'
+  | 'conditionFixDefaultFalse'
+  | 'conditionFixDefaultEmptyString'
+  | 'conditionFixDefaultZero'
+  | 'conditionFixCompareNullish'
+  | 'conditionFixCastBoolean'
+  | 'conditionFixCompareTrue'
+  | 'conditionFixCompareFalse'
+  | 'conditionFixCompareStringLength'
+  | 'conditionFixCompareEmptyString'
+  | 'conditionFixCompareZero'
+  | 'conditionFixCompareNaN';
 
 export default util.createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
+    hasSuggestions: true,
     docs: {
-      description: 'Restricts the types allowed in boolean expressions',
-      category: 'Best Practices',
+      description: 'Disallow certain types in boolean expressions',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -93,6 +104,29 @@ export default util.createRule<Options, MessageId>({
         'An explicit null check is required.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+
+      conditionFixDefaultFalse:
+        'Explicitly treat nullish value the same as false (`value ?? false`)',
+      conditionFixDefaultEmptyString:
+        'Explicitly treat nullish value the same as an empty string (`value ?? ""`)',
+      conditionFixDefaultZero:
+        'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
+      conditionFixCompareNullish:
+        'Change condition to check for null/undefined (`value != null`)',
+      conditionFixCastBoolean:
+        'Explicitly cast value to a boolean (`Boolean(value)`)',
+      conditionFixCompareTrue:
+        'Change condition to check if true (`value === true`)',
+      conditionFixCompareFalse:
+        'Change condition to check if false (`value === false`)',
+      conditionFixCompareStringLength:
+        "Change condition to check string's length (`value.length !== 0`)",
+      conditionFixCompareEmptyString:
+        'Change condition to check for empty string (`value !== ""`)',
+      conditionFixCompareZero:
+        'Change condition to check for 0 (`value !== 0`)',
+      conditionFixCompareNaN:
+        'Change condition to check for NaN (`!Number.isNaN(value)`)',
     },
   },
   defaultOptions: [
@@ -108,9 +142,10 @@ export default util.createRule<Options, MessageId>({
     },
   ],
   create(context, [options]) {
-    const service = util.getParserServices(context);
-    const checker = service.program.getTypeChecker();
-    const compilerOptions = service.program.getCompilerOptions();
+    const parserServices = util.getParserServices(context);
+    const typeChecker = parserServices.program.getTypeChecker();
+    const compilerOptions = parserServices.program.getCompilerOptions();
+    const sourceCode = context.getSourceCode();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
@@ -129,16 +164,16 @@ export default util.createRule<Options, MessageId>({
       });
     }
 
-    const checkedNodes = new Set<TSESTree.Node>();
+    const traversedNodes = new Set<TSESTree.Node>();
 
     return {
-      ConditionalExpression: checkTestExpression,
-      DoWhileStatement: checkTestExpression,
-      ForStatement: checkTestExpression,
-      IfStatement: checkTestExpression,
-      WhileStatement: checkTestExpression,
-      'LogicalExpression[operator!="??"]': checkNode,
-      'UnaryExpression[operator="!"]': checkUnaryLogicalExpression,
+      ConditionalExpression: traverseTestExpression,
+      DoWhileStatement: traverseTestExpression,
+      ForStatement: traverseTestExpression,
+      IfStatement: traverseTestExpression,
+      WhileStatement: traverseTestExpression,
+      'LogicalExpression[operator!="??"]': traverseLogicalExpression,
+      'UnaryExpression[operator="!"]': traverseUnaryLogicalExpression,
     };
 
     type TestExpression =
@@ -148,47 +183,83 @@ export default util.createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
-    function checkTestExpression(node: TestExpression): void {
+    /**
+     * Inspects condition of a test expression. (`if`, `while`, `for`, etc.)
+     */
+    function traverseTestExpression(node: TestExpression): void {
       if (node.test == null) {
         return;
       }
-      checkNode(node.test, true);
-    }
-
-    function checkUnaryLogicalExpression(node: TSESTree.UnaryExpression): void {
-      checkNode(node.argument, true);
+      traverseNode(node.test, true);
     }
 
     /**
-     * This function analyzes the type of a node and checks if it is allowed in a boolean context.
-     * It can recurse when checking nested logical operators, so that only the outermost operands are reported.
-     * The right operand of a logical expression is ignored unless it's a part of a test expression (if/while/ternary/etc).
-     * @param node The AST node to check.
-     * @param isTestExpr Whether the node is a descendant of a test expression.
+     * Inspects the argument of a unary logical expression (`!`).
      */
-    function checkNode(node: TSESTree.Node, isTestExpr = false): void {
+    function traverseUnaryLogicalExpression(
+      node: TSESTree.UnaryExpression,
+    ): void {
+      traverseNode(node.argument, true);
+    }
+
+    /**
+     * Inspects the arguments of a logical expression (`&&`, `||`).
+     *
+     * If the logical expression is a descendant of a test expression,
+     * the `isCondition` flag should be set to true.
+     * Otherwise, if the logical expression is there on it's own,
+     * it's used for control flow and is not a condition itself.
+     */
+    function traverseLogicalExpression(
+      node: TSESTree.LogicalExpression,
+      isCondition = false,
+    ): void {
+      // left argument is always treated as a condition
+      traverseNode(node.left, true);
+      // if the logical expression is used for control flow,
+      // then it's right argument is used for it's side effects only
+      traverseNode(node.right, isCondition);
+    }
+
+    /**
+     * Inspects any node.
+     *
+     * If it's a logical expression then it recursively traverses its arguments.
+     * If it's any other kind of node then it's type is finally checked against the rule,
+     * unless `isCondition` flag is set to false, in which case
+     * it's assumed to be used for side effects only and is skipped.
+     */
+    function traverseNode(node: TSESTree.Node, isCondition: boolean): void {
       // prevent checking the same node multiple times
-      if (checkedNodes.has(node)) {
+      if (traversedNodes.has(node)) {
         return;
       }
-      checkedNodes.add(node);
+      traversedNodes.add(node);
 
       // for logical operator, we check its operands
       if (
         node.type === AST_NODE_TYPES.LogicalExpression &&
         node.operator !== '??'
       ) {
-        checkNode(node.left, isTestExpr);
-
-        // we ignore the right operand when not in a context of a test expression
-        if (isTestExpr) {
-          checkNode(node.right, isTestExpr);
-        }
+        traverseLogicalExpression(node, isCondition);
         return;
       }
 
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+      // skip if node is not a condition
+      if (!isCondition) {
+        return;
+      }
+
+      checkNode(node);
+    }
+
+    /**
+     * This function does the actual type check on a node.
+     * It analyzes the type of a node and checks if it is allowed in a boolean context.
+     */
+    function checkNode(node: TSESTree.Node): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -196,7 +267,7 @@ export default util.createRule<Options, MessageId>({
         wantedTypes.every(type => types.has(type));
 
       // boolean
-      if (is('boolean')) {
+      if (is('boolean') || is('truthy boolean')) {
         // boolean is always okay
         return;
       }
@@ -214,18 +285,147 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
+      // Known edge case: boolean `true` and nullish values are always valid boolean expressions
+      if (is('nullish', 'truthy boolean')) {
+        return;
+      }
+
       // nullable boolean
       if (is('nullish', 'boolean')) {
         if (!options.allowNullableBoolean) {
-          context.report({ node, messageId: 'conditionErrorNullableBoolean' });
+          if (isLogicalNegationExpression(node.parent!)) {
+            // if (!nullableBoolean)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableBoolean',
+              suggest: [
+                {
+                  messageId: 'conditionFixDefaultFalse',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} ?? false`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareFalse',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `${code} === false`,
+                  }),
+                },
+              ],
+            });
+          } else {
+            // if (nullableBoolean)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableBoolean',
+              suggest: [
+                {
+                  messageId: 'conditionFixDefaultFalse',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} ?? false`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareTrue',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} === true`,
+                  }),
+                },
+              ],
+            });
+          }
         }
         return;
       }
 
+      // Known edge case: truthy primitives and nullish values are always valid boolean expressions
+      if (
+        (options.allowNumber && is('nullish', 'truthy number')) ||
+        (options.allowString && is('nullish', 'truthy string'))
+      ) {
+        return;
+      }
+
       // string
-      if (is('string')) {
+      if (is('string') || is('truthy string')) {
         if (!options.allowString) {
-          context.report({ node, messageId: 'conditionErrorString' });
+          if (isLogicalNegationExpression(node.parent!)) {
+            // if (!string)
+            context.report({
+              node,
+              messageId: 'conditionErrorString',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareStringLength',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `${code}.length === 0`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareEmptyString',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `${code} === ""`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `!Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          } else {
+            // if (string)
+            context.report({
+              node,
+              messageId: 'conditionErrorString',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareStringLength',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code}.length > 0`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareEmptyString',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} !== ""`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          }
         }
         return;
       }
@@ -233,15 +433,175 @@ export default util.createRule<Options, MessageId>({
       // nullable string
       if (is('nullish', 'string')) {
         if (!options.allowNullableString) {
-          context.report({ node, messageId: 'conditionErrorNullableString' });
+          if (isLogicalNegationExpression(node.parent!)) {
+            // if (!nullableString)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableString',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `${code} == null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultEmptyString',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} ?? ""`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `!Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          } else {
+            // if (nullableString)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableString',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} != null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultEmptyString',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} ?? ""`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          }
         }
         return;
       }
 
       // number
-      if (is('number')) {
+      if (is('number') || is('truthy number')) {
         if (!options.allowNumber) {
-          context.report({ node, messageId: 'conditionErrorNumber' });
+          if (isArrayLengthExpression(node, typeChecker, parserServices)) {
+            if (isLogicalNegationExpression(node.parent!)) {
+              // if (!array.length)
+              context.report({
+                node,
+                messageId: 'conditionErrorNumber',
+                fix: util.getWrappingFixer({
+                  sourceCode,
+                  node: node.parent,
+                  innerNode: node,
+                  wrap: code => `${code} === 0`,
+                }),
+              });
+            } else {
+              // if (array.length)
+              context.report({
+                node,
+                messageId: 'conditionErrorNumber',
+                fix: util.getWrappingFixer({
+                  sourceCode,
+                  node,
+                  wrap: code => `${code} > 0`,
+                }),
+              });
+            }
+          } else if (isLogicalNegationExpression(node.parent!)) {
+            // if (!number)
+            context.report({
+              node,
+              messageId: 'conditionErrorNumber',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareZero',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    // TODO: we have to compare to 0n if the type is bigint
+                    wrap: code => `${code} === 0`,
+                  }),
+                },
+                {
+                  // TODO: don't suggest this for bigint because it can't be NaN
+                  messageId: 'conditionFixCompareNaN',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `Number.isNaN(${code})`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `!Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          } else {
+            // if (number)
+            context.report({
+              node,
+              messageId: 'conditionErrorNumber',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareZero',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} !== 0`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCompareNaN',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `!Number.isNaN(${code})`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          }
         }
         return;
       }
@@ -249,7 +609,73 @@ export default util.createRule<Options, MessageId>({
       // nullable number
       if (is('nullish', 'number')) {
         if (!options.allowNullableNumber) {
-          context.report({ node, messageId: 'conditionErrorNullableNumber' });
+          if (isLogicalNegationExpression(node.parent!)) {
+            // if (!nullableNumber)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableNumber',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `${code} == null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultZero',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} ?? 0`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `!Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          } else {
+            // if (nullableNumber)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableNumber',
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} != null`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixDefaultZero',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} ?? 0`,
+                  }),
+                },
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
+          }
         }
         return;
       }
@@ -264,7 +690,30 @@ export default util.createRule<Options, MessageId>({
       // nullable object
       if (is('nullish', 'object')) {
         if (!options.allowNullableObject) {
-          context.report({ node, messageId: 'conditionErrorNullableObject' });
+          if (isLogicalNegationExpression(node.parent!)) {
+            // if (!nullableObject)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableObject',
+              fix: util.getWrappingFixer({
+                sourceCode,
+                node: node.parent,
+                innerNode: node,
+                wrap: code => `${code} == null`,
+              }),
+            });
+          } else {
+            // if (nullableObject)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableObject',
+              fix: util.getWrappingFixer({
+                sourceCode,
+                node,
+                wrap: code => `${code} != null`,
+              }),
+            });
+          }
         }
         return;
       }
@@ -272,7 +721,20 @@ export default util.createRule<Options, MessageId>({
       // any
       if (is('any')) {
         if (!options.allowAny) {
-          context.report({ node, messageId: 'conditionErrorAny' });
+          context.report({
+            node,
+            messageId: 'conditionErrorAny',
+            suggest: [
+              {
+                messageId: 'conditionFixCastBoolean',
+                fix: util.getWrappingFixer({
+                  sourceCode,
+                  node,
+                  wrap: code => `Boolean(${code})`,
+                }),
+              },
+            ],
+          });
         }
         return;
       }
@@ -285,8 +747,11 @@ export default util.createRule<Options, MessageId>({
     type VariantType =
       | 'nullish'
       | 'boolean'
+      | 'truthy boolean'
       | 'string'
+      | 'truthy string'
       | 'number'
+      | 'truthy number'
       | 'object'
       | 'any'
       | 'never';
@@ -307,30 +772,46 @@ export default util.createRule<Options, MessageId>({
       ) {
         variantTypes.add('nullish');
       }
+      const booleans = types.filter(type =>
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+      );
 
-      if (
-        types.some(type =>
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
-        )
-      ) {
+      // If incoming type is either "true" or "false", there will be one type
+      // object with intrinsicName set accordingly
+      // If incoming type is boolean, there will be two type objects with
+      // intrinsicName set "true" and "false" each because of tsutils.unionTypeParts()
+      if (booleans.length === 1) {
+        tsutils.isBooleanLiteralType(booleans[0], true)
+          ? variantTypes.add('truthy boolean')
+          : variantTypes.add('boolean');
+      } else if (booleans.length === 2) {
         variantTypes.add('boolean');
       }
 
-      if (
-        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike))
-      ) {
-        variantTypes.add('string');
+      const strings = types.filter(type =>
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.StringLike),
+      );
+
+      if (strings.length) {
+        if (strings.some(type => type.isStringLiteral() && type.value !== '')) {
+          variantTypes.add('truthy string');
+        } else {
+          variantTypes.add('string');
+        }
       }
 
-      if (
-        types.some(type =>
-          tsutils.isTypeFlagSet(
-            type,
-            ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
-          ),
-        )
-      ) {
-        variantTypes.add('number');
+      const numbers = types.filter(type =>
+        tsutils.isTypeFlagSet(
+          type,
+          ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+        ),
+      );
+      if (numbers.length) {
+        if (numbers.some(type => type.isNumberLiteral() && type.value !== 0)) {
+          variantTypes.add('truthy number');
+        } else {
+          variantTypes.add('number');
+        }
       }
 
       if (
@@ -345,6 +826,7 @@ export default util.createRule<Options, MessageId>({
                 ts.TypeFlags.StringLike |
                 ts.TypeFlags.NumberLike |
                 ts.TypeFlags.BigIntLike |
+                ts.TypeFlags.TypeParameter |
                 ts.TypeFlags.Any |
                 ts.TypeFlags.Unknown |
                 ts.TypeFlags.Never,
@@ -355,8 +837,13 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (
-        types.some(
-          type => util.isTypeAnyType(type) || util.isTypeUnknownType(type),
+        types.some(type =>
+          util.isTypeFlagSet(
+            type,
+            ts.TypeFlags.TypeParameter |
+              ts.TypeFlags.Any |
+              ts.TypeFlags.Unknown,
+          ),
         )
       ) {
         variantTypes.add('any');
@@ -370,3 +857,31 @@ export default util.createRule<Options, MessageId>({
     }
   },
 });
+
+function isLogicalNegationExpression(
+  node: TSESTree.Node,
+): node is TSESTree.UnaryExpression {
+  return node.type === AST_NODE_TYPES.UnaryExpression && node.operator === '!';
+}
+
+function isArrayLengthExpression(
+  node: TSESTree.Node,
+  typeChecker: ts.TypeChecker,
+  parserServices: ParserServices,
+): node is TSESTree.MemberExpressionNonComputedName {
+  if (node.type !== AST_NODE_TYPES.MemberExpression) {
+    return false;
+  }
+  if (node.computed) {
+    return false;
+  }
+  if (node.property.name !== 'length') {
+    return false;
+  }
+  const objectTsNode = parserServices.esTreeNodeToTSNodeMap.get(node.object);
+  const objectType = util.getConstrainedTypeAtLocation(
+    typeChecker,
+    objectTsNode,
+  );
+  return util.isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
+}

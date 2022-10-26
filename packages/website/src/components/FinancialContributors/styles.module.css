@@ -1,0 +1,58 @@
+.sponsorLink {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.linksArea {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-direction: column;
+  margin: 48px 24px 24px;
+}
+
+.become {
+  font-size: 1.25rem;
+  padding: 0.75rem 1.75rem;
+}
+
+.linksMore {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media screen and (min-width: 1150px) {
+  .sponsorsContainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin: auto;
+    max-width: 100%;
+  }
+
+  .tierArea {
+    margin: 16px 0;
+    width: auto;
+    padding: 0 60px;
+  }
+
+  .tierSponsorArea {
+    grid-area: 1 / 1 / 3 / 2;
+  }
+
+  .tierSupporterArea {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+
+  .tierOtherArea {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+
+  .sponsorLink {
+    display: flex;
+  }
+
+  .linksArea {
+    margin: 24px;
+  }
+}

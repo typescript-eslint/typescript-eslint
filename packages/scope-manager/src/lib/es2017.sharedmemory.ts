@@ -1,36 +1,18 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE, TYPE_VALUE } from './base-config';
 import { es2015_symbol } from './es2015.symbol';
 import { es2015_symbol_wellknown } from './es2015.symbol.wellknown';
 
 export const es2017_sharedmemory = {
   ...es2015_symbol,
   ...es2015_symbol_wellknown,
-  SharedArrayBuffer: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'SharedArrayBuffer',
-  },
-  SharedArrayBufferConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'SharedArrayBufferConstructor',
-  },
-  ArrayBufferTypes: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'ArrayBufferTypes',
-  },
-  Atomics: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'Atomics',
-  },
+  SharedArrayBuffer: TYPE_VALUE,
+  SharedArrayBufferConstructor: TYPE,
+  ArrayBufferTypes: TYPE,
+  Atomics: TYPE_VALUE,
 } as Record<string, ImplicitLibVariableOptions>;

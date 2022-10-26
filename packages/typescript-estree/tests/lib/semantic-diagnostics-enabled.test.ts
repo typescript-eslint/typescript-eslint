@@ -1,8 +1,10 @@
 import { readFileSync } from 'fs';
 import glob from 'glob';
 import path from 'path';
+
 import * as parser from '../../src';
 import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
+import { serializer } from '../../tools/tserror-serializer';
 
 /**
  * Process all fixtures, we will only snapshot the ones that have semantic errors
@@ -10,9 +12,11 @@ import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
  */
 const FIXTURES_DIR = path.join(__dirname, '../../../shared-fixtures/fixtures');
 
-const testFiles = glob.sync(`**/*.src.*`, {
+const testFiles = glob.sync('**/*.src.*', {
   cwd: FIXTURES_DIR,
 });
+
+expect.addSnapshotSerializer(serializer);
 
 describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled', () => {
   testFiles.forEach(filename => {

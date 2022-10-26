@@ -4,6 +4,7 @@ exports[`typescript basics import-type-empty.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {

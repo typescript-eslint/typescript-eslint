@@ -1,62 +1,21 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE, TYPE_VALUE } from './base-config';
+import { es2020_intl } from './es2020.intl';
 
 export const es2020_bigint = {
-  BigIntToLocaleStringOptions: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'BigIntToLocaleStringOptions',
-  },
-  BigInt: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'BigInt',
-  },
-  BigIntConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'BigIntConstructor',
-  },
-  BigInt64Array: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'BigInt64Array',
-  },
-  BigInt64ArrayConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'BigInt64ArrayConstructor',
-  },
-  BigUint64Array: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'BigUint64Array',
-  },
-  BigUint64ArrayConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'BigUint64ArrayConstructor',
-  },
-  DataView: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'DataView',
-  },
-  Intl: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: true,
-    name: 'Intl',
-  },
+  ...es2020_intl,
+  BigIntToLocaleStringOptions: TYPE,
+  BigInt: TYPE_VALUE,
+  BigIntConstructor: TYPE,
+  BigInt64Array: TYPE_VALUE,
+  BigInt64ArrayConstructor: TYPE,
+  BigUint64Array: TYPE_VALUE,
+  BigUint64ArrayConstructor: TYPE,
+  DataView: TYPE,
+  Intl: TYPE_VALUE,
 } as Record<string, ImplicitLibVariableOptions>;

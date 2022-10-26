@@ -1,5 +1,7 @@
+const x = 1;
 const A = class {
-  prop = 1;
+  prop1 = 1;
+  prop2 = x;
 };
 
 const unresolved = prop;

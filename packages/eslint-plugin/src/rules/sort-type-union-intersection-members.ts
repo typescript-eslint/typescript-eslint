@@ -1,8 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 import { getEnumNames } from '../util';
 
@@ -23,9 +21,6 @@ enum Group {
 
 function getGroup(node: TSESTree.TypeNode): Group {
   switch (node.type) {
-    case AST_NODE_TYPES.TSParenthesizedType:
-      return getGroup(node.typeAnnotation);
-
     case AST_NODE_TYPES.TSConditionalType:
       return Group.conditional;
 
@@ -82,14 +77,29 @@ function getGroup(node: TSESTree.TypeNode): Group {
       return Group.union;
 
     // These types should never occur as part of a union/intersection
-    case AST_NODE_TYPES.TSInterfaceHeritage:
+    case AST_NODE_TYPES.TSAbstractKeyword:
+    case AST_NODE_TYPES.TSAsyncKeyword:
+    case AST_NODE_TYPES.TSDeclareKeyword:
+    case AST_NODE_TYPES.TSExportKeyword:
     case AST_NODE_TYPES.TSNamedTupleMember:
     case AST_NODE_TYPES.TSOptionalType:
+    case AST_NODE_TYPES.TSPrivateKeyword:
+    case AST_NODE_TYPES.TSProtectedKeyword:
+    case AST_NODE_TYPES.TSPublicKeyword:
+    case AST_NODE_TYPES.TSReadonlyKeyword:
     case AST_NODE_TYPES.TSRestType:
+    case AST_NODE_TYPES.TSStaticKeyword:
     case AST_NODE_TYPES.TSTypePredicate:
       /* istanbul ignore next */
       throw new Error(`Unexpected Type ${node.type}`);
   }
+}
+
+function requiresParentheses(node: TSESTree.TypeNode): boolean {
+  return (
+    node.type === AST_NODE_TYPES.TSFunctionType ||
+    node.type === AST_NODE_TYPES.TSConstructorType
+  );
 }
 
 export type Options = [
@@ -107,11 +117,11 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforces that members of a type union/intersection are sorted alphabetically',
-      category: 'Stylistic Issues',
+        'Enforce members of a type union/intersection to be sorted alphabetically',
       recommended: false,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       notSorted: '{{type}} type members must be sorted.',
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',
@@ -122,12 +132,15 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           checkIntersections: {
+            description: 'Whether to check intersection types.',
             type: 'boolean',
           },
           checkUnions: {
+            description: 'Whether to check union types.',
             type: 'boolean',
           },
           groupOrder: {
+            description: 'Ordering of the groups.',
             type: 'array',
             items: {
               type: 'string',
@@ -212,7 +225,7 @@ export default util.createRule<Options, MessageIds>({
 
           const fix: TSESLint.ReportFixFunction = fixer => {
             const sorted = expectedOrder
-              .map(t => t.text)
+              .map(t => (requiresParentheses(t.node) ? `(${t.text})` : t.text))
               .join(
                 node.type === AST_NODE_TYPES.TSIntersectionType ? ' & ' : ' | ',
               );
@@ -241,16 +254,16 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      TSIntersectionType(node): void {
-        if (checkIntersections === true) {
+      ...(checkIntersections && {
+        TSIntersectionType(node): void {
           checkSorting(node);
-        }
-      },
-      TSUnionType(node): void {
-        if (checkUnions === true) {
+        },
+      }),
+      ...(checkUnions && {
+        TSUnionType(node): void {
           checkSorting(node);
-        }
-      },
+        },
+      }),
     };
   },
 });

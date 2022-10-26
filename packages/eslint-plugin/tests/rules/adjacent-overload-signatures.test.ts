@@ -240,6 +240,18 @@ interface Foo {
   [Symbol.iterator](): void;
 }
     `,
+    // private members
+    `
+class Test {
+  #private(): void;
+  #private(arg: number): void {}
+
+  bar() {}
+
+  '#private'(): void;
+  '#private'(arg: number): void {}
+}
+    `,
   ],
   invalid: [
     {
@@ -832,6 +844,31 @@ class Foo {
           messageId: 'adjacentSignature',
           data: { name: 'static foo' },
           line: 5,
+          column: 3,
+        },
+      ],
+    },
+    // private members
+    {
+      code: `
+class Test {
+  #private(): void;
+  '#private'(): void;
+  #private(arg: number): void {}
+  '#private'(arg: number): void {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'adjacentSignature',
+          data: { name: '#private' },
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'adjacentSignature',
+          data: { name: '"#private"' },
+          line: 6,
           column: 3,
         },
       ],

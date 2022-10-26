@@ -1,11 +1,10 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule, {
-  MessageIds,
-  Options,
-  TYPE_KEYWORDS,
-} from '../../src/rules/ban-types';
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/ban-types';
+import rule, { TYPE_KEYWORDS } from '../../src/rules/ban-types';
 import { objectReduceKey } from '../../src/util';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -163,7 +162,6 @@ ruleTester.run('ban-types', rule, {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -180,7 +178,6 @@ ruleTester.run('ban-types', rule, {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -197,7 +194,6 @@ ruleTester.run('ban-types', rule, {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -242,7 +238,6 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -252,7 +247,6 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -271,7 +265,6 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -296,7 +289,6 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -306,7 +298,6 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -316,7 +307,6 @@ class Foo<F = string> extends Bar<string> implements Baz<Object> {
         {
           messageId: 'bannedTypeMessage',
           data: {
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             name: 'String',
             customMessage: ' Use string instead.',
           },
@@ -402,10 +392,13 @@ let b: Foo<NS.Good>;
       code: noFormat`
 let foo: {} = {};
 let bar: {     } = {};
+let baz: {
+} = {};
       `,
       output: `
 let foo: object = {};
 let bar: object = {};
+let baz: object = {};
       `,
       options: [
         {
@@ -434,6 +427,15 @@ let bar: object = {};
             customMessage: ' Use object instead.',
           },
           line: 3,
+          column: 10,
+        },
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: '{}',
+            customMessage: ' Use object instead.',
+          },
+          line: 4,
           column: 10,
         },
       ],
@@ -465,7 +467,7 @@ let bar: object = {};
     },
     {
       code: noFormat`let a: Foo<   F   >;`,
-      output: noFormat`let a: Foo<   T   >;`,
+      output: `let a: Foo<   T   >;`,
       errors: [
         {
           messageId: 'bannedTypeMessage',

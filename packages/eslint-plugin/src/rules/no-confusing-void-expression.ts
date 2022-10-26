@@ -1,10 +1,8 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export type Options = [
@@ -29,8 +27,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description:
-        'Requires expressions of type void to appear in statement position',
-      category: 'Best Practices',
+        'Require expressions of type void to appear in statement position',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -57,7 +54,7 @@ export default util.createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
-      voidExprWrapVoid: 'Mark with an explicit `void` operator',
+      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
     },
     schema: [
       {
@@ -71,6 +68,7 @@ export default util.createRule<Options, MessageId>({
     ],
     type: 'problem',
     fixable: 'code',
+    hasSuggestions: true,
   },
   defaultOptions: [{}],
 
@@ -266,6 +264,11 @@ export default util.createRule<Options, MessageId>({
             return null;
           }
         }
+      }
+
+      if (parent.type === AST_NODE_TYPES.ChainExpression) {
+        // e.g. `console?.log('foo')`
+        return findInvalidAncestor(parent);
       }
 
       // any other parent is invalid

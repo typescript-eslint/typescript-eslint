@@ -1,7 +1,8 @@
-// deeplyCopy is private internal
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Converter } from '../../src/convert';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as ts from 'typescript';
+
+import type { TSNode } from '../../src';
+import { Converter } from '../../src/convert';
 
 describe('convert', () => {
   function convertCode(code: string): ts.SourceFile {
@@ -19,8 +20,7 @@ describe('convert', () => {
 
     function fakeUnknownKind(node: ts.Node): void {
       ts.forEachChild(node, fakeUnknownKind);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- intentionally writing to a readonly field
-      // @ts-expect-error
+      // @ts-expect-error -- intentionally writing to a readonly field
       node.kind = ts.SyntaxKind.UnparsedPrologue;
     }
 
@@ -28,7 +28,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
     });
     expect(instance.convertProgram()).toMatchSnapshot();
@@ -39,11 +38,12 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    }) as any;
+    });
 
-    expect(instance.deeplyCopy(ast.statements[0])).toMatchSnapshot();
+    expect(
+      instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
+    ).toMatchSnapshot();
   });
 
   it('deeplyCopy should convert node with type parameters correctly', () => {
@@ -51,11 +51,12 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    }) as any;
+    });
 
-    expect(instance.deeplyCopy(ast.statements[0])).toMatchSnapshot();
+    expect(
+      instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
+    ).toMatchSnapshot();
   });
 
   it('deeplyCopy should convert node with type arguments correctly', () => {
@@ -63,12 +64,14 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    }) as any;
+    });
 
     expect(
-      instance.deeplyCopy((ast.statements[0] as any).expression),
+      instance['deeplyCopy'](
+        (ast.statements[0] as ts.ExpressionStatement)
+          .expression as ts.NewExpression,
+      ),
     ).toMatchSnapshot();
   });
 
@@ -77,10 +80,9 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    }) as any;
-    expect(instance.deeplyCopy(ast)).toMatchSnapshot();
+    });
+    expect(instance['deeplyCopy'](ast)).toMatchSnapshot();
   });
 
   it('deeplyCopy should fail on unknown node', () => {
@@ -88,11 +90,10 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: true,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: false,
-    }) as any;
+    });
 
-    expect(() => instance.deeplyCopy(ast)).toThrow(
+    expect(() => instance['deeplyCopy'](ast)).toThrow(
       'Unknown AST_NODE_TYPE: "TSSourceFile"',
     );
   });
@@ -107,7 +108,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
     instance.convertProgram();
@@ -122,7 +122,7 @@ describe('convert', () => {
         ) {
           expect(node).toBe(
             maps.esTreeNodeToTSNodeMap.get(
-              maps.tsNodeToESTreeNodeMap.get(node as any),
+              maps.tsNodeToESTreeNodeMap.get(node as TSNode),
             ),
           );
         }
@@ -141,7 +141,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
     instance.convertProgram();
@@ -155,7 +154,7 @@ describe('convert', () => {
         ) {
           expect(node).toBe(
             maps.esTreeNodeToTSNodeMap.get(
-              maps.tsNodeToESTreeNodeMap.get(node as any),
+              maps.tsNodeToESTreeNodeMap.get(node as TSNode),
             ),
           );
         }
@@ -174,7 +173,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
     const program = instance.convertProgram();
@@ -197,7 +195,7 @@ describe('convert', () => {
 
     expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
     expect(program.body[0]).not.toBe(
-      maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as any),
+      maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as TSNode),
     );
     checkMaps(ast);
   });
@@ -206,12 +204,16 @@ describe('convert', () => {
     const ast = convertCode('');
     const instance = new Converter(ast, {
       errorOnUnknownASTType: false,
-      useJSXTextNode: false,
       shouldPreserveNodeMaps: true,
     });
 
-    const tsNode = ts.createNode(ts.SyntaxKind.AsKeyword, 0, 10);
-    const convertedNode = (instance as any).createNode(tsNode, {
+    const tsNode: ts.KeywordToken<ts.SyntaxKind.AbstractKeyword> = {
+      ...ts.factory.createToken(ts.SyntaxKind.AbstractKeyword),
+      end: 10,
+      pos: 0,
+    };
+    const convertedNode = instance['createNode'](tsNode, {
+      type: AST_NODE_TYPES.TSAbstractKeyword,
       range: [0, 20],
       loc: {
         start: {
@@ -225,17 +227,18 @@ describe('convert', () => {
       },
     });
     expect(convertedNode).toEqual({
+      type: AST_NODE_TYPES.TSAbstractKeyword,
+      range: [0, 20],
       loc: {
-        end: {
-          column: 25,
-          line: 15,
-        },
         start: {
-          column: 20,
           line: 10,
+          column: 20,
+        },
+        end: {
+          line: 15,
+          column: 25,
         },
       },
-      range: [0, 20],
     });
   });
 
@@ -251,7 +254,6 @@ describe('convert', () => {
 
       const instance = new Converter(ast, {
         errorOnUnknownASTType: false,
-        useJSXTextNode: false,
         shouldPreserveNodeMaps: false,
       });
       expect(() => instance.convertProgram()).toThrow(

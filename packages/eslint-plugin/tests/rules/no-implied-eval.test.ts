@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-implied-eval';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -250,6 +250,61 @@ new Function('foo');
 const foo = (callback: Function) => {
   setTimeout(callback, 0);
 };
+    `,
+    `
+const foo = () => {};
+const bar = () => {};
+
+setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+setTimeout(foo || bar, 500);
+    `,
+    `
+class Foo {
+  func1() {}
+  func2(): void {
+    setTimeout(this.func1.bind(this), 1);
+  }
+}
+    `,
+    `
+class Foo {
+  private a = {
+    b: {
+      c: function () {},
+    },
+  };
+  funcw(): void {
+    setTimeout(this.a.b.c.bind(this), 1);
+  }
+}
+    `,
+    `
+function setTimeout(input: string, value: number) {}
+
+setTimeout('', 0);
+    `,
+    `
+declare module 'my-timers-promises' {
+  export function setTimeout(ms: number): void;
+}
+
+import { setTimeout } from 'my-timers-promises';
+
+setTimeout(1000);
+    `,
+    `
+function setTimeout() {}
+
+{
+  setTimeout(100);
+}
+    `,
+    `
+function setTimeout() {}
+
+{
+  setTimeout("alert('evil!')");
+}
     `,
   ],
 
@@ -606,6 +661,21 @@ const fn = (foo: string | any) => {
     },
     {
       code: `
+const foo = 'foo';
+const bar = () => {};
+
+setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: `
 window.setTimeout(\`\`, 0);
 window['setTimeout'](\`\`, 0);
 
@@ -772,6 +842,21 @@ globalThis['execScript'](\`\`);
           messageId: 'noImpliedEvalError',
           line: 12,
           column: 26,
+        },
+      ],
+    },
+    {
+      code: `
+const foo: string | undefined = 'hello';
+const bar = () => {};
+
+setTimeout(foo || bar, 500);
+      `,
+      errors: [
+        {
+          messageId: 'noImpliedEvalError',
+          line: 5,
+          column: 12,
         },
       ],
     },

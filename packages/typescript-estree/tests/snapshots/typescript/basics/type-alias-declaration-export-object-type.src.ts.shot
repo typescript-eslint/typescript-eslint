@@ -4,6 +4,7 @@ exports[`typescript basics type-alias-declaration-export-object-type.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "id": Object {
           "loc": Object {

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/consistent-type-definitions';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -63,7 +63,7 @@ export type W<T> = {
   invalid: [
     {
       code: noFormat`type T = { x: number; };`,
-      output: noFormat`interface T { x: number; }`,
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -75,7 +75,7 @@ export type W<T> = {
     },
     {
       code: noFormat`type T={ x: number; };`,
-      output: noFormat`interface T { x: number; }`,
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -87,7 +87,7 @@ export type W<T> = {
     },
     {
       code: noFormat`type T=                         { x: number; };`,
-      output: noFormat`interface T { x: number; }`,
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -119,7 +119,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T { x: number; }`,
-      output: noFormat`type T = { x: number; }`,
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -131,7 +131,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T{ x: number; }`,
-      output: noFormat`type T = { x: number; }`,
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -143,7 +143,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T                          { x: number; }`,
-      output: noFormat`type T = { x: number; }`,
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -155,7 +155,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface A extends B, C { x: number; };`,
-      output: noFormat`type A = { x: number; } & B & C;`,
+      output: `type A = { x: number; } & B & C;`,
       options: ['type'],
       errors: [
         {
@@ -167,7 +167,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface A extends B<T1>, C<T2> { x: number; };`,
-      output: noFormat`type A = { x: number; } & B<T1> & C<T2>;`,
+      output: `type A = { x: number; } & B<T1> & C<T2>;`,
       options: ['type'],
       errors: [
         {
@@ -183,7 +183,7 @@ export interface W<T> {
   x: T;
 }
       `,
-      output: noFormat`
+      output: `
 export type W<T> = {
   x: T;
 }
@@ -205,7 +205,7 @@ namespace JSX {
   }
 }
       `,
-      output: noFormat`
+      output: `
 namespace JSX {
   type Array<T> = {
     foo(x: (x: number) => T): T[];
@@ -229,7 +229,7 @@ global {
   }
 }
       `,
-      output: noFormat`
+      output: `
 global {
   type Array<T> = {
     foo(x: (x: number) => T): T[];
@@ -278,6 +278,76 @@ declare global {
           messageId: 'typeOverInterface',
           line: 4,
           column: 15,
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3894
+      code: `
+export default interface Test {
+  bar(): string;
+  foo(): number;
+}
+      `,
+      output: `
+type Test = {
+  bar(): string;
+  foo(): number;
+}
+export default Test
+      `,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 2,
+          column: 26,
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/4333
+      code: `
+export declare type Test = {
+  foo: string;
+  bar: string;
+};
+      `,
+      output: `
+export declare interface Test {
+  foo: string;
+  bar: string;
+}
+      `,
+      options: ['interface'],
+      errors: [
+        {
+          messageId: 'interfaceOverType',
+          line: 2,
+          column: 21,
+        },
+      ],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/4333
+      code: `
+export declare interface Test {
+  foo: string;
+  bar: string;
+}
+      `,
+      output: `
+export declare type Test = {
+  foo: string;
+  bar: string;
+}
+      `,
+      options: ['type'],
+      errors: [
+        {
+          messageId: 'typeOverInterface',
+          line: 2,
+          column: 26,
         },
       ],
     },

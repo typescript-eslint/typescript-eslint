@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript-and-tslint-plugins-together should lint successfully 1`] = `
+[
+  {
+    "errorCount": 1,
+    "fatalErrorCount": 1,
+    "filePath": "<root>/index.ts",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "fatal": true,
+        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "ruleId": null,
+        "severity": 2,
+      },
+    ],
+    "source": "// prettier-ignore
+const noSemi = true
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+]
+`;

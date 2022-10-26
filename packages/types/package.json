@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "4.15.2",
+  "version": "5.41.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "keywords": [
     "eslint",
@@ -8,10 +8,11 @@
     "estree"
   ],
   "engines": {
-    "node": "^8.10.0 || ^10.13.0 || >=11.10.1"
+    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "files": [
     "dist",
+    "_ts3.4",
     "package.json",
     "README.md",
     "LICENSE"
@@ -19,7 +20,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "directory": "packages/visitor-keys"
+    "directory": "packages/types"
   },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
@@ -28,14 +29,42 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prebuild": "yarn ts-node --transpile-only ./tools/copy-ast-spec.ts",
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist",
-    "format": "prettier --write \"./**/*.{ts,js,json,md}\" --ignore-path ../../.prettierignore",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:lib": "../../node_modules/.bin/ts-node --files --transpile-only ../scope-manager/tools/generate-lib.ts",
-    "lint": "eslint . --ext .js,.ts --ignore-path='../../.eslintignore'",
+    "lint": "eslint . --ignore-path='../../.eslintignore'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "nx": {
+    "targets": {
+      "prebuild": {
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "dependencies"
+          }
+        ],
+        "outputs": [
+          "packages/types/src/generated"
+        ]
+      },
+      "build": {
+        "dependsOn": [
+          {
+            "target": "build",
+            "projects": "dependencies"
+          },
+          {
+            "target": "prebuild",
+            "projects": "self"
+          }
+        ]
+      }
+    }
   },
   "funding": {
     "type": "opencollective",
@@ -47,5 +76,8 @@
         "_ts3.4/*"
       ]
     }
+  },
+  "devDependencies": {
+    "typescript": "*"
   }
 }

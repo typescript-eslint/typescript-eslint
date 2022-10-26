@@ -133,8 +133,17 @@ ScopeManager {
       upper: GlobalScope$1,
       variables: Array [],
     },
-    FunctionScope$3 {
-      block: FunctionExpression$8,
+    ClassFieldInitializerScope$3 {
+      block: Literal$8,
+      isStrict: true,
+      references: Array [],
+      set: Map {},
+      type: "class-field-initializer",
+      upper: ClassScope$2,
+      variables: Array [],
+    },
+    FunctionScope$4 {
+      block: FunctionExpression$9,
       isStrict: true,
       references: Array [],
       set: Map {

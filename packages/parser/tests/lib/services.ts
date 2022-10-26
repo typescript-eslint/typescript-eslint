@@ -1,7 +1,9 @@
-import path from 'path';
+import { createProgram } from '@typescript-eslint/typescript-estree';
 import fs from 'fs';
 import glob from 'glob';
-import { ParserOptions } from '../../src/parser';
+import path from 'path';
+
+import type { ParserOptions } from '../../src/parser';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
@@ -30,15 +32,17 @@ function createConfig(filename: string): ParserOptions {
 //------------------------------------------------------------------------------
 
 describe('services', () => {
+  const program = createProgram(path.resolve(FIXTURES_DIR, 'tsconfig.json'));
   testFiles.forEach(filename => {
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const config = createConfig(filename);
-    it(
-      formatSnapshotName(filename, FIXTURES_DIR, '.ts'),
-      createSnapshotTestBlock(code, config),
-    );
-    it(`${formatSnapshotName(filename, FIXTURES_DIR, '.ts')} services`, () => {
+    const snapshotName = formatSnapshotName(filename, FIXTURES_DIR, '.ts');
+    it(snapshotName, createSnapshotTestBlock(code, config));
+    it(`${snapshotName} services`, () => {
       testServices(code, config);
+    });
+    it(`${snapshotName} services with provided program`, () => {
+      testServices(code, { ...config, program });
     });
   });
 });

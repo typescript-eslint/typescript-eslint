@@ -7,6 +7,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "assertions": Array [],
             "declaration": Object {
               "async": false,
               "body": undefined,

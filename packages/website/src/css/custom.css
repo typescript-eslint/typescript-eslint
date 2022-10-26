@@ -1,0 +1,150 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+@import './prism.css';
+
+/* You can override the default Infima variables here. */
+html:root {
+  --ifm-color-primary: #3578e5;
+  --ifm-color-primary-dark: #1b62d4;
+  --ifm-color-primary-darker: #1751af;
+  --ifm-color-primary-darkest: #123f89;
+  --ifm-color-primary-light: #1b62d4;
+  --ifm-color-primary-lighter: #80aaef;
+  --ifm-color-primary-lightest: #a5c3f3;
+  --ifm-code-font-size: 95%;
+  --ifm-color-info: var(--ifm-color-primary-dark);
+  --ifm-link-color: var(--ifm-color-primary-dark);
+
+  --code-line-decoration: rgba(53, 120, 229, 0.1);
+  --code-editor-bg: #ffffff;
+
+  --docsearch-muted-color: #666;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme='dark']:root {
+  --ifm-color-feedback-background: #f0f8ff;
+  --ifm-color-primary: #4e89e8;
+  --ifm-color-primary-dark: #144697;
+  --ifm-color-primary-darker: #0e336e;
+  --ifm-color-primary-darkest: #0b2652;
+  --ifm-color-primary-light: #699bec;
+  --ifm-color-primary-lighter: #77a4ed;
+  --ifm-color-primary-lightest: #a0c0f3;
+
+  --ifm-code-background: rgb(40, 42, 54);
+  --ifm-code-color: rgb(248, 248, 242);
+  --ifm-color-info: var(--ifm-color-primary-light);
+  --ifm-link-color: var(--ifm-color-primary-light);
+  --ifm-menu-color-active: var(--ifm-color-primary-light);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
+
+  --code-line-decoration: rgba(255, 255, 255, 0.1);
+  --code-editor-bg: #1e1e1e;
+
+  --ifm-toc-border-color: var(--ifm-background-surface-color);
+  --ifm-footer-background-color: var(--ifm-background-surface-color);
+
+  --ifm-color-secondary-contrast-background: var(
+    --ifm-background-surface-color
+  );
+
+  --ifm-color-secondary-dark: #2c2d2f;
+  --ifm-color-secondary-darker: rgb(200, 201, 204);
+  --ifm-color-secondary-darkest: rgb(164, 166, 168);
+
+  scrollbar-color: #454a4d #202324;
+
+  --docsearch-muted-color: #aaa;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  --gray-border-shadow: var(--ifm-color-secondary-dark);
+}
+
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link:before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  display: flex;
+  background: url('/img/github.svg') no-repeat;
+}
+
+html[data-theme='dark'] .header-github-link:before {
+  background: url('/img/github-dark.svg') no-repeat;
+}
+
+.theme-doc-sidebar-item-link-level-1 > a,
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > a {
+  font-size: 1em;
+  font-weight: var(--ifm-font-weight-bold);
+}
+
+.theme-doc-sidebar-item-link-level-2 > a,
+.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > a {
+  font-size: 0.9em;
+}
+
+.theme-doc-sidebar-item-link-level-3 > a,
+.theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > a {
+  font-size: 0.8em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--ifm-font-weight-semibold);
+}
+
+.myLineDecoration {
+  background-color: var(--code-line-decoration);
+}
+
+.code-block-removed-line::before {
+  content: '-';
+  display: inline-block;
+  width: 0px;
+  position: relative;
+  left: -0.7em;
+  color: red;
+}
+
+.code-block-removed-line {
+  background-color: #ff000020;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+  user-select: none;
+}
+
+.code-block-added-line::before {
+  content: '+';
+  display: inline-block;
+  width: 0px;
+  position: relative;
+  left: -0.7em;
+  color: rgb(2, 164, 113);
+  font-weight: 700;
+}
+
+.code-block-added-line {
+  background-color: #00ff9520;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+[data-theme='dark'] .code-block-added-line {
+  background-color: #00ff9510;
+}

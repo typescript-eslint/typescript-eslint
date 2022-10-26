@@ -1,4 +1,4 @@
-import { NewPlugin } from 'pretty-format';
+import type { NewPlugin } from 'pretty-format';
 
 type ConstructorSignature = new (...args: never) => unknown;
 
@@ -33,7 +33,9 @@ function createSerializer<TConstructor extends ConstructorSignature>(
     ): string {
       const id = thing.$id != null ? `$${thing.$id}` : '';
       // If `type` is a base class, we should print out the name of the subclass
-      const constructorName = Object.getPrototypeOf(thing).constructor.name;
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      const constructorName = (Object.getPrototypeOf(thing) as Object)
+        .constructor.name;
 
       if (constructorName === 'ImplicitLibVariable' && thing.name === 'const') {
         return 'ImplicitGlobalConstTypeVariable';
@@ -60,7 +62,7 @@ function createSerializer<TConstructor extends ConstructorSignature>(
         }
 
         outputLines.push(
-          `${childIndentation}${key}: ${printer(
+          `${childIndentation}${key as string}: ${printer(
             value,
             config,
             childIndentation,

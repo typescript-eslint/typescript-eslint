@@ -1,4 +1,5 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-unused-expressions';
 import { noFormat, RuleTester } from '../RuleTester';
 

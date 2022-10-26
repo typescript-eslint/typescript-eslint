@@ -1,9 +1,7 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 export type Options = [
   {
@@ -18,12 +16,11 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow usage of the `any` type',
-      category: 'Best Practices',
+      description: 'Disallow the `any` type',
       recommended: 'warn',
-      suggestion: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       unexpectedAny: 'Unexpected any. Specify a different type.',
       suggestUnknown:
@@ -37,9 +34,12 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           fixToUnknown: {
+            description:
+              'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
             type: 'boolean',
           },
           ignoreRestArgs: {
+            description: 'Whether to ignore rest parameter arrays.',
             type: 'boolean',
           },
         },
@@ -199,8 +199,8 @@ export default util.createRule<Options, MessageIds>({
         };
 
         if (fixToUnknown) {
-          fixOrSuggest.fix = (fixer =>
-            fixer.replaceText(node, 'unknown')) as TSESLint.ReportFixFunction;
+          fixOrSuggest.fix = (fixer): TSESLint.RuleFix =>
+            fixer.replaceText(node, 'unknown');
         }
 
         context.report({

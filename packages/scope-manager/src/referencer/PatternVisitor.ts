@@ -1,5 +1,8 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { VisitorBase, VisitorOptions } from './Visitor';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
+import type { VisitorOptions } from './VisitorBase';
+import { VisitorBase } from './VisitorBase';
 
 type PatternVisitorCallback = (
   pattern: TSESTree.Identifier,

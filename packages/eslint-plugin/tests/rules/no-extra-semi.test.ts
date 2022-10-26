@@ -32,7 +32,6 @@ ruleTester.run('no-extra-semi', rule, {
     },
     {
       code: 'for(a of b);',
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'if(true);',
@@ -50,23 +49,18 @@ ruleTester.run('no-extra-semi', rule, {
     // Class body.
     {
       code: 'class A { }',
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var A = class { };',
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'class A { a() { this; } }',
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var A = class { a() { this; } };',
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'class A { } a;',
-      parserOptions: { ecmaVersion: 6 },
     },
 
     // modules
@@ -159,7 +153,6 @@ export class Foo {
     {
       code: 'for(a of b);;',
       output: 'for(a of b);',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -228,7 +221,6 @@ export class Foo {
     {
       code: 'class A { ; }',
       output: 'class A {  }',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -239,7 +231,6 @@ export class Foo {
     {
       code: 'class A { /*a*/; }',
       output: 'class A { /*a*/ }',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -250,7 +241,6 @@ export class Foo {
     {
       code: 'class A { ; a() {} }',
       output: 'class A {  a() {} }',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -261,7 +251,6 @@ export class Foo {
     {
       code: 'class A { a() {}; }',
       output: 'class A { a() {} }',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -272,7 +261,6 @@ export class Foo {
     {
       code: 'class A { a() {}; b() {} }',
       output: 'class A { a() {} b() {} }',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -283,7 +271,6 @@ export class Foo {
     {
       code: 'class A {; a() {}; b() {}; }',
       output: 'class A { a() {} b() {} }',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -302,7 +289,6 @@ export class Foo {
     {
       code: 'class A { a() {}; get b() {} }',
       output: 'class A { a() {} get b() {} }',
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -321,7 +307,6 @@ class Foo {
   public foo: number = 0;
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -342,7 +327,6 @@ class Foo {
   public baz: number = 1;
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           messageId: 'unexpected',
@@ -358,6 +342,89 @@ class Foo {
           messageId: 'unexpected',
           line: 4,
           column: 26,
+        },
+      ],
+    },
+
+    // abstract prop/method
+    {
+      code: `
+class Foo {
+  abstract foo: number;; abstract bar: number;;
+  abstract baz: number;;
+}
+      `,
+      output: `
+class Foo {
+  abstract foo: number; abstract bar: number;
+  abstract baz: number;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          line: 3,
+          column: 24,
+        },
+        {
+          messageId: 'unexpected',
+          line: 3,
+          column: 47,
+        },
+        {
+          messageId: 'unexpected',
+          line: 4,
+          column: 24,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  abstract foo();; abstract bar();;
+  abstract baz();;
+  abstract foo(): void;; abstract bar(): void;;
+  abstract baz(): void;;
+}
+      `,
+      output: `
+class Foo {
+  abstract foo(); abstract bar();
+  abstract baz();
+  abstract foo(): void; abstract bar(): void;
+  abstract baz(): void;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpected',
+          line: 3,
+          column: 18,
+        },
+        {
+          messageId: 'unexpected',
+          line: 3,
+          column: 35,
+        },
+        {
+          messageId: 'unexpected',
+          line: 4,
+          column: 18,
+        },
+        {
+          messageId: 'unexpected',
+          line: 5,
+          column: 24,
+        },
+        {
+          messageId: 'unexpected',
+          line: 5,
+          column: 47,
+        },
+        {
+          messageId: 'unexpected',
+          line: 6,
+          column: 24,
         },
       ],
     },

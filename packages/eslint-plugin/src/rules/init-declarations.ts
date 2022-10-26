@@ -1,13 +1,14 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/init-declarations';
-import {
-  InferOptionsTypeFromRule,
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
+import type {
   InferMessageIdsTypeFromRule,
-  createRule,
+  InferOptionsTypeFromRule,
 } from '../util';
+import { createRule } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('init-declarations');
 
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -18,23 +19,17 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'require or disallow initialization in variable declarations',
-      category: 'Variables',
+        'Require or disallow initialization in variable declarations',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages ?? {
-      initialized:
-        "Variable '{{idName}}' should be initialized on declaration.",
-      notInitialized:
-        "Variable '{{idName}}' should not be initialized on declaration.",
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: ['always'],
-  create(context) {
+  create(context, [mode]) {
     const rules = baseRule.create(context);
-    const mode = context.options[0] || 'always';
 
     return {
       'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void {
@@ -42,11 +37,7 @@ export default createRule<Options, MessageIds>({
           if (node.declare) {
             return;
           }
-          if (
-            node.parent?.type === AST_NODE_TYPES.TSModuleBlock &&
-            node.parent.parent?.type === AST_NODE_TYPES.TSModuleDeclaration &&
-            node.parent.parent?.declare
-          ) {
+          if (isAncestorNamespaceDeclared(node)) {
             return;
           }
         }
@@ -54,5 +45,24 @@ export default createRule<Options, MessageIds>({
         rules['VariableDeclaration:exit'](node);
       },
     };
+
+    function isAncestorNamespaceDeclared(
+      node: TSESTree.VariableDeclaration,
+    ): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor) {
+        if (
+          ancestor.type === AST_NODE_TYPES.TSModuleDeclaration &&
+          ancestor.declare
+        ) {
+          return true;
+        }
+
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
   },
 });

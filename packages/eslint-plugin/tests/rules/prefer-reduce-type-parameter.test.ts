@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-reduce-type-parameter';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -39,6 +39,23 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
     '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
   ],
   invalid: [
+    {
+      code: `
+declare const arr: string[];
+arr.reduce<string>(acc => acc, arr.shift() as string);
+      `,
+      output: `
+declare const arr: string[];
+arr.reduce<string>(acc => acc, arr.shift());
+      `,
+      errors: [
+        {
+          messageId: 'preferTypeParameter',
+          column: 32,
+          line: 3,
+        },
+      ],
+    },
     {
       code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), [] as number[]);',
       output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',

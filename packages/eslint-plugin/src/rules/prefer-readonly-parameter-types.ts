@@ -1,14 +1,13 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
   {
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
-  },
+  } & util.ReadonlynessOptions,
 ];
 type MessageIds = 'shouldBeReadonly';
 
@@ -18,8 +17,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Requires that function parameters are typed as readonly to prevent accidental mutation of inputs',
-      category: 'Possible Errors',
+        'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -34,6 +32,7 @@ export default util.createRule<Options, MessageIds>({
           ignoreInferredTypes: {
             type: 'boolean',
           },
+          ...util.readonlynessOptionsSchema.properties,
         },
       },
     ],
@@ -45,10 +44,13 @@ export default util.createRule<Options, MessageIds>({
     {
       checkParameterProperties: true,
       ignoreInferredTypes: false,
+      ...util.readonlynessOptionsDefaults,
     },
   ],
-  create(context, options) {
-    const [{ checkParameterProperties, ignoreInferredTypes }] = options;
+  create(
+    context,
+    [{ checkParameterProperties, ignoreInferredTypes, treatMethodsAsReadonly }],
+  ) {
     const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
     const checker = program.getTypeChecker();
 
@@ -94,7 +96,9 @@ export default util.createRule<Options, MessageIds>({
 
           const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
           const type = checker.getTypeAtLocation(tsNode);
-          const isReadOnly = util.isTypeReadonly(checker, type);
+          const isReadOnly = util.isTypeReadonly(checker, type, {
+            treatMethodsAsReadonly: treatMethodsAsReadonly!,
+          });
 
           if (!isReadOnly) {
             context.report({

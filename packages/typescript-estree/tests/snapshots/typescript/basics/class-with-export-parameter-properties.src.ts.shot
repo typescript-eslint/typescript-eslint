@@ -37,6 +37,7 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               16,
               54,
@@ -90,6 +91,7 @@ Object {
                       "line": 2,
                     },
                   },
+                  "override": undefined,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {

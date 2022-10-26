@@ -1,115 +1,103 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import * as parser from '../../src/parser';
+import type { ParserOptions } from '@typescript-eslint/types';
+
+import { parseForESLint } from '../../src/parser';
+import { serializer } from '../tools/ts-error-serializer';
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
+expect.addSnapshotSerializer(serializer);
+
+function parseWithError(code: string, options?: ParserOptions | null): unknown {
+  try {
+    return parseForESLint(code, options);
+  } catch (e) {
+    return e;
+  }
+}
+
 describe('TSX', () => {
   describe("if the filename ends with '.tsx', enable jsx option automatically.", () => {
-    const linter = new TSESLint.Linter();
-    linter.defineParser('@typescript-eslint/parser', parser);
-
     it('filePath was not provided', () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-      };
-      const messages = linter.verify(code, config);
 
-      expect(messages).toStrictEqual([
-        {
-          column: 18,
-          fatal: true,
-          line: 1,
-          message: "Parsing error: '>' expected.",
-          ruleId: null,
-          severity: 2,
-        },
-      ]);
+      expect(parseWithError(code)).toMatchInlineSnapshot(`
+        TSError {
+          "column": 18,
+          "index": 18,
+          "lineNumber": 1,
+          "message": "'>' expected.",
+        }
+      `);
     });
 
     it("filePath was not provided and 'jsx:true' option", () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-        parserOptions: {
+      expect(() =>
+        parseForESLint(code, {
           ecmaFeatures: {
             jsx: true,
           },
-        },
-      };
-      const messages = linter.verify(code, config);
-
-      expect(messages).toStrictEqual([]);
+        }),
+      ).not.toThrow();
     });
 
     it('test.ts', () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-      };
-      const messages = linter.verify(code, config, { filename: 'test.ts' });
-
-      expect(messages).toStrictEqual([
-        {
-          column: 18,
-          fatal: true,
-          line: 1,
-          message: "Parsing error: '>' expected.",
-          ruleId: null,
-          severity: 2,
-        },
-      ]);
+      expect(
+        parseWithError(code, {
+          filePath: 'test.ts',
+        }),
+      ).toMatchInlineSnapshot(`
+        TSError {
+          "column": 18,
+          "index": 18,
+          "lineNumber": 1,
+          "message": "'>' expected.",
+        }
+      `);
     });
 
     it("test.ts with 'jsx:true' option", () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-        parserOptions: {
+
+      expect(
+        parseWithError(code, {
+          filePath: 'test.ts',
           ecmaFeatures: {
             jsx: true,
           },
-        },
-      };
-      const messages = linter.verify(code, config, { filename: 'test.ts' });
-
-      expect(messages).toStrictEqual([
-        {
-          column: 18,
-          fatal: true,
-          line: 1,
-          message: "Parsing error: '>' expected.",
-          ruleId: null,
-          severity: 2,
-        },
-      ]);
+        }),
+      ).toMatchInlineSnapshot(`
+        TSError {
+          "column": 18,
+          "index": 18,
+          "lineNumber": 1,
+          "message": "'>' expected.",
+        }
+      `);
     });
 
     it('test.tsx', () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-      };
-      const messages = linter.verify(code, config, { filename: 'test.tsx' });
-
-      expect(messages).toStrictEqual([]);
+      expect(() =>
+        parseForESLint(code, {
+          filePath: 'test.tsx',
+        }),
+      ).not.toThrow();
     });
 
     it("test.tsx with 'jsx:false' option", () => {
       const code = 'const element = <T/>';
-      const config = {
-        parser: '@typescript-eslint/parser',
-        parserOptions: {
+      expect(() =>
+        parseForESLint(code, {
           ecmaFeatures: {
             jsx: false,
           },
-        },
-      };
-      const messages = linter.verify(code, config, { filename: 'test.tsx' });
-
-      expect(messages).toStrictEqual([]);
+          filePath: 'test.tsx',
+        }),
+      ).not.toThrow();
     });
   });
 });

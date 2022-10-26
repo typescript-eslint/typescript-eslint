@@ -37,6 +37,7 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               14,
               34,
@@ -132,6 +133,7 @@ Object {
                       },
                       "typeParameters": undefined,
                     },
+                    "in": false,
                     "loc": Object {
                       "end": Object {
                         "column": 16,
@@ -160,6 +162,7 @@ Object {
                       ],
                       "type": "Identifier",
                     },
+                    "out": false,
                     "range": Array [
                       21,
                       28,

@@ -1,20 +1,23 @@
-# Disallows usage of `void` type outside of generic or return types (`no-invalid-void-type`)
+---
+description: 'Disallow `void` type outside of generic or return types.'
+---
 
-Disallows usage of `void` type outside of return types or generic type arguments.
-If `void` is used as return type, it shouldn’t be a part of intersection/union type with most other types.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-invalid-void-type** for documentation.
 
-## Rationale
+`void` in TypeScript refers to a function return that is meant to be ignored.
+Attempting to use a `void` type outside of a return type or generic type argument is often a sign of programmer error.
+`void` can also be misleading for other developers even if used correctly.
 
-The `void` type means “nothing” or that a function does not return any value,
-in contrast with implicit `undefined` type which means that a function returns a value `undefined`.
-So “nothing” cannot be mixed with any other types, other than `never`, which accepts all types.
-If you need this - use the `undefined` type instead.
+> The `void` type means cannot be mixed with any other types, other than `never`, which accepts all types.
+> If you think you need this then you probably want the `undefined` type instead.
 
-## Rule Details
+## Examples
 
-This rule aims to ensure that the `void` type is only used in valid places.
+<!--tabs-->
 
-The following patterns are considered warnings:
+### ❌ Incorrect
 
 ```ts
 type PossibleValues = string | number | void;
@@ -35,7 +38,7 @@ class MyClass {
 }
 ```
 
-The following patterns are not considered warnings:
+### ✅ Correct
 
 ```ts
 type NoOp = () => void;
@@ -49,21 +52,9 @@ async function promiseMeSomething(): Promise<void> {}
 type stillVoid = void | never;
 ```
 
-### Options
+## Options
 
-```ts
-interface Options {
-  allowInGenericTypeArguments?: boolean | string[];
-  allowAsThisParameter?: boolean;
-}
-
-const defaultOptions: Options = {
-  allowInGenericTypeArguments: true,
-  allowAsThisParameter: false,
-};
-```
-
-#### `allowInGenericTypeArguments`
+### `allowInGenericTypeArguments`
 
 This option lets you control if `void` can be used as a valid value for generic type parameters.
 
@@ -99,7 +90,7 @@ type AllowedVoid = Ex.Mx.Tx<void>;
 type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 ```
 
-#### `allowAsThisParameter`
+### `allowAsThisParameter`
 
 This option allows specifying a `this` parameter of a function to be `void` when set to `true`.
 This pattern can be useful to explicitly label function types that do not use a `this` argument. [See the TypeScript docs for more information](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters-in-callbacks).
@@ -120,7 +111,3 @@ class Example {
 
 If you don't care about if `void` is used with other types,
 or in invalid places, then you don't need this rule.
-
-## Compatibility
-
-- TSLint: [invalid-void](https://palantir.github.io/tslint/rules/invalid-void/)

@@ -1,10 +1,8 @@
-import {
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
+
 import * as util from '../util';
 
 interface ScopeInfo {
@@ -25,7 +23,6 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow async functions which have no `await` expression',
-      category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
       extendsBaseRule: true,
@@ -109,23 +106,29 @@ export default util.createRule({
      * function and the delegate is `true`
      */
     function markAsHasDelegateGen(node: TSESTree.YieldExpression): void {
-      if (!scopeInfo || !scopeInfo.isGen || !node.argument) {
+      if (!scopeInfo?.isGen || !node.argument) {
         return;
       }
 
       if (node?.argument?.type === AST_NODE_TYPES.Literal) {
         // making this `false` as for literals we don't need to check the definition
         // eg : async function* run() { yield* 1 }
-        scopeInfo.isAsyncYield = false;
+        scopeInfo.isAsyncYield ||= false;
       }
 
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node?.argument);
       const type = checker.getTypeAtLocation(tsNode);
-      const symbol = type.getSymbol();
-
-      // async function* test1() {yield* asyncGenerator() }
-      if (symbol?.getName() === 'AsyncGenerator') {
-        scopeInfo.isAsyncYield = true;
+      const typesToCheck = expandUnionOrIntersectionType(type);
+      for (const type of typesToCheck) {
+        const asyncIterator = tsutils.getWellKnownSymbolPropertyOfType(
+          type,
+          'asyncIterator',
+          checker,
+        );
+        if (asyncIterator !== undefined) {
+          scopeInfo.isAsyncYield = true;
+          break;
+        }
       }
     }
 
@@ -230,4 +233,11 @@ function getFunctionHeadLoc(
     start,
     end,
   };
+}
+
+function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
+  if (type.isUnionOrIntersection()) {
+    return type.types.flatMap(expandUnionOrIntersectionType);
+  }
+  return [type];
 }

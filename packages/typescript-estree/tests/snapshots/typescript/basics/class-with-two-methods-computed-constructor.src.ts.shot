@@ -38,6 +38,7 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               12,
               44,
@@ -132,6 +133,7 @@ Object {
                   Object {
                     "constraint": undefined,
                     "default": undefined,
+                    "in": false,
                     "loc": Object {
                       "end": Object {
                         "column": 17,
@@ -160,6 +162,7 @@ Object {
                       ],
                       "type": "Identifier",
                     },
+                    "out": false,
                     "range": Array [
                       26,
                       27,
@@ -207,6 +210,7 @@ Object {
                 "line": 5,
               },
             },
+            "override": false,
             "range": Array [
               48,
               82,
@@ -301,6 +305,7 @@ Object {
                   Object {
                     "constraint": undefined,
                     "default": undefined,
+                    "in": false,
                     "loc": Object {
                       "end": Object {
                         "column": 19,
@@ -329,6 +334,7 @@ Object {
                       ],
                       "type": "Identifier",
                     },
+                    "out": false,
                     "range": Array [
                       64,
                       65,

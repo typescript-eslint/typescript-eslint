@@ -37,6 +37,7 @@ Object {
                 "line": 2,
               },
             },
+            "override": false,
             "range": Array [
               21,
               70,
@@ -220,13 +221,14 @@ Object {
                 "line": 5,
               },
             },
+            "override": false,
             "range": Array [
               73,
               128,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "async": false,
               "body": Object {

@@ -1,4 +1,10 @@
-# Disallow the use of `eval()`-like methods (`no-implied-eval`)
+---
+description: 'Disallow the use of `eval()`-like methods.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-implied-eval** for documentation.
 
 It's considered a good practice to avoid using `eval()`. There are security and performance implications involved with doing so, which is why many linters recommend disallowing `eval()`. However, there are some other ways to pass a string and have it interpreted as JavaScript code that have similar concerns.
 
@@ -19,11 +25,13 @@ passed in to be interpreted. The same can be done with `setInterval()`, `setImme
 
 The best practice is to avoid using `new Function()` or `execScript()` and always use a function for the first argument of `setTimeout()`, `setInterval()` and `setImmediate()`.
 
-## Rule Details
+## Examples
 
 This rule aims to eliminate implied `eval()` through the use of `new Function()`, `setTimeout()`, `setInterval()`, `setImmediate()` or `execScript()`.
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 /* eslint @typescript-eslint/no-implied-eval: "error" */
@@ -51,7 +59,7 @@ setTimeout(fn(), 100);
 const fn = new Function('a', 'b', 'return a + b');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /* eslint @typescript-eslint/no-implied-eval: "error" */
@@ -88,18 +96,6 @@ class Foo {
 setTimeout(Foo.fn, 100);
 ```
 
-## How to use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-implied-eval": "off",
-  "@typescript-eslint/no-implied-eval": ["error"]
-}
-```
-
 ## When Not To Use It
 
 If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can safely disable this rule.
-
-<sup>Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/no-implied-eval.md)</sup>

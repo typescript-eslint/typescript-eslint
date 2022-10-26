@@ -1,9 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -12,10 +9,8 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Consistent with type definition either `interface` or `type`',
-      category: 'Stylistic Issues',
-      // too opinionated to be recommended
-      recommended: false,
+        'Enforce type definitions to consistently use either `interface` or `type`',
+      recommended: 'strict',
     },
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`.',
@@ -48,10 +43,10 @@ export default util.createRule({
     }
 
     return {
-      "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
-        node: TSESTree.TSTypeAliasDeclaration,
-      ): void {
-        if (option === 'interface') {
+      ...(option === 'interface' && {
+        "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
+          node: TSESTree.TSTypeAliasDeclaration,
+        ): void {
           context.report({
             node: node.id,
             messageId: 'interfaceOverType',
@@ -59,7 +54,7 @@ export default util.createRule({
               const typeNode = node.typeParameters ?? node.id;
               const fixes: TSESLint.RuleFix[] = [];
 
-              const firstToken = sourceCode.getFirstToken(node);
+              const firstToken = sourceCode.getTokenBefore(node.id);
               if (firstToken) {
                 fixes.push(fixer.replaceText(firstToken, 'interface'));
                 fixes.push(
@@ -82,10 +77,50 @@ export default util.createRule({
               return fixes;
             },
           });
-        }
-      },
-      TSInterfaceDeclaration(node): void {
-        if (option === 'type') {
+        },
+      }),
+      ...(option === 'type' && {
+        TSInterfaceDeclaration(node): void {
+          const fix = isCurrentlyTraversedNodeWithinModuleDeclaration()
+            ? null
+            : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
+                const typeNode = node.typeParameters ?? node.id;
+                const fixes: TSESLint.RuleFix[] = [];
+
+                const firstToken = sourceCode.getTokenBefore(node.id);
+                if (firstToken) {
+                  fixes.push(fixer.replaceText(firstToken, 'type'));
+                  fixes.push(
+                    fixer.replaceTextRange(
+                      [typeNode.range[1], node.body.range[0]],
+                      ' = ',
+                    ),
+                  );
+                }
+
+                if (node.extends) {
+                  node.extends.forEach(heritage => {
+                    const typeIdentifier = sourceCode.getText(heritage);
+                    fixes.push(
+                      fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
+                    );
+                  });
+                }
+
+                if (
+                  node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+                ) {
+                  fixes.push(
+                    fixer.removeRange([node.parent.range[0], node.range[0]]),
+                    fixer.insertTextAfter(
+                      node.body,
+                      `\nexport default ${node.id.name}`,
+                    ),
+                  );
+                }
+
+                return fixes;
+              };
           context.report({
             node: node.id,
             messageId: 'typeOverInterface',
@@ -93,40 +128,10 @@ export default util.createRule({
              * remove automatically fix when the interface is within a declare global
              * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/2707}
              */
-            fix: isCurrentlyTraversedNodeWithinModuleDeclaration()
-              ? null
-              : (fixer): TSESLint.RuleFix[] => {
-                  const typeNode = node.typeParameters ?? node.id;
-                  const fixes: TSESLint.RuleFix[] = [];
-
-                  const firstToken = sourceCode.getFirstToken(node);
-                  if (firstToken) {
-                    fixes.push(fixer.replaceText(firstToken, 'type'));
-                    fixes.push(
-                      fixer.replaceTextRange(
-                        [typeNode.range[1], node.body.range[0]],
-                        ' = ',
-                      ),
-                    );
-                  }
-
-                  if (node.extends) {
-                    node.extends.forEach(heritage => {
-                      const typeIdentifier = sourceCode.getText(heritage);
-                      fixes.push(
-                        fixer.insertTextAfter(
-                          node.body,
-                          ` & ${typeIdentifier}`,
-                        ),
-                      );
-                    });
-                  }
-
-                  return fixes;
-                },
+            fix,
           });
-        }
-      },
+        },
+      }),
     };
   },
 });

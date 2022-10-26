@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportNamedDeclaration identifier-many Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: null,
+      exportKind: "value",
+      source: null,
+      specifiers: Array [
+        ExportSpecifier {
+          type: "ExportSpecifier",
+          exported: Identifier {
+            type: "Identifier",
+            name: "a",
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+          exportKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            name: "a",
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+
+          range: [9, 10],
+          loc: {
+            start: { column: 9, line: 1 },
+            end: { column: 10, line: 1 },
+          },
+        },
+        ExportSpecifier {
+          type: "ExportSpecifier",
+          exported: Identifier {
+            type: "Identifier",
+            name: "b",
+
+            range: [12, 13],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+          exportKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            name: "b",
+
+            range: [12, 13],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+
+          range: [12, 13],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 13, line: 1 },
+          },
+        },
+      ],
+
+      range: [0, 16],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 16, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 17],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

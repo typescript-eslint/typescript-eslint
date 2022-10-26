@@ -1,9 +1,7 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-} from '@typescript-eslint/experimental-utils';
-import { RuleTester } from '../RuleTester';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-redeclare';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -122,6 +120,13 @@ namespace A {}
       code: `
 interface A {}
 class A {}
+namespace A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+enum A {}
 namespace A {}
       `,
       options: [{ ignoreDeclarationMerge: true }],
@@ -600,6 +605,23 @@ class A {}
             id: 'A',
           },
           line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+enum A {}
+namespace A {}
+enum A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+      errors: [
+        {
+          messageId: 'redeclared',
+          data: {
+            id: 'A',
+          },
+          line: 4,
         },
       ],
     },

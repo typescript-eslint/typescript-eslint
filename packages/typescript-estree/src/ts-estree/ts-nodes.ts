@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 // Workaround to support new TS version features for consumers on old TS versions
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
@@ -6,14 +6,21 @@ declare module 'typescript' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface NamedTupleMember extends ts.Node {}
   export interface TemplateLiteralTypeNode extends ts.Node {}
+  export interface PrivateIdentifier extends ts.Node {}
+  export interface ClassStaticBlockDeclaration extends ts.Node {}
+  export interface AssertClause extends ts.Node {}
+  export interface AssertEntry extends ts.Node {}
   /* eslint-enable @typescript-eslint/no-empty-interface */
 }
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
 export type TSNode =
+  | ts.AssertClause
+  | ts.AssertEntry
   | ts.Modifier
   | ts.Identifier
+  | ts.PrivateIdentifier
   | ts.QualifiedName
   | ts.ComputedPropertyName
   | ts.Decorator
@@ -43,6 +50,7 @@ export type TSNode =
   | ts.KeywordTypeNode // TODO: This node is bad, maybe we should report this
   | ts.ImportTypeNode
   | ts.ThisTypeNode
+  | ts.ClassStaticBlockDeclaration
   // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
   | ts.ConstructorTypeNode
   | ts.FunctionTypeNode

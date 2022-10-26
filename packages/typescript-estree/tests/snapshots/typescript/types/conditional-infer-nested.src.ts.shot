@@ -78,38 +78,34 @@ Object {
           "elementType": Object {
             "loc": Object {
               "end": Object {
-                "column": 21,
+                "column": 20,
                 "line": 2,
               },
               "start": Object {
-                "column": 12,
+                "column": 13,
                 "line": 2,
               },
             },
             "range": Array [
-              31,
-              40,
+              32,
+              39,
             ],
-            "type": "TSParenthesizedType",
-            "typeAnnotation": Object {
+            "type": "TSInferType",
+            "typeParameter": Object {
+              "constraint": undefined,
+              "default": undefined,
+              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 20,
                   "line": 2,
                 },
                 "start": Object {
-                  "column": 13,
+                  "column": 19,
                   "line": 2,
                 },
               },
-              "range": Array [
-                32,
-                39,
-              ],
-              "type": "TSInferType",
-              "typeParameter": Object {
-                "constraint": undefined,
-                "default": undefined,
+              "name": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 20,
@@ -120,30 +116,19 @@ Object {
                     "line": 2,
                   },
                 },
-                "name": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 20,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 19,
-                      "line": 2,
-                    },
-                  },
-                  "name": "U",
-                  "range": Array [
-                    38,
-                    39,
-                  ],
-                  "type": "Identifier",
-                },
+                "name": "U",
                 "range": Array [
                   38,
                   39,
                 ],
-                "type": "TSTypeParameter",
+                "type": "Identifier",
               },
+              "out": false,
+              "range": Array [
+                38,
+                39,
+              ],
+              "type": "TSTypeParameter",
             },
           },
           "loc": Object {
@@ -218,6 +203,7 @@ Object {
             "typeParameter": Object {
               "constraint": undefined,
               "default": undefined,
+              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 21,
@@ -246,6 +232,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
+              "out": false,
               "range": Array [
                 69,
                 70,
@@ -355,6 +342,7 @@ Object {
                     "typeParameter": Object {
                       "constraint": undefined,
                       "default": undefined,
+                      "in": false,
                       "loc": Object {
                         "end": Object {
                           "column": 31,
@@ -383,6 +371,7 @@ Object {
                         ],
                         "type": "Identifier",
                       },
+                      "out": false,
                       "range": Array [
                         107,
                         108,
@@ -605,6 +594,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -633,6 +623,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               14,
               15,

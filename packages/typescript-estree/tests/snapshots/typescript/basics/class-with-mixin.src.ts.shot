@@ -289,6 +289,7 @@ Object {
               },
             },
             "default": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 36,
@@ -317,6 +318,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               11,
               36,
@@ -655,6 +657,7 @@ Object {
       ],
       "type": "TSTypeAliasDeclaration",
       "typeAnnotation": Object {
+        "abstract": false,
         "loc": Object {
           "end": Object {
             "column": 47,
@@ -827,6 +830,7 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
+            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 18,
@@ -855,6 +859,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "out": false,
             "range": Array [
               175,
               176,

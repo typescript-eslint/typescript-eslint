@@ -1,10 +1,18 @@
-# Sets preference level for triple slash directives versus ES6-style import declarations (`triple-slash-reference`)
+---
+description: 'Disallow certain triple slash directives in favor of ES6-style import declarations.'
+---
 
-Use of triple-slash reference type directives is discouraged in favor of the newer `import` style. This rule allows you to ban use of `/// <reference path="" />`, `/// <reference types="" />`, or `/// <reference lib="" />` directives.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/triple-slash-reference** for documentation.
 
-Consider using this rule in place of [`no-triple-slash-reference`](./no-triple-slash-reference.md) which has been deprecated.
+TypeScript's `///` triple-slash references are a way to indicate that types from another module are available in a file.
+Use of triple-slash reference type directives is generally discouraged in favor of ECMAScript Module `import`s.
+This rule reports on the use of `/// <reference path="..." />`, `/// <reference types="..." />`, or `/// <reference lib="..." />` directives.
 
-## Rule Details
+## Examples
+
+## Options
 
 With `{ "path": "never", "types": "never", "lib": "never" }` options set, the following will all be **incorrect** usage:
 
@@ -51,8 +59,3 @@ If you want to ban use of one or all of the triple slash reference directives, o
 ## When Not To Use It
 
 If you want to use all flavors of triple slash reference directives.
-
-## Compatibility
-
-- TSLint: [no-reference](http://palantir.github.io/tslint/rules/no-reference/)
-- TSLint: [no-reference-import](https://palantir.github.io/tslint/rules/no-reference-import/)

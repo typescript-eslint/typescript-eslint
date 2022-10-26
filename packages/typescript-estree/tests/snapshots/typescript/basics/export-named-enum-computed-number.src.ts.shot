@@ -4,6 +4,7 @@ exports[`typescript basics export-named-enum-computed-number.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "id": Object {
           "loc": Object {

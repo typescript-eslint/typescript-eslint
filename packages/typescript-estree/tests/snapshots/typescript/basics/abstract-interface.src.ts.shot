@@ -4,6 +4,7 @@ exports[`typescript basics abstract-interface.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "abstract": true,
         "body": Object {

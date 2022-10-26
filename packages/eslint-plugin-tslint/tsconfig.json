@@ -6,5 +6,5 @@
   },
   "include": ["src", "tests"],
   "exclude": ["tests/test-project", "tests/test-tslint-rules-directory"],
-  "references": [{ "path": "../experimental-utils/tsconfig.build.json" }]
+  "references": [{ "path": "../utils/tsconfig.build.json" }]
 }

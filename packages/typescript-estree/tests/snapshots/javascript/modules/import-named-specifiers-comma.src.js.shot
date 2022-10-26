@@ -4,6 +4,7 @@ exports[`javascript modules import-named-specifiers-comma.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {
@@ -40,6 +41,7 @@ Object {
       },
       "specifiers": Array [
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {
@@ -93,6 +95,7 @@ Object {
           "type": "ImportSpecifier",
         },
         Object {
+          "importKind": "value",
           "imported": Object {
             "loc": Object {
               "end": Object {

@@ -1,11 +1,15 @@
-import * as parser from '../src';
-import { TSESTreeOptions } from '../src/parser-options';
+import type {
+  ParseAndGenerateServicesResult,
+  TSESTree,
+  TSESTreeOptions,
+} from '../src';
+import { parse as parserParse, parseAndGenerateServices } from '../src';
 
 export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
-): parser.ParseAndGenerateServicesResult<parser.TSESTreeOptions> {
-  return parser.parseAndGenerateServices(code, config);
+): ParseAndGenerateServicesResult<TSESTreeOptions> {
+  return parseAndGenerateServices(code, config);
 }
 
 /**
@@ -24,10 +28,10 @@ export function createSnapshotTestBlock(
   /**
    * @returns the AST object
    */
-  function parse(): parser.TSESTree.Program {
+  function parse(): TSESTree.Program {
     const ast = generateServices
-      ? parser.parseAndGenerateServices(code, config).ast
-      : parser.parse(code, config);
+      ? parseAndGenerateServices(code, config).ast
+      : parserParse(code, config);
     return deeplyCopy(ast);
   }
 
@@ -35,13 +39,13 @@ export function createSnapshotTestBlock(
     try {
       const result = parse();
       expect(result).toMatchSnapshot();
-    } catch (e) {
+    } catch (error) {
       /**
        * If we are deliberately throwing because of encountering an unknown
        * AST_NODE_TYPE, we rethrow to cause the test to fail
        */
-      if (e.message.match('Unknown AST_NODE_TYPE')) {
-        throw new Error(e);
+      if (/Unknown AST_NODE_TYPE/.exec((error as Error).message)) {
+        throw error;
       }
       expect(parse).toThrowErrorMatchingSnapshot();
     }
@@ -127,7 +131,7 @@ export function omitDeep<T = UnknownObject>(
           continue;
         }
 
-        const child = node[prop];
+        const child = node[prop] as UnknownObject | UnknownObject[];
         if (Array.isArray(child)) {
           const value = [];
           for (const el of child) {

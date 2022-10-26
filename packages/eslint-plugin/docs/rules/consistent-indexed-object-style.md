@@ -1,4 +1,10 @@
-# Enforce or disallow the use of the record type (`consistent-indexed-object-style`)
+---
+description: 'Require or disallow the `Record` type.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-indexed-object-style** for documentation.
 
 TypeScript supports defining object show keys can be flexible using an index signature. TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature. For example, the following types are equal:
 
@@ -14,25 +20,22 @@ type Foo = {
 type Foo = Record<string, unknown>;
 ```
 
+Keeping to one declaration form consistently improve code readability.
+
 ## Options
 
-- `"record"`: Set to `"record"` to only allow the `Record` type. Set to `"index-signature"` to only allow index signatures. (Defaults to `"record"`)
+- `"record"` _(default)_: only allow the `Record` type.
+- `"index-signature"`: only allow index signatures.
 
-For example:
+### `record`
 
-```CJSON
-{
-    "@typescript-eslint/consistent-indexed-object-style": ["error", "index-signature"]
-}
-```
+<!--tabs-->
 
-## Rule details
-
-This rule enforces a consistent way to define records.
-
-Examples of **incorrect** code with `record` option.
+#### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "record"] */
+
 interface Foo {
   [key: string]: unknown;
 }
@@ -42,21 +45,31 @@ type Foo = {
 };
 ```
 
-Examples of **correct** code with `record` option.
+#### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "record"] */
+
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **incorrect** code with `index-signature` option.
+### `index-signature`
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "index-signature"] */
+
 type Foo = Record<string, unknown>;
 ```
 
-Examples of **correct** code with `index-signature` option.
+#### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "index-signature"] */
+
 interface Foo {
   [key: string]: unknown;
 }

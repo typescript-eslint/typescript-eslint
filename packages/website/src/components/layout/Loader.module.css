@@ -1,0 +1,47 @@
+@keyframes loader-bounce {
+  33% {
+    transform: translateY(10px);
+  }
+  66% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.loaderContainer {
+  font-size: 18px;
+  letter-spacing: 1px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.loader {
+  animation-name: loader-bounce;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-fill-mode: both;
+  animation-play-state: running;
+  background-color: var(--ifm-color-secondary-darkest);
+  width: 1rem;
+  height: 1rem;
+  margin: 0.5rem;
+  border-radius: 100%;
+  display: inline-block;
+}
+
+.loader1 {
+  animation-delay: 0.07s;
+}
+
+.loader2 {
+  animation-delay: 0.14s;
+}
+
+.loader3 {
+  animation-delay: 0.21s;
+}

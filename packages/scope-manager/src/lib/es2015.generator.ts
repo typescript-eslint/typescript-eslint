@@ -1,28 +1,15 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
 
 export const es2015_generator = {
   ...es2015_iterable,
-  Generator: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'Generator',
-  },
-  GeneratorFunction: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'GeneratorFunction',
-  },
-  GeneratorFunctionConstructor: {
-    eslintImplicitGlobalSetting: 'readonly',
-    isTypeVariable: true,
-    isValueVariable: false,
-    name: 'GeneratorFunctionConstructor',
-  },
+  Generator: TYPE,
+  GeneratorFunction: TYPE,
+  GeneratorFunctionConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

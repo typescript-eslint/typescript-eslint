@@ -1,20 +1,30 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-import * as util from '../util';
+import type { TSESTree } from '@typescript-eslint/utils';
+import * as tsutils from 'tsutils';
 
-type MessageIds = 'unsafeCall' | 'unsafeNew' | 'unsafeTemplateTag';
+import * as util from '../util';
+import { getThisExpression } from '../util';
+
+type MessageIds =
+  | 'unsafeCall'
+  | 'unsafeCallThis'
+  | 'unsafeNew'
+  | 'unsafeTemplateTag';
 
 export default util.createRule<[], MessageIds>({
   name: 'no-unsafe-call',
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows calling an any type value',
-      category: 'Possible Errors',
+      description: 'Disallow calling a value with type `any`',
       recommended: 'error',
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an any typed value.',
+      unsafeCall: 'Unsafe call of an `any` typed value.',
+      unsafeCallThis: [
+        'Unsafe call of an `any` typed value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
       unsafeNew: 'Unsafe construction of an any type value.',
       unsafeTemplateTag: 'Unsafe any typed template tag.',
     },
@@ -24,6 +34,11 @@ export default util.createRule<[], MessageIds>({
   create(context) {
     const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
     const checker = program.getTypeChecker();
+    const compilerOptions = program.getCompilerOptions();
+    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'noImplicitThis',
+    );
 
     function checkCall(
       node: TSESTree.Node,
@@ -34,6 +49,21 @@ export default util.createRule<[], MessageIds>({
       const type = util.getConstrainedTypeAtLocation(checker, tsNode);
 
       if (util.isTypeAnyType(type)) {
+        if (!isNoImplicitThis) {
+          // `this()` or `this.foo()` or `this.foo[bar]()`
+          const thisExpression = getThisExpression(node);
+          if (
+            thisExpression &&
+            util.isTypeAnyType(
+              util.getConstrainedTypeAtLocation(
+                checker,
+                esTreeNodeToTSNodeMap.get(thisExpression),
+              ),
+            )
+          ) {
+            messageId = 'unsafeCallThis';
+          }
+        }
         context.report({
           node: reportingNode,
           messageId: messageId,

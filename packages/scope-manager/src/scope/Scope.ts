@@ -1,24 +1,28 @@
-import { BlockScope } from './BlockScope';
-import { CatchScope } from './CatchScope';
-import { ClassScope } from './ClassScope';
-import { ConditionalTypeScope } from './ConditionalTypeScope';
-import { ForScope } from './ForScope';
-import { FunctionExpressionNameScope } from './FunctionExpressionNameScope';
-import { FunctionScope } from './FunctionScope';
-import { FunctionTypeScope } from './FunctionTypeScope';
-import { GlobalScope } from './GlobalScope';
-import { MappedTypeScope } from './MappedTypeScope';
-import { ModuleScope } from './ModuleScope';
-import { SwitchScope } from './SwitchScope';
-import { TSEnumScope } from './TSEnumScope';
-import { TSModuleScope } from './TSModuleScope';
-import { TypeScope } from './TypeScope';
-import { WithScope } from './WithScope';
+import type { BlockScope } from './BlockScope';
+import type { CatchScope } from './CatchScope';
+import type { ClassFieldInitializerScope } from './ClassFieldInitializerScope';
+import type { ClassScope } from './ClassScope';
+import type { ClassStaticBlockScope } from './ClassStaticBlockScope';
+import type { ConditionalTypeScope } from './ConditionalTypeScope';
+import type { ForScope } from './ForScope';
+import type { FunctionExpressionNameScope } from './FunctionExpressionNameScope';
+import type { FunctionScope } from './FunctionScope';
+import type { FunctionTypeScope } from './FunctionTypeScope';
+import type { GlobalScope } from './GlobalScope';
+import type { MappedTypeScope } from './MappedTypeScope';
+import type { ModuleScope } from './ModuleScope';
+import type { SwitchScope } from './SwitchScope';
+import type { TSEnumScope } from './TSEnumScope';
+import type { TSModuleScope } from './TSModuleScope';
+import type { TypeScope } from './TypeScope';
+import type { WithScope } from './WithScope';
 
 type Scope =
   | BlockScope
   | CatchScope
   | ClassScope
+  | ClassFieldInitializerScope
+  | ClassStaticBlockScope
   | ConditionalTypeScope
   | ForScope
   | FunctionExpressionNameScope

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-literal-enum-member';
-import { RuleTester, noFormat } from '../RuleTester';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -62,6 +62,20 @@ enum ValidKeyWithComputedSyntaxButNoComputedKey {
   ['a'],
 }
     `,
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = 1 >>> 0,
+  D = 1 | 0,
+  E = 1 & 0,
+  F = 1 ^ 0,
+  G = ~1,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
   ],
   invalid: [
     {
@@ -251,6 +265,109 @@ enum InvalidSpread {
         {
           messageId: 'notLiteral',
           line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = 1 >>> 0,
+  D = 1 | 0,
+  E = 1 & 0,
+  F = 1 ^ 0,
+  G = ~1,
+}
+      `,
+      options: [{ allowBitwiseExpressions: false }],
+      errors: [
+        {
+          messageId: 'notLiteral',
+          line: 3,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 6,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 7,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 8,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 9,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+const x = 1;
+enum Foo {
+  A = x << 0,
+  B = x >> 0,
+  C = x >>> 0,
+  D = x | 0,
+  E = x & 0,
+  F = x ^ 0,
+  G = ~x,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+      errors: [
+        {
+          messageId: 'notLiteral',
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 6,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 7,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 8,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 9,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 10,
           column: 3,
         },
       ],

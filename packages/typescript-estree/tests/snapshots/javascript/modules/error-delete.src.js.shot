@@ -4,6 +4,7 @@ exports[`javascript modules error-delete.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "importKind": "value",
       "loc": Object {
         "end": Object {

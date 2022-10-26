@@ -24,7 +24,7 @@ interface CreateFixturePatternConfig {
 }
 
 const fixturesDirPath = path.join(__dirname, '../fixtures');
-const sharedFixturesDirPath = path.join(
+export const sharedFixturesDirPath = path.join(
   __dirname,
   '../../../shared-fixtures/fixtures',
 );
@@ -92,7 +92,10 @@ class FixturesTester {
     return this.fixtures
       .map(fixture =>
         glob
-          .sync(`${fixture.directory}/${fixture.pattern}`, {})
+          .sync(fixture.pattern, {
+            cwd: fixture.directory,
+            absolute: true,
+          })
           .map(filename => ({
             filename,
             ignoreSourceType: fixture.ignoreSourceType,
@@ -230,12 +233,18 @@ tester.addFixturePatternConfig('javascript/importMeta');
 tester.addFixturePatternConfig('javascript/labels');
 
 tester.addFixturePatternConfig('javascript/modules', {
+  ignore: [
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: Unexpected keyword 'default'.
+     */
+    'invalid-export-named-default',
+  ],
   ignoreSourceType: [
     'error-function',
     'error-strict',
     'error-delete',
     'invalid-await',
-    'invalid-export-named-default',
     // babel does not recognize these as modules
     'export-named-as-default',
     'export-named-as-specifier',
@@ -256,19 +265,13 @@ tester.addFixturePatternConfig('javascript/objectLiteralComputedProperties');
 tester.addFixturePatternConfig('javascript/objectLiteralDuplicateProperties', {
   ignore: [
     /**
-     * Babel throws SyntaxError: Redefinition of __proto__ property
-     *
-     * TypeScript reports it via the overloaded TS 2300 "Duplicate identifier '{0}'.", which we
-     * do not currently enable as per the notes above.
-     */
-    'error-proto-string-property', // babel parse errors
-    /**
      * ts-estree throws thanks to TS 1117 (ts 3.2 at time of writing)
      * "An object literal cannot have multiple properties with the same name in strict mode."
      *
      * Babel does not throw for some reason...
      */
     'strict-duplicate-properties', // ts-estree parse errors
+    'strict-duplicate-string-properties',
   ],
 });
 
@@ -300,22 +303,11 @@ tester.addFixturePatternConfig('jsx', {
      */
     'embedded-tags',
     /**
-     * JSX fixtures which have known issues for typescript-estree
-     * @see https://github.com/Microsoft/TypeScript/issues/7411
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: Unexpected token
+     * TODO: investigate if this code is valid as there is no typescript error
      */
-    'namespaced-attribute-and-value-inserted',
-    /**
-     * JSX fixtures which have known issues for typescript-estree
-     * @see https://github.com/Microsoft/TypeScript/issues/7411
-     */
-    'namespaced-name-and-attribute',
-    /**
-     * Current random error difference on jsx/invalid-no-tag-name.src.js
-     * ts-estree - SyntaxError
-     * Babel - RangeError
-     * @see https://github.com/babel/babel/issues/6680
-     */
-    'invalid-no-tag-name',
+    'invalid-namespace-value-with-dots',
   ],
 });
 tester.addFixturePatternConfig('jsx-useJSXTextNode');
@@ -346,13 +338,12 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * Babel parses it as TSQualifiedName
      * ts parses it as MemberExpression
-     * TODO: report it to babel
+     * @see https://github.com/babel/babel/issues/12884
      */
     'interface-with-extends-member-expression',
     /**
      * Not yet supported in Babel
      * Directive field is not added to module and namespace
-     * @see https://github.com/babel/babel/issues/9228
      */
     'directive-in-module',
     'directive-in-namespace',
@@ -369,7 +360,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * babel hard fails on computed string enum members, but TS doesn't
-     * https://github.com/babel/babel/issues/12683
+     * @see https://github.com/babel/babel/issues/12683
      */
     'export-named-enum-computed-string',
     /**
@@ -382,9 +373,30 @@ tester.addFixturePatternConfig('typescript/basics', {
     'import-type-error',
     /**
      * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
-     * TODO: report this to babel
+     * This is intentional; babel is not checking types
      */
     'catch-clause-with-invalid-annotation',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * TODO: enforce that accessibility is not allowed on a private identifier
+     */
+    'class-private-identifier-field-with-accessibility-error',
+    /**
+     * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
+     * TypeScript 4.4 new feature
+     * @see https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html#abstract-properties-do-not-allow-initializers
+     */
+    'abstract-class-with-override-property',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: Missing initializer in const declaration.
+     */
+    'var-with-definite-assignment',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: A JSON module can only be imported with `default`.
+     */
+    'export-with-import-assertions',
   ],
   ignoreSourceType: [
     /**
@@ -394,6 +406,8 @@ tester.addFixturePatternConfig('typescript/basics', {
     'export-assignment',
     'import-equal-declaration',
     'import-export-equal-declaration',
+    'import-equal-type-declaration',
+    'import-export-equal-type-declaration',
     // babel treats declare and types as not a module
     'export-declare-const-named-enum',
     'export-declare-named-enum',
@@ -409,6 +423,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     'import-type-named',
     'import-type-named-as',
     'import-type-star-as-ns',
+    'keyword-variables',
   ],
 });
 
@@ -417,6 +432,19 @@ tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * babel sets the range of the export node to the start of the decorator
+     * TSESTree sets it to the start of the export keyword
+     */
+    'export-default-class-decorator',
+    'export-named-class-decorator',
+    /**
+     * babel sets the range of the export node to the start of the parameter
+     * TSESTree sets it to the start of the decorator
+     */
+    'class-parameter-property',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts',
@@ -438,6 +466,13 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * Babel produces incorrect structure for TSInstantiationExpression and optional ChainExpression
+     * @see https://github.com/babel/babel/issues/14613
+     */
+    'instantiation-expression',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
@@ -469,6 +504,14 @@ tester.addFixturePatternConfig('typescript/types', {
     'template-literal-type-2',
     'template-literal-type-3',
     'template-literal-type-4',
+    /**
+     * Reported range differs between ts-estree and Babel
+     * @see https://github.com/babel/babel/issues/14589
+     */
+    'optional-variance-in',
+    'optional-variance-out',
+    'optional-variance-in-out',
+    'optional-variance-in-and-out',
   ],
 });
 

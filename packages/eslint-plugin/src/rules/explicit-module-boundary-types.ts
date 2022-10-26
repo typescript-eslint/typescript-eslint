@@ -1,14 +1,17 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import type {
+  FunctionExpression,
+  FunctionNode,
+} from '../util/explicitReturnTypeUtils';
 import {
+  ancestorHasReturnType,
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
   doesImmediatelyReturnFunctionExpression,
-  FunctionExpression,
-  FunctionNode,
   isTypedFunctionExpression,
 } from '../util/explicitReturnTypeUtils';
 
@@ -36,8 +39,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Require explicit return and argument types on exported functions' and classes' public class methods",
-      category: 'Stylistic Issues',
-      recommended: 'warn',
+      recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
@@ -52,21 +54,35 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowArgumentsExplicitlyTypedAsAny: {
+            description:
+              'Whether to ignore arguments that are explicitly typed as `any`.',
             type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
+            description: [
+              'Whether to ignore return type annotations on body-less arrow functions that return an `as const` type assertion.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
             type: 'boolean',
           },
           allowedNames: {
-            type: 'array',
+            description:
+              'An array of function/method names that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
           allowHigherOrderFunctions: {
+            description: [
+              'Whether to ignore return type annotations on functions immediately returning another function expression.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
             type: 'boolean',
           },
           allowTypedFunctionExpressions: {
+            description:
+              'Whether to ignore type annotations on the variable of a function expresion.',
             type: 'boolean',
           },
           // DEPRECATED - To be removed in next major
@@ -129,7 +145,6 @@ export default util.createRule<Options, MessageIds>({
       TSExportAssignment(node): void {
         checkNode(node.expression);
       },
-
       'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression'(
         node: FunctionNode,
       ): void {
@@ -235,7 +250,8 @@ export default util.createRule<Options, MessageIds>({
       } else if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-        (node.type === AST_NODE_TYPES.Property && node.method)
+        (node.type === AST_NODE_TYPES.Property && node.method) ||
+        node.type === AST_NODE_TYPES.PropertyDefinition
       ) {
         if (
           node.key.type === AST_NODE_TYPES.Literal &&
@@ -294,11 +310,12 @@ export default util.createRule<Options, MessageIds>({
       for (const definition of variable.defs) {
         // cases we don't care about in this rule
         if (
-          definition.type === 'ImplicitGlobalVariable' ||
-          definition.type === 'ImportBinding' ||
-          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-          definition.type === 'CatchClause' ||
-          definition.type === 'Parameter'
+          [
+            DefinitionType.ImplicitGlobalVariable,
+            DefinitionType.ImportBinding,
+            DefinitionType.CatchClause,
+            DefinitionType.Parameter,
+          ].includes(definition.type)
         ) {
           continue;
         }
@@ -335,9 +352,11 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.ClassProperty:
-        case AST_NODE_TYPES.TSAbstractClassProperty:
-          if (node.accessibility === 'private') {
+        case AST_NODE_TYPES.PropertyDefinition:
+          if (
+            node.accessibility === 'private' ||
+            node.key.type === AST_NODE_TYPES.PrivateIdentifier
+          ) {
             return;
           }
           return checkNode(node.value);
@@ -354,7 +373,10 @@ export default util.createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
-          if (node.accessibility === 'private') {
+          if (
+            node.accessibility === 'private' ||
+            node.key.type === AST_NODE_TYPES.PrivateIdentifier
+          ) {
             return;
           }
           return checkNode(node.value);
@@ -383,55 +405,6 @@ export default util.createRule<Options, MessageIds>({
         case AST_NODE_TYPES.VariableDeclarator:
           return checkNode(node.init);
       }
-    }
-
-    /**
-     * Check whether any ancestor of the provided function has a valid return type.
-     * This function assumes that the function either:
-     * - belongs to an exported function chain validated by isExportedHigherOrderFunction
-     * - is directly exported itself
-     */
-    function ancestorHasReturnType(node: FunctionNode): boolean {
-      let ancestor = node.parent;
-
-      if (ancestor?.type === AST_NODE_TYPES.Property) {
-        ancestor = ancestor.value;
-      }
-
-      // if the ancestor is not a return, then this function was not returned at all, so we can exit early
-      const isReturnStatement =
-        ancestor?.type === AST_NODE_TYPES.ReturnStatement;
-      const isBodylessArrow =
-        ancestor?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        ancestor.body.type !== AST_NODE_TYPES.BlockStatement;
-      if (!isReturnStatement && !isBodylessArrow) {
-        return false;
-      }
-
-      while (ancestor) {
-        switch (ancestor.type) {
-          case AST_NODE_TYPES.ArrowFunctionExpression:
-          case AST_NODE_TYPES.FunctionExpression:
-          case AST_NODE_TYPES.FunctionDeclaration:
-            if (ancestor.returnType) {
-              return true;
-            }
-            // assume
-            break;
-
-          // const x: Foo = () => {};
-          // Assume that a typed variable types the function expression
-          case AST_NODE_TYPES.VariableDeclarator:
-            if (ancestor.id.typeAnnotation) {
-              return true;
-            }
-            break;
-        }
-
-        ancestor = ancestor.parent;
-      }
-
-      return false;
     }
 
     function checkEmptyBodyFunctionExpression(

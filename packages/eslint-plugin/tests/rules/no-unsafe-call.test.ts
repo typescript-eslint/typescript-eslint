@@ -1,15 +1,15 @@
 import rule from '../../src/rules/no-unsafe-call';
 import {
-  RuleTester,
   batchedSingleLineTests,
   getFixturesRootDir,
   noFormat,
+  RuleTester,
 } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -148,5 +148,34 @@ function foo(x: { tag: any }) { x.tag\`foo\` }
         },
       ],
     }),
+    {
+      code: noFormat`
+const methods = {
+  methodA() {
+    return this.methodB()
+  },
+  methodB() {
+    return true
+  },
+  methodC() {
+    return this()
+  }
+};
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCallThis',
+          line: 4,
+          column: 12,
+          endColumn: 24,
+        },
+        {
+          messageId: 'unsafeCallThis',
+          line: 10,
+          column: 12,
+          endColumn: 16,
+        },
+      ],
+    },
   ],
 });

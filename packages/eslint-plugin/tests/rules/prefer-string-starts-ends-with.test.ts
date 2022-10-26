@@ -1,6 +1,7 @@
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/prefer-string-starts-ends-with';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -1069,13 +1070,13 @@ function addOptional<TOptions extends Readonly<unknown[]>>(
 ): TSESLint.ValidTestCase<TOptions>[];
 function addOptional<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 >(
   cases: TSESLint.InvalidTestCase<TMessageIds, TOptions>[],
 ): TSESLint.InvalidTestCase<TMessageIds, TOptions>[];
 function addOptional<
   TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>
+  TOptions extends Readonly<unknown[]>,
 >(
   cases: (Case<TMessageIds, TOptions> | string)[],
 ): Case<TMessageIds, TOptions>[] {

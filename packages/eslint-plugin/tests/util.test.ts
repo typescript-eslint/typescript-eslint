@@ -1,7 +1,7 @@
 import * as util from '../src/util';
 
 describe('isDefinitionFile', () => {
-  it('returns false for non-definition files', () => {
+  describe('returns false for non-definition files', () => {
     const invalid = [
       'test.js',
       'test.jsx',
@@ -15,24 +15,31 @@ describe('isDefinitionFile', () => {
       'test.tsx',
       'test.TS',
       'test.TSX',
+      // yes, it's not a definition file if it's a `.d.tsx`!
+      'test.d.tsx',
+      'test.D.TSX',
     ];
 
     invalid.forEach(f => {
-      expect(util.isDefinitionFile(f)).toStrictEqual(false);
+      it(f, () => {
+        expect(util.isDefinitionFile(f)).toBe(false);
+      });
     });
   });
 
-  it('returns true for definition files', () => {
-    const valid = ['test.d.ts', 'test.d.tsx', 'test.D.TS', 'test.D.TSX'];
+  describe('returns true for definition files', () => {
+    const valid = ['test.d.ts', 'test.D.TS'];
 
     valid.forEach(f => {
-      expect(util.isDefinitionFile(f)).toStrictEqual(true);
+      it(f, () => {
+        expect(util.isDefinitionFile(f)).toBe(true);
+      });
     });
   });
 });
 
 describe('upperCaseFirst', () => {
   it('upper cases first', () => {
-    expect(util.upperCaseFirst('hello')).toStrictEqual('Hello');
+    expect(util.upperCaseFirst('hello')).toBe('Hello');
   });
 });

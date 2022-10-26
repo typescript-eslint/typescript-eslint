@@ -1,8 +1,7 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
 
 export default createRule({
   name: 'default-param-last',
@@ -10,7 +9,6 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce default parameters to be last',
-      category: 'Best Practices',
       recommended: false,
       extendsBaseRule: true,
     },

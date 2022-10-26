@@ -1,7 +1,9 @@
-import * as ts from 'typescript';
 import { forEachComment } from 'tsutils/util/util';
+import * as ts from 'typescript';
+
 import { getLocFor } from './node-utils';
-import { AST_TOKEN_TYPES, TSESTree } from './ts-estree';
+import type { TSESTree } from './ts-estree';
+import { AST_TOKEN_TYPES } from './ts-estree';
 
 /**
  * Convert all comments for the given AST.
@@ -36,7 +38,7 @@ export function convertComments(
             range[1] - textStart - 2;
       comments.push({
         type,
-        value: code.substr(textStart, textEnd),
+        value: code.slice(textStart, textStart + textEnd),
         range,
         loc,
       });

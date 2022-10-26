@@ -1,7 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 interface Options {
@@ -21,21 +20,19 @@ export default util.createRule<[Options], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Disallows usage of `void` type outside of generic or return types',
-      category: 'Best Practices',
-      recommended: false,
+      description: 'Disallow `void` type outside of generic or return types',
+      recommended: 'strict',
     },
     messages: {
       invalidVoidForGeneric:
-        '{{ generic }} may not have void as a type variable',
+        '{{ generic }} may not have void as a type variable.',
       invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type variable',
-      invalidVoidNotReturn: 'void is only valid as a return type',
+        'void is only valid as a return type or generic type variable.',
+      invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
-        'void is only valid as return type or type of `this` parameter',
+        'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
-        'void is only valid as a return type or generic type variable or the type of a `this` parameter',
+        'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
     },
     schema: [
       {
@@ -69,7 +66,7 @@ export default util.createRule<[Options], MessageIds>({
     const invalidGrandParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSPropertySignature,
       AST_NODE_TYPES.CallExpression,
-      AST_NODE_TYPES.ClassProperty,
+      AST_NODE_TYPES.PropertyDefinition,
       AST_NODE_TYPES.Identifier,
     ];
     const validUnionMembers: AST_NODE_TYPES[] = [
@@ -131,6 +128,21 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     /**
+     * @brief checks if the generic type parameter defaults to void
+     */
+    function checkDefaultVoid(
+      node: TSESTree.TSVoidKeyword,
+      parentNode: TSESTree.TSTypeParameter,
+    ): void {
+      if (parentNode.default !== node) {
+        context.report({
+          messageId: 'invalidVoidNotReturnOrGeneric',
+          node,
+        });
+      }
+    }
+
+    /**
      * @brief checks that a union containing void is valid
      * @return true if every member of the union is specified as a valid type in
      * validUnionMembers, or is a valid generic type parametrized by void
@@ -162,6 +174,16 @@ export default util.createRule<[Options], MessageIds>({
           node.parent.parent.type === AST_NODE_TYPES.TSTypeReference
         ) {
           checkGenericTypeArgument(node);
+          return;
+        }
+
+        // allow <T = void> if allowInGenericTypeArguments is specified, and report if the generic type parameter extends void
+        if (
+          allowInGenericTypeArguments &&
+          node.parent.type === AST_NODE_TYPES.TSTypeParameter &&
+          node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
+        ) {
+          checkDefaultVoid(node, node.parent);
           return;
         }
 

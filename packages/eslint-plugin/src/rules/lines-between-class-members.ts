@@ -1,9 +1,10 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/lines-between-class-members';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('lines-between-class-members');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -26,16 +27,13 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow an empty line between class members',
-      category: 'Stylistic Issues',
       recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema,
-    messages: baseRule.meta.messages ?? {
-      never: 'Unexpected blank line between class members.',
-      always: 'Expected blank line between class members.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     'always',
@@ -44,14 +42,15 @@ export default util.createRule<Options, MessageIds>({
       exceptAfterSingleLine: false,
     },
   ],
-  create(context, options) {
+  create(context, [firstOption, secondOption]) {
     const rules = baseRule.create(context);
     const exceptAfterOverload =
-      options[1]?.exceptAfterOverload && options[0] === 'always';
+      secondOption?.exceptAfterOverload && firstOption === 'always';
 
     function isOverload(node: TSESTree.Node): boolean {
       return (
-        node.type === AST_NODE_TYPES.MethodDefinition &&
+        (node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+          node.type === AST_NODE_TYPES.MethodDefinition) &&
         node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
       );
     }

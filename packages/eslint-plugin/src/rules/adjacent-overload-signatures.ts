@@ -1,7 +1,6 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type RuleNode =
@@ -20,13 +19,12 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require that member overloads be consecutive',
-      category: 'Best Practices',
+      description: 'Require that function overload signatures be consecutive',
       recommended: 'error',
     },
     schema: [],
     messages: {
-      adjacentSignature: "All '{{name}}' signatures should be adjacent.",
+      adjacentSignature: 'All {{name}} signatures should be adjacent.',
     },
   },
   defaultOptions: [],
@@ -37,6 +35,7 @@ export default util.createRule({
       name: string;
       static: boolean;
       callSignature: boolean;
+      type: util.MemberNameType;
     }
 
     /**
@@ -72,11 +71,12 @@ export default util.createRule({
             name,
             static: isStatic,
             callSignature: false,
+            type: util.MemberNameType.Normal,
           };
         }
         case AST_NODE_TYPES.TSMethodSignature:
           return {
-            name: util.getNameFromMember(member, sourceCode),
+            ...util.getNameFromMember(member, sourceCode),
             static: isStatic,
             callSignature: false,
           };
@@ -85,16 +85,18 @@ export default util.createRule({
             name: 'call',
             static: isStatic,
             callSignature: true,
+            type: util.MemberNameType.Normal,
           };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return {
             name: 'new',
             static: isStatic,
             callSignature: false,
+            type: util.MemberNameType.Normal,
           };
         case AST_NODE_TYPES.MethodDefinition:
           return {
-            name: util.getNameFromMember(member, sourceCode),
+            ...util.getNameFromMember(member, sourceCode),
             static: isStatic,
             callSignature: false,
           };
@@ -108,7 +110,8 @@ export default util.createRule({
         !!method2 &&
         method1.name === method2.name &&
         method1.static === method2.static &&
-        method1.callSignature === method2.callSignature
+        method1.callSignature === method2.callSignature &&
+        method1.type === method2.type
       );
     }
 
@@ -151,7 +154,7 @@ export default util.createRule({
               node: member,
               messageId: 'adjacentSignature',
               data: {
-                name: (method.static ? 'static ' : '') + method.name,
+                name: `${method.static ? 'static ' : ''}${method.name}`,
               },
             });
           } else if (index === -1) {

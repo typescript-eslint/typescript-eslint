@@ -151,72 +151,55 @@ Object {
                     "elementType": Object {
                       "loc": Object {
                         "end": Object {
-                          "column": 52,
+                          "column": 51,
                           "line": 1,
                         },
                         "start": Object {
-                          "column": 35,
+                          "column": 36,
                           "line": 1,
                         },
                       },
                       "range": Array [
-                        35,
-                        52,
+                        36,
+                        51,
                       ],
-                      "type": "TSParenthesizedType",
-                      "typeAnnotation": Object {
-                        "loc": Object {
-                          "end": Object {
-                            "column": 51,
-                            "line": 1,
+                      "type": "TSUnionType",
+                      "types": Array [
+                        Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 42,
+                              "line": 1,
+                            },
+                            "start": Object {
+                              "column": 36,
+                              "line": 1,
+                            },
                           },
-                          "start": Object {
-                            "column": 36,
-                            "line": 1,
-                          },
+                          "range": Array [
+                            36,
+                            42,
+                          ],
+                          "type": "TSStringKeyword",
                         },
-                        "range": Array [
-                          36,
-                          51,
-                        ],
-                        "type": "TSUnionType",
-                        "types": Array [
-                          Object {
-                            "loc": Object {
-                              "end": Object {
-                                "column": 42,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 36,
-                                "line": 1,
-                              },
+                        Object {
+                          "loc": Object {
+                            "end": Object {
+                              "column": 51,
+                              "line": 1,
                             },
-                            "range": Array [
-                              36,
-                              42,
-                            ],
-                            "type": "TSStringKeyword",
-                          },
-                          Object {
-                            "loc": Object {
-                              "end": Object {
-                                "column": 51,
-                                "line": 1,
-                              },
-                              "start": Object {
-                                "column": 45,
-                                "line": 1,
-                              },
+                            "start": Object {
+                              "column": 45,
+                              "line": 1,
                             },
-                            "range": Array [
-                              45,
-                              51,
-                            ],
-                            "type": "TSNumberKeyword",
                           },
-                        ],
-                      },
+                          "range": Array [
+                            45,
+                            51,
+                          ],
+                          "type": "TSNumberKeyword",
+                        },
+                      ],
                     },
                     "label": Object {
                       "loc": Object {

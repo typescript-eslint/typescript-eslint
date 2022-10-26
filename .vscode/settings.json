@@ -1,5 +1,7 @@
-
 {
+  // This matches the value configured on the autoformatter
+  "editor.rulers": [80],
+
   // An array of language ids which should be validated by ESLint
   "eslint.validate": [
       "javascript",
@@ -13,8 +15,8 @@
 
   // typescript auto-format settings
   "typescript.tsdk": "node_modules/typescript/lib",
-  "javascript.preferences.importModuleSpecifier": "auto",
-  "typescript.preferences.importModuleSpecifier": "auto",
+  "javascript.preferences.importModuleSpecifier": "project-relative",
+  "typescript.preferences.importModuleSpecifier": "project-relative",
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -27,10 +29,7 @@
     {
         "icon": "jest_snapshot",
         "extensions": [
-            ".ts.shot",
-            ".tsx.shot",
-            ".js.shot",
-            ".jsx.shot",
+            ".shot",
         ],
         "extends": "jest_snapshot"
     },

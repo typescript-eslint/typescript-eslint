@@ -1,7 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
@@ -30,10 +29,9 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      category: 'Best Practices',
-      recommended: false,
       description:
-        'Prefer using type parameter when calling `Array#reduce` instead of casting',
+        'Enforce using type parameter when calling `Array#reduce` instead of casting',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
@@ -77,22 +75,31 @@ export default util.createRule({
           context.report({
             messageId: 'preferTypeParameter',
             node: secondArg,
-            fix: fixer => [
-              fixer.removeRange([
-                secondArg.range[0],
-                secondArg.expression.range[0],
-              ]),
-              fixer.removeRange([
-                secondArg.expression.range[1],
-                secondArg.range[1],
-              ]),
-              fixer.insertTextAfter(
-                callee,
-                `<${context
-                  .getSourceCode()
-                  .getText(secondArg.typeAnnotation)}>`,
-              ),
-            ],
+            fix: fixer => {
+              const fixes = [
+                fixer.removeRange([
+                  secondArg.range[0],
+                  secondArg.expression.range[0],
+                ]),
+                fixer.removeRange([
+                  secondArg.expression.range[1],
+                  secondArg.range[1],
+                ]),
+              ];
+
+              if (!callee.parent.typeParameters) {
+                fixes.push(
+                  fixer.insertTextAfter(
+                    callee,
+                    `<${context
+                      .getSourceCode()
+                      .getText(secondArg.typeAnnotation)}>`,
+                  ),
+                );
+              }
+
+              return fixes;
+            },
           });
 
           return;

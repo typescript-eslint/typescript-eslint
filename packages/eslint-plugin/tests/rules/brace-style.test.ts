@@ -721,16 +721,14 @@ if (f) {
       errors: [{ messageId: 'sameLineClose' }],
     },
     {
-      code:
-        'if (foo) {\nbaz();\n} else if (bar) {\nbaz();\n}\nelse {\nqux();\n}',
+      code: 'if (foo) {\nbaz();\n} else if (bar) {\nbaz();\n}\nelse {\nqux();\n}',
       output:
         'if (foo) {\nbaz();\n}\n else if (bar) {\nbaz();\n}\nelse {\nqux();\n}',
       options: ['stroustrup'],
       errors: [{ messageId: 'sameLineClose' }],
     },
     {
-      code:
-        'if (foo) {\npoop();\n} \nelse if (bar) {\nbaz();\n} else if (thing) {\nboom();\n}\nelse {\nqux();\n}',
+      code: 'if (foo) {\npoop();\n} \nelse if (bar) {\nbaz();\n} else if (thing) {\nboom();\n}\nelse {\nqux();\n}',
       output:
         'if (foo) {\npoop();\n} \nelse if (bar) {\nbaz();\n}\n else if (thing) {\nboom();\n}\nelse {\nqux();\n}',
       options: ['stroustrup'],
@@ -767,8 +765,7 @@ if (f) {
       ],
     },
     {
-      code:
-        'if (foo) {\nbaz();\n} else if (bar) {\nbaz();\n}\nelse {\nqux();\n}',
+      code: 'if (foo) {\nbaz();\n} else if (bar) {\nbaz();\n}\nelse {\nqux();\n}',
       output:
         'if (foo) \n{\nbaz();\n}\n else if (bar) \n{\nbaz();\n}\nelse \n{\nqux();\n}',
       options: ['allman'],
@@ -780,8 +777,7 @@ if (f) {
       ],
     },
     {
-      code:
-        'if (foo)\n{ poop();\n} \nelse if (bar) {\nbaz();\n} else if (thing) {\nboom();\n}\nelse {\nqux();\n}',
+      code: 'if (foo)\n{ poop();\n} \nelse if (bar) {\nbaz();\n} else if (thing) {\nboom();\n}\nelse {\nqux();\n}',
       output:
         'if (foo)\n{\n poop();\n} \nelse if (bar) \n{\nbaz();\n}\n else if (thing) \n{\nboom();\n}\nelse \n{\nqux();\n}',
       options: ['allman'],
@@ -946,8 +942,7 @@ if (f) {
       errors: [{ messageId: 'sameLineClose' }],
     },
     {
-      code:
-        'if (foo)\n{ poop();\n} \nelse if (bar) {\nbaz();\n} else if (thing) {\nboom();\n}\nelse {\nqux();\n}',
+      code: 'if (foo)\n{ poop();\n} \nelse if (bar) {\nbaz();\n} else if (thing) {\nboom();\n}\nelse {\nqux();\n}',
       output:
         'if (foo)\n{\n poop();\n} \nelse if (bar) \n{\nbaz();\n}\n else if (thing) \n{\nboom();\n}\nelse \n{\nqux();\n}',
       options: ['allman', { allowSingleLine: true }],

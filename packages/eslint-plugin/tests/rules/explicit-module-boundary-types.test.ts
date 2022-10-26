@@ -82,6 +82,16 @@ export class Test {
 }
       `,
     },
+    `
+export class PrivateProperty {
+  #property = () => null;
+}
+    `,
+    `
+export class PrivateMethod {
+  #method() {}
+}
+    `,
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/2150
       code: `
@@ -185,6 +195,34 @@ export const x: Foo = {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2864
+    {
+      filename: 'test.ts',
+      code: `
+export const x = {
+  foo: { bar: () => {} },
+} as Foo;
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export const x = <Foo>{
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+export const x: Foo = {
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/484
     {
       code: `
@@ -259,7 +297,8 @@ export function FunctionDeclaration() {
         // ArrowFunctionExpression_Within_FunctionExpression
         return () =>
           // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          (): number => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+          (): number =>
+            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
       };
     };
   };
@@ -351,11 +390,15 @@ export class Test {
   ['prop']() {}
   [\`prop\`]() {}
   [\`\${v}\`](): void {}
+
+  foo = () => {
+    bar: 5;
+  };
 }
       `,
       options: [
         {
-          allowedNames: ['prop', 'method'],
+          allowedNames: ['prop', 'method', 'foo'],
         },
       ],
     },
@@ -1053,7 +1096,8 @@ export function FunctionDeclaration() {
         // ArrowFunctionExpression_Within_FunctionExpression
         return () =>
           // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          () => 1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+          () =>
+            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
       };
     };
   };
@@ -1147,6 +1191,7 @@ export class Test {
     return;
   }
   arrow = (): string => 'arrow';
+  foo = () => 'bar';
 }
       `,
       options: [
@@ -1161,6 +1206,13 @@ export class Test {
           endLine: 8,
           column: 3,
           endColumn: 11,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 12,
+          endLine: 12,
+          column: 9,
+          endColumn: 14,
         },
       ],
     },
@@ -1604,18 +1656,20 @@ export { test };
     },
     {
       code: `
-export const foo = () => (a: string): ((n: number) => string) => {
-  return function (n) {
-    return String(n);
+export const foo =
+  () =>
+  (a: string): ((n: number) => string) => {
+    return function (n) {
+      return String(n);
+    };
   };
-};
       `,
       options: [{ allowHigherOrderFunctions: false }],
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 2,
-          column: 20,
+          line: 3,
+          column: 3,
         },
       ],
     },

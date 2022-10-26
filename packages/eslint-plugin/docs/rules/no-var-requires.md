@@ -1,10 +1,18 @@
-# Disallows the use of require statements except in import statements (`no-var-requires`)
+---
+description: 'Disallow `require` statements except in import statements.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-var-requires** for documentation.
 
 In other words, the use of forms such as `var foo = require("foo")` are banned. Instead use ES6 style imports or `import foo = require("foo")` imports.
 
-## Rule Details
+## Examples
 
-Examples of **incorrect** code for this rule:
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 var foo = require('foo');
@@ -12,7 +20,7 @@ const foo = require('foo');
 let foo = require('foo');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 import foo = require('foo');
@@ -22,8 +30,8 @@ import foo from 'foo';
 
 ## When Not To Use It
 
-If you don't care about TypeScript module syntax, then you will not need this rule.
+If you don't care about using newer module syntax, then you will not need this rule.
 
-## Compatibility
+## Related To
 
-- TSLint: [no-var-requires](https://palantir.github.io/tslint/rules/no-var-requires/)
+- [`no-require-imports`](./no-require-imports.md)

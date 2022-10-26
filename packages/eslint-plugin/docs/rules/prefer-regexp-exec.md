@@ -1,20 +1,23 @@
-# Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided (`prefer-regexp-exec`)
+---
+description: 'Enforce `RegExp#exec` over `String#match` if no global flag is provided.'
+---
 
-`RegExp#exec` is faster than `String#match` and both work the same when not using the `/g` flag.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-regexp-exec** for documentation.
 
-## Rule Details
+`String#match` is defined to work the same as `RegExp#exec` when the regular expression does not include the `g` flag.
+Keeping to consistently using one of the two can help improve code readability.
 
-This rule is aimed at enforcing the more performant way of applying regular expressions on strings.
+This rule reports when a `String#match` call can be replaced with an equivalent `RegExp#exec`.
 
-From [`String#match` on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match):
+> `RegExp#exec` may also be slightly faster than `String#match`; this is the reason to choose it as the preferred usage.
 
-> If the regular expression does not include the g flag, returns the same result as `RegExp.exec()`.
+## Examples
 
-From [Stack Overflow](https://stackoverflow.com/questions/9214754/what-is-the-difference-between-regexp-s-exec-function-and-string-s-match-fun)
+<!--tabs-->
 
-> `RegExp.prototype.exec` is a lot faster than `String.prototype.match`, but that’s because they are not exactly the same thing, they are different.
-
-Examples of **incorrect** code for this rule:
+### ❌ Incorrect
 
 ```ts
 'something'.match(/thing/);
@@ -26,7 +29,7 @@ const search = /thing/;
 text.match(search);
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 /thing/.exec('something');
@@ -38,16 +41,6 @@ const search = /thing/;
 search.exec(text);
 ```
 
-## Options
-
-There are no options.
-
-```json
-{
-  "@typescript-eslint/prefer-regexp-exec": "error"
-}
-```
-
 ## When Not To Use It
 
-If you prefer consistent use of `String#match` for both, with `g` flag and without it, you can turn this rule off.
+If you prefer consistent use of `String#match` for both with `g` flag and without it, you can turn this rule off.

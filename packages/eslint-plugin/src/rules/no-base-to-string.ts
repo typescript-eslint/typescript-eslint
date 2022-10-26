@@ -1,7 +1,5 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -24,14 +22,13 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Requires that `.toString()` is only called on objects which provide useful information when stringified',
-      category: 'Best Practices',
-      recommended: false,
+        'Require `.toString()` to only be called on objects which provide useful information when stringified',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
       baseToString:
-        "'{{name}} {{certainty}} evaluate to '[object Object]' when stringified.",
+        "'{{name}}' {{certainty}} evaluate to '[object Object]' when stringified.",
     },
     schema: [
       {
@@ -51,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoredTypeNames: ['RegExp'],
+      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
   create(context, [option]) {
@@ -167,7 +164,10 @@ export default util.createRule<Options, MessageIds>({
 
         if (util.getTypeName(typeChecker, leftType) === 'string') {
           checkExpression(node.right, rightType);
-        } else if (util.getTypeName(typeChecker, rightType) === 'string') {
+        } else if (
+          util.getTypeName(typeChecker, rightType) === 'string' &&
+          node.left.type !== AST_NODE_TYPES.PrivateIdentifier
+        ) {
           checkExpression(node.left, leftType);
         }
       },

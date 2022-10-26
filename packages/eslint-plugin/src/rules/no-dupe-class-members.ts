@@ -1,6 +1,10 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-dupe-class-members';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-dupe-class-members');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
@@ -11,10 +15,10 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow duplicate class members',
-      category: 'Possible Errors',
       recommended: false,
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
@@ -22,19 +26,44 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const rules = baseRule.create(context);
 
-    return {
-      ...rules,
-      MethodDefinition(node): void {
+    function wrapMemberDefinitionListener<
+      N extends TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+    >(coreListener: (node: N) => void): (node: N) => void {
+      return (node: N): void => {
         if (node.computed) {
           return;
         }
 
-        if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
+        if (
+          node.value &&
+          node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+        ) {
           return;
         }
 
-        return rules.MethodDefinition(node);
-      },
+        return coreListener(node);
+      };
+    }
+
+    return {
+      ...rules,
+      // for ESLint <= v7
+      ...(rules.MethodDefinition
+        ? {
+            MethodDefinition: wrapMemberDefinitionListener(
+              rules.MethodDefinition,
+            ),
+          }
+        : {}),
+      // for ESLint v8
+      ...(rules['MethodDefinition, PropertyDefinition']
+        ? {
+            'MethodDefinition, PropertyDefinition':
+              wrapMemberDefinitionListener(
+                rules['MethodDefinition, PropertyDefinition'],
+              ),
+          }
+        : {}),
     };
   },
 });

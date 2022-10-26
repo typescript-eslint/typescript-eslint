@@ -8,16 +8,13 @@
 **/.nyc_output
 **/.vs
 packages/eslint-plugin-tslint/tests/test-tslint-rules-directory/alwaysFailRule.js
-.github
 packages/eslint-plugin/src/configs/*.json
-.all-contributorsrc
 CONTRIBUTORS.md
+packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
 
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 
-# TODO - remove this once prettier supports TS4.1
-packages/scope-manager/tests/fixtures/type-declaration/literal-type1.ts
-packages/scope-manager/tests/fixtures/type-declaration/literal-type2.ts
-packages/scope-manager/tests/fixtures/type-declaration/literal-type3.ts
-packages/scope-manager/tests/fixtures/type-declaration/mapped-named.ts
+packages/website/.docusaurus
+packages/website/build
+packages/website/src/vendor

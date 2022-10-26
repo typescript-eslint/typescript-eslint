@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -6,7 +7,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow iterating over an array with a for-in loop',
-      category: 'Best Practices',
       recommended: 'error',
       requiresTypeChecking: true,
     },

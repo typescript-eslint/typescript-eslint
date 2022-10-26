@@ -1,9 +1,20 @@
-# Disallow the use of parameter properties in class constructors (`no-parameter-properties`)
+---
+description: 'Disallow the use of parameter properties in class constructors.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-parameter-properties** for documentation.
+
+:::danger Deprecated
+
+This rule has been deprecated in favour of the equivalent, better named [`parameter-properties`](./parameter-properties.md) rule.
+:::
 
 Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
 of declaring and initializing class members.
 
-## Rule Details
+## Examples
 
 This rule disallows the use of parameter properties in constructors, forcing the user to explicitly
 declare all properties in the class.
@@ -24,7 +35,11 @@ If you would like to allow certain types of parameter properties then you may pa
 
 ### default
 
-Examples of **incorrect** code for this rule with no options at all:
+Examples of code for this rule with no options at all:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -56,7 +71,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for this rule with no options at all:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -66,7 +81,11 @@ class Foo {
 
 ### readonly
 
-Examples of **incorrect** code for the `{ "allows": ["readonly"] }` options:
+Examples of code for the `{ "allows": ["readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -94,7 +113,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -108,7 +127,11 @@ class Foo {
 
 ### private
 
-Examples of **incorrect** code for the `{ "allows": ["private"] }` options:
+Examples of code for the `{ "allows": ["private"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -136,7 +159,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["private"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -150,7 +173,11 @@ class Foo {
 
 ### protected
 
-Examples of **incorrect** code for the `{ "allows": ["protected"] }` options:
+Examples of code for the `{ "allows": ["protected"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -178,7 +205,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["protected"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -192,7 +219,11 @@ class Foo {
 
 ### public
 
-Examples of **incorrect** code for the `{ "allows": ["public"] }` options:
+Examples of code for the `{ "allows": ["public"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -220,7 +251,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["public"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -234,7 +265,11 @@ class Foo {
 
 ### private readonly
 
-Examples of **incorrect** code for the `{ "allows": ["private readonly"] }` options:
+Examples of code for the `{ "allows": ["private readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -262,7 +297,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["private readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -276,7 +311,11 @@ class Foo {
 
 ### protected readonly
 
-Examples of **incorrect** code for the `{ "allows": ["protected readonly"] }` options:
+Examples of code for the `{ "allows": ["protected readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -304,7 +343,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["protected readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -318,7 +357,11 @@ class Foo {
 
 ### public readonly
 
-Examples of **incorrect** code for the `{ "allows": ["public readonly"] }` options:
+Examples of code for the `{ "allows": ["public readonly"] }` options:
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
 class Foo {
@@ -346,7 +389,7 @@ class Foo {
 }
 ```
 
-Examples of **correct** code for the `{ "allows": ["public readonly"] }` options:
+#### ✅ Correct
 
 ```ts
 class Foo {
@@ -361,7 +404,3 @@ class Foo {
 ## When Not To Use It
 
 If you don't care about the using parameter properties in constructors, then you will not need this rule.
-
-## Compatibility
-
-- TSLint: [no-parameter-properties](https://palantir.github.io/tslint/rules/no-parameter-properties/)

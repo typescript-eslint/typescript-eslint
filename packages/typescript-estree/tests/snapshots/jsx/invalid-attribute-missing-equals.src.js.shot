@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`jsx invalid-attribute-missing-equals.src 1`] = `
-Object {
+TSError {
   "column": 14,
   "index": 14,
   "lineNumber": 1,

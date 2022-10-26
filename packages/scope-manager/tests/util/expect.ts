@@ -1,18 +1,21 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import {
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
+import type {
   CatchClauseDefinition,
   ClassNameDefinition,
   Definition,
-  DefinitionType,
   FunctionNameDefinition,
   ImplicitGlobalVariableDefinition,
   ImportBindingDefinition,
   ParameterDefinition,
   VariableDefinition,
 } from '../../src/definition';
-import {
+import { DefinitionType } from '../../src/definition';
+import type {
   BlockScope,
   CatchScope,
+  ClassFieldInitializerScope,
   ClassScope,
   ForScope,
   FunctionExpressionNameScope,
@@ -20,10 +23,10 @@ import {
   GlobalScope,
   ModuleScope,
   Scope,
-  ScopeType,
   SwitchScope,
   WithScope,
 } from '../../src/scope';
+import { ScopeType } from '../../src/scope';
 
 //////////////////
 // EXPECT SCOPE //
@@ -34,6 +37,11 @@ function expectToBeBlockScope(scope: Scope): asserts scope is BlockScope {
 }
 function expectToBeCatchScope(scope: Scope): asserts scope is CatchScope {
   expect(scope.type).toBe(ScopeType.catch);
+}
+function expectToBeClassFieldInitializerScope(
+  scope: Scope,
+): asserts scope is ClassFieldInitializerScope {
+  expect(scope.type).toBe(ScopeType.classFieldInitializer);
 }
 function expectToBeClassScope(scope: Scope): asserts scope is ClassScope {
   expect(scope.type).toBe(ScopeType.class);
@@ -65,6 +73,7 @@ function expectToBeWithScope(scope: Scope): asserts scope is WithScope {
 export {
   expectToBeBlockScope,
   expectToBeCatchScope,
+  expectToBeClassFieldInitializerScope,
   expectToBeClassScope,
   expectToBeForScope,
   expectToBeFunctionExpressionNameScope,

@@ -132,6 +132,66 @@ ruleTester.run('no-type-alias', rule, {
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
+      code: 'type Foo = `a-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
       code: 'type Foo = true;',
       options: [{ allowAliases: 'always' }],
     },
@@ -341,10 +401,9 @@ type Foo<T> =
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'always' }],
     },
@@ -352,10 +411,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
     },
@@ -363,10 +421,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'in-intersections' }],
     },
@@ -395,7 +452,22 @@ export type ClassValue =
       options: [{ allowAliases: 'always' }],
     },
     {
+      code: "type Foo = typeof import('foo');",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: `
+const WithAKey = { AKey: true };
+type KeyNames = keyof typeof SCALARS;
+      `,
+      options: [{ allowAliases: 'always' }],
+    },
+    {
       code: 'type Foo = typeof bar | typeof baz;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: "type Foo = typeof bar | typeof import('foo');",
       options: [{ allowAliases: 'in-unions' }],
     },
     {
@@ -415,8 +487,7 @@ export type ClassValue =
       options: [{ allowTupleTypes: 'in-intersections' }],
     },
     {
-      code:
-        'type Foo = ([string] & [number, number]) | [number, number, number];',
+      code: 'type Foo = ([string] & [number, number]) | [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
@@ -436,8 +507,7 @@ export type ClassValue =
       options: [{ allowTupleTypes: 'in-intersections' }],
     },
     {
-      code:
-        'type Foo = ([string] & [number, number]) | readonly [number, number, number];',
+      code: 'type Foo = ([string] & [number, number]) | readonly [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
@@ -457,8 +527,7 @@ export type ClassValue =
       options: [{ allowTupleTypes: 'in-intersections' }],
     },
     {
-      code:
-        'type Foo = ([string] & [number, number]) | keyof [number, number, number];',
+      code: 'type Foo = ([string] & [number, number]) | keyof [number, number, number];',
       options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
     },
     {
@@ -468,6 +537,10 @@ export type ClassValue =
     {
       code: 'type Foo = new (bar: number) => string | null;',
       options: [{ allowConstructors: 'always' }],
+    },
+    {
+      code: 'type Foo = Record<string, number>;',
+      options: [{ allowGenerics: 'always' }],
     },
   ],
   invalid: [
@@ -499,7 +572,44 @@ export type ClassValue =
       ],
     },
     {
+      code: "type Foo = typeof import('foo');",
+      options: [{ allowAliases: 'never' }],
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'aliases',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
       code: "type Foo = 'a' | 'b';",
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Aliases',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Aliases',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: "type Foo = 'a' | typeof import('foo');",
       errors: [
         {
           messageId: 'noCompositionAlias',
@@ -2915,10 +3025,9 @@ type Foo<T> =
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       errors: [
         {
@@ -2936,8 +3045,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 5,
-          column: 3,
+          line: 4,
+          column: 5,
         },
       ],
     },
@@ -2945,10 +3054,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'never' }],
       errors: [
@@ -2967,8 +3075,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 5,
-          column: 3,
+          line: 4,
+          column: 5,
         },
       ],
     },
@@ -2976,10 +3084,9 @@ type Foo<T> = {
       code: `
 type Foo<T> = {
   readonly [P in keyof T]: T[P];
-} &
-  {
-    readonly [P in keyof T]: T[P];
-  };
+} & {
+  readonly [P in keyof T]: T[P];
+};
       `,
       options: [{ allowMappedTypes: 'in-unions' }],
       errors: [
@@ -2998,8 +3105,8 @@ type Foo<T> = {
             typeName: 'Mapped types',
             compositionType: 'intersection',
           },
-          line: 5,
-          column: 3,
+          line: 4,
+          column: 5,
         },
       ],
     },
@@ -3277,6 +3384,80 @@ type Foo<T> = {
           },
           line: 1,
           column: 29,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Record<string, number>;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'generics',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `foo-${number}`;',
+      errors: [
+        {
+          messageId: 'noTypeAlias',
+          data: {
+            alias: 'aliases',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowAliases: 'never' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Aliases',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Aliases',
+            compositionType: 'union',
+          },
+          line: 1,
+          column: 28,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowAliases: 'never' }],
+      errors: [
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Aliases',
+            compositionType: 'intersection',
+          },
+          line: 1,
+          column: 12,
+        },
+        {
+          messageId: 'noCompositionAlias',
+          data: {
+            typeName: 'Aliases',
+            compositionType: 'intersection',
+          },
+          line: 1,
+          column: 28,
         },
       ],
     },

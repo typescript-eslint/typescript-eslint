@@ -3,13 +3,14 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { TSESLint } from '@typescript-eslint/experimental-utils';
-import { RuleTester } from '../RuleTester';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/type-annotation-spacing';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -4594,6 +4595,54 @@ type Bar = Record<keyof Foo, string>
       ],
     },
     {
+      code: 'function foo(a? : string) {}',
+      output: 'function foo(a?: string) {}',
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
+          line: 1,
+          column: 17,
+        },
+      ],
+    },
+    {
+      code: 'function foo(a ? : string) {}',
+      output: 'function foo(a?: string) {}',
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 1,
+          column: 16,
+        },
+        {
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: 'function foo(a ?  : string) {}',
+      output: 'function foo(a?: string) {}',
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 1,
+          column: 16,
+        },
+        {
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
+          line: 1,
+          column: 19,
+        },
+      ],
+    },
+    {
       code: `
 class Foo {
     name ?: string;
@@ -4630,6 +4679,32 @@ class Foo {
           data: { type: '?:' },
           line: 3,
           column: 25,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    constructor(message ? : string);
+}
+      `,
+      output: `
+class Foo {
+    constructor(message?: string);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 3,
+          column: 25,
+        },
+        {
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
+          line: 3,
+          column: 27,
         },
       ],
     },
@@ -4676,6 +4751,32 @@ interface Foo {
           data: { type: '?:' },
           line: 3,
           column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+    name ? : string;
+}
+      `,
+      output: `
+interface Foo {
+    name?: string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedSpaceBefore',
+          data: { type: '?:' },
+          line: 3,
+          column: 10,
+        },
+        {
+          messageId: 'unexpectedSpaceBetween',
+          data: { type: ':', previousToken: '?' },
+          line: 3,
+          column: 12,
         },
       ],
     },

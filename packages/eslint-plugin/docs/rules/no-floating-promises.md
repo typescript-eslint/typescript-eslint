@@ -1,14 +1,32 @@
-# Requires Promise-like values to be handled appropriately (`no-floating-promises`)
+---
+description: 'Require Promise-like statements to be handled appropriately.'
+---
 
-This rule forbids usage of Promise-like values in statements without handling
-their errors appropriately. Unhandled promises can cause several issues, such
-as improperly sequenced operations, ignored Promise rejections and more. Valid
-ways of handling a Promise-valued statement include `await`ing, returning, and
-either calling `.then()` with two arguments or `.catch()` with one argument.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-floating-promises** for documentation.
 
-## Rule Details
+A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
+Floating Promises can cause several issues, such as improperly sequenced operations, ignored Promise rejections, and more.
 
-Examples of **incorrect** code for this rule:
+This rule reports when a Promise is created and not properly handled.
+Valid ways of handling a Promise-valued statement include:
+
+- `await`ing it
+- `return`ing it
+- Calling its `.then()` with two arguments
+- Calling its `.catch()` with one argument
+
+:::tip
+`no-floating-promises` only detects unhandled Promise _statements_.
+See [`no-misused-promises`](./no-misused-promises.md) for detecting code that provides Promises to _logical_ locations such as if statements.
+:::
+
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
 const promise = new Promise((resolve, reject) => resolve('value'));
@@ -24,7 +42,7 @@ Promise.reject('value').catch();
 Promise.reject('value').finally();
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
 const promise = new Promise((resolve, reject) => resolve('value'));
@@ -45,22 +63,6 @@ Promise.reject('value').finally(() => {});
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, checking void expressions will be skipped
-  ignoreVoid?: boolean;
-  // if true, checking for async iife will be skipped
-  ignoreIIFE?: boolean;
-};
-
-const defaults = {
-  ignoreVoid: true,
-  ignoreIIFE: false,
-};
-```
-
 ### `ignoreVoid`
 
 This allows you to stop the rule reporting promises consumed with void operator.
@@ -77,11 +79,11 @@ void returnsPromise();
 void Promise.reject('value');
 ```
 
-With this option set to `true`, and if you are using `no-void`, you should turn on the [`allowAsAStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.
+With this option set to `true`, and if you are using `no-void`, you should turn on the [`allowAsStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.
 
 ### `ignoreIIFE`
 
-This allows you to skip checking of async iife
+This allows you to skip checking of async IIFEs (Immediately Invocated function Expressions).
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
@@ -99,6 +101,6 @@ await(async function () {
 
 If you do not use Promise-like values in your codebase, or want to allow them to remain unhandled.
 
-## Related to
+## Related To
 
-- TSLint: ['no-floating-promises'](https://palantir.github.io/tslint/rules/no-floating-promises/)
+- [`no-misused-promises`](./no-misused-promises.md)

@@ -4,6 +4,7 @@ exports[`typescript basics abstract-class-with-optional-method.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "declaration": Object {
         "abstract": true,
         "body": Object {
@@ -40,6 +41,7 @@ Object {
                 },
               },
               "optional": true,
+              "override": false,
               "range": Array [
                 43,
                 76,

@@ -40,72 +40,55 @@ Object {
       "typeAnnotation": Object {
         "loc": Object {
           "end": Object {
-            "column": 28,
+            "column": 27,
             "line": 1,
           },
           "start": Object {
-            "column": 11,
+            "column": 12,
             "line": 1,
           },
         },
         "range": Array [
-          11,
-          28,
+          12,
+          27,
         ],
-        "type": "TSParenthesizedType",
-        "typeAnnotation": Object {
-          "loc": Object {
-            "end": Object {
-              "column": 27,
-              "line": 1,
+        "type": "TSUnionType",
+        "types": Array [
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 18,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 12,
+                "line": 1,
+              },
             },
-            "start": Object {
-              "column": 12,
-              "line": 1,
-            },
+            "range": Array [
+              12,
+              18,
+            ],
+            "type": "TSStringKeyword",
           },
-          "range": Array [
-            12,
-            27,
-          ],
-          "type": "TSUnionType",
-          "types": Array [
-            Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 18,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 12,
-                  "line": 1,
-                },
+          Object {
+            "loc": Object {
+              "end": Object {
+                "column": 27,
+                "line": 1,
               },
-              "range": Array [
-                12,
-                18,
-              ],
-              "type": "TSStringKeyword",
-            },
-            Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 27,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 21,
-                  "line": 1,
-                },
+              "start": Object {
+                "column": 21,
+                "line": 1,
               },
-              "range": Array [
-                21,
-                27,
-              ],
-              "type": "TSNumberKeyword",
             },
-          ],
-        },
+            "range": Array [
+              21,
+              27,
+            ],
+            "type": "TSNumberKeyword",
+          },
+        ],
       },
     },
   ],

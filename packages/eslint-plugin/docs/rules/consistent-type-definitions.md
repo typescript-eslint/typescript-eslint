@@ -1,6 +1,12 @@
-# Consistent with type definition either `interface` or `type` (`consistent-type-definitions`)
+---
+description: 'Enforce type definitions to consistently use either `interface` or `type`.'
+---
 
-There are two ways to define a type.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-definitions** for documentation.
+
+TypeScript provides two common ways to define an object type: `interface` and `type`.
 
 ```ts
 // type alias
@@ -16,33 +22,31 @@ interface T2 {
 }
 ```
 
+The two are generally very similar, and can often be used interchangeably.
+Using the same type declaration style consistently helps with code readability.
+
 ## Options
 
-This rule accepts one string option:
-
-- `"interface"`: enforce using `interface`s for object type definitions.
+- `"interface"` _(default)_: enforce using `interface`s for object type definitions.
 - `"type"`: enforce using `type`s for object type definitions.
 
-For example:
+### `interface`
 
-```jsonc
-{
-  // Use type for object definitions
-  "@typescript-eslint/consistent-type-definitions": ["error", "type"]
-}
-```
+<!--tabs-->
 
-## Rule Details
-
-Examples of **incorrect** code with `interface` option.
+#### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "interface"] */
+
 type T = { x: number };
 ```
 
-Examples of **correct** code with `interface` option.
+#### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "interface"] */
+
 type T = string;
 type Foo = string | {};
 
@@ -51,24 +55,28 @@ interface T {
 }
 ```
 
-Examples of **incorrect** code with `type` option.
+### `type`
+
+<!--tabs-->
+
+#### ❌ Incorrect
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "type"] */
+
 interface T {
   x: number;
 }
 ```
 
-Examples of **correct** code with `type` option.
+#### ✅ Correct
 
 ```ts
+/* eslint @typescript-eslint/consistent-type-definitions: ["error", "type"] */
+
 type T = { x: number };
 ```
 
 ## When Not To Use It
 
 If you specifically want to use an interface or type literal for stylistic reasons, you can disable this rule.
-
-## Compatibility
-
-- TSLint: [interface-over-type-literal](https://palantir.github.io/tslint/rules/interface-over-type-literal/)

@@ -38,6 +38,7 @@ Object {
             },
           },
           "object": Object {
+            "attributes": null,
             "loc": Object {
               "end": Object {
                 "column": 13,

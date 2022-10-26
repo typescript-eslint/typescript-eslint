@@ -1,35 +1,42 @@
-# Disallows non-null assertions using the `!` postfix operator (`no-non-null-assertion`)
+---
+description: 'Disallow non-null assertions using the `!` postfix operator.'
+---
 
-## Rule Details
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-non-null-assertion** for documentation.
 
-Using non-null assertions cancels the benefits of the strict null-checking mode.
+TypeScript's `!` non-null assertion operator asserts to the type system that an expression is non-nullable, as in not `null` or `undefined`.
+Using assertions to tell the type system new information is often a sign that code is not fully type-safe.
+It's generally better to structure program logic so that TypeScript understands when values may be nullable.
 
-Examples of **incorrect** code for this rule:
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
-interface Foo {
-  bar?: string;
+interface Example {
+  property?: string;
 }
 
-const foo: Foo = getFoo();
-const includesBaz: boolean = foo.bar!.includes('baz');
+declare const example: Example;
+const includesBaz = foo.property!.includes('baz');
 ```
 
-Examples of **correct** code for this rule:
+### ✅ Correct
 
 ```ts
-interface Foo {
-  bar?: string;
+interface Example {
+  property?: string;
 }
 
-const foo: Foo = getFoo();
-const includesBaz: boolean = foo.bar?.includes('baz') ?? false;
+declare const example: Example;
+const includesBaz = foo.property?.includes('baz') ?? false;
 ```
 
 ## When Not To Use It
 
-If you don't care about strict null-checking, then you will not need this rule.
-
-## Further Reading
-
-- [`no-non-null-assertion`](https://palantir.github.io/tslint/rules/no-non-null-assertion/) in [TSLint](https://palantir.github.io/tslint/)
+If your project does not use the `strictNullChecks` compiler option, this rule is likely useless to you.
+If your code is often wildly incorrect with respect to strict null-checking, your code may not yet be ready for this rule.

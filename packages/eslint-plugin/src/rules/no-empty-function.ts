@@ -1,14 +1,16 @@
-import {
-  AST_NODE_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils';
-import baseRule from 'eslint/lib/rules/no-empty-function';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+const baseRule = getESLintCoreRule('no-empty-function');
 
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const schema = util.deepMerge(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
   Array.isArray(baseRule.meta.schema)
     ? baseRule.meta.schema[0]
     : baseRule.meta.schema,
@@ -30,6 +32,7 @@ const schema = util.deepMerge(
             'asyncFunctions',
             'asyncMethods',
             'decoratedFunctions',
+            'overrideMethods',
           ],
         },
       },
@@ -43,10 +46,10 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow empty functions',
-      category: 'Best Practices',
       recommended: 'error',
       extendsBaseRule: true,
     },
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: [schema],
     messages: baseRule.meta.messages,
   },
@@ -63,6 +66,7 @@ export default util.createRule<Options, MessageIds>({
     );
     const isAllowedPrivateConstructors = allow.includes('private-constructors');
     const isAllowedDecoratedFunctions = allow.includes('decoratedFunctions');
+    const isAllowedOverrideMethods = allow.includes('overrideMethods');
 
     /**
      * Check if the method body is empty
@@ -138,12 +142,24 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
+    function isAllowedEmptyOverrideMethod(
+      node: TSESTree.FunctionExpression,
+    ): boolean {
+      return (
+        isAllowedOverrideMethods &&
+        isBodyEmpty(node) &&
+        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.override === true
+      );
+    }
+
     return {
       ...rules,
       FunctionExpression(node): void {
         if (
           isAllowedEmptyConstructor(node) ||
-          isAllowedEmptyDecoratedFunctions(node)
+          isAllowedEmptyDecoratedFunctions(node) ||
+          isAllowedEmptyOverrideMethod(node)
         ) {
           return;
         }

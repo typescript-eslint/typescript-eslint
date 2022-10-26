@@ -4,6 +4,7 @@ exports[`javascript modules export-from-batch.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "assertions": Array [],
       "exportKind": "value",
       "exported": null,
       "loc": Object {

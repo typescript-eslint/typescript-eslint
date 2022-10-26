@@ -5,6 +5,15 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Website
+packages/website/.docusaurus
+packages/website/.cache-loader
+packages/website/build
+packages/website/playwright-report
+packages/website/playwright/.cache
+packages/website/static/sandbox
+packages/website/test-results
+
 # Runtime data
 pids
 *.pid
@@ -57,7 +66,6 @@ jspm_packages/
 # next.js build output
 .next
 
-
 # Editor-specific metadata folders
 .vs
 
@@ -67,3 +75,7 @@ dist
 _ts3.4
 *.tsbuildinfo
 .watchmanconfig
+.rollup.cache
+
+# Files copied as part of the build
+packages/types/src/generated/**/*.ts

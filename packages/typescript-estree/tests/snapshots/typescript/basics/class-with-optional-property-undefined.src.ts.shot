@@ -39,13 +39,14 @@ Object {
               },
             },
             "optional": true,
+            "override": false,
             "range": Array [
               12,
               37,
             ],
             "readonly": undefined,
             "static": false,
-            "type": "ClassProperty",
+            "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {
                 "end": Object {
