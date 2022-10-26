@@ -30,7 +30,7 @@ export interface MutableParseSettings {
    * This is a legacy option that comes with severe performance penalties.
    * Please do not use it.
    */
-  deprecated__createDefaultProgram: boolean;
+  DEPRECATED__createDefaultProgram: boolean;
 
   /**
    * Which debug areas should be logged.

@@ -776,7 +776,7 @@ describe('parseAndGenerateServices', () => {
     const withDeprecatedDefaultProgramConfig: TSESTreeOptions = {
       ...config,
       project: './tsconfig.defaultProgram.json',
-      deprecated__createDefaultProgram: true,
+      DEPRECATED__createDefaultProgram: true,
     };
 
     describe('when file is in the project', () => {
@@ -818,7 +818,7 @@ describe('parseAndGenerateServices', () => {
       });
     });
 
-    describe('when file is not in the project and deprecated__createDefaultProgram=true', () => {
+    describe('when file is not in the project and DEPRECATED__createDefaultProgram=true', () => {
       it('returns error because __PLACEHOLDER__ can not be resolved', () => {
         expect(
           parser

@@ -45,7 +45,7 @@ function getProgramAndAST(
     (shouldProvideParserServices && createProjectProgram(parseSettings)) ||
     (shouldProvideParserServices &&
       // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      parseSettings.deprecated__createDefaultProgram &&
+      parseSettings.DEPRECATED__createDefaultProgram &&
       createDefaultProgram(parseSettings)) ||
     createIsolatedProgram(parseSettings)
   );

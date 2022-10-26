@@ -4,7 +4,7 @@ export const parseSettings: ParseSettings = {
   code: '',
   comment: true,
   comments: [],
-  deprecated__createDefaultProgram: false,
+  DEPRECATED__createDefaultProgram: false,
   debugLevel: new Set(),
   errorOnUnknownASTType: false,
   extraFileExtensions: [],
