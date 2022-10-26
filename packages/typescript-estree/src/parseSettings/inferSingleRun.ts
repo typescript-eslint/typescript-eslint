@@ -15,6 +15,16 @@ import type { TSESTreeOptions } from '../parser-options';
  * @returns Whether this is part of a single run, rather than a long-running process.
  */
 export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
+  if (
+    // single-run implies type-aware linting - no projects means we can't be in single-run mode
+    options?.project == null ||
+    // programs passed via options means the user should be managing the programs, so we shouldn't
+    // be creating our own single-run programs accidentally
+    options?.programs != null
+  ) {
+    return false;
+  }
+
   // Allow users to explicitly inform us of their intent to perform a single run (or not) with TSESTREE_SINGLE_RUN
   if (process.env.TSESTREE_SINGLE_RUN === 'false') {
     return false;
