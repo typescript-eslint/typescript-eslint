@@ -81,6 +81,13 @@ export function isTypeReferenceType(type: ts.Type): type is ts.TypeReference {
 }
 
 /**
+ * @returns The intrinsic name for a type, if the type is a literal.
+ */
+export function getIntrinsicName(type: ts.Type): string | undefined {
+  return type.intrinsicName;
+}
+
+/**
  * @returns true if the type is `any`
  */
 export function isTypeAnyType(type: ts.Type): boolean {
