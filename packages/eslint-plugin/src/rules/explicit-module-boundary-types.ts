@@ -22,7 +22,6 @@ type Options = [
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
-    shouldTrackReferences?: boolean;
   },
 ];
 type MessageIds =
@@ -83,10 +82,6 @@ export default util.createRule<Options, MessageIds>({
           allowTypedFunctionExpressions: {
             description:
               'Whether to ignore type annotations on the variable of a function expresion.',
-            type: 'boolean',
-          },
-          // DEPRECATED - To be removed in next major
-          shouldTrackReferences: {
             type: 'boolean',
           },
         },

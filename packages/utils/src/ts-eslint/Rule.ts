@@ -455,9 +455,7 @@ interface RuleModule<
 type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
-  // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
+> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
 
 export {
   ReportDescriptor,

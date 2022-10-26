@@ -40,43 +40,6 @@ Object {
         ],
         "type": "Identifier",
       },
-      "implements": Array [
-        Object {
-          "expression": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 24,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 23,
-                "line": 1,
-              },
-            },
-            "name": "e",
-            "range": Array [
-              23,
-              24,
-            ],
-            "type": "Identifier",
-          },
-          "loc": Object {
-            "end": Object {
-              "column": 24,
-              "line": 1,
-            },
-            "start": Object {
-              "column": 23,
-              "line": 1,
-            },
-          },
-          "range": Array [
-            23,
-            24,
-          ],
-          "type": "TSInterfaceHeritage",
-        },
-      ],
       "loc": Object {
         "end": Object {
           "column": 27,

@@ -187,7 +187,6 @@ class TypeVisitor extends Visitor {
     }
 
     node.extends?.forEach(this.visit, this);
-    node.implements?.forEach(this.visit, this);
     this.visit(node.body);
 
     if (node.typeParameters) {
@@ -260,7 +259,10 @@ class TypeVisitor extends Visitor {
 
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
-    let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
+    let entityName:
+      | TSESTree.Identifier
+      | TSESTree.ThisExpression
+      | TSESTree.TSImportType;
     if (node.exprName.type === AST_NODE_TYPES.TSQualifiedName) {
       let iter = node.exprName;
       while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
@@ -269,6 +271,10 @@ class TypeVisitor extends Visitor {
       entityName = iter.left;
     } else {
       entityName = node.exprName;
+
+      if (node.exprName.type === AST_NODE_TYPES.TSImportType) {
+        this.visit(node.exprName);
+      }
     }
     if (entityName.type === AST_NODE_TYPES.Identifier) {
       this.#referencer.currentScope().referenceValue(entityName);
