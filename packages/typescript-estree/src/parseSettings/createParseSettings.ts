@@ -28,7 +28,8 @@ export function createParseSettings(
     code: enforceString(code),
     comment: options.comment === true,
     comments: [],
-    createDefaultProgram: options.createDefaultProgram === true,
+    deprecated__createDefaultProgram:
+      options.deprecated__createDefaultProgram === true,
     debugLevel:
       options.debugLevel === true
         ? new Set(['typescript-eslint'])

@@ -144,6 +144,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   programs?: ts.Program[];
 
   /**
+   * @deprecated
    ***************************************************************************************
    * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
    ***************************************************************************************
@@ -152,7 +153,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * This means that if the parser encounters a file not included in any of the provided `project`s,
    * it will not error, but will instead parse the file and its dependencies in a new program.
    */
-  createDefaultProgram?: boolean;
+  deprecated__createDefaultProgram?: boolean;
 
   /**
    * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,

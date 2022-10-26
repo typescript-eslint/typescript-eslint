@@ -14,6 +14,9 @@ const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
 /**
  * @param parseSettings Internal settings for parsing the file
  * @returns If found, returns the source file corresponding to the code and the containing program
+ * @deprecated
+ * This is a legacy option that comes with severe performance penalties.
+ * Please do not use it.
  */
 function createDefaultProgram(
   parseSettings: ParseSettings,
@@ -66,4 +69,5 @@ function createDefaultProgram(
   return ast && { ast, program };
 }
 
+// eslint-disable-next-line deprecation/deprecation
 export { createDefaultProgram };

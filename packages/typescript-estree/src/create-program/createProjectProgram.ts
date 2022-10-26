@@ -36,7 +36,7 @@ function createProjectProgram(
   );
 
   // The file was either matched within the tsconfig, or we allow creating a default program
-  if (astAndProgram || parseSettings.createDefaultProgram) {
+  if (astAndProgram || parseSettings.deprecated__createDefaultProgram) {
     return astAndProgram;
   }
 

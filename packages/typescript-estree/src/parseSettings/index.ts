@@ -26,8 +26,11 @@ export interface MutableParseSettings {
 
   /**
    * Whether to create a TypeScript program if one is not provided.
+   * @deprecated
+   * This is a legacy option that comes with severe performance penalties.
+   * Please do not use it.
    */
-  createDefaultProgram: boolean;
+  deprecated__createDefaultProgram: boolean;
 
   /**
    * Which debug areas should be logged.
