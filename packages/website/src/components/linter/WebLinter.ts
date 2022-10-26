@@ -1,5 +1,5 @@
 import { createVirtualCompilerHost } from '@site/src/components/linter/CompilerHost';
-import { extra } from '@site/src/components/linter/config';
+import { parseSettings } from '@site/src/components/linter/config';
 import type { ParserOptions } from '@typescript-eslint/types';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { LintUtils } from '@typescript-eslint/website-eslint';
@@ -106,15 +106,11 @@ export class WebLinter {
 
     const { estree: ast, astMaps } = this.lintUtils.astConverter(
       tsAst,
-      { ...extra, code, jsx: isJsx },
+      { ...parseSettings, code, jsx: isJsx },
       true,
     );
 
     const scopeManager = this.lintUtils.analyze(ast, {
-      ecmaVersion:
-        eslintOptions.ecmaVersion === 'latest'
-          ? 1e8
-          : eslintOptions.ecmaVersion,
       globalReturn: eslintOptions.ecmaFeatures?.globalReturn ?? false,
       sourceType: eslintOptions.sourceType ?? 'script',
     });

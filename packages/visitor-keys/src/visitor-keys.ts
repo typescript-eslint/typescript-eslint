@@ -96,7 +96,7 @@ const additionalKeys: AdditionalKeys = {
   TSExternalModuleReference: ['expression'],
   TSFunctionType: ['typeParameters', 'params', 'returnType'],
   TSImportEqualsDeclaration: ['id', 'moduleReference'],
-  TSImportType: ['parameter', 'qualifier', 'typeParameters'],
+  TSImportType: ['argument', 'qualifier', 'typeParameters'],
   TSIndexedAccessType: ['indexType', 'objectType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],

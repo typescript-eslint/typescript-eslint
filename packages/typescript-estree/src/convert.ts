@@ -697,62 +697,6 @@ export class Converter {
   }
 
   /**
-   * Applies the given TS modifiers to the given result object.
-   *
-   * This method adds not standardized `modifiers` property in nodes
-   *
-   * @param result
-   * @param modifiers original ts.Nodes from the node.modifiers array
-   * @returns the current result object will be mutated
-   */
-  private applyModifiersToResult(
-    result: TSESTree.TSEnumDeclaration | TSESTree.TSModuleDeclaration,
-    modifiers: Iterable<ts.Modifier> | undefined,
-  ): void {
-    if (!modifiers) {
-      return;
-    }
-
-    const remainingModifiers: TSESTree.Modifier[] = [];
-    /**
-     * Some modifiers are explicitly handled by applying them as
-     * boolean values on the result node. As well as adding them
-     * to the result, we remove them from the array, so that they
-     * are not handled twice.
-     */
-    for (const modifier of modifiers) {
-      switch (modifier.kind) {
-        /**
-         * Ignore ExportKeyword and DefaultKeyword, they are handled
-         * via the fixExports utility function
-         */
-        case SyntaxKind.ExportKeyword:
-        case SyntaxKind.DefaultKeyword:
-          break;
-        case SyntaxKind.ConstKeyword:
-          (result as any).const = true;
-          break;
-        case SyntaxKind.DeclareKeyword:
-          result.declare = true;
-          break;
-        default:
-          remainingModifiers.push(
-            this.convertChild(modifier) as TSESTree.Modifier,
-          );
-          break;
-      }
-    }
-    /**
-     * If there are still valid modifiers available which have
-     * not been explicitly handled above, we just convert and
-     * add the modifiers array to the result node.
-     */
-    if (remainingModifiers.length > 0) {
-      result.modifiers = remainingModifiers;
-    }
-  }
-
-  /**
    * Uses the provided range location to adjust the location data of the given Node
    * @param result The node that will have its location data mutated
    * @param childRange The child node range used to expand location
@@ -2674,7 +2618,6 @@ export class Converter {
 
         if (interfaceHeritageClauses.length > 0) {
           const interfaceExtends: TSESTree.TSInterfaceHeritage[] = [];
-          const interfaceImplements: TSESTree.TSInterfaceHeritage[] = [];
 
           for (const heritageClause of interfaceHeritageClauses) {
             if (heritageClause.token === SyntaxKind.ExtendsKeyword) {
@@ -2683,27 +2626,14 @@ export class Converter {
                   this.convertChild(n, node) as TSESTree.TSInterfaceHeritage,
                 );
               }
-            } else {
-              for (const n of heritageClause.types) {
-                interfaceImplements.push(
-                  this.convertChild(n, node) as TSESTree.TSInterfaceHeritage,
-                );
-              }
             }
           }
 
-          if (interfaceExtends.length) {
+          if (interfaceExtends.length > 0) {
             result.extends = interfaceExtends;
           }
-
-          if (interfaceImplements.length) {
-            result.implements = interfaceImplements;
-          }
         }
 
-        if (hasModifier(SyntaxKind.AbstractKeyword, node)) {
-          result.abstract = true;
-        }
         if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
           result.declare = true;
         }
@@ -2730,11 +2660,15 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.ImportType:
-        return this.createNode<TSESTree.TSImportType>(node, {
+      case SyntaxKind.ImportType: {
+        const range = getRange(node, this.ast);
+        if (node.isTypeOf) {
+          const token = findNextToken(node.getFirstToken()!, node, this.ast)!;
+          range[0] = token.getStart(this.ast);
+        }
+        const result = this.createNode<TSESTree.TSImportType>(node, {
           type: AST_NODE_TYPES.TSImportType,
-          isTypeOf: !!node.isTypeOf,
-          parameter: this.convertChild(node.argument),
+          argument: this.convertChild(node.argument),
           qualifier: this.convertChild(node.qualifier),
           typeParameters: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameters(
@@ -2742,7 +2676,16 @@ export class Converter {
                 node,
               )
             : null,
+          range: range,
         });
+        if (node.isTypeOf) {
+          return this.createNode<TSESTree.TSTypeQuery>(node, {
+            type: AST_NODE_TYPES.TSTypeQuery,
+            exprName: result,
+          });
+        }
+        return result;
+      }
 
       case SyntaxKind.EnumDeclaration: {
         const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
@@ -2751,7 +2694,14 @@ export class Converter {
           members: node.members.map(el => this.convertChild(el)),
         });
         // apply modifiers first...
-        this.applyModifiersToResult(result, getModifiers(node));
+        if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
+          result.declare = true;
+        }
+
+        if (hasModifier(SyntaxKind.ConstKeyword, node)) {
+          result.const = true;
+        }
+
         // ...then check for exports
         return this.fixExports(node, result);
       }
@@ -2779,7 +2729,9 @@ export class Converter {
           result.body = this.convertChild(node.body);
         }
         // apply modifiers first...
-        this.applyModifiersToResult(result, getModifiers(node));
+        if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
+          result.declare = true;
+        }
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
           result.global = true;
         }

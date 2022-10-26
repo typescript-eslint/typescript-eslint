@@ -292,6 +292,28 @@ export function preprocessBabylonAST(ast: File): any {
           delete node.loc.start.index;
         }
       },
+      TSImportType(node: any) {
+        if (!node.typeParameters) {
+          node.typeParameters = null;
+        }
+        if (!node.qualifier) {
+          node.qualifier = null;
+        }
+        /**
+         * https://github.com/babel/babel/issues/12833
+         */
+        if (node.argument) {
+          node.argument = {
+            type: AST_NODE_TYPES.TSLiteralType,
+            literal: node.argument,
+            loc: {
+              start: { ...node.argument.loc.start },
+              end: { ...node.argument.loc.end },
+            },
+            range: [...node.argument.range],
+          };
+        }
+      },
       TSTypePredicate(node: any) {
         if (node.loc?.start?.index) {
           delete node.loc.start.index;
