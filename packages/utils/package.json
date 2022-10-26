@@ -43,7 +43,6 @@
     "@typescript-eslint/scope-manager": "5.29.0",
     "@typescript-eslint/types": "5.29.0",
     "@typescript-eslint/typescript-estree": "5.29.0",
-    "eslint-scope": "^5.1.1",
     "eslint-utils": "^3.0.0"
   },
   "peerDependencies": {
