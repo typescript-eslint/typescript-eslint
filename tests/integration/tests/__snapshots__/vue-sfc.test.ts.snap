@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`vue-sfc should lint successfully 1`] = `
-Array [
-  Object {
+[
+  {
     "errorCount": 1,
     "fatalErrorCount": 1,
     "filePath": "<root>/Hello.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "fatal": true,
         "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
         "ruleId": null,
@@ -21,14 +21,14 @@ Array [
   <div>
     <div>
       <!-- !!!!! expected error !!!!! -->
-      Hello {{ (name as any) }}{{ exclamationMarks }}
+      Hello {{ name as any }}{{ exclamationMarks }}
     </div>
-    <button @click=\\"decrement\\">-</button>
-    <button @click=\\"increment\\">+</button>
+    <button @click="decrement">-</button>
+    <button @click="increment">+</button>
   </div>
 </template>
 
-<script lang=\\"ts\\">
+<script lang="ts">
 import Vue from 'vue';
 export default Vue.extend({
   props: ['name', 'initialEnthusiasm'],
@@ -56,24 +56,25 @@ export default Vue.extend({
 });
 </script>
 ",
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": 1,
     "filePath": "<root>/Utility.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "fatal": true,
         "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
         "ruleId": null,
         "severity": 2,
       },
     ],
-    "source": "<script lang=\\"ts\\">
+    "source": "<script lang="ts">
 /* https://github.com/typescript-eslint/typescript-eslint/issues/2591 */
 /* eslint-disable class-methods-use-this */
 export default class Utility {
@@ -89,17 +90,18 @@ export default class Utility {
 }
 </script>
 ",
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": 1,
     "filePath": "<root>/World.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "fatal": true,
         "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
         "ruleId": null,
@@ -109,15 +111,15 @@ export default class Utility {
     "source": "<!-- World.vue -->
 <template>
   <div>
-    <div :id=\\"name\\">
+    <div :id="name">
       {{ enthusiasm }}
     </div>
-    <button @click=\\"decrement\\">-</button>
-    <button @click=\\"increment\\">+</button>
+    <button @click="decrement">-</button>
+    <button @click="increment">+</button>
   </div>
 </template>
 
-<script lang=\\"ts\\">
+<script lang="ts">
 import Vue from 'vue';
 export default Vue.extend({
   props: ['name', 'initialEnthusiasm'],
@@ -139,7 +141,8 @@ export default Vue.extend({
 });
 </script>
 ",
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
 ]

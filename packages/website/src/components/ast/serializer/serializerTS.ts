@@ -1,5 +1,6 @@
-import type { ASTViewerModel, Serializer, SelectedPosition } from '../types';
-import type { SourceFile, Node, Type, Symbol as TSSymbol } from 'typescript';
+import type { Node, SourceFile, Symbol as TSSymbol, Type } from 'typescript';
+
+import type { ASTViewerModel, SelectedPosition, Serializer } from '../types';
 import { isRecord } from '../utils';
 
 export function getLineAndCharacterFor(
@@ -20,10 +21,13 @@ export const propsToFilter = [
   'jsDocComment',
   'lineMap',
   'externalModuleIndicator',
+  'setExternalModuleIndicator',
   'bindDiagnostics',
   'transformFlags',
   'resolvedModules',
   'imports',
+  'antecedent',
+  'antecedents',
 ];
 
 function isTsNode(value: unknown): value is Node {

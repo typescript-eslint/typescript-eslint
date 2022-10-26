@@ -3,19 +3,6 @@
 // @ts-check
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  resolver: '<rootDir>/../../tests/jest-resolver.js',
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-  },
-  testRegex: './tests/.+\\.test\\.ts$',
-  collectCoverage: false,
-  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  coverageReporters: ['text-summary', 'lcov'],
+  ...require('../../jest.config.base.js'),
+  coveragePathIgnorePatterns: ['src/index.ts$', 'src/configs/.*.ts$'],
 };

@@ -5,6 +5,8 @@ import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
+export type RuleRecommendation = 'error' | 'strict' | 'warn' | false;
+
 interface RuleMetaDataDocs {
   /**
    * Concise description of the rule
@@ -12,10 +14,10 @@ interface RuleMetaDataDocs {
   description: string;
   /**
    * The recommendation level for the rule.
-   * Used by the build tools to generate the recommended config.
+   * Used by the build tools to generate the recommended and strict configs.
    * Set to false to not include it as a recommendation
    */
-  recommended: 'error' | 'warn' | false;
+  recommended: 'error' | 'strict' | 'warn' | false;
   /**
    * The URL of the rule's docs
    */
@@ -221,7 +223,6 @@ interface RuleContext<
   /**
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * This was added in v6.6.0
    * @since 6.6.0
    */
   getCwd?(): string;
@@ -233,7 +234,6 @@ interface RuleContext<
 
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
-   * This was added in v7.28.0
    * @since 7.28.0
    */
   getPhysicalFilename?(): string;
@@ -434,6 +434,11 @@ interface RuleModule<
   TRuleListener extends RuleListener = RuleListener,
 > {
   /**
+   * Default options the rule will be run with
+   */
+  defaultOptions: TOptions;
+
+  /**
    * Metadata about the rule
    */
   meta: RuleMetaData<TMessageIds>;
@@ -448,9 +453,7 @@ interface RuleModule<
 type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
-  // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
+> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
 
 export {
   ReportDescriptor,

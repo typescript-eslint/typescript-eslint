@@ -51,6 +51,7 @@ import type { TemplateLiteral } from '../expression/TemplateLiteral/spec';
 import type { ThisExpression } from '../expression/ThisExpression/spec';
 import type { TSAsExpression } from '../expression/TSAsExpression/spec';
 import type { TSEmptyBodyFunctionExpression } from '../expression/TSEmptyBodyFunctionExpression/spec';
+import type { TSInstantiationExpression } from '../expression/TSInstantiationExpression/spec';
 import type { TSNonNullExpression } from '../expression/TSNonNullExpression/spec';
 import type { TSTypeAssertion } from '../expression/TSTypeAssertion/spec';
 import type { UnaryExpression } from '../expression/UnaryExpression/spec';
@@ -115,27 +116,22 @@ import type { TryStatement } from '../statement/TryStatement/spec';
 import type { TSExportAssignment } from '../statement/TSExportAssignment/spec';
 import type { WhileStatement } from '../statement/WhileStatement/spec';
 import type { WithStatement } from '../statement/WithStatement/spec';
-import type { TSAbstractKeyword } from '../token/TSAbstractKeyword/spec';
-import type { TSAsyncKeyword } from '../token/TSAsyncKeyword/spec';
-import type { TSDeclareKeyword } from '../token/TSDeclareKeyword/spec';
-import type { TSExportKeyword } from '../token/TSExportKeyword/spec';
-import type { TSPrivateKeyword } from '../token/TSPrivateKeyword/spec';
-import type { TSProtectedKeyword } from '../token/TSProtectedKeyword/spec';
-import type { TSPublicKeyword } from '../token/TSPublicKeyword/spec';
-import type { TSReadonlyKeyword } from '../token/TSReadonlyKeyword/spec';
-import type { TSStaticKeyword } from '../token/TSStaticKeyword/spec';
+import type { TSAbstractKeyword } from '../type/TSAbstractKeyword/spec';
 import type { TSAnyKeyword } from '../type/TSAnyKeyword/spec';
 import type { TSArrayType } from '../type/TSArrayType/spec';
+import type { TSAsyncKeyword } from '../type/TSAsyncKeyword/spec';
 import type { TSBigIntKeyword } from '../type/TSBigIntKeyword/spec';
 import type { TSBooleanKeyword } from '../type/TSBooleanKeyword/spec';
 import type { TSConditionalType } from '../type/TSConditionalType/spec';
 import type { TSConstructorType } from '../type/TSConstructorType/spec';
+import type { TSDeclareKeyword } from '../type/TSDeclareKeyword/spec';
+import type { TSExportKeyword } from '../type/TSExportKeyword/spec';
 import type { TSFunctionType } from '../type/TSFunctionType/spec';
 import type { TSImportType } from '../type/TSImportType/spec';
 import type { TSIndexedAccessType } from '../type/TSIndexedAccessType/spec';
 import type { TSInferType } from '../type/TSInferType/spec';
 import type { TSIntersectionType } from '../type/TSIntersectionType/spec';
-import type { TSIntrinsicKeyword } from '../type/TSIntrinsicType/spec';
+import type { TSIntrinsicKeyword } from '../type/TSIntrinsicKeyword/spec';
 import type { TSLiteralType } from '../type/TSLiteralType/spec';
 import type { TSMappedType } from '../type/TSMappedType/spec';
 import type { TSNamedTupleMember } from '../type/TSNamedTupleMember/spec';
@@ -144,8 +140,13 @@ import type { TSNullKeyword } from '../type/TSNullKeyword/spec';
 import type { TSNumberKeyword } from '../type/TSNumberKeyword/spec';
 import type { TSObjectKeyword } from '../type/TSObjectKeyword/spec';
 import type { TSOptionalType } from '../type/TSOptionalType/spec';
+import type { TSPrivateKeyword } from '../type/TSPrivateKeyword/spec';
+import type { TSProtectedKeyword } from '../type/TSProtectedKeyword/spec';
+import type { TSPublicKeyword } from '../type/TSPublicKeyword/spec';
 import type { TSQualifiedName } from '../type/TSQualifiedName/spec';
+import type { TSReadonlyKeyword } from '../type/TSReadonlyKeyword/spec';
 import type { TSRestType } from '../type/TSRestType/spec';
+import type { TSStaticKeyword } from '../type/TSStaticKeyword/spec';
 import type { TSStringKeyword } from '../type/TSStringKeyword/spec';
 import type { TSSymbolKeyword } from '../type/TSSymbolKeyword/spec';
 import type { TSTemplateLiteralType } from '../type/TSTemplateLiteralType/spec';
@@ -277,6 +278,7 @@ export type Node =
   | TSIndexedAccessType
   | TSIndexSignature
   | TSInferType
+  | TSInstantiationExpression
   | TSInterfaceBody
   | TSInterfaceDeclaration
   | TSInterfaceHeritage

@@ -1,6 +1,7 @@
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
-import { TSESLint, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import * as util from '../util';
 
@@ -17,9 +18,9 @@ export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
-      description: 'Requires Promise-like values to be handled appropriately',
+      description:
+        'Require Promise-like statements to be handled appropriately',
       recommended: 'error',
-      suggestion: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -35,8 +36,15 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          ignoreVoid: { type: 'boolean' },
-          ignoreIIFE: { type: 'boolean' },
+          ignoreVoid: {
+            description: 'Whether to ignore `void` expressions.',
+            type: 'boolean',
+          },
+          ignoreIIFE: {
+            description:
+              'Whether to ignore async IIFEs (Immediately Invocated Function Expressions).',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },

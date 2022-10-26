@@ -1,6 +1,5 @@
-import { TypeScriptWorker } from './tsWorker'; // import { TypeScriptWorker } from "./tsWorker";
+import { TypeScriptWorker } from './tsWorker';
 // import lzstring from "./vendor/lzstring.min";
-
 import * as tsvfs from './typescript-vfs';
 
 declare type CompilerOptions =
@@ -46,7 +45,6 @@ export declare type SandboxConfig = {
       elementToAppend: HTMLElement;
     }
 );
-
 /** The default settings which we apply a partial over */
 export declare function defaultPlaygroundSettings(): {
   /** The default source code for the playground */
@@ -79,7 +77,6 @@ export declare function defaultPlaygroundSettings(): {
 } & {
   domID: string;
 };
-
 /** Creates a sandbox editor, and returns a set of useful functions and the editor */
 export declare const createTypeScriptSandbox: (
   partialConfig: Partial<SandboxConfig>,
@@ -108,7 +105,9 @@ export declare const createTypeScriptSandbox: (
   };
   /** A list of TypeScript versions you can use with the TypeScript sandbox */
   supportedVersions: readonly [
-    '4.5.0-beta',
+    '4.7.3',
+    '4.6.4',
+    '4.5.5',
     '4.4.4',
     '4.3.5',
     '4.2.3',

@@ -1,14 +1,15 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 import {
   isConditionalType,
+  isIntersectionType,
   isObjectType,
-  isUnionType,
-  unionTypeParts,
   isPropertyReadonlyInType,
   isSymbolFlagSet,
-  isIntersectionType,
+  isUnionType,
+  unionTypeParts,
 } from 'tsutils';
 import * as ts from 'typescript';
+
 import { getTypeOfPropertyOfType } from './propertyTypes';
 
 const enum Readonlyness {
@@ -112,6 +113,10 @@ function isTypeReadonlyObject(
         return Readonlyness.Mutable;
       }
 
+      if (indexInfo.type === type) {
+        return Readonlyness.Readonly;
+      }
+
       return isTypeReadonlyRecurser(
         checker,
         indexInfo.type,
@@ -154,6 +159,11 @@ function isTypeReadonlyObject(
       }
 
       if (isPropertyReadonlyInType(type, property.getEscapedName(), checker)) {
+        continue;
+      }
+
+      const name = ts.getNameOfDeclaration(property.valueDeclaration);
+      if (name && ts.isPrivateIdentifier(name)) {
         continue;
       }
 

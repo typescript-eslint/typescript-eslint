@@ -10,9 +10,25 @@ const rules = Object.entries(plugin.rules).map(([name, rule]) => {
   };
 });
 
-const notDeprecatedRules = rules.filter(rule => !rule.meta.deprecated);
+const deprecatedRules = new Set(rules.filter(rule => rule.meta.deprecated));
 
-const deprecatedRules = rules.filter(rule => rule.meta.deprecated);
+const formattingRules = new Set(
+  rules.filter(rule => !rule.meta.deprecated && rule.meta.type === 'layout'),
+);
+
+const extensionRules = new Set(
+  rules.filter(
+    rule => rule.meta.docs?.extendsBaseRule && !formattingRules.has(rule),
+  ),
+);
+
+const typescriptRules = rules.filter(
+  rule =>
+    !rule.meta.deprecated &&
+    !extensionRules.has(rule) &&
+    !deprecatedRules.has(rule) &&
+    !formattingRules.has(rule),
+);
 
 const paths = globby
   .sync('*.md', {
@@ -24,37 +40,45 @@ const paths = globby
     };
   })
   .filter(item => {
-    return item.name !== 'README' && !rules.some(a => a.name === item.name);
+    return (
+      item.name !== 'README' &&
+      item.name !== 'TEMPLATE' &&
+      !rules.some(a => a.name === item.name)
+    );
   });
+
+function createCategory(label, rules, additionalItems = []) {
+  return {
+    items: [
+      ...rules.map(rule => {
+        return {
+          type: 'doc',
+          id: rule.name,
+          label: rule.name,
+        };
+      }),
+      ...additionalItems,
+    ],
+    label,
+    type: 'category',
+  };
+}
 
 module.exports = {
   someSidebar: [
     'README',
     {
-      type: 'category',
-      label: 'Rules',
-      collapsible: true,
+      ...createCategory('TypeScript Rules', Array.from(typescriptRules)),
       collapsed: false,
-      items: notDeprecatedRules.map(item => {
-        return {
-          type: 'doc',
-          id: item.name,
-          label: item.name,
-        };
-      }),
     },
     {
-      type: 'category',
-      label: 'Deprecated',
-      collapsible: true,
+      ...createCategory('Extension Rules', Array.from(extensionRules)),
       collapsed: false,
-      items: [...deprecatedRules, ...paths].map(item => {
-        return {
-          type: 'doc',
-          id: item.name,
-          label: item.name,
-        };
-      }),
     },
+    createCategory('Formatting Rules', Array.from(formattingRules)),
+    createCategory('Deprecated Rules', [
+      ...Array.from(deprecatedRules),
+      ...paths,
+    ]),
   ],
 };

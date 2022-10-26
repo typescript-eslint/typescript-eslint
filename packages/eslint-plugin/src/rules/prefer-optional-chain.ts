@@ -1,4 +1,8 @@
-import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { isBinaryExpression } from 'tsutils';
+import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type ValidChainTarget =
@@ -11,7 +15,6 @@ type ValidChainTarget =
 
 /*
 The AST is always constructed such the first element is always the deepest element.
-
 I.e. for this code: `foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz`
 The AST will look like this:
 {
@@ -32,9 +35,8 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Prefer using concise optional chain expressions instead of chained logical ands',
-      recommended: false,
-      suggestion: true,
+        'Enforce using concise optional chain expressions instead of chained logical ands',
+      recommended: 'strict',
     },
     hasSuggestions: true,
     messages: {
@@ -47,7 +49,68 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
+    const parserServices = util.getParserServices(context, true);
+
     return {
+      'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
+        node: TSESTree.LogicalExpression,
+      ): void {
+        const leftNode = node.left;
+        const rightNode = node.right;
+        const parentNode = node.parent;
+        const isRightNodeAnEmptyObjectLiteral =
+          rightNode.type === AST_NODE_TYPES.ObjectExpression &&
+          rightNode.properties.length === 0;
+        if (
+          !isRightNodeAnEmptyObjectLiteral ||
+          !parentNode ||
+          parentNode.type !== AST_NODE_TYPES.MemberExpression ||
+          parentNode.optional
+        ) {
+          return;
+        }
+
+        function isLeftSideLowerPrecedence(): boolean {
+          const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+
+          const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
+          const operator = isBinaryExpression(logicalTsNode)
+            ? logicalTsNode.operatorToken.kind
+            : ts.SyntaxKind.Unknown;
+          const leftPrecedence = util.getOperatorPrecedence(
+            leftTsNode.kind,
+            operator,
+          );
+
+          return leftPrecedence < util.OperatorPrecedence.LeftHandSide;
+        }
+        context.report({
+          node: parentNode,
+          messageId: 'optionalChainSuggest',
+          suggest: [
+            {
+              messageId: 'optionalChainSuggest',
+              fix: (fixer): TSESLint.RuleFix => {
+                const leftNodeText = sourceCode.getText(leftNode);
+                // Any node that is made of an operator with higher or equal precedence,
+                const maybeWrappedLeftNode = isLeftSideLowerPrecedence()
+                  ? `(${leftNodeText})`
+                  : leftNodeText;
+                const propertyToBeOptionalText = sourceCode.getText(
+                  parentNode.property,
+                );
+                const maybeWrappedProperty = parentNode.computed
+                  ? `[${propertyToBeOptionalText}]`
+                  : propertyToBeOptionalText;
+                return fixer.replaceTextRange(
+                  parentNode.range,
+                  `${maybeWrappedLeftNode}?.${maybeWrappedProperty}`,
+                );
+              },
+            },
+          ],
+        });
+      },
       [[
         'LogicalExpression[operator="&&"] > Identifier',
         'LogicalExpression[operator="&&"] > MemberExpression',
@@ -118,27 +181,22 @@ export default util.createRule({
             /*
             Diff the left and right text to construct the fix string
             There are the following cases:
-
             1)
             rightText === 'foo.bar.baz.buzz'
             leftText === 'foo.bar.baz'
             diff === '.buzz'
-
             2)
             rightText === 'foo.bar.baz.buzz()'
             leftText === 'foo.bar.baz'
             diff === '.buzz()'
-
             3)
             rightText === 'foo.bar.baz.buzz()'
             leftText === 'foo.bar.baz.buzz'
             diff === '()'
-
             4)
             rightText === 'foo.bar.baz[buzz]'
             leftText === 'foo.bar.baz'
             diff === '[buzz]'
-
             5)
             rightText === 'foo.bar.baz?.buzz'
             leftText === 'foo.bar.baz'
@@ -374,24 +432,10 @@ function isValidChainTarget(
   - foo !== undefined
   - foo != undefined
   */
-  if (
+  return (
     node.type === AST_NODE_TYPES.BinaryExpression &&
     ['!==', '!='].includes(node.operator) &&
-    isValidChainTarget(node.left, allowIdentifier)
-  ) {
-    if (
-      node.right.type === AST_NODE_TYPES.Identifier &&
-      node.right.name === 'undefined'
-    ) {
-      return true;
-    }
-    if (
-      node.right.type === AST_NODE_TYPES.Literal &&
-      node.right.value === null
-    ) {
-      return true;
-    }
-  }
-
-  return false;
+    isValidChainTarget(node.left, allowIdentifier) &&
+    (util.isUndefinedIdentifier(node.right) || util.isNullLiteral(node.right))
+  );
 }

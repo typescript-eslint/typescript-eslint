@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-duplicate-imports');
 
@@ -10,6 +12,8 @@ type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 export default util.createRule<Options, MessageIds>({
   name: 'no-duplicate-imports',
   meta: {
+    deprecated: true,
+    replacedBy: ['import/no-duplicates'],
     type: 'problem',
     docs: {
       description: 'Disallow duplicate imports',

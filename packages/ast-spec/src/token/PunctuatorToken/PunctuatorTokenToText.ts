@@ -1,6 +1,8 @@
 import type { SyntaxKind } from 'typescript';
 
-export interface PunctuatorTokenToText {
+import type { AssignmentOperatorToText } from '../../expression/AssignmentExpression/AssignmentOperatorToText';
+
+export interface PunctuatorTokenToText extends AssignmentOperatorToText {
   [SyntaxKind.OpenBraceToken]: '{';
   [SyntaxKind.CloseBraceToken]: '}';
   [SyntaxKind.OpenParenToken]: '(';
@@ -46,20 +48,4 @@ export interface PunctuatorTokenToText {
   [SyntaxKind.QuestionQuestionToken]: '??';
   [SyntaxKind.BacktickToken]: '`';
   [SyntaxKind.HashToken]: '#';
-  [SyntaxKind.EqualsToken]: '=';
-  [SyntaxKind.PlusEqualsToken]: '+=';
-  [SyntaxKind.MinusEqualsToken]: '-=';
-  [SyntaxKind.AsteriskEqualsToken]: '*=';
-  [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=';
-  [SyntaxKind.SlashEqualsToken]: '/=';
-  [SyntaxKind.PercentEqualsToken]: '%=';
-  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=';
-  [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
-  [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
-  [SyntaxKind.AmpersandEqualsToken]: '&=';
-  [SyntaxKind.BarEqualsToken]: '|=';
-  [SyntaxKind.BarBarEqualsToken]: '||=';
-  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
-  [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
-  [SyntaxKind.CaretEqualsToken]: '^=';
 }

@@ -1,4 +1,5 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 import {
   isClassOrTypeElement,
@@ -180,6 +181,7 @@ export default util.createRule<Options, MessageIds>({
 
       if (type === ':' && previousToken.value === '?') {
         if (
+          // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
           sourceCode.isSpaceBetweenTokens(previousToken, punctuatorTokenStart)
         ) {
           context.report({

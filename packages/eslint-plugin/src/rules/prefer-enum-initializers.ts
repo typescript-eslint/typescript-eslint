@@ -1,4 +1,5 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
@@ -8,9 +9,9 @@ export default util.createRule<[], MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Prefer initializing each enums member value',
+      description:
+        'Require each enum member value to be explicitly initialized',
       recommended: false,
-      suggestion: true,
     },
     hasSuggestions: true,
     messages: {

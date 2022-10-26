@@ -1,7 +1,9 @@
-import { ESLintUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import * as util from '../util';
 import * as ts from 'typescript';
+
+import * as util from '../util';
 
 type Options = [
   {
@@ -19,8 +21,7 @@ export default util.createRule<
     docs: {
       description:
         'Disallow the `void` operator except when used to discard a value',
-      recommended: false,
-      suggestion: true,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',

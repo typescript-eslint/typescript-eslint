@@ -1,4 +1,4 @@
-import React, { createRef, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 export interface CheckboxProps {
   readonly name: string;
@@ -10,17 +10,18 @@ export interface CheckboxProps {
 }
 
 function Checkbox(props: CheckboxProps): JSX.Element {
-  const checkboxRef = createRef<HTMLInputElement>();
+  const { indeterminate } = props;
 
-  useEffect(() => {
-    if (!checkboxRef.current) {
-      return;
-    }
+  const checkboxRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      if (!node) {
+        return;
+      }
 
-    if (props.indeterminate !== checkboxRef.current.indeterminate) {
-      checkboxRef.current.indeterminate = props.indeterminate ?? false;
-    }
-  }, [props.indeterminate]);
+      node.indeterminate = indeterminate ?? false;
+    },
+    [indeterminate],
+  );
 
   return (
     <input

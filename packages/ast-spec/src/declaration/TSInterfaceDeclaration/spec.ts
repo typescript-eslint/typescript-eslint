@@ -7,9 +7,26 @@ import type { TSTypeParameterDeclaration } from '../../special/TSTypeParameterDe
 
 export interface TSInterfaceDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSInterfaceDeclaration;
+  /**
+   * The body of the interface
+   */
   body: TSInterfaceBody;
-  id: Identifier;
-  typeParameters?: TSTypeParameterDeclaration;
-  extends?: TSInterfaceHeritage[];
+  /**
+   * Whether the interface was `declare`d, `undefined` otherwise
+   */
+  // TODO(#5020) - make this `false` if it is not `declare`d
   declare?: boolean;
+  /**
+   * The types this interface `extends`
+   */
+  extends?: TSInterfaceHeritage[];
+  /**
+   * The name of this interface
+   */
+  id: Identifier;
+  /**
+   * The generic type parameters declared for the interface.
+   * This is `undefined` if there are no generic type parameters declared.
+   */
+  typeParameters?: TSTypeParameterDeclaration;
 }

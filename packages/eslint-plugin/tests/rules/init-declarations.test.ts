@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/init-declarations';
 import { RuleTester } from '../RuleTester';
 
@@ -340,6 +341,35 @@ namespace myLib {
 }
       `,
       options: ['always'],
+    },
+    {
+      code: `
+declare namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['always'],
+    },
+
+    {
+      code: `
+declare namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['never'],
     },
   ],
   invalid: [
@@ -720,6 +750,37 @@ namespace myLib {
         {
           messageId: 'notInitialized',
           data: { idName: 'numberOfGreetings' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['always'],
+      errors: [
+        {
+          messageId: 'initialized',
+          data: { idName: 'foo' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+        {
+          messageId: 'initialized',
+          data: { idName: 'bar' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+        {
+          messageId: 'initialized',
+          data: { idName: 'baz' },
           type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],

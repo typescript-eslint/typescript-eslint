@@ -1,10 +1,11 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-inferrable-types';
-import { RuleTester } from '../RuleTester';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -156,7 +157,54 @@ class Foo {
 
   invalid: [
     ...invalidTestCases,
-
+    {
+      // This is invalid TS semantic, but it's trivial to make valid anyway
+      code: 'const fn = (a?: number = 5) => {};',
+      output: 'const fn = (a = 5) => {};',
+      options: [
+        {
+          ignoreParameters: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          column: 13,
+        },
+      ],
+    },
+    {
+      // This is invalid TS semantic, but it's trivial to make valid anyway
+      code: `
+class A {
+  a!: number = 1;
+}
+      `,
+      output: `
+class A {
+  a = 1;
+}
+      `,
+      options: [
+        {
+          ignoreProperties: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number',
+          },
+          line: 3,
+          column: 3,
+        },
+      ],
+    },
     {
       code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
       output: "const fn = (a = 5, b = true, c = 'foo') => {};",

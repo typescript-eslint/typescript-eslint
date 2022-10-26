@@ -1,4 +1,10 @@
-# Restricts the types allowed in boolean expressions (`strict-boolean-expressions`)
+---
+description: 'Disallow certain types in boolean expressions.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/strict-boolean-expressions** for documentation.
 
 Forbids usage of non-boolean types in expressions where a boolean is expected.
 `boolean` and `never` types are always allowed.
@@ -14,8 +20,6 @@ The following nodes are considered boolean expressions and their type is checked
     This is to allow usage of boolean operators for their short-circuiting behavior.
 
 ## Examples
-
-Examples of code for this rule:
 
 <!--tabs-->
 
@@ -82,29 +86,6 @@ const foo = (arg: any) => (Boolean(arg) ? 1 : 0);
 ```
 
 ## Options
-
-```ts
-type Options = {
-  allowString?: boolean;
-  allowNumber?: boolean;
-  allowNullableObject?: boolean;
-  allowNullableBoolean?: boolean;
-  allowNullableString?: boolean;
-  allowNullableNumber?: boolean;
-  allowAny?: boolean;
-};
-
-const defaultOptions: Options = {
-  allowString: true,
-  allowNumber: true,
-  allowNullableObject: true,
-  allowNullableBoolean: false,
-  allowNullableString: false,
-  allowNullableNumber: false,
-  allowAny: false,
-  allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-};
-```
 
 ### `allowString`
 
@@ -193,11 +174,4 @@ This rule provides following fixes and suggestions for particular types in boole
 
 ## Related To
 
-- TSLint: [strict-boolean-expressions](https://palantir.github.io/tslint/rules/strict-boolean-expressions)
 - [no-unnecessary-condition](./no-unnecessary-condition.md) - Similar rule which reports always-truthy and always-falsy values in conditions
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

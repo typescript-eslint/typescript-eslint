@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration implements-one AST Alignment - Token 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+    Keyword {
+      type: 'Keyword',
+      value: 'class',
+
+      range: [0, 5],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 5, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'Foo',
+
+      range: [6, 9],
+      loc: {
+        start: { column: 6, line: 1 },
+        end: { column: 9, line: 1 },
+      },
+    },
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'implements',
+
+      range: [10, 20],
+      loc: {
+        start: { column: 10, line: 1 },
+        end: { column: 20, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'Object',
+
+      range: [21, 27],
+      loc: {
+        start: { column: 21, line: 1 },
+        end: { column: 27, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [28, 29],
+      loc: {
+        start: { column: 28, line: 1 },
+        end: { column: 29, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [29, 30],
+      loc: {
+        start: { column: 29, line: 1 },
+        end: { column: 30, line: 1 },
+      },
+    },
+  ]"
+`;

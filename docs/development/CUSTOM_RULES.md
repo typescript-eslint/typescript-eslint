@@ -46,20 +46,23 @@ export const rule = createRule({
   create(context) {
     return {
       FunctionDeclaration(node) {
-        if (/^[a-z]/.test(node.id.name)) {
-          context.report({
-            messageId: 'uppercase',
-            node: node.id,
-          });
+        if (node.id != null) {
+          if (/^[a-z]/.test(node.id.name)) {
+            context.report({
+              messageId: 'uppercase',
+              node: node.id,
+            });
+          }
         }
       },
     };
   },
+  name: 'uppercase-first-declarations',
   meta: {
     docs: {
-      category: 'Best Practices',
       description:
         'Function declaration names should start with an upper-case letter.',
+      recommended: 'warn',
     },
     messages: {
       uppercase: 'Start this name with an upper-case letter.',
@@ -67,6 +70,7 @@ export const rule = createRule({
     type: 'suggestion',
     schema: [],
   },
+  defaultOptions: [],
 });
 ```
 
@@ -222,7 +226,7 @@ import { ESLintUtils } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
 
-export const rule: eslint.Rule.RuleModule = {
+export const rule = createRule({
   create(context) {
     return {
       ForOfStatement(node) {
@@ -248,8 +252,8 @@ export const rule: eslint.Rule.RuleModule = {
   },
   meta: {
     docs: {
-      category: 'Best Practices',
       description: 'Avoid looping over enums.',
+      recommended: 'error',
     },
     messages: {
       loopOverEnum: 'Do not loop over enums.',
@@ -257,7 +261,9 @@ export const rule: eslint.Rule.RuleModule = {
     type: 'suggestion',
     schema: [],
   },
-};
+  name: 'no-loop-over-enum',
+  defaultOptions: [],
+});
 ```
 
 ## Testing

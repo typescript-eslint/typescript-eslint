@@ -1,50 +1,25 @@
-# Avoid using promises in places not designed to handle them (`no-misused-promises`)
+---
+description: 'Disallow Promises in places not designed to handle them.'
+---
 
-This rule forbids using promises in places where the TypeScript compiler
-allows them but they are not handled properly. These situations can often arise
-due to a missing `await` keyword or just a misunderstanding of the way async
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misused-promises** for documentation.
+
+This rule forbids providing Promises to logical locations such as if statements in places where the TypeScript compiler allows them but they are not handled properly.
+These situations can often arise due to a missing `await` keyword or just a misunderstanding of the way async
 functions are handled/awaited.
 
-## Rule Details
-
-This rule accepts a single option which is an object with `checksConditionals`
-and `checksVoidReturn` properties indicating which types of misuse to flag.
-Both are enabled by default
+:::tip
+`no-misused-promises` only detects code that provides Promises to incorrect _logical_ locations.
+See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled Promise _statements_.
+:::
 
 ## Options
 
-```ts
-type Options = [
-  {
-    checksConditionals?: boolean;
-    checksVoidReturn?: boolean;
-  },
-];
+### `"checksConditionals"`
 
-const defaultOptions: Options = [
-  {
-    checksConditionals: true,
-    checksVoidReturn: true,
-  },
-];
-```
-
-If you don't want functions that return promises where a void return is
-expected to be checked, your configuration will look like this:
-
-```json
-{
-  "@typescript-eslint/no-misused-promises": [
-    "error",
-    {
-      "checksVoidReturn": false
-    }
-  ]
-}
-```
-
-Likewise, if you don't want to check conditionals, you can configure the rule
-like this:
+If you don't want to check conditionals, you can configure the rule with `"checksConditionals": false`:
 
 ```json
 {
@@ -57,7 +32,7 @@ like this:
 }
 ```
 
-### `checksConditionals: true`
+Doing so prevents the rule from looking at code like `if (somePromise)`.
 
 Examples of code for this rule with `checksConditionals: true`:
 
@@ -98,7 +73,46 @@ while (await promise) {
 
 <!--/tabs-->
 
-### `checksVoidReturn: true`
+### `"checksVoidReturn"`
+
+Likewise, if you don't want functions that return promises where a void return is
+expected to be checked, your configuration will look like this:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksVoidReturn": false
+    }
+  ]
+}
+```
+
+You can disable selective parts of the `checksVoidReturn` option by providing an object that disables specific checks.
+The following options are supported:
+
+- `arguments`: Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`
+- `attributes`: Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`
+- `properties`: Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`
+- `returns`: Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`
+- `variables`: Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`
+
+For example, if you don't mind that passing a `() => Promise<void>` to a `() => void` parameter or JSX attribute can lead to a floating unhandled Promise:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksVoidReturn": {
+        "arguments": false,
+        "attributes": false
+      }
+    }
+  ]
+}
+```
 
 Examples of code for this rule with `checksVoidReturn: true`:
 
@@ -168,6 +182,55 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
+### `"checksSpreads"`
+
+If you don't want to check object spreads, you can add this configuration:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksSpreads": false
+    }
+  ]
+}
+```
+
+Examples of code for this rule with `checksSpreads: true`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...getData() };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...getData2() };
+```
+
+#### ✅ Correct
+
+```ts
+const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...(await getData()) };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...(await getData2()) };
+```
+
+<!--tabs-->
+
 ## When Not To Use It
 
 If you do not use Promises in your codebase or are not concerned with possible
@@ -180,9 +243,3 @@ misuses of them outside of what the TypeScript compiler will check.
 ## Related To
 
 - [`no-floating-promises`](./no-floating-promises.md)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

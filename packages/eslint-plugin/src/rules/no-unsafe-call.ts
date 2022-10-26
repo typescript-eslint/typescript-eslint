@@ -1,5 +1,6 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+
 import * as util from '../util';
 import { getThisExpression } from '../util';
 
@@ -14,7 +15,7 @@ export default util.createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows calling an any type value',
+      description: 'Disallow calling a value with type `any`',
       recommended: 'error',
       requiresTypeChecking: true,
     },

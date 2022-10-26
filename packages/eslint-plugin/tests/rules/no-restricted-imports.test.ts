@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-restricted-imports';
 import { RuleTester } from '../RuleTester';
 
@@ -216,6 +217,42 @@ ruleTester.run('no-restricted-imports', rule, {
     {
       code: "export * from 'foo';",
       options: ['import1'],
+    },
+    {
+      code: "import type { MyType } from './types';",
+      options: [
+        {
+          patterns: [
+            {
+              group: ['fail'],
+              message: "Please do not load from 'fail'.",
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import type { foo } from 'import1/private/bar';
+import type { foo } from 'import2/private/bar';
+      `,
+      options: [
+        {
+          patterns: [
+            {
+              group: ['import1/private/*'],
+              message: 'usage of import1 private modules not allowed.',
+              allowTypeImports: true,
+            },
+            {
+              group: ['import2/private/*'],
+              message: 'usage of import2 private modules not allowed.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
     },
   ],
   invalid: [

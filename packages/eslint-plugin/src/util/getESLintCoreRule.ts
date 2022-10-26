@@ -5,6 +5,7 @@ import * as semver from 'semver';
 const isESLintV8 = semver.major(version) >= 8;
 
 interface RuleMap {
+  /* eslint-disable @typescript-eslint/consistent-type-imports -- more concise to use inline imports */
   'arrow-parens': typeof import('eslint/lib/rules/arrow-parens');
   'brace-style': typeof import('eslint/lib/rules/brace-style');
   'comma-dangle': typeof import('eslint/lib/rules/comma-dangle');
@@ -33,8 +34,10 @@ interface RuleMap {
   'prefer-const': typeof import('eslint/lib/rules/prefer-const');
   quotes: typeof import('eslint/lib/rules/quotes');
   semi: typeof import('eslint/lib/rules/semi');
+  'space-before-blocks': typeof import('eslint/lib/rules/space-before-blocks');
   'space-infix-ops': typeof import('eslint/lib/rules/space-infix-ops');
   strict: typeof import('eslint/lib/rules/strict');
+  /* eslint-enable @typescript-eslint/consistent-type-imports */
 }
 
 type RuleId = keyof RuleMap;

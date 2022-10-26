@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -23,9 +25,13 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowDestructuring: {
+            description:
+              'Whether to ignore destructurings, such as `const { props, state } = this`.',
             type: 'boolean',
           },
           allowedNames: {
+            description:
+              'Names to ignore, such as ["self"] for `const self = this;`.',
             type: 'array',
             items: {
               type: 'string',
@@ -48,11 +54,11 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ allowDestructuring, allowedNames }]) {
     return {
-      "VariableDeclarator[init.type='ThisExpression']"(
-        node: TSESTree.VariableDeclarator,
+      "VariableDeclarator[init.type='ThisExpression'], AssignmentExpression[right.type='ThisExpression']"(
+        node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
       ): void {
-        const { id } = node;
-
+        const id =
+          node.type === AST_NODE_TYPES.VariableDeclarator ? node.id : node.left;
         if (allowDestructuring && id.type !== AST_NODE_TYPES.Identifier) {
           return;
         }

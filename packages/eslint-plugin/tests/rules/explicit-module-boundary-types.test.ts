@@ -390,11 +390,15 @@ export class Test {
   ['prop']() {}
   [\`prop\`]() {}
   [\`\${v}\`](): void {}
+
+  foo = () => {
+    bar: 5;
+  };
 }
       `,
       options: [
         {
-          allowedNames: ['prop', 'method'],
+          allowedNames: ['prop', 'method', 'foo'],
         },
       ],
     },
@@ -1187,6 +1191,7 @@ export class Test {
     return;
   }
   arrow = (): string => 'arrow';
+  foo = () => 'bar';
 }
       `,
       options: [
@@ -1201,6 +1206,13 @@ export class Test {
           endLine: 8,
           column: 3,
           endColumn: 11,
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 12,
+          endLine: 12,
+          column: 9,
+          endColumn: 14,
         },
       ],
     },

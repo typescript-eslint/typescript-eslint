@@ -1,5 +1,5 @@
 import rule from '../../src/rules/restrict-plus-operands';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -109,6 +109,46 @@ const x = a + b;
     `
 declare const a: 'string literal' & string;
 declare const b: string;
+const x = a + b;
+    `,
+    `
+declare const a: {} & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: unknown & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: number & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: 42 & number;
+declare const b: number;
+const x = a + b;
+    `,
+    `
+declare const a: {} & bigint;
+declare const b: bigint;
+const x = a + b;
+    `,
+    `
+declare const a: unknown & bigint;
+declare const b: bigint;
+const x = a + b;
+    `,
+    `
+declare const a: bigint & bigint;
+declare const b: bigint;
+const x = a + b;
+    `,
+    `
+declare const a: 42n & bigint;
+declare const b: bigint;
 const x = a + b;
     `,
     `
@@ -570,6 +610,188 @@ function foo<T extends 1>(a: T) {
       errors: [
         {
           messageId: 'notStrings',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: boolean & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: symbol & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: object & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: never & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: any & number;
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notValidAnys',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: number;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notNumbers',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: boolean & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: number & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: symbol & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: object & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: never & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: any & bigint;
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notValidAnys',
+          line: 4,
+          column: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a: { a: 1 } & { b: 2 };
+        declare const b: bigint;
+        const x = a + b;
+      `,
+      errors: [
+        {
+          messageId: 'notBigInts',
           line: 4,
           column: 19,
         },

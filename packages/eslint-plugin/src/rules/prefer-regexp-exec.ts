@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
+
 import {
   createRule,
   getParserServices,
@@ -25,7 +27,7 @@ export default createRule({
     fixable: 'code',
     docs: {
       description:
-        'Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided',
+        'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
       recommended: false,
       requiresTypeChecking: true,
     },

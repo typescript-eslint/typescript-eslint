@@ -1,18 +1,19 @@
-# Enforce that `RegExp#exec` is used instead of `String#match` if no global flag is provided (`prefer-regexp-exec`)
+---
+description: 'Enforce `RegExp#exec` over `String#match` if no global flag is provided.'
+---
 
-As `String#match` is defined to be the same as `RegExp#exec` when the regular expression does not include the `g` flag, prefer a consistent usage.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-regexp-exec** for documentation.
 
-## Rule Details
+`String#match` is defined to work the same as `RegExp#exec` when the regular expression does not include the `g` flag.
+Keeping to consistently using one of the two can help improve code readability.
 
-This rule is aimed at enforcing a consistent way to apply regular expressions to strings.
+This rule reports when a `String#match` call can be replaced with an equivalent `RegExp#exec`.
 
-From [`String#match` on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match):
+> `RegExp#exec` may also be slightly faster than `String#match`; this is the reason to choose it as the preferred usage.
 
-> If the regular expression does not include the g flag, returns the same result as `RegExp.exec()`.
-
-`RegExp#exec` may also be slightly faster than `String#match`; this is the reason to choose it as the preferred usage.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -40,22 +41,6 @@ const search = /thing/;
 search.exec(text);
 ```
 
-## Options
-
-There are no options.
-
-```json
-{
-  "@typescript-eslint/prefer-regexp-exec": "error"
-}
-```
-
 ## When Not To Use It
 
-If you prefer consistent use of `String#match` for both, with `g` flag and without it, you can turn this rule off.
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information
+If you prefer consistent use of `String#match` for both with `g` flag and without it, you can turn this rule off.

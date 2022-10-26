@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration implements-many Babel - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [6, 9],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "implements",
+
+    range: [10, 20],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 20, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Object",
+
+    range: [21, 27],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 27, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ",",
+
+    range: [27, 28],
+    loc: {
+      start: { column: 27, line: 1 },
+      end: { column: 28, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Function",
+
+    range: [29, 37],
+    loc: {
+      start: { column: 29, line: 1 },
+      end: { column: 37, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ",",
+
+    range: [37, 38],
+    loc: {
+      start: { column: 37, line: 1 },
+      end: { column: 38, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "RegExp",
+
+    range: [39, 45],
+    loc: {
+      start: { column: 39, line: 1 },
+      end: { column: 45, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [46, 47],
+    loc: {
+      start: { column: 46, line: 1 },
+      end: { column: 47, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [47, 48],
+    loc: {
+      start: { column: 47, line: 1 },
+      end: { column: 48, line: 1 },
+    },
+  },
+]
+`;

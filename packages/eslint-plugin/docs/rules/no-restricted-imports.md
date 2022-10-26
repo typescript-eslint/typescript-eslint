@@ -1,22 +1,17 @@
-# Disallow specified modules when loaded by `import` (`no-restricted-imports`)
+---
+description: 'Disallow specified modules when loaded by `import`.'
+---
 
-## Rule Details
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-restricted-imports** for documentation.
+
+## Examples
 
 This rule extends the base [`eslint/no-restricted-imports`](https://eslint.org/docs/rules/no-restricted-imports) rule.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-restricted-imports": "off",
-  "@typescript-eslint/no-restricted-imports": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/no-restricted-imports` options](https://eslint.org/docs/rules/no-restricted-imports#options).
 This rule adds the following options:
 
 ### `allowTypeImports`
@@ -66,9 +61,3 @@ export type { Foo } from 'import-foo';
 import type baz from 'import-baz';
 export type { Baz } from 'import-baz';
 ```
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

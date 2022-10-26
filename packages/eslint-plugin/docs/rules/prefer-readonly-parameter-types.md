@@ -1,10 +1,14 @@
-# Requires that function parameters are typed as readonly to prevent accidental mutation of inputs (`prefer-readonly-parameter-types`)
+---
+description: 'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-readonly-parameter-types** for documentation.
 
 Mutating function arguments can lead to confusing, hard to debug behavior.
 Whilst it's easy to implicitly remember to not modify function arguments, explicitly typing arguments as readonly provides clear contract to consumers.
 This contract makes it easier for a consumer to reason about if a function has side-effects.
-
-## Rule Details
 
 This rule allows you to enforce that function parameters resolve to readonly types.
 A type is considered readonly if:
@@ -15,7 +19,7 @@ A type is considered readonly if:
 - it is a readonly tuple type whose elements are all considered readonly.
 - it is an object type whose properties are all marked as readonly, and whose values are all considered readonly.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -125,19 +129,6 @@ interface Foo {
 
 ## Options
 
-```ts
-interface Options {
-  checkParameterProperties?: boolean;
-  ignoreInferredTypes?: boolean;
-}
-
-const defaultOptions: Options = {
-  checkParameterProperties: true,
-  ignoreInferredTypes: false,
-  treatMethodsAsReadonly: false,
-};
-```
-
 ### `checkParameterProperties`
 
 This option allows you to enable or disable the checking of parameter properties.
@@ -189,7 +180,7 @@ Examples of code for this rule with `{ignoreInferredTypes: true}`:
 ```ts
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
 
-acceceptsCallback((options: CallbackOptions) => {});
+acceptsCallback((options: CallbackOptions) => {});
 ```
 
 <details>
@@ -212,7 +203,7 @@ export const acceptsCallback: AcceptsCallback;
 ```ts
 import { acceptsCallback } from 'external-dependency';
 
-acceceptsCallback(options => {});
+acceptsCallback(options => {});
 ```
 
 <details>
@@ -232,7 +223,7 @@ export const acceptsCallback: AcceptsCallback;
 
 ### `treatMethodsAsReadonly`
 
-This option allows you to treat all mutable methods as though they were readonly. This may be desirable in when you are never reassigning methods.
+This option allows you to treat all mutable methods as though they were readonly. This may be desirable when you are never reassigning methods.
 
 Examples of code for this rule with `{treatMethodsAsReadonly: false}`:
 
@@ -275,9 +266,3 @@ type MyType = {
 };
 function foo(arg: MyType) {}
 ```
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

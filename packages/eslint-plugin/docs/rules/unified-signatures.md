@@ -1,12 +1,18 @@
-# Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter (`unified-signatures`)
+---
+description: 'Disallow two overloads that could be unified into one with a union or an optional/rest parameter.'
+---
 
-Warns for any two overloads that could be unified into one by using a union or an optional/rest parameter.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/unified-signatures** for documentation.
 
-## Rule Details
+Function overload signatures are a TypeScript way to define a function that can be called in multiple very different ways.
+Overload signatures add syntax and theoretical bloat, so it's generally best to avoid using them when possible.
+Switching to union types and/or optional or rest parameters can often avoid the need for overload signatures.
 
-This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
+This rule reports when function overload signatures can be replaced by a single function signature.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -32,12 +38,36 @@ function x(x: number | string): void;
 function y(...x: number[]): void;
 ```
 
-## Related To
+## Options
 
-- TSLint: [`unified-signatures`](https://palantir.github.io/tslint/rules/unified-signatures/)
+### `ignoreDifferentlyNamedParameters`
 
-## Attributes
+Examples of code for this rule with `ignoreDifferentlyNamedParameters`:
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+function f(a: number): void;
+function f(a: string): void;
+```
+
+```ts
+function f(...a: number[]): void;
+function f(...b: string[]): void;
+```
+
+### ✅ Correct
+
+```ts
+function f(a: number): void;
+function f(b: string): void;
+```
+
+```ts
+function f(...a: number[]): void;
+function f(...a: string[]): void;
+```
+
+## Options

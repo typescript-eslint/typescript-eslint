@@ -1,16 +1,16 @@
 #!/usr/bin/env ts-node
 
+import type { TSESLint } from '@typescript-eslint/utils';
 import fs from 'fs';
 import path from 'path';
+import prettier from 'prettier';
 
 import rules from '../src/rules';
-
-import prettier from 'prettier';
 
 interface RuleDetails {
   name: string;
   description: string;
-  recommended: boolean;
+  recommended: TSESLint.RuleRecommendation;
   fixable: boolean;
   requiresTypeChecking: boolean;
   extendsBaseRule: boolean;
@@ -19,13 +19,14 @@ interface RuleDetails {
 type RuleColumn = [
   string,
   string,
-  ':white_check_mark:' | '',
+  ':lock:' | ':white_check_mark:' | '',
   ':wrench:' | '',
   ':thought_balloon:' | '',
 ];
 
 const emojiKey = {
   recommended: ':white_check_mark:',
+  strict: ':lock:',
   fixable: ':wrench:',
   requiresTypeChecking: ':thought_balloon:',
 } as const;
@@ -33,13 +34,14 @@ const emojiKey = {
 const staticElements = {
   rulesListKey: [
     `**Key**: ${emojiKey.recommended} = recommended`,
+    `${emojiKey.strict} = strict`,
     `${emojiKey.fixable} = fixable`,
     `${emojiKey.requiresTypeChecking} = requires type information`,
   ].join(', '),
   listHeaderRow: [
     'Name',
     'Description',
-    emojiKey.recommended,
+    `${emojiKey.recommended}${emojiKey.strict}`,
     emojiKey.fixable,
     emojiKey.requiresTypeChecking,
   ],
@@ -57,7 +59,9 @@ const createRuleLink = (ruleName: string, basePath: string): string =>
 const buildRuleRow = (rule: RuleDetails, basePath: string): RuleColumn => [
   createRuleLink(rule.name, basePath),
   rule.description,
-  returnEmojiIfTrue('recommended', rule),
+  rule.recommended === 'strict'
+    ? emojiKey.strict
+    : returnEmojiIfTrue('recommended', rule),
   returnEmojiIfTrue('fixable', rule),
   returnEmojiIfTrue('requiresTypeChecking', rule),
 ];
@@ -119,7 +123,7 @@ const rulesDetails: RuleDetails[] = Object.entries(rules)
   .map(([name, rule]) => ({
     name,
     description: rule.meta.docs?.description ?? '',
-    recommended: !!rule.meta.docs?.recommended ?? false,
+    recommended: rule.meta.docs?.recommended ?? false,
     fixable: !!rule.meta.fixable,
     requiresTypeChecking: rule.meta.docs?.requiresTypeChecking ?? false,
     extendsBaseRule: !!rule.meta.docs?.extendsBaseRule ?? false,

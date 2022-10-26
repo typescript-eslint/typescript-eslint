@@ -24,6 +24,7 @@
   width: calc(var(--ifm-container-width) * 0.7);
   animation-name: animatetop;
   animation-duration: 0.4s;
+  max-width: 95%;
 }
 
 @keyframes animatetop {

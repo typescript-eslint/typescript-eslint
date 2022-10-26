@@ -1,4 +1,6 @@
-import { TSESLint, TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Delimiter = 'comma' | 'none' | 'semi';
@@ -35,6 +37,7 @@ interface MakeFixFunctionParams {
   optsNone: boolean;
   optsSemi: boolean;
   lastToken: LastTokenType;
+  commentsAfterLastToken: LastTokenType | undefined;
   missingDelimiter: boolean;
   lastTokenLine: string;
   isSingleLine: boolean;
@@ -68,16 +71,35 @@ const definition = {
   additionalProperties: false,
 };
 
-const isLastTokenEndOfLine = (token: string, line: string): boolean => {
-  const positionInLine = line.indexOf(token);
+const isLastTokenEndOfLine = (token: LastTokenType, line: string): boolean => {
+  const positionInLine = token.loc.start.column;
 
   return positionInLine === line.length - 1;
+};
+
+const isCommentsEndOfLine = (
+  token: LastTokenType,
+  comments: LastTokenType | undefined,
+  line: string,
+): boolean => {
+  if (!comments) {
+    return false;
+  }
+
+  if (comments.loc.end.line > token.loc.end.line) {
+    return true;
+  }
+
+  const positionInLine = comments.loc.end.column;
+
+  return positionInLine === line.length;
 };
 
 const makeFixFunction = ({
   optsNone,
   optsSemi,
   lastToken,
+  commentsAfterLastToken,
   missingDelimiter,
   lastTokenLine,
   isSingleLine,
@@ -85,7 +107,8 @@ const makeFixFunction = ({
   // if removing is the action but last token is not the end of the line
   if (
     optsNone &&
-    !isLastTokenEndOfLine(lastToken.value, lastTokenLine) &&
+    !isLastTokenEndOfLine(lastToken, lastTokenLine) &&
+    !isCommentsEndOfLine(lastToken, commentsAfterLastToken, lastTokenLine) &&
     !isSingleLine
   ) {
     return null;
@@ -112,13 +135,13 @@ const makeFixFunction = ({
 export default util.createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
-    type: 'suggestion',
+    type: 'layout',
     docs: {
       description:
         'Require a specific member delimiter style for interfaces and type literals',
       recommended: false,
     },
-    fixable: 'code',
+    fixable: 'whitespace',
     messages: {
       unexpectedComma: 'Unexpected separator (,).',
       unexpectedSemi: 'Unexpected separator (;).',
@@ -206,6 +229,10 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
+      const commentsAfterLastToken = sourceCode
+        .getCommentsAfter(lastToken)
+        .pop();
+
       const sourceCodeLines = sourceCode.getLines();
       const lastTokenLine = sourceCodeLines[lastToken?.loc.start.line - 1];
 
@@ -255,6 +282,7 @@ export default util.createRule<Options, MessageIds>({
             optsNone,
             optsSemi,
             lastToken,
+            commentsAfterLastToken,
             missingDelimiter,
             lastTokenLine,
             isSingleLine: opts.type === 'single-line',

@@ -1,6 +1,8 @@
-import rule, { MessageIds, Options } from '../../src/rules/member-ordering';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/member-ordering';
+import rule from '../../src/rules/member-ordering';
 import { RuleTester } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -1244,6 +1246,36 @@ class Foo {
             `,
       options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
     },
+    {
+      code: `
+class Foo {
+  static {}
+  m() {}
+  f = 1;
+}
+            `,
+      options: [{ default: ['static-initialization', 'method', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  m() {}
+  f = 1;
+  static {}
+}
+            `,
+      options: [{ default: ['method', 'field', 'static-initialization'] }],
+    },
+    {
+      code: `
+class Foo {
+  f = 1;
+  static {}
+  m() {}
+}
+            `,
+      options: [{ default: ['field', 'static-initialization', 'method'] }],
+    },
     `
 interface Foo {
     [Z: string]: any;
@@ -1414,6 +1446,74 @@ class Foo {
       options: [
         {
           default: ['public-method', 'field'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    get B() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get', 'set'], 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    B(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', [], 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    @Dec() private B: string;
+    private C(): void;
+    set D() {}
+    E(): void;
+}           `,
+      options: [
+        {
+          default: [
+            'public-field',
+            'constructor',
+            ['private-decorated-field', 'public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    get B() {}
+    get C() {}
+    set B() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get'], ['set'], 'method'],
         },
       ],
     },
@@ -3820,6 +3920,221 @@ class Foo {
           },
           line: 7,
           column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    get B() {}
+    constructor() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', ['get', 'set'], 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'constructor',
+            rank: 'get, set',
+          },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    private C(): void;
+    constructor() {}
+    @Dec() private B: string;
+    set D() {}
+    E(): void;
+}           `,
+      options: [
+        {
+          default: [
+            'public-field',
+            'constructor',
+            ['private-decorated-field', 'public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'constructor',
+            rank: 'private decorated field, public set, private method',
+          },
+          line: 5,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+    A: string;
+    constructor() {}
+    get B() {}
+    set B() {}
+    get C() {}
+    set C() {}
+    D(): void;
+}           `,
+      options: [
+        {
+          default: ['field', 'constructor', 'get', ['set'], 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'C',
+            rank: 'set',
+          },
+          line: 7,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+  m() {}
+  f = 1;
+}
+            `,
+      options: [{ default: ['method', 'field', 'static-initialization'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'm',
+            rank: 'static initialization',
+          },
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'f',
+            rank: 'static initialization',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  m() {}
+  f = 1;
+  static {}
+}
+            `,
+      options: [{ default: ['static-initialization', 'method', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'static block',
+            rank: 'method',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  f = 1;
+  static {}
+  m() {}
+}
+            `,
+      options: [{ default: ['static-initialization', 'field', 'method'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'static block',
+            rank: 'field',
+          },
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+  f = 1;
+  m() {}
+}
+            `,
+      options: [{ default: ['field', 'static-initialization', 'method'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'f',
+            rank: 'static initialization',
+          },
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private mp() {}
+  static {}
+  public m() {}
+  @dec
+  md() {}
+}
+            `,
+      options: [
+        { default: ['decorated-method', 'static-initialization', 'method'] },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'static block',
+            rank: 'method',
+          },
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'md',
+            rank: 'method',
+          },
+          line: 6,
+          column: 3,
         },
       ],
     },

@@ -1,12 +1,13 @@
 module.exports = {
   root: true,
   plugins: [
-    'eslint-plugin',
     '@typescript-eslint',
-    'jest',
-    'import',
-    'eslint-comments',
     '@typescript-eslint/internal',
+    'deprecation',
+    'eslint-comments',
+    'eslint-plugin',
+    'import',
+    'jest',
     'simple-import-sort',
   ],
   env: {
@@ -15,6 +16,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
@@ -24,6 +26,15 @@ module.exports = {
       './tsconfig.eslint.json',
       './packages/*/tsconfig.json',
       './tests/integration/tsconfig.json',
+      /**
+       * We are currently in the process of transitioning to nx's out of the box structure and
+       * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
+       * files here for now in addition to the tsconfig.json glob pattern.
+       *
+       * TODO(#4665): Clean this up once all packages have been transitioned.
+       */
+      './packages/scope-manager/tsconfig.build.json',
+      './packages/scope-manager/tsconfig.spec.json',
     ],
     allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
@@ -31,6 +42,9 @@ module.exports = {
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   },
   rules: {
+    // make sure we're not leveraging any deprecated APIs
+    'deprecation/deprecation': 'error',
+
     //
     // our plugin :D
     //
@@ -46,6 +60,10 @@ module.exports = {
       },
     ],
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      { prefer: 'type-imports', disallowTypeAnnotations: true },
+    ],
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-empty-function': [
@@ -55,6 +73,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
@@ -73,9 +92,6 @@ module.exports = {
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
-
-    // TODO - enable this
-    '@typescript-eslint/naming-convention': 'off',
 
     //
     // Internal repo rules
@@ -144,8 +160,10 @@ module.exports = {
     'import/no-absolute-path': 'error',
     // disallow AMD require/define
     'import/no-amd': 'error',
-    // forbid default exports
+    // forbid default exports - we want to standardize on named exports so that imported names are consistent
     'import/no-default-export': 'error',
+    // disallow imports from duplicate paths
+    'import/no-duplicates': 'error',
     // Forbid the use of extraneous packages
     'import/no-extraneous-dependencies': [
       'error',
@@ -165,19 +183,22 @@ module.exports = {
     'import/no-self-import': 'error',
     // Require modules with a single export to use a default export
     'import/prefer-default-export': 'off', // we want everything to be named
+
+    // enforce a sort order across the codebase
+    'simple-import-sort/imports': 'error',
   },
   overrides: [
     // all test files
     {
       files: [
-        'packages/*/tests/**/*.spec.ts',
-        'packages/*/tests/**/*.test.ts',
-        'packages/*/tests/**/spec.ts',
-        'packages/*/tests/**/test.ts',
-        'packages/parser/tests/**/*.ts',
-        'tests/integration/**/*.test.ts',
-        'tests/integration/integration-test-base.ts',
-        'tests/integration/pack-packages.ts',
+        './packages/*/tests/**/*.spec.ts',
+        './packages/*/tests/**/*.test.ts',
+        './packages/*/tests/**/spec.ts',
+        './packages/*/tests/**/test.ts',
+        './packages/parser/tests/**/*.ts',
+        './tests/integration/**/*.test.ts',
+        './tests/integration/integration-test-base.ts',
+        './tests/integration/pack-packages.ts',
       ],
       env: {
         'jest/globals': true,
@@ -187,7 +208,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
-        'eslint-plugin/no-identical-tests': 'error',
+        'eslint-plugin/consistent-output': 'off', // Might eventually be removed from `eslint-plugin/recommended`: https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/284
         'jest/no-disabled-tests': 'warn',
         'jest/no-focused-tests': 'error',
         'jest/no-alias-methods': 'error',
@@ -219,9 +240,9 @@ module.exports = {
     // plugin source files
     {
       files: [
-        'packages/eslint-plugin-internal/**/*.ts',
-        'packages/eslint-plugin-tslint/**/*.ts',
-        'packages/eslint-plugin/**/*.ts',
+        './packages/eslint-plugin-internal/**/*.ts',
+        './packages/eslint-plugin-tslint/**/*.ts',
+        './packages/eslint-plugin/**/*.ts',
       ],
       rules: {
         '@typescript-eslint/internal/no-typescript-estree-import': 'error',
@@ -230,10 +251,10 @@ module.exports = {
     // plugin rule source files
     {
       files: [
-        'packages/eslint-plugin-internal/src/rules/**/*.ts',
-        'packages/eslint-plugin-tslint/src/rules/**/*.ts',
-        'packages/eslint-plugin/src/configs/**/*.ts',
-        'packages/eslint-plugin/src/rules/**/*.ts',
+        './packages/eslint-plugin-internal/src/rules/**/*.ts',
+        './packages/eslint-plugin-tslint/src/rules/**/*.ts',
+        './packages/eslint-plugin/src/configs/**/*.ts',
+        './packages/eslint-plugin/src/rules/**/*.ts',
       ],
       rules: {
         // specifically for rules - default exports makes the tooling easier
@@ -243,10 +264,10 @@ module.exports = {
     // plugin rule tests
     {
       files: [
-        'packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
-        'packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
-        'packages/eslint-plugin/tests/rules/**/*.test.ts',
-        'packages/eslint-plugin/tests/eslint-rules/**/*.test.ts',
+        './packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
+        './packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
+        './packages/eslint-plugin/tests/rules/**/*.test.ts',
+        './packages/eslint-plugin/tests/eslint-rules/**/*.test.ts',
       ],
       rules: {
         '@typescript-eslint/internal/plugin-test-formatting': 'error',
@@ -254,7 +275,7 @@ module.exports = {
     },
     // files which list all the things
     {
-      files: ['packages/eslint-plugin/src/rules/index.ts'],
+      files: ['./packages/eslint-plugin/src/rules/index.ts'],
       rules: {
         // enforce alphabetical ordering
         'sort-keys': 'error',
@@ -272,11 +293,10 @@ module.exports = {
     // generated files
     {
       files: [
-        'packages/scope-manager/src/lib/*.ts',
-        'packages/eslint-plugin/src/configs/*.ts',
+        './packages/scope-manager/src/lib/*.ts',
+        './packages/eslint-plugin/src/configs/*.ts',
       ],
       rules: {
-        // allow console logs in tools and tests
         '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
         '@typescript-eslint/internal/no-typescript-default-import': 'off',
         '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
@@ -284,18 +304,11 @@ module.exports = {
     },
     // ast spec specific standardization
     {
-      files: ['packages/ast-spec/src/**/*.ts'],
+      files: ['./packages/ast-spec/src/**/*.ts'],
       rules: {
-        '@typescript-eslint/consistent-type-imports': [
-          'error',
-          { prefer: 'type-imports', disallowTypeAnnotations: true },
-        ],
+        // disallow ALL unused vars
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/sort-type-union-intersection-members': 'error',
-        'import/first': 'error',
-        'import/newline-after-import': 'error',
-        'import/no-duplicates': 'error',
-        'simple-import-sort/imports': 'error',
       },
     },
     {
@@ -305,9 +318,30 @@ module.exports = {
       },
     },
     {
-      files: ['packages/website/src/**/*.{ts,tsx}'],
+      files: ['./packages/website/'],
+      extends: [
+        'plugin:jsx-a11y/recommended',
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
+      ],
+      plugins: ['jsx-a11y', 'react', 'react-hooks'],
+      rules: {
+        'react/jsx-no-target-blank': 'off',
+        'react/no-unescaped-entities': 'off',
+        '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+        'react-hooks/exhaustive-deps': 'off', // TODO: enable it later
+      },
+      settings: {
+        react: {
+          version: 'detect',
+        },
+      },
+    },
+    {
+      files: ['./packages/website/src/**/*.{ts,tsx}'],
       rules: {
         'import/no-default-export': 'off',
+        // allow console logs in the website to help with debugging things in production
         'no-console': 'off',
       },
     },

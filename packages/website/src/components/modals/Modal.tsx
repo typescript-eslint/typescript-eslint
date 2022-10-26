@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
-import React, { MouseEvent, useCallback, useEffect } from 'react';
-import clsx from 'clsx';
-import styles from './Modal.module.css';
 import CloseIcon from '@site/src/icons/close.svg';
+import clsx from 'clsx';
+import type { MouseEvent } from 'react';
+import React, { useCallback, useEffect } from 'react';
+
+import styles from './Modal.module.css';
 
 interface ModalProps {
   readonly header: string;
@@ -12,10 +14,16 @@ interface ModalProps {
 }
 
 function Modal(props: ModalProps): JSX.Element {
+  const { onClose } = props;
+
   useEffect(() => {
     const closeOnEscapeKeyDown = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape' || e.keyCode === 27) {
-        props.onClose();
+      if (
+        e.key === 'Escape' ||
+        // eslint-disable-next-line deprecation/deprecation -- intentional fallback for old browsers
+        e.keyCode === 27
+      ) {
+        onClose();
       }
     };
 
@@ -23,15 +31,15 @@ function Modal(props: ModalProps): JSX.Element {
     return (): void => {
       document.body.removeEventListener('keydown', closeOnEscapeKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   const onClick = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       if (e.currentTarget === e.target) {
-        props.onClose();
+        onClose();
       }
     },
-    [props.onClose],
+    [onClose],
   );
 
   return (

@@ -1,0 +1,36 @@
+name: '♻ Propose a Change to Preset Configurations'
+description: 'Propose an addition, removal, or general change to a preset config'
+title: 'Configs: <a short description of my proposal>'
+labels:
+  - 'package: eslint-plugin'
+  - 'preset config change'
+  - triage
+body:
+  - type: checkboxes
+    id: sanity-checks
+    attributes:
+      label: Before You File a Proposal Please Confirm You Have Done The Following...
+      description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
+      options:
+        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3A%22preset+config+change%22+) and found none that match my proposal.
+          required: true
+        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Explain what your proposed config change would do and why this is useful.
+      placeholder: We should enable <XYZ> super duper useful fancy rule for the recommended config!
+    validations:
+      required: true
+  - type: textarea
+    id: impacted-configs
+    attributes:
+      label: Impacted Configurations
+      description: Which existing config(s) does this issue request changing?
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Info
+      description: Any additional info you'd like to provide.

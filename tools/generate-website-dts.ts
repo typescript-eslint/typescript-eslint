@@ -1,5 +1,5 @@
-import * as fs from 'fs';
 import fetch from 'cross-fetch';
+import * as fs from 'fs';
 import * as path from 'path';
 
 const baseHost = 'https://www.staging-typescript.org';
@@ -77,18 +77,10 @@ async function main(): Promise<void> {
     '/js/sandbox/index.d.ts',
     path.join(vendor, 'sandbox.d.ts'),
     text => {
-      const removeImports = text
-        .replace(/^import/g, '// import')
-        .replace(/\nimport/g, '\n// import');
-      const replaceTSVFS = removeImports.replace(
-        '// import * as tsvfs from "./vendor/typescript-vfs"',
-        "\nimport * as tsvfs from './typescript-vfs'",
-      );
-      const removedLZ = replaceTSVFS.replace(
-        'lzstring: typeof lzstring',
-        '// lzstring: typeof lzstring',
-      );
-      return 'import { TypeScriptWorker } from "./tsWorker";' + removedLZ;
+      return text
+        .replace(/import lzstring/g, '// import lzstring')
+        .replace('"./vendor/typescript-vfs"', "'./typescript-vfs'")
+        .replace('lzstring: typeof lzstring', '// lzstring: typeof lzstring');
     },
   );
 

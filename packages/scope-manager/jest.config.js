@@ -1,24 +1,14 @@
 'use strict';
 
 // @ts-check
+
+const baseConfig = require('../../jest.config.base.js');
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
-  testEnvironment: 'node',
-  transform: {
-    ['^.+\\.tsx?$']: 'ts-jest',
-  },
-  testRegex: [
-    './tests/.+\\.test\\.ts$',
-    './tests/eslint-scope/[^/]+\\.test\\.ts$',
+  ...baseConfig,
+  setupFilesAfterEnv: [
+    ...baseConfig.setupFilesAfterEnv,
+    './tests/util/serializers/index.ts',
   ],
-  collectCoverage: false,
-  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  coverageReporters: ['text-summary', 'lcov'],
-  setupFilesAfterEnv: ['./tests/util/serializers/index.ts'],
 };

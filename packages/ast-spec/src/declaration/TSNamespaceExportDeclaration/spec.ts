@@ -4,5 +4,8 @@ import type { Identifier } from '../../expression/Identifier/spec';
 
 export interface TSNamespaceExportDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSNamespaceExportDeclaration;
+  /**
+   * The name the global variable being exported to
+   */
   id: Identifier;
 }

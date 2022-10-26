@@ -1,11 +1,12 @@
-import * as ts from 'typescript';
-import { TSESTree } from '@typescript-eslint/utils';
 import { parseForESLint } from '@typescript-eslint/parser';
-import {
-  isTypeReadonly,
-  type ReadonlynessOptions,
-} from '../src/isTypeReadonly';
+import type { TSESTree } from '@typescript-eslint/utils';
 import path from 'path';
+import type * as ts from 'typescript';
+
+import {
+  type ReadonlynessOptions,
+  isTypeReadonly,
+} from '../src/isTypeReadonly';
 
 describe('isTypeReadonly', () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -82,6 +83,14 @@ describe('isTypeReadonly', () => {
             ['type Test = Readonly<ReadonlySet<string>>;'],
             ['type Test = Readonly<ReadonlyMap<string, string>>;'],
           ])('handles fully readonly sets and maps', runTests);
+
+          // Private Identifier.
+          // Note: It can't be accessed from outside of class thus exempt from the checks.
+          it.each([
+            ['class Foo { readonly #readonlyPrivateField = "foo"; }'],
+            ['class Foo { #privateField = "foo"; }'],
+            ['class Foo { #privateMember() {}; }'],
+          ])('treat private identifier as readonly', runTests);
         });
 
         describe('is not readonly', () => {
@@ -125,6 +134,13 @@ describe('isTypeReadonly', () => {
           );
         });
 
+        describe('is readonly circular', () => {
+          const runTests = runTestIsReadonly;
+
+          it('handles circular readonly PropertySignature inside a readonly IndexSignature', () =>
+            runTests('interface Test { readonly [key: string]: Test };'));
+        });
+
         describe('is not readonly', () => {
           const runTests = runTestIsNotReadonly;
 
@@ -135,6 +151,13 @@ describe('isTypeReadonly', () => {
             'handles mutable PropertySignature inside a readonly IndexSignature',
             runTests,
           );
+        });
+
+        describe('is not readonly circular', () => {
+          const runTests = runTestIsNotReadonly;
+
+          it('handles circular mutable PropertySignature inside a readonly IndexSignature', () =>
+            runTests('interface Test { [key: string]: Test };'));
         });
       });
 

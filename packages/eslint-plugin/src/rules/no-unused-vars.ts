@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type MessageIds = 'unusedVar';
@@ -14,6 +16,7 @@ export type Options = [
       argsIgnorePattern?: string;
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
+      destructuredArrayIgnorePattern?: string;
     },
 ];
 
@@ -25,6 +28,7 @@ interface TranslatedOptions {
   argsIgnorePattern?: RegExp;
   caughtErrors: 'all' | 'none';
   caughtErrorsIgnorePattern?: RegExp;
+  destructuredArrayIgnorePattern?: RegExp;
 }
 
 export default util.createRule<Options, MessageIds>({
@@ -64,6 +68,9 @@ export default util.createRule<Options, MessageIds>({
                 enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {
+                type: 'string',
+              },
+              destructuredArrayIgnorePattern: {
                 type: 'string',
               },
             },
@@ -123,12 +130,33 @@ export default util.createRule<Options, MessageIds>({
               'u',
             );
           }
+
+          if (firstOption.destructuredArrayIgnorePattern) {
+            options.destructuredArrayIgnorePattern = new RegExp(
+              firstOption.destructuredArrayIgnorePattern,
+              'u',
+            );
+          }
         }
       }
       return options;
     })();
 
     function collectUnusedVariables(): TSESLint.Scope.Variable[] {
+      /**
+       * Checks whether a node is a sibling of the rest property or not.
+       * @param {ASTNode} node a node to check
+       * @returns {boolean} True if the node is a sibling of the rest property, otherwise false.
+       */
+      function hasRestSibling(node: TSESTree.Node): boolean {
+        return (
+          node.type === AST_NODE_TYPES.Property &&
+          node.parent?.type === AST_NODE_TYPES.ObjectPattern &&
+          node.parent.properties[node.parent.properties.length - 1].type ===
+            AST_NODE_TYPES.RestElement
+        );
+      }
+
       /**
        * Determines if a variable has a sibling rest property
        * @param variable eslint-scope variable object.
@@ -138,17 +166,14 @@ export default util.createRule<Options, MessageIds>({
         variable: TSESLint.Scope.Variable,
       ): boolean {
         if (options.ignoreRestSiblings) {
-          return variable.defs.some(def => {
-            const propertyNode = def.name.parent!;
-            const patternNode = propertyNode.parent!;
+          const hasRestSiblingDefinition = variable.defs.some(def =>
+            hasRestSibling(def.name.parent!),
+          );
+          const hasRestSiblingReference = variable.references.some(ref =>
+            hasRestSibling(ref.identifier.parent!),
+          );
 
-            return (
-              propertyNode.type === AST_NODE_TYPES.Property &&
-              patternNode.type === AST_NODE_TYPES.ObjectPattern &&
-              patternNode.properties[patternNode.properties.length - 1].type ===
-                AST_NODE_TYPES.RestElement
-            );
-          });
+          return hasRestSiblingDefinition || hasRestSiblingReference;
         }
 
         return false;
@@ -185,6 +210,20 @@ export default util.createRule<Options, MessageIds>({
           options.vars === 'local'
         ) {
           // skip variables in the global scope if configured to
+          continue;
+        }
+
+        const refUsedInArrayPatterns = variable.references.some(
+          ref => ref.identifier.parent?.type === AST_NODE_TYPES.ArrayPattern,
+        );
+
+        // skip elements of array destructuring patterns
+        if (
+          (def.name.parent?.type === AST_NODE_TYPES.ArrayPattern ||
+            refUsedInArrayPatterns) &&
+          'name' in def.name &&
+          options.destructuredArrayIgnorePattern?.test(def.name.name)
+        ) {
           continue;
         }
 
@@ -361,9 +400,17 @@ export default util.createRule<Options, MessageIds>({
         function getAssignedMessageData(
           unusedVar: TSESLint.Scope.Variable,
         ): Record<string, unknown> {
-          const additional = options.varsIgnorePattern
-            ? `. Allowed unused vars must match ${options.varsIgnorePattern.toString()}`
-            : '';
+          const def = unusedVar.defs[0];
+          let additional = '';
+
+          if (
+            options.destructuredArrayIgnorePattern &&
+            def?.name.parent?.type === AST_NODE_TYPES.ArrayPattern
+          ) {
+            additional = `. Allowed unused elements of array destructuring patterns must match ${options.destructuredArrayIgnorePattern.toString()}`;
+          } else if (options.varsIgnorePattern) {
+            additional = `. Allowed unused vars must match ${options.varsIgnorePattern.toString()}`;
+          }
 
           return {
             varName: unusedVar.name,
@@ -374,15 +421,18 @@ export default util.createRule<Options, MessageIds>({
 
         const unusedVars = collectUnusedVariables();
 
-        for (let i = 0, l = unusedVars.length; i < l; ++i) {
-          const unusedVar = unusedVars[i];
-
+        for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
+            const writeReferences = unusedVar.references.filter(
+              ref =>
+                ref.isWrite() &&
+                ref.from.variableScope === unusedVar.scope.variableScope,
+            );
+
             context.report({
-              node: unusedVar.references.length
-                ? unusedVar.references[unusedVar.references.length - 1]
-                    .identifier
+              node: writeReferences.length
+                ? writeReferences[writeReferences.length - 1].identifier
                 : unusedVar.identifiers[0],
               messageId: 'unusedVar',
               data: unusedVar.references.some(ref => ref.isWrite())

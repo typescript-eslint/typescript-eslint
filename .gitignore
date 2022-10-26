@@ -9,7 +9,10 @@ yarn-error.log*
 packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
+packages/website/playwright-report
+packages/website/playwright/.cache
 packages/website/static/sandbox
+packages/website/test-results
 
 # Runtime data
 pids
@@ -75,4 +78,4 @@ _ts3.4
 .rollup.cache
 
 # Files copied as part of the build
-packages/types/src/ast-spec.ts
+packages/types/src/generated/**/*.ts

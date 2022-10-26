@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration empty TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [10, 12],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 12, line: 1 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      superClass: null,
+
+      range: [0, 12],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 12, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 13],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

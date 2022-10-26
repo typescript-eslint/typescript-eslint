@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -8,16 +9,14 @@ export default util.createRule({
   name: 'non-nullable-type-assertion-style',
   meta: {
     docs: {
-      description:
-        'Prefers a non-null assertion over explicit type cast when possible',
-      recommended: false,
+      description: 'Enforce non-null assertions over explicit type casts',
+      recommended: 'strict',
       requiresTypeChecking: true,
-      suggestion: true,
     },
     fixable: 'code',
     messages: {
       preferNonNullAssertion:
-        'Use a ! assertion to more succintly remove null and undefined from the type.',
+        'Use a ! assertion to more succinctly remove null and undefined from the type.',
     },
     schema: [],
     type: 'suggestion',
@@ -43,14 +42,31 @@ export default util.createRule({
       return tsutils.unionTypeParts(type);
     };
 
+    const couldBeNullish = (type: ts.Type): boolean => {
+      if (type.flags & ts.TypeFlags.TypeParameter) {
+        const constraint = type.getConstraint();
+        return constraint == null || couldBeNullish(constraint);
+      } else if (tsutils.isUnionType(type)) {
+        for (const part of type.types) {
+          if (couldBeNullish(part)) {
+            return true;
+          }
+        }
+        return false;
+      } else {
+        return (
+          (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0
+        );
+      }
+    };
+
     const sameTypeWithoutNullish = (
       assertedTypes: ts.Type[],
       originalTypes: ts.Type[],
     ): boolean => {
       const nonNullishOriginalTypes = originalTypes.filter(
         type =>
-          type.flags !== ts.TypeFlags.Null &&
-          type.flags !== ts.TypeFlags.Undefined,
+          (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) === 0,
       );
 
       if (nonNullishOriginalTypes.length === originalTypes.length) {
@@ -58,7 +74,10 @@ export default util.createRule({
       }
 
       for (const assertedType of assertedTypes) {
-        if (!nonNullishOriginalTypes.includes(assertedType)) {
+        if (
+          couldBeNullish(assertedType) ||
+          !nonNullishOriginalTypes.includes(assertedType)
+        ) {
           return false;
         }
       }

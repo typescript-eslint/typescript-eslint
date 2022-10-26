@@ -1,34 +1,7 @@
-import { DebugLevel } from '@typescript-eslint/types';
-import * as ts from 'typescript';
-import { CanonicalPath } from './create-program/shared';
-import { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
+import type { DebugLevel } from '@typescript-eslint/types';
+import type * as ts from 'typescript';
 
-type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
-
-export interface Extra {
-  code: string;
-  comment: boolean;
-  comments: TSESTree.Comment[];
-  createDefaultProgram: boolean;
-  debugLevel: Set<DebugModule>;
-  errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
-  errorOnUnknownASTType: boolean;
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
-  extraFileExtensions: string[];
-  filePath: string;
-  jsx: boolean;
-  loc: boolean;
-  singleRun: boolean;
-  log: (message: string) => void;
-  preserveNodeMaps?: boolean;
-  programs: null | Iterable<ts.Program>;
-  projects: CanonicalPath[];
-  range: boolean;
-  strict: boolean;
-  tokens: null | TSESTree.Token[];
-  tsconfigRootDir: string;
-  moduleResolver: string;
-}
+import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 ////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE README //
@@ -67,7 +40,7 @@ interface ParseOptions {
    * Enable parsing of JSX.
    * For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
    *
-   * NOTE: this setting does not effect known file types (.js, .jsx, .ts, .tsx, .json) because the
+   * NOTE: this setting does not effect known file types (.js, .cjs, .mjs, .jsx, .ts, .mts, .cts, .tsx, .json) because the
    * TypeScript compiler has its own internal handling for known file extensions.
    *
    * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsecmafeaturesjsx

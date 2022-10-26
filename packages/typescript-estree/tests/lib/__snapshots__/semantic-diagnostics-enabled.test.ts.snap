@@ -138,7 +138,7 @@ TSError {
   "column": 21,
   "index": 21,
   "lineNumber": 1,
-  "message": "Octal literals are not allowed in strict mode.",
+  "message": "Octal literals are not available when targeting ECMAScript 5 and higher. Use the syntax '0o0'.",
 }
 `;
 
@@ -1130,22 +1130,36 @@ TSError {
   "column": 1,
   "index": 62,
   "lineNumber": 7,
-  "message": "An object literal cannot have multiple properties with the same name in strict mode.",
+  "message": "An object literal cannot have multiple properties with the same name.",
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 64,
+  "lineNumber": 7,
+  "message": "An object literal cannot have multiple properties with the same name.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `
 TSError {
   "column": 1,
   "index": 39,
   "lineNumber": 5,
-  "message": "An object literal cannot have multiple properties with the same name in strict mode.",
+  "message": "An object literal cannot have multiple properties with the same name.",
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 41,
+  "lineNumber": 5,
+  "message": "An object literal cannot have multiple properties with the same name.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/javascript/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `
 TSError {
@@ -1332,10 +1346,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/jsx/embedded-tags.src 1`] = `
 TSError {
-  "column": 16,
-  "index": 16,
+  "column": 40,
+  "index": 40,
   "lineNumber": 1,
-  "message": "'{' expected.",
+  "message": "Unexpected token. Did you mean \`{'>'}\` or \`&gt;\`?",
 }
 `;
 
@@ -1354,7 +1368,7 @@ TSError {
   "column": 5,
   "index": 5,
   "lineNumber": 1,
-  "message": "'{' expected.",
+  "message": "'{' or JSX element expected.",
 }
 `;
 
@@ -2210,6 +2224,12 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/class-decorators/class-decorator-factory.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/class-decorators/class-parameter-property.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/class-decorators/export-default-class-decorator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/class-decorators/export-named-class-decorator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/method-decorators/method-decorator-factory-instance-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/decorators/method-decorators/method-decorator-factory-static-member.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2626,6 +2646,8 @@ TSError {
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/expressions/call-expression-type-arguments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/expressions/instantiation-expression.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/expressions/new-expression-type-arguments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/expressions/optional-call-expression-type-arguments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2653,6 +2675,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-infer-nested.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-infer-simple.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-infer-with-constraint.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/conditional-with-null.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -2716,6 +2740,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/object-literal-type-with-accessors.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/optional-variance-in.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/optional-variance-in-and-out.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/optional-variance-in-out.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/optional-variance-out.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/parenthesized-type.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/reference.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -2759,6 +2791,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/type-operator.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/typeof.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/typeof-this.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/typeof-with-type-parameters.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/types/union-intersection.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 

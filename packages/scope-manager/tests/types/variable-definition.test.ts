@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { getSpecificNode, parseAndAnalyze } from '../util';
 
 describe('variable definition', () => {
@@ -8,16 +9,16 @@ describe('variable definition', () => {
     `);
     const node = getSpecificNode(ast, AST_NODE_TYPES.TSTypeAliasDeclaration);
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
-      Array [
+      [
         Variable$2 {
-          defs: Array [
+          defs: [
             TypeDefinition$1 {
               name: Identifier<"TypeDecl">,
               node: TSTypeAliasDeclaration$1,
             },
           ],
           name: "TypeDecl",
-          references: Array [],
+          references: [],
           isValueVariable: false,
           isTypeVariable: true,
         },
@@ -33,16 +34,16 @@ describe('variable definition', () => {
     `);
     const node = getSpecificNode(ast, AST_NODE_TYPES.TSInterfaceDeclaration);
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
-      Array [
+      [
         Variable$2 {
-          defs: Array [
+          defs: [
             TypeDefinition$1 {
               name: Identifier<"InterfaceDecl">,
               node: TSInterfaceDeclaration$1,
             },
           ],
           name: "InterfaceDecl",
-          references: Array [],
+          references: [],
           isValueVariable: false,
           isTypeVariable: true,
         },
@@ -56,16 +57,16 @@ describe('variable definition', () => {
     `);
     const node = getSpecificNode(ast, AST_NODE_TYPES.TSTypeParameter);
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
-      Array [
+      [
         Variable$3 {
-          defs: Array [
+          defs: [
             TypeDefinition$2 {
               name: Identifier<"TypeParam">,
               node: TSTypeParameter$1,
             },
           ],
           name: "TypeParam",
-          references: Array [],
+          references: [],
           isValueVariable: false,
           isTypeVariable: true,
         },
@@ -83,16 +84,16 @@ describe('variable definition', () => {
       n => n.typeParameter,
     );
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
-      Array [
+      [
         Variable$4 {
-          defs: Array [
+          defs: [
             TypeDefinition$3 {
               name: Identifier<"Inferred">,
               node: TSTypeParameter$1,
             },
           ],
           name: "Inferred",
-          references: Array [
+          references: [
             Reference$3 {
               identifier: Identifier<"Inferred">,
               isRead: true,

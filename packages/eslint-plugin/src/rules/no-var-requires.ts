@@ -1,4 +1,6 @@
-import { ASTUtils, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [];
@@ -9,8 +11,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Disallows the use of require statements except in import statements',
+      description: 'Disallow `require` statements except in import statements',
       recommended: 'error',
     },
     messages: {

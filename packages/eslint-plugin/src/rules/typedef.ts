@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 const enum OptionKeys {
@@ -20,7 +22,7 @@ export default util.createRule<[Options], MessageIds>({
   name: 'typedef',
   meta: {
     docs: {
-      description: 'Requires type annotations to exist',
+      description: 'Require type annotations in certain places',
       recommended: false,
     },
     messages: {
@@ -149,6 +151,26 @@ export default util.createRule<[Options], MessageIds>({
       );
     }
 
+    function isAncestorHasTypeAnnotation(
+      node: TSESTree.ObjectPattern | TSESTree.ArrayPattern,
+    ): boolean {
+      let ancestor = node.parent;
+
+      while (ancestor) {
+        if (
+          (ancestor.type === AST_NODE_TYPES.ObjectPattern ||
+            ancestor.type === AST_NODE_TYPES.ArrayPattern) &&
+          ancestor.typeAnnotation
+        ) {
+          return true;
+        }
+
+        ancestor = ancestor.parent;
+      }
+
+      return false;
+    }
+
     return {
       ...(arrayDestructuring && {
         ArrayPattern(node): void {
@@ -159,7 +181,12 @@ export default util.createRule<[Options], MessageIds>({
             return;
           }
 
-          if (!node.typeAnnotation && !isForOfStatementContext(node)) {
+          if (
+            !node.typeAnnotation &&
+            !isForOfStatementContext(node) &&
+            !isAncestorHasTypeAnnotation(node) &&
+            node.parent?.type !== AST_NODE_TYPES.AssignmentExpression
+          ) {
             report(node);
           }
         },
@@ -193,7 +220,11 @@ export default util.createRule<[Options], MessageIds>({
       }),
       ...(objectDestructuring && {
         ObjectPattern(node): void {
-          if (!node.typeAnnotation && !isForOfStatementContext(node)) {
+          if (
+            !node.typeAnnotation &&
+            !isForOfStatementContext(node) &&
+            !isAncestorHasTypeAnnotation(node)
+          ) {
             report(node);
           }
         },

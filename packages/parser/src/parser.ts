@@ -1,17 +1,21 @@
-import { ParserOptions, TSESTree, Lib } from '@typescript-eslint/types';
-import {
-  parseAndGenerateServices,
-  ParserServices,
-  TSESTreeOptions,
-  visitorKeys,
-} from '@typescript-eslint/typescript-estree';
-import {
-  analyze,
+import type {
   AnalyzeOptions,
   ScopeManager,
 } from '@typescript-eslint/scope-manager';
+import { analyze } from '@typescript-eslint/scope-manager';
+import type { Lib, TSESTree } from '@typescript-eslint/types';
+import { ParserOptions } from '@typescript-eslint/types';
+import type {
+  ParserServices,
+  TSESTreeOptions,
+} from '@typescript-eslint/typescript-estree';
+import {
+  parseAndGenerateServices,
+  visitorKeys,
+} from '@typescript-eslint/typescript-estree';
 import debug from 'debug';
-import { CompilerOptions, ScriptTarget } from 'typescript';
+import type { CompilerOptions } from 'typescript';
+import { ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
 
@@ -36,7 +40,7 @@ function validateBoolean(
   return value;
 }
 
-const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.ts$/;
+const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
     return compilerOptions.lib.reduce((acc, lib) => {
@@ -98,7 +102,6 @@ function parseForESLint(
 
   const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
-    useJSXTextNode: validateBoolean(options.useJSXTextNode, true),
     jsx: validateBoolean(options.ecmaFeatures.jsx),
   });
   const analyzeOptions: AnalyzeOptions = {
@@ -109,13 +112,6 @@ function parseForESLint(
     lib: options.lib,
     sourceType: options.sourceType,
   };
-
-  if (typeof options.filePath === 'string') {
-    const tsx = options.filePath.endsWith('.tsx');
-    if (tsx || options.filePath.endsWith('.ts')) {
-      parserOptions.jsx = tsx;
-    }
-  }
 
   /**
    * Allow the user to suppress the warning from typescript-estree if they are using an unsupported
@@ -132,6 +128,7 @@ function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
+  let emitDecoratorMetadata = options.emitDecoratorMetadata === true;
   if (services.hasFullTypeInformation) {
     // automatically apply the options configured for the program
     const compilerOptions = services.program.getCompilerOptions();
@@ -165,9 +162,12 @@ function parseForESLint(
       }
     }
     if (compilerOptions.emitDecoratorMetadata === true) {
-      analyzeOptions.emitDecoratorMetadata =
-        compilerOptions.emitDecoratorMetadata;
+      emitDecoratorMetadata = true;
     }
+  }
+
+  if (emitDecoratorMetadata) {
+    analyzeOptions.emitDecoratorMetadata = true;
   }
 
   const scopeManager = analyze(ast, analyzeOptions);

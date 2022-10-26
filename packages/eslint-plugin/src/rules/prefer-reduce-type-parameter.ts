@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
@@ -27,9 +29,9 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: false,
       description:
-        'Prefer using type parameter when calling `Array#reduce` instead of casting',
+        'Enforce using type parameter when calling `Array#reduce` instead of casting',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

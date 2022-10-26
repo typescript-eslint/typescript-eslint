@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { SourceCode as ESLintSourceCode } from 'eslint';
-import { ParserServices, TSESTree } from '../ts-estree';
-import { Scope } from './Scope';
+
+import type { ParserServices, TSESTree } from '../ts-estree';
+import type { Scope } from './Scope';
 
 declare class TokenStore {
   /**
@@ -276,7 +277,7 @@ declare class SourceCodeBase extends TokenStore {
    * @returns The text representing the AST node.
    */
   getText(
-    node?: TSESTree.Node,
+    node?: TSESTree.Node | TSESTree.Token,
     beforeCount?: number,
     afterCount?: number,
   ): string;
@@ -288,7 +289,6 @@ declare class SourceCodeBase extends TokenStore {
    * Determines if two nodes or tokens have at least one whitespace character
    * between them. Order does not matter. Returns false if the given nodes or
    * tokens overlap.
-   * This was added in v6.7.0.
    * @since 6.7.0
    * @param first The first node or token to check between.
    * @param second The second node or token to check between.

@@ -1,8 +1,10 @@
-import { TSESTree, EcmaVersion, Lib } from '@typescript-eslint/types';
+import type { EcmaVersion, Lib, TSESTree } from '@typescript-eslint/types';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
-import { Referencer, ReferencerOptions } from './referencer';
-import { ScopeManager } from './ScopeManager';
+
 import { lib as TSLibraries } from './lib';
+import type { ReferencerOptions } from './referencer';
+import { Referencer } from './referencer';
+import { ScopeManager } from './ScopeManager';
 
 ////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE README //

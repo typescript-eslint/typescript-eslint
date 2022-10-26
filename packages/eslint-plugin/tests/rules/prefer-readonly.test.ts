@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-readonly';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -287,6 +287,19 @@ class Foo {
     ({ value: this.value } = newValue);
     return this.value;
   }
+}
+      `,
+    },
+    {
+      code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private _name: string;
+
+    public test(value: string) {
+      this._name = value;
+    }
+  };
 }
       `,
     },
@@ -703,6 +716,31 @@ class Foo {
           private readonly incorrectlyInlineLambda = () => 7;
         }
       `,
+    },
+    {
+      code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private _name: string;
+  };
+}
+      `,
+      output: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private readonly _name: string;
+  };
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: '_name',
+          },
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
     },
   ],
 });

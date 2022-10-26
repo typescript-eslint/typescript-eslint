@@ -1,21 +1,24 @@
+:root {
+  --playground-main-color: var(--ifm-background-surface-color);
+  --playground-secondary-color: var(--ifm-color-emphasis-100);
+}
+
 .options {
-  width: 20rem;
-  background: var(--ifm-background-surface-color);
+  background: var(--playground-main-color);
   overflow: auto;
+  z-index: 1;
 }
 
 .sourceCode {
   height: 100%;
-  width: 50%;
-  border: 1px solid var(--ifm-color-emphasis-100);
-}
-
-.sourceCodeStandalone {
-  width: 100%;
+  border: 1px solid var(--playground-secondary-color);
 }
 
 .codeBlocks {
   display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   flex-direction: row;
   height: 100%;
   width: calc(100vw - 20rem);
@@ -23,8 +26,8 @@
 
 .astViewer {
   height: 100%;
-  width: 50%;
-  border: 1px solid var(--ifm-color-emphasis-100);
+  width: 100%;
+  border: 1px solid var(--playground-secondary-color);
   padding: 0;
   overflow: auto;
   word-wrap: initial;
@@ -39,5 +42,67 @@
   width: 100%;
   height: calc(100% - var(--ifm-navbar-height));
   top: var(--ifm-navbar-height);
-  z-index: var(--ifm-z-index-fixed);
+  z-index: calc(var(--ifm-z-index-fixed) - 1);
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: space-between;
+  background: var(--playground-main-color);
+  border-bottom: 1px solid var(--playground-secondary-color);
+}
+
+.tabCode {
+  height: calc(100%);
+}
+
+.tabStyle {
+  border: none;
+  border-right: 1px solid var(--playground-secondary-color);
+  background: var(--playground-main-color);
+  color: var(--ifm-color-emphasis-700);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.tabStyle svg {
+  margin-left: 0.3rem;
+}
+
+.tabStyle:hover {
+  background: var(--playground-secondary-color);
+}
+
+.tabStyle:disabled {
+  background: var(--playground-secondary-color);
+  color: var(--ifm-color-emphasis-900);
+}
+
+@media only screen and (max-width: 996px) {
+  .codeContainer {
+    display: block;
+    width: 100%;
+    position: static;
+  }
+  .codeBlocks {
+    display: block;
+    width: 100%;
+  }
+
+  .options {
+    display: none;
+  }
+
+  .tabCode {
+    height: calc(30rem - 3.2rem);
+  }
+
+  .astViewer,
+  .sourceCode {
+    height: 30rem;
+  }
+
+  .astViewer {
+    height: auto;
+  }
 }

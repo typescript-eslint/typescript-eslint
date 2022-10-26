@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { ClassNameDefinition, ParameterDefinition } from '../definition';
-import { Referencer } from './Referencer';
+import type { Referencer } from './Referencer';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
@@ -293,7 +295,7 @@ class ClassVisitor extends Visitor {
       node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
       this.#emitDecoratorMetadata
     ) {
-      let identifier: TSESTree.Identifier;
+      let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
       if (
         node.typeAnnotation.typeName.type === AST_NODE_TYPES.TSQualifiedName
       ) {
@@ -301,13 +303,15 @@ class ClassVisitor extends Visitor {
         while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
           iter = iter.left;
         }
-        identifier = iter.left;
+        entityName = iter.left;
       } else {
-        identifier = node.typeAnnotation.typeName;
+        entityName = node.typeAnnotation.typeName;
       }
 
       if (withDecorators) {
-        this.#referencer.currentScope().referenceDualValueType(identifier);
+        if (entityName.type === AST_NODE_TYPES.Identifier) {
+          this.#referencer.currentScope().referenceDualValueType(entityName);
+        }
 
         if (node.typeAnnotation.typeParameters) {
           this.visitType(node.typeAnnotation.typeParameters);
@@ -356,6 +360,14 @@ class ClassVisitor extends Visitor {
 
   protected PrivateIdentifier(): void {
     // intentionally skip
+  }
+
+  protected StaticBlock(node: TSESTree.StaticBlock): void {
+    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
+
+    node.body.forEach(b => this.visit(b));
+
+    this.#referencer.close(node);
   }
 }
 

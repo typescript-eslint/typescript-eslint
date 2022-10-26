@@ -1,11 +1,14 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
+import * as util from '../../util';
+import type { SelectorsString } from './enums';
 import {
   MetaSelectors,
   Modifiers,
   PredefinedFormats,
   Selectors,
-  SelectorsString,
   TypeModifiers,
   UnderscoreOptions,
 } from './enums';
@@ -16,7 +19,6 @@ import {
   selectorTypeToMessageString,
 } from './shared';
 import type { Context, NormalizedSelector } from './types';
-import * as util from '../../util';
 
 function createValidator(
   type: SelectorsString,
@@ -127,7 +129,9 @@ function createValidator(
         return;
       }
 
-      if (!validatePredefinedFormat(config, name, node, originalName)) {
+      if (
+        !validatePredefinedFormat(config, name, node, originalName, modifiers)
+      ) {
         // fail
         return;
       }
@@ -376,16 +380,19 @@ function createValidator(
     name: string,
     node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
     originalName: string,
+    modifiers: Set<Modifiers>,
   ): boolean {
     const formats = config.format;
     if (formats === null || formats.length === 0) {
       return true;
     }
 
-    for (const format of formats) {
-      const checker = PredefinedFormatToCheckFunction[format];
-      if (checker(name)) {
-        return true;
+    if (!modifiers.has(Modifiers.requiresQuotes)) {
+      for (const format of formats) {
+        const checker = PredefinedFormatToCheckFunction[format];
+        if (checker(name)) {
+          return true;
+        }
       }
     }
 

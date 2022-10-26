@@ -1,42 +1,82 @@
-import React, { useCallback } from 'react';
-import tsConfigOptions from '../tsConfigOptions.json';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import ConfigEditor from './ConfigEditor';
-import type { CompilerFlags } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
+import type { ConfigModel, TSConfig } from '../types';
+import type { ConfigOptionsType } from './ConfigEditor';
+import ConfigEditor from './ConfigEditor';
+import { getTypescriptOptions, parseTSConfig, toJson } from './utils';
 
-interface ModalTypeScriptProps {
+interface ConfigTypeScriptProps {
   readonly isOpen: boolean;
-  readonly onClose: (config?: CompilerFlags) => void;
-  readonly config?: CompilerFlags;
+  readonly onClose: (config?: Partial<ConfigModel>) => void;
+  readonly config?: string;
 }
 
-function checkOptions(item: [string, unknown]): item is [string, boolean] {
-  return typeof item[1] === 'boolean';
-}
+function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
+  const { onClose: onCloseProps, isOpen, config } = props;
+  const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
+  const [configObject, updateConfigObject] = useState<TSConfig>();
 
-function ConfigTypeScript(props: ModalTypeScriptProps): JSX.Element {
+  useEffect(() => {
+    if (isOpen) {
+      updateConfigObject(parseTSConfig(config));
+    }
+  }, [isOpen, config]);
+
+  useEffect(() => {
+    if (window.ts) {
+      updateOptions(
+        Object.values(
+          getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
+            (group, item) => {
+              const category = item.category!.message;
+              group[category] = group[category] ?? {
+                heading: category,
+                fields: [],
+              };
+              if (item.type === 'boolean') {
+                group[category].fields.push({
+                  key: item.name,
+                  type: 'boolean',
+                  label: item.description!.message,
+                });
+              } else if (item.type instanceof Map) {
+                group[category].fields.push({
+                  key: item.name,
+                  type: 'string',
+                  label: item.description!.message,
+                  enum: ['', ...Array.from<string>(item.type.keys())],
+                });
+              }
+              return group;
+            },
+            {},
+          ),
+        ),
+      );
+    }
+  }, [isOpen]);
+
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const cfg = Object.fromEntries(
-        Object.entries(newConfig).filter(checkOptions),
-      );
-      if (!shallowEqual(cfg, props.config)) {
-        props.onClose(cfg);
+      const cfg = { ...newConfig };
+      if (!shallowEqual(cfg, configObject?.compilerOptions)) {
+        onCloseProps({
+          tsconfig: toJson({ ...(configObject ?? {}), compilerOptions: cfg }),
+        });
       } else {
-        props.onClose();
+        onCloseProps();
       }
     },
-    [props.onClose, props.config],
+    [onCloseProps, configObject],
   );
 
   return (
     <ConfigEditor
       header="TypeScript Config"
       options={tsConfigOptions}
-      values={props.config ?? {}}
-      jsonField="compilerOptions"
-      isOpen={props.isOpen}
+      values={configObject?.compilerOptions ?? {}}
+      isOpen={isOpen}
       onClose={onClose}
     />
   );

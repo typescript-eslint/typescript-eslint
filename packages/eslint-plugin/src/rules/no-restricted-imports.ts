@@ -1,15 +1,16 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
 } from 'eslint/lib/rules/no-restricted-imports';
-import ignore, { Ignore } from 'ignore';
-import {
-  createRule,
-  deepMerge,
+import type { Ignore } from 'ignore';
+import ignore from 'ignore';
+
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-restricted-imports');
@@ -146,15 +147,19 @@ export default createRule<Options, MessageIds>({
         typeof restrictedPattern === 'object' &&
         restrictedPattern.allowTypeImports
       ) {
-        allowedImportTypeMatchers.push(ignore().add(restrictedPattern.group));
+        // Following how ignore is configured in the base rule
+        allowedImportTypeMatchers.push(
+          ignore({
+            allowRelativePaths: true,
+            ignoreCase: !restrictedPattern.caseSensitive,
+          }).add(restrictedPattern.group),
+        );
       }
     }
     function isAllowedTypeImportPattern(importSource: string): boolean {
       return (
-        allowedImportTypeMatchers.length > 0 &&
-        allowedImportTypeMatchers.every(matcher => {
-          return matcher.ignores(importSource);
-        })
+        // As long as there's one matching pattern that allows type import
+        allowedImportTypeMatchers.some(matcher => matcher.ignores(importSource))
       );
     }
 

@@ -1,9 +1,7 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type Options = [
@@ -25,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     docs: {
       description:
-        'Requires any function or method that returns a Promise to be marked async',
+        'Require any function or method that returns a Promise to be marked async',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -37,9 +35,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowAny: {
+            description:
+              'Whether to consider `any` and `unknown` to be Promises.',
             type: 'boolean',
           },
           allowedPromiseNames: {
+            description:
+              'Any extra names of classes or interfaces to be considered Promises.',
             type: 'array',
             items: {
               type: 'string',

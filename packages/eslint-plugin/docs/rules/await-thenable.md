@@ -1,11 +1,18 @@
-# Disallows awaiting a value that is not a Thenable (`await-thenable`)
+---
+description: 'Disallow awaiting a value that is not a Thenable.'
+---
 
-This rule disallows awaiting a value that is not a "Thenable" (an object which has `then` method, such as a Promise).
-While it is valid JavaScript to await a non-`Promise`-like value (it will resolve immediately), this pattern is often a programmer error, such as forgetting to add parenthesis to call a function that returns a Promise.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/await-thenable** for documentation.
 
-## Rule Details
+A "Thenable" value is an object with has a `then` method, such as a Promise.
+The `await` keyword is generally used to retrieve the result of calling a Thenable's `then` method.
 
-Examples of code for this rule:
+If the `await` keyword is used on a value that is not a Thenable, the value is directly resolved immediately.
+While doing so is valid JavaScript, it is often a programmer error, such as forgetting to add parenthesis to call a function that returns a Promise.
+
+## Examples
 
 <!--tabs-->
 
@@ -31,13 +38,3 @@ await createValue();
 
 If you want to allow code to `await` non-Promise values.
 This is generally not preferred, but can sometimes be useful for visual consistency.
-
-## Related To
-
-- TSLint: ['await-promise'](https://palantir.github.io/tslint/rules/await-promise)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

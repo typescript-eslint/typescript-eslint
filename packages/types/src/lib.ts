@@ -1,6 +1,7 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:lib
+// RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
+// npx nx generate-lib @typescript-eslint/scope-manager
 
 type Lib =
   | 'es5'
@@ -13,6 +14,7 @@ type Lib =
   | 'es2019'
   | 'es2020'
   | 'es2021'
+  | 'es2022'
   | 'esnext'
   | 'dom'
   | 'dom.iterable'
@@ -45,15 +47,23 @@ type Lib =
   | 'es2019.string'
   | 'es2019.symbol'
   | 'es2020.bigint'
+  | 'es2020.date'
   | 'es2020.promise'
   | 'es2020.sharedmemory'
   | 'es2020.string'
   | 'es2020.symbol.wellknown'
   | 'es2020.intl'
+  | 'es2020.number'
   | 'es2021.promise'
   | 'es2021.string'
   | 'es2021.weakref'
   | 'es2021.intl'
+  | 'es2022.array'
+  | 'es2022.error'
+  | 'es2022.intl'
+  | 'es2022.object'
+  | 'es2022.sharedmemory'
+  | 'es2022.string'
   | 'esnext.array'
   | 'esnext.symbol'
   | 'esnext.asynciterable'
@@ -68,6 +78,7 @@ type Lib =
   | 'es2019.full'
   | 'es2020.full'
   | 'es2021.full'
+  | 'es2022.full'
   | 'esnext.full'
   | 'lib';
 

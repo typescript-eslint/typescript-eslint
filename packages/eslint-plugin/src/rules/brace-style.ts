@@ -1,11 +1,11 @@
-import { TSESTree } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
-import {
-  InferOptionsTypeFromRule,
+import type { TSESTree } from '@typescript-eslint/utils';
+
+import type {
   InferMessageIdsTypeFromRule,
-  createRule,
-  isTokenOnSameLine,
+  InferOptionsTypeFromRule,
 } from '../util';
+import { createRule, isTokenOnSameLine } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('brace-style');
 
