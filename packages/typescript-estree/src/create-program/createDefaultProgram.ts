@@ -69,5 +69,5 @@ function createDefaultProgram(
   return ast && { ast, program };
 }
 
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
 export { createDefaultProgram };

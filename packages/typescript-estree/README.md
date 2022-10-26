@@ -216,7 +216,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * This means that if the parser encounters a file not included in any of the provided `project`s,
    * it will not error, but will instead parse the file and its dependencies in a new program.
    */
-  deprecated__createDefaultProgram?: boolean;
+  DEPRECATED__createDefaultProgram?: boolean;
 
   /**
    * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
