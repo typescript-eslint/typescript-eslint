@@ -12,6 +12,7 @@ describe('ScopeManager.prototype.getDeclaredVariables', () => {
     expectedNamesList: string[][],
   ): void {
     const scopeManager = analyze(ast, {
+      ecmaVersion: 6,
       sourceType: 'module',
     });
 

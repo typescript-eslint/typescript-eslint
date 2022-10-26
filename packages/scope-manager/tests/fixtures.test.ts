@@ -42,6 +42,7 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   keyof AnalyzeOptions,
   ALLOWED_VALUE
 >([
+  ['ecmaVersion', ['number']],
   ['globalReturn', ['boolean']],
   ['impliedStrict', ['boolean']],
   ['jsxPragma', ['string']],

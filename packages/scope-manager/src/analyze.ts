@@ -1,6 +1,7 @@
-import type { Lib, TSESTree } from '@typescript-eslint/types';
+import type { EcmaVersion, Lib, TSESTree } from '@typescript-eslint/types';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
+import { lib as TSLibraries } from './lib';
 import type { ReferencerOptions } from './referencer';
 import { Referencer } from './referencer';
 import { ScopeManager } from './ScopeManager';
@@ -16,6 +17,13 @@ interface AnalyzeOptions {
   childVisitorKeys?: ReferencerOptions['childVisitorKeys'];
 
   /**
+   * Which ECMAScript version is considered.
+   * Defaults to `2018`.
+   * `'latest'` is converted to 1e8 at parser.
+   */
+  ecmaVersion?: EcmaVersion | 1e8;
+
+  /**
    * Whether the whole script is executed under node.js environment.
    * When enabled, the scope manager adds a function scope immediately following the global scope.
    * Defaults to `false`.
@@ -23,7 +31,7 @@ interface AnalyzeOptions {
   globalReturn?: boolean;
 
   /**
-   * Implied strict mode.
+   * Implied strict mode (if ecmaVersion >= 5).
    * Defaults to `false`.
    */
   impliedStrict?: boolean;
@@ -46,7 +54,7 @@ interface AnalyzeOptions {
   /**
    * The lib used by the project.
    * This automatically defines a type variable for any types provided by the configured TS libs.
-   * Defaults to ['esnext'].
+   * Defaults to the lib for the provided `ecmaVersion`.
    *
    * https://www.typescriptlang.org/tsconfig#lib
    */
@@ -66,6 +74,7 @@ interface AnalyzeOptions {
 
 const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   childVisitorKeys: visitorKeys,
+  ecmaVersion: 2018,
   globalReturn: false,
   impliedStrict: false,
   jsxPragma: 'React',
@@ -76,15 +85,33 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
 };
 
 /**
+ * Convert ecmaVersion to lib.
+ * `'latest'` is converted to 1e8 at parser.
+ */
+function mapEcmaVersion(version: EcmaVersion | 1e8 | undefined): Lib {
+  if (version == null || version === 3 || version === 5) {
+    return 'es5';
+  }
+
+  const year = version > 2000 ? version : 2015 + (version - 6);
+  const lib = `es${year}`;
+
+  return lib in TSLibraries ? (lib as Lib) : year > 2020 ? 'esnext' : 'es5';
+}
+
+/**
  * Takes an AST and returns the analyzed scopes.
  */
 function analyze(
   tree: TSESTree.Node,
   providedOptions?: AnalyzeOptions,
 ): ScopeManager {
+  const ecmaVersion =
+    providedOptions?.ecmaVersion ?? DEFAULT_OPTIONS.ecmaVersion;
   const options: Required<AnalyzeOptions> = {
     childVisitorKeys:
       providedOptions?.childVisitorKeys ?? DEFAULT_OPTIONS.childVisitorKeys,
+    ecmaVersion,
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:
       providedOptions?.impliedStrict ?? DEFAULT_OPTIONS.impliedStrict,
@@ -95,7 +122,7 @@ function analyze(
     jsxFragmentName:
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
-    lib: providedOptions?.lib ?? ['esnext'],
+    lib: providedOptions?.lib ?? [mapEcmaVersion(ecmaVersion)],
     emitDecoratorMetadata:
       providedOptions?.emitDecoratorMetadata ??
       DEFAULT_OPTIONS.emitDecoratorMetadata,
