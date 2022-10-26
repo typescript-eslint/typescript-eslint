@@ -2730,11 +2730,15 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.ImportType:
-        return this.createNode<TSESTree.TSImportType>(node, {
+      case SyntaxKind.ImportType: {
+        const range = getRange(node, this.ast);
+        if (node.isTypeOf) {
+          const token = findNextToken(node.getFirstToken()!, node, this.ast)!;
+          range[0] = token.getStart(this.ast);
+        }
+        const result = this.createNode<TSESTree.TSImportType>(node, {
           type: AST_NODE_TYPES.TSImportType,
-          isTypeOf: !!node.isTypeOf,
-          parameter: this.convertChild(node.argument),
+          argument: this.convertChild(node.argument),
           qualifier: this.convertChild(node.qualifier),
           typeParameters: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameters(
@@ -2742,7 +2746,16 @@ export class Converter {
                 node,
               )
             : null,
+          range: range,
         });
+        if (node.isTypeOf) {
+          return this.createNode<TSESTree.TSTypeQuery>(node, {
+            type: AST_NODE_TYPES.TSTypeQuery,
+            exprName: result,
+          });
+        }
+        return result;
+      }
 
       case SyntaxKind.EnumDeclaration: {
         const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
