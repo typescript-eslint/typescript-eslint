@@ -14,7 +14,7 @@ import {
   visitorKeys,
 } from '@typescript-eslint/typescript-estree';
 import debug from 'debug';
-import type { CompilerOptions } from 'typescript';
+import type * as ts from 'typescript';
 import { ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
@@ -41,7 +41,7 @@ function validateBoolean(
 }
 
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
-function getLib(compilerOptions: CompilerOptions): Lib[] {
+function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
     return compilerOptions.lib.reduce((acc, lib) => {
       const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
@@ -76,14 +76,14 @@ function getLib(compilerOptions: CompilerOptions): Lib[] {
 }
 
 function parse(
-  code: string,
+  code: string | ts.SourceFile,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
 function parseForESLint(
-  code: string,
+  code: string | ts.SourceFile,
   options?: ParserOptions | null,
 ): ParseForESLintResult {
   if (!options || typeof options !== 'object') {

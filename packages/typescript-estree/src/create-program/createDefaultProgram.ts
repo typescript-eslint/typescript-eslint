@@ -53,7 +53,7 @@ function createDefaultProgram(
   const oldReadFile = compilerHost.readFile;
   compilerHost.readFile = (fileName: string): string | undefined =>
     path.normalize(fileName) === path.normalize(parseSettings.filePath)
-      ? parseSettings.code
+      ? parseSettings.codeFullText
       : oldReadFile(fileName);
 
   const program = ts.createProgram(

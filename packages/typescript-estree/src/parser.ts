@@ -75,7 +75,7 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
 }
 
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string,
+  code: string | ts.SourceFile,
   options: T | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
@@ -128,7 +128,7 @@ function clearParseAndGenerateServicesCalls(): void {
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string,
+  code: string | ts.SourceFile,
   options: T,
 ): ParseAndGenerateServicesResult<T> {
   /**
