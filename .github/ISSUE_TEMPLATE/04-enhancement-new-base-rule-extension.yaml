@@ -1,9 +1,9 @@
-name: "✨ Propose a New Base Rule Extension"
-description: "Propose a new base lint rule extension"
-title: "Base rule extension: [rule-name] <a short description of my proposal>"
+name: '✨ Propose a New Base Rule Extension'
+description: 'Propose a new base lint rule extension'
+title: 'Base rule extension: [rule-name] <a short description of my proposal>'
 labels:
-  - "enhancement: new base rule extension"
-  - "package: eslint-plugin"
+  - 'enhancement: new base rule extension'
+  - 'package: eslint-plugin'
   - triage
 body:
   - type: markdown

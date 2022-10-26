@@ -1,5 +1,7 @@
-import { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+
 import { assert } from './assert';
+import type { Scope } from './scope';
 import {
   BlockScope,
   CatchScope,
@@ -12,7 +14,6 @@ import {
   GlobalScope,
   MappedTypeScope,
   ModuleScope,
-  Scope,
   SwitchScope,
   TSEnumScope,
   TSModuleScope,
@@ -21,16 +22,17 @@ import {
 } from './scope';
 import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
 import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
-
-import { Variable } from './variable';
+import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
   sourceType?: 'module' | 'script';
   impliedStrict?: boolean;
-  ecmaVersion?: number;
 }
 
+/**
+ * @see https://eslint.org/docs/latest/developer-guide/scope-manager-interface#scopemanager-interface
+ */
 class ScopeManager {
   public currentScope: Scope | null;
   public readonly declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
@@ -77,12 +79,13 @@ class ScopeManager {
   public isImpliedStrict(): boolean {
     return this.#options.impliedStrict === true;
   }
+
   public isStrictModeSupported(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 5;
+    return true;
   }
 
   public isES6(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 6;
+    return true;
   }
 
   /**

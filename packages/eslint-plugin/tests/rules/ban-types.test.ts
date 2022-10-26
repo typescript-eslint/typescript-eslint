@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, {
-  MessageIds,
-  Options,
-  TYPE_KEYWORDS,
-} from '../../src/rules/ban-types';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/ban-types';
+import rule, { TYPE_KEYWORDS } from '../../src/rules/ban-types';
 import { objectReduceKey } from '../../src/util';
 import { noFormat, RuleTester } from '../RuleTester';
 
@@ -469,7 +467,7 @@ let baz: object = {};
     },
     {
       code: noFormat`let a: Foo<   F   >;`,
-      output: noFormat`let a: Foo<   T   >;`,
+      output: `let a: Foo<   T   >;`,
       errors: [
         {
           messageId: 'bannedTypeMessage',

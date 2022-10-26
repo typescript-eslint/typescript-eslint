@@ -1,14 +1,15 @@
-# `parameter-properties`
+---
+description: 'Require or disallow parameter properties in class constructors.'
+---
 
-Requires or disallows parameter properties in class constructors.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/parameter-properties** for documentation.
 
-Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways
-of declaring and initializing class members.
+TypeScript includes a "parameter properties" shorthand for declaring a class constructor parameter and class property in one location.
+Parameter properties can be confusing to those new to TypeScript as they are less explicit than other ways of declaring and initializing class members.
 
-## Rule Details
-
-This rule disallows the use of parameter properties in constructors, forcing the user to explicitly
-declare all properties in the class.
+This rule can be configured to always disallow the use of parameter properties or enforce their usage when possible.
 
 ## Options
 

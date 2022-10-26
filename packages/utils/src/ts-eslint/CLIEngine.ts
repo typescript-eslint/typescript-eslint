@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable deprecation/deprecation -- "uses" deprecated API to define the deprecated API */
 
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
-import { Linter } from './Linter';
-import { RuleListener, RuleMetaData, RuleModule } from './Rule';
+
+import type { Linter } from './Linter';
+import type { RuleMetaData, RuleModule } from './Rule';
 
 declare class CLIEngineBase {
   /**
@@ -70,9 +72,7 @@ declare class CLIEngineBase {
   getRules<
     TMessageIds extends string = string,
     TOptions extends readonly unknown[] = unknown[],
-    // for extending base rules
-    TRuleListener extends RuleListener = RuleListener,
-  >(): Map<string, RuleModule<TMessageIds, TOptions, TRuleListener>>;
+  >(): Map<string, RuleModule<TMessageIds, TOptions>>;
 
   ////////////////////
   // static members //

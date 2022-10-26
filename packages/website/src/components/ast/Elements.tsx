@@ -1,19 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import styles from './ASTViewer.module.css';
+import HiddenItem from './HiddenItem';
+import ItemGroup from './ItemGroup';
+import { SimpleItem } from './SimpleItem';
 import type {
-  GenericParams,
   ASTViewerModelMap,
   ASTViewerModelMapComplex,
   ASTViewerModelMapSimple,
+  GenericParams,
 } from './types';
-
 import { hasChildInRange, isArrayInRange, isInRange } from './utils';
-
-import styles from './ASTViewer.module.css';
-
-import ItemGroup from './ItemGroup';
-import HiddenItem from './HiddenItem';
-import { SimpleItem } from './SimpleItem';
 
 export function ComplexItem({
   data,
@@ -33,7 +30,7 @@ export function ComplexItem({
         }
       }
     },
-    [data],
+    [data.model.range, onSelectNode],
   );
 
   useEffect(() => {
@@ -47,10 +44,10 @@ export function ComplexItem({
       level !== 'ast' && selected && !hasChildInRange(selection, data.model),
     );
 
-    if (selected && !isExpanded) {
+    if (selected) {
       setIsExpanded(selected);
     }
-  }, [selection, data]);
+  }, [selection, data, level]);
 
   return (
     <ItemGroup

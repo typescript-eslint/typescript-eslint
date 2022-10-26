@@ -1,25 +1,29 @@
-# `no-this-alias`
+---
+description: 'Disallow aliasing `this`.'
+---
 
-Disallows aliasing `this`.
-
-This rule prohibits assigning variables to `this`.
-
-## Rule Details
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-this-alias** for documentation.
 
 Assigning a variable to `this` instead of properly using arrow lambdas may be a symptom of pre-ES6 practices
 or not managing scope well.
 
-Instead of storing a reference to `this` and using it inside a `function () {`:
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```js
 const self = this;
->
+
 setTimeout(function () {
-    self.doWork();
+  self.doWork();
 });
 ```
 
-Use `() =>` arrow lambdas, as they preserve `this` scope for you:
+### ✅ Correct
 
 ```js
 setTimeout(() => {
@@ -27,29 +31,7 @@ setTimeout(() => {
 });
 ```
 
-Examples of **incorrect** code for this rule:
-
-(see the rationale above)
-
-Examples of **correct** code for this rule:
-
-(see the rationale above)
-
 ## Options
-
-You can pass an object option:
-
-```jsonc
-{
-  "@typescript-eslint/no-this-alias": [
-    "error",
-    {
-      "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
-      "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
-    }
-  ]
-}
-```
 
 ## When Not To Use It
 

@@ -434,6 +434,11 @@ interface RuleModule<
   TRuleListener extends RuleListener = RuleListener,
 > {
   /**
+   * Default options the rule will be run with
+   */
+  defaultOptions: TOptions;
+
+  /**
    * Metadata about the rule
    */
   meta: RuleMetaData<TMessageIds>;
@@ -448,9 +453,7 @@ interface RuleModule<
 type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
-  // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
+> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
 
 export {
   ReportDescriptor,

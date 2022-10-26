@@ -1,41 +1,26 @@
-# `explicit-member-accessibility`
+---
+description: 'Require explicit accessibility modifiers on class properties and methods.'
+---
 
-Requires explicit accessibility modifiers on class properties and methods.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
 
-Leaving off accessibility modifier and making everything public can make
-your interface hard to use by others.
-If you make all internal pieces private or protected, your interface will
-be easier to use.
+TypeScript allows placing explicit `public`, `protected`, and `private` accessibility modifiers in front of class members.
+The modifiers exist solely in the type system and just server to describe who is allowed to access those members.
 
-## Rule Details
+Leaving off accessibility modifiers makes for less code to read and write.
+Members are `public` by default.
+
+However, adding in explicit accessibility modifiers can be helpful in codebases with many classes for enforcing proper privacy of members.
+Some developers also find it preferable for code readability to keep member publicity explicit.
+
+## Examples
 
 This rule aims to make code more readable and explicit about who can use
 which properties.
 
 ## Options
-
-```ts
-type AccessibilityLevel =
-  | 'explicit' // require an accessor (including public)
-  | 'no-public' // don't require public
-  | 'off'; // don't check
-
-type Options = {
-  accessibility?: AccessibilityLevel;
-  ignoredMethodNames?: string[];
-  overrides?: {
-    accessors?: AccessibilityLevel;
-    constructors?: AccessibilityLevel;
-    methods?: AccessibilityLevel;
-    properties?: AccessibilityLevel;
-    parameterProperties?: AccessibilityLevel;
-  };
-};
-
-const defaultOptions: Options = {
-  accessibility: 'explicit',
-};
-```
 
 ### Configuring in a mixed JS/TS codebase
 
@@ -52,7 +37,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-member-accessibility": ["error"]
+        "@typescript-eslint/explicit-member-accessibility": "error"
       }
     }
   ]
@@ -343,4 +328,4 @@ If you think defaulting to public is a good default, then you should consider us
 
 ## Further Reading
 
-- TypeScript [Accessibility Modifiers](https://www.typescriptlang.org/docs/handbook/classes.html#public-private-and-protected-modifiers)
+- TypeScript [Accessibility Modifiers Handbook Docs](https://www.typescriptlang.org/docs/handbook/2/classes.html#member-visibility)

@@ -26,7 +26,6 @@ export * from './unions/JSXTagNameExpression';
 export * from './unions/LeftHandSideExpression';
 export * from './unions/Literal';
 export * from './unions/LiteralExpression';
-export * from './unions/Modifier';
 export * from './unions/Node';
 export * from './unions/ObjectLiteralElement';
 export * from './unions/Parameter';

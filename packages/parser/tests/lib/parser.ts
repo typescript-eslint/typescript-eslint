@@ -1,6 +1,7 @@
-import { ParserOptions } from '@typescript-eslint/types';
-import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
 import * as scopeManager from '@typescript-eslint/scope-manager/dist/analyze';
+import type { ParserOptions } from '@typescript-eslint/types';
+import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
+
 import { parse, parseForESLint } from '../../src/parser';
 
 describe('parser', () => {
@@ -18,11 +19,6 @@ describe('parser', () => {
     expect(() => parseForESLint(code, null)).not.toThrow();
   });
 
-  it("parseForESLint() should work if options.ecmaVersion is `'latest'`", () => {
-    const code = 'const valid = true;';
-    expect(() => parseForESLint(code, { ecmaVersion: 'latest' })).not.toThrow();
-  });
-
   it('parseAndGenerateServices() should be called with options', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
@@ -32,7 +28,6 @@ describe('parser', () => {
       range: false,
       tokens: false,
       sourceType: 'module' as const,
-      ecmaVersion: 2018,
       ecmaFeatures: {
         globalReturn: false,
         jsx: false,
@@ -83,7 +78,6 @@ describe('parser', () => {
       range: false,
       tokens: false,
       sourceType: 'module' as const,
-      ecmaVersion: 2018,
       ecmaFeatures: {
         globalReturn: false,
         jsx: false,
@@ -103,7 +97,6 @@ describe('parser', () => {
     parseForESLint(code, config);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenLastCalledWith(expect.anything(), {
-      ecmaVersion: 2018,
       globalReturn: false,
       lib: ['dom.iterable'],
       jsxPragma: 'Foo',

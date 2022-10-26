@@ -14,7 +14,7 @@ You probably don't want to use it directly.
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](https://typescript-eslint.io/docs/linting)**
+**[You can find our Getting Started docs here](https://typescript-eslint.io/docs)**
 
 ## Installation
 
@@ -37,13 +37,6 @@ interface AnalyzeOptions {
   childVisitorKeys?: Record<string, string[]> | null;
 
   /**
-   * Which ECMAScript version is considered.
-   * Defaults to `2018`.
-   * `'latest'` is converted to 1e8 at parser.
-   */
-  ecmaVersion?: EcmaVersion | 1e8;
-
-  /**
    * Whether the whole script is executed under node.js environment.
    * When enabled, the scope manager adds a function scope immediately following the global scope.
    * Defaults to `false`.
@@ -51,7 +44,7 @@ interface AnalyzeOptions {
   globalReturn?: boolean;
 
   /**
-   * Implied strict mode (if ecmaVersion >= 5).
+   * Implied strict mode.
    * Defaults to `false`.
    */
   impliedStrict?: boolean;
@@ -76,7 +69,7 @@ interface AnalyzeOptions {
    * This automatically defines a type variable for any types provided by the configured TS libs.
    * For more information, see https://www.typescriptlang.org/tsconfig#lib
    *
-   * Defaults to the lib for the provided `ecmaVersion`.
+   * Defaults to ['esnext'].
    */
   lib?: Lib[];
 
@@ -105,7 +98,6 @@ const ast = parse(code, {
   range: true,
 });
 const scope = analyze(ast, {
-  ecmaVersion: 2020,
   sourceType: 'module',
 });
 ```

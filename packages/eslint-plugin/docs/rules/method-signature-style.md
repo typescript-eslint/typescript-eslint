@@ -1,20 +1,24 @@
-# `method-signature-style`
+---
+description: 'Enforce using a particular method signature syntax.'
+---
 
-Enforces using a particular method signature syntax.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/method-signature-style** for documentation.
 
-There are two ways to define an object/interface function property.
+TypeScript provides two ways to define an object/interface function property:
 
 ```ts
-// method shorthand syntax
-interface T1 {
+interface Example {
+  // method shorthand syntax
   func(arg: string): number;
-}
 
-// regular property with function type
-interface T2 {
+  // regular property with function type
   func: (arg: string) => number;
 }
 ```
+
+The two are very similar; most of the time it doesn't matter which one you use.
 
 A good practice is to use the TypeScript's `strict` option (which implies `strictFunctionTypes`) which enables correct typechecking for function properties only (method signatures get old behavior).
 

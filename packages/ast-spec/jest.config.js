@@ -1,9 +1,15 @@
 'use strict';
 
 // @ts-check
+
+const baseConfig = require('../../jest.config.base.js');
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  ...require('../../jest.config.base.js'),
+  ...baseConfig,
   collectCoverage: false,
-  setupFilesAfterEnv: ['./tests/util/setupJest.ts'],
+  setupFilesAfterEnv: [
+    ...baseConfig.setupFilesAfterEnv,
+    './tests/util/setupJest.ts',
+  ],
 };

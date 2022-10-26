@@ -1,12 +1,69 @@
 import debug from 'debug';
 import { join, resolve } from 'path';
+
 import * as parser from '../../src';
-import * as astConverter from '../../src/ast-converter';
-import { TSESTreeOptions } from '../../src/parser-options';
-import * as sharedParserUtils from '../../src/create-program/shared';
+import * as astConverterModule from '../../src/ast-converter';
+import * as sharedParserUtilsModule from '../../src/create-program/shared';
+import type { TSESTreeOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
+
+// we can't spy on the exports of an ES module - so we instead have to mock the entire module
+jest.mock('../../src/ast-converter', () => {
+  const astConverterActual = jest.requireActual<typeof astConverterModule>(
+    '../../src/ast-converter',
+  );
+
+  return {
+    ...astConverterActual,
+    __esModule: true,
+    astConverter: jest.fn(astConverterActual.astConverter),
+  };
+});
+jest.mock('../../src/create-program/shared', () => {
+  const sharedActual = jest.requireActual<typeof sharedParserUtilsModule>(
+    '../../src/create-program/shared',
+  );
+
+  return {
+    ...sharedActual,
+    __esModule: true,
+    createDefaultCompilerOptionsFromExtra: jest.fn(
+      sharedActual.createDefaultCompilerOptionsFromExtra,
+    ),
+  };
+});
+
+// Tests in CI by default run with lowercase program file names,
+// resulting in path.relative results starting with many "../"s
+jest.mock('typescript', () => {
+  const ts = jest.requireActual('typescript');
+  return {
+    ...ts,
+    sys: {
+      ...ts.sys,
+      useCaseSensitiveFileNames: true,
+    },
+  };
+});
+
+const astConverterMock = jest.mocked(astConverterModule.astConverter);
+const createDefaultCompilerOptionsFromExtra = jest.mocked(
+  sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
+);
+
+/**
+ * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
+ */
+function alignErrorPath(error: Error): never {
+  error.message = error.message.replace(/\\(?!["])/gm, '/');
+  throw error;
+}
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('parseWithNodeMaps()', () => {
   describe('basic functionality', () => {
@@ -25,10 +82,10 @@ describe('parseWithNodeMaps()', () => {
     it('should simple code', () => {
       const result = parser.parseWithNodeMaps('1;');
       expect(result.ast).toMatchInlineSnapshot(`
-        Object {
-          "body": Array [
-            Object {
-              "expression": Object {
+        {
+          "body": [
+            {
+              "expression": {
                 "raw": "1",
                 "type": "Literal",
                 "value": 1,
@@ -114,8 +171,6 @@ describe('parseWithNodeMaps()', () => {
 
   describe('loggerFn should be propagated to ast-converter', () => {
     it('output tokens, comments, locs, and ranges when called with those options', () => {
-      const spy = jest.spyOn(astConverter, 'astConverter');
-
       const loggerFn = jest.fn(() => {});
 
       parser.parseWithNodeMaps('let foo = bar;', {
@@ -126,8 +181,8 @@ describe('parseWithNodeMaps()', () => {
         loc: true,
       });
 
-      expect(spy).toHaveBeenCalled();
-      expect(spy.mock.calls[0][1]).toMatchObject({
+      expect(astConverterMock).toHaveBeenCalled();
+      expect(astConverterMock.mock.calls[0][1]).toMatchObject({
         code: 'let foo = bar;',
         comment: true,
         comments: [],
@@ -505,14 +560,7 @@ describe('parseAndGenerateServices', () => {
             filePath: join(PROJECT_DIR, filePath),
           });
         } catch (error) {
-          /**
-           * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
-           */
-          (error as Error).message = (error as Error).message.replace(
-            /\\(?!["])/gm,
-            '/',
-          );
-          throw error;
+          throw alignErrorPath(error as Error);
         }
       };
 
@@ -583,6 +631,33 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
+  describe('invalid project error messages', () => {
+    it('throws when non of multiple projects include the file', () => {
+      const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
+      const code = 'var a = true';
+      const config: TSESTreeOptions = {
+        comment: true,
+        tokens: true,
+        range: true,
+        loc: true,
+        tsconfigRootDir: PROJECT_DIR,
+        project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+      };
+      const testParse = (filePath: string) => (): void => {
+        try {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            filePath: join(PROJECT_DIR, filePath),
+          });
+        } catch (error) {
+          throw alignErrorPath(error as Error);
+        }
+      };
+
+      expect(testParse('ts/notIncluded0j1.ts')).toThrowErrorMatchingSnapshot();
+    });
+  });
+
   describe('debug options', () => {
     const debugEnable = jest.fn();
     beforeEach(() => {
@@ -625,16 +700,11 @@ describe('parseAndGenerateServices', () => {
     });
 
     it('should turn on typescript debugger', () => {
-      const spy = jest.spyOn(
-        sharedParserUtils,
-        'createDefaultCompilerOptionsFromExtra',
-      );
-
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript'],
       });
-      expect(spy).toHaveBeenCalled();
-      expect(spy).toHaveReturnedWith(
+      expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
+      expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
         expect.objectContaining({
           extendedDiagnostics: true,
         }),

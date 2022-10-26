@@ -1,14 +1,18 @@
-# `no-dynamic-delete`
+---
+description: 'Disallow using the `delete` operator on computed key expressions.'
+---
 
-Disallows using the `delete` operator on computed key expressions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-dynamic-delete** for documentation.
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
-
-## Rule Details
-
 Using the `delete` operator on keys that aren't runtime constants could be a sign that you're using the wrong data structures.
 Using `Object`s with added and removed keys can cause occasional edge case bugs, such as if a key is named `"hasOwnProperty"`.
-Consider using a `Map` or `Set` if you’re storing collections of objects.
+
+> Consider using a `Map` or `Set` if you’re storing collections of objects.
+
+## Examples
 
 <!--tabs-->
 
@@ -39,19 +43,6 @@ delete container.aaa;
 delete container[7];
 delete container['-Infinity'];
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-dynamic-delete": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

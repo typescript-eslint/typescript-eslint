@@ -1,7 +1,9 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
-import { parse } from '../util/parse';
+
 import { analyze } from '../../src/analyze';
+import { parse } from '../util/parse';
 
 describe('ScopeManager.prototype.getDeclaredVariables', () => {
   function verify(
@@ -10,7 +12,6 @@ describe('ScopeManager.prototype.getDeclaredVariables', () => {
     expectedNamesList: string[][],
   ): void {
     const scopeManager = analyze(ast, {
-      ecmaVersion: 6,
       sourceType: 'module',
     });
 

@@ -1,8 +1,9 @@
 import { RuleTester as ESLintRuleTester } from 'eslint';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
-import { Linter } from './Linter';
-import { ParserOptions } from './ParserOptions';
-import {
+
+import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
+import type { Linter } from './Linter';
+import type { ParserOptions } from './ParserOptions';
+import type {
   RuleCreateFunction,
   RuleModule,
   SharedConfigurationSettings,
@@ -124,6 +125,11 @@ interface TestCaseError<TMessageIds extends string> {
   // readonly message?: string | RegExp;
 }
 
+type RuleTesterTestFrameworkFunction = (
+  text: string,
+  callback: () => void,
+) => void;
+
 interface RunTests<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>,
@@ -163,7 +169,7 @@ declare class RuleTesterBase {
    * @param text a string describing the rule
    * @param callback the test callback
    */
-  static describe?: (text: string, callback: () => void) => void;
+  static describe?: RuleTesterTestFrameworkFunction;
 
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
@@ -171,7 +177,15 @@ declare class RuleTesterBase {
    * @param text a string describing the test case
    * @param callback the test callback
    */
-  static it?: (text: string, callback: () => void) => void;
+  static it?: RuleTesterTestFrameworkFunction;
+
+  /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   * @param text a string describing the test case
+   * @param callback the test callback
+   */
+  static itOnly?: RuleTesterTestFrameworkFunction;
 
   /**
    * Define a rule for one particular run of tests.
@@ -193,6 +207,7 @@ export {
   SuggestionOutput,
   RuleTester,
   RuleTesterConfig,
+  RuleTesterTestFrameworkFunction,
   RunTests,
   TestCaseError,
   ValidTestCase,

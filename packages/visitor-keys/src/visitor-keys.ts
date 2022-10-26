@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 interface VisitorKeys {
@@ -96,7 +96,7 @@ const additionalKeys: AdditionalKeys = {
   TSExternalModuleReference: ['expression'],
   TSFunctionType: ['typeParameters', 'params', 'returnType'],
   TSImportEqualsDeclaration: ['id', 'moduleReference'],
-  TSImportType: ['parameter', 'qualifier', 'typeParameters'],
+  TSImportType: ['argument', 'qualifier', 'typeParameters'],
   TSIndexedAccessType: ['indexType', 'objectType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],

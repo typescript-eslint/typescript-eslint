@@ -1,14 +1,18 @@
-# `class-literal-property-style`
+---
+description: 'Enforce that literals on classes are exposed in a consistent style.'
+---
 
-Enforces that literals on classes are exposed in a consistent style.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/class-literal-property-style** for documentation.
 
-When writing TypeScript applications, it's typically safe to store literal values on classes using fields with the `readonly` modifier to prevent them from being reassigned.
-When writing TypeScript libraries that could be used by JavaScript users however, it's typically safer to expose these literals using `getter`s, since the `readonly` modifier is enforced at compile type.
-
-## Rule Details
+Some TypeScript applications store literal values on classes using fields with the `readonly` modifier to prevent them from being reassigned.
+When writing TypeScript libraries that could be used by JavaScript users, however, it's typically safer to expose these literals using `getter`s, since the `readonly` modifier is enforced at compile type.
 
 This rule aims to ensure that literals exposed by classes are done so consistently, in one of the two style described above.
 By default this rule prefers the `fields` style as it means JS doesn't have to setup & teardown a function closure.
+
+## Options
 
 :::note
 
@@ -17,7 +21,7 @@ This is because these types can be mutated and carry with them more complex impl
 
 :::
 
-### The `fields` style
+### `"fields"`
 
 This style checks for any getter methods that return literal values, and requires them to be defined using fields with the `readonly` modifier instead.
 
@@ -60,7 +64,7 @@ class Mx {
 }
 ```
 
-### The `getters` style
+### `"getters"`
 
 This style checks for any `readonly` fields that are assigned literal values, and requires them to be defined as getters instead.
 This style pairs well with the [`@typescript-eslint/prefer-readonly`](prefer-readonly.md) rule,

@@ -1,17 +1,15 @@
-# `consistent-type-exports`
+---
+description: 'Enforce consistent usage of type exports.'
+---
 
-Enforces consistent usage of type exports.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/consistent-type-exports** for documentation.
 
-TypeScript 3.8 added support for type-only exports.
+TypeScript allows specifying a `type` keyword on exports to indicate that the export exists only in the type system, not at runtime.
+This allows transpilers to drop exports without knowing the types of the dependencies.
 
-Type-only exports allow you to specify that 1 or more named exports are exported as type-only. This allows
-transpilers to drop exports without knowing the types of the dependencies.
-
-## Rule Details
-
-This rule aims to standardize the use of type exports style across a codebase.
-
-Given a class `Button`, and an interface `ButtonProps`, examples of code:
+## Examples
 
 <!--tabs-->
 
@@ -21,11 +19,11 @@ Given a class `Button`, and an interface `ButtonProps`, examples of code:
 interface ButtonProps {
   onClick: () => void;
 }
+
 class Button implements ButtonProps {
-  onClick() {
-    console.log('button!');
-  }
+  onClick = () => console.log('button!');
 }
+
 export { Button, ButtonProps };
 ```
 
@@ -35,26 +33,16 @@ export { Button, ButtonProps };
 interface ButtonProps {
   onClick: () => void;
 }
+
 class Button implements ButtonProps {
-  onClick() {
-    console.log('button!');
-  }
+  onClick = () => console.log('button!');
 }
+
 export { Button };
 export type { ButtonProps };
 ```
 
 ## Options
-
-```ts
-interface Options {
-  fixMixedExportsWithInlineTypeSpecifier?: boolean;
-}
-
-const defaultOptions: Options = {
-  fixMixedExportsWithInlineTypeSpecifier: false,
-};
-```
 
 ### `fixMixedExportsWithInlineTypeSpecifier`
 
@@ -106,6 +94,5 @@ export { Button, type ButtonProps } from 'some-library';
 
 ## When Not To Use It
 
-- If you are using a TypeScript version less than 3.8, then you will not be able to use this rule as type exports are not supported.
 - If you specifically want to use both export kinds for stylistic reasons, you can disable this rule.
 - If you use `--isolatedModules` the compiler would error if a type is not re-exported using `export type`. If you also don't wish to enforce one style over the other, you can disable this rule.

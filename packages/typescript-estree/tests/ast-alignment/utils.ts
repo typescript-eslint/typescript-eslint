@@ -1,7 +1,9 @@
 // babel types are something we don't really care about
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
-import type { File, Program } from '@babel/types';
-import { AST_NODE_TYPES, TSESTree } from '../../src/ts-estree';
+import type { File, Identifier, Program, TSTypeQuery } from '@babel/types';
+
+import type { TSESTree } from '../../src/ts-estree';
+import { AST_NODE_TYPES } from '../../src/ts-estree';
 import { deeplyCopy, omitDeep } from '../../tools/test-utils';
 
 /**
@@ -290,9 +292,55 @@ export function preprocessBabylonAST(ast: File): any {
           delete node.loc.start.index;
         }
       },
+      TSImportType(node: any) {
+        if (!node.typeParameters) {
+          node.typeParameters = null;
+        }
+        if (!node.qualifier) {
+          node.qualifier = null;
+        }
+        /**
+         * https://github.com/babel/babel/issues/12833
+         */
+        if (node.argument) {
+          node.argument = {
+            type: AST_NODE_TYPES.TSLiteralType,
+            literal: node.argument,
+            loc: {
+              start: { ...node.argument.loc.start },
+              end: { ...node.argument.loc.end },
+            },
+            range: [...node.argument.range],
+          };
+        }
+      },
       TSTypePredicate(node: any) {
         if (node.loc?.start?.index) {
           delete node.loc.start.index;
+        }
+      },
+      /**
+       * ts-estree: `this` in `typeof this` has been converted from `Identifier` to `ThisExpression`
+       * @see https://github.com/typescript-eslint/typescript-eslint/pull/4382
+       */
+      TSTypeQuery(node: any) {
+        const { exprName } = node as TSTypeQuery;
+        let identifier: Identifier;
+        if (exprName.type === AST_NODE_TYPES.TSImportType) {
+          return;
+        } else if (exprName.type === AST_NODE_TYPES.TSQualifiedName) {
+          let iter = exprName;
+          while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
+            iter = iter.left;
+          }
+          identifier = iter.left;
+        } else {
+          identifier = exprName;
+        }
+
+        if (identifier.name === 'this') {
+          (identifier.type as string) = AST_NODE_TYPES.ThisExpression;
+          delete (identifier as { name?: string }).name;
         }
       },
     },

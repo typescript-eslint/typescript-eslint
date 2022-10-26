@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from '../OptionsSelector.module.css';
 import clsx from 'clsx';
+import React from 'react';
+
+import styles from '../OptionsSelector.module.css';
 
 export interface DropdownOption<T> {
   readonly value: T;
@@ -13,6 +14,7 @@ export interface DropdownProps<T> {
   readonly value: T | undefined;
   readonly name: string;
   readonly className?: string;
+  readonly disabled?: boolean;
 }
 
 function Dropdown<T extends boolean | string | number>(
@@ -27,6 +29,7 @@ function Dropdown<T extends boolean | string | number>(
   return (
     <select
       name={props.name}
+      disabled={props.disabled}
       value={String(props.value)}
       className={clsx(styles.optionSelect, props.className)}
       onChange={(e): void => {

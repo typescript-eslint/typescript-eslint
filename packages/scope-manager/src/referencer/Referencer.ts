@@ -1,12 +1,6 @@
-import { AST_NODE_TYPES, Lib, TSESTree } from '@typescript-eslint/types';
-import { ClassVisitor } from './ClassVisitor';
-import { ExportVisitor } from './ExportVisitor';
-import { ImportVisitor } from './ImportVisitor';
-import { PatternVisitor } from './PatternVisitor';
-import { ReferenceFlag, ReferenceImplicitGlobal } from './Reference';
-import { ScopeManager } from '../ScopeManager';
-import { TypeVisitor } from './TypeVisitor';
-import { Visitor, VisitorOptions } from './Visitor';
+import type { Lib, TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { assert } from '../assert';
 import {
   CatchClauseDefinition,
@@ -19,7 +13,17 @@ import {
   VariableDefinition,
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
-import { Scope, GlobalScope } from '../scope';
+import type { GlobalScope, Scope } from '../scope';
+import type { ScopeManager } from '../ScopeManager';
+import { ClassVisitor } from './ClassVisitor';
+import { ExportVisitor } from './ExportVisitor';
+import { ImportVisitor } from './ImportVisitor';
+import { PatternVisitor } from './PatternVisitor';
+import type { ReferenceImplicitGlobal } from './Reference';
+import { ReferenceFlag } from './Reference';
+import { TypeVisitor } from './TypeVisitor';
+import type { VisitorOptions } from './Visitor';
+import { Visitor } from './Visitor';
 
 interface ReferencerOptions extends VisitorOptions {
   jsxPragma: string | null;
@@ -367,9 +371,7 @@ class Referencer extends Visitor {
   }
 
   protected BlockStatement(node: TSESTree.BlockStatement): void {
-    if (this.scopeManager.isES6()) {
-      this.scopeManager.nestBlockScope(node);
-    }
+    this.scopeManager.nestBlockScope(node);
 
     this.visitChildren(node);
 
@@ -483,7 +485,7 @@ class Referencer extends Visitor {
 
   protected ImportDeclaration(node: TSESTree.ImportDeclaration): void {
     assert(
-      this.scopeManager.isES6() && this.scopeManager.isModule(),
+      this.scopeManager.isModule(),
       'ImportDeclaration should appear when the mode is ES6 and in the module context.',
     );
 
@@ -575,14 +577,11 @@ class Referencer extends Visitor {
       this.scopeManager.nestFunctionScope(node, false);
     }
 
-    if (this.scopeManager.isES6() && this.scopeManager.isModule()) {
+    if (this.scopeManager.isModule()) {
       this.scopeManager.nestModuleScope(node);
     }
 
-    if (
-      this.scopeManager.isStrictModeSupported() &&
-      this.scopeManager.isImpliedStrict()
-    ) {
+    if (this.scopeManager.isImpliedStrict()) {
       this.currentScope().isStrict = true;
     }
 
@@ -597,9 +596,7 @@ class Referencer extends Visitor {
   protected SwitchStatement(node: TSESTree.SwitchStatement): void {
     this.visit(node.discriminant);
 
-    if (this.scopeManager.isES6()) {
-      this.scopeManager.nestSwitchScope(node);
-    }
+    this.scopeManager.nestSwitchScope(node);
 
     for (const switchCase of node.cases) {
       this.visit(switchCase);
@@ -690,6 +687,13 @@ class Referencer extends Visitor {
     }
 
     this.close(node);
+  }
+
+  protected TSInstantiationExpression(
+    node: TSESTree.TSInstantiationExpression,
+  ): void {
+    this.visitChildren(node, ['typeParameters']);
+    this.visitType(node.typeParameters);
   }
 
   protected TSInterfaceDeclaration(

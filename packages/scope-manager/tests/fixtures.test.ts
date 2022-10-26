@@ -2,7 +2,9 @@ import fs from 'fs';
 import glob from 'glob';
 import makeDir from 'make-dir';
 import path from 'path';
-import { parseAndAnalyze, AnalyzeOptions } from './util';
+
+import type { AnalyzeOptions } from './util';
+import { parseAndAnalyze } from './util';
 
 // Assign a segment set to this variable to limit the test to only this segment
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output
@@ -40,7 +42,6 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   keyof AnalyzeOptions,
   ALLOWED_VALUE
 >([
-  ['ecmaVersion', ['number']],
   ['globalReturn', ['boolean']],
   ['impliedStrict', ['boolean']],
   ['jsxPragma', ['string']],

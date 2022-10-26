@@ -1,6 +1,8 @@
-import rule, { MessageIds, Options } from '../../src/rules/no-explicit-any';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/no-explicit-any';
+import rule from '../../src/rules/no-explicit-any';
 import { RuleTester } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/utils';
 
 type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
 type SuggestionOutput = TSESLint.SuggestionOutput<MessageIds>;
@@ -1001,7 +1003,7 @@ type obj = {
         code: `
 function test<T extends Partial<any>>() {}
 const test = <T extends Partial<any>>() => {};
-      `.trimRight(),
+      `,
         errors: [
           {
             messageId: 'unexpectedAny',
@@ -1013,14 +1015,14 @@ const test = <T extends Partial<any>>() => {};
                 output: `
 function test<T extends Partial<unknown>>() {}
 const test = <T extends Partial<any>>() => {};
-              `.trimRight(),
+      `,
               },
               {
                 messageId: 'suggestNever',
                 output: `
 function test<T extends Partial<never>>() {}
 const test = <T extends Partial<any>>() => {};
-              `.trimRight(),
+      `,
               },
             ],
           },
@@ -1034,14 +1036,14 @@ const test = <T extends Partial<any>>() => {};
                 output: `
 function test<T extends Partial<any>>() {}
 const test = <T extends Partial<unknown>>() => {};
-              `.trimRight(),
+      `,
               },
               {
                 messageId: 'suggestNever',
                 output: `
 function test<T extends Partial<any>>() {}
 const test = <T extends Partial<never>>() => {};
-              `.trimRight(),
+      `,
               },
             ],
           },

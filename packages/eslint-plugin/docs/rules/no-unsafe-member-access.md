@@ -1,15 +1,20 @@
-# `no-unsafe-member-access`
+---
+description: 'Disallow member access on a value with type `any`.'
+---
 
-Disallows member access on a value with type `any`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-member-access** for documentation.
+
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Member access on `any` typed variables is not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
-
-## Rule Details
+Accessing a member of an `any`-typed value creates a potential type safety hole and source of bugs in your codebase.
 
 This rule disallows member access on any variable that is typed as `any`.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -53,19 +58,6 @@ const idx = 1;
 arr[idx];
 arr[idx++];
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-member-access": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## Related To
 

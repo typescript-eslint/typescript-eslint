@@ -1,6 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-import * as ts from 'typescript';
-import { TSNode } from './ts-nodes';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type * as ts from 'typescript';
+
+import type { TSNode } from './ts-nodes';
 
 export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ArrayExpression]: ts.ArrayLiteralExpression;
@@ -149,7 +150,10 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TemplateLiteral]:
     | ts.NoSubstitutionTemplateLiteral
     | ts.TemplateExpression;
-  [AST_NODE_TYPES.ThisExpression]: ts.ThisExpression | ts.KeywordTypeNode;
+  [AST_NODE_TYPES.ThisExpression]:
+    | ts.ThisExpression
+    | ts.KeywordTypeNode
+    | ts.Identifier;
   [AST_NODE_TYPES.ThrowStatement]: ts.ThrowStatement;
   [AST_NODE_TYPES.TryStatement]: ts.TryStatement;
   [AST_NODE_TYPES.TSAbstractPropertyDefinition]: ts.PropertyDeclaration;
@@ -221,7 +225,7 @@ export interface EstreeToTsNodeTypes {
     | ts.CallExpression
     | ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypePredicate]: ts.TypePredicateNode;
-  [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode;
+  [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode | ts.ImportTypeNode;
   [AST_NODE_TYPES.TSTypeReference]: ts.TypeReferenceNode;
   [AST_NODE_TYPES.TSUnionType]: ts.UnionTypeNode;
   [AST_NODE_TYPES.UpdateExpression]:

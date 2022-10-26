@@ -1,4 +1,6 @@
+import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 type MessageIds = 'preferTypeAnnotation' | 'preferConstructor';
@@ -30,9 +32,16 @@ export default createRule<Options, MessageIds>({
   create(context, [mode]) {
     const sourceCode = context.getSourceCode();
     return {
-      VariableDeclarator(node): void {
-        const lhs = node.id.typeAnnotation?.typeAnnotation;
-        const rhs = node.init;
+      'VariableDeclarator,PropertyDefinition'(
+        node: TSESTree.VariableDeclarator | TSESTree.PropertyDefinition,
+      ): void {
+        const lhs = (
+          node.type === AST_NODE_TYPES.VariableDeclarator ? node.id : node
+        ).typeAnnotation?.typeAnnotation;
+        const rhs =
+          node.type === AST_NODE_TYPES.VariableDeclarator
+            ? node.init
+            : node.value;
         if (
           !rhs ||
           rhs.type !== AST_NODE_TYPES.NewExpression ||
@@ -57,9 +66,25 @@ export default createRule<Options, MessageIds>({
               node,
               messageId: 'preferTypeAnnotation',
               fix(fixer) {
+                function getIDToAttachAnnotation():
+                  | TSESTree.Token
+                  | TSESTree.Node {
+                  if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+                    return node.id;
+                  }
+                  if (!node.computed) {
+                    return node.key;
+                  }
+                  // If the property's computed, we have to attach the
+                  // annotation after the square bracket, not the enclosed expression
+                  return sourceCode.getTokenAfter(node.key)!;
+                }
                 return [
                   fixer.remove(typeParameters),
-                  fixer.insertTextAfter(node.id, ': ' + typeAnnotation),
+                  fixer.insertTextAfter(
+                    getIDToAttachAnnotation(),
+                    ': ' + typeAnnotation,
+                  ),
                 ];
               },
             });
