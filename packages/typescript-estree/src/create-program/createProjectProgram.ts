@@ -36,6 +36,7 @@ function createProjectProgram(
   );
 
   // The file was either matched within the tsconfig, or we allow creating a default program
+  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
   if (astAndProgram || parseSettings.DEPRECATED__createDefaultProgram) {
     return astAndProgram;
   }

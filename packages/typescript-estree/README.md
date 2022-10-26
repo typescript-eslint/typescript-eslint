@@ -208,7 +208,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
 
   /**
    * @deprecated - this flag will be removed in the next major.
-   * Do not rely on the behaviour provided by this flag.
+   * Do not rely on the behavior provided by this flag.
    */
   DEPRECATED__createDefaultProgram?: boolean;
 
