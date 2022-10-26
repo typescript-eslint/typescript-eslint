@@ -21,6 +21,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-
           },
         },
         importKind: 'value',
++       isExport: false,
         moduleReference: TSExternalModuleReference {
           type: 'TSExternalModuleReference',
           expression: Literal {
