@@ -342,11 +342,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-extends-member-expression',
     /**
-     * @see https://github.com/typescript-eslint/typescript-eslint/issues/2998
-     */
-    'type-import-type',
-    'type-import-type-with-type-parameters-in-type-reference',
-    /**
      * Not yet supported in Babel
      * Directive field is not added to module and namespace
      */

@@ -226,7 +226,7 @@ export interface EstreeToTsNodeTypes {
     | ts.CallExpression
     | ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypePredicate]: ts.TypePredicateNode;
-  [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode;
+  [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode | ts.ImportTypeNode;
   [AST_NODE_TYPES.TSTypeReference]: ts.TypeReferenceNode;
   [AST_NODE_TYPES.TSUnionType]: ts.UnionTypeNode;
   [AST_NODE_TYPES.UpdateExpression]:
