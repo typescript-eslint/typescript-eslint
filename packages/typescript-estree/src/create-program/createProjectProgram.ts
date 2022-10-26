@@ -3,7 +3,7 @@ import path from 'path';
 import * as ts from 'typescript';
 
 import { firstDefined } from '../node-utils';
-import type { Extra } from '../parser-options';
+import type { ParseSettings } from '../parseSettings';
 import { getProgramsForProjects } from './createWatchProgram';
 import type { ASTAndProgram } from './shared';
 import { getAstFromProgram } from './shared';
@@ -22,45 +22,37 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = [
 ] as readonly string[];
 
 /**
- * @param code The code of the file being linted
- * @param createDefaultProgram True if the default program should be created
- * @param extra The config object
- * @returns If found, returns the source file corresponding to the code and the containing program
+ * @param parseSettings Internal settings for parsing the file
+ * @returns If found, the source file corresponding to the code and the containing program
  */
 function createProjectProgram(
-  code: string,
-  createDefaultProgram: boolean,
-  extra: Extra,
+  parseSettings: ParseSettings,
 ): ASTAndProgram | undefined {
-  log('Creating project program for: %s', extra.filePath);
+  log('Creating project program for: %s', parseSettings.filePath);
 
-  const programsForProjects = getProgramsForProjects(
-    code,
-    extra.filePath,
-    extra,
-  );
+  const programsForProjects = getProgramsForProjects(parseSettings);
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
-    getAstFromProgram(currentProgram, extra),
+    getAstFromProgram(currentProgram, parseSettings),
   );
 
   // The file was either matched within the tsconfig, or we allow creating a default program
-  if (astAndProgram || createDefaultProgram) {
+  if (astAndProgram || parseSettings.createDefaultProgram) {
     return astAndProgram;
   }
 
   const describeFilePath = (filePath: string): string => {
     const relative = path.relative(
-      extra.tsconfigRootDir || process.cwd(),
+      parseSettings.tsconfigRootDir || process.cwd(),
       filePath,
     );
-    if (extra.tsconfigRootDir) {
+    if (parseSettings.tsconfigRootDir) {
       return `<tsconfigRootDir>/${relative}`;
     }
     return `<cwd>/${relative}`;
   };
 
-  const describedFilePath = describeFilePath(extra.filePath);
-  const relativeProjects = extra.projects.map(describeFilePath);
+  const describedFilePath = describeFilePath(parseSettings.filePath);
+  const relativeProjects = parseSettings.projects.map(describeFilePath);
   const describedPrograms =
     relativeProjects.length === 1
       ? relativeProjects[0]
@@ -70,7 +62,7 @@ function createProjectProgram(
   ];
   let hasMatchedAnError = false;
 
-  const extraFileExtensions = extra.extraFileExtensions || [];
+  const extraFileExtensions = parseSettings.extraFileExtensions || [];
 
   extraFileExtensions.forEach(extraExtension => {
     if (!extraExtension.startsWith('.')) {
@@ -85,7 +77,7 @@ function createProjectProgram(
     }
   });
 
-  const fileExtension = path.extname(extra.filePath);
+  const fileExtension = path.extname(parseSettings.filePath);
   if (!DEFAULT_EXTRA_FILE_EXTENSIONS.includes(fileExtension)) {
     const nonStandardExt = `The extension for the file (\`${fileExtension}\`) is non-standard`;
     if (extraFileExtensions.length > 0) {
@@ -105,7 +97,7 @@ function createProjectProgram(
 
   if (!hasMatchedAnError) {
     const [describedInclusions, describedSpecifiers] =
-      extra.projects.length === 1
+      parseSettings.projects.length === 1
         ? ['that TSConfig does not', 'that TSConfig']
         : ['none of those TSConfigs', 'one of those TSConfigs'];
     errorLines.push(
