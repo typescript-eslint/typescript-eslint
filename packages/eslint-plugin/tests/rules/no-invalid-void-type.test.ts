@@ -98,28 +98,6 @@ function foo(): void | never {
   ],
 });
 
-ruleTester.run('invalidUnionParameter:true', rule, {
-  valid: [
-    {
-      code: 'type allowUnion = string | number',
-      options: [{ allowUnionType: true }],
-    },
-  ],
-  invalid: [
-    {
-      code: 'type invalidVoidUnion = void | number;',
-      options: [{ invalidUnionParameter: false }],
-      errors: [
-        {
-          messageId: 'InvalidVoidForUnion',
-          line: 1,
-          column: 25,
-        },
-      ],
-    },
-  ],
-});
-
 ruleTester.run('allowInGenericTypeArguments: true', rule, {
   valid: [
     'function func(): void {}',
@@ -338,7 +316,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       code: 'type UnionType2 = string | number | void;',
       errors: [
         {
-          messageId: 'invalidVoidNotReturnOrGeneric',
+          messageId: 'invalidVoidUnionConstituent',
           line: 1,
           column: 37,
         },
@@ -348,9 +326,29 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       code: 'type UnionType3 = string | ((number & any) | (string | void));',
       errors: [
         {
-          messageId: 'invalidVoidNotReturnOrGeneric',
+          messageId: 'invalidVoidUnionConstituent',
           line: 1,
           column: 56,
+        },
+      ],
+    },
+    {
+      code: 'declare function test(): number | void;',
+      errors: [
+        {
+          messageId: 'invalidVoidUnionConstituent',
+          line: 1,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: 'declare function test<T extends number | void>(): T;',
+      errors: [
+        {
+          messageId: 'invalidVoidUnionConstituent',
+          line: 1,
+          column: 42,
         },
       ],
     },
@@ -416,7 +414,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       code: 'type invalidVoidUnion = void | Map<string, number>;',
       errors: [
         {
-          messageId: 'invalidVoidNotReturnOrGeneric',
+          messageId: 'invalidVoidUnionConstituent',
           line: 1,
           column: 25,
         },
