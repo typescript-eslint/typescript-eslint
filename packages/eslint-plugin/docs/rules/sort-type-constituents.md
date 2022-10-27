@@ -1,15 +1,10 @@
 ---
-description: 'Enforce members of a type union/intersection to be sorted alphabetically.'
+description: 'Enforce constituents of a type union/intersection to be sorted alphabetically.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> See **https://typescript-eslint.io/rules/sort-type-union-intersection-members** for documentation.
-
-:::danger Deprecated
-
-This rule has been renamed to [`sort-type-union-intersection-members`](./sort-type-union-intersection-members.md).
-:::
+> See **https://typescript-eslint.io/rules/sort-type-constituents** for documentation.
 
 Sorting union (`|`) and intersection (`&`) types can help:
 
@@ -89,7 +84,7 @@ type T4 =
 
 ### `groupOrder`
 
-Each member of the type is placed into a group, and then the rule sorts alphabetically within each group.
+Each constituent of the type is placed into a group, and then the rule sorts alphabetically within each group.
 The ordering of groups is determined by this option.
 
 - `conditional` - Conditional types (`A extends B ? C : D`)
