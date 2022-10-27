@@ -750,7 +750,7 @@ describe('RuleTester', () => {
         mockedDescribe.mock.lastCall?.[1]();
         expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`
           [
-            "All test skipped due to unsatisfied constructor dependency constraints",
+            "All tests skipped due to unsatisfied constructor dependency constraints",
             [Function],
           ]
         `);

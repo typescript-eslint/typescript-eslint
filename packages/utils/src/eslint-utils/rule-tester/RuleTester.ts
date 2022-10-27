@@ -146,7 +146,7 @@ class RuleTester extends BaseRuleTester.RuleTester {
         };
         (this.staticThis.describe as DescribeWithSkip).skip(name, () => {
           this.staticThis.it(
-            'All test skipped due to unsatisfied constructor dependency constraints',
+            'All tests skipped due to unsatisfied constructor dependency constraints',
             () => {},
           );
         });
@@ -154,7 +154,7 @@ class RuleTester extends BaseRuleTester.RuleTester {
         // otherwise just declare an empty test
         this.staticThis.describe(name, () => {
           this.staticThis.it(
-            'All test skipped due to unsatisfied constructor dependency constraints',
+            'All tests skipped due to unsatisfied constructor dependency constraints',
             () => {
               // some frameworks error if there are no assertions
               assert.equal(true, true);
