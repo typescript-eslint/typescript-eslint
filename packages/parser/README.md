@@ -168,7 +168,7 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
 - TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
 
-- Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
+- Note that if this setting is specified, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
   ```jsonc
   {
@@ -217,18 +217,12 @@ Default `true`.
 
 This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
 
-### `parserOptions.createDefaultProgram`
-
-Default `false`.
-
-This option allows you to request that when the `project` setting is specified, files will be allowed when not included in the projects defined by the provided `tsconfig.json` files. **Using this option will incur significant performance costs. This option is primarily included for backwards-compatibility.** See the **`project`** section above for more information.
-
 ### `parserOptions.programs`
 
 Default `undefined`.
 
 This option allows you to programmatically provide an array of one or more instances of a TypeScript Program object that will provide type information to rules.
-This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
+This will override any programs that would have been computed from `parserOptions.project`.
 All linted files must be part of the provided program(s).
 
 ### `parserOptions.moduleResolver`
