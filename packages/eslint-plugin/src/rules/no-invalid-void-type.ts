@@ -139,7 +139,7 @@ export default util.createRule<[Options], MessageIds>({
     ): void {
       if (parentNode.default !== node) {
         context.report({
-          messageId: getNotReturnOrGenericMessageId(node), // 'invalidVoidNotReturnOrGeneric',
+          messageId: getNotReturnOrGenericMessageId(node),
           node,
         });
       }
