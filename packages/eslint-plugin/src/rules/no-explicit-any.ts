@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type Options = [
@@ -14,9 +16,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow usage of the `any` type',
+      description: 'Disallow the `any` type',
       recommended: 'warn',
-      suggestion: true,
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -33,9 +34,12 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           fixToUnknown: {
+            description:
+              'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
             type: 'boolean',
           },
           ignoreRestArgs: {
+            description: 'Whether to ignore rest parameter arrays.',
             type: 'boolean',
           },
         },

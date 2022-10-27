@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 /**
@@ -587,14 +589,14 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'require or disallow padding lines between statements',
+      description: 'Require or disallow padding lines between statements',
       recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
-    hasSuggestions: true,
+    hasSuggestions: false,
     schema: {
-      definitions: {
+      $defs: {
         paddingType: {
           enum: Object.keys(PaddingTypes),
         },
@@ -615,9 +617,9 @@ export default util.createRule<Options, MessageIds>({
       items: {
         type: 'object',
         properties: {
-          blankLine: { $ref: '#/definitions/paddingType' },
-          prev: { $ref: '#/definitions/statementType' },
-          next: { $ref: '#/definitions/statementType' },
+          blankLine: { $ref: '#/$defs/paddingType' },
+          prev: { $ref: '#/$defs/statementType' },
+          next: { $ref: '#/$defs/statementType' },
         },
         additionalProperties: false,
         required: ['blankLine', 'prev', 'next'],

@@ -1,9 +1,10 @@
 import type Monaco from 'monaco-editor';
-import { createURI } from './utils';
-import type { LintCodeAction } from './lintCode';
+
+import type { LintCodeAction } from '../linter/utils';
+import { createEditOperation, createURI } from '../linter/utils';
 
 export function createProvideCodeActions(
-  fixes: Map<string, LintCodeAction>,
+  fixes: Map<string, LintCodeAction[]>,
 ): Monaco.languages.CodeActionProvider {
   return {
     provideCodeActions(
@@ -22,27 +23,18 @@ export function createProvideCodeActions(
       }
       const actions: Monaco.languages.CodeAction[] = [];
       for (const marker of context.markers) {
-        const message = fixes.get(createURI(marker));
-        if (message) {
-          const start = model.getPositionAt(message.fix.range[0]);
-          const end = model.getPositionAt(message.fix.range[1]);
+        const messages = fixes.get(createURI(marker)) ?? [];
+        for (const message of messages) {
           actions.push({
-            title: message.message,
+            title: message.message + (message.code ? ` (${message.code})` : ''),
             diagnostics: [marker],
             kind: 'quickfix',
+            isPreferred: message.isPreferred,
             edit: {
               edits: [
                 {
                   resource: model.uri,
-                  edit: {
-                    range: {
-                      startLineNumber: start.lineNumber,
-                      startColumn: start.column,
-                      endLineNumber: end.lineNumber,
-                      endColumn: end.column,
-                    },
-                    text: message.fix.text,
-                  },
+                  edit: createEditOperation(model, message),
                 },
               ],
             },

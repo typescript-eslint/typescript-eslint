@@ -1,9 +1,11 @@
 // any is required to work around manipulating the AST in weird ways
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 
-import { AST_NODE_TYPES, TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-extra-parens');
 
@@ -79,7 +81,9 @@ export default util.createRule<Options, MessageIds>({
       if (
         node.arguments.length === 1 &&
         node.typeParameters?.params.some(
-          param => param.type === AST_NODE_TYPES.TSImportType,
+          param =>
+            param.type === AST_NODE_TYPES.TSImportType ||
+            param.type === AST_NODE_TYPES.TSArrayType,
         )
       ) {
         return rule({
@@ -122,7 +126,19 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       // AssignmentExpression
-      // AwaitExpression
+      AwaitExpression(node) {
+        if (util.isTypeAssertion(node.argument)) {
+          // reduces the precedence of the node so the rule thinks it needs to be wrapped
+          return rules.AwaitExpression({
+            ...node,
+            argument: {
+              ...node.argument,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+        return rules.AwaitExpression(node);
+      },
       BinaryExpression: binaryExp,
       CallExpression: callExp,
       // ClassDeclaration
@@ -148,7 +164,7 @@ export default util.createRule<Options, MessageIds>({
           });
         }
         if (util.isTypeAssertion(node.alternate)) {
-          // reduces the precedence of the node so the rule thinks it needs to be rapped
+          // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.ConditionalExpression({
             ...node,
             alternate: {

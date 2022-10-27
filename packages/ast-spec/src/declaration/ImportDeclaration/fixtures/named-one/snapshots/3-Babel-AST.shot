@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ImportDeclaration named-one Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ImportDeclaration {
+      type: "ImportDeclaration",
+      assertions: Array [],
+      importKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'mod'",
+        value: "mod",
+
+        range: [18, 23],
+        loc: {
+          start: { column: 18, line: 1 },
+          end: { column: 23, line: 1 },
+        },
+      },
+      specifiers: Array [
+        ImportSpecifier {
+          type: "ImportSpecifier",
+          imported: Identifier {
+            type: "Identifier",
+            name: "a",
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+          importKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            name: "a",
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+
+          range: [9, 10],
+          loc: {
+            start: { column: 9, line: 1 },
+            end: { column: 10, line: 1 },
+          },
+        },
+      ],
+
+      range: [0, 24],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 24, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 25],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

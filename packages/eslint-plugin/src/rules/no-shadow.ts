@@ -1,18 +1,14 @@
-import {
-  ASTUtils,
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
-import {
+import type {
   Definition,
-  DefinitionType,
   ImportBindingDefinition,
-  ScopeType,
 } from '@typescript-eslint/scope-manager';
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
-type MessageIds = 'noShadow';
+type MessageIds = 'noShadow' | 'noShadowGlobal';
 type Options = [
   {
     allow?: string[];
@@ -64,7 +60,9 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
     messages: {
-      noShadow: "'{{name}}' is already declared in the upper scope.",
+      noShadow:
+        "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
+      noShadowGlobal: "'{{name}}' is already a global variable.",
     },
   },
   defaultOptions: [
@@ -518,6 +516,28 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Get declared line and column of a variable.
+     * @param  variable The variable to get.
+     * @returns The declared line and column of the variable.
+     */
+    function getDeclaredLocation(
+      variable: TSESLint.Scope.Variable,
+    ): { global: true } | { global: false; line: number; column: number } {
+      const identifier = variable.identifiers[0];
+      if (identifier) {
+        return {
+          global: false,
+          line: identifier.loc.start.line,
+          column: identifier.loc.start.column + 1,
+        };
+      } else {
+        return {
+          global: true,
+        };
+      }
+    }
+
+    /**
      * Checks the current context for shadowed variables.
      * @param {Scope} scope Fixme
      */
@@ -595,12 +615,25 @@ export default util.createRule<Options, MessageIds>({
           ) &&
           !(options.hoist !== 'all' && isInTdz(variable, shadowed))
         ) {
+          const location = getDeclaredLocation(shadowed);
+
           context.report({
             node: variable.identifiers[0],
-            messageId: 'noShadow',
-            data: {
-              name: variable.name,
-            },
+            ...(location.global
+              ? {
+                  messageId: 'noShadowGlobal',
+                  data: {
+                    name: variable.name,
+                  },
+                }
+              : {
+                  messageId: 'noShadow',
+                  data: {
+                    name: variable.name,
+                    shadowedLine: location.line,
+                    shadowedColumn: location.column,
+                  },
+                }),
           });
         }
       }

@@ -1,4 +1,6 @@
-import { TSESLint, TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Types = Record<
@@ -117,7 +119,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Bans specific types from being used',
+      description: 'Disallow certain types',
       recommended: 'error',
     },
     fixable: 'code',

@@ -1,8 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -20,7 +18,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Sets preference level for triple slash directives versus ES6-style import declarations',
+        'Disallow certain triple slash directives in favor of ES6-style import declarations',
       recommended: 'error',
     },
     messages: {

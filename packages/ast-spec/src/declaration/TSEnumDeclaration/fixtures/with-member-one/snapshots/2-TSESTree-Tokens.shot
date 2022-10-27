@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSEnumDeclaration with-member-one TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "enum",
+
+    range: [0, 4],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 4, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [5, 8],
+    loc: {
+      start: { column: 5, line: 1 },
+      end: { column: 8, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [9, 10],
+    loc: {
+      start: { column: 9, line: 1 },
+      end: { column: 10, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "A",
+
+    range: [13, 14],
+    loc: {
+      start: { column: 2, line: 2 },
+      end: { column: 3, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ",",
+
+    range: [14, 15],
+    loc: {
+      start: { column: 3, line: 2 },
+      end: { column: 4, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [16, 17],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+]
+`;

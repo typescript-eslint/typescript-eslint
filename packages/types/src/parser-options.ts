@@ -1,5 +1,6 @@
-import { Lib } from './lib';
 import type { Program } from 'typescript';
+
+import type { Lib } from './lib';
 
 type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
 
@@ -56,9 +57,9 @@ interface ParserOptions {
   sourceType?: SourceType;
   tokens?: boolean;
   tsconfigRootDir?: string;
-  useJSXTextNode?: boolean;
   warnOnUnsupportedTypeScriptVersion?: boolean;
   moduleResolver?: string;
+  [additionalProperties: string]: unknown;
 }
 
 export { DebugLevel, EcmaVersion, ParserOptions, SourceType };

@@ -6,7 +6,7 @@
 export = {
   overrides: [
     {
-      files: ['*.ts', '*.tsx'],
+      files: ['*.ts', '*.tsx', '*.mts', '*.cts'],
       rules: {
         'constructor-super': 'off', // ts(2335) & ts(2377)
         'getter-return': 'off', // ts(2378)

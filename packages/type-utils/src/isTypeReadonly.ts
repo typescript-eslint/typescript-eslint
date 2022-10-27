@@ -1,14 +1,15 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 import {
   isConditionalType,
+  isIntersectionType,
   isObjectType,
-  isUnionType,
-  unionTypeParts,
   isPropertyReadonlyInType,
   isSymbolFlagSet,
-  isIntersectionType,
+  isUnionType,
+  unionTypeParts,
 } from 'tsutils';
 import * as ts from 'typescript';
+
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import {
   TypeAllowlistItem,
@@ -158,6 +159,10 @@ function isTypeReadonlyObject(
     if (indexInfo) {
       if (!indexInfo.isReadonly) {
         return Readonlyness.Mutable;
+      }
+
+      if (indexInfo.type === type) {
+        return Readonlyness.Readonly;
       }
 
       return isTypeReadonlyRecurser(

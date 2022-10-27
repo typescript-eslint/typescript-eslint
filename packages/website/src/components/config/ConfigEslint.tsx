@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import type { RulesRecord, RuleEntry } from '@typescript-eslint/website-eslint';
 
-import ConfigEditor, { ConfigOptionsType } from './ConfigEditor';
-import type { RuleDetails } from '../types';
 import { shallowEqual } from '../lib/shallowEqual';
+import type { ConfigModel, EslintRC, RuleDetails, RuleEntry } from '../types';
+import type { ConfigOptionsType } from './ConfigEditor';
+import ConfigEditor from './ConfigEditor';
+import { parseESLintRC, toJson } from './utils';
 
-export interface ModalEslintProps {
+export interface ConfigEslintProps {
   readonly isOpen: boolean;
-  readonly onClose: (value?: RulesRecord) => void;
+  readonly onClose: (value?: Partial<ConfigModel>) => void;
   readonly ruleOptions: RuleDetails[];
-  readonly rules: RulesRecord;
+  readonly config?: string;
 }
 
 function checkSeverity(value: unknown): boolean {
@@ -26,33 +27,43 @@ function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
   return checkSeverity(rule[1]);
 }
 
-function ConfigEslint(props: ModalEslintProps): JSX.Element {
+function ConfigEslint(props: ConfigEslintProps): JSX.Element {
+  const { isOpen, config, onClose: onCloseProps, ruleOptions } = props;
   const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
+  const [configObject, updateConfigObject] = useState<EslintRC>();
+
+  useEffect(() => {
+    if (isOpen) {
+      updateConfigObject(parseESLintRC(config));
+    }
+  }, [isOpen, config]);
 
   useEffect(() => {
     updateOptions([
       {
         heading: 'Rules',
-        fields: props.ruleOptions
+        fields: ruleOptions
           .filter(item => item.name.startsWith('@typescript'))
           .map(item => ({
             key: item.name,
             label: item.description,
+            type: 'boolean',
             defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
           })),
       },
       {
         heading: 'Core rules',
-        fields: props.ruleOptions
+        fields: ruleOptions
           .filter(item => !item.name.startsWith('@typescript'))
           .map(item => ({
             key: item.name,
             label: item.description,
+            type: 'boolean',
             defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
           })),
       },
     ]);
-  }, [props.ruleOptions]);
+  }, [ruleOptions]);
 
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
@@ -65,22 +76,23 @@ function ConfigEslint(props: ModalEslintProps): JSX.Element {
           )
           .filter(checkOptions),
       );
-      if (!shallowEqual(cfg, props.rules)) {
-        props.onClose(cfg);
+      if (!shallowEqual(cfg, configObject?.rules)) {
+        onCloseProps({
+          eslintrc: toJson({ ...(configObject ?? {}), rules: cfg }),
+        });
       } else {
-        props.onClose();
+        onCloseProps();
       }
     },
-    [props.onClose, props.rules],
+    [onCloseProps, configObject],
   );
 
   return (
     <ConfigEditor
       header="Eslint Config"
       options={options}
-      values={props.rules ?? {}}
-      jsonField="rules"
-      isOpen={props.isOpen}
+      values={configObject?.rules ?? {}}
+      isOpen={isOpen}
       onClose={onClose}
     />
   );

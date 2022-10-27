@@ -24,7 +24,7 @@ interface CreateFixturePatternConfig {
 }
 
 const fixturesDirPath = path.join(__dirname, '../fixtures');
-const sharedFixturesDirPath = path.join(
+export const sharedFixturesDirPath = path.join(
   __dirname,
   '../../../shared-fixtures/fixtures',
 );
@@ -365,7 +365,7 @@ tester.addFixturePatternConfig('typescript/basics', {
     /**
      * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
      * babel hard fails on computed string enum members, but TS doesn't
-     * https://github.com/babel/babel/issues/12683
+     * @see https://github.com/babel/babel/issues/12683
      */
     'export-named-enum-computed-string',
     /**
@@ -397,6 +397,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      * SyntaxError: Missing initializer in const declaration.
      */
     'var-with-definite-assignment',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: A JSON module can only be imported with `default`.
+     */
+    'export-with-import-assertions',
   ],
   ignoreSourceType: [
     /**
@@ -432,6 +437,19 @@ tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * babel sets the range of the export node to the start of the decorator
+     * TSESTree sets it to the start of the export keyword
+     */
+    'export-default-class-decorator',
+    'export-named-class-decorator',
+    /**
+     * babel sets the range of the export node to the start of the parameter
+     * TSESTree sets it to the start of the decorator
+     */
+    'class-parameter-property',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts',
@@ -453,6 +471,13 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * Babel produces incorrect structure for TSInstantiationExpression and optional ChainExpression
+     * @see https://github.com/babel/babel/issues/14613
+     */
+    'instantiation-expression',
+  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
@@ -485,10 +510,13 @@ tester.addFixturePatternConfig('typescript/types', {
     'template-literal-type-3',
     'template-literal-type-4',
     /**
-     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
-     * Babel doesn't support TS 4.7 new feature yet.
+     * Reported range differs between ts-estree and Babel
+     * @see https://github.com/babel/babel/issues/14589
      */
-    'conditional-infer-with-constraint',
+    'optional-variance-in',
+    'optional-variance-out',
+    'optional-variance-in-out',
+    'optional-variance-in-and-out',
   ],
 });
 

@@ -1,6 +1,8 @@
-import fs from 'fs';
 import type { File } from '@babel/types';
-import { fixturesToTest } from './fixtures-to-test';
+import fs from 'fs';
+import path from 'path';
+
+import { fixturesToTest, sharedFixturesDirPath } from './fixtures-to-test';
 import { parse } from './parse';
 import {
   preprocessBabylonAST,
@@ -70,22 +72,23 @@ fixturesToTest.forEach(fixture => {
   /**
    * No errors, assert the two ASTs match
    */
-  it(`${filename}`, () => {
+  const relativeFilename = path.relative(sharedFixturesDirPath, filename);
+  it(`${relativeFilename}`, () => {
     expect(babelParserResult.ast).toBeTruthy();
     expect(typeScriptESTreeResult.ast).toBeTruthy();
     /**
      * Perform some extra formatting steps on the babel AST before comparing
      */
-    expect(
-      removeLocationDataAndSourceTypeFromProgramNode(
-        preprocessBabylonAST(babelParserResult.ast as File),
-        fixture.ignoreSourceType,
-      ),
-    ).toEqual(
-      removeLocationDataAndSourceTypeFromProgramNode(
-        preprocessTypescriptAST(typeScriptESTreeResult.ast),
-        fixture.ignoreSourceType,
-      ),
+    const babelAst = removeLocationDataAndSourceTypeFromProgramNode(
+      preprocessBabylonAST(babelParserResult.ast as File),
+      fixture.ignoreSourceType,
     );
+    const tsestreeAst = removeLocationDataAndSourceTypeFromProgramNode(
+      preprocessTypescriptAST(typeScriptESTreeResult.ast),
+      fixture.ignoreSourceType,
+    );
+
+    // Received = Babel, Expected = TSESTree
+    expect(babelAst).toEqual(tsestreeAst);
   });
 });

@@ -13,3 +13,8 @@ export * from './propertyTypes';
 export * from './requiresQuoting';
 export * from './TypeAllowListItem';
 export * from './typeFlagUtils';
+export {
+  getDecorators,
+  getModifiers,
+  typescriptVersionIsAtLeast,
+} from '@typescript-eslint/typescript-estree';

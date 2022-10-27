@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export default function useDebouncedToggle<T>(
   value: T,
@@ -19,7 +19,7 @@ export default function useDebouncedToggle<T>(
         setState(value);
       }, timeout);
     },
-    [timeoutIdRef],
+    [timeout, value],
   );
 
   return [state, update];

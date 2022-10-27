@@ -7,8 +7,31 @@ import type { ImportKind } from '../ExportAndImportKind';
 
 export interface ImportDeclaration extends BaseNode {
   type: AST_NODE_TYPES.ImportDeclaration;
-  source: StringLiteral;
-  specifiers: ImportClause[];
-  importKind: ImportKind;
+  /**
+   * The assertions declared for the export.
+   * ```
+   * import * from 'mod' assert { type: 'json' };
+   * ```
+   */
   assertions: ImportAttribute[];
+  /**
+   * The kind of the import.
+   */
+  importKind: ImportKind;
+  /**
+   * The source module being imported from.
+   */
+  source: StringLiteral;
+  /**
+   * The specifiers being imported.
+   * If this is an empty array then either there are no specifiers:
+   * ```
+   * import {} from 'mod';
+   * ```
+   * Or it is a side-effect import:
+   * ```
+   * import 'mod';
+   * ```
+   */
+  specifiers: ImportClause[];
 }

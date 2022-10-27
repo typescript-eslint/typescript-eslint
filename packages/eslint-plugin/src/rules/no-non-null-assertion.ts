@@ -1,4 +1,6 @@
-import { TSESLint, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';
@@ -9,9 +11,8 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Disallows non-null assertions using the `!` postfix operator',
+        'Disallow non-null assertions using the `!` postfix operator',
       recommended: 'warn',
-      suggestion: true,
     },
     hasSuggestions: true,
     messages: {

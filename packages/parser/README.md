@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](https://typescript-eslint.io/docs/linting)**
+**[You can find our Getting Started docs here](https://typescript-eslint.io/docs)**
 
 These docs walk you through setting up ESLint, this parser, and our plugin. If you know what you're doing and just want to quick start, read on...
 
@@ -78,16 +78,19 @@ Default `false`.
 
 Enable parsing JSX when `true`. More details can be found [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-**NOTE:** this setting does not affect known file types (`.js`, `.jsx`, `.ts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions. The exact behavior is as follows:
+**NOTE:** this setting does not affect known file types (`.js`, `.mjs`, `.cjs`, `.jsx`, `.ts`, `.mts`, `.cts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions.
 
-- if `parserOptions.project` is _not_ provided:
-  - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
-  - `.ts` files are parsed as if this is false.
-  - unknown extensions (`.md`, `.vue`) will respect this setting.
-- if `parserOptions.project` is provided (i.e. you are using rules with type information):
-  - `.js`, `.jsx`, `.tsx` files are parsed as if this is true.
-  - `.ts` files are parsed as if this is false.
-  - "unknown" extensions (`.md`, `.vue`) **are parsed as if this is false**.
+<!-- https://github.com/microsoft/TypeScript/blob/d6e483b8dabd8fd37c00954c3f2184bb7f1eb90c/src/compiler/utilities.ts#L6281-L6285 -->
+
+The exact behavior is as follows:
+
+- `.js`, `.mjs`, `.cjs`, `.jsx`, `.tsx` files are always parsed as if this is `true`.
+- `.ts`, `.mts`, `.cts` files are always parsed as if this is `false`.
+- For "unknown" extensions (`.md`, `.vue`):
+  - If `parserOptions.project` is _not_ provided:
+    - The setting will be respected.
+  - If `parserOptions.project` is provided (i.e. you are using rules with type information):
+    - **always parsed as if this is `false`**
 
 ### `parserOptions.ecmaFeatures.globalReturn`
 
@@ -161,6 +164,8 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
 - If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 
+- Note that using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time. For more info see [#2611](https://github.com/typescript-eslint/typescript-eslint/issues/2611).
+
 - TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
 
 - Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
@@ -203,7 +208,8 @@ For example, by default it will ensure that a glob like `./**/tsconfig.json` wil
 Default `undefined`.
 
 This option allows you to provide one or more additional file extensions which should be considered in the TypeScript Program compilation.
-The default extensions are `.ts`, `.tsx`, `.js`, and `.jsx`. Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
+The default extensions are `['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx']`.
+Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
 
 ### `parserOptions.warnOnUnsupportedTypeScriptVersion`
 
@@ -252,7 +258,7 @@ Note that if you pass custom programs via `options.programs` this option will no
 
 Default `undefined`.
 
-This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](https://typescript-eslint.io/docs/linting/type-linting). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
+This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](https://typescript-eslint.io/docs/linting/typed-linting). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ## Utilities
 

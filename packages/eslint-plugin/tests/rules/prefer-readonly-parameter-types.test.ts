@@ -1,10 +1,12 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/prefer-readonly-parameter-types';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { readonlynessOptionsDefaults } from '../../src/util';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -288,7 +290,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         new (arg: readonly string[]): void;
       }
     `, // TSConstructSignatureDeclaration
-    'const x = { foo(arg: readonly string[]): void; };', // TSEmptyBodyFunctionExpression
+    noFormat`const x = { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
     'function foo(arg: readonly string[]);', // TSDeclareFunction
     'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
     `
@@ -358,6 +360,23 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       options: [
         {
           ignoreInferredTypes: true,
+        },
+      ],
+    },
+    {
+      name: 'circular readonly types (Bug: #4476)',
+      code: `
+        interface Obj {
+          readonly [K: string]: Obj;
+        }
+        
+        function foo(event: Obj): void {}
+      `,
+      options: [
+        {
+          checkParameterProperties: true,
+          ignoreInferredTypes: false,
+          ...readonlynessOptionsDefaults,
         },
       ],
     },
@@ -704,7 +723,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       // TSEmptyBodyFunctionExpression
-      code: 'const x = { foo(arg: string[]): void; };',
+      code: noFormat`const x = { foo(arg: string[]): void; };`,
       errors: [
         {
           messageId: 'shouldBeReadonly',

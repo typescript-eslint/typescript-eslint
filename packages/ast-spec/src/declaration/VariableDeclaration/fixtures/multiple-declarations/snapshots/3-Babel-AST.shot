@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration VariableDeclaration multiple-declarations Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "x",
+
+            range: [4, 5],
+            loc: {
+              start: { column: 4, line: 1 },
+              end: { column: 5, line: 1 },
+            },
+          },
+          init: null,
+
+          range: [4, 5],
+          loc: {
+            start: { column: 4, line: 1 },
+            end: { column: 5, line: 1 },
+          },
+        },
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "y",
+
+            range: [7, 8],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 8, line: 1 },
+            },
+          },
+          init: null,
+
+          range: [7, 8],
+          loc: {
+            start: { column: 7, line: 1 },
+            end: { column: 8, line: 1 },
+          },
+        },
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "z",
+
+            range: [10, 11],
+            loc: {
+              start: { column: 10, line: 1 },
+              end: { column: 11, line: 1 },
+            },
+          },
+          init: null,
+
+          range: [10, 11],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 11, line: 1 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [0, 12],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 12, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 13],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

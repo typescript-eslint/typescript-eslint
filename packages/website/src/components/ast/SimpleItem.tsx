@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import ItemGroup from './ItemGroup';
 import Tooltip from '@site/src/components/inputs/Tooltip';
-import PropertyValue from './PropertyValue';
+import React, { useCallback } from 'react';
 
+import ItemGroup from './ItemGroup';
+import PropertyValue from './PropertyValue';
 import type { ASTViewerModelMapSimple, OnSelectNodeFn } from './types';
 
 export interface SimpleItemProps {
@@ -20,7 +20,7 @@ export function SimpleItem({
         onSelectNode(state ? data.model.range : null);
       }
     },
-    [data],
+    [data.model.range, onSelectNode],
   );
 
   return (

@@ -1,8 +1,9 @@
 import ESLintScopeManager from 'eslint-scope/lib/scope-manager';
-import { TSESTree } from '../ts-estree';
-import { EcmaVersion } from '../ts-eslint';
-import { Scope } from './Scope';
-import { Variable } from './Variable';
+
+import type { EcmaVersion } from '../ts-eslint';
+import type { TSESTree } from '../ts-estree';
+import type { Scope } from './Scope';
+import type { Variable } from './Variable';
 
 interface ScopeManagerOptions {
   directive?: boolean;

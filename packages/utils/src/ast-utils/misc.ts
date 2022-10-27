@@ -1,4 +1,4 @@
-import { TSESTree } from '../ts-estree';
+import type { TSESTree } from '../ts-estree';
 
 const LINEBREAK_MATCHER = /\r\n|[\r\n\u2028\u2029]/;
 

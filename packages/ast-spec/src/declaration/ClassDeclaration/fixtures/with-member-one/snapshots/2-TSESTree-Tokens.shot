@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration with-member-one TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [6, 9],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "prop",
+
+    range: [14, 18],
+    loc: {
+      start: { column: 2, line: 2 },
+      end: { column: 6, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [18, 19],
+    loc: {
+      start: { column: 6, line: 2 },
+      end: { column: 7, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [20, 21],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+]
+`;

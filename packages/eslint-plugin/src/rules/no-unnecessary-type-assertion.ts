@@ -1,12 +1,14 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
-  isObjectType,
   isObjectFlagSet,
+  isObjectType,
   isStrictCompilerOptionEnabled,
   isTypeFlagSet,
   isVariableDeclaration,
 } from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type Options = [
@@ -21,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Warns if a type assertion does not change the type of an expression',
+        'Disallow type assertions that do not change the type of an expression',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -37,6 +39,7 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           typesToIgnore: {
+            description: 'A list of type names to ignore.',
             type: 'array',
             items: {
               type: 'string',

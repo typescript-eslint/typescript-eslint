@@ -1,5 +1,8 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST as RegExpAST, RegExpParser } from 'regexpp';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { AST as RegExpAST } from 'regexpp';
+import { RegExpParser } from 'regexpp';
+
 import {
   createRule,
   getParserServices,
@@ -22,7 +25,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce the use of `String#startsWith` and `String#endsWith` instead of other equivalent methods of checking substrings',
+        'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
       recommended: 'strict',
       requiresTypeChecking: true,
     },

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSDeclareFunction generator Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSDeclareFunction {
+      type: "TSDeclareFunction",
+      async: false,
+      declare: true,
+      expression: false,
+      generator: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [18, 21],
+        loc: {
+          start: { column: 18, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+      params: Array [],
+
+      range: [0, 24],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 24, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 25],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

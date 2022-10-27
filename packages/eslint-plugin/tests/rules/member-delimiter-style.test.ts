@@ -3548,5 +3548,79 @@ type Foo = {a: {
         },
       ],
     },
+    {
+      code: `
+type Foo = {
+  a: {
+    b: true;
+  }; c: false;
+}
+      `,
+      output: `
+type Foo = {
+  a: {
+    b: true
+  }; c: false
+}
+      `,
+      options: [
+        {
+          multiline: { delimiter: 'none' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 13,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 5,
+          column: 5,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 5,
+          column: 15,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  a: true; /** something */ /** some
+  thing */ b: true; /** something */ c: false; // something
+}
+      `,
+      output: `
+type Foo = {
+  a: true /** something */ /** some
+  thing */ b: true; /** something */ c: false // something
+}
+      `,
+      options: [
+        {
+          multiline: { delimiter: 'none' },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedSemi',
+          line: 3,
+          column: 11,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 20,
+        },
+        {
+          messageId: 'unexpectedSemi',
+          line: 4,
+          column: 47,
+        },
+      ],
+    },
   ],
 });

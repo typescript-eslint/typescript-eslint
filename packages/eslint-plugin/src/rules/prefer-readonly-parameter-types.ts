@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -17,7 +19,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Requires that function parameters are typed as readonly to prevent accidental mutation of inputs',
+        'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
       recommended: false,
       requiresTypeChecking: true,
     },

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { SourceCode as ESLintSourceCode } from 'eslint';
-import { ParserServices, TSESTree } from '../ts-estree';
-import { Scope } from './Scope';
+
+import type { ParserServices, TSESTree } from '../ts-estree';
+import type { Scope } from './Scope';
 
 declare class TokenStore {
   /**
@@ -276,7 +277,7 @@ declare class SourceCodeBase extends TokenStore {
    * @returns The text representing the AST node.
    */
   getText(
-    node?: TSESTree.Node,
+    node?: TSESTree.Node | TSESTree.Token,
     beforeCount?: number,
     afterCount?: number,
   ): string;

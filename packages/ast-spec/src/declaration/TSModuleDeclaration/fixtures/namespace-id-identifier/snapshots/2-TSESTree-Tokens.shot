@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-identifier TSESTree - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "namespace",
+
+    range: [0, 9],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "F",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [12, 13],
+    loc: {
+      start: { column: 12, line: 1 },
+      end: { column: 13, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [13, 14],
+    loc: {
+      start: { column: 13, line: 1 },
+      end: { column: 14, line: 1 },
+    },
+  },
+]
+`;

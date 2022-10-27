@@ -1,5 +1,7 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 // intentionally mirroring the options
 type MessageIds =
@@ -22,7 +24,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforces consistent usage of type assertions',
+      description: 'Enforce consistent usage of type assertions',
       recommended: 'strict',
     },
     messages: {

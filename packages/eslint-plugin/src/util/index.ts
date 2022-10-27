@@ -7,6 +7,9 @@ export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
 export * from './getThisExpression';
 export * from './getWrappingFixer';
+export * from './isNodeEqual';
+export * from './isNullLiteral';
+export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './objectIterators';
 

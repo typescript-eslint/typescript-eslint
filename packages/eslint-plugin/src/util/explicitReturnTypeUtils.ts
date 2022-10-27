@@ -1,10 +1,7 @@
-import {
-  TSESTree,
-  AST_NODE_TYPES,
-  ESLintUtils,
-  TSESLint,
-} from '@typescript-eslint/utils';
-import { isTypeAssertion, isConstructor, isSetter } from './astUtils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+
+import { isConstructor, isSetter, isTypeAssertion } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 
 type FunctionExpression =

@@ -1,5 +1,5 @@
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-extra-semi');
 

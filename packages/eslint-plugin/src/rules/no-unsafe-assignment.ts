@@ -1,6 +1,8 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
+
 import * as util from '../util';
 import { getThisExpression } from '../util';
 
@@ -18,7 +20,8 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallows assigning any to variables and properties',
+      description:
+        'Disallow assigning a value with type `any` to variables and properties',
       recommended: 'error',
       requiresTypeChecking: true,
     },
