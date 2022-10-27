@@ -11,10 +11,8 @@ import {
 import * as ts from 'typescript';
 
 import { getTypeOfPropertyOfType } from './propertyTypes';
-import {
-  TypeAllowlistItem,
-  typeAllowListItemSchema,
-} from './TypeAllowListItem';
+import type { TypeAllowlistItem } from './TypeAllowListItem';
+import { typeAllowListItemSchema } from './TypeAllowListItem';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
