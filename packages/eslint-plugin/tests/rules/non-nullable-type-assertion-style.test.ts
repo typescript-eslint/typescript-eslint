@@ -1,4 +1,5 @@
 import path from 'path';
+
 import rule from '../../src/rules/non-nullable-type-assertion-style';
 import { RuleTester } from '../RuleTester';
 

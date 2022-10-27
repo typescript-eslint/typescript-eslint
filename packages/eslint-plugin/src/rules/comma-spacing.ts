@@ -1,9 +1,11 @@
-import { TSESTree, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import {
+  createRule,
   isClosingParenToken,
   isCommaToken,
   isTokenOnSameLine,
-  createRule,
 } from '../util';
 
 type Options = [
@@ -17,7 +19,7 @@ type MessageIds = 'unexpected' | 'missing';
 export default createRule<Options, MessageIds>({
   name: 'comma-spacing',
   meta: {
-    type: 'suggestion',
+    type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after commas',
       recommended: false,

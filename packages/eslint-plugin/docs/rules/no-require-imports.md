@@ -8,33 +8,30 @@ description: 'Disallow invocation of `require()`.'
 
 Prefer the newer ES6-style imports over `require()`.
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
 ### ❌ Incorrect
 
 ```ts
-var lib = require('lib');
-let lib2 = require('lib2');
-var lib5 = require('lib5'),
-  lib6 = require('lib6');
-import lib8 = require('lib8');
+const lib1 = require('lib1');
+const { lib2 } = require('lib2');
+import lib3 = require('lib3');
 ```
 
 ### ✅ Correct
 
 ```ts
-import { l } from 'lib';
-var lib3 = load('not_an_import');
-var lib4 = lib2.subImport;
-var lib7 = 700;
-import lib9 = lib2.anotherSubImport;
-import lib10 from 'lib10';
+import * as lib1 from 'lib1';
+import { lib2 } from 'lib2';
+import * as lib3 from 'lib3';
 ```
 
 ## When Not To Use It
 
-If you don't care about TypeScript module syntax, then you will not need this rule.
+If you don't care about using newer module syntax, then you will not need this rule.
+
+## Related To
+
+- [`no-var-requires`](./no-var-requires.md)

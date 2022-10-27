@@ -40,6 +40,7 @@ Be sure to update your `.eslintrc.js` to point at this new config file.
 
 The `parserOptions.project` option introduced in [Linting with Type Information](../TYPED_LINTING.md) accepts an array of relative paths.
 Paths may be provided as [Node globs](https://github.com/isaacs/node-glob/blob/f5a57d3d6e19b324522a3fa5bdd5075fd1aa79d1/README.md#glob-primer).
+For each file being linted, the first matching project path will be used as its backing TSConfig.
 
 ```js title=".eslintrc.js"
 module.exports = {
@@ -60,6 +61,33 @@ module.exports = {
   root: true,
 };
 ```
+
+### Wide globs in `parserOptions.project`
+
+Using wide globs `**` in your `parserOptions.project` may degrade linting performance.
+Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    // Remove this line
+    project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
+    // Add this line
+    project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+  },
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+```
+
+See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
 
 ### Important note regarding large (> 10) multi-package monorepos
 

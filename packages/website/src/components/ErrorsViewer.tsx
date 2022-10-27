@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import type Monaco from 'monaco-editor';
-import clsx from 'clsx';
-
-import type { ErrorItem, ErrorGroup } from './types';
 import IconExternalLink from '@theme/Icon/ExternalLink';
+import clsx from 'clsx';
+import type Monaco from 'monaco-editor';
+import React, { useEffect, useState } from 'react';
+
 import styles from './ErrorsViewer.module.css';
+import type { ErrorGroup, ErrorItem } from './types';
 
 export interface ErrorsViewerProps {
   readonly value?: ErrorGroup[] | Error;
@@ -91,6 +91,18 @@ function ErrorBlock({
   );
 }
 
+function SuccessBlock(): JSX.Element {
+  return (
+    <div className="admonition alert alert--success">
+      <div className="admonition-content">
+        <div className={styles.fixerContainer}>
+          <div>All is ok!</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ErrorsViewer({
   value,
 }: ErrorsViewerProps): JSX.Element {
@@ -113,31 +125,37 @@ export default function ErrorsViewer({
 
   return (
     <div className={styles.list}>
-      {value?.map(({ group, uri, items }) => {
-        return (
-          <div className="margin-top--sm" key={group}>
-            <h4>
-              {group}
-              {uri && (
-                <>
-                  {' - '}
-                  <a href={uri} target="_blank">
-                    docs <IconExternalLink width={13.5} height={13.5} />
-                  </a>
-                </>
-              )}
-            </h4>
-            {items.map((item, index) => (
-              <ErrorBlock
-                isLocked={isLocked}
-                setIsLocked={setIsLocked}
-                item={item}
-                key={index}
-              />
-            ))}
-          </div>
-        );
-      })}
+      {value?.length ? (
+        value.map(({ group, uri, items }) => {
+          return (
+            <div className="margin-top--md" key={group}>
+              <h4>
+                {group}
+                {uri && (
+                  <>
+                    {' - '}
+                    <a href={uri} target="_blank">
+                      docs <IconExternalLink width={13.5} height={13.5} />
+                    </a>
+                  </>
+                )}
+              </h4>
+              {items.map((item, index) => (
+                <ErrorBlock
+                  isLocked={isLocked}
+                  setIsLocked={setIsLocked}
+                  item={item}
+                  key={index}
+                />
+              ))}
+            </div>
+          );
+        })
+      ) : (
+        <div className="margin-top--md">
+          <SuccessBlock />
+        </div>
+      )}
     </div>
   );
 }

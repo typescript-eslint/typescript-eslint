@@ -6,7 +6,7 @@ description: 'Disallow duplicate class members.'
 >
 > See **https://typescript-eslint.io/rules/no-dupe-class-members** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-dupe-class-members`](https://eslint.org/docs/rules/no-dupe-class-members) rule.
 It adds support for TypeScript's method overload definitions.

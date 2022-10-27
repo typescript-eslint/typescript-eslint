@@ -1,5 +1,5 @@
 import rule from '../../src/rules/require-array-sort-compare';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 

@@ -4,19 +4,21 @@
 }
 
 .options {
-  width: 20rem;
   background: var(--playground-main-color);
   overflow: auto;
+  z-index: 1;
 }
 
 .sourceCode {
   height: 100%;
-  width: 50%;
   border: 1px solid var(--playground-secondary-color);
 }
 
 .codeBlocks {
   display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   flex-direction: row;
   height: 100%;
   width: calc(100vw - 20rem);
@@ -24,7 +26,7 @@
 
 .astViewer {
   height: 100%;
-  width: 50%;
+  width: 100%;
   border: 1px solid var(--playground-secondary-color);
   padding: 0;
   overflow: auto;
@@ -98,7 +100,6 @@
   .astViewer,
   .sourceCode {
     height: 30rem;
-    width: 100%;
   }
 
   .astViewer {

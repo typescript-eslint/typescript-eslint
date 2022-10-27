@@ -1,5 +1,6 @@
 import { isTypeReference, isUnionOrIntersectionType } from 'tsutils';
 import * as ts from 'typescript';
+
 import { isTypeFlagSet } from './typeFlagUtils';
 
 /**

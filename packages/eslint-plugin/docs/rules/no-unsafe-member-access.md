@@ -6,14 +6,15 @@ description: 'Disallow member access on a value with type `any`.'
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-member-access** for documentation.
 
-Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Member access on `any` typed variables is not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 
-## Rule Details
+Despite your best intentions, the `any` type can sometimes leak into your codebase.
+Accessing a member of an `any`-typed value creates a potential type safety hole and source of bugs in your codebase.
 
 This rule disallows member access on any variable that is typed as `any`.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

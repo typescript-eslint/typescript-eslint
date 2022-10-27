@@ -6,7 +6,7 @@ description: 'Enforce consistent spacing inside braces.'
 >
 > See **https://typescript-eslint.io/rules/object-curly-spacing** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/object-curly-spacing`](https://eslint.org/docs/rules/object-curly-spacing) rule.
 It adds support for TypeScript's object types.

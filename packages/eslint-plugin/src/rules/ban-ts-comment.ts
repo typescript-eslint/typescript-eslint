@@ -1,4 +1,5 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type DirectiveConfig =
@@ -27,7 +28,7 @@ export default util.createRule<[Options], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Disallow `@ts-<directive>` comments or require descriptions after directive',
+        'Disallow `@ts-<directive>` comments or require descriptions after directives',
       recommended: 'error',
     },
     messages: {

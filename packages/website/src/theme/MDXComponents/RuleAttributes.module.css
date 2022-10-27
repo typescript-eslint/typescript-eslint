@@ -1,7 +1,9 @@
-.taskList {
-  list-style: none;
+.features {
+  display: flex;
+  gap: 0 1rem;
+  flex-wrap: wrap;
 }
 
-:not(.taskList > li) > .taskList {
-  padding-left: 0;
+.features + h2 {
+  margin-top: 1rem;
 }

@@ -1,5 +1,6 @@
-import * as React from 'react';
 import clsx from 'clsx';
+import * as React from 'react';
+
 import styles from './Loader.module.css';
 
 function Loader(): JSX.Element {

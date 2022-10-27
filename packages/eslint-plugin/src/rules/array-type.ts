@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 /**
@@ -88,7 +90,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require using either `T[]` or `Array<T>` for arrays',
+      description:
+        'Require consistently using either `T[]` or `Array<T>` for arrays',
       recommended: 'strict',
     },
     fixable: 'code',

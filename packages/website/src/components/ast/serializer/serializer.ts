@@ -1,6 +1,6 @@
 import type {
-  ASTViewerModelSimple,
   ASTViewerModelMap,
+  ASTViewerModelSimple,
   Serializer,
 } from '../types';
 import { isRecord, objType } from '../utils';

@@ -2,16 +2,17 @@ import fs from 'fs';
 import glob from 'glob';
 import makeDir from 'make-dir';
 import path from 'path';
+
 import { parseBabel } from './util/parsers/babel';
-import {
+import type {
   Fixture,
   ParserResponse,
   ParserResponseError,
   ParserResponseSuccess,
-  ParserResponseType,
 } from './util/parsers/parser-types';
+import { ParserResponseType } from './util/parsers/parser-types';
 import { parseTSESTree } from './util/parsers/typescript-estree';
-import { snapshotDiff, diffHasChanges } from './util/snapshot-diff';
+import { diffHasChanges, snapshotDiff } from './util/snapshot-diff';
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
 const SRC_DIR = path.resolve(PACKAGE_ROOT, 'src');
