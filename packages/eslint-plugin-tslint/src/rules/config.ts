@@ -1,6 +1,8 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 import memoize from 'lodash/memoize';
-import { Configuration, RuleSeverity } from 'tslint';
+import type { RuleSeverity } from 'tslint';
+import { Configuration } from 'tslint';
+
 import { CustomLinter } from '../custom-linter';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder

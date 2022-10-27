@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 import { getEnumNames } from '../util';
 
@@ -75,9 +77,18 @@ function getGroup(node: TSESTree.TypeNode): Group {
       return Group.union;
 
     // These types should never occur as part of a union/intersection
+    case AST_NODE_TYPES.TSAbstractKeyword:
+    case AST_NODE_TYPES.TSAsyncKeyword:
+    case AST_NODE_TYPES.TSDeclareKeyword:
+    case AST_NODE_TYPES.TSExportKeyword:
     case AST_NODE_TYPES.TSNamedTupleMember:
     case AST_NODE_TYPES.TSOptionalType:
+    case AST_NODE_TYPES.TSPrivateKeyword:
+    case AST_NODE_TYPES.TSProtectedKeyword:
+    case AST_NODE_TYPES.TSPublicKeyword:
+    case AST_NODE_TYPES.TSReadonlyKeyword:
     case AST_NODE_TYPES.TSRestType:
+    case AST_NODE_TYPES.TSStaticKeyword:
     case AST_NODE_TYPES.TSTypePredicate:
       /* istanbul ignore next */
       throw new Error(`Unexpected Type ${node.type}`);
@@ -103,6 +114,7 @@ export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 export default util.createRule<Options, MessageIds>({
   name: 'sort-type-union-intersection-members',
   meta: {
+    deprecated: true,
     type: 'suggestion',
     docs: {
       description:
@@ -116,6 +128,7 @@ export default util.createRule<Options, MessageIds>({
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',
       suggestFix: 'Sort members of type (removes all comments).',
     },
+    replacedBy: ['@typescript-eslint/sort-type-constituents'],
     schema: [
       {
         type: 'object',

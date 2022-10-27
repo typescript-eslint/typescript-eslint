@@ -1,10 +1,10 @@
-import type { TSAbstractKeyword } from '../token/TSAbstractKeyword/spec';
-import type { TSAsyncKeyword } from '../token/TSAsyncKeyword/spec';
-import type { TSPrivateKeyword } from '../token/TSPrivateKeyword/spec';
-import type { TSProtectedKeyword } from '../token/TSProtectedKeyword/spec';
-import type { TSPublicKeyword } from '../token/TSPublicKeyword/spec';
-import type { TSReadonlyKeyword } from '../token/TSReadonlyKeyword/spec';
-import type { TSStaticKeyword } from '../token/TSStaticKeyword/spec';
+import type { TSAbstractKeyword } from '../type/TSAbstractKeyword/spec';
+import type { TSAsyncKeyword } from '../type/TSAsyncKeyword/spec';
+import type { TSPrivateKeyword } from '../type/TSPrivateKeyword/spec';
+import type { TSProtectedKeyword } from '../type/TSProtectedKeyword/spec';
+import type { TSPublicKeyword } from '../type/TSPublicKeyword/spec';
+import type { TSReadonlyKeyword } from '../type/TSReadonlyKeyword/spec';
+import type { TSStaticKeyword } from '../type/TSStaticKeyword/spec';
 
 export type Modifier =
   | TSAbstractKeyword

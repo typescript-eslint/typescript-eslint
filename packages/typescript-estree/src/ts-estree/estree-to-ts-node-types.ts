@@ -1,6 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-import * as ts from 'typescript';
-import { TSNode } from './ts-nodes';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type * as ts from 'typescript';
+
+import type { TSNode } from './ts-nodes';
 
 export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ArrayExpression]: ts.ArrayLiteralExpression;

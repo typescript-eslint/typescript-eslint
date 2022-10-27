@@ -4,6 +4,7 @@
 /* eslint-enable eslint-comments/no-use */
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/object-curly-spacing';
 import { RuleTester } from '../RuleTester';
 

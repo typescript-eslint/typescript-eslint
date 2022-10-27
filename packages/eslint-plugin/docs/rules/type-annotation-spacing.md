@@ -35,7 +35,7 @@ type Foo = (string: name)=> string;
 type Foo = (string: name) =>string;
 ```
 
-## Rule Details
+## Examples
 
 This rule aims to enforce specific spacing patterns around type annotations and function types in type literals.
 

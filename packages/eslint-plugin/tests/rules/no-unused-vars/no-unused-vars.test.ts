@@ -1018,6 +1018,27 @@ export class TestClass {
       `,
       parserOptions: withMetaParserOptions,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5577
+    `
+function foo() {}
+
+export class Foo {
+  constructor() {
+    foo();
+  }
+}
+    `,
+    `
+function foo() {}
+
+export class Foo {
+  static {}
+
+  constructor() {
+    foo();
+  }
+}
+    `,
   ],
 
   invalid: [

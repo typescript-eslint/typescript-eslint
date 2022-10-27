@@ -1,5 +1,5 @@
-import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
-
+import type { TSESTree } from '../ts-estree';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import {
   isNodeOfType,
   isNodeOfTypes,

@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
-import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import type { RulesMeta } from '@site/rulesMeta';
+import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import clsx from 'clsx';
+import React, { useMemo, useState } from 'react';
 
 import styles from './styles.module.css';
 
@@ -15,7 +15,7 @@ function interpolateCode(text: string): (JSX.Element | string)[] | string {
 }
 
 function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
-  if (!rule.docs || !rule.docs.url) {
+  if (!rule.docs?.url) {
     return null;
   }
   const { fixable, hasSuggestions } = rule;

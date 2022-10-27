@@ -1,8 +1,10 @@
 import debug from 'debug';
 import * as ts from 'typescript';
-import { Extra } from '../parser-options';
-import { ASTAndProgram, createDefaultCompilerOptionsFromExtra } from './shared';
+
+import type { ParseSettings } from '../parseSettings';
 import { getScriptKind } from './getScriptKind';
+import type { ASTAndProgram } from './shared';
+import { createDefaultCompilerOptionsFromExtra } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
 
@@ -10,11 +12,11 @@ const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
  * @param code The code of the file being linted
  * @returns Returns a new source file and program corresponding to the linted code
  */
-function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
+function createIsolatedProgram(parseSettings: ParseSettings): ASTAndProgram {
   log(
     'Getting isolated program in %s mode for: %s',
-    extra.jsx ? 'TSX' : 'TS',
-    extra.filePath,
+    parseSettings.jsx ? 'TSX' : 'TS',
+    parseSettings.filePath,
   );
 
   const compilerHost: ts.CompilerHost = {
@@ -22,7 +24,7 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
       return true;
     },
     getCanonicalFileName() {
-      return extra.filePath;
+      return parseSettings.filePath;
     },
     getCurrentDirectory() {
       return '';
@@ -41,10 +43,10 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
     getSourceFile(filename: string) {
       return ts.createSourceFile(
         filename,
-        code,
+        parseSettings.code,
         ts.ScriptTarget.Latest,
         /* setParentNodes */ true,
-        getScriptKind(extra.filePath, extra.jsx),
+        getScriptKind(parseSettings.filePath, parseSettings.jsx),
       );
     },
     readFile() {
@@ -59,17 +61,17 @@ function createIsolatedProgram(code: string, extra: Extra): ASTAndProgram {
   };
 
   const program = ts.createProgram(
-    [extra.filePath],
+    [parseSettings.filePath],
     {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
-      jsx: extra.jsx ? ts.JsxEmit.Preserve : undefined,
-      ...createDefaultCompilerOptionsFromExtra(extra),
+      jsx: parseSettings.jsx ? ts.JsxEmit.Preserve : undefined,
+      ...createDefaultCompilerOptionsFromExtra(parseSettings),
     },
     compilerHost,
   );
 
-  const ast = program.getSourceFile(extra.filePath);
+  const ast = program.getSourceFile(parseSettings.filePath);
   if (!ast) {
     throw new Error(
       'Expected an ast to be returned for the single-file isolated program.',

@@ -1,9 +1,11 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 import {
+  ancestorHasReturnType,
   checkFunctionReturnType,
   isValidFunctionExpressionReturnType,
-  ancestorHasReturnType,
 } from '../util/explicitReturnTypeUtils';
 
 type Options = [
@@ -90,7 +92,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
-      if (!options.allowedNames || !options.allowedNames.length) {
+      if (!options.allowedNames?.length) {
         return false;
       }
 

@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 interface Options {
@@ -158,6 +160,21 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     /**
+     * @brief checks if the generic type parameter defaults to void
+     */
+    function checkDefaultVoid(
+      node: TSESTree.TSVoidKeyword,
+      parentNode: TSESTree.TSTypeParameter,
+    ): void {
+      if (parentNode.default !== node) {
+        context.report({
+          messageId: 'invalidVoidNotReturnOrGeneric',
+          node,
+        });
+      }
+    }
+
+    /**
      * @brief checks that a union containing void is valid
      * @return true if every member of the union is specified as a valid type in
      * validUnionMembers, or is a valid generic type parametrized by void
@@ -189,6 +206,16 @@ export default util.createRule<[Options], MessageIds>({
           node.parent.parent.type === AST_NODE_TYPES.TSTypeReference
         ) {
           checkGenericTypeArgument(node);
+          return;
+        }
+
+        // allow <T = void> if allowInGenericTypeArguments is specified, and report if the generic type parameter extends void
+        if (
+          allowInGenericTypeArguments &&
+          node.parent.type === AST_NODE_TYPES.TSTypeParameter &&
+          node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
+        ) {
+          checkDefaultVoid(node, node.parent);
           return;
         }
 

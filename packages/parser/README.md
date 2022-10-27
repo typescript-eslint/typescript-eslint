@@ -10,7 +10,7 @@
 
 ## Getting Started
 
-**[You can find our Getting Started docs here](https://typescript-eslint.io/docs/linting)**
+**[You can find our Getting Started docs here](https://typescript-eslint.io/docs)**
 
 These docs walk you through setting up ESLint, this parser, and our plugin. If you know what you're doing and just want to quick start, read on...
 
@@ -163,6 +163,8 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
   ```
 
 - If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
+
+- Note that using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time. For more info see [#2611](https://github.com/typescript-eslint/typescript-eslint/issues/2611).
 
 - TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
 

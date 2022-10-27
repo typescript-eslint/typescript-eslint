@@ -7,20 +7,19 @@ description: 'Enforce using `String#startsWith` and `String#endsWith` over other
 > See **https://typescript-eslint.io/rules/prefer-string-starts-ends-with** for documentation.
 
 There are multiple ways to verify if a string starts or ends with a specific string, such as `foo.indexOf('bar') === 0`.
-Since ES2015 has added `String#startsWith` and `String#endsWith`, this rule reports other ways to be consistent.
+As of ES2015, the most common way in JavaScript is to use `String#startsWith` and `String#endsWith`.
+Keeping to those methods consistently helps with code readability.
 
-## Rule Details
+This rule reports when a string method can be replaced safely with `String#startsWith` or `String#endsWith`.
 
-This rule is aimed at enforcing a consistent way to check whether a string starts or ends with a specific string.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
 ### ❌ Incorrect
 
 ```ts
-let foo: string;
+declare const foo: string;
 
 // starts with
 foo[0] === 'b';
@@ -44,7 +43,12 @@ foo.match(/bar$/) != null;
 ### ✅ Correct
 
 ```ts
+declare const foo: string;
+
+// starts with
 foo.startsWith('bar');
+
+// ends with
 foo.endsWith('bar');
 ```
 

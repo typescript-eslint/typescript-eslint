@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import type { SourceFile } from 'typescript';
 
 import ASTViewer from './ast/ASTViewer';
-import type { ASTViewerBaseProps, ASTViewerModelMap } from './ast/types';
-import type { SourceFile } from 'typescript';
 import { serialize } from './ast/serializer/serializer';
 import { createTsSerializer } from './ast/serializer/serializerTS';
+import type { ASTViewerBaseProps, ASTViewerModelMap } from './ast/types';
 
 export interface ASTTsViewerProps extends ASTViewerBaseProps {
   readonly value: SourceFile;
@@ -53,7 +53,17 @@ export default function ASTViewerTS({
       ['TypeFlags', typeFlags],
     );
     setModel(serialize(value, scopeSerializer));
-  }, [value, syntaxKind]);
+  }, [
+    value,
+    syntaxKind,
+    nodeFlags,
+    tokenFlags,
+    modifierFlags,
+    objectFlags,
+    symbolFlags,
+    flowFlags,
+    typeFlags,
+  ]);
 
   return (
     <ASTViewer position={position} onSelectNode={onSelectNode} value={model} />
