@@ -201,6 +201,9 @@ import { type foo } from './foo';
 // 'foo' is already declared in the upper scope
 function doThing(foo: number) {}
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ ignoreTypeValueShadow: true }],
     },
     {
@@ -494,6 +497,9 @@ function doThing(foo: number) {}
 import { type foo } from './foo';
 function doThing(foo: number) {}
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ ignoreTypeValueShadow: false }],
       errors: [
         {
@@ -621,6 +627,9 @@ declare module 'baz' {
   }
 }
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       errors: [
         {
           messageId: 'noShadow',
@@ -641,6 +650,9 @@ declare module 'bar' {
   export type Foo = string;
 }
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       errors: [
         {
           messageId: 'noShadow',
@@ -663,6 +675,9 @@ declare module 'bar' {
   }
 }
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       errors: [
         {
           messageId: 'noShadow',

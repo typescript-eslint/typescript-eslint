@@ -1,14 +1,11 @@
-import path from 'path';
-
 import rule from '../../src/rules/non-nullable-type-assertion-style';
-import { RuleTester } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
-const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
     sourceType: 'module',
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.noUncheckedIndexedAccess.json',
+    tsconfigRootDir: getFixturesRootDir(),
+    project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
 });
@@ -61,35 +58,6 @@ const x = 1 as 1;
     `
 declare function foo<T = any>(): T;
 const bar = foo() as number;
-    `,
-    `
-function first<T>(array: ArrayLike<T>): T | null {
-  return array.length > 0 ? (array[0] as T) : null;
-}
-    `,
-    `
-function first<T extends string | null>(array: ArrayLike<T>): T | null {
-  return array.length > 0 ? (array[0] as T) : null;
-}
-    `,
-    `
-function first<T extends string | undefined>(array: ArrayLike<T>): T | null {
-  return array.length > 0 ? (array[0] as T) : null;
-}
-    `,
-    `
-function first<T extends string | null | undefined>(
-  array: ArrayLike<T>,
-): T | null {
-  return array.length > 0 ? (array[0] as T) : null;
-}
-    `,
-    `
-type A = 'a' | 'A';
-type B = 'b' | 'B';
-function first<T extends A | B | null>(array: ArrayLike<T>): T | null {
-  return array.length > 0 ? (array[0] as T) : null;
-}
     `,
   ],
 
@@ -229,6 +197,54 @@ declare const x: T;
 const y = x!;
       `,
     },
+  ],
+});
+
+const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
+  parserOptions: {
+    sourceType: 'module',
+    tsconfigRootDir: getFixturesRootDir(),
+    project: './tsconfig.noUncheckedIndexedAccess.json',
+  },
+  parser: '@typescript-eslint/parser',
+  dependencyConstraints: {
+    typescript: '4.1',
+  },
+});
+
+ruleTesterWithNoUncheckedIndexAccess.run('', rule, {
+  valid: [
+    `
+function first<T>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | null>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | undefined>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+function first<T extends string | null | undefined>(
+  array: ArrayLike<T>,
+): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+    `
+type A = 'a' | 'A';
+type B = 'b' | 'B';
+function first<T extends A | B | null>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+    `,
+  ],
+  invalid: [
     {
       code: `
 function first<T extends string | number>(array: ArrayLike<T>): T | null {

@@ -87,8 +87,11 @@ class RuleTester extends BaseRuleTester.RuleTester {
   }
 
   constructor(baseOptions: RuleTesterConfig) {
+    // eslint will hard-error if you include non-standard top-level properties
+    const { dependencyConstraints: _, ...baseOptionsSafeForESLint } =
+      baseOptions;
     super({
-      ...baseOptions,
+      ...baseOptionsSafeForESLint,
       parserOptions: {
         ...baseOptions.parserOptions,
         warnOnUnsupportedTypeScriptVersion:
