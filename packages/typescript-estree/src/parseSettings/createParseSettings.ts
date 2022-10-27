@@ -28,7 +28,9 @@ export function createParseSettings(
     code: enforceString(code),
     comment: options.comment === true,
     comments: [],
-    createDefaultProgram: options.createDefaultProgram === true,
+    DEPRECATED__createDefaultProgram:
+      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+      options.DEPRECATED__createDefaultProgram === true,
     debugLevel:
       options.debugLevel === true
         ? new Set(['typescript-eslint'])
