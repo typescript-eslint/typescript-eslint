@@ -6,7 +6,9 @@ title: Issue Management
 
 This document serves as a guide for how you might manage issues, also known as issue triaging.
 
-Use your best judgement when triaging issues, but most of all remember to be **kind, friendly, and encouraging** when responding to users.
+Use your best judgement when triaging issues, and most of all remember to be **kind, friendly, and encouraging** when responding to users.
+Many users are new to open source and/or typed linting.
+It's imperative we give them a positive, uplifting experience.
 
 :::tip
 If you're ever unsure on any part of issue management, don't hesitate to loop in a maintainer that has more context to help!
@@ -14,11 +16,17 @@ If you're ever unsure on any part of issue management, don't hesitate to loop in
 
 ## Issue Flow
 
-[Issues pending triage](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3Atriage) are given the `triage` label.
-Most issues go through the following triage flow when created:
+:::note
+We include a set of common responses to issues in [`.github/replies.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/replies.yml), intended to be used with the [Refined Saved Replies](https://github.com/JoshuaKGoldberg/refined-saved-replies) extension.
+Don't treat these as exact responses you must use: they're just a starting copy+paste helper.
+Please do adopt your specific responses to your personal tone and to match the thread for non-straightforward issues.
+:::
 
-1. Some user files the issue, and it is given the `triage` label automatically
-2. A maintainer ensures the issue is valid:
+[Issues pending triage](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3Atriage) are searchable the `triage` label.
+That label is added automatically when a new issue is created.
+Most issues go through the following review flow when created or updated:
+
+1. A maintainer ensures the issue is valid:
    - If the poster didn't fill out an appropriate template with enough information:
      - Add the `please fill out the template` and `awaiting response` labels
      - Ask the poster for more information using a _Needs More Info_ response
@@ -33,9 +41,9 @@ Most issues go through the following triage flow when created:
        - [This issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22fix%3A+user+error%22+is%3Aclosed)
      - If the behavior is otherwise expected, [this issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22working+as+intended%22+-label%3A%22fix%3A+user+error%22+is%3Aclosed+)
      - You needn't go into too much detail in your comment - just enough to explain it
-3. If the report is valid, add the `accepting prs` label and remove the `triage` label
-4. If you know the rough steps for a fix, consider writing a comment with links to codebase to help someone put together a fix
-5. If you think that the fix is relatively straightforward, consider also adding the `good first issue` label
+2. If the report is valid, add the `accepting prs` label and remove the `triage` label
+3. If you know the rough steps for a fix, consider writing a comment with links to codebase to help someone put together a fix
+4. If you think that the fix is relatively straightforward, consider also adding the `good first issue` label
 
 Whenever an issue is waiting for the reporter to provide more information, it should be given the `awaiting response` label.
 When more information is provided:
@@ -58,12 +66,6 @@ If you can't find anything that matches, use your best judgement based on the sp
 
 It's worth noting that, occasionally, a user will intentionally raise a duplicate issue because they feel the original issue was closed when it shouldn't have been.
 If this is the case, you should read the original issue to gather context, understand the reason for it being closed, and determine if the new issue raises any new or relevant point that requires addressing.
-
-### Response Templates
-
-We include a set of common responses to issues in [`.github/replies.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/replies.yml), intended to be used with the [Refined Saved Replies](https://github.com/JoshuaKGoldberg/refined-saved-replies) extension.
-Don't treat these as exact responses you must use: they're just a starting copy+paste helper.
-Please do adopt your specific responses to your personal tone and to match the thread for non-straightforward issues.
 
 ## Skipping Steps
 
