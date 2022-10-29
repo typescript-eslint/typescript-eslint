@@ -256,6 +256,7 @@ a<(A)>((1));
 async function f(arg: Promise<any>) { await (arg); }
 async function f(arg: any) { await ((arg as Promise<void>)); }
 class Foo extends ((Bar as any)) {}
+class Foo extends (Bar) {}
       `,
       output: `
 a = b * c;
@@ -270,6 +271,7 @@ a<(A)>(1);
 async function f(arg: Promise<any>) { await arg; }
 async function f(arg: any) { await (arg as Promise<void>); }
 class Foo extends (Bar as any) {}
+class Foo extends Bar {}
       `,
       errors: [
         {
@@ -331,6 +333,11 @@ class Foo extends (Bar as any) {}
           messageId: 'unexpected',
           line: 13,
           column: 20,
+        },
+        {
+          messageId: 'unexpected',
+          line: 14,
+          column: 19,
         },
       ],
     }),
