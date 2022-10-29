@@ -141,6 +141,7 @@ t.true((me.get as SinonStub).calledWithExactly('/foo', other));
 t.true((<SinonStub>me.get).calledWithExactly('/foo', other));
 (requestInit.headers as Headers).get('Cookie');
 (<Headers> requestInit.headers).get('Cookie');
+class Foo extends (Bar as any) {}
       `,
       parserOptions: {
         ecmaFeatures: {
@@ -254,6 +255,7 @@ new a<import('')>((1));
 a<(A)>((1));
 async function f(arg: Promise<any>) { await (arg); }
 async function f(arg: any) { await ((arg as Promise<void>)); }
+class Foo extends ((Bar as any)) {}
       `,
       output: `
 a = b * c;
@@ -267,6 +269,7 @@ new a<import('')>(1);
 a<(A)>(1);
 async function f(arg: Promise<any>) { await arg; }
 async function f(arg: any) { await (arg as Promise<void>); }
+class Foo extends (Bar as any) {}
       `,
       errors: [
         {
@@ -323,6 +326,11 @@ async function f(arg: any) { await (arg as Promise<void>); }
           messageId: 'unexpected',
           line: 12,
           column: 37,
+        },
+        {
+          messageId: 'unexpected',
+          line: 13,
+          column: 20,
         },
       ],
     }),
