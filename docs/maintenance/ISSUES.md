@@ -18,8 +18,8 @@ If you're ever unsure on any part of issue management, don't hesitate to loop in
 Most issues go through the following triage flow when created:
 
 1. Some user files the issue, and it is given the `triage` label automatically
-2. A maintainer will ensure the issue is valid:
-   - If it doesn't fill out an appropriate template with enough information:
+2. A maintainer ensures the issue is valid:
+   - If the poster didn't fill out an appropriate template with enough information:
      - Add the `please fill out the template` and `awaiting response` labels
      - Ask the poster for more information using a _Needs More Info_ response
    - If it's a duplicate of an issue that already exists:
@@ -33,9 +33,9 @@ Most issues go through the following triage flow when created:
        - [This issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22fix%3A+user+error%22+is%3Aclosed)
      - If the behavior is otherwise expected, [this issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22working+as+intended%22+-label%3A%22fix%3A+user+error%22+is%3Aclosed+)
      - You needn't go into too much detail in your comment - just enough to explain it
-3. If it was valid, add the `accepting prs` label and remove the `triage` label
+3. If the report is valid, add the `accepting prs` label and remove the `triage` label
 4. If you know the rough steps for a fix, consider writing a comment with links to codebase to help someone put together a fix
-5. If you think that the fix is relatively straightforward then consider also adding the `good first issue` label
+5. If you think that the fix is relatively straightforward, consider also adding the `good first issue` label
 
 Whenever an issue is waiting for the reporter to provide more information, it should be given the `awaiting response` label.
 When more information is provided:
@@ -50,14 +50,14 @@ When viewing a file in GitHub pressing `y` will update the URL to a "permalink" 
 
 ### Determining Whether Code is Working As Intended
 
-As you become more familiar with the codebase and how everything works this will be easier to do intuitively, but to begin with this will likely involve investigating the documentation, code, and the tests to determine if it's a bug or working as intended.
-In general if there is a passing test or documented example that is the same as or similar to the repro code - that indicates that it's working as intended.
+As you become more familiar with the codebase and how everything works, this will be easier to do intuitively, but to begin with, this will likely involve investigating the documentation, code, and tests to determine if it's a bug or working as intended.
+In general, if there is a passing test or documented example that is the same as or similar to the repro code — that indicates it's working as intended.
 If you can't find anything that matches, use your best judgement based on the spirit of the code.
 
 ### Looking for Duplicates
 
-It's worth noting that occasionally a user will intentionally raise a duplicate issue because they feel the original issue was closed when it shouldn't have been.
-If this is the case then you should read the original issue to gather context and understand the reason for it being closed, and determine if the new issue is raises any new or relevant issue that requires addressing.
+It's worth noting that, occasionally, a user will intentionally raise a duplicate issue because they feel the original issue was closed when it shouldn't have been.
+If this is the case, you should read the original issue to gather context, understand the reason for it being closed, and determine if the new issue raises any new or relevant point that requires addressing.
 
 ### Response Templates
 
@@ -68,7 +68,7 @@ Please do adopt your specific responses to your personal tone and to match the t
 ## Skipping Steps
 
 As you become more familiar with the codebase and how it's supposed to behave you'll be able to skip steps or do things out of order as you see fit.
-For example you may be able to identify if a bug report is "working as intended" or you might recognize an issue as a duplicate without having a completely filled out issue.
+For example, you may be able to identify if a bug report is "working as intended", or you might recognize an issue as a duplicate without having a completely filled-out issue.
 In such cases you can forgo the back-and-forth and just skip to the closing steps.
 
 ## Specific Issue Types
