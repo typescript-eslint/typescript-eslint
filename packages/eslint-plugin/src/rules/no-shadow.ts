@@ -147,8 +147,9 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      const id = variable.identifiers[0];
-      return util.isFunctionType(id.parent);
+      return variable.defs.every(
+        def => def.node.type === AST_NODE_TYPES.TSFunctionType,
+      );
     }
 
     function isGenericOfStaticMethod(
@@ -582,7 +583,6 @@ export default util.createRule<Options, MessageIds>({
         if (!shadowed) {
           continue;
         }
-
         // ignore type value variable shadowing if configured
         if (isTypeValueShadow(variable, shadowed)) {
           continue;
