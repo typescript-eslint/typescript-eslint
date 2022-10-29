@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
 ## [5.40.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.0...v5.40.1) (2022-10-17)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec

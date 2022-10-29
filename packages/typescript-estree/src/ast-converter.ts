@@ -4,13 +4,13 @@ import type { ASTMaps } from './convert';
 import { Converter, convertError } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
-import type { Extra } from './parser-options';
+import type { ParseSettings } from './parseSettings';
 import { simpleTraverse } from './simple-traverse';
 import type { TSESTree } from './ts-estree';
 
 export function astConverter(
   ast: SourceFile,
-  extra: Extra,
+  parseSettings: ParseSettings,
   shouldPreserveNodeMaps: boolean,
 ): { estree: TSESTree.Program; astMaps: ASTMaps } {
   /**
@@ -26,7 +26,7 @@ export function astConverter(
    * Recursively convert the TypeScript AST into an ESTree-compatible AST
    */
   const instance = new Converter(ast, {
-    errorOnUnknownASTType: extra.errorOnUnknownASTType || false,
+    errorOnUnknownASTType: parseSettings.errorOnUnknownASTType || false,
     shouldPreserveNodeMaps,
   });
 
@@ -35,15 +35,15 @@ export function astConverter(
   /**
    * Optionally remove range and loc if specified
    */
-  if (!extra.range || !extra.loc) {
+  if (!parseSettings.range || !parseSettings.loc) {
     simpleTraverse(estree, {
       enter: node => {
-        if (!extra.range) {
+        if (!parseSettings.range) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TS 4.0 made this an error because the types aren't optional
           // @ts-expect-error
           delete node.range;
         }
-        if (!extra.loc) {
+        if (!parseSettings.loc) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TS 4.0 made this an error because the types aren't optional
           // @ts-expect-error
           delete node.loc;
@@ -55,15 +55,15 @@ export function astConverter(
   /**
    * Optionally convert and include all tokens in the AST
    */
-  if (extra.tokens) {
+  if (parseSettings.tokens) {
     estree.tokens = convertTokens(ast);
   }
 
   /**
    * Optionally convert and include all comments in the AST
    */
-  if (extra.comment) {
-    estree.comments = convertComments(ast, extra.code);
+  if (parseSettings.comment) {
+    estree.comments = convertComments(ast, parseSettings.code);
   }
 
   const astMaps = instance.getASTMaps();

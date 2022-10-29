@@ -5,6 +5,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { readonlynessOptionsDefaults } from '../../src/util';
 import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -359,6 +360,23 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       options: [
         {
           ignoreInferredTypes: true,
+        },
+      ],
+    },
+    {
+      name: 'circular readonly types (Bug: #4476)',
+      code: `
+        interface Obj {
+          readonly [K: string]: Obj;
+        }
+        
+        function foo(event: Obj): void {}
+      `,
+      options: [
+        {
+          checkParameterProperties: true,
+          ignoreInferredTypes: false,
+          ...readonlynessOptionsDefaults,
         },
       ],
     },
