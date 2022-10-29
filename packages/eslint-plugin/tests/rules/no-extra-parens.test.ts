@@ -142,6 +142,7 @@ t.true((<SinonStub>me.get).calledWithExactly('/foo', other));
 (requestInit.headers as Headers).get('Cookie');
 (<Headers> requestInit.headers).get('Cookie');
 class Foo extends (Bar as any) {}
+const foo = class extends (Bar as any) {}
       `,
       parserOptions: {
         ecmaFeatures: {
@@ -257,6 +258,8 @@ async function f(arg: Promise<any>) { await (arg); }
 async function f(arg: any) { await ((arg as Promise<void>)); }
 class Foo extends ((Bar as any)) {}
 class Foo extends (Bar) {}
+const foo = class extends ((Bar as any)) {}
+const foo = class extends (Bar) {}
       `,
       output: `
 a = b * c;
@@ -272,6 +275,8 @@ async function f(arg: Promise<any>) { await arg; }
 async function f(arg: any) { await (arg as Promise<void>); }
 class Foo extends (Bar as any) {}
 class Foo extends Bar {}
+const foo = class extends (Bar as any) {}
+const foo = class extends Bar {}
       `,
       errors: [
         {
@@ -338,6 +343,16 @@ class Foo extends Bar {}
           messageId: 'unexpected',
           line: 14,
           column: 19,
+        },
+        {
+          messageId: 'unexpected',
+          line: 15,
+          column: 28,
+        },
+        {
+          messageId: 'unexpected',
+          line: 16,
+          column: 27,
         },
       ],
     }),
