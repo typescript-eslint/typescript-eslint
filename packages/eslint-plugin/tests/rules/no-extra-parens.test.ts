@@ -141,7 +141,9 @@ t.true((me.get as SinonStub).calledWithExactly('/foo', other));
 t.true((<SinonStub>me.get).calledWithExactly('/foo', other));
 (requestInit.headers as Headers).get('Cookie');
 (<Headers> requestInit.headers).get('Cookie');
+class Foo {}
 class Foo extends (Bar as any) {}
+const foo = class {};
 const foo = class extends (Bar as any) {}
       `,
       parserOptions: {
