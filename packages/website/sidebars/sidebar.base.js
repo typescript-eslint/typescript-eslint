@@ -54,7 +54,11 @@ module.exports = {
     },
     {
       collapsible: false,
-      items: ['maintenance/issues', 'maintenance/versioning-and-releases'],
+      items: [
+        'maintenance/issues',
+        'maintenance/releases',
+        'maintenance/versioning',
+      ],
       label: 'Maintenance',
       link: {
         id: 'maintenance',

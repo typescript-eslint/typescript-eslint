@@ -66,7 +66,7 @@ Any custom rules you write generally will be as well.
 [`@typescript-eslint/eslint-plugin-tslint`] is a separate ESLint plugin that allows running TSLint rules within ESLint to help you migrate from TSLint to ESLint.
 
 :::caution
-**TSLint is deprecated.** It is in your best interest to migrate off it. See [Linting > Troubleshooting & FAQs > What About TSLint?](../../linting/troubleshooting/TSLINT.md).
+**TSLint is deprecated.** It is in your best interest to migrate off it. See [Linting > Troubleshooting & FAQs > What About TSLint?](../../linting/troubleshooting/TSLint.md).
 :::
 
 [`@typescript-eslint/eslint-plugin-tslint`]: https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin-tslint
