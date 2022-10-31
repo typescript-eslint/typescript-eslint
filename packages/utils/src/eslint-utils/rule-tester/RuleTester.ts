@@ -55,7 +55,12 @@ function isDescribeWithSkip(
 ): value is RuleTesterTestFrameworkFunction & {
   skip: RuleTesterTestFrameworkFunction;
 } {
-  return 'skip' in describe && typeof describe.skip === 'function';
+  return (
+    typeof value === 'object' &&
+    value != null &&
+    'skip' in value &&
+    typeof (value as Record<string, unknown>).skip === 'function'
+  );
 }
 
 class RuleTester extends BaseRuleTester.RuleTester {
