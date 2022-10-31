@@ -12,7 +12,7 @@ This release is goes to the `canary` tag on npm and it is versioned as an increm
 
 ## Latest
 
-We release a latest version every Monday at 1pm US Eastern time using the latest commit to `main` at that time. This release is performed automatically by an external job (TBA migration to GitHub actions). This release goes to the standard `latest` tag on npm.
+We release a latest version every Monday at 1pm US Eastern time using the latest commit to `main` at that time. This release is performed automatically by a Github action. This release goes to the standard `latest` tag on npm.
 
 See the [versioning](#versioning) section below for how the version number is calculated.
 
@@ -22,8 +22,7 @@ Latest releases shall only ever be "minor" or "patch" releases.
 
 ## Major Releases
 
-We currently do not have a set schedule around when major releases shall be performed.
-They're instead done as the need arises.
+We currently do not have a set schedule around when major releases shall be performed; instead they are done as the need arises.
 
 We keep a backlog of breaking issues as a milestone on GitHub that is named in the form `${major}.0.0`.
 When we do do a major release, we release a release candidate version to the `rc-v${major}` tag on npm for each commit to the major branch.
@@ -44,11 +43,12 @@ Our releases go through three groups of steps:
 1. Create two new branches off `main` in the project repository (not a personal fork):
    - `v${major}`
    - `v${major}-canary-auto-release`
-1. Send a PR from `v${major}-canary-auto-release` to `main` modifying the [`ci.yml` workflow](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml) [example: [chore: add auto-canary release for v6](https://github.com/typescript-eslint/typescript-eslint/pull/5883)]:
+1. Raise a PR from `v${major}-canary-auto-release` to `main` modifying the [`ci.yml` workflow](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml) [example: [chore: add auto-canary release for v6](https://github.com/typescript-eslint/typescript-eslint/pull/5883)]:
    - Under `pushes:` at the beginning of the file, add an `- v${major}` list item.
    - Add a `publish_canary_version_v${major}` step the same as `publish_canary_version` except:
      - Add the condition: `if: github.ref == 'refs/heads/v${major}'`.
      - Its publish command should be `npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v${major}`.
+   - Merge this into `main` once reviewed and rebase the `v${major}` branch.
 
 #### 2. Merging Breaking Changes
 
@@ -70,6 +70,7 @@ They don't need any special treatment.
 
 1. Discuss with the maintainers to be ready for an [out-of-band](#out-of-band) release. Doing this manually helps ensure someone is on-hand to action any issues that might arise from the major release.
 1. Prepare the release notes. Lerna will automatically generate the release notes on GitHub, however this will be disorganized and unhelpful for users. We need to reorganize the release notes so that breaking changes are placed at the top to make them most visible. If any migrations are required, we must list the steps to make it easy for users.
+  - Example release notes: [`v5.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v5.0.0), [`v4.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v4.0.0), [`v3.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
 1. Finally, tweet the release on the `@tseslint` twitter with a link to the GitHub release. Make sure you include additional information about the highlights of the release!
 
 ## Out-of-Band

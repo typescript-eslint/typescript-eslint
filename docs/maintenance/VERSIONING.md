@@ -35,7 +35,7 @@ A change to the AST **_shall not_** be considered breaking if it:
 
 ## `eslint-plugin` and `eslint-plugin-tslint`
 
-A change to the plugins **_shall_** be considered breaking if it:
+A change to the plugins **_shall_** be considered breaking if it will require the user to change their config. More specifically:
 
 - Removes or renames an option.
 - Changes the default option of a rule.
@@ -47,7 +47,7 @@ A change to the plugins **_shall_** be considered breaking if it:
 
 A change to the plugins **_shall not_** be considered breaking if it:
 
-- Adds an option.
+- Adds an option that by default does not remove existing functionality.
 - Adds a rule.
 - Deprecates a rule.
 - Adds additional checks to an existing rule that causes new reports in a small-to-medium set of cases in an average codebase.
