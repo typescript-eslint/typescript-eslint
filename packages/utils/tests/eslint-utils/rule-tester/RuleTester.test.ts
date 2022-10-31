@@ -739,15 +739,17 @@ describe('RuleTester', () => {
           ],
         });
 
-        expect(mockedDescribe.mock.lastCall).toMatchInlineSnapshot(`
+        // trigger the describe block
+        expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
+        mockedDescribe.mock.lastCall?.[1]();
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
           [
-            "my-rule",
-            [Function],
+            [
+              "my-rule",
+              [Function],
+            ],
           ]
         `);
-
-        // trigger the describe block
-        mockedDescribe.mock.lastCall?.[1]();
         expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`
           [
             "All tests skipped due to unsatisfied constructor dependency constraints",
@@ -777,6 +779,27 @@ describe('RuleTester', () => {
             },
           ],
         });
+
+        // trigger the describe block
+        expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
+        mockedDescribe.mock.lastCall?.[1]();
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "valid",
+              [Function],
+            ],
+            [
+              "invalid",
+              [Function],
+            ],
+          ]
+        `);
+        // expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`undefined`);
       });
     });
   });

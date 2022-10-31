@@ -125,6 +125,10 @@ interface TestCaseError<TMessageIds extends string> {
   // readonly message?: string | RegExp;
 }
 
+/**
+ * @param text a string describing the rule
+ * @param callback the test callback
+ */
 type RuleTesterTestFrameworkFunction = (
   text: string,
   callback: () => void,
@@ -166,8 +170,6 @@ declare class RuleTesterBase {
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
    * the global namespace.
-   * @param text a string describing the rule
-   * @param callback the test callback
    */
   static get describe(): RuleTesterTestFrameworkFunction;
   static set describe(value: RuleTesterTestFrameworkFunction | undefined);
@@ -175,8 +177,6 @@ declare class RuleTesterBase {
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
    * the global namespace.
-   * @param text a string describing the test case
-   * @param callback the test callback
    */
   static get it(): RuleTesterTestFrameworkFunction;
   static set it(value: RuleTesterTestFrameworkFunction | undefined);
@@ -184,16 +184,12 @@ declare class RuleTesterBase {
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
    * the global namespace.
-   * @param text a string describing the test case
-   * @param callback the test callback
    */
   static get itOnly(): RuleTesterTestFrameworkFunction;
   static set itOnly(value: RuleTesterTestFrameworkFunction | undefined);
 
   /**
    * Define a rule for one particular run of tests.
-   * @param name The name of the rule to define.
-   * @param rule The rule definition.
    */
   defineRule<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,

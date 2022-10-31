@@ -50,6 +50,14 @@ interface RunTests<
 
 type AfterAll = (fn: () => void) => void;
 
+function isDescribeWithSkip(
+  value: unknown,
+): value is RuleTesterTestFrameworkFunction & {
+  skip: RuleTesterTestFrameworkFunction;
+} {
+  return 'skip' in describe && typeof describe.skip === 'function';
+}
+
 class RuleTester extends BaseRuleTester.RuleTester {
   readonly #baseOptions: RuleTesterConfig;
 
@@ -134,17 +142,10 @@ class RuleTester extends BaseRuleTester.RuleTester {
         this.#baseOptions.dependencyConstraints,
       )
     ) {
-      type DescribeWithMaybeSkip = RuleTesterTestFrameworkFunction & {
-        skip?: RuleTesterTestFrameworkFunction;
-      };
-      const describe: DescribeWithMaybeSkip = this.staticThis.describe;
-      if ('skip' in describe && typeof describe.skip === 'function') {
+      if (isDescribeWithSkip(this.staticThis.describe)) {
         // for frameworks like mocha or jest that have a "skip" version of their function
         // we can provide a nice skipped test!
-        type DescribeWithSkip = RuleTesterTestFrameworkFunction & {
-          skip: RuleTesterTestFrameworkFunction;
-        };
-        (this.staticThis.describe as DescribeWithSkip).skip(name, () => {
+        this.staticThis.describe.skip(name, () => {
           this.staticThis.it(
             'All tests skipped due to unsatisfied constructor dependency constraints',
             () => {},
