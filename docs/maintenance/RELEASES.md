@@ -12,7 +12,7 @@ This release is goes to the `canary` tag on npm and it is versioned as an increm
 
 ## Latest
 
-We release a latest version every Monday at 1pm US Eastern time using the latest commit to `main` at that time. This release is performed automatically by a Github action. This release goes to the standard `latest` tag on npm.
+We release a latest version every Monday at 1pm US Eastern time using the latest commit to `main` at that time. This release is performed automatically by a Github action located in a private repository. This release goes to the standard `latest` tag on npm.
 
 See the [versioning](#versioning) section below for how the version number is calculated.
 
