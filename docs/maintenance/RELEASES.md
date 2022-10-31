@@ -70,7 +70,9 @@ They don't need any special treatment.
 
 1. Discuss with the maintainers to be ready for an [out-of-band](#out-of-band) release. Doing this manually helps ensure someone is on-hand to action any issues that might arise from the major release.
 1. Prepare the release notes. Lerna will automatically generate the release notes on GitHub, however this will be disorganized and unhelpful for users. We need to reorganize the release notes so that breaking changes are placed at the top to make them most visible. If any migrations are required, we must list the steps to make it easy for users.
-  - Example release notes: [`v5.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v5.0.0), [`v4.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v4.0.0), [`v3.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
+
+- Example release notes: [`v5.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v5.0.0), [`v4.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v4.0.0), [`v3.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
+
 1. Finally, tweet the release on the `@tseslint` twitter with a link to the GitHub release. Make sure you include additional information about the highlights of the release!
 
 ## Out-of-Band
