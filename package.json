@@ -46,7 +46,7 @@
     "typecheck": "nx run-many --target=typecheck --all --parallel"
   },
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    "node": "^14.17.0 || >=16.0.0"
   },
   "devDependencies": {
     "@babel/code-frame": "^7.16.7",
