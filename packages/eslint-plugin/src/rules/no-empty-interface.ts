@@ -85,7 +85,7 @@ export default util.createRule<Options, MessageIds>({
               }
             }
 
-            // Not suggest if the interface declaration merged with class declarations.
+            // Checks if the interface declaration is merged with class declarations.
             const defs = scope.set.get(node.id.name)?.defs;
             if (
               defs?.some(
