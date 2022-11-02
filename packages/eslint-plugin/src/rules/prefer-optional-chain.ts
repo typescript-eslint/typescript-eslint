@@ -221,10 +221,19 @@ export default util.createRule({
 
         if (expressionCount > 1) {
           if (previous.right.type === AST_NODE_TYPES.BinaryExpression) {
+            let operator = previous.right.operator;
+            if (
+              previous.right.operator === '!==' &&
+              previous.right.right.type === AST_NODE_TYPES.Literal &&
+              previous.right.right.raw === 'null'
+            ) {
+              // case like foo !== null && foo.bar !== null
+              operator = '!=';
+            }
             // case like foo && foo.bar !== someValue
-            optionallyChainedCode += ` ${
-              previous.right.operator
-            } ${sourceCode.getText(previous.right.right)}`;
+            optionallyChainedCode += ` ${operator} ${sourceCode.getText(
+              previous.right.right,
+            )}`;
           }
 
           context.report({

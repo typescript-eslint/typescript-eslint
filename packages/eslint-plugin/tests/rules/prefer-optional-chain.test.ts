@@ -123,6 +123,22 @@ const baseCases = [
     code: 'foo.bar && foo.bar?.() && foo.bar?.().baz',
     output: 'foo.bar?.()?.baz',
   },
+  {
+    code: 'foo !== null && foo.bar !== null',
+    output: 'foo?.bar != null',
+  },
+  {
+    code: 'foo != null && foo.bar != null',
+    output: 'foo?.bar != null',
+  },
+  {
+    code: 'foo != null && foo.bar !== null',
+    output: 'foo?.bar != null',
+  },
+  {
+    code: 'foo !== null && foo.bar != null',
+    output: 'foo?.bar != null',
+  },
 ].map(
   c =>
     ({
