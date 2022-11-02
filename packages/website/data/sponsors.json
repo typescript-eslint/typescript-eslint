@@ -40,6 +40,14 @@
     "website": "https://blog.coinbase.com/engineering-and-security/home"
   },
   {
+    "id": "Sentry",
+    "image": "https://images.opencollective.com/sentry/9620d33/logo.png",
+    "name": "Sentry",
+    "tier": "sponsor",
+    "totalDonations": 114800,
+    "website": "https://sentry.io/welcome/"
+  },
+  {
     "id": "n8n.io - n8n GmbH",
     "image": "https://images.opencollective.com/n8n/dca2f0c/logo.png",
     "name": "n8n.io - n8n GmbH",
@@ -78,14 +86,6 @@
     "tier": "supporter",
     "totalDonations": 54000,
     "website": "https://www.future-processing.com/"
-  },
-  {
-    "id": "Sentry",
-    "image": "https://images.opencollective.com/sentry/9620d33/logo.png",
-    "name": "Sentry",
-    "tier": "supporter",
-    "totalDonations": 50000,
-    "website": "https://sentry.io/welcome/"
   },
   {
     "id": "Whitebox",

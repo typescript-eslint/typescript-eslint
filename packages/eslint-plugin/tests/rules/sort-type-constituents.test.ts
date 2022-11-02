@@ -3,8 +3,8 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import type {
   MessageIds,
   Options,
-} from '../../src/rules/sort-type-union-intersection-members';
-import rule from '../../src/rules/sort-type-union-intersection-members';
+} from '../../src/rules/sort-type-constituents';
+import rule from '../../src/rules/sort-type-constituents';
 import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -290,7 +290,7 @@ type T =
   ];
 };
 
-ruleTester.run('sort-type-union-intersection-members', rule, {
+ruleTester.run('sort-type-constituents', rule, {
   valid: [
     ...valid('|'),
     {

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+### Bug Fixes
+
+- **ast-spec:** add TSQualifiedName to TypeNode union ([#5906](https://github.com/typescript-eslint/typescript-eslint/issues/5906)) ([5c316c1](https://github.com/typescript-eslint/typescript-eslint/commit/5c316c12f09d58aee6ee634a8055533f361f1589))
+
 # [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec
