@@ -1,5 +1,5 @@
 diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
-index 0e6b255..f0a588c 100644
+index 54e4c65..aa00912 100644
 --- a/node_modules/typescript/lib/typescript.d.ts
 +++ b/node_modules/typescript/lib/typescript.d.ts
 @@ -428,8 +428,8 @@ declare namespace ts {
@@ -40,7 +40,7 @@ index 0e6b255..f0a588c 100644
      function canHaveDecorators(node: Node): node is HasDecorators;
  }
  declare namespace ts {
-@@ -7951,7 +7963,7 @@ declare namespace ts {
+@@ -7958,7 +7970,7 @@ declare namespace ts {
           * const decorators = ts.canHaveDecorators(node) ? ts.getDecorators(node) : undefined;
           * ```
           */
