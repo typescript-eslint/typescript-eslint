@@ -1,4 +1,4 @@
-import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
@@ -76,11 +76,24 @@ export default util.createRule<Options, MessageIds>({
 
             // Check if interface is within ambient declaration
             let useAutoFix = true;
+            let hasSuggest = true;
+            const scope = context.getScope();
+
             if (util.isDefinitionFile(filename)) {
-              const scope = context.getScope();
               if (scope.type === 'tsModule' && scope.block.declare) {
                 useAutoFix = false;
               }
+            }
+
+            // Not suggest if the interface declaration merged with class declarations.
+            const defs = scope.set.get(node.id.name)?.defs;
+            if (
+              defs?.some(
+                def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
+              )
+            ) {
+              useAutoFix = false;
+              hasSuggest = false;
             }
 
             context.report({
@@ -88,14 +101,16 @@ export default util.createRule<Options, MessageIds>({
               messageId: 'noEmptyWithSuper',
               ...(useAutoFix
                 ? { fix }
-                : {
+                : hasSuggest
+                ? {
                     suggest: [
                       {
                         messageId: 'noEmptyWithSuper',
                         fix,
                       },
                     ],
-                  }),
+                  }
+                : null),
             });
           }
         }

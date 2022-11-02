@@ -59,6 +59,26 @@ interface Bar extends Foo {}
     {
       code: `
 interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
+class Bar {}
+      `,
+      options: [{ allowSingleExtends: false }],
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 6,
+          column: 11,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
   name: string;
 }
 
