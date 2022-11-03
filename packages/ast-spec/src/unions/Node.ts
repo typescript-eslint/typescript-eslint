@@ -12,6 +12,7 @@ import type { TSModuleDeclaration } from '../declaration/TSModuleDeclaration/spe
 import type { TSNamespaceExportDeclaration } from '../declaration/TSNamespaceExportDeclaration/spec';
 import type { TSTypeAliasDeclaration } from '../declaration/TSTypeAliasDeclaration/spec';
 import type { VariableDeclaration } from '../declaration/VariableDeclaration/spec';
+import type { AccessorProperty } from '../element/AccessorProperty/spec';
 import type { MethodDefinition } from '../element/MethodDefinition/spec';
 import type { Property } from '../element/Property/spec';
 import type { PropertyDefinition } from '../element/PropertyDefinition/spec';
@@ -169,6 +170,7 @@ import type { Literal } from './Literal';
  */
 
 export type Node =
+  | AccessorProperty
   | ArrayExpression
   | ArrayPattern
   | ArrowFunctionExpression

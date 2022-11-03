@@ -1,3 +1,4 @@
+export * from './AccessorProperty/spec';
 export * from './PropertyDefinition/spec';
 export * from './MethodDefinition/spec';
 export * from './Property/spec';

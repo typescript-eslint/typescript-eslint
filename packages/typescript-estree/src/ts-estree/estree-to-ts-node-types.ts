@@ -4,6 +4,7 @@ import type * as ts from 'typescript';
 import type { TSNode } from './ts-nodes';
 
 export interface EstreeToTsNodeTypes {
+  [AST_NODE_TYPES.AccessorProperty]: ts.PropertyDeclaration;
   [AST_NODE_TYPES.ArrayExpression]: ts.ArrayLiteralExpression;
   [AST_NODE_TYPES.ArrayPattern]:
     | ts.ArrayLiteralExpression

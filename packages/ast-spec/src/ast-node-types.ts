@@ -1,4 +1,5 @@
 export enum AST_NODE_TYPES {
+  AccessorProperty = 'AccessorProperty',
   ArrayExpression = 'ArrayExpression',
   ArrayPattern = 'ArrayPattern',
   ArrowFunctionExpression = 'ArrowFunctionExpression',
