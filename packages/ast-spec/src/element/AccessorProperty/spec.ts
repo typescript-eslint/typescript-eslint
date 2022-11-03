@@ -1,13 +1,19 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
-import type { BaseNode } from '../../base/BaseNode';
-import type { Decorator, PrivateIdentifier } from '../../special/spec';
-import type { Expression } from '../../unions/Expression';
+import type {
+  PropertyDefinitionComputedNameBase,
+  PropertyDefinitionNonComputedNameBase,
+} from '../../base/PropertyDefinitionBase';
 
-export interface AccessorProperty extends BaseNode {
+export interface AccessorPropertyComputedName
+  extends PropertyDefinitionComputedNameBase {
   type: AST_NODE_TYPES.AccessorProperty;
-  key: Expression | PrivateIdentifier;
-  value: Expression | null;
-  computed: boolean;
-  static: boolean;
-  decorators: Decorator[];
 }
+
+export interface AccessorPropertyNonComputedName
+  extends PropertyDefinitionNonComputedNameBase {
+  type: AST_NODE_TYPES.AccessorProperty;
+}
+
+export type AccessorProperty =
+  | AccessorPropertyComputedName
+  | AccessorPropertyNonComputedName;
