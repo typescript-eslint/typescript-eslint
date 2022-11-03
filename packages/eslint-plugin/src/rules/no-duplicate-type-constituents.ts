@@ -162,10 +162,10 @@ export default util.createRule<Options, MessageIds>({
       }, []);
 
       const hasComments = node.types.some(type => {
-        const count =
-          sourceCode.getCommentsBefore(type).length +
-          sourceCode.getCommentsAfter(type).length;
-        return count > 0;
+        return (
+          sourceCode.getCommentsBefore(type).length ||
+          sourceCode.getCommentsAfter(type).length
+        );
       });
 
       const fix: TSESLint.ReportFixFunction = fixer => {
