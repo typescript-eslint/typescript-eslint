@@ -14,30 +14,10 @@ const constituentsAreEqual = (
   actualTypeNode: TSESTree.TypeNode,
   expectedTypeNode: TSESTree.TypeNode,
 ): boolean => {
-  switch (expectedTypeNode.type) {
-    // These types should never occur as constituents of a union/intersection
-    case AST_NODE_TYPES.TSAbstractKeyword:
-    case AST_NODE_TYPES.TSAsyncKeyword:
-    case AST_NODE_TYPES.TSDeclareKeyword:
-    case AST_NODE_TYPES.TSExportKeyword:
-    case AST_NODE_TYPES.TSNamedTupleMember:
-    case AST_NODE_TYPES.TSOptionalType:
-    case AST_NODE_TYPES.TSPrivateKeyword:
-    case AST_NODE_TYPES.TSProtectedKeyword:
-    case AST_NODE_TYPES.TSPublicKeyword:
-    case AST_NODE_TYPES.TSReadonlyKeyword:
-    case AST_NODE_TYPES.TSRestType:
-    case AST_NODE_TYPES.TSStaticKeyword:
-    case AST_NODE_TYPES.TSTypePredicate:
-      /* istanbul ignore next */
-      throw new Error(`Unexpected Type ${expectedTypeNode.type}`);
-
-    default:
-      if (nodeTypesAreEqual(actualTypeNode, expectedTypeNode)) {
-        return astNodesAreEquals(actualTypeNode, expectedTypeNode);
-      }
-      return false;
+  if (nodeTypesAreEqual(actualTypeNode, expectedTypeNode)) {
+    return astNodesAreEquals(actualTypeNode, expectedTypeNode);
   }
+  return false;
 };
 
 const astIgnoreKeys = ['range', 'loc', 'parent'];
