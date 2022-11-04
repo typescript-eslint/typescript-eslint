@@ -11,7 +11,7 @@ export type Options = [
   },
 ];
 
-export type MessageIds = 'duplicate' | 'suggestFix';
+export type MessageIds = 'duplicate';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-duplicate-type-constituents',
@@ -22,10 +22,8 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
     },
     fixable: 'code',
-    hasSuggestions: true,
     messages: {
       duplicate: '{{type}} type member {{name}} is duplicated.',
-      suggestFix: 'Delete duplicated members of type (removes all comments).',
     },
     schema: [
       {
@@ -69,13 +67,6 @@ export default util.createRule<Options, MessageIds>({
         }
       });
 
-      const hasComments = node.types.some(type => {
-        return (
-          sourceCode.getCommentsBefore(type).length ||
-          sourceCode.getCommentsAfter(type).length
-        );
-      });
-
       const fix: TSESLint.ReportFixFunction = fixer => {
         return duplicateConstituentNodes
           .map(duplicateConstituentNode => {
@@ -104,19 +95,7 @@ export default util.createRule<Options, MessageIds>({
           },
           messageId: 'duplicate',
           node,
-          // don't autofix if any of the types have leading/trailing comments
-          ...(hasComments
-            ? {
-                suggest: [
-                  {
-                    fix,
-                    messageId: 'suggestFix',
-                  },
-                ],
-              }
-            : {
-                fix,
-              }),
+          fix,
         });
       });
     }
