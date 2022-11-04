@@ -1,84 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { Type } from 'typescript';
 
 import * as util from '../util';
-
-const nodeTypesAreEqual = <T extends TSESTree.Node>(
-  actualTypeNode: TSESTree.Node,
-  expectedTypeNode: T,
-): actualTypeNode is T => {
-  return actualTypeNode.type === expectedTypeNode.type;
-};
-
-const constituentsAreEqual = (
-  actualTypeNode: TSESTree.TypeNode,
-  expectedTypeNode: TSESTree.TypeNode,
-): boolean => {
-  if (nodeTypesAreEqual(actualTypeNode, expectedTypeNode)) {
-    return astNodesAreEquals(actualTypeNode, expectedTypeNode);
-  }
-  return false;
-};
-
-const astIgnoreKeys = ['range', 'loc', 'parent'];
-
-type NodeElementsType =
-  | number
-  | string
-  | bigint
-  | boolean
-  | null
-  | undefined
-  | RegExp
-  | TSESTree.BaseNode
-  | TSESTree.BaseNode[]
-  | [number, number];
-
-const astNodesAreEquals = <T extends NodeElementsType>(
-  actualNode: T,
-  expectedNode: T,
-): boolean => {
-  if (actualNode === expectedNode) {
-    return true;
-  }
-  if (
-    actualNode &&
-    expectedNode &&
-    typeof actualNode == 'object' &&
-    typeof expectedNode == 'object'
-  ) {
-    if (Array.isArray(actualNode) && Array.isArray(expectedNode)) {
-      if (actualNode.length != expectedNode.length) {
-        return false;
-      }
-      return !actualNode.some(
-        (nodeEle, index) => !astNodesAreEquals(nodeEle, expectedNode[index]),
-      );
-    }
-    if (isAstNodeType(actualNode) && isAstNodeType(expectedNode)) {
-      const actualNodeKeys = Object.keys(actualNode).filter(
-        key => !astIgnoreKeys.includes(key),
-      );
-      const expectedNodeKeys = Object.keys(expectedNode).filter(
-        key => !astIgnoreKeys.includes(key),
-      );
-      if (actualNodeKeys.length === expectedNodeKeys.length) {
-        return !actualNodeKeys.some(
-          actualNodeKey =>
-            !astNodesAreEquals(
-              actualNode[actualNodeKey],
-              expectedNode[actualNodeKey],
-            ),
-        );
-      }
-    }
-  }
-  return false;
-};
-
-const isAstNodeType = (node: object): node is Record<string, TSESTree.Node> => {
-  return node.constructor === Object;
-};
 
 export type Options = [
   {
@@ -125,21 +49,25 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const sourceCode = context.getSourceCode();
+    const parserServices = util.getParserServices(context);
+    const checker = parserServices.program.getTypeChecker();
+
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const duplicateConstituents: {
-        node: TSESTree.TypeNode;
-        index: number;
-      }[] = [];
+      const uniqConstituentTypes = new Set<Type>();
+      const duplicateConstituentNodes: TSESTree.TypeNode[] = [];
 
-      node.types.reduce<TSESTree.TypeNode[]>((acc, cur, index) => {
-        if (acc.some(ele => constituentsAreEqual(ele, cur))) {
-          duplicateConstituents.push({ node: cur, index });
-          return acc;
+      node.types.forEach(memberNode => {
+        const type = checker.getTypeAtLocation(
+          parserServices.esTreeNodeToTSNodeMap.get(memberNode),
+        );
+        if (uniqConstituentTypes.has(type)) {
+          duplicateConstituentNodes.push(memberNode);
+        } else {
+          uniqConstituentTypes.add(type);
         }
-        return [...acc, cur];
-      }, []);
+      });
 
       const hasComments = node.types.some(type => {
         return (
@@ -149,23 +77,26 @@ export default util.createRule<Options, MessageIds>({
       });
 
       const fix: TSESLint.ReportFixFunction = fixer => {
-        return duplicateConstituents.map(duplicateConstituent => {
-          const parent = duplicateConstituent.node.parent as
-            | TSESTree.TSUnionType
-            | TSESTree.TSIntersectionType;
-          const delteRangeStart =
-            parent.types[duplicateConstituent.index - 1].range[1];
-          return fixer.removeRange([
-            delteRangeStart,
-            duplicateConstituent.node.range[1],
-          ]);
-        });
+        return duplicateConstituentNodes
+          .map(duplicateConstituentNode => {
+            const fixes: TSESLint.RuleFix[] = [];
+            const unionOrIntersectionToken = sourceCode.getTokenBefore(
+              duplicateConstituentNode,
+            );
+
+            if (unionOrIntersectionToken) {
+              fixes.push(fixer.remove(unionOrIntersectionToken));
+            }
+            fixes.push(fixer.remove(duplicateConstituentNode));
+            return fixes;
+          })
+          .flat();
       };
 
-      duplicateConstituents.forEach(duplicateConstituent => {
+      duplicateConstituentNodes.forEach(duplicateConstituentNode => {
         context.report({
           data: {
-            name: sourceCode.getText(duplicateConstituent.node),
+            name: sourceCode.getText(duplicateConstituentNode),
             type:
               node.type === AST_NODE_TYPES.TSIntersectionType
                 ? 'Intersection'
