@@ -18,6 +18,8 @@ type AdditionalKeys = {
 const additionalKeys: AdditionalKeys = {
   // Stage 3 Import Assertions
   ImportAttribute: ['key', 'value'],
+  // Stage 3 Accessor Property
+  AccessorProperty: ['key', 'value', 'decorators'],
 
   // Additional Properties.
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
