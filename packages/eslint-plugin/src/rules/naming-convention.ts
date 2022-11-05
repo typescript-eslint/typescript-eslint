@@ -457,13 +457,6 @@ export default util.createRule<Options, MessageIds>({
         handleMember(validators.accessor, node, modifiers);
       },
 
-      'TSAbstractMethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])'(
-        node: TSESTree.MethodDefinitionNonComputedName,
-      ): void {
-        const modifiers = getMemberModifiers(node);
-        handleMember(validators.accessor, node, modifiers);
-      },
-
       // #endregion accessor
 
       // #region enumMember

@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
-import rule, { MessageIds } from '../../../src/rules/naming-convention';
+import rule from '../../../src/rules/naming-convention';
 import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
-import { TestCaseError } from '@typescript-eslint/utils/src/ts-eslint';
-import { SelectorsString } from '../../../src/rules/naming-convention-utils/enums';
-import { PredefinedFormatsString } from '../../../src/rules/naming-convention-utils';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -15,38 +12,6 @@ const parserOptions = {
   tsconfigRootDir: rootDir,
   project: './tsconfig.json',
 };
-
-/** Union of all case error configs with `messageId` as discriminant property for type narrowing */
-type CaseErrorWithDataConfig =
-  | {
-      messageId: 'doesNotMatchFormat';
-      type: Capitalize<SelectorsString>;
-      name: string;
-      expectedFormats: PredefinedFormatsString[];
-    }
-  | { messageId: 'unexpectedUnderscore' }; // todo add more detail and union members as required
-
-function createExpectedTestCaseErrorsWithData(
-  caseErrorConfigs: CaseErrorWithDataConfig[],
-): TestCaseError<MessageIds>[] {
-  return caseErrorConfigs.map(errorConfig => {
-    if (errorConfig.messageId === 'doesNotMatchFormat') {
-      const typeNotCamelCase = errorConfig.type
-        .replace(/([A-Z])/g, ' $1')
-        .trim();
-      return {
-        messageId: 'doesNotMatchFormat',
-        data: {
-          type: typeNotCamelCase,
-          name: errorConfig.name,
-          formats: errorConfig.expectedFormats.join(','),
-        },
-      };
-    }
-
-    throw Error(`${errorConfig.messageId} not yet supported`);
-  });
-}
 
 ruleTester.run('naming-convention', rule, {
   valid: [
@@ -1705,32 +1670,40 @@ ruleTester.run('naming-convention', rule, {
           modifiers: ['async'],
         },
       ],
-      errors: createExpectedTestCaseErrorsWithData([
+      errors: [
         {
           messageId: 'doesNotMatchFormat',
-          name: 'asyncBar',
-          type: 'ClassMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Class Method',
+            name: 'asyncBar',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'AsyncBar2',
-          type: 'ClassMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Class Method',
+            name: 'AsyncBar2',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'AsyncBar3',
-          type: 'ClassMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Class Method',
+            name: 'AsyncBar3',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'ASYNC_BAR',
-          type: 'ClassMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Class Method',
+            name: 'ASYNC_BAR',
+            formats: 'snake_case',
+          },
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -1771,26 +1744,32 @@ ruleTester.run('naming-convention', rule, {
           modifiers: ['async'],
         },
       ],
-      errors: createExpectedTestCaseErrorsWithData([
+      errors: [
         {
           messageId: 'doesNotMatchFormat',
-          name: 'AsyncBar',
-          type: 'ObjectLiteralMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Object Literal Method',
+            name: 'AsyncBar',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'AsyncBar2',
-          type: 'ObjectLiteralMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Object Literal Method',
+            name: 'AsyncBar2',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'AsyncBar3',
-          type: 'ObjectLiteralMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Object Literal Method',
+            name: 'AsyncBar3',
+            formats: 'snake_case',
+          },
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -1801,12 +1780,8 @@ ruleTester.run('naming-convention', rule, {
         // ❌ error
         const AsyncBar1 = async () => {};
         const async_bar1 = async () => {};
-        // ❌ error
-        async function asyncBar2() {}
         const async_bar3 = async function async_bar4() {};
         async function async_bar2() {}
-        // ❌ error
-        const async_bar3 = async function ASYNC_BAR4() {};
         // ❌ error
         const asyncBar5 = async function async_bar6() {};
       `,
@@ -1822,32 +1797,69 @@ ruleTester.run('naming-convention', rule, {
           format: ['snake_case'],
         },
       ],
-      errors: createExpectedTestCaseErrorsWithData([
+      errors: [
         {
           messageId: 'doesNotMatchFormat',
-          name: 'AsyncBar1',
-          type: 'Variable',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Variable',
+            name: 'AsyncBar1',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'asyncBar2',
-          type: 'Function',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Variable',
+            name: 'asyncBar5',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const syncbar1 = () => {};
+        function syncBar2() {}
+        const syncBar3 = function syncBar4() {};
+
+        const async_bar1 = async () => {};
+        // ❌ error
+        async function asyncBar2() {}
+        const async_bar3 = async function async_bar4() {};
+        async function async_bar2() {}
+        // ❌ error
+        const async_bar3 = async function ASYNC_BAR4() {};
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'variableLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['variableLike'],
+          modifiers: ['async'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Function',
+            name: 'asyncBar2',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'ASYNC_BAR4',
-          type: 'Function',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Function',
+            name: 'ASYNC_BAR4',
+            formats: 'snake_case',
+          },
         },
-        {
-          messageId: 'doesNotMatchFormat',
-          name: 'asyncBar5',
-          type: 'Variable',
-          expectedFormats: ['snake_case'],
-        },
-      ]),
+      ],
     },
     {
       code: `
@@ -1856,42 +1868,6 @@ ruleTester.run('naming-convention', rule, {
           public override some_attribute_override = 1;
           // ❌ error
           public override someAttributeOverride = 1;
-          public someMethod() {
-            return 42;
-          }
-          public override some_method_override() {
-            return 42;
-          }
-          // ❌ error
-          public override someMethodOverride() {
-            return 42;
-          }
-          public get someGetter(): string;
-          public override get some_getter_override(): string;
-          // ❌ error
-          public override get someGetterOverride(): string;
-          public set someSetter(val: string);
-          public override set some_setter_override(val: string);
-          // ❌ error
-          public override set someSetterOverride(val: string);
-        }
-        abstract class foo2 extends bar {
-          public abstract someAttribute2: string;
-          public abstract override some_attribute_override2: string;
-          // ❌ error
-          public abstract override someAttributeOverride2: string;
-          public abstract someMethod2(): string;
-          public abstract override some_method_override2(): string;
-          // ❌ error
-          public abstract override someMethodOverride2(): string;
-          public abstract get someGetter2(): string;
-          public abstract override get some_getter_override2(): string;
-          // ❌ error
-          public abstract override get someGetterOverride2(): string;
-          public abstract set someSetter2(val: string);
-          public abstract override set some_setter_override2(val: string);
-          // ❌ error
-          public abstract override set someSetterOverride2(val: string);
         }
       `,
       parserOptions,
@@ -1906,56 +1882,95 @@ ruleTester.run('naming-convention', rule, {
           format: ['snake_case'],
         },
       ],
-      errors: createExpectedTestCaseErrorsWithData([
+      errors: [
         {
           messageId: 'doesNotMatchFormat',
-          name: 'someAttributeOverride',
-          type: 'ClassProperty',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Class Property',
+            name: 'someAttributeOverride',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public override some_method_override() {
+            return 42;
+          }
+          // ❌ error
+          public override someMethodOverride() {
+            return 42;
+          }
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['override'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'someMethodOverride',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public get someGetter(): string;
+          public override get some_getter_override(): string;
+          // ❌ error
+          public override get someGetterOverride(): string;
+          public set someSetter(val: string);
+          public override set some_setter_override(val: string);
+          // ❌ error
+          public override set someSetterOverride(val: string);
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['override'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Accessor',
+            name: 'someGetterOverride',
+            formats: 'snake_case',
+          },
         },
         {
           messageId: 'doesNotMatchFormat',
-          name: 'someMethodOverride',
-          type: 'ClassMethod',
-          expectedFormats: ['snake_case'],
+          data: {
+            type: 'Accessor',
+            name: 'someSetterOverride',
+            formats: 'snake_case',
+          },
         },
-        {
-          messageId: 'doesNotMatchFormat',
-          name: 'someGetterOverride',
-          type: 'Accessor',
-          expectedFormats: ['snake_case'],
-        },
-        {
-          messageId: 'doesNotMatchFormat',
-          name: 'someSetterOverride',
-          type: 'Accessor',
-          expectedFormats: ['snake_case'],
-        },
-        {
-          messageId: 'doesNotMatchFormat',
-          name: 'someAttributeOverride2',
-          type: 'ClassProperty',
-          expectedFormats: ['snake_case'],
-        },
-        {
-          messageId: 'doesNotMatchFormat',
-          name: 'someMethodOverride2',
-          type: 'ClassMethod',
-          expectedFormats: ['snake_case'],
-        },
-        {
-          messageId: 'doesNotMatchFormat',
-          name: 'someGetterOverride2',
-          type: 'Accessor',
-          expectedFormats: ['snake_case'],
-        },
-        {
-          messageId: 'doesNotMatchFormat',
-          name: 'someSetterOverride2',
-          type: 'Accessor',
-          expectedFormats: ['snake_case'],
-        },
-      ]),
+      ],
     },
   ],
 });

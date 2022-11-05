@@ -197,7 +197,7 @@ There are two types of selectors, individual selectors, and grouped selectors.
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
 - `variable` - matches any `var` / `let` / `const` variable name.
-  - Allowed `modifiers`: `const`, `destructured`, `global`, `exported`, `unused`, `override`, `async`.
+  - Allowed `modifiers`: `const`, `destructured`, `global`, `exported`, `unused`, `async`.
   - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
 - `function` - matches any named function declaration or named function expression.
   - Allowed `modifiers`: `global`, `exported`, `unused`, `async`.
