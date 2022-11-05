@@ -71,14 +71,32 @@ export default util.createRule<Options, MessageIds>({
         return duplicateConstituentNodes
           .map(duplicateConstituentNode => {
             const fixes: TSESLint.RuleFix[] = [];
-            const unionOrIntersectionToken = sourceCode.getTokenBefore(
+            const beforeTokens = sourceCode.getTokensBefore(
               duplicateConstituentNode,
             );
+            const afterTokens = sourceCode.getTokensAfter(
+              duplicateConstituentNode,
+            );
+            const beforeUnionOrIntersectionToken = beforeTokens
+              .reverse()
+              .find(token => token.value === '|' || token.value === '&');
 
-            if (unionOrIntersectionToken) {
-              fixes.push(fixer.remove(unionOrIntersectionToken));
+            if (beforeUnionOrIntersectionToken) {
+              const bracketBeforeTokens = sourceCode.getTokensBetween(
+                beforeUnionOrIntersectionToken,
+                duplicateConstituentNode,
+              );
+              const bracketAfterTokens = afterTokens.slice(
+                0,
+                bracketBeforeTokens.length,
+              );
+              [
+                beforeUnionOrIntersectionToken,
+                ...bracketBeforeTokens,
+                duplicateConstituentNode,
+                ...bracketAfterTokens,
+              ].forEach(token => fixes.push(fixer.remove(token)));
             }
-            fixes.push(fixer.remove(duplicateConstituentNode));
             return fixes;
           })
           .flat();
