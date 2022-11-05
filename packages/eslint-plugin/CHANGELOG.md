@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+### Bug Fixes
+
+- **ast-spec:** add TSQualifiedName to TypeNode union ([#5906](https://github.com/typescript-eslint/typescript-eslint/issues/5906)) ([5c316c1](https://github.com/typescript-eslint/typescript-eslint/commit/5c316c12f09d58aee6ee634a8055533f361f1589))
+- **eslint-plugin:** [no-extra-parens] handle type assertion in extends clause ([#5901](https://github.com/typescript-eslint/typescript-eslint/issues/5901)) ([8ed7219](https://github.com/typescript-eslint/typescript-eslint/commit/8ed72192c274249d26628fb125796e71318b857a))
+
+### Features
+
+- **eslint-plugin:** [member-ordering] add natural sort order ([#5662](https://github.com/typescript-eslint/typescript-eslint/issues/5662)) ([1eaae09](https://github.com/typescript-eslint/typescript-eslint/commit/1eaae09ecca359f366b94f6a04665403f48b05c7))
+- **eslint-plugin:** [no-invalid-void-type] better report message for void used as a constituent inside a function return type ([#5274](https://github.com/typescript-eslint/typescript-eslint/issues/5274)) ([d806bda](https://github.com/typescript-eslint/typescript-eslint/commit/d806bda82343712a24e3c78b9b34d4345dd1de3b))
+
+# [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
+
+### Bug Fixes
+
+- **eslint-plugin:** [no-base-to-string] ignore Error, URL, and URLSearchParams by default ([#5839](https://github.com/typescript-eslint/typescript-eslint/issues/5839)) ([96e1c6c](https://github.com/typescript-eslint/typescript-eslint/commit/96e1c6c171a34b0793c50c3dba853c3999a6bd49))
+- **type-utils:** prevent stack overflow in `isTypeReadonly` ([#5860](https://github.com/typescript-eslint/typescript-eslint/issues/5860)) ([a6d8f7e](https://github.com/typescript-eslint/typescript-eslint/commit/a6d8f7edb84f9f6dd59a76faf53bf686756e2aed)), closes [#4476](https://github.com/typescript-eslint/typescript-eslint/issues/4476)
+
+### Features
+
+- **eslint-plugin:** [no-unsafe-declaration-merging] switch to use scope analysis instead of type information ([#5865](https://github.com/typescript-eslint/typescript-eslint/issues/5865)) ([e70a10a](https://github.com/typescript-eslint/typescript-eslint/commit/e70a10aea684bc6bca05b69bfce3bae769a5f5ab))
+- **eslint-plugin:** add no-unsafe-declaration-merging ([#5840](https://github.com/typescript-eslint/typescript-eslint/issues/5840)) ([3728031](https://github.com/typescript-eslint/typescript-eslint/commit/3728031c659dabde7658cd54184951d4be9aabcb))
+
 ## [5.40.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.0...v5.40.1) (2022-10-17)
 
 ### Bug Fixes

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+**Note:** Version bump only for package @typescript-eslint/type-utils
+
+# [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
+
+### Bug Fixes
+
+- **type-utils:** prevent stack overflow in `isTypeReadonly` ([#5860](https://github.com/typescript-eslint/typescript-eslint/issues/5860)) ([a6d8f7e](https://github.com/typescript-eslint/typescript-eslint/commit/a6d8f7edb84f9f6dd59a76faf53bf686756e2aed)), closes [#4476](https://github.com/typescript-eslint/typescript-eslint/issues/4476)
+
 ## [5.40.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.0...v5.40.1) (2022-10-17)
 
 **Note:** Version bump only for package @typescript-eslint/type-utils

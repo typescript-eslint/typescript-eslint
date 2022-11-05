@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+### Features
+
+- **scope-manager:** ignore ECMA version ([#5881](https://github.com/typescript-eslint/typescript-eslint/issues/5881)) ([3b8d449](https://github.com/typescript-eslint/typescript-eslint/commit/3b8d449696c319690536a18a48ef32749dc2f559))
+
+### Reverts
+
+- Revert "feat(scope-manager): ignore ECMA version" (#5888) ([2ee81df](https://github.com/typescript-eslint/typescript-eslint/commit/2ee81df5a365d82ef4b3dfc124d4ec39c7bcb725)), closes [#5888](https://github.com/typescript-eslint/typescript-eslint/issues/5888) [#5881](https://github.com/typescript-eslint/typescript-eslint/issues/5881)
+
+# [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
 ## [5.40.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.0...v5.40.1) (2022-10-17)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

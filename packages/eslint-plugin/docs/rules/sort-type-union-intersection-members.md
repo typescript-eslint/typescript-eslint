@@ -6,6 +6,11 @@ description: 'Enforce members of a type union/intersection to be sorted alphabet
 >
 > See **https://typescript-eslint.io/rules/sort-type-union-intersection-members** for documentation.
 
+:::danger Deprecated
+
+This rule has been renamed to [`sort-type-union-intersection-members`](./sort-type-union-intersection-members.md).
+:::
+
 Sorting union (`|`) and intersection (`&`) types can help:
 
 - keep your codebase standardized
