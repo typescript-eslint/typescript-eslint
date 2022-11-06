@@ -3,7 +3,10 @@ async function main(): Promise<void> {
     default: { default: rules },
   } =
     // @ts-expect-error -- We don't support ESM imports of local code yet.
-    await import('../dist/rules/index.js');
+    (await import('../dist/rules/index.js')) as {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+      default: typeof import('../src/rules');
+    };
   const { markdownTable } = await import('markdown-table');
 
   console.log(`
