@@ -52,5 +52,19 @@ module.exports = {
         'development/custom-rules',
       ],
     },
+    {
+      collapsible: false,
+      items: [
+        'maintenance/issues',
+        'maintenance/releases',
+        'maintenance/versioning',
+      ],
+      label: 'Maintenance',
+      link: {
+        id: 'maintenance',
+        type: 'doc',
+      },
+      type: 'category',
+    },
   ],
 };

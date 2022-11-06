@@ -27,6 +27,7 @@ export = {
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'warn',
     '@typescript-eslint/no-unnecessary-condition': 'warn',
     '@typescript-eslint/no-unnecessary-type-arguments': 'warn',
+    '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'warn',
     '@typescript-eslint/non-nullable-type-assertion-style': 'warn',
