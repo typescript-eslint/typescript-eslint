@@ -20,6 +20,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow duplicate union/intersection type members',
       recommended: false,
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {
@@ -56,12 +57,12 @@ export default util.createRule<Options, MessageIds>({
       const uniqConstituentTypes = new Set<Type>();
       const duplicateConstituentNodes: TSESTree.TypeNode[] = [];
 
-      node.types.forEach(memberNode => {
+      node.types.forEach(constituentNode => {
         const type = checker.getTypeAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(memberNode),
+          parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
         );
         if (uniqConstituentTypes.has(type)) {
-          duplicateConstituentNodes.push(memberNode);
+          duplicateConstituentNodes.push(constituentNode);
         } else {
           uniqConstituentTypes.add(type);
         }

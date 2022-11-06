@@ -19,16 +19,24 @@ const ruleTester = new RuleTester({
 
 const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
   {
-    code: `type T = A ${operator} B;`,
+    code: `type A = "A";
+type B = "B";
+type T = A ${operator} B;`,
   },
   {
-    code: `const a : A ${operator} B = "A";`,
+    code: `type A = "A";
+type B = "B";
+const a : A ${operator} B = "A";`,
   },
   {
-    code: `type T = A ${operator} /* comment */ B;`,
+    code: `type A = "A";
+type B = "B";
+type T = A ${operator} /* comment */ B;`,
   },
   {
-    code: `type T = 'A' ${operator} 'B';`,
+    code: `type A = "A";
+type B = "B";
+type T = 'A' ${operator} 'B';`,
   },
   {
     code: `type T = 1 ${operator} 2;`,
@@ -46,7 +54,9 @@ const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
     code: `type T = any ${operator} unknown;`,
   },
   {
-    code: noFormat`type T = (A) ${operator} (B);`,
+    code: noFormat`type A = "A";
+type B = "B";
+type T = (A) ${operator} (B);`,
   },
   {
     code: `type T = { a: string } ${operator} { b: string };`,
@@ -76,19 +86,31 @@ const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
     code: `type T = (arg : string ${operator} number) => void;`,
   },
   {
-    code: `type T = A ${operator} B ${operator} C;`,
+    code: `type A = "A";
+type B = "B";
+type C = "C";
+type T = A ${operator} B ${operator} C;`,
   },
   {
     code: `type T = readonly string[] ${operator} string[];`,
   },
   {
-    code: `type T = (A | B) ${operator} (A | C);`,
+    code: `type A = "A";
+type B = "B";
+type C = "C";
+type D = "D";
+type T = (A | B) ${operator} (C | D);
+`,
   },
   {
-    code: `type T = (A | B) ${operator} (A & B);`,
+    code: `type A = "A";
+type B = "B";
+type T = (A | B) ${operator} (A & B);`,
   },
   {
-    code: `type T = Record<string, A ${operator} B>;`,
+    code: `type A = "A";
+type B = "B";
+type T = Record<string, A ${operator} B>;`,
   },
 ];
 const invalid = (
@@ -97,8 +119,10 @@ const invalid = (
   const type = operator === '|' ? 'Union' : 'Intersection';
   return [
     {
-      code: `type T = A ${operator} A;`,
-      output: `type T = A  ;`,
+      code: `type A = "A";
+type T = A ${operator} A;`,
+      output: `type A = "A";
+type T = A  ;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -110,8 +134,10 @@ const invalid = (
       ],
     },
     {
-      code: `const a : A ${operator} A = 'A';`,
-      output: `const a : A   = 'A';`,
+      code: `type A = "A";
+const a : A ${operator} A = 'A';`,
+      output: `type A = "A";
+const a : A   = 'A';`,
       errors: [
         {
           messageId: 'duplicate',
@@ -188,8 +214,10 @@ const invalid = (
       ],
     },
     {
-      code: noFormat`type T = (A) ${operator} (A);`,
-      output: noFormat`type T = (A)  ;`,
+      code: noFormat`type A = "A";
+type T = (A) ${operator} (A);`,
+      output: noFormat`type A = "A";
+type T = (A)  ;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -201,40 +229,16 @@ const invalid = (
       ],
     },
     {
-      code: noFormat`type T = (A) ${operator} ((A));`,
-      output: noFormat`type T = (A)  ;`,
+      code: noFormat`type A = "A";
+type T = (A) ${operator} ((A));`,
+      output: noFormat`type A = "A";
+type T = (A)  ;`,
       errors: [
         {
           messageId: 'duplicate',
           data: {
             type,
             name: 'A',
-          },
-        },
-      ],
-    },
-    {
-      code: `type T = { a: string } ${operator} { a: string };`,
-      output: `type T = { a: string };`,
-      errors: [
-        {
-          messageId: 'duplicate',
-          data: {
-            type,
-            name: '{ a: string }',
-          },
-        },
-      ],
-    },
-    {
-      code: `type T = { a: string, b: number } ${operator} { a: string, b: number };`,
-      output: `type T = { a: string, b: number };`,
-      errors: [
-        {
-          messageId: 'duplicate',
-          data: {
-            type,
-            name: '{ a: string, b: number }',
           },
         },
       ],
@@ -261,19 +265,6 @@ const invalid = (
           data: {
             type,
             name: '[1, 2, 3]',
-          },
-        },
-      ],
-    },
-    {
-      code: `type T = (() => string) ${operator} (() => string);`,
-      output: `type T = (() => string)  ;`,
-      errors: [
-        {
-          messageId: 'duplicate',
-          data: {
-            type,
-            name: '() => string',
           },
         },
       ],
@@ -318,8 +309,10 @@ const invalid = (
       ],
     },
     {
-      code: `type T = A ${operator} /* comment */ A;`,
-      output: `type T = A  /* comment */ ;`,
+      code: `type A = "A";
+type T = A ${operator} /* comment */ A;`,
+      output: `type A = "A";
+type T = A  /* comment */ ;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -331,8 +324,12 @@ const invalid = (
       ],
     },
     {
-      code: `type T = A ${operator} B ${operator} A;`,
-      output: `type T = A ${operator} B  ;`,
+      code: `type A = "A";
+type B = "B";
+type T = A ${operator} B ${operator} A;`,
+      output: `type A = "A";
+type B = "B";
+type T = A ${operator} B  ;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -344,8 +341,12 @@ const invalid = (
       ],
     },
     {
-      code: `type T = A ${operator} B ${operator} A ${operator} B;`,
-      output: `type T = A ${operator} B    ;`,
+      code: `type A = "A";
+type B = "B";
+type T = A ${operator} B ${operator} A ${operator} B;`,
+      output: `type A = "A";
+type B = "B";
+type T = A ${operator} B    ;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -364,8 +365,12 @@ const invalid = (
       ],
     },
     {
-      code: `type T = A ${operator} B ${operator} A ${operator} A;`,
-      output: `type T = A ${operator} B    ;`,
+      code: `type A = "A";
+type B = "B";
+type T = A ${operator} B ${operator} A ${operator} A;`,
+      output: `type A = "A";
+type B = "B";
+type T = A ${operator} B    ;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -384,8 +389,14 @@ const invalid = (
       ],
     },
     {
-      code: `type T = A ${operator} B ${operator} A ${operator} C;`,
-      output: `type T = A ${operator} B   ${operator} C;`,
+      code: `type A = "A";
+type B = "B";
+type C = "C";
+type T = A ${operator} B ${operator} A ${operator} C;`,
+      output: `type A = "A";
+type B = "B";
+type C = "C";
+type T = A ${operator} B   ${operator} C;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -397,8 +408,12 @@ const invalid = (
       ],
     },
     {
-      code: `type T = (A | B) ${operator} (A | B);`,
-      output: `type T = (A | B)  ;`,
+      code: `type A = "A";
+type B = "B";
+type T = (A | B) ${operator} (A | B);`,
+      output: `type A = "A";
+type B = "B";
+type T = (A | B)  ;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -410,8 +425,10 @@ const invalid = (
       ],
     },
     {
-      code: `type T = Record<string, A ${operator} A>;`,
-      output: `type T = Record<string, A  >;`,
+      code: `type A = "A";
+type T = Record<string, A ${operator} A>;`,
+      output: `type A = "A";
+type T = Record<string, A  >;`,
       errors: [
         {
           messageId: 'duplicate',
@@ -436,7 +453,6 @@ ruleTester.run('no-duplicate-type-constituents', rule, {
         },
       ],
     },
-
     ...valid('&'),
     {
       code: 'type T = A & A;',
