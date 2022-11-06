@@ -23,7 +23,7 @@ async function main(): Promise<void> {
     - ⚠️ = recommended as warning
     - 🛑  = recommended as an error
     - 🗑️  = remove from recommended this version
-    - Str = strict
+  - Str = strict
     - ⚠️ = recommended as warning
     - 🗑️  = remove from recommended this version
 
