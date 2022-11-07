@@ -1,6 +1,5 @@
 import debug from 'debug';
 import fs from 'fs';
-import semver from 'semver';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
@@ -259,10 +258,6 @@ function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
   return results;
 }
 
-const isRunningNoTimeoutFix = semver.satisfies(ts.version, '>=3.9.0-beta', {
-  includePrerelease: true,
-});
-
 function createWatchProgram(
   tsconfigPath: string,
   parseSettings: ParseSettings,
@@ -373,34 +368,9 @@ function createWatchProgram(
 
   // Since we don't want to asynchronously update program we want to disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch
-  let callback: (() => void) | undefined;
-  if (isRunningNoTimeoutFix) {
-    watchCompilerHost.setTimeout = undefined;
-    watchCompilerHost.clearTimeout = undefined;
-  } else {
-    log('Running without timeout fix');
-    // But because of https://github.com/microsoft/TypeScript/pull/37308 we cannot just set it to undefined
-    // instead save it and call before getProgram is called
-    watchCompilerHost.setTimeout = (cb, _ms, ...args: unknown[]): unknown => {
-      callback = cb.bind(/*this*/ undefined, ...args);
-      return callback;
-    };
-    watchCompilerHost.clearTimeout = (): void => {
-      callback = undefined;
-    };
-  }
-  const watch = ts.createWatchProgram(watchCompilerHost);
-  if (!isRunningNoTimeoutFix) {
-    const originalGetProgram = watch.getProgram;
-    watch.getProgram = (): ts.BuilderProgram => {
-      if (callback) {
-        callback();
-      }
-      callback = undefined;
-      return originalGetProgram.call(watch);
-    };
-  }
-  return watch;
+  watchCompilerHost.setTimeout = undefined;
+  watchCompilerHost.clearTimeout = undefined;
+  return ts.createWatchProgram(watchCompilerHost);
 }
 
 function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {

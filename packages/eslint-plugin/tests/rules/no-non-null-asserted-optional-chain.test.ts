@@ -17,7 +17,6 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
     'foo?.bar();',
     '(foo?.bar).baz!;',
     '(foo?.bar()).baz!;',
-    // Valid as of 3.9
     'foo?.bar!.baz;',
     'foo?.bar!();',
     "foo?.['bar']!.baz;",
