@@ -450,7 +450,6 @@ export default util.createRule<Options, MessageIds>({
           ),
           util.NullThrowsReasons.MissingToken('{', node.type),
         );
-        // TODO: why require default import as well?  What about import type { type1, type2 }?
         const commaToken = util.nullThrows(
           sourceCode.getTokenBefore(openingBraceToken, util.isCommaToken),
           util.NullThrowsReasons.MissingToken(',', node.type),
