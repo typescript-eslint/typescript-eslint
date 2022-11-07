@@ -377,10 +377,6 @@ export default util.createRule({
           objectText = getText(node.object);
           break;
 
-        case AST_NODE_TYPES.TSNonNullExpression:
-          // Not supported mixing with TSNonNullExpression
-          return '';
-
         case AST_NODE_TYPES.MemberExpression:
           objectText = getMemberExpressionText(node.object);
           break;
