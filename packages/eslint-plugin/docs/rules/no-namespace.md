@@ -1,19 +1,18 @@
 ---
-description: 'Disallow custom TypeScript modules and namespaces.'
+description: 'Disallow TypeScript namespaces.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-namespace** for documentation.
 
-Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
-ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).
+TypeScript historically allowed a form of code organization called "custom modules" (`module Example {}`), later renamed to "namespaces" (`namespace Example`).
+Namespaces are an outdated way to organize TypeScript code.
+ES2015 module syntax is now preferred (`import`/`export`).
 
-This rule still allows the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
+> This rule does not report on the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
 
-## Rule Details
-
-This rule aims to standardize the way modules are declared.
+## Examples
 
 Examples of code with the default options:
 

@@ -15,7 +15,7 @@ In contrast, non-`async` `Promise` - returning functions are technically capable
 Code that handles the results of those functions will often need to handle both cases, which can get complex.
 This rule's practice removes a requirement for creating code to handle both cases.
 
-## Rule Details
+## Examples
 
 Examples of code for this rule
 

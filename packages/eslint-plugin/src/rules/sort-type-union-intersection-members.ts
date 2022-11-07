@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 import { getEnumNames } from '../util';
 
@@ -58,6 +60,7 @@ function getGroup(node: TSESTree.TypeNode): Group {
     case AST_NODE_TYPES.TSIndexedAccessType:
     case AST_NODE_TYPES.TSInferType:
     case AST_NODE_TYPES.TSTypeReference:
+    case AST_NODE_TYPES.TSQualifiedName:
       return Group.named;
 
     case AST_NODE_TYPES.TSMappedType:
@@ -112,6 +115,7 @@ export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 export default util.createRule<Options, MessageIds>({
   name: 'sort-type-union-intersection-members',
   meta: {
+    deprecated: true,
     type: 'suggestion',
     docs: {
       description:
@@ -125,6 +129,7 @@ export default util.createRule<Options, MessageIds>({
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',
       suggestFix: 'Sort members of type (removes all comments).',
     },
+    replacedBy: ['@typescript-eslint/sort-type-constituents'],
     schema: [
       {
         type: 'object',

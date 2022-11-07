@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { ESLint as ESLintESLint } from 'eslint';
-import { Linter } from './Linter';
+
+import type { Linter } from './Linter';
 
 declare class ESLintBase {
   /**

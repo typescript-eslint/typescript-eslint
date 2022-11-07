@@ -6,30 +6,22 @@ description: 'Enforce members of a type union/intersection to be sorted alphabet
 >
 > See **https://typescript-eslint.io/rules/sort-type-union-intersection-members** for documentation.
 
+:::danger Deprecated
+
+This rule has been renamed to [`sort-type-union-intersection-members`](./sort-type-union-intersection-members.md).
+:::
+
 Sorting union (`|`) and intersection (`&`) types can help:
 
 - keep your codebase standardized
 - find repeated types
 - reduce diff churn
 
-## Rule Details
+This rule reports on any types that aren't sorted alphabetically.
 
-Sorting within each group is done using the following code:
+> Types are sorted case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
 
-```ts
-const collator = new Intl.Collator('en', {
-  sensitivity: 'base',
-  numeric: true,
-});
-
-function compare(a, b) {
-  return collator.compare(a, b) || (a < b ? -1 : a > b ? 1 : 0);
-}
-```
-
-In other words, the types are sorted alphabetically, case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

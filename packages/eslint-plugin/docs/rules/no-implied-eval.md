@@ -25,11 +25,9 @@ passed in to be interpreted. The same can be done with `setInterval()`, `setImme
 
 The best practice is to avoid using `new Function()` or `execScript()` and always use a function for the first argument of `setTimeout()`, `setInterval()` and `setImmediate()`.
 
-## Rule Details
+## Examples
 
 This rule aims to eliminate implied `eval()` through the use of `new Function()`, `setTimeout()`, `setInterval()`, `setImmediate()` or `execScript()`.
-
-Examples of code for this rule:
 
 <!--tabs-->
 

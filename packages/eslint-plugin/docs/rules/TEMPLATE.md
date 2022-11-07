@@ -2,7 +2,7 @@
 >
 > See **https://typescript-eslint.io/rules/your-rule-name** for documentation.
 
-## Rule Details
+## Examples
 
 To fill out: tell us more about this rule.
 

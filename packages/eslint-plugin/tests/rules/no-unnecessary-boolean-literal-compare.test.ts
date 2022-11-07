@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-unnecessary-boolean-literal-compare';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({

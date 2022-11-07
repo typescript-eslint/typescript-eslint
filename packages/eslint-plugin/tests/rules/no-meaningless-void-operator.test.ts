@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-meaningless-void-operator';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 

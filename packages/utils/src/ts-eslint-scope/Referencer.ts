@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ESLintReferencer from 'eslint-scope/lib/referencer';
-import { TSESTree } from '../ts-estree';
-import {
+
+import type { TSESTree } from '../ts-estree';
+import type {
   PatternVisitorCallback,
   PatternVisitorOptions,
   Visitor,
 } from './Options';
-import { Scope } from './Scope';
-import { ScopeManager } from './ScopeManager';
+import type { Scope } from './Scope';
+import type { ScopeManager } from './ScopeManager';
 
 interface Referencer<SM extends ScopeManager> extends Visitor {
   isInnerMethodDefinition: boolean;

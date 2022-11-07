@@ -6,11 +6,8 @@ description: 'Enforce consistent usage of type imports.'
 >
 > See **https://typescript-eslint.io/rules/consistent-type-imports** for documentation.
 
-Type-only imports allow you to specify that an import can only be used in a type location, allowing certain optimizations within compilers.
-
-## Rule Details
-
-This rule aims to standardize the use of type imports style.
+TypeScript allows specifying a `type` keyword on imports to indicate that the export exists only in the type system, not at runtime.
+This allows transpilers to drop imports without knowing the types of the dependencies.
 
 ## Options
 
@@ -50,6 +47,12 @@ Examples of **incorrect** code with `{disallowTypeAnnotations: true}`:
 type T = import('Foo').Foo;
 const x: import('Bar') = 1;
 ```
+
+## Usage with `emitDecoratorMetadata`
+
+The `emitDecoratorMetadata` compiler option changes the code the TypeScript emits. In short - it causes TypeScript to create references to value imports when they are used in a type-only location. If you are using `emitDecoratorMetadata` then our tooling will require additional information in order for the rule to work correctly.
+
+If you are using [type-aware linting](https://typescript-eslint.io/docs/linting/typed-linting), then you just need to ensure that the `tsconfig.json` you've configured for `parserOptions.project` has `emitDecoratorMetadata` turned on. Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on [by setting `parserOptions.emitDecoratorMetadata` to `true`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/README.md#parseroptionsemitdecoratormetadata).
 
 ## When Not To Use It
 

@@ -52,6 +52,7 @@
     "bivariant",
     "blockless",
     "camelcase",
+    "Cena",
     "codebases",
     "Codecov",
     "contravariant",
@@ -105,6 +106,7 @@
     "transpiled",
     "transpiles",
     "transpiling",
+    "triaging",
     "tsconfigs",
     "tsutils",
     "tsvfs",
@@ -114,7 +116,8 @@
     "unoptimized",
     "unprefixed",
     "upsert",
-    "Zacher"
+    "Zacher",
+    "tseslint"
   ],
   "overrides": [
     {

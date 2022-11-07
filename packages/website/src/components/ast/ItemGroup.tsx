@@ -1,9 +1,9 @@
-import React, { MouseEvent, useEffect, useRef } from 'react';
 import { scrollIntoViewIfNeeded } from '@site/src/components/lib/scroll-into';
 import clsx from 'clsx';
+import type { MouseEvent } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import styles from './ASTViewer.module.css';
-
 import PropertyName from './PropertyName';
 import type { ASTViewerModelMap } from './types';
 

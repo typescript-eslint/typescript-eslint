@@ -6,11 +6,8 @@ description: 'Require a consistent member declaration order.'
 >
 > See **https://typescript-eslint.io/rules/member-ordering** for documentation.
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate, and edit.
-
-## Rule Details
-
-This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
+This rule aims to standardize the way classes, interfaces, and type literals are structured and ordered.
+A consistent ordering of fields, methods and constructors can make code easier to read, navigate, and edit.
 
 ## Options
 
@@ -27,7 +24,12 @@ type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
-  order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written';
+  order:
+    | 'alphabetically'
+    | 'alphabetically-case-insensitive'
+    | 'as-written'
+    | 'natural'
+    | 'natural-case-insensitive';
 }
 
 // See below for the more specific MemberType strings
@@ -58,6 +60,17 @@ The supported member attributes are, in order:
 
 Member attributes may be joined with a `'-'` to combine into more specific groups.
 For example, `'public-field'` would come before `'private-field'`.
+
+### Orders
+
+The `order` value specifies what order members should be within a group.
+It defaults to `as-written`, meaning any order is fine.
+Other allowed values are:
+
+- `alphabetically`: Sorted in a-z alphabetical order, directly using string `<` comparison (so `B` comes before `a`)
+- `alphabetically-case-insensitive`: Sorted in a-z alphabetical order, ignoring case (so `a` comes before `B`)
+- `natural`: Same as `alphabetically`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
+- `natural-case-insensitive`: Same as `alphabetically-case-insensitive`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
 
 ### Default configuration
 

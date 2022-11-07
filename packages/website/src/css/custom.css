@@ -62,6 +62,8 @@ html[data-theme='dark']:root {
 
   --docsearch-muted-color: #aaa;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  --gray-border-shadow: var(--ifm-color-secondary-dark);
 }
 
 .header-github-link:hover {
