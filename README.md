@@ -65,7 +65,7 @@ In terms of what versions we support:
 
 - We do not support the `beta` releases.
 - We _generally_ do not officially support the `rc` releases.
-- We endeavour to support the latest stable TypeScript versions as soon as possible after the release.
+- We endeavor to support the latest stable TypeScript versions as soon as possible after the release.
 
 Generally we will begin working on supporting the next release when the `rc` version is released.
 
