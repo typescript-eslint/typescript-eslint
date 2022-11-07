@@ -692,7 +692,6 @@ export default util.createRule<Options, MessageIds>({
           if (sourceImports.typeOnlyNamedImport.range[1] <= node.range[0]) {
             yield insertTypeNamedSpecifiers;
           } else {
-            // TODO: delay inserting b/c....
             afterFixes.push(insertTypeNamedSpecifiers);
           }
         } else {
