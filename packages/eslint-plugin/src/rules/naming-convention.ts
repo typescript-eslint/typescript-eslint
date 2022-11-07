@@ -330,10 +330,6 @@ export default util.createRule<Options, MessageIds>({
               modifiers.add(Modifiers.unused);
             }
 
-            if (node.async) {
-              modifiers.add(Modifiers.async);
-            }
-
             validator(i, modifiers);
           });
         });
