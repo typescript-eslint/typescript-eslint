@@ -2090,7 +2090,7 @@ type T = B;
 type U = D;
 type V = A;
       `,
-      output: noFormat`
+      output: `
 import {type B, type C as D} from 'foo';
 import type A from 'foo';
 type T = B;
