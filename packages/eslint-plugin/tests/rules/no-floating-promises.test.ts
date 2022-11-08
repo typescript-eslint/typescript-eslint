@@ -656,6 +656,42 @@ async function test() {
         {
           line: 3,
           messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function test() {
+  await Promise.resolve();
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  const promise = new Promise((resolve, reject) => resolve('value'));
+  promise;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function test() {
+  const promise = new Promise((resolve, reject) => resolve('value'));
+  await promise;
+}
+      `,
+            },
+          ],
         },
       ],
     },

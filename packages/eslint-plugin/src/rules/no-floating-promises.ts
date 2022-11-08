@@ -12,7 +12,11 @@ type Options = [
   },
 ];
 
-type MessageId = 'floating' | 'floatingVoid' | 'floatingFixVoid';
+type MessageId =
+  | 'floating'
+  | 'floatingVoid'
+  | 'floatingFixVoid'
+  | 'floatingFixAwait';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
@@ -27,6 +31,7 @@ export default util.createRule<Options, MessageId>({
     messages: {
       floating:
         'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.',
+      floatingFixAwait: 'Add await operator.',
       floatingVoid:
         'Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler' +
         ' or be explicitly marked as ignored with the `void` operator.',
@@ -95,6 +100,20 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'floating',
+              suggest: [
+                {
+                  messageId: 'floatingFixAwait',
+                  fix(fixer): TSESLint.RuleFix {
+                    let code = sourceCode.getText(node);
+                    code = `await ${
+                      code.startsWith('void')
+                        ? code.replace('void', '').trimStart()
+                        : code
+                    }`;
+                    return fixer.replaceText(node, code);
+                  },
+                },
+              ],
             });
           }
         }
