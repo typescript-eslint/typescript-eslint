@@ -114,7 +114,7 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
           {title}
         </Heading>
       </div>
-      {description}
+      <p>{description}</p>
       <div className={styles.buttons}>
         <Link className="button button--primary" to={useBaseUrl('docs/')}>
           Get Started
