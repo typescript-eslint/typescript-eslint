@@ -108,7 +108,7 @@ const features: FeatureItem[] = [
 function Feature({ title, description }: FeatureItem): JSX.Element {
   return (
     <div className="col col--12 padding-vert--lg">
-      <h2 id="title" className="text--center">{title}</h2>
+      <Heading as="h2" id="title" className="text--center">{title}</h2>
       {description}
       <div className={styles.buttons}>
         <Link className="button button--primary" to={useBaseUrl('docs/')}>
@@ -161,7 +161,7 @@ function Home(): JSX.Element {
         ))}
         <section className={styles.sponsors}>
           <div className="container text--center padding-vert--lg">
-            <h2 id="financial-contributors">Financial Contributors</h2>
+            <Heading as="h2" id="financial-contributors">Financial Contributors</h2>
             <FinancialContributors />
           </div>
         </section>
