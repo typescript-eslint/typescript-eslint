@@ -108,10 +108,12 @@ const features: FeatureItem[] = [
 
 function Feature({ title, description }: FeatureItem): JSX.Element {
   return (
-    <div className="col col--12 padding-vert--lg text--center">
-      <Heading as="h2" id="title">
-        {title}
-      </Heading>
+    <div className="col col--12 padding-vert--lg ">
+      <div className="text--center">
+        <Heading as="h2" id="title">
+          {title}
+        </Heading>
+      </div>
       {description}
       <div className={styles.buttons}>
         <Link className="button button--primary" to={useBaseUrl('docs/')}>
