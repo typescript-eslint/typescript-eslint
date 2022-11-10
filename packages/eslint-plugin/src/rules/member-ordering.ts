@@ -791,7 +791,7 @@ export default util.createRule<Options, MessageIds>({
 
       // Standardize config
       let order: Order | undefined;
-      let memberTypes;
+      let memberTypes: string | MemberType[] | undefined;
       let requiredFirst = false;
 
       const memberSets: Array<Member[]> = [];
@@ -801,7 +801,11 @@ export default util.createRule<Options, MessageIds>({
 
         // Check order
         if (Array.isArray(memberTypes)) {
-          const grouped = checkGroupSort(members, memberTypes, supportsModifiers);
+          const grouped = checkGroupSort(
+            memberSet,
+            memberTypes,
+            supportsModifiers,
+          );
 
           if (grouped === null) {
             return;
@@ -814,7 +818,7 @@ export default util.createRule<Options, MessageIds>({
             );
           }
         } else if (hasAlphaSort) {
-          checkAlphaSort(members, order as AlphabeticalOrder);
+          checkAlphaSort(memberSet, order as AlphabeticalOrder);
         }
       };
 
