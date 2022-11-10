@@ -16,7 +16,8 @@ interface X {
   c: string;
   b?: string;
   d?: string;
-}           `,
+}
+      `,
       options: [
         {
           default: {
@@ -33,7 +34,8 @@ interface X {
   b?: string;
   c?: string;
   d?: string;
-}           `,
+}
+      `,
       options: [
         {
           default: {
@@ -50,7 +52,8 @@ interface X {
   b: string;
   c: string;
   d: string;
-}           `,
+}
+      `,
       options: [
         {
           default: {
@@ -69,7 +72,8 @@ interface X {
   m: string;
   d?: string;
   b?: string;
-}           `,
+}
+      `,
       options: [
         {
           default: {
@@ -94,7 +98,7 @@ interface X {
   b?: string;
   c: string;
 }
-            `,
+      `,
       options: [
         {
           default: {
