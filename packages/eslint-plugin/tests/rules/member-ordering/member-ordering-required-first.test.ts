@@ -1,8 +1,8 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import type { MessageIds, Options } from '../../src/rules/member-ordering';
-import rule from '../../src/rules/member-ordering';
-import { RuleTester } from '../RuleTester';
+import type { MessageIds, Options } from '../../../src/rules/member-ordering';
+import rule from '../../../src/rules/member-ordering';
+import { RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -22,6 +22,40 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
+            requiredFirst: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  b?: string;
+  c?: string;
+  d?: string;
+}           `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'as-written',
+            requiredFirst: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  b: string;
+  c: string;
+  d: string;
+}           `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'as-written',
             requiredFirst: true,
           },
         },

@@ -751,7 +751,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Checks if all required members appear before all optional members.
      *
-     * @param members Members to be validated.
+     * @param {Member[]} members Members to be validated.
      *
      * @return True if all required and optional members are correctly sorted.
      */
@@ -760,6 +760,12 @@ export default util.createRule<Options, MessageIds>({
       const firstOptionalMemberIndex = members.findIndex(member =>
         isMemberOptional(member),
       );
+
+      // if the array is either all required members or all optional members
+      // then its already in required first order
+      if (firstOptionalMemberIndex === -1 || lastRequiredMemberIndex === -1) {
+        return true;
+      }
 
       if (firstOptionalMemberIndex < lastRequiredMemberIndex) {
         context.report({
@@ -851,15 +857,20 @@ export default util.createRule<Options, MessageIds>({
           isMemberOptional(member),
         );
 
-        const requiredMembers: Member[] = members.slice(
-          0,
-          lastRequiredMemberIndex + 1,
-        );
-        const optionalMembers: Member[] = members.slice(
-          firstOptionalMemberIndex,
-        );
+        if (lastRequiredMemberIndex != -1) {
+          const requiredMembers: Member[] = members.slice(
+            0,
+            lastRequiredMemberIndex + 1,
+          );
+          memberSets.push(requiredMembers);
+        }
 
-        memberSets.push(requiredMembers, optionalMembers);
+        if (firstOptionalMemberIndex != -1) {
+          const optionalMembers: Member[] = members.slice(
+            firstOptionalMemberIndex,
+          );
+          memberSets.push(optionalMembers);
+        }
       }
 
       if (memberSets.length === 0) {
