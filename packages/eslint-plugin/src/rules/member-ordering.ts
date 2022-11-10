@@ -792,7 +792,7 @@ export default util.createRule<Options, MessageIds>({
       // Standardize config
       let order: Order | undefined;
       let memberTypes: string | MemberType[] | undefined;
-      let requiredFirst = false;
+      let requiredFirst: boolean | undefined = false;
 
       const memberSets: Array<Member[]> = [];
 
