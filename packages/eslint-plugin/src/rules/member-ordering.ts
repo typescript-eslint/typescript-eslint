@@ -387,7 +387,8 @@ function getMemberName(
  * Returns true if the member is optional based on the member type.
  *
  * @param node the node to be evaluated.
- * @param sourceCode
+ *
+ * @returns {Boolean} Returns true if the member is optional, false if it is not and undefined if it cannot be optional at all.
  */
 function isMemberOptional(node: Member): boolean | undefined {
   switch (node.type) {
@@ -408,22 +409,29 @@ function isMemberOptional(node: Member): boolean | undefined {
 }
 
 /**
- * Gets the index of the
+ * Gets the index of the last required member in the array.
  *
- * @param node the node to be evaluated.
- * @param sourceCode
+ * @example
+ * // returns 5
+ * getIndexOfLastRequiredMember([ req, req, req, optional, req, req, optional ])
+ * //                              0    1    2      3       4    5      6
+ *
+ * @param {Member[]} members An array of Member nodes containing required and optional items.
+ *
+ * @returns {Number} Returns the index of the element if it finds it or -1 otherwise.
  */
 function getIndexOfLastRequiredMember(members: Member[]): number {
-  let idx = members
-    .slice()
-    .reverse()
-    .findIndex(member => !isMemberOptional(member));
+  let idx = members.length - 1;
 
-  if (idx != -1) {
-    idx = members.length - 1 - idx;
+  while (idx >= 0) {
+    const isMemberRequired = !isMemberOptional(members[idx]);
+    if (isMemberRequired) {
+      return idx;
+    }
+    idx--;
   }
 
-  return idx;
+  return -1;
 }
 
 /**
