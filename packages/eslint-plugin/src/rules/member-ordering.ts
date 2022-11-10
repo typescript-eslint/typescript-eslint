@@ -4,7 +4,10 @@ import naturalCompare from 'natural-compare-lite';
 
 import * as util from '../util';
 
-export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
+export type MessageIds =
+  | 'incorrectGroupOrder'
+  | 'incorrectOrder'
+  | 'incorrectRequiredFirstOrder';
 
 type MemberKind =
   | 'call-signature'
@@ -46,6 +49,7 @@ type Order = AlphabeticalOrder | 'as-written';
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
   order: Order;
+  requiredFirst?: boolean;
 }
 
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
@@ -98,6 +102,9 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
         'natural',
         'natural-case-insensitive',
       ],
+    },
+    requiredFirst: {
+      type: 'boolean',
     },
   },
   additionalProperties: false,
@@ -377,6 +384,49 @@ function getMemberName(
 }
 
 /**
+ * Returns true if the member is optional based on the member type.
+ *
+ * @param node the node to be evaluated.
+ * @param sourceCode
+ */
+function isMemberOptional(node: Member): boolean | undefined {
+  switch (node.type) {
+    case AST_NODE_TYPES.TSPropertySignature:
+    case AST_NODE_TYPES.TSMethodSignature:
+    case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.PropertyDefinition:
+    case AST_NODE_TYPES.TSAbstractMethodDefinition:
+    case AST_NODE_TYPES.MethodDefinition:
+      return node.optional;
+    case AST_NODE_TYPES.TSConstructSignatureDeclaration:
+    case AST_NODE_TYPES.TSCallSignatureDeclaration:
+    case AST_NODE_TYPES.TSIndexSignature:
+    case AST_NODE_TYPES.StaticBlock:
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Gets the index of the
+ *
+ * @param node the node to be evaluated.
+ * @param sourceCode
+ */
+function getIndexOfLastRequiredMember(members: Member[]): number {
+  let idx = members
+    .slice()
+    .reverse()
+    .findIndex(member => !isMemberOptional(member));
+
+  if (idx != -1) {
+    idx = members.length - 1 - idx;
+  }
+
+  return idx;
+}
+
+/**
  * Gets the calculated rank using the provided method definition.
  * The algorithm is as follows:
  * - Get the rank based on the accessibility-scope-type name, e.g. public-instance-field
@@ -525,6 +575,7 @@ export default util.createRule<Options, MessageIds>({
         'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectGroupOrder:
         'Member {{name}} should be declared before all {{rank}} definitions.',
+      incorrectRequiredFirstOrder: `Required {{member}} should be declared before optional member {{beforeMember}}.`,
     },
     schema: [
       {
@@ -690,6 +741,39 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if all required members appear before all optional members.
+     *
+     * @param members Members to be validated.
+     *
+     * @return True if all required and optional members are correctly sorted.
+     */
+    function checkRequiredFirstOrder(members: Member[]): boolean {
+      const lastRequiredMemberIndex = getIndexOfLastRequiredMember(members);
+      const firstOptionalMemberIndex = members.findIndex(member =>
+        isMemberOptional(member),
+      );
+
+      if (firstOptionalMemberIndex < lastRequiredMemberIndex) {
+        context.report({
+          messageId: 'incorrectRequiredFirstOrder',
+          loc: members[firstOptionalMemberIndex].loc,
+          data: {
+            member: getMemberName(
+              members[lastRequiredMemberIndex],
+              context.getSourceCode(),
+            ),
+            beforeMember: getMemberName(
+              members[firstOptionalMemberIndex],
+              context.getSourceCode(),
+            ),
+          },
+        });
+      }
+
+      return firstOptionalMemberIndex > lastRequiredMemberIndex;
+    }
+
+    /**
      * Validates if all members are correctly sorted.
      *
      * @param members Members to be validated.
@@ -708,33 +792,69 @@ export default util.createRule<Options, MessageIds>({
       // Standardize config
       let order: Order | undefined;
       let memberTypes;
+      let requiredFirst = false;
+
+      const memberSets: Array<Member[]> = [];
+
+      const checkOrder = (memberSet: Member[]): void => {
+        const hasAlphaSort = !!(order && order !== 'as-written');
+
+        // Check order
+        if (Array.isArray(memberTypes)) {
+          const grouped = checkGroupSort(members, memberTypes, supportsModifiers);
+
+          if (grouped === null) {
+            return;
+          }
+
+          if (hasAlphaSort) {
+            grouped.some(
+              groupMember =>
+                !checkAlphaSort(groupMember, order as AlphabeticalOrder),
+            );
+          }
+        } else if (hasAlphaSort) {
+          checkAlphaSort(members, order as AlphabeticalOrder);
+        }
+      };
 
       if (Array.isArray(orderConfig)) {
         memberTypes = orderConfig;
       } else {
         order = orderConfig.order;
         memberTypes = orderConfig.memberTypes;
+        requiredFirst = orderConfig.requiredFirst;
       }
 
-      const hasAlphaSort = !!(order && order !== 'as-written');
-
-      // Check order
-      if (Array.isArray(memberTypes)) {
-        const grouped = checkGroupSort(members, memberTypes, supportsModifiers);
-
-        if (grouped === null) {
+      if (requiredFirst) {
+        if (!checkRequiredFirstOrder(members)) {
           return;
         }
 
-        if (hasAlphaSort) {
-          grouped.some(
-            groupMember =>
-              !checkAlphaSort(groupMember, order as AlphabeticalOrder),
-          );
-        }
-      } else if (hasAlphaSort) {
-        checkAlphaSort(members, order as AlphabeticalOrder);
+        // if the order of required and optional elements is correct,
+        // then check for correct order within the required and
+        // optional member sets
+        const lastRequiredMemberIndex = getIndexOfLastRequiredMember(members);
+        const firstOptionalMemberIndex = members.findIndex(member =>
+          isMemberOptional(member),
+        );
+
+        const requiredMembers: Member[] = members.slice(
+          0,
+          lastRequiredMemberIndex + 1,
+        );
+        const optionalMembers: Member[] = members.slice(
+          firstOptionalMemberIndex,
+        );
+
+        memberSets.push(requiredMembers, optionalMembers);
       }
+
+      if (memberSets.length === 0) {
+        memberSets.push(members);
+      }
+
+      memberSets.forEach(checkOrder);
     }
 
     return {
