@@ -107,7 +107,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: `Enforces that eslint-plugin test snippets are correctly formatted`,
+      description: `Enforce that eslint-plugin test snippets are correctly formatted`,
       recommended: 'error',
       requiresTypeChecking: true,
     },
