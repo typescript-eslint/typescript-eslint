@@ -257,6 +257,11 @@ module.exports = {
         './packages/eslint-plugin/src/rules/**/*.ts',
       ],
       rules: {
+        'eslint-plugin/require-meta-docs-description': [
+          'error',
+          { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },
+        ],
+
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
       },
