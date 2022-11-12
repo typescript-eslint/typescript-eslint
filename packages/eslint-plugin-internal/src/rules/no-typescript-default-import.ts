@@ -20,7 +20,7 @@ export default createRule({
     type: 'problem',
     docs: {
       description:
-        "Enforces that packages rules don't do `import ts from 'typescript';`",
+        "Enforce that packages rules don't do `import ts from 'typescript';`",
       recommended: 'error',
     },
     fixable: 'code',
