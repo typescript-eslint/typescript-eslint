@@ -12,8 +12,8 @@ import { RuleTester } from '../RuleTester';
 // Helpers
 //------------------------------------------------------------------------------
 
-const BOTH = { before: true, after: true };
-const NEITHER = { before: false, after: false };
+const BOTH: Options[0] = { before: true, after: true };
+const NEITHER: Options[0] = { before: false, after: false };
 
 /**
  * Creates an option object to test an 'overrides' option.
@@ -114,6 +114,16 @@ ruleTester.run('keyword-spacing', rule, {
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
+    // {
+    //   code: 'import type { foo } from "foo";',
+    //   options: [{ overrides: { as: {} } }],
+    //   parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    // },
+    // {
+    //   code: 'import type * as Foo from \'foo\'',
+    //   options: [{ overrides: { as: {} } }],
+    //   parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    // },
   ],
   invalid: [
     //----------------------------------------------------------------------
@@ -151,6 +161,34 @@ ruleTester.run('keyword-spacing', rule, {
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: expectedAfter('as'),
+    },
+    {
+      code: 'import type{ foo } from "foo";',
+      output: 'import type { foo } from "foo";',
+      options: [{ after: true, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'expectedBefore', data: { value: '{' } }],
+    },
+    {
+      code: 'import type { foo } from"foo";',
+      output: 'import type{ foo } from"foo";',
+      options: [{ after: false, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'unexpectedBefore', data: { value: '{' } }],
+    },
+    {
+      code: 'import type* as foo from "foo";',
+      output: 'import type * as foo from "foo";',
+      options: [{ after: true, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'expectedBefore', data: { value: '*' } }],
+    },
+    {
+      code: 'import type * as foo from"foo";',
+      output: 'import type* as foo from"foo";',
+      options: [{ after: false, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'unexpectedBefore', data: { value: '*' } }],
     },
   ],
 });
