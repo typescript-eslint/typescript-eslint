@@ -16,30 +16,79 @@ async function main(): Promise<void> {
 
   const newRuleNames = await getNewRulesAsOfMajorVersion('5.0.0');
 
-  console.log(`
-<details>
-<summary>Header Key</summary>
+  console.log(`## Table Key
 
-- New = new since version 5.0.0
-  - 🆕 = newly added to TypeScript-ESLint
-- Ext = extension rule
-- Dep = deprecated
-  - ☑️ = deprecated in the next major
-  - 🗑️ = to be removed from the plugin in the next version
-- R = recommended
-  - ⚠️ = recommended as warning
-  - 🛑  = recommended as an error
-  - 🗑️  = remove from recommended this version
-- RWT = recommended with typechecking
-  - ⚠️ = recommended as warning
-  - 🛑  = recommended as an error
-  - 🗑️  = remove from recommended this version
-- Str = strict
-  - ⚠️ = recommended as warning
-  - 🗑️  = remove from recommended this version
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Description</th>
+      <th>Emojis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Status</td>
+      <td>Being added, deprecated, or removed</td>
+      <td>
+        <ul>
+          <li>🆕 = newly added to TypeScript-ESLint</li>
+          <li>🙅 = deprecated in the next major</li>
+          <li>➖️ = to be removed from the plugin in the next version</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Ext</td>
+      <td>Extension rule?</td>
+      <td>
+        <ul>
+          <li>☑️ = yes</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>R</td>
+      <td>Recommended</td>
+      <td>
+        <ul>
+          <li>➕ = add to recommended this version</li>
+          <li>⚠️ = recommended as warning</li>
+          <li>🛑 = recommended as an error</li>
+          <li>➖️ = remove from recommended this version</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>RWT</td>
+      <td>Recommended-requiring-type-checking</td>
+      <td>
+        <ul>
+          <li>➕ = add to recommended-with-typechecking this version</li>
+          <li>⚠️ = recommended as warning</li>
+          <li>🛑 = recommended as an error</li>
+          <li>➖️ = remove from recommended this version</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Strict</td>
+      <td>Strict</td>
+      <td>
+        <ul>
+          <li>➕ = add to strict this version</li>
+          <li>⚠️ = recommended as warning</li>
+          <li>➖️ = remove from strict this version</li>
+        </ul>
+      </td>
+  </tr>
+  </tbody>
+</table>
 
-</details>
-  `);
+## Recommendations Table
+
+> Hint: search for 🆕 to find newly added rules, and ➕ or ➖ to see config changes.
+`);
 
   console.log(
     markdownTable([
