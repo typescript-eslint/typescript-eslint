@@ -114,16 +114,16 @@ ruleTester.run('keyword-spacing', rule, {
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
-    // {
-    //   code: 'import type { foo } from "foo";',
-    //   options: [{ overrides: { as: {} } }],
-    //   parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-    // },
-    // {
-    //   code: 'import type * as Foo from \'foo\'',
-    //   options: [{ overrides: { as: {} } }],
-    //   parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-    // },
+    {
+      code: 'import type { foo } from "foo";',
+      options: [{ overrides: { as: {} } }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: "import type * as Foo from 'foo'",
+      options: [{ overrides: { as: {} } }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
   ],
   invalid: [
     //----------------------------------------------------------------------
