@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.42.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.0...v5.42.1) (2022-11-07)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+### Bug Fixes
+
+- **typescript-estree:** don't allow single-run unless we're in type-aware linting mode ([#5893](https://github.com/typescript-eslint/typescript-eslint/issues/5893)) ([891b087](https://github.com/typescript-eslint/typescript-eslint/commit/891b0879ba9c64a4722b8c0bf9e599a725b6d6df))
+
+### Features
+
+- **typescript-estree:** clarify docs and error for program project without matching TSConfig ([#5762](https://github.com/typescript-eslint/typescript-eslint/issues/5762)) ([67744db](https://github.com/typescript-eslint/typescript-eslint/commit/67744db31f61acab14b5fe027fbc2844ba198c97))
+
 # [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree
