@@ -80,23 +80,19 @@ class Foo {}
     },
     {
       code: `
-namespace Foo {
-  export interface Bar {}
-}
-namespace Foo {
-  export class Bar {}
-}
+class Foo {}
+interface Foo {}
       `,
       errors: [
         {
           messageId: 'unsafeMerging',
-          line: 3,
-          column: 20,
+          line: 2,
+          column: 7,
         },
         {
           messageId: 'unsafeMerging',
-          line: 6,
-          column: 16,
+          line: 3,
+          column: 11,
         },
       ],
     },

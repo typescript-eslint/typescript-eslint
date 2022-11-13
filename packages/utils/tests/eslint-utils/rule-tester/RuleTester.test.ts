@@ -73,8 +73,8 @@ RuleTester.itOnly = jest.fn();
 /* eslint-enable jest/prefer-spy-on */
 
 const mockedAfterAll = jest.mocked(RuleTester.afterAll);
-const _mockedDescribe = jest.mocked(RuleTester.describe);
-const _mockedIt = jest.mocked(RuleTester.it);
+const mockedDescribe = jest.mocked(RuleTester.describe);
+const mockedIt = jest.mocked(RuleTester.it);
 const _mockedItOnly = jest.mocked(RuleTester.itOnly);
 const runSpy = jest.spyOn(BaseRuleTester.prototype, 'run');
 const mockedParserClearCaches = jest.mocked(parser.clearCaches);
@@ -714,6 +714,93 @@ describe('RuleTester', () => {
           ],
         }
       `);
+    });
+
+    describe('constructor constraints', () => {
+      it('skips all tests if a constructor constraint is not satisifed', () => {
+        const ruleTester = new RuleTester({
+          parser: '@typescript-eslint/parser',
+          dependencyConstraints: {
+            'totally-real-dependency': '999',
+          },
+        });
+
+        ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [
+            {
+              code: 'failing - major',
+              errors: [],
+            },
+          ],
+          valid: [
+            {
+              code: 'passing - major',
+            },
+          ],
+        });
+
+        // trigger the describe block
+        expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
+        mockedDescribe.mock.lastCall?.[1]();
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+          ]
+        `);
+        expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`
+          [
+            "All tests skipped due to unsatisfied constructor dependency constraints",
+            [Function],
+          ]
+        `);
+      });
+
+      it('does not skip all tests if a constructor constraint is satisifed', () => {
+        const ruleTester = new RuleTester({
+          parser: '@typescript-eslint/parser',
+          dependencyConstraints: {
+            'totally-real-dependency': '10',
+          },
+        });
+
+        ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [
+            {
+              code: 'valid',
+              errors: [],
+            },
+          ],
+          valid: [
+            {
+              code: 'valid',
+            },
+          ],
+        });
+
+        // trigger the describe block
+        expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
+        mockedDescribe.mock.lastCall?.[1]();
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "valid",
+              [Function],
+            ],
+            [
+              "invalid",
+              [Function],
+            ],
+          ]
+        `);
+        // expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`undefined`);
+      });
     });
   });
 });

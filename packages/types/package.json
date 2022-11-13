@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "5.40.1",
+  "version": "5.42.1",
   "description": "Types for the TypeScript-ESTree AST spec",
   "keywords": [
     "eslint",
