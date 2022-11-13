@@ -224,6 +224,7 @@ export default util.createRule({
             let operator = previous.right.operator;
             if (
               previous.right.operator === '!==' &&
+              // TODO(#4820): Use the type checker to know whether this is `null`
               previous.right.right.type === AST_NODE_TYPES.Literal &&
               previous.right.right.raw === 'null'
             ) {
