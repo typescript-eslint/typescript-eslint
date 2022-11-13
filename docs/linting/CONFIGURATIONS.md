@@ -13,7 +13,7 @@ With the exception of `strict`, all configurations are considered "stable".
 Rule additions and removals are treated as breaking changes and will only be done in major version bumps.
 
 :::note
-We recommend most packages extend from [`recommended-requiring-type-checking`](#recommended-requiring-type-checking) (which requires [typed linting](./TYPED_LINTING.md)).
+We recommend most packages extend from [`recommended-requiring-type-checking`](#recommended-requiring-type-checking) (which requires [typed linting](./Typed_Linting.md)).
 :::
 
 ### `eslint-recommended`

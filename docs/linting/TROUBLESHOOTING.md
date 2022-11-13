@@ -35,11 +35,11 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 - If you **do not** want to lint the file:
   - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+  - If you **do not** want to lint the file with [type-aware linting](./Typed_Linting.md):
     - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
       - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
       - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
-  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+  - If you **do** want to lint the file with [type-aware linting](./Typed_Linting.md):
     - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
       - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
@@ -64,7 +64,7 @@ For example, many projects have files like:
 
 In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
 
-See our docs on [type aware linting](./TYPED_LINTING.md) for more information.
+See our docs on [type aware linting](./Typed_Linting.md) for more information.
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
@@ -207,7 +207,7 @@ See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/
 
 ## My linting feels really slow
 
-As mentioned in the [type-aware linting doc](./TYPED_LINTING.md), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+As mentioned in the [type-aware linting doc](./Typed_Linting.md), if you're using type-aware linting, your lint times should be roughly the same as your build times.
 
 If you're experiencing times much slower than that, then there are a few common culprits.
 

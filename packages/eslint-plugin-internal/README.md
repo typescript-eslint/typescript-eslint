@@ -1,9 +1,5 @@
-<h1 align="center">Internal ESLint Plugin</h1>
+# `@typescript-eslint/eslint-plugin-internal`
 
-<p align="center">An ESLint plugin used internally in this project to ensure consistency.</p>
-
-<p align="center">
-    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
-</p>
+> An ESLint plugin used internally in this project to ensure consistency.
 
 This plugin is not intended to be used externally.

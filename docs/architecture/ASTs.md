@@ -1,6 +1,6 @@
 ---
 id: asts
-sidebar_label: ASTs
+sidebar_label: 'ASTs'
 ---
 
 # Abstract Syntax Trees (ASTs)

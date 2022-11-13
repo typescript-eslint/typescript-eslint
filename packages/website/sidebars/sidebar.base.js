@@ -35,22 +35,30 @@ module.exports = {
       label: 'Getting Started',
       type: 'category',
     },
+    'custom-rules',
     {
+      collapsible: false,
+      items: ['contributing/development'],
+      label: 'Contributing',
+      link: {
+        id: 'contributing',
+        type: 'doc',
+      },
       type: 'category',
-      label: 'Development',
+    },
+    {
       collapsible: false,
       items: [
-        {
-          label: 'Architecture',
-          type: 'category',
-          collapsible: false,
-          items: [
-            'development/architecture/asts',
-            'development/architecture/packages',
-          ],
-        },
-        'development/custom-rules',
+        'architecture/asts',
+        'architecture/eslint-plugin',
+        'architecture/eslint-plugin-tslint',
+        'architecture/parser',
+        'architecture/scope-manager',
+        'architecture/typescript-estree',
+        'architecture/utils',
       ],
+      label: 'Architecture',
+      type: 'category',
     },
     {
       collapsible: false,

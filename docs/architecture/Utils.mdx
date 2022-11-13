@@ -1,0 +1,28 @@
+---
+id: utils
+sidebar_label: utils
+---
+
+# `@typescript-eslint/utils`
+
+> Utilities for working with TypeScript + ESLint together. ✨
+
+This package contains public utilities for writing custom rules and plugins in TypeScript.
+Rules declared in [`@typescript-eslint/eslint-plugin`](https://typescript-eslint.io/docs/architecture/eslint-plugin) are created using these utility functions.
+Any custom rules you write generally will be as well.
+
+> See [Custom Rules](https://typescript-eslint.io/docs/custom-rules) for documentation on creating your own custom ESLint rules for TypeScript code.
+
+## Exports
+
+| Name              | Description                                                                                                                                                                                                                       |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AST_NODE_TYPES`  | An enum with the names of every single _node_ found in `TSESTree`.                                                                                                                                                                |
+| `AST_TOKEN_TYPES` | An enum with the names of every single _token_ found in `TSESTree`.                                                                                                                                                               |
+| `ASTUtils`        | Tools for operating on the ESTree AST. Also includes the [`eslint-utils`](https://www.npmjs.com/package/eslint-utils) package, correctly typed to work with the types found in `TSESTree`                                         |
+| `ESLintUtils`     | Tools for creating ESLint rules with TypeScript.                                                                                                                                                                                  |
+| `JSONSchema`      | Types from the [`@types/json-schema`](https://www.npmjs.com/package/@types/json-schema) package, re-exported to save you having to manually import them. Also ensures you're using the same version of the types as this package. |
+| `ParserServices`  | Typing for the parser services provided when parsing a file using `@typescript-eslint/typescript-estree`.                                                                                                                         |
+| `TSESLint`        | Types for ESLint, correctly typed to work with the types found in `TSESTree`.                                                                                                                                                     |
+| `TSESLintScope`   | The [`eslint-scope`](https://www.npmjs.com/package/eslint-scope) package, correctly typed to work with the types found in both `TSESTree` and `TSESLint`                                                                          |
+| `TSESTree`        | Types for the TypeScript flavor of ESTree created by `@typescript-eslint/typescript-estree`.                                                                                                                                      |

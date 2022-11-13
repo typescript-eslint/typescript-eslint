@@ -1,0 +1,51 @@
+---
+id: eslint-plugin-tslint
+sidebar_label: eslint-plugin-tslint
+---
+
+# `@typescript-eslint/eslint-plugin-tslint`
+
+> ESLint plugin that allows running TSLint rules within ESLint to help you migrate from TSLint to ESLint. ✨
+
+:::danger
+Per [What About TSLint?](../linting/troubleshooting/TSLint.md), we highly recommend migrating off TSLint.
+See [Getting Started](../README.md) for documentation on how to lint your TypeScript code with ESLint.
+:::
+
+## Installation
+
+```sh
+yarn add -D @typescript-eslint/eslint-plugin-tslint
+```
+
+## Usage
+
+Configure in your ESLint config file:
+
+```js
+{
+  "plugins": [
+    "@typescript-eslint/tslint"
+  ],
+  "parserOptions": {
+      "project": "tsconfig.json",
+  },
+  "rules": {
+    "@typescript-eslint/tslint/config": ["warn", {
+      "lintFile": "", // path to tslint.json of your project
+      "rules": {
+        // tslint rules (will be used if `lintFile` is not specified)
+      },
+      "rulesDirectory": [
+        // array of paths to directories with rules, e.g. 'node_modules/tslint/lib/rules' (will be used if `lintFile` is not specified)
+      ]
+    }],
+  }
+}
+```
+
+**Note:** The ability to automatically fix problems with `--fix` is unavailable for TSLint rules loaded with this plugin.
+
+## Rules
+
+This plugin contains only a single rule: `@typescript-eslint/tslint/config`.

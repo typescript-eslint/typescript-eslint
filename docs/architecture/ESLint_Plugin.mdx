@@ -1,0 +1,22 @@
+---
+id: eslint-plugin
+sidebar_label: eslint-plugin
+---
+
+# `@typescript-eslint/eslint-plugin`
+
+> The TypeScript plugin for ESLint. ✨
+
+:::info
+See [Getting Started](../README.md) for documentation on how to lint your TypeScript code with ESLint.
+:::
+
+`@typescript-eslint/eslint-plugin` is an ESLint plugin used to load in custom rules and rule configurations lists from typescript-eslint.
+Those rules rely on [`@typescript-eslint/parser`](./Parser.mdx) to parse TypeScript code into ESLint-compatible nodes, as well as provide backing TypeScript programs.
+
+## Exports
+
+| Name      | Description                                                                                                                                                                             |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `configs` | Object mapping string names of configs to extendable [ESLint config settings](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files). |
+| `rules`   | Object mapping string names of rules to the [rule objects](https://eslint.org/docs/latest/developer-guide/working-with-rules).                                                          |
