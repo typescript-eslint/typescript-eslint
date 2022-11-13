@@ -583,6 +583,7 @@ export default util.createRule<Options, MessageIds>({
         if (!shadowed) {
           continue;
         }
+
         // ignore type value variable shadowing if configured
         if (isTypeValueShadow(variable, shadowed)) {
           continue;
