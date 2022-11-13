@@ -60,6 +60,7 @@ function getGroup(node: TSESTree.TypeNode): Group {
     case AST_NODE_TYPES.TSIndexedAccessType:
     case AST_NODE_TYPES.TSInferType:
     case AST_NODE_TYPES.TSTypeReference:
+    case AST_NODE_TYPES.TSQualifiedName:
       return Group.named;
 
     case AST_NODE_TYPES.TSMappedType:
