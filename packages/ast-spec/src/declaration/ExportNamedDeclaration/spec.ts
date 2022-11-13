@@ -46,7 +46,7 @@ export interface ExportNamedDeclarationWithoutSourceWithMultiple
   extends ExportNamedDeclarationBase {
   // this will always be empty array
   assertions: ImportAttribute[];
-  declaration: NamedExportDeclarations;
+  declaration: null;
   source: null;
   specifiers: ExportSpecifier[];
 }
@@ -55,7 +55,7 @@ export interface ExportNamedDeclarationWithoutSourceWithSingle
   extends ExportNamedDeclarationBase {
   // this will always be empty array
   assertions: ImportAttribute[];
-  declaration: null;
+  declaration: NamedExportDeclarations;
   source: null;
   // this will always be empty array
   specifiers: ExportSpecifier[];

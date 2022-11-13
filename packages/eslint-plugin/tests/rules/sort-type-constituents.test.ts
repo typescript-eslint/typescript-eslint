@@ -45,6 +45,8 @@ const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
 type T =
   ${operator} A
   ${operator} B
+  ${operator} C.D
+  ${operator} D.E
   ${operator} intrinsic
   ${operator} number[]
   ${operator} string[]
@@ -220,6 +222,8 @@ type T =
   ${operator} readonly number[]
   ${operator} string[]
   ${operator} number[]
+  ${operator} D.E
+  ${operator} C.D
   ${operator} B
   ${operator} A
   ${operator} undefined
@@ -229,7 +233,7 @@ type T =
       `,
       output: `
 type T =
-  A ${operator} B ${operator} number[] ${operator} string[] ${operator} any ${operator} string ${operator} readonly number[] ${operator} readonly string[] ${operator} 'a' ${operator} 'b' ${operator} "a" ${operator} "b" ${operator} (() => string) ${operator} (() => void) ${operator} { a: string } ${operator} { b: string } ${operator} [1, 2, 3] ${operator} [1, 2, 4] ${operator} null ${operator} undefined;
+  A ${operator} B ${operator} C.D ${operator} D.E ${operator} number[] ${operator} string[] ${operator} any ${operator} string ${operator} readonly number[] ${operator} readonly string[] ${operator} 'a' ${operator} 'b' ${operator} "a" ${operator} "b" ${operator} (() => string) ${operator} (() => void) ${operator} { a: string } ${operator} { b: string } ${operator} [1, 2, 3] ${operator} [1, 2, 4] ${operator} null ${operator} undefined;
       `,
       errors: [
         {

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.42.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.0...v5.42.1) (2022-11-07)
+
+### Bug Fixes
+
+- **eslint-plugin:** isTypeReadonly stack overflow ([#5875](https://github.com/typescript-eslint/typescript-eslint/issues/5875)) ([#5876](https://github.com/typescript-eslint/typescript-eslint/issues/5876)) ([2d9a33c](https://github.com/typescript-eslint/typescript-eslint/commit/2d9a33cfb2db53d76246a59253daaf2abb19ee57))
+
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+### Bug Fixes
+
+- **ast-spec:** add TSQualifiedName to TypeNode union ([#5906](https://github.com/typescript-eslint/typescript-eslint/issues/5906)) ([5c316c1](https://github.com/typescript-eslint/typescript-eslint/commit/5c316c12f09d58aee6ee634a8055533f361f1589))
+- **eslint-plugin:** [no-extra-parens] handle type assertion in extends clause ([#5901](https://github.com/typescript-eslint/typescript-eslint/issues/5901)) ([8ed7219](https://github.com/typescript-eslint/typescript-eslint/commit/8ed72192c274249d26628fb125796e71318b857a))
+
+### Features
+
+- **eslint-plugin:** [member-ordering] add natural sort order ([#5662](https://github.com/typescript-eslint/typescript-eslint/issues/5662)) ([1eaae09](https://github.com/typescript-eslint/typescript-eslint/commit/1eaae09ecca359f366b94f6a04665403f48b05c7))
+- **eslint-plugin:** [no-invalid-void-type] better report message for void used as a constituent inside a function return type ([#5274](https://github.com/typescript-eslint/typescript-eslint/issues/5274)) ([d806bda](https://github.com/typescript-eslint/typescript-eslint/commit/d806bda82343712a24e3c78b9b34d4345dd1de3b))
+
 # [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
 
 ### Bug Fixes

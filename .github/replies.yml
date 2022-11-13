@@ -18,6 +18,25 @@ replies:
       If you need it sooner, please try the `canary` tag on NPM.
     name: Fix Has Been Merged
   - body: |
+      Thanks for the report @<reporter>!\
+      This might be a valid issue, but we can't tell because you haven't filled in enough information.\
+      Please fill in the rest of the issue template so we can take a look.\
+      Thanks!
+    name: Needs More Info
+  - body: |
+      Thanks for the report @<reporter>!\
+      I can't reproduce the issue using the repository you provided.\
+      Could you please comment with instructions on how to reproduce the issue?\
+      Thanks!
+    name: Needs Full Reproduction
+  - body: |
+      Thanks for the report @<reporter>!\
+      I can't reproduce the issue using the code you provided.\
+      Could you please create an isolated reproduction in our playground (https://typescript-eslint.io/play) and comment back when you've got one?\
+      We prefer an isolated reproduction so that we as volunteer maintainers can quickly reproduce the issue and more easily find the cause.\
+      Thanks!
+    name: Needs Playground Reproduction
+  - body: |
       With any issue opened in this project — it either has visible progress in the form of an attached PR, or it has no progress.\
       \
       We are a community-run project. The volunteer maintainers spend most of their time triaging issues and reviewing PRs. This means that most issues will not progress unless a member of the community steps up and champions it.\

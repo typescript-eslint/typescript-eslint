@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.42.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.0...v5.42.1) (2022-11-07)
+
+### Bug Fixes
+
+- **ast-spec:** correct misnamed ExportNamedDeclaration AST type ([#5913](https://github.com/typescript-eslint/typescript-eslint/issues/5913)) ([e88f4fa](https://github.com/typescript-eslint/typescript-eslint/commit/e88f4fa1d0127ba0ddeff578ec67f2e66a1de68b))
+- **eslint-plugin:** isTypeReadonly stack overflow ([#5875](https://github.com/typescript-eslint/typescript-eslint/issues/5875)) ([#5876](https://github.com/typescript-eslint/typescript-eslint/issues/5876)) ([2d9a33c](https://github.com/typescript-eslint/typescript-eslint/commit/2d9a33cfb2db53d76246a59253daaf2abb19ee57))
+
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+### Bug Fixes
+
+- **ast-spec:** add TSQualifiedName to TypeNode union ([#5906](https://github.com/typescript-eslint/typescript-eslint/issues/5906)) ([5c316c1](https://github.com/typescript-eslint/typescript-eslint/commit/5c316c12f09d58aee6ee634a8055533f361f1589))
+- **eslint-plugin:** [no-extra-parens] handle type assertion in extends clause ([#5901](https://github.com/typescript-eslint/typescript-eslint/issues/5901)) ([8ed7219](https://github.com/typescript-eslint/typescript-eslint/commit/8ed72192c274249d26628fb125796e71318b857a))
+- **eslint-plugin:** enable react/jsx-curly-brace-presence lint rule in website package ([#5894](https://github.com/typescript-eslint/typescript-eslint/issues/5894)) ([344322a](https://github.com/typescript-eslint/typescript-eslint/commit/344322add846d03c6c9981e486b09e6ba1196555))
+- **typescript-estree:** don't allow single-run unless we're in type-aware linting mode ([#5893](https://github.com/typescript-eslint/typescript-eslint/issues/5893)) ([891b087](https://github.com/typescript-eslint/typescript-eslint/commit/891b0879ba9c64a4722b8c0bf9e599a725b6d6df))
+
+### Features
+
+- **eslint-plugin:** [member-ordering] add natural sort order ([#5662](https://github.com/typescript-eslint/typescript-eslint/issues/5662)) ([1eaae09](https://github.com/typescript-eslint/typescript-eslint/commit/1eaae09ecca359f366b94f6a04665403f48b05c7))
+- **eslint-plugin:** [no-invalid-void-type] better report message for void used as a constituent inside a function return type ([#5274](https://github.com/typescript-eslint/typescript-eslint/issues/5274)) ([d806bda](https://github.com/typescript-eslint/typescript-eslint/commit/d806bda82343712a24e3c78b9b34d4345dd1de3b))
+- **scope-manager:** ignore ECMA version ([#5881](https://github.com/typescript-eslint/typescript-eslint/issues/5881)) ([3b8d449](https://github.com/typescript-eslint/typescript-eslint/commit/3b8d449696c319690536a18a48ef32749dc2f559))
+- **typescript-estree:** clarify docs and error for program project without matching TSConfig ([#5762](https://github.com/typescript-eslint/typescript-eslint/issues/5762)) ([67744db](https://github.com/typescript-eslint/typescript-eslint/commit/67744db31f61acab14b5fe027fbc2844ba198c97))
+- **utils:** add `RuleTester` API for top-level dependency constraints ([#5896](https://github.com/typescript-eslint/typescript-eslint/issues/5896)) ([0520d53](https://github.com/typescript-eslint/typescript-eslint/commit/0520d53536af411d66ce2ce0dd478365e67adbac))
+- **website:** Add a happy message to playground output pane when no errors or AST ([#5868](https://github.com/typescript-eslint/typescript-eslint/issues/5868)) ([#5873](https://github.com/typescript-eslint/typescript-eslint/issues/5873)) ([c4e0d86](https://github.com/typescript-eslint/typescript-eslint/commit/c4e0d8678e0398f3ab85510f40ad6f97832b9e6d))
+
+### Reverts
+
+- Revert "feat(scope-manager): ignore ECMA version" (#5888) ([2ee81df](https://github.com/typescript-eslint/typescript-eslint/commit/2ee81df5a365d82ef4b3dfc124d4ec39c7bcb725)), closes [#5888](https://github.com/typescript-eslint/typescript-eslint/issues/5888) [#5881](https://github.com/typescript-eslint/typescript-eslint/issues/5881)
+
 # [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
 
 ### Bug Fixes
