@@ -68,6 +68,9 @@ type T = (A) ${operator} (B);`,
     code: `type T = { a: string ${operator} number };`,
   },
   {
+    code: `type T = Set<string> ${operator} Set<number>;`,
+  },
+  {
     code: `type T = [1, 2, 3] ${operator} [1, 2, 4];`,
   },
   {
@@ -257,6 +260,45 @@ type T = (A)  ;`,
       ],
     },
     {
+      code: `type T = { a : string } ${operator} { a : string };`,
+      output: `type T = { a : string }  ;`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: '{ a : string }',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = { a : string, b : number } ${operator} { a : string, b : number };`,
+      output: `type T = { a : string, b : number }  ;`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: '{ a : string, b : number }',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = Set<string> ${operator} Set<string>;`,
+      output: `type T = Set<string>  ;`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: 'Set<string>',
+          },
+        },
+      ],
+    },
+    {
       code: `type T = [1, 2, 3] ${operator} [1, 2, 3];`,
       output: `type T = [1, 2, 3]  ;`,
       errors: [
@@ -420,6 +462,28 @@ type T = (A | B)  ;`,
           data: {
             type,
             name: 'A | B',
+          },
+        },
+      ],
+    },
+    {
+      code: `type A = "A";
+type T = A ${operator} (A ${operator} A);`,
+      output: `type A = "A";
+type T = A  ;`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: `A ${operator} A`,
+          },
+        },
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: 'A',
           },
         },
       ],

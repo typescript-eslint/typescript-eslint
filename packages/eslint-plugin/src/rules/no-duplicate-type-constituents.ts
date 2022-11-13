@@ -13,6 +13,71 @@ export type Options = [
 
 export type MessageIds = 'duplicate';
 
+const isRecordType = (
+  object: object,
+): object is Record<string | symbol, unknown> => {
+  return object.constructor === Object;
+};
+
+const astIgnoreKeys = ['range', 'loc', 'parent'];
+
+const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
+  if (actualNode === expectedNode) {
+    return true;
+  }
+  if (
+    actualNode &&
+    expectedNode &&
+    typeof actualNode == 'object' &&
+    typeof expectedNode == 'object'
+  ) {
+    if (actualNode.constructor !== expectedNode.constructor) {
+      return false;
+    }
+    if (Array.isArray(actualNode) && Array.isArray(expectedNode)) {
+      if (actualNode.length != expectedNode.length) {
+        return false;
+      }
+      return !actualNode.some(
+        (nodeEle, index) => !isSameAstNode(nodeEle, expectedNode[index]),
+      );
+    }
+    if (!isRecordType(actualNode) || !isRecordType(expectedNode)) {
+      return false;
+    }
+    const actualNodeKeys = Object.keys(actualNode).filter(
+      key => !astIgnoreKeys.includes(key),
+    );
+    const expectedNodeKeys = Object.keys(expectedNode).filter(
+      key => !astIgnoreKeys.includes(key),
+    );
+    if (actualNodeKeys.length !== expectedNodeKeys.length) {
+      return false;
+    }
+    if (
+      actualNodeKeys.some(
+        actualNodeKey =>
+          !Object.prototype.hasOwnProperty.call(expectedNode, actualNodeKey),
+      )
+    ) {
+      return false;
+    }
+    if (
+      actualNodeKeys.some(
+        actualNodeKey =>
+          !isSameAstNode(
+            actualNode[actualNodeKey],
+            expectedNode[actualNodeKey],
+          ),
+      )
+    ) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+};
+
 export default util.createRule<Options, MessageIds>({
   name: 'no-duplicate-type-constituents',
   meta: {
@@ -57,16 +122,25 @@ export default util.createRule<Options, MessageIds>({
       const uniqConstituentTypes = new Set<Type>();
       const duplicateConstituentNodes: TSESTree.TypeNode[] = [];
 
-      node.types.forEach(constituentNode => {
-        const type = checker.getTypeAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
-        );
-        if (uniqConstituentTypes.has(type)) {
-          duplicateConstituentNodes.push(constituentNode);
-        } else {
+      node.types.reduce<TSESTree.TypeNode[]>(
+        (uniqConstituentNodes, constituentNode) => {
+          const type = checker.getTypeAtLocation(
+            parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
+          );
+          if (
+            uniqConstituentNodes.some(ele =>
+              isSameAstNode(ele, constituentNode),
+            ) ||
+            uniqConstituentTypes.has(type)
+          ) {
+            duplicateConstituentNodes.push(constituentNode);
+            return uniqConstituentNodes;
+          }
           uniqConstituentTypes.add(type);
-        }
-      });
+          return [...uniqConstituentNodes, constituentNode];
+        },
+        [],
+      );
 
       const fix: TSESLint.ReportFixFunction = fixer => {
         return duplicateConstituentNodes
