@@ -6,19 +6,6 @@ import * as util from '../util';
 type Options = ['fields' | 'getters'];
 type MessageIds = 'preferFieldStyle' | 'preferGetterStyle';
 
-interface NodeWithModifiers {
-  accessibility?: TSESTree.Accessibility;
-  static: boolean;
-}
-
-const printNodeModifiers = (
-  node: NodeWithModifiers,
-  final: 'readonly' | 'get',
-): string =>
-  `${node.accessibility ?? ''}${
-    node.static ? ' static' : ''
-  } ${final} `.trimStart();
-
 const isSupportedLiteral = (
   node: TSESTree.Node,
 ): node is TSESTree.LiteralExpression => {
@@ -45,23 +32,22 @@ export default util.createRule<Options, MessageIds>({
         'Enforce that literals on classes are exposed in a consistent style',
       recommended: 'strict',
     },
-    fixable: 'code',
     messages: {
       preferFieldStyle: 'Literals should be exposed using readonly fields.',
       preferGetterStyle: 'Literals should be exposed using getters.',
     },
-    schema: [{ enum: ['fields', 'getters'] }],
+    schema: [
+      {
+        enum: ['fields', 'getters'],
+      },
+    ],
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
     return {
       ...(style === 'fields' && {
-        MethodDefinition(node): void {
-          if (
-            node.kind !== 'get' ||
-            !node.value.body ||
-            !node.value.body.body.length
-          ) {
+        'MethodDefinition[kind="get"]'(node: TSESTree.MethodDefinition): void {
+          if (!node.value.body?.body.length) {
             return;
           }
 
@@ -69,6 +55,19 @@ export default util.createRule<Options, MessageIds>({
 
           if (statement.type !== AST_NODE_TYPES.ReturnStatement) {
             return;
+          }
+
+          if (node.parent?.type === AST_NODE_TYPES.ClassBody) {
+            const classBody: TSESTree.ClassBody = node.parent;
+            const setter = classBody.body.find(
+              item =>
+                item.type === AST_NODE_TYPES.MethodDefinition &&
+                item.kind === 'set' &&
+                isEqualPropertyKey(node.key, item.key),
+            );
+            if (setter) {
+              return;
+            }
           }
 
           const { argument } = statement;
@@ -80,18 +79,6 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
-            fix(fixer) {
-              const sourceCode = context.getSourceCode();
-              const name = sourceCode.getText(node.key);
-
-              let text = '';
-
-              text += printNodeModifiers(node, 'readonly');
-              text += node.computed ? `[${name}]` : name;
-              text += ` = ${sourceCode.getText(argument)};`;
-
-              return fixer.replaceText(node, text);
-            },
           });
         },
       }),
@@ -110,21 +97,30 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node: node.key,
             messageId: 'preferGetterStyle',
-            fix(fixer) {
-              const sourceCode = context.getSourceCode();
-              const name = sourceCode.getText(node.key);
-
-              let text = '';
-
-              text += printNodeModifiers(node, 'get');
-              text += node.computed ? `[${name}]` : name;
-              text += `() { return ${sourceCode.getText(value)}; }`;
-
-              return fixer.replaceText(node, text);
-            },
           });
         },
       }),
     };
   },
 });
+
+function getPropertyName(key: TSESTree.PropertyName): unknown {
+  switch (key.type) {
+    case AST_NODE_TYPES.PrivateIdentifier:
+    case AST_NODE_TYPES.Identifier:
+      return key.name;
+    case AST_NODE_TYPES.Literal:
+      return key.raw;
+    default:
+      return undefined;
+  }
+}
+
+function isEqualPropertyKey(
+  base: TSESTree.PropertyName,
+  key: TSESTree.PropertyName,
+): boolean {
+  return (
+    base.type === key.type && getPropertyName(base) === getPropertyName(key)
+  );
+}

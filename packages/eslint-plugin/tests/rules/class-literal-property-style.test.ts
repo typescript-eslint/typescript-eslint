@@ -95,6 +95,93 @@ abstract class Mx {
       `,
       options: ['fields'],
     },
+    `
+      const a = {
+        get test(): string {
+          return 'test';
+        },
+      };
+    `,
+    `
+      class A {
+        method() {
+          return {
+            get test(): string {
+              return 'test';
+            },
+          };
+        }
+      }
+    `,
+    // From #5962
+    `
+      class Test {
+        set value(val: string) {
+          // ...
+        }
+
+        get value(): string {
+          return 'test';
+        }
+      }
+    `,
+    `
+      const key = Symbol();
+      class Test {
+        set [key](val: string) {
+          // ...
+        }
+
+        get [key](): string {
+          return 'test';
+        }
+      }
+    `,
+    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+    `
+      class Test {
+        set 'key'(val: string) {
+          // ...
+        }
+
+        get 'key'(): string {
+          return 'test';
+        }
+      }
+    `,
+    `
+      class Test {
+        set 0(val: string) {
+          // ...
+        }
+
+        get 0(): string {
+          return 'test';
+        }
+      }
+    `,
+    `
+      class Test {
+        set #key(val: string) {
+          // ...
+        }
+
+        get #key(): string {
+          return 'test';
+        }
+      }
+    `,
+    `
+      class Test {
+        set ['key'](val: string) {
+          // ...
+        }
+
+        get ['key'](): string {
+          return 'test';
+        }
+      }
+    `,
     {
       code: `
 class Mx {
@@ -187,11 +274,6 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -206,11 +288,6 @@ class Mx {
   get p1() {
     return \`hello world\`;
   }
-}
-      `,
-      output: `
-class Mx {
-  readonly p1 = \`hello world\`;
 }
       `,
       errors: [
@@ -229,11 +306,6 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  static readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -248,11 +320,6 @@ class Mx {
   public static get foo() {
     return 1;
   }
-}
-      `,
-      output: `
-class Mx {
-  public static readonly foo = 1;
 }
       `,
       errors: [
@@ -271,11 +338,6 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public readonly [myValue] = 'a literal value';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -292,11 +354,6 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public readonly [myValue] = 12345n;
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -309,11 +366,6 @@ class Mx {
       code: `
 class Mx {
   public readonly [myValue] = 'a literal value';
-}
-      `,
-      output: `
-class Mx {
-  public get [myValue]() { return 'a literal value'; }
 }
       `,
       errors: [
@@ -331,11 +383,6 @@ class Mx {
   readonly p1 = 'hello world';
 }
       `,
-      output: `
-class Mx {
-  get p1() { return 'hello world'; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
@@ -351,11 +398,6 @@ class Mx {
   readonly p1 = \`hello world\`;
 }
       `,
-      output: `
-class Mx {
-  get p1() { return \`hello world\`; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
@@ -369,11 +411,6 @@ class Mx {
       code: `
 class Mx {
   static readonly p1 = 'hello world';
-}
-      `,
-      output: `
-class Mx {
-  static get p1() { return 'hello world'; }
 }
       `,
       errors: [
@@ -393,11 +430,6 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  protected readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -411,11 +443,6 @@ class Mx {
       code: `
 class Mx {
   protected readonly p1 = 'hello world';
-}
-      `,
-      output: `
-class Mx {
-  protected get p1() { return 'hello world'; }
 }
       `,
       errors: [
@@ -435,11 +462,6 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public static readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -452,11 +474,6 @@ class Mx {
       code: `
 class Mx {
   public static readonly p1 = 'hello world';
-}
-      `,
-      output: `
-class Mx {
-  public static get p1() { return 'hello world'; }
 }
       `,
       errors: [
@@ -483,18 +500,6 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public readonly myValue = gql\`
-      {
-        user(id: 5) {
-          firstName
-          lastName
-        }
-      }
-    \`;
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
@@ -516,18 +521,6 @@ class Mx {
   \`;
 }
       `,
-      output: `
-class Mx {
-  public get myValue() { return gql\`
-    {
-      user(id: 5) {
-        firstName
-        lastName
-      }
-    }
-  \`; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
@@ -536,6 +529,30 @@ class Mx {
         },
       ],
       options: ['getters'],
+    },
+    {
+      code: `
+        class A {
+          _test: string;
+
+          get #test(): string {
+            return this._test;
+          }
+        }
+
+        class B extends A {
+          get #test(): string {
+            return 'test';
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'preferFieldStyle',
+          column: 15,
+          line: 11,
+        },
+      ],
     },
   ],
 });
