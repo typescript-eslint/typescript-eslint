@@ -212,7 +212,7 @@ const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
   },
 });
 
-ruleTesterWithNoUncheckedIndexAccess.run('', rule, {
+ruleTesterWithNoUncheckedIndexAccess.run('non-nullable-type-assertion-style', rule, {
   valid: [
     `
 function first<T>(array: ArrayLike<T>): T | null {
