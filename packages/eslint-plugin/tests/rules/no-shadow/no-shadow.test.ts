@@ -12,6 +12,25 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-shadow TS tests', rule, {
   valid: [
+    'function foo<T = (arg: any) => any>(arg: T) {}',
+    'function foo<T = ([arg]: [any]) => any>(arg: T) {}',
+    'function foo<T = ({ args }: { args: any }) => any>(arg: T) {}',
+    'function foo<T = (...args: any[]) => any>(fn: T, args: any[]) {}',
+    'function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}',
+    'function foo<T extends (...args: any[]) => any>(fn: T, ...args: any[]) {}',
+    'function foo<T extends ([args]: any[]) => any>(fn: T, args: any[]) {}',
+    'function foo<T extends ([...args]: any[]) => any>(fn: T, args: any[]) {}',
+    'function foo<T extends ({ args }: { args: any }) => any>(fn: T, args: any) {}',
+    `
+function foo<T extends (id: string, ...args: any[]) => any>(
+  fn: T,
+  ...args: any[]
+) {}
+    `,
+    `
+type Args = 1;
+function foo<T extends (Args: any) => void>(arg: T) {}
+    `,
     // nested conditional types
     `
 export type ArrayInput<Func> = Func extends (arg0: Array<infer T>) => any
@@ -375,6 +394,22 @@ type T = 1;
     },
     {
       code: `
+type T = 1;
+function foo<T>(arg: T) {}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'T',
+            shadowedLine: 2,
+            shadowedColumn: 6,
+          },
+        },
+      ],
+    },
+    {
+      code: `
 function foo<T>() {
   return function <T>() {};
 }
@@ -386,6 +421,22 @@ function foo<T>() {
             name: 'T',
             shadowedLine: 2,
             shadowedColumn: 14,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type T = string;
+function foo<T extends (arg: any) => void>(arg: T) {}
+      `,
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'T',
+            shadowedLine: 2,
+            shadowedColumn: 6,
           },
         },
       ],
@@ -700,6 +751,30 @@ let y;
             shadowedColumn: 5,
           },
           type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
+      `,
+      options: [
+        {
+          ignoreTypeValueShadow: false,
+          builtinGlobals: true,
+        },
+      ],
+      globals: {
+        args: 'writable',
+      },
+      errors: [
+        {
+          messageId: 'noShadowGlobal',
+          data: {
+            name: 'args',
+            shadowedLine: 2,
+            shadowedColumn: 5,
+          },
         },
       ],
     },
