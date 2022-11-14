@@ -212,57 +212,61 @@ const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
   },
 });
 
-ruleTesterWithNoUncheckedIndexAccess.run('non-nullable-type-assertion-style', rule, {
-  valid: [
-    `
+ruleTesterWithNoUncheckedIndexAccess.run(
+  'non-nullable-type-assertion-style',
+  rule,
+  {
+    valid: [
+      `
 function first<T>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
     `,
-    `
+      `
 function first<T extends string | null>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
     `,
-    `
+      `
 function first<T extends string | undefined>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
     `,
-    `
+      `
 function first<T extends string | null | undefined>(
   array: ArrayLike<T>,
 ): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
     `,
-    `
+      `
 type A = 'a' | 'A';
 type B = 'b' | 'B';
 function first<T extends A | B | null>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
     `,
-  ],
-  invalid: [
-    {
-      code: `
+    ],
+    invalid: [
+      {
+        code: `
 function first<T extends string | number>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
       `,
-      errors: [
-        {
-          column: 30,
-          line: 3,
-          messageId: 'preferNonNullAssertion',
-        },
-      ],
-      output: `
+        errors: [
+          {
+            column: 30,
+            line: 3,
+            messageId: 'preferNonNullAssertion',
+          },
+        ],
+        output: `
 function first<T extends string | number>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0]!) : null;
 }
       `,
-    },
-  ],
-});
+      },
+    ],
+  },
+);
