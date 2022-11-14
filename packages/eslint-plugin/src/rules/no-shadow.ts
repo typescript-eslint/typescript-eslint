@@ -147,8 +147,9 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      const id = variable.identifiers[0];
-      return util.isFunctionType(id.parent);
+      return variable.defs.every(
+        def => def.node.type === AST_NODE_TYPES.TSFunctionType,
+      );
     }
 
     function isGenericOfStaticMethod(
