@@ -29,6 +29,9 @@ interface Foo {
 }
     `,
     {
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       code: `
 // no accessibility === public
 interface Foo {

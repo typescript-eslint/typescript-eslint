@@ -207,14 +207,16 @@ class RuleTester extends BaseRuleTester.RuleTester {
     single test case.
     Hugely helps with the string-based valid test cases as it means they don't
     need to be made objects!
+    Also removes dependencyConstraints, which we support but ESLint core doesn't.
     */
-    const addFilename = <
+    const normalizeTest = <
       T extends
         | ValidTestCase<TOptions>
         | InvalidTestCase<TMessageIds, TOptions>,
-    >(
-      test: T,
-    ): T => {
+    >({
+      dependencyConstraints: _,
+      ...test
+    }: T): Omit<T, 'dependencyConstraints'> => {
       if (test.parser === TS_ESLINT_PARSER) {
         throw new Error(ERROR_MESSAGE);
       }
@@ -226,8 +228,8 @@ class RuleTester extends BaseRuleTester.RuleTester {
       }
       return test;
     };
-    tests.valid = tests.valid.map(addFilename);
-    tests.invalid = tests.invalid.map(addFilename);
+    tests.valid = tests.valid.map(normalizeTest);
+    tests.invalid = tests.invalid.map(normalizeTest);
 
     const hasOnly = ((): boolean => {
       for (const test of allTestsIterator) {
