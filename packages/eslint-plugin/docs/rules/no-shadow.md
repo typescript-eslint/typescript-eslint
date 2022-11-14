@@ -78,3 +78,32 @@ Examples of **correct** code with `{ ignoreFunctionTypeParameterNameValueShadow:
 const test = 1;
 type Func = (test: string) => typeof test;
 ```
+
+## FAQ
+
+### The rule reports on enum members
+
+This isn't a bug - this is completely intentional and correct reporting!  
+This report occurs due to a relatively unknown feature of enums best illustrated with an example:
+
+```ts
+const A = 2;
+enum Test {
+  A = 1,
+  B = A,
+}
+
+console.log(Test.B);
+// what should be logged?
+```
+
+It might look like the log should output `2`, because the outer variable `A`'s value is `2` - however the code instead outputs `1`, which is the value of `Test.A`. This is because enum members create a variable within the enum scope so that they can be referenced within the enum without a qualifier! To make it clear with another example:
+
+```ts
+const A = 2;
+enum Test {
+  A = 1,
+  B = A, //      this unqualified line has exactly the same meaning as
+  C = Test.A, // this fully-qualified line
+}
+```
