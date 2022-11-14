@@ -42,7 +42,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"
+    "eslint": "^7.0.0 || ^8.0.0"
   },
   "dependencies": {
     "@typescript-eslint/scope-manager": "5.44.0",
