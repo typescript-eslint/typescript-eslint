@@ -407,6 +407,10 @@ export default util.createRule({
             propertyText = getMemberExpressionText(node.property);
             break;
 
+          case AST_NODE_TYPES.BinaryExpression:
+            propertyText = sourceCode.getText(node.property);
+            break;
+
           /* istanbul ignore next */
           default:
             throw new Error(
