@@ -88,7 +88,7 @@ module.exports = {
 
 ## I am running into errors when parsing TypeScript in my .vue files
 
-If you are running into issues parsing .vue files, it might be because parsers like [`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files.  In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
+If you are running into issues parsing .vue files, it might be because parsers like [`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files. In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
 
 ```diff
 - "parser": "@typescript-eslint/parser",
@@ -99,7 +99,7 @@ If you are running into issues parsing .vue files, it might be because parsers l
   }
 ```
 
-The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the [vue-eslint-parser usage guide](https://eslint.vuejs.org/user-guide/#usage) for more details.
+The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the [`vue-eslint-parser` usage guide](https://eslint.vuejs.org/user-guide/#usage) for more details.
 
 ## One of my lint rules isn't working correctly on a pure JavaScript file
 
@@ -292,4 +292,3 @@ However this involves a _lot_ of computations across every single token in a fil
 Across a large codebase, these can add up, and severely impact performance.
 
 We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
-
