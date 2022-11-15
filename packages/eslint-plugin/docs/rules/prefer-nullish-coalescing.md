@@ -11,6 +11,10 @@ Because the nullish coalescing operator _only_ coalesces when the original value
 
 This rule reports when an `||` operator can be safely replaced with a `??`.
 
+:::caution
+This rule will not work as expected if [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) is not enabled.
+:::
+
 ## Options
 
 ### `ignoreTernaryTests`
