@@ -11,165 +11,227 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const baseCases = [
-  // chained members
-  {
-    code: 'foo && foo.bar',
-    output: 'foo?.bar',
-  },
-  {
-    code: 'foo.bar && foo.bar.baz',
-    output: 'foo.bar?.baz',
-  },
-  {
-    code: 'foo && foo()',
-    output: 'foo?.()',
-  },
-  {
-    code: 'foo.bar && foo.bar()',
-    output: 'foo.bar?.()',
-  },
-  {
-    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz',
-    output: 'foo?.bar?.baz?.buzz',
-  },
-  {
-    code: 'foo.bar && foo.bar.baz && foo.bar.baz.buzz',
-    output: 'foo.bar?.baz?.buzz',
-  },
-  // case with a jump (i.e. a non-nullish prop)
-  {
-    code: 'foo && foo.bar && foo.bar.baz.buzz',
-    output: 'foo?.bar?.baz.buzz',
-  },
-  {
-    code: 'foo.bar && foo.bar.baz.buzz',
-    output: 'foo.bar?.baz.buzz',
-  },
-  // case where for some reason there is a doubled up expression
-  {
-    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz && foo.bar.baz.buzz',
-    output: 'foo?.bar?.baz?.buzz',
-  },
-  {
-    code: 'foo.bar && foo.bar.baz && foo.bar.baz && foo.bar.baz.buzz',
-    output: 'foo.bar?.baz?.buzz',
-  },
-  // chained members with element access
-  {
-    code: 'foo && foo[bar] && foo[bar].baz && foo[bar].baz.buzz',
-    output: 'foo?.[bar]?.baz?.buzz',
-  },
-  {
+// eslint-disable-next-line @typescript-eslint/no-namespace
+namespace BaseCases {
+  type InvalidTestCase = TSESLint.InvalidTestCase<
+    InferMessageIdsTypeFromRule<typeof rule>,
+    InferOptionsTypeFromRule<typeof rule>
+  >;
+
+  interface BaseCase {
+    canReplaceAndWithOr: boolean;
+    output: string;
+    code: string;
+  }
+
+  const mapper = (c: BaseCase): InvalidTestCase => ({
+    code: c.code.trim(),
+    output: null,
+    errors: [
+      {
+        messageId: 'preferOptionalChain',
+        suggestions: [
+          {
+            messageId: 'optionalChainSuggest',
+            output: c.output.trim(),
+          },
+        ],
+      },
+    ],
+  });
+
+  const baseCases: Array<BaseCase> = [
+    // chained members
+    {
+      code: 'foo && foo.bar',
+      output: 'foo?.bar',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar.baz',
+      output: 'foo.bar?.baz',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo && foo()',
+      output: 'foo?.()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar()',
+      output: 'foo.bar?.()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz',
+      output: 'foo?.bar?.baz?.buzz',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar.baz && foo.bar.baz.buzz',
+      output: 'foo.bar?.baz?.buzz',
+      canReplaceAndWithOr: true,
+    },
     // case with a jump (i.e. a non-nullish prop)
-    code: 'foo && foo[bar].baz && foo[bar].baz.buzz',
-    output: 'foo?.[bar].baz?.buzz',
-  },
-  // case with a property access in computed property
-  {
-    code: 'foo && foo[bar.baz] && foo[bar.baz].buzz',
-    output: 'foo?.[bar.baz]?.buzz',
-  },
-  // case with this keyword
-  {
-    code: 'foo[this.bar] && foo[this.bar].baz',
-    output: 'foo[this.bar]?.baz',
-  },
-  // chained calls
-  {
-    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz()',
-    output: 'foo?.bar?.baz?.buzz()',
-  },
-  {
-    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz && foo.bar.baz.buzz()',
-    output: 'foo?.bar?.baz?.buzz?.()',
-  },
-  {
-    code: 'foo.bar && foo.bar.baz && foo.bar.baz.buzz && foo.bar.baz.buzz()',
-    output: 'foo.bar?.baz?.buzz?.()',
-  },
-  // case with a jump (i.e. a non-nullish prop)
-  {
-    code: 'foo && foo.bar && foo.bar.baz.buzz()',
-    output: 'foo?.bar?.baz.buzz()',
-  },
-  {
-    code: 'foo.bar && foo.bar.baz.buzz()',
-    output: 'foo.bar?.baz.buzz()',
-  },
-  {
+    {
+      code: 'foo && foo.bar && foo.bar.baz.buzz',
+      output: 'foo?.bar?.baz.buzz',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar.baz.buzz',
+      output: 'foo.bar?.baz.buzz',
+      canReplaceAndWithOr: true,
+    },
+    // case where for some reason there is a doubled up expression
+    {
+      code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz && foo.bar.baz.buzz',
+      output: 'foo?.bar?.baz?.buzz',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar.baz && foo.bar.baz && foo.bar.baz.buzz',
+      output: 'foo.bar?.baz?.buzz',
+      canReplaceAndWithOr: true,
+    },
+    // chained members with element access
+    {
+      code: 'foo && foo[bar] && foo[bar].baz && foo[bar].baz.buzz',
+      output: 'foo?.[bar]?.baz?.buzz',
+      canReplaceAndWithOr: true,
+    },
+    {
+      // case with a jump (i.e. a non-nullish prop)
+      code: 'foo && foo[bar].baz && foo[bar].baz.buzz',
+      output: 'foo?.[bar].baz?.buzz',
+      canReplaceAndWithOr: true,
+    },
+    // case with a property access in computed property
+    {
+      code: 'foo && foo[bar.baz] && foo[bar.baz].buzz',
+      output: 'foo?.[bar.baz]?.buzz',
+      canReplaceAndWithOr: true,
+    },
+    // case with this keyword
+    {
+      code: 'foo[this.bar] && foo[this.bar].baz',
+      output: 'foo[this.bar]?.baz',
+      canReplaceAndWithOr: true,
+    },
+    // chained calls
+    {
+      code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz()',
+      output: 'foo?.bar?.baz?.buzz()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz && foo.bar.baz.buzz()',
+      output: 'foo?.bar?.baz?.buzz?.()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar.baz && foo.bar.baz.buzz && foo.bar.baz.buzz()',
+      output: 'foo.bar?.baz?.buzz?.()',
+      canReplaceAndWithOr: true,
+    },
     // case with a jump (i.e. a non-nullish prop)
-    code: 'foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz()',
-    output: 'foo?.bar?.baz.buzz?.()',
-  },
-  {
-    // case with a call expr inside the chain for some inefficient reason
-    code: 'foo && foo.bar() && foo.bar().baz && foo.bar().baz.buzz && foo.bar().baz.buzz()',
-    output: 'foo?.bar()?.baz?.buzz?.()',
-  },
-  // chained calls with element access
-  {
-    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz[buzz]()',
-    output: 'foo?.bar?.baz?.[buzz]()',
-  },
-  {
-    code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz[buzz] && foo.bar.baz[buzz]()',
-    output: 'foo?.bar?.baz?.[buzz]?.()',
-  },
-  // (partially) pre-optional chained
-  {
-    code: 'foo && foo?.bar && foo?.bar.baz && foo?.bar.baz[buzz] && foo?.bar.baz[buzz]()',
-    output: 'foo?.bar?.baz?.[buzz]?.()',
-  },
-  {
-    code: 'foo && foo?.bar.baz && foo?.bar.baz[buzz]',
-    output: 'foo?.bar.baz?.[buzz]',
-  },
-  {
-    code: 'foo && foo?.() && foo?.().bar',
-    output: 'foo?.()?.bar',
-  },
-  {
-    code: 'foo.bar && foo.bar?.() && foo.bar?.().baz',
-    output: 'foo.bar?.()?.baz',
-  },
-  {
-    code: 'foo !== null && foo.bar !== null',
-    output: 'foo?.bar != null',
-  },
-  {
-    code: 'foo != null && foo.bar != null',
-    output: 'foo?.bar != null',
-  },
-  {
-    code: 'foo != null && foo.bar !== null',
-    output: 'foo?.bar != null',
-  },
-  {
-    code: 'foo !== null && foo.bar != null',
-    output: 'foo?.bar != null',
-  },
-].map(
-  c =>
-    ({
-      code: c.code.trim(),
-      output: null,
-      errors: [
-        {
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: c.output.trim(),
-            },
-          ],
-        },
-      ],
-    } as TSESLint.InvalidTestCase<
-      InferMessageIdsTypeFromRule<typeof rule>,
-      InferOptionsTypeFromRule<typeof rule>
-    >),
-);
+    {
+      code: 'foo && foo.bar && foo.bar.baz.buzz()',
+      output: 'foo?.bar?.baz.buzz()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar.baz.buzz()',
+      output: 'foo.bar?.baz.buzz()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      // case with a jump (i.e. a non-nullish prop)
+      code: 'foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz()',
+      output: 'foo?.bar?.baz.buzz?.()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      // case with a call expr inside the chain for some inefficient reason
+      code: 'foo && foo.bar() && foo.bar().baz && foo.bar().baz.buzz && foo.bar().baz.buzz()',
+      output: 'foo?.bar()?.baz?.buzz?.()',
+      canReplaceAndWithOr: true,
+    },
+    // chained calls with element access
+    {
+      code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz[buzz]()',
+      output: 'foo?.bar?.baz?.[buzz]()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo && foo.bar && foo.bar.baz && foo.bar.baz[buzz] && foo.bar.baz[buzz]()',
+      output: 'foo?.bar?.baz?.[buzz]?.()',
+      canReplaceAndWithOr: true,
+    },
+    // (partially) pre-optional chained
+    {
+      code: 'foo && foo?.bar && foo?.bar.baz && foo?.bar.baz[buzz] && foo?.bar.baz[buzz]()',
+      output: 'foo?.bar?.baz?.[buzz]?.()',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo && foo?.bar.baz && foo?.bar.baz[buzz]',
+      output: 'foo?.bar.baz?.[buzz]',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo && foo?.() && foo?.().bar',
+      output: 'foo?.()?.bar',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo.bar && foo.bar?.() && foo.bar?.().baz',
+      output: 'foo.bar?.()?.baz',
+      canReplaceAndWithOr: true,
+    },
+    {
+      code: 'foo !== null && foo.bar !== null',
+      output: 'foo?.bar != null',
+      canReplaceAndWithOr: false,
+    },
+    {
+      code: 'foo != null && foo.bar != null',
+      output: 'foo?.bar != null',
+      canReplaceAndWithOr: false,
+    },
+    {
+      code: 'foo != null && foo.bar !== null',
+      output: 'foo?.bar != null',
+      canReplaceAndWithOr: false,
+    },
+    {
+      code: 'foo !== null && foo.bar != null',
+      output: 'foo?.bar != null',
+      canReplaceAndWithOr: false,
+    },
+  ];
+
+  interface Selector {
+    all(): Array<InvalidTestCase>;
+    select<K extends Exclude<keyof BaseCase, 'code' | 'output'>>(
+      key: K,
+      value: BaseCase[K],
+    ): Selector;
+  }
+
+  const selector = (cases: Array<BaseCase>): Selector => ({
+    all: () => cases.map(mapper),
+    select: <K extends Exclude<keyof BaseCase, 'code' | 'output'>>(
+      key: K,
+      value: BaseCase[K],
+    ): Selector => {
+      const selectedCases = baseCases.filter(c => c[key] === value);
+      return selector(selectedCases);
+    },
+  });
+
+  export const { all, select } = selector(baseCases);
+}
 
 ruleTester.run('prefer-optional-chain', rule, {
   valid: [
@@ -227,18 +289,18 @@ ruleTester.run('prefer-optional-chain', rule, {
     '!foo.bar!.baz || !foo.bar!.baz!.paz;',
   ],
   invalid: [
-    ...baseCases,
+    ...BaseCases.all(),
     // it should ignore whitespace in the expressions
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: c.code.replace(/\./g, '.      '),
     })),
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: c.code.replace(/\./g, '.\n'),
     })),
     // it should ignore parts of the expression that aren't part of the expression chain
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: `${c.code} && bing`,
       errors: [
@@ -253,7 +315,7 @@ ruleTester.run('prefer-optional-chain', rule, {
         },
       ],
     })),
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: `${c.code} && bing.bong`,
       errors: [
@@ -269,22 +331,42 @@ ruleTester.run('prefer-optional-chain', rule, {
       ],
     })),
     // strict nullish equality checks x !== null && x.y !== null
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: c.code.replace(/&&/g, '!== null &&'),
     })),
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: c.code.replace(/&&/g, '!= null &&'),
     })),
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: c.code.replace(/&&/g, '!== undefined &&'),
     })),
-    ...baseCases.map(c => ({
+    ...BaseCases.all().map(c => ({
       ...c,
       code: c.code.replace(/&&/g, '!= undefined &&'),
     })),
+
+    // replace && with ||: foo && foo.bar -> !foo || !foo.bar
+    ...BaseCases.select('canReplaceAndWithOr', true)
+      .all()
+      .map(c => ({
+        ...c,
+        code: c.code.replace(/(^|\s)foo/g, '$1!foo').replace(/&&/g, '||'),
+        errors: [
+          {
+            ...c.errors[0],
+            suggestions: [
+              {
+                ...c.errors[0].suggestions![0],
+                output: `!${c.errors[0].suggestions![0].output}`,
+              },
+            ],
+          },
+        ],
+      })),
+
     // two  errors
     {
       code: noFormat`foo && foo.bar && foo.bar.baz || baz && baz.bar && baz.bar.foo`,
@@ -1219,21 +1301,6 @@ foo?.bar(/* comment */a,
         },
       ],
     },
-    ...baseCases.map(c => ({
-      ...c,
-      code: c.code.replace(/foo/g, '!foo').replace(/&&/g, '||'),
-      errors: [
-        {
-          ...c.errors[0],
-          suggestions: [
-            {
-              ...c.errors[0].suggestions![0],
-              output: `!${c.errors[0].suggestions![0].output}`,
-            },
-          ],
-        },
-      ],
-    })),
     // case with this keyword at the start of expression
     {
       code: '!this.bar || !this.bar.baz;',
