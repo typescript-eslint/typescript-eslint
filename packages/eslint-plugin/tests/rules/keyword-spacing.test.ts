@@ -12,8 +12,8 @@ import { RuleTester } from '../RuleTester';
 // Helpers
 //------------------------------------------------------------------------------
 
-const BOTH: Options[0] = { before: true, after: true };
-const NEITHER: Options[0] = { before: false, after: false };
+const BOTH = { before: true, after: true };
+const NEITHER = { before: false, after: false };
 
 /**
  * Creates an option object to test an 'overrides' option.
