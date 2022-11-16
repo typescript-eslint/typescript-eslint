@@ -63,7 +63,7 @@ export function astConverter(
    * Optionally convert and include all comments in the AST
    */
   if (parseSettings.comment) {
-    estree.comments = convertComments(ast, parseSettings.code);
+    estree.comments = convertComments(ast, parseSettings.codeFullText);
   }
 
   const astMaps = instance.getASTMaps();

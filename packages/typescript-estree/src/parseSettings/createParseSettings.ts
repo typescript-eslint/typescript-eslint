@@ -1,6 +1,7 @@
 import debug from 'debug';
 import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
+import type * as ts from 'typescript';
 
 import type { CanonicalPath } from '../create-program/shared';
 import {
@@ -8,6 +9,7 @@ import {
   getCanonicalFileName,
 } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
+import { isSourceFile } from '../source-files';
 import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
@@ -17,15 +19,17 @@ const log = debug(
 );
 
 export function createParseSettings(
-  code: string,
+  code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
+  const codeFullText = enforceCodeString(code);
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
-    code: enforceString(code),
+    code,
+    codeFullText,
     comment: options.comment === true,
     comments: [],
     DEPRECATED__createDefaultProgram:
@@ -127,12 +131,12 @@ export function createParseSettings(
 /**
  * Ensures source code is a string.
  */
-function enforceString(code: unknown): string {
-  if (typeof code !== 'string') {
-    return String(code);
-  }
-
-  return code;
+function enforceCodeString(code: unknown): string {
+  return isSourceFile(code)
+    ? code.getFullText(code)
+    : typeof code === 'string'
+    ? code
+    : String(code);
 }
 
 /**
