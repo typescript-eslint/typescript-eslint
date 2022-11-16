@@ -256,6 +256,24 @@ class Test {
   invalid: [
     {
       code: `
+function wrap() {
+  function foo(s: string);
+  function foo(n: number);
+  export type bar = number;
+  function foo(sn: string | number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
 export function foo(s: string);
 export function foo(n: number);
 export function bar(): void {}
