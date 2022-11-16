@@ -81,6 +81,41 @@ class RuleTester extends BaseRuleTester.RuleTester {
     this.#afterAll = value;
   }
 
+  static get describe(): RuleTesterTestFrameworkFunction {
+    const baseDescribe = super.describe;
+    return (text, callback) => {
+      return baseDescribe(text, (...args) => {
+        callback(...args);
+
+        // make sure that the parser doesn't hold onto file handles between tests
+        // on linux (i.e. our CI env), there can be very a limited number of watch handles available
+
+        // we do this here by wrapping the describe function so that we can be certain
+        // that this is run after the block of tests described by a given rule tester
+        // run.
+        // This allows users to do things like this in the same file:
+        // ```
+        // const ruleTester1 = new RuleTester({... some config ...});
+        // ruleTester1.run( ... );
+        //
+        // const ruleTester2 = new RuleTester({... some OTHER config ...});
+        // ruleTester2.run( ... );
+        // ```
+        this.afterAll(() => {
+          try {
+            // instead of creating a hard dependency, just use a soft require
+            // a bit weird, but if they're using this tooling, it'll be installed
+            const parser =
+              require(TS_ESLINT_PARSER) as typeof TSESLintParserType;
+            parser.clearCaches();
+          } catch {
+            // ignored on purpose
+          }
+        });
+      });
+    };
+  }
+
   private get staticThis(): typeof RuleTester {
     // the cast here is due to https://github.com/microsoft/TypeScript/issues/3841
     return this.constructor as typeof RuleTester;
@@ -105,19 +140,6 @@ class RuleTester extends BaseRuleTester.RuleTester {
     });
 
     this.#baseOptions = baseOptions;
-
-    // make sure that the parser doesn't hold onto file handles between tests
-    // on linux (i.e. our CI env), there can be very a limited number of watch handles available
-    this.staticThis.afterAll(() => {
-      try {
-        // instead of creating a hard dependency, just use a soft require
-        // a bit weird, but if they're using this tooling, it'll be installed
-        const parser = require(TS_ESLINT_PARSER) as typeof TSESLintParserType;
-        parser.clearCaches();
-      } catch {
-        // ignored on purpose
-      }
-    });
   }
   private getFilename(testOptions?: ParserOptions): string {
     const resolvedOptions = deepMerge(
