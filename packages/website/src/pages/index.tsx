@@ -5,6 +5,7 @@ import Heading from '@theme/Heading';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
+import { start } from 'repl';
 
 import { FinancialContributors } from '../components/FinancialContributors';
 import styles from './styles.module.css';
@@ -110,7 +111,7 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
   return (
     <div className="col col--12 padding-vert--lg">
       <div className="text--center">
-        <Heading as="h2" id="start-typescript-eslint-title">
+        <Heading as="h2" id={title.toLowerCase().replace(/\s|,|_/g, '-')}>
           {title}
         </Heading>
       </div>
