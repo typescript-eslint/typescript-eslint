@@ -5,7 +5,6 @@ import Heading from '@theme/Heading';
 import Layout from '@theme/Layout';
 import clsx from 'clsx';
 import React from 'react';
-import { start } from 'repl';
 
 import { FinancialContributors } from '../components/FinancialContributors';
 import styles from './styles.module.css';
