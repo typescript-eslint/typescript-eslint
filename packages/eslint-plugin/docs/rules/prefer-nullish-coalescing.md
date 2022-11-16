@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using the nullish coalescing operator instead of logical chaining.'
+description: 'Enforce using the nullish coalescing operator instead of logical assignments or chaining.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -9,7 +9,10 @@ description: 'Enforce using the nullish coalescing operator instead of logical c
 The `??` nullish coalescing runtime operator allows providing a default value when dealing with `null` or `undefined`.
 Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`, which coalesces on any _falsy_ value.
 
-This rule reports when an `||` operator can be safely replaced with a `??`.
+This rule reports when you can safely replace:
+
+- An `||` operator with `??`
+- An `||=` operator with `??=`
 
 ## Options
 
@@ -69,7 +72,10 @@ declare const b: string | null;
 
 if (a || b) {
 }
+if ((a ||= b)) {
+}
 while (a || b) {}
+while ((a ||= b)) {}
 do {} while (a || b);
 for (let i = 0; a || b; i += 1) {}
 a || b ? true : false;
@@ -83,7 +89,10 @@ declare const b: string | null;
 
 if (a ?? b) {
 }
+if ((a ??= b)) {
+}
 while (a ?? b) {}
+while ((a ??= b)) {}
 do {} while (a ?? b);
 for (let i = 0; a ?? b; i += 1) {}
 a ?? b ? true : false;
@@ -106,6 +115,7 @@ declare const c: string | null;
 declare const d: string | null;
 
 a || (b && c);
+a ||= b && c;
 (a && b) || c || d;
 a || (b && c) || d;
 a || (b && c && d);
@@ -120,6 +130,7 @@ declare const c: string | null;
 declare const d: string | null;
 
 a ?? (b && c);
+a ??= b && c;
 (a && b) ?? c ?? d;
 a ?? (b && c) ?? d;
 a ?? (b && c && d);
