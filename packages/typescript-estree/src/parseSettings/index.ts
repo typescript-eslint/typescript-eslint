@@ -10,9 +10,14 @@ type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
  */
 export interface MutableParseSettings {
   /**
-   * Code of the file being parsed.
+   * Code of the file being parsed, or raw source file containing it.
    */
-  code: string;
+  code: string | ts.SourceFile;
+
+  /**
+   * Full text of the file being parsed.
+   */
+  codeFullText: string;
 
   /**
    * Whether the `comment` parse option is enabled.

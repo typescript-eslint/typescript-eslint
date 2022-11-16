@@ -3,6 +3,7 @@ import fs from 'fs';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
+import { getCodeText } from '../source-files';
 import type { CanonicalPath } from './shared';
 import {
   canonicalDirname,
@@ -89,7 +90,10 @@ function saveWatchCallback(
 /**
  * Holds information about the file currently being linted
  */
-const currentLintOperationState: { code: string; filePath: CanonicalPath } = {
+const currentLintOperationState: {
+  code: string | ts.SourceFile;
+  filePath: CanonicalPath;
+} = {
   code: '',
   filePath: '' as CanonicalPath,
 };
@@ -147,7 +151,7 @@ function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
 
   // Update file version if necessary
   const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(filePath);
-  const codeHash = createHash(parseSettings.code);
+  const codeHash = createHash(getCodeText(parseSettings.code));
   if (
     parsedFilesSeenHash.get(filePath) !== codeHash &&
     fileWatchCallbacks &&
@@ -276,7 +280,7 @@ function createWatchProgram(
     const filePath = getCanonicalFileName(filePathIn);
     const fileContent =
       filePath === currentLintOperationState.filePath
-        ? currentLintOperationState.code
+        ? getCodeText(currentLintOperationState.code)
         : oldReadFile(filePath, encoding);
     if (fileContent !== undefined) {
       parsedFilesSeenHash.set(filePath, createHash(fileContent));
