@@ -400,6 +400,7 @@ export default util.createRule({
 
           case AST_NODE_TYPES.Literal:
           case AST_NODE_TYPES.TemplateLiteral:
+          case AST_NODE_TYPES.BinaryExpression:
             propertyText = sourceCode.getText(node.property);
             break;
 

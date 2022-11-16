@@ -10,5 +10,12 @@
     { "path": "../parser/tsconfig.build.json" },
     { "path": "../scope-manager/tsconfig.build.json" },
     { "path": "../type-utils/tsconfig.build.json" }
-  ]
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "ESNext"
+    },
+    "files": true,
+    "transpileOnly": true
+  }
 }
