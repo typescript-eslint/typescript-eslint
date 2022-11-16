@@ -98,4 +98,4 @@ console.log(Test.B);
 // what should be logged?
 ```
 
-Naively looking at the above code it might look like the log should output `2`, because the outer variable `A`'s value is `2` - however the code instead outputs `1`, which is the value of `Test.A`. This is because the unqualified code `B = A` is equivalent to the fully-qualified code `B = Test.A`. Due to this behaviour, the enum member has **shadowed** the outer variable declaration.
+Naively looking at the above code, it might look like the log should output `2`, because the outer variable `A`'s value is `2` - however, the code instead outputs `1`, which is the value of `Test.A`. This is because the unqualified code `B = A` is equivalent to the fully-qualified code `B = Test.A`. Due to this behavior, the enum member has **shadowed** the outer variable declaration.
