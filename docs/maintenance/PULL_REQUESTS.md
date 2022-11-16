@@ -13,6 +13,14 @@ It's imperative we give them a positive, uplifting experience.
 If you're ever unsure on any part of PR reviews, don't hesitate to loop in a maintainer that has more context to help!
 :::
 
+## PR Flow
+
+:::note
+We include a set of common responses to PRs in [`.github/replies.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/replies.yml), intended to be used with the [Refined Saved Replies](https://github.com/JoshuaKGoldberg/refined-saved-replies) extension.
+Don't treat these as exact responses you must use: they're just a starting copy+paste helper.
+Please do adopt your specific responses to your personal tone and to match the thread for non-straightforward PRs.
+:::
+
 TODO: This will be filled out... soon!
 
 ## Pruning Old PRs
