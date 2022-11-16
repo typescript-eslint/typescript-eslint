@@ -81,7 +81,7 @@ type Func = (test: string) => typeof test;
 
 ## FAQ
 
-### Why does the rule reports on enum members that share the same name as a variable in a parent scope?
+### Why does the rule report on enum members that share the same name as a variable in a parent scope?
 
 Reporting on this case isn't a bug - it is completely intentional and correct reporting! The rule reports due to a relatively unknown feature of enums - enum members create a variable within the enum scope so that they can be referenced within the enum without a qualifier.
 
