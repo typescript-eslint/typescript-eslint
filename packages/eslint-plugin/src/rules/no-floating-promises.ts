@@ -104,13 +104,16 @@ export default util.createRule<Options, MessageId>({
                 {
                   messageId: 'floatingFixAwait',
                   fix(fixer): TSESLint.RuleFix {
-                    let code = sourceCode.getText(node);
-                    code = `await ${
-                      code.startsWith('void')
-                        ? code.replace('void', '').trimStart()
-                        : code
-                    }`;
-                    return fixer.replaceText(node, code);
+                    if (
+                      expression.type === AST_NODE_TYPES.UnaryExpression &&
+                      expression.operator === 'void'
+                    ) {
+                      return fixer.replaceTextRange(
+                        [expression.range[0], expression.range[0] + 4],
+                        'await',
+                      );
+                    }
+                    return fixer.insertTextBefore(node, 'await ');
                   },
                 },
               ],

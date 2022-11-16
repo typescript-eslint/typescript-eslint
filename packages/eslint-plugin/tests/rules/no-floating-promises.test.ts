@@ -697,6 +697,32 @@ async function test() {
     },
     {
       code: `
+async function returnsPromise() {
+  return 'value';
+}
+void returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await returnsPromise();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 async function test() {
   const obj = { foo: Promise.resolve() };
   obj.foo;
