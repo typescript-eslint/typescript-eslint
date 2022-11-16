@@ -111,7 +111,10 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
   return (
     <div className="col col--12 padding-vert--lg">
       <div className="text--center">
-        <Heading as="h2" id={title.toLowerCase().replace(/\s|,|_/g, '-')}>
+        <Heading
+          as="h2"
+          id={title.replace(/,/g, '').toLowerCase().replace(/\s|_/g, '-')}
+        >
           {title}
         </Heading>
       </div>
