@@ -113,13 +113,11 @@ export default util.createRule({
       },
       [[
         'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > Identifier',
-        'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > PrivateIdentifier',
         'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > MemberExpression',
         'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > ChainExpression > MemberExpression',
       ].join(',')](
         initialIdentifierOrNotEqualsExpr:
           | TSESTree.Identifier
-          | TSESTree.PrivateIdentifier
           | TSESTree.MemberExpression,
       ): void {
         // selector guarantees this cast
@@ -427,12 +425,7 @@ export default util.createRule({
 
           /* istanbul ignore next */
           default:
-            if (
-              ![
-                AST_NODE_TYPES.Identifier,
-                AST_NODE_TYPES.ThisExpression,
-              ].includes(node.object.type)
-            ) {
+            if (![AST_NODE_TYPES.Identifier, AST_NODE_TYPES.ThisExpression].includes(node.object.type)) {
               throw new Error(
                 `Unexpected member property type: ${node.object.type}`,
               );
@@ -449,20 +442,17 @@ export default util.createRule({
 const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.CallExpression,
   AST_NODE_TYPES.Identifier,
-  AST_NODE_TYPES.PrivateIdentifier,
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.ThisExpression,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
-  AST_NODE_TYPES.PrivateIdentifier,
   AST_NODE_TYPES.Literal,
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.TemplateLiteral,
 ]);
 const ALLOWED_NON_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
-  AST_NODE_TYPES.PrivateIdentifier,
 ]);
 
 interface ReportIfMoreThanOneOptions {
@@ -497,9 +487,6 @@ function reportIfMoreThanOne({
         previous.right.operator
       } ${sourceCode.getText(previous.right.right)}`;
     }
-    const newText = `${
-      shouldHandleChainedAnds ? '' : '!'
-    }${optionallyChainedCode}`;
 
     context.report({
       node: previous,
@@ -507,9 +494,11 @@ function reportIfMoreThanOne({
       suggest: [
         {
           messageId: 'optionalChainSuggest',
-          // For some reason the fixer either doesn't accept it or accepts and reverts? :shrug:
           fix: (fixer): TSESLint.RuleFix[] => [
-            fixer.replaceText(previous, newText),
+            fixer.replaceText(
+              previous,
+              `${shouldHandleChainedAnds ? '' : '!'}${optionallyChainedCode}`,
+            ),
           ],
         },
       ],
