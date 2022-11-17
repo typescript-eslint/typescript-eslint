@@ -67,7 +67,7 @@
     "@types/lodash": "^4.14.182",
     "@types/marked": "^4.0.3",
     "@types/ncp": "^2.0.5",
-    "@types/node": "^18.0.0",
+    "@types/node": "^18.11.9",
     "@types/prettier": "^2.6.0",
     "@types/rimraf": "^3.0.2",
     "@types/semver": "^7.3.9",
@@ -108,7 +108,7 @@
   },
   "resolutions": {
     "typescript": "~4.9.3",
-    "@types/node": "^18.0.0",
+    "@types/node": "^18.11.9",
     "//": "Pin jest to v29 across the repo",
     "@jest/create-cache-key-function": "^29",
     "@jest/reporters": "^29",

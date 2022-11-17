@@ -252,8 +252,60 @@ class Test {
   '#private'(arg: number): void {}
 }
     `,
+    // block statement
+    `
+function wrap() {
+  function foo(s: string);
+  function foo(n: number);
+  function foo(sn: string | number) {}
+}
+    `,
+    `
+if (true) {
+  function foo(s: string);
+  function foo(n: number);
+  function foo(sn: string | number) {}
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+function wrap() {
+  function foo(s: string);
+  function foo(n: number);
+  type bar = number;
+  function foo(sn: string | number) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+if (true) {
+  function foo(s: string);
+  function foo(n: number);
+  let a = 1;
+  function foo(sn: string | number) {}
+  foo(a);
+}
+      `,
+      errors: [
+        {
+          messageId: 'adjacentSignature',
+          data: { name: 'foo' },
+          line: 6,
+          column: 3,
+        },
+      ],
+    },
     {
       code: `
 export function foo(s: string);
