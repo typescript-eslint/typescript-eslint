@@ -8,3 +8,4 @@ const t3 = { } satisfies I1; // Error
 const t4: T1 = { a: "a" } satisfies T1; // Ok
 const t5 = (m => m.substring(0)) satisfies T2; // Ok
 const t6 = [1, 2] satisfies [number, number];
+const t7 = (async (context) => context.value) satisfies (context: { value: string }) => Promise<string>;
