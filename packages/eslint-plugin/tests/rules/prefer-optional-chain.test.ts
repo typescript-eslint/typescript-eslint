@@ -197,8 +197,6 @@ ruleTester.run('prefer-optional-chain', rule, {
     // private properties
     'this.#a && this.#b;',
     '!this.#a || !this.#b;',
-    'a.#foo && a.#foo.bar;',
-    '!a.#foo || !a.#foo.bar;',
     'a.#foo?.bar;',
     '!a.#foo?.bar;',
     // currently do not handle complex computed properties
@@ -1323,6 +1321,36 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz?.bar?.foo);`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'a.#foo && a.#foo.bar;',
+      output: 'a.#foo?.bar;',
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'a.#foo?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!a.#foo || !a.#foo.bar;',
+      output: '!a.#foo?.bar;',
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!a.#foo?.bar;',
             },
           ],
         },
