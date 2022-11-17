@@ -425,9 +425,12 @@ export default util.createRule({
 
           /* istanbul ignore next */
           default:
-            throw new Error(
-              `Unexpected member property type: ${node.object.type}`,
-            );
+            if (![AST_NODE_TYPES.Identifier, AST_NODE_TYPES.ThisExpression].includes(node.object.type)) {
+              throw new Error(
+                `Unexpected member property type: ${node.object.type}`,
+              );
+            }
+            propertyText = sourceCode.getText(node.property);
         }
 
         return `${objectText}${node.optional ? '?.' : '.'}${propertyText}`;

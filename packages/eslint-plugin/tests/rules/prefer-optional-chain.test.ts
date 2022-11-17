@@ -194,6 +194,13 @@ ruleTester.run('prefer-optional-chain', rule, {
     'match && match$1 !== undefined;',
     'foo !== null && foo !== undefined;',
     "x['y'] !== undefined && x['y'] !== null;",
+    // private properties
+    'this.#a && this.#b;',
+    '!this.#a || !this.#b;',
+    'a.#foo && a.#foo.bar;',
+    '!a.#foo || !a.#foo.bar;',
+    'a.#foo?.bar;',
+    '!a.#foo?.bar;',
     // currently do not handle complex computed properties
     'foo && foo[bar as string] && foo[bar as string].baz;',
     'foo && foo[1 + 2] && foo[1 + 2].baz;',
