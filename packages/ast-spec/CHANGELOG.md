@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.43.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.1...v5.43.0) (2022-11-14)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+## [5.42.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.0...v5.42.1) (2022-11-07)
+
+### Bug Fixes
+
+- **ast-spec:** correct misnamed ExportNamedDeclaration AST type ([#5913](https://github.com/typescript-eslint/typescript-eslint/issues/5913)) ([e88f4fa](https://github.com/typescript-eslint/typescript-eslint/commit/e88f4fa1d0127ba0ddeff578ec67f2e66a1de68b))
+
 # [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
 
 ### Bug Fixes

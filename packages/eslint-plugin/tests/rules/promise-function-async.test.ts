@@ -102,6 +102,13 @@ const invalidAsyncModifiers = {
         constructor() {}
       }
     `,
+    `
+class Foo {
+  async catch<T>(arg: Promise<T>) {
+    return arg;
+  }
+}
+    `,
     {
       code: `
 function returnsAny(): any {
@@ -669,6 +676,81 @@ class Test {
   }
 }
       `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5729
+    {
+      code: `
+class Foo {
+  catch() {
+    return Promise.resolve(1);
+  }
+
+  public default() {
+    return Promise.resolve(2);
+  }
+
+  @decorator
+  private case<T>() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      output: `
+class Foo {
+  async catch() {
+    return Promise.resolve(1);
+  }
+
+  public async default() {
+    return Promise.resolve(2);
+  }
+
+  @decorator
+  private async case<T>() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 3,
+          messageId,
+        },
+        {
+          line: 7,
+          column: 3,
+          messageId,
+        },
+        {
+          line: 12,
+          column: 3,
+          messageId,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  catch() {
+    return Promise.resolve(1);
+  },
+};
+      `,
+      output: `
+const foo = {
+  async catch() {
+    return Promise.resolve(1);
+  },
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 3,
+          messageId,
+        },
+      ],
     },
   ],
 });
