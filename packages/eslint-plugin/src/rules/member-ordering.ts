@@ -389,7 +389,7 @@ function getMemberName(
  *
  * @param node the node to be evaluated.
  *
- * @returns {Boolean} Returns true if the member is optional, false if it is not and undefined if it cannot be optional at all.
+ * @returns Whether the member is optional, or false if it cannot be optional at all.
  */
 function isMemberOptional(node: Member): boolean | undefined {
   switch (node.type) {
@@ -400,45 +400,8 @@ function isMemberOptional(node: Member): boolean | undefined {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
       return node.optional;
-    case AST_NODE_TYPES.TSConstructSignatureDeclaration:
-    case AST_NODE_TYPES.TSCallSignatureDeclaration:
-    case AST_NODE_TYPES.TSIndexSignature:
-    case AST_NODE_TYPES.StaticBlock:
-    default:
-      return undefined;
   }
-}
-
-/**
- * Iterates the array in reverse and returns the index of the first element it
- * finds which passes the predicate function.
- *
- * @example
- * ```js
- * const isMemberRequired = (member) => !isMemberOptional(member);
- * // returns 5
- * findLastIndexOfMember([ req, req, req, optional, req, req, optional ], isMemberRequired)
- * //                       0    1    2       3      4    5      6
- * ```
- * @param {Member[]} members An array of Member nodes containing required and optional items.
- *
- * @returns {Number} Returns the index of the element if it finds it or -1 otherwise.
- */
-function findLastIndex<T>(
-  members: T[],
-  predicate: (member: T) => boolean | undefined | null,
-): number {
-  let idx = members.length - 1;
-
-  while (idx >= 0) {
-    const valid = predicate(members[idx]);
-    if (valid) {
-      return idx;
-    }
-    idx--;
-  }
-
-  return -1;
+  return false;
 }
 
 /**
@@ -759,7 +722,7 @@ export default util.createRule<Options, MessageIds>({
      * Checks if the order of optional and required members is correct based
      * on the given 'required' parameter.
      *
-     * @param {Member[]} members Members to be validated.
+     * @param members Members to be validated.
      *
      * @return True if all required and optional members are correctly sorted.
      */
@@ -771,35 +734,33 @@ export default util.createRule<Options, MessageIds>({
         return true;
       }
 
-      let firstIdx = -1;
-      let lastIdx = -1;
-
-      if (required === 'first') {
-        firstIdx = members.findIndex(member => isMemberOptional(member));
-        lastIdx = findLastIndex<Member>(members, m => !isMemberOptional(m));
-      } else if (required === 'last') {
-        firstIdx = members.findIndex(member => !isMemberOptional(member));
-        lastIdx = findLastIndex<Member>(members, isMemberOptional);
-      }
+      const [firstIdx, lastIdx] =
+        required === 'first'
+          ? [
+              members.findIndex(isMemberOptional),
+              util.findLastIndex(members, m => !isMemberOptional(m)),
+            ]
+          : [
+              members.findIndex(member => !isMemberOptional(member)),
+              util.findLastIndex(members, isMemberOptional),
+            ];
 
       // if the array is either all required members or all optional members
-      // then its already in required first order
-      if (firstIdx === -1 || lastIdx === -1) {
+      // then it is already in the correct order
+      if (firstIdx === -1 || lastIdx === -1 || firstIdx > lastIdx) {
         return true;
       }
 
-      if (firstIdx < lastIdx) {
-        context.report({
-          messageId: 'incorrectRequiredMembersOrder',
-          loc: members[firstIdx].loc,
-          data: {
-            member: getMemberName(members[firstIdx], context.getSourceCode()),
-            optionalOrRequired: required === 'first' ? 'required' : 'optional',
-          },
-        });
-      }
+      context.report({
+        messageId: 'incorrectRequiredMembersOrder',
+        loc: members[firstIdx].loc,
+        data: {
+          member: getMemberName(members[firstIdx], context.getSourceCode()),
+          optionalOrRequired: required === 'first' ? 'required' : 'optional',
+        },
+      });
 
-      return firstIdx > lastIdx;
+      return false;
     }
 
     /**
@@ -873,24 +834,17 @@ export default util.createRule<Options, MessageIds>({
         const firstOptionalMemberIndex = members.findIndex(member =>
           isMemberOptional(member),
         );
-        const lastRequiredMemberIndex = findLastIndex(
+        const lastRequiredMemberIndex = util.findLastIndex(
           members,
           m => !isMemberOptional(m),
         );
 
         if (firstOptionalMemberIndex != -1) {
-          const optionalMembers: Member[] = members.slice(
-            firstOptionalMemberIndex,
-          );
-          memberSets.push(optionalMembers);
+          memberSets.push(members.slice(firstOptionalMemberIndex));
         }
 
         if (lastRequiredMemberIndex != -1) {
-          const requiredMembers: Member[] = members.slice(
-            0,
-            lastRequiredMemberIndex + 1,
-          );
-          memberSets.push(requiredMembers);
+          memberSets.push(members.slice(0, lastRequiredMemberIndex + 1));
         }
       } else if (required === 'last') {
         // if the order of required and optional elements is correct,
@@ -899,24 +853,17 @@ export default util.createRule<Options, MessageIds>({
         const firstRequiredMemberIndex = members.findIndex(
           member => !isMemberOptional(member),
         );
-        const lastOptionalMemberIndex = findLastIndex<Member>(
+        const lastOptionalMemberIndex = util.findLastIndex<Member>(
           members,
           isMemberOptional,
         );
 
         if (firstRequiredMemberIndex != -1) {
-          const requiredMembers: Member[] = members.slice(
-            firstRequiredMemberIndex,
-          );
-          memberSets.push(requiredMembers);
+          memberSets.push(members.slice(firstRequiredMemberIndex));
         }
 
         if (lastOptionalMemberIndex != -1) {
-          const optionalMembers: Member[] = members.slice(
-            0,
-            lastOptionalMemberIndex + 1,
-          );
-          memberSets.push(optionalMembers);
+          memberSets.push(members.slice(0, lastOptionalMemberIndex + 1));
         }
       }
 
