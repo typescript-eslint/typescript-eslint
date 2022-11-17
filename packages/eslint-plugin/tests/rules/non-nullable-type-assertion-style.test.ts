@@ -207,6 +207,9 @@ const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
     project: './tsconfig.noUncheckedIndexedAccess.json',
   },
   parser: '@typescript-eslint/parser',
+  dependencyConstraints: {
+    typescript: '4.1',
+  },
 });
 
 ruleTesterWithNoUncheckedIndexAccess.run(
