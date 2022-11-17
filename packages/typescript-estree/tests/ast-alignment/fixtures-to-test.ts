@@ -471,13 +471,6 @@ tester.addFixturePatternConfig('typescript/decorators/property-decorators', {
 
 tester.addFixturePatternConfig('typescript/expressions', {
   fileType: 'ts',
-  ignore: [
-    /**
-     * Babel produces incorrect structure for TSInstantiationExpression and optional ChainExpression
-     * @see https://github.com/babel/babel/issues/14613
-     */
-    'instantiation-expression',
-  ],
 });
 
 tester.addFixturePatternConfig('typescript/errorRecovery', {
@@ -509,10 +502,6 @@ tester.addFixturePatternConfig('typescript/types', {
     'template-literal-type-2',
     'template-literal-type-3',
     'template-literal-type-4',
-    /**
-     * Reported range differs between ts-estree and Babel
-     * @see https://github.com/babel/babel/issues/14589
-     */
     'optional-variance-in',
     'optional-variance-out',
     'optional-variance-in-out',
