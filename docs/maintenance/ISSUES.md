@@ -108,5 +108,6 @@ Every so often, we like to [search for open issues `awaiting response`](https://
 Our flow for issues that have been waiting for >=1 month is:
 
 1. Ping the author with a message like the _Checking In_ template
-2. Wait 2 weeks
-3. If they still haven't responded, close the issue with a message like the _Pruning Stale Issue_ template
+2. Add the `stale` label to the issue
+3. Wait 2 weeks
+4. If they still haven't responded, close the issue with a message like the _Pruning Stale Issue_ template
