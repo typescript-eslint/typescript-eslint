@@ -44,7 +44,7 @@ const presetClassicOptions: PresetClassicOptions = {
 const pluginContentDocsOptions: PluginContentDocsOptions = {
   id: 'base-docs',
   path: '../../docs',
-  routeBasePath: 'docs',
+  routeBasePath: '/',
   sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
   editUrl: `${githubUrl}/edit/main/packages/website/`,
   beforeDefaultRemarkPlugins,
@@ -74,20 +74,17 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
     },
     items: [
       {
-        to: 'docs/',
-        activeBasePath: 'docs',
+        to: 'getting-started/',
         label: 'Getting started',
         position: 'left',
       },
       {
         to: 'rules/',
-        activeBasePath: 'rules',
         label: 'Rules',
         position: 'left',
       },
       {
         to: 'blog/',
-        activeBasePath: 'blog',
         label: 'Blog',
         position: 'left',
       },
