@@ -2,8 +2,9 @@
 
 > Visitor keys used to help traverse the TypeScript-ESTree AST.
 
-[![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/visitor-keys.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/visitor-keys)
-[![NPM Downloads](https://img.shields.io/npm/dm/@typescript-eslint/visitor-keys.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/visitor-keys)
+## ✋ Internal Package
 
-TODO
-maybe standardize the "this is an internal package" notice?
+This is an _internal package_ to the [typescript-eslint monorepo](https://github.com/typescript-eslint/typescript-eslint).
+You likely don't want to use it directly.
+
+👉 See **[typescript-eslint.io](https://typescript-eslint.io)** for docs on typescript-eslint.

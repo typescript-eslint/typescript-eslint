@@ -1,17 +1,16 @@
 # `@typescript-eslint/ast-spec`
 
-[![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/ast-spec.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/ast-spec)
-[![NPM Downloads](https://img.shields.io/npm/dm/@typescript-eslint/ast-spec.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/ast-spec)
+> Complete specification for the TypeScript-ESTree AST
 
-> ✋ This is an internal-facing package.
-> You probably don't want to use it directly.
-
-If you're building an ESLint plugin, consider using [`@typescript-eslint/utils`](../utils) and [`@typescript-eslint/type-utils`](../type-utils).
-If you're parsing TypeScript code, consider using [`@typescript-eslint/typescript-estree`](../typescript-estree).
-
-This is the complete specification for the TypeScript-ESTree AST.
-It includes:
+This package includes:
 
 - Node definitions as TypeScript types (the specification)
 - Logic for converting from the TypeScript AST to the TypeScript-ESTree AST.
 - Tests/Fixtures/Examples for each Node
+
+## ✋ Internal Package
+
+This is an _internal package_ to the [typescript-eslint monorepo](https://github.com/typescript-eslint/typescript-eslint).
+You likely don't want to use it directly.
+
+👉 See **[typescript-eslint.io](https://typescript-eslint.io)** for docs on typescript-eslint.

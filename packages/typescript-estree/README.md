@@ -5,6 +5,6 @@
 
 ## Contributing
 
-TODO: standardize contributing / general site reference docs
-maybe put the pointup/pointdown arrows on top?
-a notice saying these are pulled into the site, like with rules md files?
+👉 See **[typescript-eslint.io/docs/architecture/typescript-estree](https://typescript-eslint.io/docs/architecture/typescript-estree)** for documentation on this package.
+
+> See [typescript-eslint.io](https://typescript-eslint.io) for general documentation on typescript-eslint, the tooling that allows you to run ESLint and Prettier on TypeScript code.
