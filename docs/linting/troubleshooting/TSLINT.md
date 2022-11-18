@@ -17,7 +17,7 @@ You can look at [the alternatives list](https://github.com/typescript-eslint/typ
 
 There is also the ultimate fallback option of using both linters together for a while during your transition if you
 absolutely have to by using TSLint _within_ ESLint.
-For this option, check out [`@typescript-eslint/eslint-plugin-tslint`](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin-tslint).
+For this option, check out [`@typescript-eslint/eslint-plugin-tslint`](../../architecture/ESLint_Plugin_TSLint.mdx).
 
 ## Why Deprecate TSLint?
 

@@ -69,7 +69,7 @@ See our docs on [type aware linting](./Typed_Linting.md) for more information.
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
 You're using an outdated version of `@typescript-eslint/parser`.
-Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file 'backlink to I get errors telling me ESLint was configured to run ...').
 
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 
