@@ -34,6 +34,18 @@ interface Bar extends Foo {}
       `,
       options: [{ allowSingleExtends: true }],
     },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
+class Bar {}
+      `,
+      options: [{ allowSingleExtends: true }],
+    },
   ],
   invalid: [
     {
@@ -64,6 +76,34 @@ interface Foo {
 
 interface Bar extends Foo {}
 
+class Baz {}
+      `,
+      output: `
+interface Foo {
+  props: string;
+}
+
+type Bar = Foo
+
+class Baz {}
+      `,
+      options: [{ allowSingleExtends: false }],
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 6,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
 class Bar {}
       `,
       options: [{ allowSingleExtends: false }],
@@ -75,6 +115,34 @@ class Bar {}
         },
       ],
       output: null,
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
+const bar = class Bar {};
+      `,
+      output: `
+interface Foo {
+  props: string;
+}
+
+type Bar = Foo
+
+const bar = class Bar {};
+      `,
+      options: [{ allowSingleExtends: false }],
+      errors: [
+        {
+          messageId: 'noEmptyWithSuper',
+          line: 6,
+          column: 11,
+        },
+      ],
     },
     {
       code: `

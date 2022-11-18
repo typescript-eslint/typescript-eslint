@@ -74,35 +74,30 @@ export default util.createRule<Options, MessageIds>({
                 )}${typeParam} = ${sourceCode.getText(extend[0])}`,
               );
             };
-
-            // Check if interface is within ambient declaration
-            let useAutoFix = true;
-            let hasSuggest = true;
             const scope = context.getScope();
 
-            if (util.isDefinitionFile(filename)) {
-              if (scope.type === 'tsModule' && scope.block.declare) {
-                useAutoFix = false;
-              }
-            }
-
-            // Checks if the interface declaration is merged with class declarations.
-            const defs = scope.set.get(node.id.name)?.defs;
-            if (
-              defs?.some(
+            const mergedWithClassDeclaration = scope.set
+              .get(node.id.name)
+              ?.defs?.some(
                 def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
-              )
-            ) {
-              useAutoFix = false;
-              hasSuggest = false;
-            }
+              );
+
+            const isInAmbientDeclaration = !!(
+              util.isDefinitionFile(filename) &&
+              scope.type === 'tsModule' &&
+              scope.block.declare
+            );
+
+            const useAutoFix = !(
+              isInAmbientDeclaration || mergedWithClassDeclaration
+            );
 
             context.report({
               node: node.id,
               messageId: 'noEmptyWithSuper',
               ...(useAutoFix
                 ? { fix }
-                : hasSuggest
+                : !mergedWithClassDeclaration
                 ? {
                     suggest: [
                       {
