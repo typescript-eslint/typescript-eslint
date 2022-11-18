@@ -110,7 +110,7 @@
   "resolutions": {
     "typescript": "~4.9.3",
     "@types/node": "^18.11.9",
-    "//": "Stub out unnecessary swc packages to improve install size and speed",
+    "//": "Pin jest to v29 across the repo",
     "@jest/create-cache-key-function": "^29",
     "@jest/reporters": "^29",
     "@jest/test-result": "^29",
@@ -122,6 +122,7 @@
     "jest-snapshot": "^29",
     "jest-util": "^29",
     "pretty-format": "^29",
+    "//": "Stub out unnecessary swc packages to improve install size and speed",
     "@swc/core-android-arm-eabi": "npm:dummypkg-a@1.0.0",
     "@swc/core-android-arm64": "npm:dummypkg-a@1.0.0",
     "@swc/core-freebsd-x64": "npm:dummypkg-a@1.0.0",
