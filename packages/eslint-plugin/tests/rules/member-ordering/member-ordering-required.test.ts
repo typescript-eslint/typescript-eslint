@@ -265,6 +265,37 @@ class Test {
         },
       ],
     },
+    {
+      code: `
+class Test {
+  a: string;
+  b: string;
+  f?: string;
+  c?: string;
+  d?: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'as-written',
+            required: 'last',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectRequiredMembersOrder',
+          line: 3,
+          column: 3,
+          data: {
+            member: 'a',
+            optionalOrRequired: 'optional',
+          },
+        },
+      ],
+    },
   ],
 };
 
