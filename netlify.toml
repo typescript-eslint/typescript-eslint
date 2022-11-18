@@ -10,8 +10,20 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration/#redirects
 
 [[redirects]]
-  from = "/docs/*"
-  to = "/"
+  from = "/docs"
+  to = "/getting-started"
+
+[[redirects]]
+  from = "/docs/development/architecture/asts"
+  to = "/blog/asts-and-typescript-eslint"
+
+[[redirects]]
+  from = "/docs/development/architecture/packages"
+  to = "/architecture"
+
+[[redirects]]
+  from = "/docs/development/custom-rules"
+  to = "/custom-rules"
 
 [[redirects]]
   from = "/docs/linting/type-linting"
@@ -24,3 +36,7 @@
 [[redirects]]
   from = "/docs/linting/tslint"
   to = "/linting/troubleshooting/tslint"
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/"
