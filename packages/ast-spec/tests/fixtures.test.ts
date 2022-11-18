@@ -25,6 +25,7 @@ const ONLY = [].join(path.sep);
 
 const fixturesWithASTDifferences = new Set<string>();
 const fixturesWithTokenDifferences = new Set<string>();
+const fixturesConfiguredToExpectBabelToNotSupport = new Set<string>();
 enum ErrorLabel {
   TSESTree = "TSESTree errored but Babel didn't",
   Babel = "Babel errored but TSESTree didn't",
@@ -36,46 +37,67 @@ const fixturesWithErrorDifferences = {
   [ErrorLabel.Babel]: new Set<string>(),
 } as const;
 
-const validFixtures = glob.sync(`${SRC_DIR}/**/fixtures/*/*.{ts,tsx}`);
-const errorFixtures = glob.sync(`${SRC_DIR}/**/fixtures/_error_/*/*.{ts,tsx}`);
+const VALID_FIXTURES: readonly string[] = glob.sync(
+  `${SRC_DIR}/**/fixtures/*/fixture.{ts,tsx}`,
+);
+const ERROR_FIXTURES: readonly string[] = glob.sync(
+  `${SRC_DIR}/**/fixtures/_error_/*/fixture.{ts,tsx}`,
+);
 
-const fixtures: readonly Fixture[] = [...validFixtures, ...errorFixtures].map(
+const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
   absolute => {
     const relativeToSrc = path.relative(SRC_DIR, absolute);
     const { dir, ext } = path.parse(relativeToSrc);
     const segments = dir.split(path.sep).filter(s => s !== 'fixtures');
     const name = segments.pop()!;
-    const snapshotPath = path.join(SRC_DIR, dir, 'snapshots');
+    const fixtureDir = path.join(SRC_DIR, dir);
+    const configPath = path.join(fixtureDir, 'config' /* .ts */);
+    const snapshotPath = path.join(fixtureDir, 'snapshots');
     return {
       absolute,
-      name,
+      config: ((): ASTFixtureConfig => {
+        try {
+          return require(configPath).default;
+        } catch {
+          return {};
+        }
+      })(),
       ext,
       isError: absolute.includes('/_error_/'),
       isJSX: ext.endsWith('x'),
+      name,
       relative: path.relative(SRC_DIR, absolute),
       segments,
-      snapshotPath,
       snapshotFiles: {
         success: {
           tsestree: {
-            ast: path.join(snapshotPath, '1-TSESTree-AST.shot'),
-            tokens: path.join(snapshotPath, '2-TSESTree-Tokens.shot'),
+            ast: (i: number) =>
+              path.join(snapshotPath, `${i}-TSESTree-AST.shot`),
+            tokens: (i: number) =>
+              path.join(snapshotPath, `${i}-TSESTree-Tokens.shot`),
           },
           babel: {
-            ast: path.join(snapshotPath, '3-Babel-AST.shot'),
-            tokens: path.join(snapshotPath, '4-Babel-Tokens.shot'),
+            ast: (i: number) => path.join(snapshotPath, `${i}-Babel-AST.shot`),
+            tokens: (i: number) =>
+              path.join(snapshotPath, `${i}-Babel-Tokens.shot`),
           },
           alignment: {
-            ast: path.join(snapshotPath, '5-AST-Alignment-AST.shot'),
-            tokens: path.join(snapshotPath, '6-AST-Alignment-Tokens.shot'),
+            ast: (i: number) =>
+              path.join(snapshotPath, `${i}-AST-Alignment-AST.shot`),
+            tokens: (i: number) =>
+              path.join(snapshotPath, `${i}-AST-Alignment-Tokens.shot`),
           },
         },
         error: {
-          tsestree: path.join(snapshotPath, '1-TSESTree-Error.shot'),
-          babel: path.join(snapshotPath, '2-Babel-Error.shot'),
-          alignment: path.join(snapshotPath, '3-Alignment-Error.shot'),
+          tsestree: (i: number) =>
+            path.join(snapshotPath, `${i}-TSESTree-Error.shot`),
+          babel: (i: number) =>
+            path.join(snapshotPath, `${i}-Babel-Error.shot`),
+          alignment: (i: number) =>
+            path.join(snapshotPath, `${i}-Alignment-Error.shot`),
         },
       },
+      snapshotPath,
     };
   },
 );
@@ -130,6 +152,8 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         errorLabel = ErrorLabel.None;
       }
 
+      let snapshotCounter = 1;
+
       if (fixture.isError) {
         if (
           errorLabel === ErrorLabel.TSESTree ||
@@ -140,17 +164,17 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
 
         it('TSESTree - Error', () => {
           expect(tsestreeParsed.error).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.error.tsestree,
+            fixture.snapshotFiles.error.tsestree(snapshotCounter++),
           );
         });
         it('Babel - Error', () => {
           expect(babelParsed.error).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.error.babel,
+            fixture.snapshotFiles.error.babel(snapshotCounter++),
           );
         });
         it('Error Alignment', () => {
           expect(errorLabel).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.error.alignment,
+            fixture.snapshotFiles.error.alignment(snapshotCounter++),
           );
         });
         it('Should parse with errors', () => {
@@ -162,63 +186,77 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         it('TSESTree - AST', () => {
           expectSuccessResponse(tsestreeParsed);
           expect(tsestreeParsed.ast).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.success.tsestree.ast,
+            fixture.snapshotFiles.success.tsestree.ast(snapshotCounter++),
           );
         });
         it('TSESTree - Tokens', () => {
           expectSuccessResponse(tsestreeParsed);
           expect(tsestreeParsed.tokens).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.success.tsestree.tokens,
+            fixture.snapshotFiles.success.tsestree.tokens(snapshotCounter++),
           );
         });
 
-        it('Babel - AST', () => {
-          expectSuccessResponse(babelParsed);
-          expect(babelParsed.ast).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.success.babel.ast,
-          );
-        });
-        it('Babel - Tokens', () => {
-          expectSuccessResponse(babelParsed);
-          expect(babelParsed.tokens).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.success.babel.tokens,
-          );
-        });
+        if (fixture.config.expectBabelToNotSupport === true) {
+          fixturesConfiguredToExpectBabelToNotSupport.add(fixture.relative);
 
-        it('AST Alignment - AST', () => {
-          expectSuccessResponse(tsestreeParsed);
-          expectSuccessResponse(babelParsed);
-          const diffResult = snapshotDiff(
-            'TSESTree',
-            tsestreeParsed.ast,
-            'Babel',
-            babelParsed.ast,
-          );
-          expect(diffResult).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.success.alignment.ast,
-          );
+          // eslint-disable-next-line jest/no-identical-title -- intentional duplication that won't ever happen due to exclusionary conditions
+          it('Babel - Error', () => {
+            expect(babelParsed.error).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.error.babel(snapshotCounter++),
+            );
+          });
+          // eslint-disable-next-line jest/no-disabled-tests -- intentional skip for CLI documentation purposes
+          it.skip('Babel - Skipped as this fixture is configured to expect babel to error', () => {});
+          // eslint-disable-next-line jest/no-disabled-tests -- intentional skip for CLI documentation purposes
+          it.skip('AST Alignment - Skipped as this fixture is configured to expect babel to error', () => {});
+        } else {
+          it('Babel - AST', () => {
+            expectSuccessResponse(babelParsed);
+            expect(babelParsed.ast).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.babel.ast(snapshotCounter++),
+            );
+          });
+          it('Babel - Tokens', () => {
+            expectSuccessResponse(babelParsed);
+            expect(babelParsed.tokens).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.babel.tokens(snapshotCounter++),
+            );
+          });
+          it('AST Alignment - AST', () => {
+            expectSuccessResponse(tsestreeParsed);
+            expectSuccessResponse(babelParsed);
+            const diffResult = snapshotDiff(
+              'TSESTree',
+              tsestreeParsed.ast,
+              'Babel',
+              babelParsed.ast,
+            );
+            expect(diffResult).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.alignment.ast(snapshotCounter++),
+            );
 
-          if (diffHasChanges(diffResult)) {
-            fixturesWithASTDifferences.add(fixture.relative);
-          }
-        });
-        it('AST Alignment - Token', () => {
-          expectSuccessResponse(tsestreeParsed);
-          expectSuccessResponse(babelParsed);
-          const diffResult = snapshotDiff(
-            'TSESTree',
-            tsestreeParsed.tokens,
-            'Babel',
-            babelParsed.tokens,
-          );
-          expect(diffResult).toMatchSpecificSnapshot(
-            fixture.snapshotFiles.success.alignment.tokens,
-          );
+            if (diffHasChanges(diffResult)) {
+              fixturesWithASTDifferences.add(fixture.relative);
+            }
+          });
+          it('AST Alignment - Token', () => {
+            expectSuccessResponse(tsestreeParsed);
+            expectSuccessResponse(babelParsed);
+            const diffResult = snapshotDiff(
+              'TSESTree',
+              tsestreeParsed.tokens,
+              'Babel',
+              babelParsed.tokens,
+            );
+            expect(diffResult).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.alignment.tokens(snapshotCounter++),
+            );
 
-          if (diffHasChanges(diffResult)) {
-            fixturesWithTokenDifferences.add(fixture.relative);
-          }
-        });
+            if (diffHasChanges(diffResult)) {
+              fixturesWithTokenDifferences.add(fixture.relative);
+            }
+          });
+        }
 
         it('Should parse with no errors', () => {
           // log the error for debug purposes in case there wasn't supposed to be an error
@@ -228,7 +266,9 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
 
             case ErrorLabel.Babel:
               expectErrorResponse(babelParsed);
-              console.error('Babel:\n', babelParsed.error);
+              if (fixture.config.expectBabelToNotSupport !== true) {
+                console.error('Babel:\n', babelParsed.error);
+              }
               break;
 
             case ErrorLabel.TSESTree:
@@ -244,15 +284,33 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
               break;
           }
 
+          // NOTE - the comments below exist so that they show up in the stack trace jest shows
+          //        when the test fails. Yes, sadly, they're duplicated, but it's necessary to
+          //        provide the best and most understandable DevX that we can here.
+          //        Jest will print a code frame with the fail line as well as 2 lines before and after
+
           // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
           // if this fails and you WEREN'T expecting a parser error - then something is broken.
-          expect(errorLabel).toBe(ErrorLabel.None);
+          expect(errorLabel).not.toBe(ErrorLabel.TSESTree);
+
+          // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
+          // if this fails and you WEREN'T expecting a parser error - then something is broken.
+          expect(errorLabel).not.toBe(ErrorLabel.Both);
+
+          if (fixture.config.expectBabelToNotSupport === true) {
+            // if this fails and you WERE expecting a parser error, then Babel parsed without error and you should remove the `expectBabelToNotSupport` config.
+            expect(errorLabel).toBe(ErrorLabel.Babel);
+          } else {
+            // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
+            // if this fails and you WEREN'T expecting a parser error - then something is broken.
+            expect(errorLabel).not.toBe(ErrorLabel.Babel);
+          }
         });
       }
     };
 
     if ([...fixture.segments, fixture.name].join(path.sep) === ONLY) {
-      // eslint-disable-next-line jest/no-focused-tests
+      // eslint-disable-next-line jest/no-focused-tests -- intentional focused test that only happens during development
       describe.only(fixture.name, test);
     } else {
       describe(fixture.name, test);
@@ -261,7 +319,7 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
 }
 
 describe('AST Fixtures', () => {
-  fixtures.forEach(f => nestDescribe(f));
+  FIXTURES.forEach(f => nestDescribe(f));
 
   // once we've run all the tests, snapshot the list of fixtures that have differences for easy reference
   it('List fixtures with AST differences', () => {
@@ -277,6 +335,11 @@ describe('AST Fixtures', () => {
   it('List fixtures with Error differences', () => {
     expect(fixturesWithErrorDifferences).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-errors.shot'),
+    );
+  });
+  it('List fixtures we expect babel to not support', () => {
+    expect(fixturesConfiguredToExpectBabelToNotSupport).toMatchSpecificSnapshot(
+      path.resolve(__dirname, 'fixtures-without-babel-support.shot'),
     );
   });
 });

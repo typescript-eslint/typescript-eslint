@@ -1,3 +1,3 @@
-class Foo extends Bar {
+class Foo {
   override accessor foo = 2;
 }

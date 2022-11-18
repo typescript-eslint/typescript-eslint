@@ -29,6 +29,7 @@ Set {
   "element/AccessorProperty/fixtures/key-computed-string/fixture.ts",
   "element/AccessorProperty/fixtures/key-private/fixture.ts",
   "element/AccessorProperty/fixtures/key-string/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-override/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-private/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-protected/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-public/fixture.ts",

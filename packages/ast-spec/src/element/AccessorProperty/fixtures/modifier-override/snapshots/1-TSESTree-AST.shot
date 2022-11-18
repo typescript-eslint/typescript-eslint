@@ -17,7 +17,7 @@ Program {
               type: "Identifier",
               name: "foo",
 
-              range: [32, 35],
+              range: [44, 47],
               loc: {
                 start: { column: 20, line: 2 },
                 end: { column: 23, line: 2 },
@@ -27,17 +27,17 @@ Program {
             static: false,
             value: Literal {
               type: "Literal",
-              raw: "1",
-              value: 1,
+              raw: "2",
+              value: 2,
 
-              range: [38, 39],
+              range: [50, 51],
               loc: {
                 start: { column: 26, line: 2 },
                 end: { column: 27, line: 2 },
               },
             },
 
-            range: [14, 40],
+            range: [26, 52],
             loc: {
               start: { column: 2, line: 2 },
               end: { column: 28, line: 2 },
@@ -45,9 +45,9 @@ Program {
           },
         ],
 
-        range: [10, 42],
+        range: [22, 54],
         loc: {
-          start: { column: 10, line: 1 },
+          start: { column: 22, line: 1 },
           end: { column: 1, line: 3 },
         },
       },
@@ -61,9 +61,18 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
-      superClass: null,
+      superClass: Identifier {
+        type: "Identifier",
+        name: "Bar",
 
-      range: [0, 42],
+        range: [18, 21],
+        loc: {
+          start: { column: 18, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+
+      range: [0, 54],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 1, line: 3 },
@@ -72,7 +81,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 43],
+  range: [0, 55],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures element AccessorProperty modifier-declare TSESTree - AST 1`] = `
+exports[`AST Fixtures element AccessorProperty modifier-override Babel - AST 1`] = `
 Program {
   type: "Program",
   body: Array [
@@ -9,53 +9,44 @@ Program {
       body: ClassBody {
         type: "ClassBody",
         body: Array [
-          AccessorProperty {
-            type: "AccessorProperty",
+          ClassAccessorProperty {
+            type: "ClassAccessorProperty",
             computed: false,
-            declare: true,
             key: Identifier {
               type: "Identifier",
               name: "foo",
 
-              range: [31, 34],
+              range: [44, 47],
               loc: {
-                start: { column: 19, line: 2 },
-                end: { column: 22, line: 2 },
+                start: { column: 20, line: 2 },
+                end: { column: 23, line: 2 },
               },
             },
-            override: false,
+            override: true,
             static: false,
-            typeAnnotation: TSTypeAnnotation {
-              type: "TSTypeAnnotation",
-              typeAnnotation: TSNumberKeyword {
-                type: "TSNumberKeyword",
+            value: Literal {
+              type: "Literal",
+              raw: "2",
+              value: 2,
 
-                range: [36, 42],
-                loc: {
-                  start: { column: 24, line: 2 },
-                  end: { column: 30, line: 2 },
-                },
-              },
-
-              range: [34, 42],
+              range: [50, 51],
               loc: {
-                start: { column: 22, line: 2 },
-                end: { column: 30, line: 2 },
+                start: { column: 26, line: 2 },
+                end: { column: 27, line: 2 },
               },
             },
-            value: null,
 
-            range: [14, 43],
+            range: [26, 52],
             loc: {
               start: { column: 2, line: 2 },
-              end: { column: 31, line: 2 },
+              end: { column: 28, line: 2 },
             },
           },
         ],
 
-        range: [10, 45],
+        range: [22, 54],
         loc: {
-          start: { column: 10, line: 1 },
+          start: { column: 22, line: 1 },
           end: { column: 1, line: 3 },
         },
       },
@@ -69,9 +60,18 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
-      superClass: null,
+      superClass: Identifier {
+        type: "Identifier",
+        name: "Bar",
 
-      range: [0, 45],
+        range: [18, 21],
+        loc: {
+          start: { column: 18, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+
+      range: [0, 54],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 1, line: 3 },
@@ -80,7 +80,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 46],
+  range: [0, 55],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },

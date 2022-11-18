@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures List fixtures we expect babel to not support 1`] = `
+Set {
+  "element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-abstract/fixture.ts",
+  "element/AccessorProperty/fixtures/with-annotation-no-value/fixture.ts",
+  "element/AccessorProperty/fixtures/with-annotation-with-value/fixture.ts",
+}
+`;

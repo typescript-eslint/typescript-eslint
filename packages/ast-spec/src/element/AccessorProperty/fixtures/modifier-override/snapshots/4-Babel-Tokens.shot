@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures element AccessorProperty modifier-override TSESTree - Tokens 1`] = `
+exports[`AST Fixtures element AccessorProperty modifier-override Babel - Tokens 1`] = `
 Array [
   Keyword {
     type: "Keyword",
