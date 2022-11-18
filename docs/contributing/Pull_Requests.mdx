@@ -1,0 +1,74 @@
+---
+id: pull-requests
+title: Pull Requests
+---
+
+> See [Local Development](./Local_Development.mdx) for details on how to get started developing locally.
+
+So you've got changes locally that address an issue?
+Fantastic!
+
+Please do:
+
+- Only send pull requests that resolve [open issues marked as `accepting prs`](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+is%3Aopen+label%3A%22accepting+prs%22)
+  - One exception: extremely minor documentation typos
+- Fill out the pull request template in full
+- Validate your changes per [Development > Validating Changes](./Local_Development.mdx#validating-changes) before un-[drafting your PR](https://github.blog/2019-02-14-introducing-draft-pull-requests)
+
+Please don't:
+
+- Force push after opening a PR
+  - Reasoning: GitHub is not able to track changes across force pushes, which makes it take longer for us to perform incremental reviews
+- Comment asking for updates
+  - Reasoning: Your PR hasn't been forgotten! The volunteer maintainers have limited time to work on the project, and they will get to it as soon as they are able.
+
+### Raising a PR
+
+Once your changes are ready, you can raise a PR! 🙌
+The title of your PR should match the following format:
+
+```text
+<type>(<package>): <short description>
+```
+
+You can find more samples of good past PR titles in [recent commits to `main`](https://github.com/typescript-eslint/typescript-eslint/commits/main):
+
+- `fix(scope-manager): correct handling for class static blocks`
+- `docs: Fix links to getting started in README.md`
+
+Within the body of your PR, make sure you reference the issue that you have worked on, as well as pointing out anything of note you wish us to look at during our review.
+
+> We do not care about the number, or style of commits in your history, because we squash merge every PR into `main`.
+> Feel free to commit in whatever style you feel comfortable with.
+
+> Tip: Send the PR from a branch other than `main`.
+> See GitHub's [Proposing Changes docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests) for more information.
+
+#### type
+
+Must be one of the following:
+
+- `docs` - if you only change documentation, and not shipped code
+- `feat` - for any new functionality additions
+- `fix` - for any bug fixes that don't add new functionality
+- `test` - if you only change tests, and not shipped code
+- `chore` - anything else
+
+#### package
+
+The name of the package you have made changes within, (e.g. `eslint-plugin`, `parser`, `typescript-estree`).
+If you make significant changes across multiple packages, you can omit this (e.g.
+`feat: foo bar`).
+
+#### short description
+
+A succinct title for the PR.
+
+### Addressing Feedback and Beyond
+
+With your PR raised and the CI passing, your PR will [wait in the queue to be reviewed](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Apr+is%3Aopen+sort%3Acreated-asc+-label%3A%22breaking+change%22+-label%3A%22awaiting+response%22+-label%3A%221+approval%22+-label%3A%22DO+NOT+MERGE%22+status%3Asuccess).
+We generally review PRs oldest to newest, unless we consider a newer PR higher priority (e.g. if it's a bug fix).
+
+Once we have reviewed your PR, we will provide any feedback that needs addressing.
+If you feel a requested change is wrong, don't be afraid to discuss with us in the comments.
+Once the feedback is addressed, and the PR is reviewed, we'll ensure the branch is up to date with `main`, and merge it for you.

@@ -37,8 +37,11 @@ module.exports = {
     },
     'custom-rules',
     {
-      collapsible: false,
-      items: ['contributing/development'],
+      items: [
+        'contributing/issues',
+        'contributing/local-development',
+        'contributing/pull-requests',
+      ],
       label: 'Contributing',
       link: {
         id: 'contributing',
