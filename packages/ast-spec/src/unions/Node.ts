@@ -18,6 +18,7 @@ import type { Property } from '../element/Property/spec';
 import type { PropertyDefinition } from '../element/PropertyDefinition/spec';
 import type { SpreadElement } from '../element/SpreadElement/spec';
 import type { StaticBlock } from '../element/StaticBlock/spec';
+import type { TSAbstractAccessorProperty } from '../element/TSAbstractAccessorProperty/spec';
 import type { TSAbstractMethodDefinition } from '../element/TSAbstractMethodDefinition/spec';
 import type { TSAbstractPropertyDefinition } from '../element/TSAbstractPropertyDefinition/spec';
 import type { TSCallSignatureDeclaration } from '../element/TSCallSignatureDeclaration/spec';
@@ -253,6 +254,7 @@ export type Node =
   | ThisExpression
   | ThrowStatement
   | TryStatement
+  | TSAbstractAccessorProperty
   | TSAbstractKeyword
   | TSAbstractMethodDefinition
   | TSAbstractPropertyDefinition

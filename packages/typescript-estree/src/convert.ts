@@ -1168,16 +1168,29 @@ export class Converter {
       case SyntaxKind.PropertyDeclaration: {
         const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
         const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
+        const type = (() => {
+          if (isAccessor) {
+            if (isAbstract) {
+              return AST_NODE_TYPES.TSAbstractAccessorProperty;
+            }
+            return AST_NODE_TYPES.AccessorProperty;
+          }
+
+          if (isAbstract) {
+            return AST_NODE_TYPES.TSAbstractPropertyDefinition;
+          }
+          return AST_NODE_TYPES.PropertyDefinition;
+        })();
+
         const result = this.createNode<
+          | TSESTree.TSAbstractAccessorProperty
           | TSESTree.TSAbstractPropertyDefinition
           | TSESTree.PropertyDefinition
           | TSESTree.AccessorProperty
         >(node, {
-          type: isAbstract
-            ? AST_NODE_TYPES.TSAbstractPropertyDefinition
-            : isAccessor
-            ? AST_NODE_TYPES.AccessorProperty
-            : AST_NODE_TYPES.PropertyDefinition,
+          type,
           key: this.convertChild(node.name),
           value: isAbstract ? null : this.convertChild(node.initializer),
           computed: isComputedProperty(node.name),

@@ -4,6 +4,7 @@ export * from './MethodDefinition/spec';
 export * from './Property/spec';
 export * from './SpreadElement/spec';
 export * from './StaticBlock/spec';
+export * from './TSAbstractAccessorProperty/spec';
 export * from './TSAbstractPropertyDefinition/spec';
 export * from './TSAbstractMethodDefinition/spec';
 export * from './TSCallSignatureDeclaration/spec';

@@ -91,6 +91,7 @@ export enum AST_NODE_TYPES {
   /**
    * TS-prefixed nodes
    */
+  TSAbstractAccessorProperty = 'TSAbstractAccessorProperty',
   TSAbstractKeyword = 'TSAbstractKeyword',
   TSAbstractMethodDefinition = 'TSAbstractMethodDefinition',
   TSAbstractPropertyDefinition = 'TSAbstractPropertyDefinition',
