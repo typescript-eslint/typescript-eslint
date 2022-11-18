@@ -47,7 +47,6 @@ module.exports = {
       type: 'category',
     },
     {
-      collapsible: false,
       items: [
         'architecture/asts',
         'architecture/eslint-plugin',
@@ -58,10 +57,13 @@ module.exports = {
         'architecture/utils',
       ],
       label: 'Architecture',
+      link: {
+        id: 'architecture',
+        type: 'doc',
+      },
       type: 'category',
     },
     {
-      collapsible: false,
       items: [
         'maintenance/issues',
         'maintenance/pull-requests',
