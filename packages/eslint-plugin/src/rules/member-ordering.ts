@@ -763,9 +763,8 @@ export default util.createRule<Options, MessageIds>({
 
       for (let i = switchIndex + 1; i < members.length; i++) {
         if (
-          i > switchIndex &&
           isMemberOptional(members[i]) !==
-            isMemberOptional(members[switchIndex])
+          isMemberOptional(members[switchIndex])
         ) {
           report(members[switchIndex]);
           return false;
