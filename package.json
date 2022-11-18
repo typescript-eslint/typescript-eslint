@@ -49,10 +49,11 @@
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.16.7",
-    "@babel/eslint-parser": "^7.18.2",
-    "@babel/parser": "^7.18.0",
-    "@babel/types": "^7.18.2",
+    "@babel/code-frame": "^7.18.6",
+    "@babel/core": "^7.20.2",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/parser": "^7.20.3",
+    "@babel/types": "^7.20.2",
     "@nrwl/nx-cloud": "14.7.0",
     "@nrwl/workspace": "14.8.4",
     "@swc/core": "^1.3.1",
@@ -109,7 +110,7 @@
   "resolutions": {
     "typescript": "~4.9.3",
     "@types/node": "^18.11.9",
-    "//": "Pin jest to v29 across the repo",
+    "//": "Stub out unnecessary swc packages to improve install size and speed",
     "@jest/create-cache-key-function": "^29",
     "@jest/reporters": "^29",
     "@jest/test-result": "^29",
@@ -121,7 +122,6 @@
     "jest-snapshot": "^29",
     "jest-util": "^29",
     "pretty-format": "^29",
-    "//": "Stub out unnecessary swc packages to improve install size and speed",
     "@swc/core-android-arm-eabi": "npm:dummypkg-a@1.0.0",
     "@swc/core-android-arm64": "npm:dummypkg-a@1.0.0",
     "@swc/core-freebsd-x64": "npm:dummypkg-a@1.0.0",

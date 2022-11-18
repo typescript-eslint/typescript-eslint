@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression array-array Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: TSSatisfiesExpression {
+        type: "TSSatisfiesExpression",
+        expression: ArrayExpression {
+          type: "ArrayExpression",
+          elements: Array [
+            Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [1, 2],
+              loc: {
+                start: { column: 1, line: 1 },
+                end: { column: 2, line: 1 },
+              },
+            },
+            Literal {
+              type: "Literal",
+              raw: "2",
+              value: 2,
+
+              range: [3, 4],
+              loc: {
+                start: { column: 3, line: 1 },
+                end: { column: 4, line: 1 },
+              },
+            },
+            Literal {
+              type: "Literal",
+              raw: "3",
+              value: 3,
+
+              range: [5, 6],
+              loc: {
+                start: { column: 5, line: 1 },
+                end: { column: 6, line: 1 },
+              },
+            },
+          ],
+
+          range: [0, 7],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 7, line: 1 },
+          },
+        },
+        typeAnnotation: TSTupleType {
+          type: "TSTupleType",
+          elementTypes: Array [
+            TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "1",
+                value: 1,
+
+                range: [19, 20],
+                loc: {
+                  start: { column: 19, line: 1 },
+                  end: { column: 20, line: 1 },
+                },
+              },
+
+              range: [19, 20],
+              loc: {
+                start: { column: 19, line: 1 },
+                end: { column: 20, line: 1 },
+              },
+            },
+            TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "2",
+                value: 2,
+
+                range: [22, 23],
+                loc: {
+                  start: { column: 22, line: 1 },
+                  end: { column: 23, line: 1 },
+                },
+              },
+
+              range: [22, 23],
+              loc: {
+                start: { column: 22, line: 1 },
+                end: { column: 23, line: 1 },
+              },
+            },
+            TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "3",
+                value: 3,
+
+                range: [25, 26],
+                loc: {
+                  start: { column: 25, line: 1 },
+                  end: { column: 26, line: 1 },
+                },
+              },
+
+              range: [25, 26],
+              loc: {
+                start: { column: 25, line: 1 },
+                end: { column: 26, line: 1 },
+              },
+            },
+          ],
+
+          range: [18, 27],
+          loc: {
+            start: { column: 18, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+
+        range: [0, 27],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 27, line: 1 },
+        },
+      },
+
+      range: [0, 28],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 28, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 29],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

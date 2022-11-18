@@ -2652,8 +2652,6 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/expressions/optional-call-expression-type-arguments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/expressions/satisfies-expression.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/expressions/tagged-template-expression-type-arguments.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/typescript/namespaces-and-modules/ambient-module-declaration-with-import.src 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
