@@ -391,7 +391,7 @@ function getMemberName(
  *
  * @returns Whether the member is optional, or false if it cannot be optional at all.
  */
-function isMemberOptional(node: Member): boolean | undefined {
+function isMemberOptional(node: Member): boolean {
   switch (node.type) {
     case AST_NODE_TYPES.TSPropertySignature:
     case AST_NODE_TYPES.TSMethodSignature:
@@ -399,7 +399,7 @@ function isMemberOptional(node: Member): boolean | undefined {
     case AST_NODE_TYPES.PropertyDefinition:
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
-      return node.optional;
+      return !!node.optional;
   }
   return false;
 }
@@ -734,33 +734,45 @@ export default util.createRule<Options, MessageIds>({
         return true;
       }
 
-      const [firstIdx, lastIdx] =
-        required === 'first'
-          ? [
-              members.findIndex(isMemberOptional),
-              util.findLastIndex(members, m => !isMemberOptional(m)),
-            ]
-          : [
-              members.findIndex(member => !isMemberOptional(member)),
-              util.findLastIndex(members, isMemberOptional),
-            ];
+      const switchIndex = members.findIndex(
+        (member, i) =>
+          i && isMemberOptional(member) !== isMemberOptional(members[i - 1]),
+      );
 
-      // if the array is either all required members or all optional members
-      // then it is already in the correct order
-      if (firstIdx === -1 || lastIdx === -1 || firstIdx > lastIdx) {
+      if (switchIndex === -1) {
         return true;
       }
 
-      context.report({
-        messageId: 'incorrectRequiredMembersOrder',
-        loc: members[firstIdx].loc,
-        data: {
-          member: getMemberName(members[firstIdx], context.getSourceCode()),
-          optionalOrRequired: required === 'first' ? 'required' : 'optional',
-        },
-      });
+      const report = (member: Member): void =>
+        context.report({
+          messageId: 'incorrectRequiredMembersOrder',
+          loc: member.loc,
+          data: {
+            member: getMemberName(member, context.getSourceCode()),
+            optionalOrRequired: required === 'first' ? 'required' : 'optional',
+          },
+        });
 
-      return false;
+      // if the optionality of the first item is correct (based on required)
+      // then the first 0 inclusive to switchIndex exclusive members all
+      // have the correct optionality
+      if (isMemberOptional(members[0]) !== (required === 'last')) {
+        report(members[0]);
+        return false;
+      }
+
+      for (let i = switchIndex + 1; i < members.length; i++) {
+        if (
+          i > switchIndex &&
+          isMemberOptional(members[i]) !==
+            isMemberOptional(members[switchIndex])
+        ) {
+          report(members[switchIndex]);
+          return false;
+        }
+      }
+
+      return true;
     }
 
     /**
@@ -783,8 +795,6 @@ export default util.createRule<Options, MessageIds>({
       let order: Order | undefined;
       let memberTypes: string | MemberType[] | undefined;
       let required: 'first' | 'last' | undefined;
-
-      const memberSets: Array<Member[]> = [];
 
       // returns true if everything is good and false if an error was reported
       const checkOrder = (memberSet: Member[]): boolean => {
@@ -823,55 +833,23 @@ export default util.createRule<Options, MessageIds>({
         required = orderConfig.required;
       }
 
-      if (!checkRequiredOrder(members, required)) {
+      if (!required) {
+        checkOrder(members);
         return;
       }
 
-      if (required === 'first') {
-        // if the order of required and optional elements is correct,
-        // then check for correct sort and group order within the required and
-        // optional member sets
-        const firstOptionalMemberIndex = members.findIndex(member =>
-          isMemberOptional(member),
-        );
-        const lastRequiredMemberIndex = util.findLastIndex(
-          members,
-          m => !isMemberOptional(m),
-        );
+      const switchIndex = members.findIndex(
+        (member, i) =>
+          i && isMemberOptional(member) !== isMemberOptional(members[i - 1]),
+      );
 
-        if (firstOptionalMemberIndex != -1) {
-          memberSets.push(members.slice(firstOptionalMemberIndex));
+      if (switchIndex !== -1) {
+        if (!checkRequiredOrder(members, required)) {
+          return;
         }
-
-        if (lastRequiredMemberIndex != -1) {
-          memberSets.push(members.slice(0, lastRequiredMemberIndex + 1));
-        }
-      } else if (required === 'last') {
-        // if the order of required and optional elements is correct,
-        // then check for correct order within the required and
-        // optional member sets
-        const firstRequiredMemberIndex = members.findIndex(
-          member => !isMemberOptional(member),
-        );
-        const lastOptionalMemberIndex = util.findLastIndex<Member>(
-          members,
-          isMemberOptional,
-        );
-
-        if (firstRequiredMemberIndex != -1) {
-          memberSets.push(members.slice(firstRequiredMemberIndex));
-        }
-
-        if (lastOptionalMemberIndex != -1) {
-          memberSets.push(members.slice(0, lastOptionalMemberIndex + 1));
-        }
+        checkOrder(members.slice(0, switchIndex));
+        checkOrder(members.slice(switchIndex));
       }
-
-      if (memberSets.length === 0) {
-        memberSets.push(members);
-      }
-
-      memberSets.every(checkOrder);
     }
 
     return {

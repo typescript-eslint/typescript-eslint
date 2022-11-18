@@ -232,6 +232,39 @@ interface X {
         },
       ],
     },
+    {
+      code: `
+class Test {
+  a?: string;
+  b?: string;
+  f: string;
+  c?: string;
+  d?: string;
+  g: string;
+  h: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'as-written',
+            required: 'last',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectRequiredMembersOrder',
+          line: 5,
+          column: 3,
+          data: {
+            member: 'f',
+            optionalOrRequired: 'optional',
+          },
+        },
+      ],
+    },
   ],
 };
 
