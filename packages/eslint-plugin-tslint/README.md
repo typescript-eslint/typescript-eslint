@@ -5,6 +5,6 @@
 [![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint)
 [![NPM Downloads](https://img.shields.io/npm/dm/@typescript-eslint/eslint-plugin-tslint.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint)
 
-👉 See **[typescript-eslint.io/architecture/eslint-plugin-tslint](https://typescript-eslint.io/architecture/eslint-plugin-tslint)** for documentation on this package.
+👉 See **https://typescript-eslint.io/architecture/eslint-plugin-tslint** for documentation on this package.
 
-> See [typescript-eslint.io](https://typescript-eslint.io) for general documentation on typescript-eslint, the tooling that allows you to run ESLint and Prettier on TypeScript code.
+> See https://typescript-eslint.io for general documentation on typescript-eslint, the tooling that allows you to run ESLint and Prettier on TypeScript code.

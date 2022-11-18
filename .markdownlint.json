@@ -103,10 +103,7 @@
       "TypeScript",
       "TSLint",
       "ESLint",
-      "eslint-plugin-tslint",
-      "typescript-eslint",
-      "typescript-estree",
-      "TypeScript-ESTree"
+      "typescript-eslint"
     ],
     "code_blocks": false
   },
