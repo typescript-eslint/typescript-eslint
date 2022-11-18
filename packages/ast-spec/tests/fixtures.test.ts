@@ -25,7 +25,7 @@ const ONLY = [].join(path.sep);
 
 const fixturesWithASTDifferences = new Set<string>();
 const fixturesWithTokenDifferences = new Set<string>();
-const fixturesConfiguredToExpectBabelToNotSupport = new Set<string>();
+const fixturesConfiguredToExpectBabelToNotSupport = new Map<string, string>();
 enum ErrorLabel {
   TSESTree = "TSESTree errored but Babel didn't",
   Babel = "Babel errored but TSESTree didn't",
@@ -196,8 +196,11 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
           );
         });
 
-        if (fixture.config.expectBabelToNotSupport === true) {
-          fixturesConfiguredToExpectBabelToNotSupport.add(fixture.relative);
+        if (fixture.config.expectBabelToNotSupport != null) {
+          fixturesConfiguredToExpectBabelToNotSupport.set(
+            fixture.relative,
+            fixture.config.expectBabelToNotSupport,
+          );
 
           // eslint-disable-next-line jest/no-identical-title -- intentional duplication that won't ever happen due to exclusionary conditions
           it('Babel - Error', () => {
@@ -266,7 +269,7 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
 
             case ErrorLabel.Babel:
               expectErrorResponse(babelParsed);
-              if (fixture.config.expectBabelToNotSupport !== true) {
+              if (fixture.config.expectBabelToNotSupport == null) {
                 console.error('Babel:\n', babelParsed.error);
               }
               break;
@@ -297,7 +300,7 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
           // if this fails and you WEREN'T expecting a parser error - then something is broken.
           expect(errorLabel).not.toBe(ErrorLabel.Both);
 
-          if (fixture.config.expectBabelToNotSupport === true) {
+          if (fixture.config.expectBabelToNotSupport != null) {
             // if this fails and you WERE expecting a parser error, then Babel parsed without error and you should remove the `expectBabelToNotSupport` config.
             expect(errorLabel).toBe(ErrorLabel.Babel);
           } else {
