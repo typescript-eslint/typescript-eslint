@@ -48,7 +48,6 @@ module.exports = {
     },
     {
       items: [
-        'architecture/asts',
         'architecture/eslint-plugin',
         'architecture/eslint-plugin-tslint',
         'architecture/parser',
