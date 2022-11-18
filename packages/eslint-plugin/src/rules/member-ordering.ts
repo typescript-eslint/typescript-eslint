@@ -730,18 +730,10 @@ export default util.createRule<Options, MessageIds>({
       members: Member[],
       required: 'first' | 'last' | undefined,
     ): boolean {
-      if (!required) {
-        return true;
-      }
-
       const switchIndex = members.findIndex(
         (member, i) =>
           i && isMemberOptional(member) !== isMemberOptional(members[i - 1]),
       );
-
-      if (switchIndex === -1) {
-        return true;
-      }
 
       const report = (member: Member): void =>
         context.report({
