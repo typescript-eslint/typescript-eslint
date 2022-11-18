@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import * as util from '../util';
 
@@ -103,7 +103,7 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'floatingFixAwait',
-                  fix(fixer): TSESLint.RuleFix {
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
                     if (
                       expression.type === AST_NODE_TYPES.UnaryExpression &&
                       expression.operator === 'void'
@@ -113,7 +113,20 @@ export default util.createRule<Options, MessageId>({
                         'await',
                       );
                     }
-                    return fixer.insertTextBefore(node, 'await ');
+                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanAwait(tsNode)) {
+                      return fixer.insertTextBefore(node, 'await ');
+                    } else {
+                      return [
+                        fixer.insertTextBefore(node, 'await ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    }
                   },
                 },
               ],
@@ -122,6 +135,18 @@ export default util.createRule<Options, MessageId>({
         }
       },
     };
+
+    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
+      const operator = tsutils.isBinaryExpression(node)
+        ? node.operatorToken.kind
+        : ts.SyntaxKind.Unknown;
+      const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
+      const awaitPrecedence = util.getOperatorPrecedence(
+        ts.SyntaxKind.AwaitExpression,
+        ts.SyntaxKind.Unknown,
+      );
+      return nodePrecedence > awaitPrecedence;
+    }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
       if (node.expression.type !== AST_NODE_TYPES.CallExpression) {

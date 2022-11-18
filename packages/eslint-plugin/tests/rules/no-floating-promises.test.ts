@@ -722,6 +722,85 @@ await returnsPromise();
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+void /* ... */ returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await /* ... */ returnsPromise();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+1, returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await (1, returnsPromise());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+bool ? returnsPromise() : null;
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await (bool ? returnsPromise() : null);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 async function test() {
   const obj = { foo: Promise.resolve() };
