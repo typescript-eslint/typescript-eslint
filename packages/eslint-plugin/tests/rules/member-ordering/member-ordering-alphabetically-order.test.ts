@@ -1694,6 +1694,9 @@ class Foo {
   static {}
 }
       `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [
         {
           default: {

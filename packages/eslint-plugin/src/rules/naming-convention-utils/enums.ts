@@ -102,6 +102,10 @@ enum Modifiers {
   unused = 1 << 10,
   // properties that require quoting
   requiresQuotes = 1 << 11,
+  // class members that are overridden
+  override = 1 << 12,
+  // class methods, object function properties, or functions that are async via the `async` keyword
+  async = 1 << 13,
 
   // make sure TypeModifiers starts at Modifiers + 1 or else sorting won't work
 }

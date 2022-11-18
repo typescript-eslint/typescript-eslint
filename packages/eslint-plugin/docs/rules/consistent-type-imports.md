@@ -15,7 +15,7 @@ This allows transpilers to drop imports without knowing the types of the depende
 
 This option defines the expected import kind for type-only imports. Valid values for `prefer` are:
 
-- `type-imports` will enforce that you always use `import type Foo from '...'` except referenced by metadata of decorators. It is default.
+- `type-imports` will enforce that you always use `import type Foo from '...'` except referenced by metadata of decorators. It is the default.
 - `no-type-imports` will enforce that you always use `import Foo from '...'`.
 
 Examples of **correct** code with `{prefer: 'type-imports'}`, and **incorrect** code with `{prefer: 'no-type-imports'}`.
@@ -35,6 +35,44 @@ import Bar from 'Bar';
 type T = Foo;
 const x: Bar = 1;
 ```
+
+### `fixStyle`
+
+This option defines the expected type modifier to be added when an import is detected as used only in the type position. Valid values for `fixStyle` are:
+
+- `separate-type-imports` will add the type keyword after the import keyword `import type { A } from '...'`. It is the default.
+- `inline-type-imports` will inline the type keyword `import { type A } from '...'` and is only available in TypeScript 4.5 and onwards. See [documentation here](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names 'TypeScript 4.5 documentation on type modifiers and import names').
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+import { Foo } from 'Foo';
+import Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+```
+
+#### ✅ With `separate-type-imports`
+
+```ts
+import type { Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+```
+
+#### ✅ With `inline-type-imports`
+
+```ts
+import { type Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+```
+
+<!--tabs-->
 
 ### `disallowTypeAnnotations`
 

@@ -129,6 +129,7 @@ const additionalKeys: AdditionalKeys = {
   TSQualifiedName: ['left', 'right'],
   TSReadonlyKeyword: [],
   TSRestType: ['typeAnnotation'],
+  TSSatisfiesExpression: ['typeAnnotation', 'expression'],
   TSStaticKeyword: [],
   TSStringKeyword: [],
   TSSymbolKeyword: [],
