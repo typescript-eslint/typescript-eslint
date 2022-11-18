@@ -22,7 +22,7 @@
 
 ## Code Contributors
 
-This project exists thanks to every one of the awesome people who contribute code and documentation:
+This project exists thanks to the awesome people who contribute code and documentation:
 
 <a href="https://github.com/typescript-eslint/typescript-eslint/graphs/contributors"><img alt="Gallery of all contributors' profile photos" src="https://opencollective.com/typescript-eslint/contributors.svg?width=890&button=false" /></a>
 

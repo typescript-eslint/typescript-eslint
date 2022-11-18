@@ -64,6 +64,7 @@ module.exports = {
       collapsible: false,
       items: [
         'maintenance/issues',
+        'maintenance/pull-requests',
         'maintenance/releases',
         'maintenance/versioning',
       ],

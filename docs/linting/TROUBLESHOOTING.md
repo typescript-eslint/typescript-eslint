@@ -86,6 +86,21 @@ module.exports = {
 };
 ```
 
+## I am running into errors when parsing TypeScript in my .vue files
+
+If you are running into issues parsing .vue files, it might be because parsers like [`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files. In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
+
+```diff
+- "parser": "@typescript-eslint/parser",
++ "parser": "vue-eslint-parser",
+  "parserOptions": {
++     "parser": "@typescript-eslint/parser",
+      "sourceType": "module"
+  }
+```
+
+The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the [`vue-eslint-parser` usage guide](https://eslint.vuejs.org/user-guide/#usage) for more details.
+
 ## One of my lint rules isn't working correctly on a pure JavaScript file
 
 This is to be expected - ESLint rules do not check file extensions on purpose, as it causes issues in environments that use non-standard extensions (for example, a `.vue` and a `.md` file can both contain TypeScript code to be linted).
@@ -204,6 +219,25 @@ For example:
 - TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
 
 See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.
+
+## Changes to one file are not reflected when linting other files in my IDE
+
+> tl;dr: Restart your ESLint server to force an update.
+
+ESLint currently does not have any way of telling parsers such as ours when an arbitrary file is changed on disk.
+That means if you change file A that is imported by file B, it won't update lint caches for file B -- even if file B's text contents have changed.
+Sometimes the only solution is to restart your ESLint editor extension altogether.
+
+See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/5845#issuecomment-1283248238 'GitHub issue 5845, comment 1283248238: details on ESLint cross-file caching') for more information.
+
+:::tip
+[VS Code's ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) provides an `ESLint: Restart ESLint Server` action.
+:::
+
+### I get `no-unsafe-*` complaints for cross-file changes
+
+See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-in-linting-other-files-in-my-ide).
+Rules such as [`no-unsafe-argument`](https://typescript-eslint.io/rules/no-unsafe-argument), [`no-unsafe-assignment`](https://typescript-eslint.io/rules/no-unsafe-assignment), and [`no-unsafe-call`](https://typescript-eslint.io/rules/no-unsafe-call) are often impacted.
 
 ## My linting feels really slow
 

@@ -527,6 +527,24 @@ if (x) {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
     },
+    `
+interface Foo {
+  [key: string]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.test?.length;
+    `,
+    `
+interface Foo {
+  [key: number]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.[1]?.length;
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1547,6 +1565,37 @@ if (x) {
       parserOptions: {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
+    },
+    {
+      code: `
+interface Foo {
+  test: string;
+  [key: string]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.test?.length;
+      `,
+      output: `
+interface Foo {
+  test: string;
+  [key: string]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.test.length;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 9,
+          endLine: 9,
+          column: 10,
+          endColumn: 12,
+        },
+      ],
     },
   ],
 });

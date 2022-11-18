@@ -554,7 +554,12 @@ export default createRule<Options, MessageId>({
             type,
             property.name,
           );
-          return propType && isNullableType(propType, { allowUndefined: true });
+
+          if (propType) {
+            return isNullableType(propType, { allowUndefined: true });
+          }
+
+          return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
         });
         return (
           !isOwnNullable && isNullableType(prevType, { allowUndefined: true })

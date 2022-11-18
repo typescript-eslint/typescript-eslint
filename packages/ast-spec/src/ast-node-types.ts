@@ -145,6 +145,7 @@ export enum AST_NODE_TYPES {
   TSQualifiedName = 'TSQualifiedName',
   TSReadonlyKeyword = 'TSReadonlyKeyword',
   TSRestType = 'TSRestType',
+  TSSatisfiesExpression = 'TSSatisfiesExpression',
   TSStaticKeyword = 'TSStaticKeyword',
   TSStringKeyword = 'TSStringKeyword',
   TSSymbolKeyword = 'TSSymbolKeyword',
