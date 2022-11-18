@@ -180,6 +180,7 @@ export type TSNode =
   | ts.UnparsedSource
   | ts.JsonMinusNumericLiteral
   | ts.TemplateLiteralTypeNode
+  | ts.SatisfiesExpression
 
   // JSDoc: Unsupported
   | ts.JSDoc
