@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression conditional-no-parentheses TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ConditionalExpression {
+        type: "ConditionalExpression",
+        alternate: TSSatisfiesExpression {
+          type: "TSSatisfiesExpression",
+          expression: Literal {
+            type: "Literal",
+            raw: "0",
+            value: 0,
+
+            range: [10, 11],
+            loc: {
+              start: { column: 10, line: 1 },
+              end: { column: 11, line: 1 },
+            },
+          },
+          typeAnnotation: TSNumberKeyword {
+            type: "TSNumberKeyword",
+
+            range: [22, 28],
+            loc: {
+              start: { column: 22, line: 1 },
+              end: { column: 28, line: 1 },
+            },
+          },
+
+          range: [10, 28],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 28, line: 1 },
+          },
+        },
+        consequent: Literal {
+          type: "Literal",
+          raw: "1",
+          value: 1,
+
+          range: [6, 7],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 7, line: 1 },
+          },
+        },
+        test: Identifier {
+          type: "Identifier",
+          name: "foo",
+
+          range: [0, 3],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 3, line: 1 },
+          },
+        },
+
+        range: [0, 28],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 28, line: 1 },
+        },
+      },
+
+      range: [0, 29],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 29, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 30],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

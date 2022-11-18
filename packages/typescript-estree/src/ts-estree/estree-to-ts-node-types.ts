@@ -188,6 +188,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSInterfaceHeritage]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSIntersectionType]: ts.IntersectionTypeNode;
   [AST_NODE_TYPES.TSInstantiationExpression]: ts.ExpressionWithTypeArguments;
+  [AST_NODE_TYPES.TSSatisfiesExpression]: ts.SatisfiesExpression;
   [AST_NODE_TYPES.TSLiteralType]: ts.LiteralTypeNode;
   [AST_NODE_TYPES.TSMappedType]: ts.MappedTypeNode;
   [AST_NODE_TYPES.TSMethodSignature]:

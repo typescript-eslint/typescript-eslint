@@ -668,7 +668,7 @@ class Referencer extends Visitor {
         member.id.type === AST_NODE_TYPES.Literal &&
         typeof member.id.value === 'string'
       ) {
-        const name = member.id as TSESTree.StringLiteral;
+        const name = member.id;
         this.currentScope().defineLiteralIdentifier(
           name,
           new TSEnumMemberDefinition(name, member),

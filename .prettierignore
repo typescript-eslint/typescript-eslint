@@ -12,6 +12,9 @@ packages/eslint-plugin/src/configs/*.json
 CONTRIBUTORS.md
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
 
+# prettier doesn't yet support satisfies
+packages/ast-spec/src/expression/TSSatisfiesExpression/fixtures/
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 
