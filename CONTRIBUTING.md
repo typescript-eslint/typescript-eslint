@@ -1,4 +1,4 @@
 # Contributing
 
-See **http://typescript-eslint.io/contributing** for our contributing guidelines.
+See **https://typescript-eslint.io/contributing** for our contributing guidelines.
 Thanks! 💖
