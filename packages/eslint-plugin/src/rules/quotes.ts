@@ -21,10 +21,7 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'code',
     hasSuggestions: baseRule.meta.hasSuggestions,
-    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
-    messages: baseRule.meta.messages ?? {
-      wrongQuotes: 'Strings must use {{description}}.',
-    },
+    messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
   defaultOptions: [
