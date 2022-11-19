@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
@@ -12,15 +13,16 @@ type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 /**
  * Check if method with accessibility is not useless
  */
-function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
+function checkAccessibilityStandalone(
+  node: TSESTree.MethodDefinition,
+): boolean {
   switch (node.accessibility) {
     case 'protected':
     case 'private':
       return false;
     case 'public':
       if (
-        node.parent &&
-        node.parent.type === AST_NODE_TYPES.ClassBody &&
+        node.parent?.type === AST_NODE_TYPES.ClassBody &&
         node.parent.parent &&
         'superClass' in node.parent.parent &&
         node.parent.parent.superClass
@@ -41,6 +43,22 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
       param.type === AST_NODE_TYPES.TSParameterProperty ||
       param.decorators?.length,
   );
+}
+
+function getTypeScriptAccessibility(
+  node:
+    | ts.ConstructorDeclaration
+    | ts.ConstructSignatureDeclaration
+    | undefined,
+): TSESTree.Accessibility {
+  switch (util.getModifiers(node)?.[0].kind) {
+    case ts.SyntaxKind.ProtectedKeyword:
+      return 'protected';
+    case ts.SyntaxKind.PrivateKeyword:
+      return 'private';
+    default:
+      return 'public';
+  }
 }
 
 export default util.createRule<Options, MessageIds>({
@@ -65,15 +83,48 @@ export default util.createRule<Options, MessageIds>({
     return {
       MethodDefinition(node): void {
         if (
-          node.value &&
-          node.value.type === AST_NODE_TYPES.FunctionExpression &&
+          node.value?.type === AST_NODE_TYPES.FunctionExpression &&
           node.value.body &&
-          checkAccessibility(node) &&
-          checkParams(node)
+          checkParams(node) &&
+          checkAccessibility(node)
         ) {
           rules.MethodDefinition(node);
         }
       },
     };
+
+    function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
+      const parent = (node.parent as TSESTree.ClassBody).parent as
+        | TSESTree.ClassDeclaration
+        | TSESTree.ClassExpression;
+      if (!parent.superClass) {
+        return checkAccessibilityStandalone(node);
+      }
+
+      const parserServices = util.getParserServices(context);
+      const checker = parserServices.program.getTypeChecker();
+
+      const superClassNode = parserServices.esTreeNodeToTSNodeMap.get(
+        parent.superClass,
+      );
+      const parentType = checker.getTypeAtLocation(superClassNode);
+      const parentSymbol = parentType.getSymbol();
+      const parentConstructor = parentSymbol?.members?.get(
+        '__constructor' as ts.__String,
+      );
+      const parentConstructorDeclaration =
+        parentConstructor?.getDeclarations()?.[0] as
+          | ts.ConstructorDeclaration
+          | ts.ConstructSignatureDeclaration
+          | undefined;
+      if (!parentConstructorDeclaration) {
+        return checkAccessibilityStandalone(node);
+      }
+
+      return (
+        getTypeScriptAccessibility(parentConstructorDeclaration) ===
+        (node.accessibility ?? 'public')
+      );
+    }
   },
 });

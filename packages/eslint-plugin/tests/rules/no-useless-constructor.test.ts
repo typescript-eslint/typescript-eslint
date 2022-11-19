@@ -1,12 +1,15 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-useless-constructor';
-import { RuleTester } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
+
+const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parserOptions: {
-    ecmaVersion: 6,
+    project: './tsconfig.json',
     sourceType: 'module',
+    tsconfigRootDir: rootDir,
   },
   parser: '@typescript-eslint/parser',
 });
@@ -223,6 +226,82 @@ class A extends Object {
   }
 }
     `,
+    `
+class A {
+  public constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  private constructor() {
+    super();
+  }
+}
+    `,
+    `
+class A {
+  constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  private constructor() {
+    super();
+  }
+}
+    `,
+    `
+class A {
+  public constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  protected constructor() {
+    super();
+  }
+}
+    `,
+    `
+class A {
+  protected constructor() {}
+}
+class B extends A {
+  public constructor() {
+    super();
+  }
+}
+    `,
+    `
+class A {
+  protected constructor() {}
+}
+class B extends A {
+  constructor() {
+    super();
+  }
+}
+    `,
+    `
+class A {
+  protected constructor() {}
+}
+class B extends A {
+  private constructor() {
+    super();
+  }
+}
+    `,
+    `
+class A {
+  public other() {}
+}
+class B extends A {
+  public other() {
+    super.other();
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -307,6 +386,81 @@ class A extends B {
       code: `
 class A {
   public constructor() {}
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A {
+  public constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  public constructor() {
+    super();
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A {
+  constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  public constructor() {
+    super();
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A {
+  public constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  constructor() {
+    super();
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A {
+  protected constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  protected constructor() {
+    super();
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A {
+  private constructor() {
+    console.log('Hello, world!');
+  }
+}
+class B extends A {
+  private constructor() {
+    super();
+  }
 }
       `,
       errors: [error],
