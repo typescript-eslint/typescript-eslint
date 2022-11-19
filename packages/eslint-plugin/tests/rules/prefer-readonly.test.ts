@@ -814,4 +814,3 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
     },
   ],
 });
-
