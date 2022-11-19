@@ -23,6 +23,7 @@ export * from './TSAsExpression/spec';
 export * from './TSEmptyBodyFunctionExpression/spec';
 export * from './TSInstantiationExpression/spec';
 export * from './TSNonNullExpression/spec';
+export * from './TSSatisfiesExpression/spec';
 export * from './TSTypeAssertion/spec';
 export * from './TaggedTemplateExpression/spec';
 export * from './TemplateLiteral/spec';

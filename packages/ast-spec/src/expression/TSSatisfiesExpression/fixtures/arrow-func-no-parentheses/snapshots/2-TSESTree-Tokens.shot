@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-no-parentheses TSESTree - Tokens 1`] = `
+Array [
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [0, 1],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 1, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [1, 2],
+    loc: {
+      start: { column: 1, line: 1 },
+      end: { column: 2, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=>",
+
+    range: [3, 5],
+    loc: {
+      start: { column: 3, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Numeric {
+    type: "Numeric",
+    value: "1",
+
+    range: [6, 7],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 7, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "satisfies",
+
+    range: [8, 17],
+    loc: {
+      start: { column: 8, line: 1 },
+      end: { column: 17, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "number",
+
+    range: [18, 24],
+    loc: {
+      start: { column: 18, line: 1 },
+      end: { column: 24, line: 1 },
+    },
+  },
+]
+`;

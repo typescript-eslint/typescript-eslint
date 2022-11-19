@@ -159,11 +159,21 @@ function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
     );
   }
 
+  const currentProjectsFromSettings = new Set(parseSettings.projects);
+
   /*
    * before we go into the process of attempting to find and update every program
    * see if we know of a program that contains this file
    */
   for (const [tsconfigPath, existingWatch] of knownWatchProgramMap.entries()) {
+    if (!currentProjectsFromSettings.has(tsconfigPath)) {
+      // the current parser run doesn't specify this tsconfig in parserOptions.project
+      // so we don't want to consider it for caching purposes.
+      //
+      // if we did consider it we might return a program for a project
+      // that wasn't specified in the current parser run (which is obv bad!).
+      continue;
+    }
     let fileList = programFileListCache.get(tsconfigPath);
     let updatedProgram: ts.Program | null = null;
     if (!fileList) {
