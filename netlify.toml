@@ -40,3 +40,5 @@
 [[redirects]]
   from = "/docs/*"
   to = "/"
+  to = "/docs/linting/troubleshooting/tslint"
+
