@@ -111,10 +111,7 @@ Putting together all the terms introduces in this article:
 - **Node Type**: What kind of code syntax an AST node refers to, such as _BinaryExpression_ or _Literal_.
 - **Node**: A single range of code syntax in an AST.
 - **Parser**: A tool that reads in a string and outputs an AST.
-  <<<<<<< HEAD
-  =======
 - **TSESTree**: Our extension to the ESTree AST format that also includes TypeScript-specific syntax.
-  > > > > > > > blog-asts-and-typescript-eslint
 
 [astexplorer.net]: https://astexplorer.net
 [espree]: https://github.com/eslint/espree
