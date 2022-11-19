@@ -63,7 +63,7 @@ That code snippet includes four nodes of the following types:
 
 That ESTree object representation of the code is what static analysis tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) work with.
 
-## Various AST Formats
+## AST Formats
 
 ESTree is more broadly used than just for ESLint -- it is the de facto community standard.
 ESLint's built-in parser that outputs an ESTree-shaped AST is also a separate package, called **[Espree]**.
@@ -77,7 +77,9 @@ Because TypeScript is developed separately and with different goals from ESLint,
 ESLint rules are by default only given nodes in the ESTree AST format - which has no knowledge of TypeScript-specific syntax such as interfaces.
 On the other hand, TypeScript's type checking APIs require nodes in the TypeScript AST format.
 
-That's why typescript-eslint provides its own [`@typescript-eslint/parser` package](https://typescript-eslint.io/architecture/Parser.mdx) which:
+### Enter TSESTree
+
+To resolve the incompatibilities between ESTrees and the TypeScript AST typescript-eslint provides its own [`@typescript-eslint/parser` package](https://typescript-eslint.io/architecture/Parser.mdx) which:
 
 1. First parses TypeScript syntax into a TypeScript AST
 1. Creates an ESTree AST based on that TypeScript AST
@@ -85,6 +87,8 @@ That's why typescript-eslint provides its own [`@typescript-eslint/parser` packa
 
 By creating both an ESTree AST and a TypeScript AST, the typescript-eslint parser allows ESLint rules to work with TypeScript code.
 That's why the [Getting Started guide](https://typescript-eslint.io/getting-started) for typescript-eslint has you specify `parser: '@typescript-eslint/parser'` in your ESLint config!
+
+We commonly refer to the ESTree format that also includes TypeScript-specific syntax as **TSESTree**.
 
 ### AST Playground
 
@@ -107,6 +111,10 @@ Putting together all the terms introduces in this article:
 - **Node Type**: What kind of code syntax an AST node refers to, such as _BinaryExpression_ or _Literal_.
 - **Node**: A single range of code syntax in an AST.
 - **Parser**: A tool that reads in a string and outputs an AST.
+  <<<<<<< HEAD
+  =======
+- **TSESTree**: Our extension to the ESTree AST format that also includes TypeScript-specific syntax.
+  > > > > > > > blog-asts-and-typescript-eslint
 
 [astexplorer.net]: https://astexplorer.net
 [espree]: https://github.com/eslint/espree
