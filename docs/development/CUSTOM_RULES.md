@@ -5,7 +5,7 @@ title: Custom Rules
 ---
 
 :::important
-You should be familiar with [ESLint's developer guide](https://eslint.org/docs/developer-guide) and [Development > Architecture](./architecture/asts) before writing custom rules.
+You should be familiar with [ESLint's developer guide](https://eslint.org/docs/developer-guide) and [ASTs](https://typescript-eslint.io/blog/asts-and-typescript-eslint) before writing custom rules.
 :::
 
 As long as you are using `@typescript-eslint/parser` as the `parser` in your ESLint configuration, custom ESLint rules generally work the same way for JavaScript and TypeScript code.

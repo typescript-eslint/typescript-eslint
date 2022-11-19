@@ -44,10 +44,7 @@ module.exports = {
           label: 'Architecture',
           type: 'category',
           collapsible: false,
-          items: [
-            'development/architecture/asts',
-            'development/architecture/packages',
-          ],
+          items: ['development/architecture/packages'],
         },
         'development/custom-rules',
       ],
