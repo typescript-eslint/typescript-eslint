@@ -13,12 +13,21 @@
 👇
 </p>
 <p align="center">
-  <!-- markdownlint-disable MD033 -->
   See <strong><a href="https://typescript-eslint.io">typescript-eslint.io</a></strong> for documentation.
 </p>
 <p align="center">
 👆
 </p>
+
+## Packages included in this project
+
+> Foo…
+> …bar…
+> …baz.
+
+# aha
+
+# aha
 
 ## Packages included in this project
 

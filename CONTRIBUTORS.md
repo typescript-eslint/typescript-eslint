@@ -3,7 +3,6 @@
 Thanks goes to these wonderful people:
 
 <!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
 <table>
   <tr>
     <td align="center"><a href="https://github.com/JamesHenry"><img src="https://avatars.githubusercontent.com/u/900523?v=4&size=100" width="100px;" alt=""/><br /><sub><b>James Henry</b></sub></a></td>
@@ -90,7 +89,6 @@ Thanks goes to these wonderful people:
   </tr>
 </table>
 
-<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <sup>This list is auto-generated using `yarn generate-contributors`. It shows the top 100 contributors with > 3 contributions.</sup>

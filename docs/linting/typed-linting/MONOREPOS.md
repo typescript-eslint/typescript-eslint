@@ -13,6 +13,8 @@ Configurations will look different based on which setup you use:
 
 ## One root `tsconfig.json`
 
+## One root `tsconfig.json`
+
 If you only have one `tsconfig.json` file _and_ its `include` paths include all the files you'd like to lint, you can directly use it with typescript-eslint without further configuration.
 
 If its `include` paths cannot include all files to be linted, we suggest creating a new config called `tsconfig.eslint.json`, that looks something like this:

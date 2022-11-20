@@ -42,10 +42,7 @@ You can run `yarn lint` in any package or in the root.
 
 ### Proofreading
 
-Changes must pass two linters for documentation and naming, the commands for which may be run from the root:
-
-- `yarn check-spelling`: [CSpell](https://cspell.org), for all code
-- `yarn lint-markdown`: [Markdownlint](https://github.com/DavidAnson/markdownlint), for Markdown documentation
+Changes must pass `yarn check-spelling`, which runs [CSpell](https://cspell.org) to lint documentation and naming in code.
 
 ### Tests
 

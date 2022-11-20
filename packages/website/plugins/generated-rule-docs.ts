@@ -8,6 +8,7 @@ import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
 import { format } from 'prettier';
+// @ts-expect-error - will look at this later...
 import type { Plugin } from 'unified';
 import type * as unist from 'unist';
 

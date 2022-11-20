@@ -82,7 +82,6 @@ function writeTable(contributors: User[], perLine = 5): void {
     'Thanks goes to these wonderful people:',
     '',
     '<!-- prettier-ignore-start -->',
-    '<!-- markdownlint-disable -->',
     '<table>',
   ];
 
@@ -109,7 +108,6 @@ function writeTable(contributors: User[], perLine = 5): void {
 
   lines.push('</table>');
   lines.push('');
-  lines.push('<!-- markdownlint-restore -->');
   lines.push('<!-- prettier-ignore-end -->');
   lines.push('');
   lines.push(

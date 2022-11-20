@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['check-spelling', 'check-format', 'lint-markdown']
+        lint-task: ['check-spelling', 'check-format']
     steps:
       - name: Checkout
         uses: actions/checkout@v3

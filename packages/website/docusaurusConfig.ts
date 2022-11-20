@@ -11,8 +11,10 @@ import tabsPlugin from 'remark-docusaurus-tabs';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
+// @ts-expect-error - will look at this later...
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
+// @ts-expect-error - will look at this later...
 const beforeDefaultRemarkPlugins: MDXPlugin[] = [tabsPlugin];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
@@ -25,7 +27,9 @@ const presetClassicOptions: PresetClassicOptions = {
     routeBasePath: 'rules',
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     beforeDefaultRemarkPlugins: [
+      // @ts-expect-error - will look at this later...
       ...beforeDefaultRemarkPlugins,
+      // @ts-expect-error - will look at this later...
       generatedRuleDocs,
     ],
     remarkPlugins: remarkPlugins,

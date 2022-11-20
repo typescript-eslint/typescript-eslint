@@ -14,4 +14,6 @@ If you're parsing TypeScript code, consider using [`@typescript-eslint/typescrip
 
 ## Contributing
 
+## Contributing
+
 [See the contributing guide here](../../CONTRIBUTING.md)
