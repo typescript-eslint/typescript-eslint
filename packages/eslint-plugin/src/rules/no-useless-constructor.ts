@@ -68,6 +68,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow unnecessary constructors',
       recommended: 'strict',
+      requiresTypeChecking: true,
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
