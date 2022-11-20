@@ -631,33 +631,6 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
-  describe('invalid project error messages', () => {
-    it('throws when non of multiple projects include the file', () => {
-      const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
-      const code = 'var a = true';
-      const config: TSESTreeOptions = {
-        comment: true,
-        tokens: true,
-        range: true,
-        loc: true,
-        tsconfigRootDir: PROJECT_DIR,
-        project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
-      };
-      const testParse = (filePath: string) => (): void => {
-        try {
-          parser.parseAndGenerateServices(code, {
-            ...config,
-            filePath: join(PROJECT_DIR, filePath),
-          });
-        } catch (error) {
-          throw alignErrorPath(error as Error);
-        }
-      };
-
-      expect(testParse('ts/notIncluded0j1.ts')).toThrowErrorMatchingSnapshot();
-    });
-  });
-
   describe('debug options', () => {
     const debugEnable = jest.fn();
     beforeEach(() => {
