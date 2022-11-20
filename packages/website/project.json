@@ -7,7 +7,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/website/**/*.{ts,js}"]
+        "lintFilePatterns": ["packages/website/**/*.ts"]
       }
     }
   }
