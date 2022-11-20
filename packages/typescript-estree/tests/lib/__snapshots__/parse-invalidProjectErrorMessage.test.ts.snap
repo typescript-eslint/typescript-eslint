@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseAndGenerateServices invalid project error messages throws when non of multiple projects include the file 1`] = `
+"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+- <tsconfigRootDir>/tsconfig.json
+- <tsconfigRootDir>/tsconfig.extra.json
+However, none of those TSConfigs include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change one of those TSConfigs to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the TypeScript ESLint docs for more info: https://typescript-eslint.io/docs/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+`;
