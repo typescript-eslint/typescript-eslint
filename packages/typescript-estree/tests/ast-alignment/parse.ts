@@ -29,7 +29,6 @@ function parseWithBabelParser(text: string, jsx = true): File {
     [
       'estree',
       {
-        // @ts-expect-error -- this isn't exposed in the types yet
         classFeatures: true,
       },
     ],
