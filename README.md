@@ -27,6 +27,12 @@
 
 # aha
 
+```js
+var a = true;
+export var b = 1 + 1 == 2;
+export var c = 1 + 1 === 2;
+```
+
 # aha
 
 ## Packages included in this project
