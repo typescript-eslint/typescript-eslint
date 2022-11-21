@@ -39,7 +39,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:breaking-changes": "../../node_modules/.bin/ts-node tools/generate-breaking-changes.ts",
     "generate:configs": "../../node_modules/.bin/ts-node tools/generate-configs.ts",
-    "lint": "eslint . --ignore-path ../../.eslintignore",
+    "lint": "nx lint @typescript-eslint/eslint-plugin",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
