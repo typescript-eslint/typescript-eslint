@@ -339,6 +339,34 @@ class Foo {
 }
       `,
     },
+    {
+      code: `
+        class Test {
+          private testObj = {
+            prop: '',
+          };
+
+          public test(): void {
+            this.testObj = '';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestObject {
+          public prop: number;
+        }
+
+        class Test {
+          private testObj = new TestObject();
+
+          public test(): void {
+            this.testObj = new TestObject();
+          }
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -751,6 +779,16 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           public test(): void {
             this.testObj.prop = '';
+            this.testObj.prop;
+            this.testObj?.prop;
+            this.testObj!.prop;
+            this.testObj!.prop = '';
+            this.testObj.prop.prop = '';
+            this.testObj.prop.doesSomething();
+            this.testObj?.prop.prop;
+            this.testObj?.prop?.prop;
+            this.testObj.prop?.prop;
+            this.testObj!.prop?.prop;
           }
         }
       `,
@@ -762,6 +800,16 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           public test(): void {
             this.testObj.prop = '';
+            this.testObj.prop;
+            this.testObj?.prop;
+            this.testObj!.prop;
+            this.testObj!.prop = '';
+            this.testObj.prop.prop = '';
+            this.testObj.prop.doesSomething();
+            this.testObj?.prop.prop;
+            this.testObj?.prop?.prop;
+            this.testObj.prop?.prop;
+            this.testObj!.prop?.prop;
           }
         }
       `,
@@ -778,27 +826,47 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
     {
       code: `
         class TestObject {
-          public value: number;
+          public prop: number;
         }
 
         class Test {
           private testObj = new TestObject();
 
           public test(): void {
-            this.testObj.value = 10;
+            this.testObj.prop = 10;
+            this.testObj.prop;
+            this.testObj?.prop;
+            this.testObj!.prop;
+            this.testObj!.prop = '';
+            this.testObj.prop.prop = '';
+            this.testObj.prop.doesSomething();
+            this.testObj?.prop.prop;
+            this.testObj?.prop?.prop;
+            this.testObj.prop?.prop;
+            this.testObj!.prop?.prop;
           }
         }
       `,
       output: `
         class TestObject {
-          public value: number;
+          public prop: number;
         }
 
         class Test {
           private readonly testObj = new TestObject();
 
           public test(): void {
-            this.testObj.value = 10;
+            this.testObj.prop = 10;
+            this.testObj.prop;
+            this.testObj?.prop;
+            this.testObj!.prop;
+            this.testObj!.prop = '';
+            this.testObj.prop.prop = '';
+            this.testObj.prop.doesSomething();
+            this.testObj?.prop.prop;
+            this.testObj?.prop?.prop;
+            this.testObj.prop?.prop;
+            this.testObj!.prop?.prop;
           }
         }
       `,
