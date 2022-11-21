@@ -49,6 +49,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     'foo && foo[bar as string] && foo[bar as string].baz;',
     'foo && foo[1 + 2] && foo[1 + 2].baz;',
     'foo && foo[typeof bar] && foo[typeof bar].baz;',
+    '!foo[1 + 1] || !foo[1 + 2];',
+    '!foo[1 + 1] || !foo[1 + 1].foo;',
     '!foo || !foo[bar as string] || !foo[bar as string].baz;',
     '!foo || !foo[1 + 2] || !foo[1 + 2].baz;',
     '!foo || !foo[typeof bar] || !foo[typeof bar].baz;',
