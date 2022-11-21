@@ -65,6 +65,115 @@ interface X {
         },
       ],
     },
+    {
+      code: `
+class X {
+  c: string;
+  d: string;
+  ['a']?: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically',
+            required: 'first',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class X {
+  c: string;
+  public static d: string;
+  public static ['a']?: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically',
+            required: 'first',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class X {
+  a: string;
+  static {}
+  b: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically',
+            required: 'first',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class X {
+  a: string;
+  [i: number]: string;
+  b?: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically',
+            required: 'first',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a: string;
+  [i?: number]: string;
+  b?: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically',
+            required: 'first',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a: string;
+  (a: number): string;
+  new (i: number): string;
+  b?: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically',
+            required: 'first',
+          },
+        },
+      ],
+    },
     // required - last
     {
       code: `
@@ -115,6 +224,24 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'as-written',
+            required: 'last',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class X {
+  ['c']?: string;
+  a: string;
+  b: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically',
             required: 'last',
           },
         },
@@ -172,6 +299,35 @@ interface X {
           column: 3,
           data: {
             member: 'b',
+            optionalOrRequired: 'required',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class X {
+  a?: string;
+  static {}
+  b?: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'as-written',
+            required: 'first',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectRequiredMembersOrder',
+          line: 3,
+          column: 3,
+          data: {
+            member: 'a',
             optionalOrRequired: 'required',
           },
         },
