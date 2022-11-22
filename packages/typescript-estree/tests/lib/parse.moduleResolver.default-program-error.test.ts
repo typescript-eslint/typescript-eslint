@@ -77,45 +77,6 @@ describe('parseAndGenerateServices', () => {
       createDefaultProgram: true,
     };
 
-    describe('when file is in the project', () => {
-      it('returns error if __PLACEHOLDER__ can not be resolved', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, config)
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveProperty(
-          [0, 'messageText'],
-          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
-        );
-      });
-
-      it('throws error if moduleResolver can not be found', () => {
-        expect(() =>
-          parser.parseAndGenerateServices(code, {
-            ...config,
-            moduleResolver: resolve(
-              PROJECT_DIR,
-              './this_moduleResolver_does_not_exist.js',
-            ),
-          }),
-        ).toThrowErrorMatchingInlineSnapshot(`
-        "Could not find the provided parserOptions.moduleResolver.
-        Hint: use an absolute path if you are not in control over where the ESLint instance runs."
-      `);
-      });
-
-      it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...config,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
-      });
-    });
-
     describe('when file is not in the project and createDefaultProgram=true', () => {
       it('returns error because __PLACEHOLDER__ can not be resolved', () => {
         expect(
@@ -126,17 +87,6 @@ describe('parseAndGenerateServices', () => {
           [0, 'messageText'],
           "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
         );
-      });
-
-      it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...withDefaultProgramConfig,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
       });
     });
   });
