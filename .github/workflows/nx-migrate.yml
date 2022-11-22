@@ -44,7 +44,7 @@ jobs:
           # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
           GITHUB_TOKEN: ${{ secrets.JAMES_HENRY_GITHUB_TOKEN }}
           # We don't want to run any of our postinstall logic when Nx is invoking install behind the scenes
-          SKIP_POSTINSTALL: "true"
+          SKIP_POSTINSTALL: 'true'
         run: |
           # Checkout the PR branch using the github CLI
           gh pr checkout ${{ github.event.pull_request.number }}
