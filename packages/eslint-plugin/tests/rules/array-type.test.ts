@@ -1983,6 +1983,61 @@ class Foo<T = Bar[][]> extends Bar<T, T[]> implements Baz<T[]> {
       `,
     );
     testOutput(
+      'array',
+      `
+interface WorkingArray {
+  outerProperty: Array<
+    { innerPropertyOne: string } & { innerPropertyTwo: string }
+  >;
+}
+
+interface BrokenArray {
+  outerProperty: Array<
+    ({ innerPropertyOne: string } & { innerPropertyTwo: string })
+  >;
+}
+      `,
+      `
+interface WorkingArray {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+
+interface BrokenArray {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+      `,
+    );
+    testOutput(
+      'array',
+      `
+type WorkingArray = {
+  outerProperty: Array<
+    { innerPropertyOne: string } & { innerPropertyTwo: string }
+  >;
+}
+
+type BrokenArray = {
+  outerProperty: Array<
+    ({ innerPropertyOne: string } & { innerPropertyTwo: string })
+  >;
+}
+      `,
+      `
+type WorkingArray = {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+
+type BrokenArray = {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+      `,
+    );
+    testOutput(
+      'array',
+      'const a: Array<(string|number)>;',
+      'const a: (string|number)[];',
+    );
+    testOutput(
       'array-simple',
       'let xx: Array<Array<number>> = [[1, 2], [3]];',
       'let xx: number[][] = [[1, 2], [3]];',
