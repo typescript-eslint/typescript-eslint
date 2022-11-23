@@ -83,7 +83,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow duplicate union/intersection type members',
+      description:
+        'Disallow duplicate constituents of union or intersection types',
       recommended: false,
       requiresTypeChecking: true,
     },

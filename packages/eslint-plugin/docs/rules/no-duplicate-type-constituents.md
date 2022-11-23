@@ -1,5 +1,5 @@
 ---
-description: 'Disallow duplicate union/intersection type members.'
+description: 'Disallow duplicate constituents of union or intersection types.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
