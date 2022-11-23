@@ -30,8 +30,7 @@ export default createRule<Options, MessageIds>({
     },
   },
   defaultOptions: ['never'],
-  create(context) {
-    const [firstOption, secondOption] = context.options;
+  create(context, [firstOption, secondOption]) {
     const spaced = firstOption === 'always';
     const sourceCode = context.getSourceCode();
 
