@@ -182,12 +182,21 @@ export interface ParserWeakMapESTreeToTSNode<
   has(key: unknown): boolean;
 }
 
-export interface ParserServices {
-  program: ts.Program;
+export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
-  hasFullTypeInformation: boolean;
 }
+export interface ParserServicesWithTypeInformation
+  extends ParserServicesNodeMaps {
+  program: ts.Program;
+}
+export interface ParserServicesWithoutTypeInformation
+  extends ParserServicesNodeMaps {
+  program: null;
+}
+export type ParserServices =
+  | ParserServicesWithTypeInformation
+  | ParserServicesWithoutTypeInformation;
 
 export interface ModuleResolver {
   version: 1;

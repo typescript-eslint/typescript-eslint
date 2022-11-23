@@ -6,6 +6,7 @@ import * as astConverterModule from '../../src/ast-converter';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
+import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
@@ -196,39 +197,6 @@ describe('parseWithNodeMaps()', () => {
 });
 
 describe('parseAndGenerateServices', () => {
-  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
-    const code = '@test const foo = 2';
-    const options: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true,
-    };
-
-    it('should throw on invalid option when used in parseWithNodeMaps', () => {
-      expect(() => {
-        parser.parseWithNodeMaps(code, options);
-      }).toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should not throw when used in parseAndGenerateServices', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).not.toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should error on invalid code', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).toThrow('Decorators are not valid here.');
-    });
-  });
-
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
@@ -321,16 +289,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
-          parseResult.services.esTreeNodeToTSNodeMap.has(
+          parseResult.services.esTreeNodeToTSNodeMap?.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile('estree.ts'),
           ),
         ).toBe(setting);
       });
@@ -341,18 +302,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
           parseResult.services.esTreeNodeToTSNodeMap.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile(
-              join(FIXTURES_DIR, 'file.ts'),
-            ),
           ),
         ).toBe(setting);
       });
@@ -411,14 +363,16 @@ describe('parseAndGenerateServices', () => {
         }
 
         if (!shouldThrow) {
-          expect(result?.services.program).toBeDefined();
           expect(result?.ast).toBeDefined();
           expect({
             ...result,
             services: {
               ...result?.services,
-              // Reduce noise in snapshot
-              program: {},
+              // Reduce noise in snapshot by not printing the TS program
+              program:
+                result?.services.program == null
+                  ? 'No Program'
+                  : 'With Program',
             },
           }).toMatchSnapshot();
         }
@@ -700,9 +654,14 @@ describe('parseAndGenerateServices', () => {
     });
 
     it('should turn on typescript debugger', () => {
-      parser.parseAndGenerateServices('const x = 1;', {
-        debugLevel: ['typescript'],
-      });
+      expect(() =>
+        parser.parseAndGenerateServices('const x = 1;', {
+          debugLevel: ['typescript'],
+          filePath: './path-that-doesnt-exist.ts',
+          project: ['./tsconfig-that-doesnt-exist.json'],
+        }),
+      ) // should throw because the file and tsconfig don't exist
+        .toThrow();
       expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
       expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
         expect.objectContaining({
@@ -781,12 +740,11 @@ describe('parseAndGenerateServices', () => {
 
     describe('when file is in the project', () => {
       it('returns error if __PLACEHOLDER__ can not be resolved', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, config)
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveProperty(
-          [0, 'messageText'],
+        const services = parser.parseAndGenerateServices(code, config).services;
+        expectToHaveParserServices(services);
+        const diagnositcs = services.program.getSemanticDiagnostics();
+        expect(diagnositcs.length).toBeGreaterThan(0);
+        expect(diagnositcs[0].messageText).toBe(
           "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
         );
       });
@@ -801,44 +759,42 @@ describe('parseAndGenerateServices', () => {
             ),
           }),
         ).toThrowErrorMatchingInlineSnapshot(`
-        "Could not find the provided parserOptions.moduleResolver.
-        Hint: use an absolute path if you are not in control over where the ESLint instance runs."
-      `);
+          "Could not find the provided parserOptions.moduleResolver.
+          Hint: use an absolute path if you are not in control over where the ESLint instance runs."
+        `);
       });
 
       it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...config,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
+        const services = parser.parseAndGenerateServices(code, {
+          ...config,
+          moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
+        }).services;
+        expectToHaveParserServices(services);
+        expect(services.program.getSemanticDiagnostics()).toHaveLength(0);
       });
     });
 
     describe('when file is not in the project and DEPRECATED__createDefaultProgram=true', () => {
       it('returns error because __PLACEHOLDER__ can not be resolved', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, withDeprecatedDefaultProgramConfig)
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveProperty(
-          [0, 'messageText'],
+        const services = parser.parseAndGenerateServices(
+          code,
+          withDeprecatedDefaultProgramConfig,
+        ).services;
+        expectToHaveParserServices(services);
+        const diagnositcs = services.program.getSemanticDiagnostics();
+        expect(diagnositcs.length).toBeGreaterThan(0);
+        expect(diagnositcs[0].messageText).toBe(
           "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
         );
       });
 
       it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...withDeprecatedDefaultProgramConfig,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
+        const services = parser.parseAndGenerateServices(code, {
+          ...withDeprecatedDefaultProgramConfig,
+          moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
+        }).services;
+        expectToHaveParserServices(services);
+        expect(services.program.getSemanticDiagnostics()).toHaveLength(0);
       });
     });
   });
