@@ -10,32 +10,47 @@ Although TypeScript supports duplicate union and intersection member values, peo
 
 ## Rule Details
 
-This rule disallows duplicate union or intersection type members. It only checks duplication on the notation. Members with the same value but different names are not marked duplicates.
+This rule disallows duplicate union or intersection constituents.
+
+It determines whether two types are equivalent in the following way.
+
+1. whether the syntax is exactly the same.
+2. whether TypeScript treats them as the same type.
+
+If either of the two conditions is satisfied, It treats the two types as duplicates.
 
 <!--tabs-->
 
 ### ❌ Incorrect
 
 ```ts
-type T1 = A | A | B;
+type T1 = 'A' | 'A';
 
-type T2 = { a: string } & { a: string };
+type T2 = A | A | B;
 
-type T3 = [1, 2, 3] & [1, 2, 3];
+type T3 = { a: string } & { a: string };
 
-type T4 = () => string | string;
+type T4 = [1, 2, 3] & [1, 2, 3];
+
+type StringA = string;
+type StringB = string;
+type T5 = StringA | StringB;
 ```
 
 ### ✅ Correct
 
 ```ts
-type T1 = A | B | C;
+type T1 = 'A' | 'B';
 
-type T2 = { a: string } & { b: string };
+type T2 = A | B | C;
 
-type T3 = [1, 2, 3] & [1, 2, 3, 4];
+type T3 = { a: string } & { b: string };
 
-type T4 = () => string | number;
+type T4 = [1, 2, 3] & [1, 2, 3, 4];
+
+type StringA = string;
+type NumberB = string;
+type T5 = StringA | NumberB;
 ```
 
 ## Options
