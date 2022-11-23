@@ -135,6 +135,7 @@ export default util.createRule<Options, MessageIds>({
             uniqConstituentTypes.has(type)
           ) {
             duplicateConstituentNodes.push(constituentNode);
+            uniqConstituentTypes.add(type);
             return uniqConstituentNodes;
           }
           uniqConstituentTypes.add(type);
