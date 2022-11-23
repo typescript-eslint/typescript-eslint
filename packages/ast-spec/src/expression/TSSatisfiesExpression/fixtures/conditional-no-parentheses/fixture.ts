@@ -1,1 +1,1 @@
-foo ? 1 : 0 satisfies number;
+foo ? 1 : (0 satisfies number);

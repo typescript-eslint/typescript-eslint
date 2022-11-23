@@ -50,16 +50,16 @@ Program {
         },
       },
 
-      range: [0, 24],
+      range: [0, 25],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 24, line: 1 },
+        end: { column: 25, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 25],
+  range: [0, 26],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },
