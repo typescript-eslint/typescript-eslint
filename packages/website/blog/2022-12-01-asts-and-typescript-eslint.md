@@ -65,7 +65,7 @@ That ESTree object representation of the code is what static analysis tools such
 
 ## AST Formats
 
-ESTree is more broadly used than just for ESLint -- it is the de facto community standard.
+ESTree is more broadly used than just for ESLint -- it is a popular community standard.
 ESLint's built-in parser that outputs an ESTree-shaped AST is also a separate package, called **[Espree]**.
 
 TypeScript has its own separate AST format, often referred to as the TypeScript AST.
