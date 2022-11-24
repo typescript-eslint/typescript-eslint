@@ -27,6 +27,22 @@ Linters typically run on a rule-by-rule basis, typically resulting in many edge 
 We recommend using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
 You can then configure your formatter separately from ESLint.
 
+Using this config by adding it to the end of your `extends`:
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    // Add this line
+    'prettier',
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+```
+
 ## ESLint Core and Formatting
 
 Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies#what-are-the-changes):

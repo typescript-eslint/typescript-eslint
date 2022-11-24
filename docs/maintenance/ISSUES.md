@@ -1,7 +1,7 @@
 ---
 id: issues
-sidebar_label: Issue Management
-title: Issue Management
+sidebar_label: Issues
+title: Issues
 ---
 
 This document serves as a guide for how you might manage issues, also known as issue triaging.
@@ -101,3 +101,13 @@ TODO: This will be filled out... soon!
 ### 🚀 New Rules
 
 TODO: This will be filled out... soon!
+
+## Pruning Old Issues
+
+Every so often, we like to [search for open issues `awaiting response`](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3A%22awaiting+response%22) to find ones that might have been forgotten.
+Our flow for issues that have been waiting for >=1 month is:
+
+1. Ping the author with a message like the _Checking In_ template
+2. Add the `stale` label to the issue
+3. Wait 2 weeks
+4. If they still haven't responded, close the issue with a message like the _Pruning Stale Issue_ template

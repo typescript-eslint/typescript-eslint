@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "5.43.0",
+  "version": "5.44.0",
   "description": "TypeScript plugin for ESLint",
   "keywords": [
     "eslint",
@@ -39,14 +39,14 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:breaking-changes": "../../node_modules/.bin/ts-node tools/generate-breaking-changes.ts",
     "generate:configs": "../../node_modules/.bin/ts-node tools/generate-configs.ts",
-    "lint": "eslint . --ignore-path ../../.eslintignore",
+    "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "5.43.0",
-    "@typescript-eslint/type-utils": "5.43.0",
-    "@typescript-eslint/utils": "5.43.0",
+    "@typescript-eslint/scope-manager": "5.44.0",
+    "@typescript-eslint/type-utils": "5.44.0",
+    "@typescript-eslint/utils": "5.44.0",
     "debug": "^4.3.4",
     "ignore": "^5.2.0",
     "natural-compare-lite": "^1.4.0",
