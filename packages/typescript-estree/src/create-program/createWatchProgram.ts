@@ -88,14 +88,6 @@ function saveWatchCallback(
 }
 
 /**
- * Holds information about the file currently being linted
- */
-const currentLintOperationState: { code: string; filePath: CanonicalPath } = {
-  code: '',
-  filePath: '' as CanonicalPath,
-};
-
-/**
  * Appropriately report issues found when reading a config file
  * @param diagnostic The diagnostic raised when creating a program
  */
@@ -141,10 +133,6 @@ function updateCachedFileList(
 function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
   const filePath = getCanonicalFileName(parseSettings.filePath);
   const results = [];
-
-  // preserve reference to code and file being linted
-  currentLintOperationState.code = parseSettings.code;
-  currentLintOperationState.filePath = filePath;
 
   // Update file version if necessary
   const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(filePath);
@@ -238,7 +226,11 @@ function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
       continue;
     }
 
-    const programWatch = createWatchProgram(tsconfigPath, parseSettings);
+    const programWatch = createWatchProgram(
+      filePath,
+      tsconfigPath,
+      parseSettings,
+    );
     knownWatchProgramMap.set(tsconfigPath, programWatch);
 
     const program = programWatch.getProgram().getProgram();
@@ -264,6 +256,7 @@ const isRunningNoTimeoutFix = semver.satisfies(ts.version, '>=3.9.0-beta', {
 });
 
 function createWatchProgram(
+  filePath: string,
   tsconfigPath: string,
   parseSettings: ParseSettings,
 ): ts.WatchOfConfigFile<ts.BuilderProgram> {
@@ -288,13 +281,13 @@ function createWatchProgram(
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
   watchCompilerHost.readFile = (filePathIn, encoding): string | undefined => {
-    const filePath = getCanonicalFileName(filePathIn);
+    const canonicalFileNameIn = getCanonicalFileName(filePathIn);
     const fileContent =
-      filePath === currentLintOperationState.filePath
-        ? currentLintOperationState.code
-        : oldReadFile(filePath, encoding);
+      canonicalFileNameIn === filePath
+        ? parseSettings.code
+        : oldReadFile(canonicalFileNameIn, encoding);
     if (fileContent !== undefined) {
-      parsedFilesSeenHash.set(filePath, createHash(fileContent));
+      parsedFilesSeenHash.set(canonicalFileNameIn, createHash(fileContent));
     }
     return fileContent;
   };
