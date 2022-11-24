@@ -1,1 +1,1 @@
-foo === 1 satisfies number;
+foo === (1 satisfies number);
