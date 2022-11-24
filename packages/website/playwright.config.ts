@@ -4,7 +4,6 @@ import { devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   fullyParallel: true,
-
   reporter: 'html',
   retries: 0,
   testDir: './tests',
