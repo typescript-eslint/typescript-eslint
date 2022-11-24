@@ -26,46 +26,46 @@ Program {
             raw: "1",
             value: 1,
 
-            range: [8, 9],
+            range: [9, 10],
             loc: {
-              start: { column: 8, line: 1 },
-              end: { column: 9, line: 1 },
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
             },
           },
           typeAnnotation: TSNumberKeyword {
             type: "TSNumberKeyword",
 
-            range: [20, 26],
+            range: [21, 27],
             loc: {
-              start: { column: 20, line: 1 },
-              end: { column: 26, line: 1 },
+              start: { column: 21, line: 1 },
+              end: { column: 27, line: 1 },
             },
           },
 
-          range: [8, 26],
+          range: [9, 27],
           loc: {
-            start: { column: 8, line: 1 },
-            end: { column: 26, line: 1 },
+            start: { column: 9, line: 1 },
+            end: { column: 27, line: 1 },
           },
         },
 
-        range: [0, 26],
+        range: [0, 28],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 26, line: 1 },
+          end: { column: 28, line: 1 },
         },
       },
 
-      range: [0, 27],
+      range: [0, 29],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 27, line: 1 },
+        end: { column: 29, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 28],
+  range: [0, 30],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },
