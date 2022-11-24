@@ -53,6 +53,7 @@ import type { TSAsExpression } from '../expression/TSAsExpression/spec';
 import type { TSEmptyBodyFunctionExpression } from '../expression/TSEmptyBodyFunctionExpression/spec';
 import type { TSInstantiationExpression } from '../expression/TSInstantiationExpression/spec';
 import type { TSNonNullExpression } from '../expression/TSNonNullExpression/spec';
+import type { TSSatisfiesExpression } from '../expression/TSSatisfiesExpression/spec';
 import type { TSTypeAssertion } from '../expression/TSTypeAssertion/spec';
 import type { UnaryExpression } from '../expression/UnaryExpression/spec';
 import type { UpdateExpression } from '../expression/UpdateExpression/spec';
@@ -305,6 +306,7 @@ export type Node =
   | TSQualifiedName
   | TSReadonlyKeyword
   | TSRestType
+  | TSSatisfiesExpression
   | TSStaticKeyword
   | TSStringKeyword
   | TSSymbolKeyword

@@ -78,3 +78,24 @@ Examples of **correct** code with `{ ignoreFunctionTypeParameterNameValueShadow:
 const test = 1;
 type Func = (test: string) => typeof test;
 ```
+
+## FAQ
+
+### Why does the rule report on enum members that share the same name as a variable in a parent scope?
+
+Reporting on this case isn't a bug - it is completely intentional and correct reporting! The rule reports due to a relatively unknown feature of enums - enum members create a variable within the enum scope so that they can be referenced within the enum without a qualifier.
+
+To illustrate this with an example:
+
+```ts
+const A = 2;
+enum Test {
+  A = 1,
+  B = A,
+}
+
+console.log(Test.B);
+// what should be logged?
+```
+
+Naively looking at the above code, it might look like the log should output `2`, because the outer variable `A`'s value is `2` - however, the code instead outputs `1`, which is the value of `Test.A`. This is because the unqualified code `B = A` is equivalent to the fully-qualified code `B = Test.A`. Due to this behavior, the enum member has **shadowed** the outer variable declaration.

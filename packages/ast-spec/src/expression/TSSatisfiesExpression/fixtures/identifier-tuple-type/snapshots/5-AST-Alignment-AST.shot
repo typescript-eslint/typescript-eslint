@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression identifier-tuple-type AST Alignment - AST 1`] = `
+"Snapshot Diff:
+Compared values have no visual difference."
+`;

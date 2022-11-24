@@ -1,23 +1,22 @@
-import type { TSESLint } from '@typescript-eslint/utils';
-
-import type { MessageIds, Options } from '../../src/rules/member-ordering';
-import rule, { defaultOrder } from '../../src/rules/member-ordering';
-import { RuleTester } from '../RuleTester';
+import type { MessageIds, Options } from '../../../src/rules/member-ordering';
+import rule, { defaultOrder } from '../../../src/rules/member-ordering';
+import type { RunTests } from '../../RuleTester';
+import { RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const sortedCiWithoutGrouping: TSESLint.RunTests<MessageIds, Options> = {
+const sortedCiWithoutGrouping: RunTests<MessageIds, Options> = {
   valid: [
     // default option + interface + lower/upper case
     {
       code: `
 interface Foo {
-  a : b;
-  B : b;
+  a: b;
+  B: b;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -32,10 +31,10 @@ interface Foo {
     {
       code: `
 type Foo = {
-  a : b;
-  B : b;
-}
-            `,
+  a: b;
+  B: b;
+};
+      `,
       options: [
         {
           default: {
@@ -50,10 +49,10 @@ type Foo = {
     {
       code: `
 class Foo {
-  public static a : string;
-  public static B : string;
+  public static a: string;
+  public static B: string;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -68,10 +67,10 @@ class Foo {
     {
       code: `
 const foo = class Foo {
-  public static a : string;
-  public static B : string;
-}
-            `,
+  public static a: string;
+  public static B: string;
+};
+      `,
       options: [
         {
           default: {
@@ -86,11 +85,11 @@ const foo = class Foo {
     {
       code: `
 class Foo {
-  public static a : string;
-  @Dec() static B : string;
-  public static c : string;
+  public static a: string;
+  @Dec() static B: string;
+  public static c: string;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -106,11 +105,11 @@ class Foo {
     {
       code: `
 interface Foo {
-  c : string;
-  B : string;
-  a : string;
+  c: string;
+  B: string;
+  a: string;
 }
-          `,
+      `,
       options: [
         {
           default: {
@@ -141,10 +140,10 @@ interface Foo {
     {
       code: `
 interface Foo {
-  B : b;
-  a : b;
+  B: b;
+  a: b;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -168,10 +167,10 @@ interface Foo {
     {
       code: `
 type Foo = {
-  B : b;
-  a : b;
-}
-            `,
+  B: b;
+  a: b;
+};
+      `,
       options: [
         {
           default: {
@@ -195,10 +194,10 @@ type Foo = {
     {
       code: `
 class Foo {
-  public static B : string;
-  public static a : string;
+  public static B: string;
+  public static a: string;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -222,10 +221,10 @@ class Foo {
     {
       code: `
 const foo = class Foo {
-  public static B : string;
-  public static a : string;
-}
-            `,
+  public static B: string;
+  public static a: string;
+};
+      `,
       options: [
         {
           default: {
@@ -247,27 +246,27 @@ const foo = class Foo {
   ],
 };
 
-const sortedCiWithGrouping: TSESLint.RunTests<MessageIds, Options> = {
+const sortedCiWithGrouping: RunTests<MessageIds, Options> = {
   valid: [
     // default option + interface + default order + alphabetically
     {
       code: `
 interface Foo {
-  [a: string] : number;
+  [a: string]: number;
 
-  () : Baz;
+  (): Baz;
 
-  a : x;
-  B : x;
-  c : x;
+  a: x;
+  B: x;
+  c: x;
 
-  new () : Bar;
+  new (): Bar;
 
-  a() : void;
-  B() : void;
-  c() : void;
+  a(): void;
+  B(): void;
+  c(): void;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -282,20 +281,20 @@ interface Foo {
     {
       code: `
 interface Foo {
-  new () : Bar;
+  new (): Bar;
 
-  a() : void;
-  B() : void;
-  c() : void;
+  a(): void;
+  B(): void;
+  c(): void;
 
-  a : x;
-  B : x;
-  c : x;
+  a: x;
+  B: x;
+  c: x;
 
-  [a: string] : number;
-  () : Baz;
+  [a: string]: number;
+  (): Baz;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -310,21 +309,21 @@ interface Foo {
     {
       code: `
 type Foo = {
-  [a: string] : number;
+  [a: string]: number;
 
-  () : Baz;
+  (): Baz;
 
-  a : x;
-  B : x;
-  c : x;
+  a: x;
+  B: x;
+  c: x;
 
-  new () : Bar;
+  new (): Bar;
 
-  a() : void;
-  B() : void;
-  c() : void;
-}
-            `,
+  a(): void;
+  B(): void;
+  c(): void;
+};
+      `,
       options: [
         {
           default: {
@@ -339,21 +338,21 @@ type Foo = {
     {
       code: `
 type Foo = {
-  [a: string] : number;
+  [a: string]: number;
 
-  new () : Bar;
+  new (): Bar;
 
-  a() : void;
-  B() : void;
-  c() : void;
+  a(): void;
+  B(): void;
+  c(): void;
 
-  a : x;
-  B : x;
-  c : x;
+  a: x;
+  B: x;
+  c: x;
 
-  () : Baz;
-}
-            `,
+  (): Baz;
+};
+      `,
       options: [
         {
           default: {
@@ -369,16 +368,16 @@ type Foo = {
       code: `
 class Foo {
   public static a: string;
-  protected static b: string = "";
-  private static c: string = "";
+  protected static b: string = '';
+  private static c: string = '';
 
-  public d: string = "";
-  protected E: string = "";
-  private f: string = "";
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
 
   constructor() {}
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -393,20 +392,20 @@ class Foo {
       code: `
 class Foo {
   public static a: string;
-  protected static b: string = "";
-  private static c: string = "";
+  protected static b: string = '';
+  private static c: string = '';
 
   @Dec() public d: string;
   @Dec() protected E: string;
   @Dec() private f: string;
 
-  public g: string = "";
-  protected h: string = "";
-  private i: string = "";
+  public g: string = '';
+  protected h: string = '';
+  private i: string = '';
 
   constructor() {}
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -423,15 +422,15 @@ class Foo {
 class Foo {
   constructor() {}
 
-  public d: string = "";
-  protected E: string = "";
-  private f: string = "";
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
 
   public static a: string;
-  protected static b: string = "";
-  private static c: string = "";
+  protected static b: string = '';
+  private static c: string = '';
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -447,16 +446,16 @@ class Foo {
       code: `
 const foo = class Foo {
   public static a: string;
-  protected static b: string = "";
-  private static c: string = "";
+  protected static b: string = '';
+  private static c: string = '';
 
-  public d: string = "";
-  protected E: string = "";
-  private f: string = "";
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
 
   constructor() {}
-}
-            `,
+};
+      `,
       options: [
         {
           default: {
@@ -473,15 +472,15 @@ const foo = class Foo {
 const foo = class Foo {
   constructor() {}
 
-  public d: string = "";
-  protected E: string = "";
-  private f: string = "";
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
 
   public static a: string;
-  protected static b: string = "";
-  private static c: string = "";
-}
-            `,
+  protected static b: string = '';
+  private static c: string = '';
+};
+      `,
       options: [
         {
           default: {
@@ -499,7 +498,10 @@ class Foo {
   static {}
   static {}
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [
         {
           default: {
@@ -515,21 +517,21 @@ class Foo {
     {
       code: `
 interface Foo {
-  [a: string] : number;
+  [a: string]: number;
 
-  a : x;
-  B : x;
-  c : x;
+  a: x;
+  B: x;
+  c: x;
 
-  c() : void;
-  B() : void;
-  a() : void;
+  c(): void;
+  B(): void;
+  a(): void;
 
-  () : Baz;
+  (): Baz;
 
-  new () : Bar;
+  new (): Bar;
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -560,21 +562,21 @@ interface Foo {
     {
       code: `
 type Foo = {
-  [a: string] : number;
+  [a: string]: number;
 
-  a : x;
-  B : x;
-  c : x;
+  a: x;
+  B: x;
+  c: x;
 
-  c() : void;
-  B() : void;
-  a() : void;
+  c(): void;
+  B(): void;
+  a(): void;
 
-  () : Baz;
+  (): Baz;
 
-  new () : Bar;
-}
-            `,
+  new (): Bar;
+};
+      `,
       options: [
         {
           default: {
@@ -605,15 +607,15 @@ type Foo = {
     {
       code: `
 class Foo {
-  public static c: string = "";
-  public static B: string = "";
+  public static c: string = '';
+  public static B: string = '';
   public static a: string;
 
   constructor() {}
 
-  public d: string = "";
+  public d: string = '';
 }
-            `,
+      `,
       options: [
         {
           default: {
@@ -637,15 +639,15 @@ class Foo {
     {
       code: `
 const foo = class Foo {
-  public static c: string = "";
-  public static B: string = "";
+  public static c: string = '';
+  public static B: string = '';
   public static a: string;
 
   constructor() {}
 
-  public d: string = "";
-}
-            `,
+  public d: string = '';
+};
+      `,
       options: [
         {
           default: {

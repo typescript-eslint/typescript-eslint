@@ -1,130 +1,132 @@
-import type { TSESLint } from '@typescript-eslint/utils';
-
 import type { MessageIds, Options } from '../../src/rules/member-ordering';
 import rule from '../../src/rules/member-ordering';
+import type { RunTests } from '../RuleTester';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const grouped: TSESLint.RunTests<MessageIds, Options> = {
+const grouped: RunTests<MessageIds, Options> = {
   valid: [
     `
 // no accessibility === public
 interface Foo {
-    [Z: string]: any;
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    new();
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  new ();
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
 }
-        `,
+    `,
     {
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       code: `
 // no accessibility === public
 interface Foo {
-    A: string;
-    J();
-    K();
-    D: string;
-    E: string;
-    F: string;
-    new();
-    G();
-    H();
-    [Z: string]: any;
-    B: string;
-    C: string;
-    I();
-    L();
+  A: string;
+  J();
+  K();
+  D: string;
+  E: string;
+  F: string;
+  new ();
+  G();
+  H();
+  [Z: string]: any;
+  B: string;
+  C: string;
+  I();
+  L();
 }
-            `,
+      `,
       options: [{ default: 'never' }],
     },
     {
       code: `
 // no accessibility === public
 interface Foo {
-    [Z: string]: any;
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    new();
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  new ();
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
 }
-            `,
+      `,
       options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
 interface X {
   (): void;
-  a:  unknown;
+  a: unknown;
   b(): void;
 }
-            `,
+      `,
       options: [{ default: ['call-signature', 'field', 'method'] }],
     },
     {
       code: `
 // no accessibility === public
 interface Foo {
-    A: string;
-    J();
-    K();
-    D: string;
-    [Z: string]: any;
-    E: string;
-    F: string;
-    new();
-    G();
-    B: string;
-    C: string;
-    H();
-    I();
-    L();
+  A: string;
+  J();
+  K();
+  D: string;
+  [Z: string]: any;
+  E: string;
+  F: string;
+  new ();
+  G();
+  B: string;
+  C: string;
+  H();
+  I();
+  L();
 }
-            `,
+      `,
       options: [{ interfaces: 'never' }],
     },
     {
       code: `
 // no accessibility === public
 interface Foo {
-    [Z: string]: any;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
+  [Z: string]: any;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
 }
-            `,
+      `,
       options: [
         { interfaces: ['signature', 'method', 'constructor', 'field'] },
       ],
@@ -133,22 +135,22 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    [Z: string]: any;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           default: ['signature', 'field', 'constructor', 'method'],
@@ -160,23 +162,23 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    G();
-    H();
-    I();
-    new();
-    [Z: string]: any;
-    D: string;
-    E: string;
-    F: string;
-    G?: string;
-    J();
-    K();
-    L();
-    A: string;
-    B: string;
-    C: string;
+  G();
+  H();
+  I();
+  new ();
+  [Z: string]: any;
+  D: string;
+  E: string;
+  F: string;
+  G?: string;
+  J();
+  K();
+  L();
+  A: string;
+  B: string;
+  C: string;
 }
-            `,
+      `,
       options: [
         {
           default: [
@@ -191,22 +193,22 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    [Z: string]: any;
-    D: string;
-    E: string;
-    F: string;
-    new();
-    A: string;
-    B: string;
-    C: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  [Z: string]: any;
+  D: string;
+  E: string;
+  F: string;
+  new ();
+  A: string;
+  B: string;
+  C: string;
 }
-            `,
+      `,
       options: [
         {
           default: ['method', 'public-constructor', 'protected-static-field'],
@@ -216,147 +218,147 @@ interface Foo {
     `
 // no accessibility === public
 type Foo = {
-    [Z: string]: any;
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    new();
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-}
-        `,
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  new ();
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+};
+    `,
     {
       code: `
 // no accessibility === public
 type Foo = {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    [Z: string]: any;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-}
-            `,
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  [Z: string]: any;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+};
+      `,
       options: [{ default: 'never' }],
     },
     {
       code: `
 // no accessibility === public
 type Foo = {
-    [Z: string]: any;
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-}
-            `,
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+};
+      `,
       options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
 // no accessibility === public
 type Foo = {
-    [Z: string]: any;
-    new();
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-}
-            `,
+  [Z: string]: any;
+  new ();
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+};
+      `,
       options: [{ default: ['field', 'method'] }],
     },
     {
       code: `
 // no accessibility === public
 type Foo = {
-    G();
-    H();
-    [Z: string]: any;
-    K();
-    L();
-    A: string;
-    B: string;
-    I();
-    J();
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-}
-            `,
+  G();
+  H();
+  [Z: string]: any;
+  K();
+  L();
+  A: string;
+  B: string;
+  I();
+  J();
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+};
+      `,
       options: [{ typeLiterals: 'never' }],
     },
     {
       code: `
 // no accessibility === public
 type Foo = {
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    [Z: string]: any;
-}
-            `,
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  [Z: string]: any;
+};
+      `,
       options: [{ typeLiterals: ['method', 'field', 'signature'] }],
     },
     {
       code: `
 // no accessibility === public
 type Foo = {
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    [Z: string]: any;
-}
-            `,
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  [Z: string]: any;
+};
+      `,
       options: [
         { typeLiterals: ['method', 'constructor', 'field', 'signature'] },
       ],
@@ -365,21 +367,21 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    [Z: string]: any;
-}
-            `,
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  [Z: string]: any;
+};
+      `,
       options: [
         {
           default: ['signature', 'field', 'constructor', 'method'],
@@ -391,21 +393,21 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
-    [Z: string]: any;
-    D: string;
-    E: string;
-    F: string;
-    A: string;
-    B: string;
-    C: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-}
-            `,
+  [Z: string]: any;
+  D: string;
+  E: string;
+  F: string;
+  A: string;
+  B: string;
+  C: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+};
+      `,
       options: [
         {
           default: [
@@ -419,202 +421,202 @@ type Foo = {
     },
     `
 class Foo {
-    [Z: string]: any;
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    #L() {}
+  [Z: string]: any;
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  constructor() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
 }
-        `,
+    `,
     {
       code: `
 class Foo {
-    [Z: string]: any;
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    #L() {}
+  [Z: string]: any;
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  constructor() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
 }
-            `,
+      `,
       options: [{ default: 'never' }],
     },
     {
       code: `
 class Foo {
-    [Z: string]: any;
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    #L() {}
+  [Z: string]: any;
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  constructor() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
 }
-            `,
+      `,
       options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
 class Foo {
-    [Z: string]: any;
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #F: string = "";
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    #L() {}
+  [Z: string]: any;
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
 }
-            `,
+      `,
       options: [{ default: ['field', 'method'] }],
     },
     {
       code: `
 class Foo {
-    public static G() {}
-    protected K() {}
-    private L() {}
-    private static I() {}
-    public J() {}
-    public D: string = "";
-    [Z: string]: any;
-    protected static H() {}
-    public static A: string;
-    protected static B: string = "";
-    constructor() {}
-    private static C: string = "";
-    protected E: string = "";
-    private F: string = "";
+  public static G() {}
+  protected K() {}
+  private L() {}
+  private static I() {}
+  public J() {}
+  public D: string = '';
+  [Z: string]: any;
+  protected static H() {}
+  public static A: string;
+  protected static B: string = '';
+  constructor() {}
+  private static C: string = '';
+  protected E: string = '';
+  private F: string = '';
 }
-            `,
+      `,
       options: [{ classes: 'never' }],
     },
     {
       code: `
 class Foo {
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    #L() {}
-    [Z: string]: any;
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #F: string = "";
-    constructor() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
+  [Z: string]: any;
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  constructor() {}
 }
-            `,
+      `,
       options: [{ classes: ['method', 'field'] }],
     },
     {
       code: `
 class Foo {
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    [Z: string]: any;
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [{ classes: ['method', 'constructor', 'field', 'signature'] }],
     },
     {
       code: `
 class Foo {
-    private required: boolean;
-    private typeChecker: (data: any) => boolean;
-    constructor(validator: (data: any) => boolean) {
-        this.typeChecker = validator;
-    }
-    check(data: any): boolean {
-        return this.typeChecker(data);
-    }
+  private required: boolean;
+  private typeChecker: (data: any) => boolean;
+  constructor(validator: (data: any) => boolean) {
+    this.typeChecker = validator;
+  }
+  check(data: any): boolean {
+    return this.typeChecker(data);
+  }
 }
-            `,
+      `,
       options: [{ classes: ['field', 'constructor', 'method'] }],
     },
     {
       code: `
 class Foo {
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    [Z: string]: any;
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           default: ['signature', 'field', 'constructor', 'method'],
@@ -625,24 +627,24 @@ class Foo {
     {
       code: `
 class Foo {
-    public J() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    protected K() {}
-    private L() {}
-    [Z: string]: any;
-    constructor() {}
-    public D: string = "";
-    public static A: string;
-    private static C: string = "";
-    private F: string = "";
-    static #M: string = "";
-    #N: string = "";
-    protected static B: string = "";
-    protected E: string = "";
+  public J() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  protected K() {}
+  private L() {}
+  [Z: string]: any;
+  constructor() {}
+  public D: string = '';
+  public static A: string;
+  private static C: string = '';
+  private F: string = '';
+  static #M: string = '';
+  #N: string = '';
+  protected static B: string = '';
+  protected E: string = '';
 }
-            `,
+      `,
       options: [
         {
           classes: [
@@ -660,23 +662,23 @@ class Foo {
     {
       code: `
 class Foo {
-    public static G() {}
-    private static I() {}
-    protected static H() {}
-    public J() {}
-    private L() {}
-    protected K() {}
-    [Z: string]: any;
-    constructor() {}
-    public D: string = "";
-    public static A: string;
-    protected static B: string = "";
-    protected E: string = "";
-    private static C: string = "";
-    private F: string = "";
-    #M: string = "";
+  public static G() {}
+  private static I() {}
+  protected static H() {}
+  public J() {}
+  private L() {}
+  protected K() {}
+  [Z: string]: any;
+  constructor() {}
+  public D: string = '';
+  public static A: string;
+  protected static B: string = '';
+  protected E: string = '';
+  private static C: string = '';
+  private F: string = '';
+  #M: string = '';
 }
-            `,
+      `,
       options: [
         {
           classes: [
@@ -697,26 +699,26 @@ class Foo {
     {
       code: `
 class Foo {
-    public J() {}
-    public static G() {}
-    public D: string = "";
-    public static A: string = "";
-    constructor() {}
-    protected K() {}
-    private L() {}
-    #P() {}
-    protected static H() {}
-    private static I() {}
-    static #O() {}
-    protected static B: string = "";
-    private static C: string = "";
-    static #N: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #M: string = "";
-    [Z: string]: any;
+  public J() {}
+  public static G() {}
+  public D: string = '';
+  public static A: string = '';
+  constructor() {}
+  protected K() {}
+  private L() {}
+  #P() {}
+  protected static H() {}
+  private static I() {}
+  static #O() {}
+  protected static B: string = '';
+  private static C: string = '';
+  static #N: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #M: string = '';
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           default: [
@@ -733,26 +735,26 @@ class Foo {
     {
       code: `
 class Foo {
-    public J() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
-    protected K() {}
-    private L() {}
-    #L() {}
-    constructor() {}
-    [Z: string]: any;
-    public static A: string;
-    private F: string = "";
-    #F: string = "";
-    protected static B: string = "";
-    public D: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    protected E: string = "";
+  public J() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  protected K() {}
+  private L() {}
+  #L() {}
+  constructor() {}
+  [Z: string]: any;
+  public static A: string;
+  private F: string = '';
+  #F: string = '';
+  protected static B: string = '';
+  public D: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  protected E: string = '';
 }
-            `,
+      `,
       options: [
         {
           classes: [
@@ -772,22 +774,22 @@ class Foo {
     {
       code: `
 class Foo {
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    protected static B: string = "";
-    public static G() {}
-    public J() {}
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-    [Z: string]: any;
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  protected static B: string = '';
+  public static G() {}
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           classes: ['private-instance-method', 'protected-static-field'],
@@ -797,22 +799,22 @@ class Foo {
     {
       code: `
 class Foo {
-    private L() {}
-    private static I() {}
-    static #H() {}
-    static #B: string = "";
-    public static G() {}
-    public J() {}
-    #K() {}
-    private static C: string = "";
-    private F: string = "";
-    #E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-    [Z: string]: any;
+  private L() {}
+  private static I() {}
+  static #H() {}
+  static #B: string = '';
+  public static G() {}
+  public J() {}
+  #K() {}
+  private static C: string = '';
+  private F: string = '';
+  #E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           classes: ['private-instance-method', 'protected-static-field'],
@@ -822,22 +824,22 @@ class Foo {
     {
       code: `
 class Foo {
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    protected static B: string = "";
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-    [Z: string]: any;
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  protected static B: string = '';
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           default: ['public-instance-method', 'protected-static-field'],
@@ -847,22 +849,22 @@ class Foo {
     {
       code: `
 class Foo {
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    protected static B: string = "";
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-    [Z: string]: any;
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  protected static B: string = '';
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           classes: ['public-instance-method', 'protected-static-field'],
@@ -872,22 +874,22 @@ class Foo {
     {
       code: `
 class Foo {
-    [Z: string]: any;
-    public D: string = "";
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    private constructor() {}
-    protected static B: string = "";
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
+  [Z: string]: any;
+  public D: string = '';
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  private constructor() {}
+  protected static B: string = '';
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
 }
-            `,
+      `,
       options: [
         {
           default: [
@@ -906,22 +908,22 @@ class Foo {
     {
       code: `
 class Foo {
-    public constructor() {}
-    public D: string = "";
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    [Z: string]: any;
-    protected static B: string = "";
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
+  public constructor() {}
+  public D: string = '';
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  [Z: string]: any;
+  protected static B: string = '';
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
 }
-            `,
+      `,
       options: [
         {
           default: [
@@ -939,146 +941,146 @@ class Foo {
     },
     `
 const foo = class Foo {
-    [Z: string]: any;
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-}
-        `,
+  [Z: string]: any;
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+};
+    `,
     {
       code: `
 const foo = class Foo {
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static I() {}
-    public J() {}
-    private F: string = "";
-    [Z: string]: any;
-    public static G() {}
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    protected static H() {}
-    protected K() {}
-    private L() {}
-}
-            `,
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  private static I() {}
+  public J() {}
+  private F: string = '';
+  [Z: string]: any;
+  public static G() {}
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  protected static H() {}
+  protected K() {}
+  private L() {}
+};
+      `,
       options: [{ default: 'never' }],
     },
     {
       code: `
 const foo = class Foo {
-    [Z: string]: any;
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-}
-            `,
+  [Z: string]: any;
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+};
+      `,
       options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
 const foo = class Foo {
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    [Z: string]: any;
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-}
-            `,
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  [Z: string]: any;
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+};
+      `,
       options: [{ default: ['field', 'method'] }],
     },
     {
       code: `
 const foo = class Foo {
-    private L() {}
-    protected static H() {}
-    constructor() {}
-    private static I() {}
-    public J() {}
-    private static C: string = "";
-    [Z: string]: any;
-    public D: string = "";
-    protected K() {}
-    public static G() {}
-    public static A: string;
-    protected static B: string = "";
-    protected E: string = "";
-    private F: string = "";
-}
-            `,
+  private L() {}
+  protected static H() {}
+  constructor() {}
+  private static I() {}
+  public J() {}
+  private static C: string = '';
+  [Z: string]: any;
+  public D: string = '';
+  protected K() {}
+  public static G() {}
+  public static A: string;
+  protected static B: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
       options: [{ classExpressions: 'never' }],
     },
     {
       code: `
 const foo = class Foo {
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-    [Z: string]: any;
-}
-            `,
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+  [Z: string]: any;
+};
+      `,
       options: [{ classExpressions: ['method', 'field'] }],
     },
     {
       code: `
 const foo = class Foo {
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    [Z: string]: any;
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-}
-            `,
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  [Z: string]: any;
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
       options: [
         { classExpressions: ['method', 'signature', 'constructor', 'field'] },
       ],
@@ -1086,22 +1088,22 @@ const foo = class Foo {
     {
       code: `
 const foo = class Foo {
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    [Z: string]: any;
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-}
-            `,
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  [Z: string]: any;
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
       options: [
         {
           default: ['field', 'constructor', 'method'],
@@ -1112,23 +1114,22 @@ const foo = class Foo {
     {
       code: `
 const foo = class Foo {
-    [Z: string]: any;
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    protected static B: string = "";
-    public static G() {}
-    public J() {}
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-
-}
-            `,
+  [Z: string]: any;
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  protected static B: string = '';
+  public static G() {}
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+};
+      `,
       options: [
         {
           classExpressions: [
@@ -1141,23 +1142,22 @@ const foo = class Foo {
     {
       code: `
 const foo = class Foo {
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    [Z: string]: any;
-    protected static B: string = "";
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-
-}
-            `,
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  [Z: string]: any;
+  protected static B: string = '';
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+};
+      `,
       options: [
         {
           default: ['public-instance-method', 'protected-static-field'],
@@ -1167,23 +1167,22 @@ const foo = class Foo {
     {
       code: `
 const foo = class Foo {
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    [Z: string]: any;
-    protected static B: string = "";
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-
-}
-            `,
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  [Z: string]: any;
+  protected static B: string = '';
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+};
+      `,
       options: [
         {
           classExpressions: [
@@ -1196,22 +1195,22 @@ const foo = class Foo {
     {
       code: `
 const foo = class Foo {
-    public D: string = "";
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    [Z: string]: any;
-    private constructor() {}
-    protected static B: string = "";
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-}
-            `,
+  public D: string = '';
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  [Z: string]: any;
+  private constructor() {}
+  protected static B: string = '';
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+};
+      `,
       options: [
         {
           default: [
@@ -1235,22 +1234,22 @@ const foo = class Foo {
     {
       code: `
 const foo = class Foo {
-    public constructor() {}
-    public D: string = "";
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    public J() {}
-    protected static B: string = "";
-    protected K() {}
-    [Z: string]: any;
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-}
-            `,
+  public constructor() {}
+  public D: string = '';
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  public J() {}
+  protected static B: string = '';
+  protected K() {}
+  [Z: string]: any;
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+};
+      `,
       options: [
         {
           default: [
@@ -1273,36 +1272,36 @@ const foo = class Foo {
     },
     `
 class Foo {
-    [Z: string]: any;
-    A: string;
-    constructor () {}
-    J() {}
-    K = () => {}
+  [Z: string]: any;
+  A: string;
+  constructor() {}
+  J() {}
+  K = () => {};
 }
-        `,
+    `,
     {
       code: `
 class Foo {
-    J() {}
-    K = () => {}
-    constructor () {}
-    A: string;
-    [Z: string]: any;
+  J() {}
+  K = () => {};
+  constructor() {}
+  A: string;
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [{ default: ['method', 'constructor', 'field', 'signature'] }],
     },
     {
       code: `
 class Foo {
-    J() {}
-    K = () => {}
-    constructor () {}
-    [Z: string]: any;
-    A: string;
-    L: () => {}
+  J() {}
+  K = () => {};
+  constructor() {}
+  [Z: string]: any;
+  A: string;
+  L: () => {};
 }
-            `,
+      `,
       options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
     },
     {
@@ -1312,7 +1311,10 @@ class Foo {
   m() {}
   f = 1;
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
     },
     {
@@ -1322,7 +1324,10 @@ class Foo {
   f = 1;
   static {}
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
     },
     {
@@ -1332,108 +1337,113 @@ class Foo {
   static {}
   m() {}
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
     },
     `
 interface Foo {
-    [Z: string]: any;
-    A: string;
-    K: () => {};
-    J();
+  [Z: string]: any;
+  A: string;
+  K: () => {};
+  J();
 }
-        `,
+    `,
     {
       code: `
 interface Foo {
-    [Z: string]: any;
-    J();
-    K: () => {}
-    A: string;
+  [Z: string]: any;
+  J();
+  K: () => {};
+  A: string;
 }
-            `,
+      `,
       options: [{ default: ['signature', 'method', 'constructor', 'field'] }],
     },
     `
 type Foo = {
-    [Z: string]: any;
-    A: string;
-    K: () => {}
-    J();
-}
-        `,
+  [Z: string]: any;
+  A: string;
+  K: () => {};
+  J();
+};
+    `,
     {
       code: `
 type Foo = {
-    J();
-    [Z: string]: any;
-    K: () => {}
-    A: string;
-}
-            `,
+  J();
+  [Z: string]: any;
+  K: () => {};
+  A: string;
+};
+      `,
       options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
     },
     {
       code: `
 abstract class Foo {
-    B: string;
-    abstract A: () => {}
+  B: string;
+  abstract A: () => {};
 }
-    `,
+      `,
     },
     {
       code: `
 interface Foo {
-    [A:string]: number;
-    public B: string;
+  [A: string]: number;
+  B: string;
 }
-    `,
+      `,
     },
     {
       code: `
 abstract class Foo {
-    [Z: string]: any;
-    private static C: string;
-    B: string;
-    private D: string;
-    protected static F(): {};
-    public E(): {};
-    public abstract A(): void;
-    protected abstract G(): void;
+  [Z: string]: any;
+  private static C: string;
+  B: string;
+  private D: string;
+  protected static F(): {};
+  public E(): {};
+  public abstract A(): void;
+  protected abstract G(): void;
 }
-    `,
+      `,
     },
     {
       code: `
 abstract class Foo {
-    protected typeChecker: (data: any) => boolean;
-    public abstract required: boolean;
-    abstract verify(): void;
+  protected typeChecker: (data: any) => boolean;
+  public abstract required: boolean;
+  abstract verify(): void;
 }
-            `,
+      `,
       options: [{ classes: ['signature', 'field', 'constructor', 'method'] }],
     },
     {
       code: `
 class Foo {
-    @Dec() B: string;
-    @Dec() A: string;
-    constructor() {}
-    D: string;
-    C: string;
-    E(): void;
-    F(): void;
-}           `,
+  @Dec() B: string;
+  @Dec() A: string;
+  constructor() {}
+  D: string;
+  C: string;
+  E(): void;
+  F(): void;
+}
+      `,
       options: [{ default: ['decorated-field', 'field'] }],
     },
     {
       code: `
 class Foo {
-    A: string;
-    B: string;
-    @Dec() private C: string;
-    private D: string;
-}           `,
+  A: string;
+  B: string;
+  @Dec() private C: string;
+  private D: string;
+}
+      `,
       options: [
         {
           default: ['public-field', 'private-decorated-field', 'private-field'],
@@ -1443,12 +1453,13 @@ class Foo {
     {
       code: `
 class Foo {
-    constructor() {}
-    @Dec() public A(): void;
-    @Dec() private B: string;
-    private C(): void;
-    private D: string;
-}           `,
+  constructor() {}
+  @Dec() public A(): void;
+  @Dec() private B: string;
+  private C(): void;
+  private D: string;
+}
+      `,
       options: [
         {
           default: [
@@ -1462,12 +1473,13 @@ class Foo {
     {
       code: `
 class Foo {
-    @Dec() private A(): void;
-    @Dec() private B: string;
-    constructor() {}
-    private C(): void;
-    private D: string;
-}           `,
+  @Dec() private A(): void;
+  @Dec() private B: string;
+  constructor() {}
+  private C(): void;
+  private D: string;
+}
+      `,
       options: [
         {
           default: [
@@ -1482,9 +1494,10 @@ class Foo {
     {
       code: `
 class Foo {
-    public A: string;
-    @Dec() private B: string;
-}           `,
+  public A: string;
+  @Dec() private B: string;
+}
+      `,
       options: [
         {
           default: ['private-decorated-field', 'public-instance-field'],
@@ -1496,12 +1509,13 @@ class Foo {
     {
       code: `
 class Foo {
-    public A(): string;
-    @Dec() public B(): string;
-    public C(): string;
+  public A(): string;
+  @Dec() public B(): string;
+  public C(): string;
 
-    d: string;
-}           `,
+  d: string;
+}
+      `,
       options: [
         {
           default: ['public-method', 'field'],
@@ -1511,14 +1525,15 @@ class Foo {
     {
       code: `
 class Foo {
-    A: string;
-    constructor() {}
-    get B() {}
-    set B() {}
-    get C() {}
-    set C() {}
-    D(): void;
-}           `,
+  A: string;
+  constructor() {}
+  get B() {}
+  set B() {}
+  get C() {}
+  set C() {}
+  D(): void;
+}
+      `,
       options: [
         {
           default: ['field', 'constructor', ['get', 'set'], 'method'],
@@ -1528,10 +1543,11 @@ class Foo {
     {
       code: `
 class Foo {
-    A: string;
-    constructor() {}
-    B(): void;
-}           `,
+  A: string;
+  constructor() {}
+  B(): void;
+}
+      `,
       options: [
         {
           default: ['field', 'constructor', [], 'method'],
@@ -1541,13 +1557,14 @@ class Foo {
     {
       code: `
 class Foo {
-    A: string;
-    constructor() {}
-    @Dec() private B: string;
-    private C(): void;
-    set D() {}
-    E(): void;
-}           `,
+  A: string;
+  constructor() {}
+  @Dec() private B: string;
+  private C(): void;
+  set D() {}
+  E(): void;
+}
+      `,
       options: [
         {
           default: [
@@ -1562,14 +1579,15 @@ class Foo {
     {
       code: `
 class Foo {
-    A: string;
-    constructor() {}
-    get B() {}
-    get C() {}
-    set B() {}
-    set C() {}
-    D(): void;
-}           `,
+  A: string;
+  constructor() {}
+  get B() {}
+  get C() {}
+  set B() {}
+  set C() {}
+  D(): void;
+}
+      `,
       options: [
         {
           default: ['field', 'constructor', ['get'], ['set'], 'method'],
@@ -1581,10 +1599,10 @@ class Foo {
       code: `
 // no accessibility === public
 class Foo {
-    imPublic() {};
-    #imPrivate() {};
+  imPublic() {}
+  #imPrivate() {}
 }
-        `,
+      `,
       options: [
         {
           default: {
@@ -1599,10 +1617,10 @@ class Foo {
       code: `
 // no accessibility === public
 class Foo {
-    private imPrivate() {};
-    #imPrivate() {};
+  private imPrivate() {}
+  #imPrivate() {}
 }
-        `,
+      `,
       options: [
         {
           default: {
@@ -1617,10 +1635,10 @@ class Foo {
       code: `
 // no accessibility === public
 class Foo {
-    #imPrivate() {};
-    private imPrivate() {};
+  #imPrivate() {}
+  private imPrivate() {}
 }
-        `,
+      `,
       options: [
         {
           default: {
@@ -1636,22 +1654,22 @@ class Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    [Z: string]: any;
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -1660,18 +1678,18 @@ interface Foo {
             rank: 'method',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 interface X {
-  a:  unknown;
+  a: unknown;
   (): void;
   b(): void;
 }
-            `,
+      `,
       options: [{ default: ['call-signature', 'field', 'method'] }],
       errors: [
         {
@@ -1689,22 +1707,22 @@ interface X {
       code: `
 // no accessibility === public
 interface Foo {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-    [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [{ default: ['signature', 'method', 'constructor', 'field'] }],
       errors: [
         {
@@ -1714,7 +1732,7 @@ interface Foo {
             rank: 'field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1723,7 +1741,7 @@ interface Foo {
             rank: 'field',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1732,7 +1750,7 @@ interface Foo {
             rank: 'field',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1741,7 +1759,7 @@ interface Foo {
             rank: 'field',
           },
           line: 13,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1750,7 +1768,7 @@ interface Foo {
             rank: 'field',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1759,7 +1777,7 @@ interface Foo {
             rank: 'field',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1768,7 +1786,7 @@ interface Foo {
             rank: 'field',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1777,7 +1795,7 @@ interface Foo {
             rank: 'field',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -1785,22 +1803,22 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-    [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         { interfaces: ['method', 'signature', 'constructor', 'field'] },
       ],
@@ -1812,7 +1830,7 @@ interface Foo {
             rank: 'field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1821,7 +1839,7 @@ interface Foo {
             rank: 'field',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1830,7 +1848,7 @@ interface Foo {
             rank: 'field',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1839,7 +1857,7 @@ interface Foo {
             rank: 'field',
           },
           line: 13,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1848,7 +1866,7 @@ interface Foo {
             rank: 'field',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1857,7 +1875,7 @@ interface Foo {
             rank: 'field',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1866,7 +1884,7 @@ interface Foo {
             rank: 'field',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1875,7 +1893,7 @@ interface Foo {
             rank: 'field',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -1883,22 +1901,22 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-    [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [
         {
           default: ['field', 'method', 'constructor', 'signature'],
@@ -1913,7 +1931,7 @@ interface Foo {
             rank: 'field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1922,7 +1940,7 @@ interface Foo {
             rank: 'field',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1931,7 +1949,7 @@ interface Foo {
             rank: 'field',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1940,7 +1958,7 @@ interface Foo {
             rank: 'field',
           },
           line: 13,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1949,7 +1967,7 @@ interface Foo {
             rank: 'field',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1958,7 +1976,7 @@ interface Foo {
             rank: 'field',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1967,7 +1985,7 @@ interface Foo {
             rank: 'field',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -1976,7 +1994,7 @@ interface Foo {
             rank: 'field',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -1984,22 +2002,22 @@ interface Foo {
       code: `
 // no accessibility === public
 interface Foo {
-    [Z: string]: any;
-    new();
-    A: string;
-    G();
-    B: string;
-    H();
-    C: string;
-    I();
-    D: string;
-    J();
-    E: string;
-    K();
-    F: string;
-    L();
+  [Z: string]: any;
+  new ();
+  A: string;
+  G();
+  B: string;
+  H();
+  C: string;
+  I();
+  D: string;
+  J();
+  E: string;
+  K();
+  F: string;
+  L();
 }
-            `,
+      `,
       options: [
         {
           interfaces: ['signature', 'constructor', 'field', 'method'],
@@ -2013,7 +2031,7 @@ interface Foo {
             rank: 'method',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2022,7 +2040,7 @@ interface Foo {
             rank: 'method',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2031,7 +2049,7 @@ interface Foo {
             rank: 'method',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2040,7 +2058,7 @@ interface Foo {
             rank: 'method',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2049,7 +2067,7 @@ interface Foo {
             rank: 'method',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -2057,22 +2075,22 @@ interface Foo {
       code: `
 // no accessibility === public
 type Foo = {
-    [Z: string]: any;
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-}
-            `,
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+};
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -2081,7 +2099,7 @@ type Foo = {
             rank: 'method',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -2089,22 +2107,22 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    [Z: string]: any;
-    new();
-}
-            `,
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  [Z: string]: any;
+  new ();
+};
+      `,
       options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
       errors: [
         {
@@ -2114,7 +2132,7 @@ type Foo = {
             rank: 'field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2123,7 +2141,7 @@ type Foo = {
             rank: 'field',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2132,7 +2150,7 @@ type Foo = {
             rank: 'field',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2141,7 +2159,7 @@ type Foo = {
             rank: 'field',
           },
           line: 13,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2150,7 +2168,7 @@ type Foo = {
             rank: 'field',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2159,7 +2177,7 @@ type Foo = {
             rank: 'field',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2168,7 +2186,7 @@ type Foo = {
             rank: 'field',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2177,7 +2195,7 @@ type Foo = {
             rank: 'field',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -2185,22 +2203,22 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
-    [Z: string]: any;
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-}
-            `,
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+};
+      `,
       options: [
         { typeLiterals: ['method', 'constructor', 'signature', 'field'] },
       ],
@@ -2212,7 +2230,7 @@ type Foo = {
             rank: 'signature',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2221,7 +2239,7 @@ type Foo = {
             rank: 'signature',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2230,7 +2248,7 @@ type Foo = {
             rank: 'signature',
           },
           line: 13,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2239,7 +2257,7 @@ type Foo = {
             rank: 'signature',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2248,7 +2266,7 @@ type Foo = {
             rank: 'signature',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2257,7 +2275,7 @@ type Foo = {
             rank: 'signature',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2266,7 +2284,7 @@ type Foo = {
             rank: 'signature',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -2274,22 +2292,22 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
-    A: string;
-    B: string;
-    C: string;
-    D: string;
-    E: string;
-    F: string;
-    G();
-    H();
-    I();
-    J();
-    K();
-    L();
-    new();
-    [Z: string]: any;
-}
-            `,
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
+};
+      `,
       options: [
         {
           default: ['field', 'method', 'constructor', 'signature'],
@@ -2304,7 +2322,7 @@ type Foo = {
             rank: 'field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2313,7 +2331,7 @@ type Foo = {
             rank: 'field',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2322,7 +2340,7 @@ type Foo = {
             rank: 'field',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2331,7 +2349,7 @@ type Foo = {
             rank: 'field',
           },
           line: 13,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2340,7 +2358,7 @@ type Foo = {
             rank: 'field',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2349,7 +2367,7 @@ type Foo = {
             rank: 'field',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2358,7 +2376,7 @@ type Foo = {
             rank: 'field',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2367,7 +2385,7 @@ type Foo = {
             rank: 'field',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -2375,22 +2393,22 @@ type Foo = {
       code: `
 // no accessibility === public
 type Foo = {
-    new();
-    [Z: string]: any;
-    A: string;
-    G();
-    B: string;
-    H();
-    C: string;
-    I();
-    D: string;
-    J();
-    E: string;
-    K();
-    F: string;
-    L();
-}
-            `,
+  new ();
+  [Z: string]: any;
+  A: string;
+  G();
+  B: string;
+  H();
+  C: string;
+  I();
+  D: string;
+  J();
+  E: string;
+  K();
+  F: string;
+  L();
+};
+      `,
       options: [
         {
           typeLiterals: ['constructor', 'signature', 'field', 'method'],
@@ -2404,7 +2422,7 @@ type Foo = {
             rank: 'method',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2413,7 +2431,7 @@ type Foo = {
             rank: 'method',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2422,7 +2440,7 @@ type Foo = {
             rank: 'method',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2431,7 +2449,7 @@ type Foo = {
             rank: 'method',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2440,33 +2458,33 @@ type Foo = {
             rank: 'method',
           },
           line: 16,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    [Z: string]: any;
-    public static A: string = "";
-    protected static B: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #F: string = "";
-    constructor() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    #L() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
+  [Z: string]: any;
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  constructor() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -2475,7 +2493,7 @@ class Foo {
             rank: 'public instance method',
           },
           line: 17,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2484,7 +2502,7 @@ class Foo {
             rank: 'public instance method',
           },
           line: 18,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2493,7 +2511,7 @@ class Foo {
             rank: 'public instance method',
           },
           line: 19,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2502,33 +2520,33 @@ class Foo {
             rank: 'public instance method',
           },
           line: 20,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    constructor() {}
-    public static A: string = "";
-    protected static B: string = "";
-    private static C: string = "";
-    static #C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    #F: string = "";
-    public J() {}
-    protected K() {}
-    private L() {}
-    #L() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    static #I() {}
-    [Z: string]: any;
+  constructor() {}
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [{ default: ['field', 'constructor', 'method', 'signature'] }],
       errors: [
         {
@@ -2538,7 +2556,7 @@ class Foo {
             rank: 'constructor',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2547,7 +2565,7 @@ class Foo {
             rank: 'constructor',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2556,7 +2574,7 @@ class Foo {
             rank: 'constructor',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2565,7 +2583,7 @@ class Foo {
             rank: 'constructor',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2574,7 +2592,7 @@ class Foo {
             rank: 'constructor',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2583,7 +2601,7 @@ class Foo {
             rank: 'constructor',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2592,7 +2610,7 @@ class Foo {
             rank: 'constructor',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2601,28 +2619,28 @@ class Foo {
             rank: 'constructor',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    constructor() {}
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    public static G() {}
-    public static A: string;
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  public static G() {}
+  public static A: string;
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
 }
-            `,
+      `,
       options: [{ default: ['field', 'method'] }],
       errors: [
         {
@@ -2632,28 +2650,28 @@ class Foo {
             rank: 'method',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    public static A: string;
-    public static G() {}
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  public static G() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
 }
-            `,
+      `,
       options: [{ default: ['method', 'field'] }],
       errors: [
         {
@@ -2663,28 +2681,28 @@ class Foo {
             rank: 'field',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    public static G() {}
-    protected static H() {}
-    protected static B: string = "";
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    public static A: string;
-    constructor() {}
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
+  public static G() {}
+  protected static H() {}
+  protected static B: string = '';
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  constructor() {}
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
 }
-            `,
+      `,
       options: [{ classes: ['method', 'constructor', 'field'] }],
       errors: [
         {
@@ -2694,7 +2712,7 @@ class Foo {
             rank: 'field',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2703,7 +2721,7 @@ class Foo {
             rank: 'field',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2712,7 +2730,7 @@ class Foo {
             rank: 'field',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2721,7 +2739,7 @@ class Foo {
             rank: 'field',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2730,28 +2748,28 @@ class Foo {
             rank: 'field',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    public static A: string;
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    constructor() {}
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
+  public static A: string;
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
 }
-            `,
+      `,
       options: [
         {
           default: ['field', 'constructor', 'method'],
@@ -2766,7 +2784,7 @@ class Foo {
             rank: 'field',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2775,7 +2793,7 @@ class Foo {
             rank: 'field',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2784,7 +2802,7 @@ class Foo {
             rank: 'field',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2793,7 +2811,7 @@ class Foo {
             rank: 'field',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2802,7 +2820,7 @@ class Foo {
             rank: 'field',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2811,7 +2829,7 @@ class Foo {
             rank: 'field',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2820,30 +2838,30 @@ class Foo {
             rank: 'field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    private L() {}
-    public J() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    protected K() {}
-    constructor() {}
-    public D: string = "";
-    private static C: string = "";
-    public static A: string;
-    private static C: string = "";
-    protected static B: string = "";
-    private F: string = "";
-    protected static B: string = "";
-    protected E: string = "";
+  private L() {}
+  public J() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  protected K() {}
+  constructor() {}
+  public D: string = '';
+  private static C: string = '';
+  public static A: string;
+  private static C: string = '';
+  protected static B: string = '';
+  private F: string = '';
+  protected static B: string = '';
+  protected E: string = '';
 }
-            `,
+      `,
       options: [
         {
           classes: [
@@ -2863,7 +2881,7 @@ class Foo {
             rank: 'private field',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2872,28 +2890,28 @@ class Foo {
             rank: 'protected field',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    public static G() {}
-    private static I() {}
-    public J() {}
-    protected static H() {}
-    private L() {}
-    protected K() {}
-    public D: string = "";
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    protected E: string = "";
-    private static C: string = "";
-    private F: string = "";
+  public static G() {}
+  private static I() {}
+  public J() {}
+  protected static H() {}
+  private L() {}
+  protected K() {}
+  public D: string = '';
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  protected E: string = '';
+  private static C: string = '';
+  private F: string = '';
 }
-            `,
+      `,
       options: [
         {
           classes: [
@@ -2916,7 +2934,7 @@ class Foo {
             rank: 'public instance method',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -2925,28 +2943,28 @@ class Foo {
             rank: 'public field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    public J() {}
-    public static G() {}
-    public D: string = "";
-    public static A: string = "";
-    private L() {}
-    constructor() {}
-    protected K() {}
-    protected static H() {}
-    private static I() {}
-    protected static B: string = "";
-    private static C: string = "";
-    protected E: string = "";
-    private F: string = "";
+  public J() {}
+  public static G() {}
+  public D: string = '';
+  public static A: string = '';
+  private L() {}
+  constructor() {}
+  protected K() {}
+  protected static H() {}
+  private static I() {}
+  protected static B: string = '';
+  private static C: string = '';
+  protected E: string = '';
+  private F: string = '';
 }
-            `,
+      `,
       options: [
         {
           default: [
@@ -2966,28 +2984,28 @@ class Foo {
             rank: 'method',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    public J() {}
-    private static I() {}
-    public static G() {}
-    protected static H() {}
-    protected K() {}
-    private L() {}
-    constructor() {}
-    public static A: string;
-    private F: string = "";
-    protected static B: string = "";
-    public D: string = "";
-    private static C: string = "";
-    protected E: string = "";
+  public J() {}
+  private static I() {}
+  public static G() {}
+  protected static H() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  public static A: string;
+  private F: string = '';
+  protected static B: string = '';
+  public D: string = '';
+  private static C: string = '';
+  protected E: string = '';
 }
-            `,
+      `,
       options: [
         {
           classes: [
@@ -3009,7 +3027,7 @@ class Foo {
             rank: 'private static method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3018,28 +3036,28 @@ class Foo {
             rank: 'private static method',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    private static I() {}
-    protected static H() {}
-    protected static B: string = "";
-    public static G() {}
-    public J() {}
-    protected K() {}
-    private static C: string = "";
-    private L() {}
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
+  private static I() {}
+  protected static H() {}
+  protected static B: string = '';
+  public static G() {}
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private L() {}
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
 }
-            `,
+      `,
       options: [
         {
           classes: ['private-instance-method', 'protected-static-field'],
@@ -3053,29 +3071,28 @@ class Foo {
             rank: 'protected static field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    protected static B: string = "";
-    public J() {}
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  protected static B: string = '';
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
 }
-            `,
+      `,
       options: [
         {
           default: ['public-instance-method', 'protected-static-field'],
@@ -3089,28 +3106,28 @@ class Foo {
             rank: 'protected static field',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class Foo {
-    public static A: string = "";
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-}
-            `,
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+};
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -3119,7 +3136,7 @@ const foo = class Foo {
             rank: 'public instance method',
           },
           line: 13,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3128,7 +3145,7 @@ const foo = class Foo {
             rank: 'public instance method',
           },
           line: 14,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3137,29 +3154,29 @@ const foo = class Foo {
             rank: 'public instance method',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    [Z: string]: any;
-    constructor() {}
-    public static A: string = "";
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    public J() {}
-    protected K() {}
-    private L() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-}
-            `,
+  [Z: string]: any;
+  constructor() {}
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+};
+      `,
       options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
       errors: [
         {
@@ -3169,7 +3186,7 @@ const foo = class {
             rank: 'constructor',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3178,7 +3195,7 @@ const foo = class {
             rank: 'constructor',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3187,7 +3204,7 @@ const foo = class {
             rank: 'constructor',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3196,7 +3213,7 @@ const foo = class {
             rank: 'constructor',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3205,7 +3222,7 @@ const foo = class {
             rank: 'constructor',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3214,29 +3231,29 @@ const foo = class {
             rank: 'constructor',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    constructor() {}
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    [Z: string]: any;
-    public static G() {}
-    public static A: string;
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-}
-            `,
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  [Z: string]: any;
+  public static G() {}
+  public static A: string;
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+};
+      `,
       options: [{ default: ['field', 'method'] }],
       errors: [
         {
@@ -3246,28 +3263,28 @@ const foo = class {
             rank: 'method',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    public static A: string;
-    public static G() {}
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-    constructor() {}
-}
-            `,
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  public static G() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+};
+      `,
       options: [{ default: ['method', 'field'] }],
       errors: [
         {
@@ -3277,29 +3294,29 @@ const foo = class {
             rank: 'field',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    public static G() {}
-    protected static H() {}
-    protected static B: string = "";
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    public static A: string;
-    constructor() {}
-    [Z: string]: any;
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-}
-            `,
+  public static G() {}
+  protected static H() {}
+  protected static B: string = '';
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  constructor() {}
+  [Z: string]: any;
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
       options: [{ classExpressions: ['method', 'constructor', 'field'] }],
       errors: [
         {
@@ -3309,7 +3326,7 @@ const foo = class {
             rank: 'field',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3318,7 +3335,7 @@ const foo = class {
             rank: 'field',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3327,7 +3344,7 @@ const foo = class {
             rank: 'field',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3336,7 +3353,7 @@ const foo = class {
             rank: 'field',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3345,28 +3362,28 @@ const foo = class {
             rank: 'field',
           },
           line: 11,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    public static A: string;
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    public J() {}
-    protected K() {}
-    private L() {}
-    constructor() {}
-    protected static B: string = "";
-    private static C: string = "";
-    public D: string = "";
-    protected E: string = "";
-    private F: string = "";
-}
-            `,
+  public static A: string;
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
       options: [
         {
           default: ['field', 'constructor', 'method'],
@@ -3381,7 +3398,7 @@ const foo = class {
             rank: 'field',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3390,7 +3407,7 @@ const foo = class {
             rank: 'field',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3399,7 +3416,7 @@ const foo = class {
             rank: 'field',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3408,7 +3425,7 @@ const foo = class {
             rank: 'field',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3417,7 +3434,7 @@ const foo = class {
             rank: 'field',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3426,7 +3443,7 @@ const foo = class {
             rank: 'field',
           },
           line: 9,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3435,30 +3452,30 @@ const foo = class {
             rank: 'field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    private L() {}
-    public J() {}
-    public static G() {}
-    protected static H() {}
-    private static I() {}
-    protected K() {}
-    constructor() {}
-    public D: string = "";
-    private static C: string = "";
-    public static A: string;
-    private static C: string = "";
-    protected static B: string = "";
-    private F: string = "";
-    protected static B: string = "";
-    protected E: string = "";
-}
-            `,
+  private L() {}
+  public J() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  protected K() {}
+  constructor() {}
+  public D: string = '';
+  private static C: string = '';
+  public static A: string;
+  private static C: string = '';
+  protected static B: string = '';
+  private F: string = '';
+  protected static B: string = '';
+  protected E: string = '';
+};
+      `,
       options: [
         {
           classExpressions: [
@@ -3478,7 +3495,7 @@ const foo = class {
             rank: 'private field',
           },
           line: 12,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3487,28 +3504,28 @@ const foo = class {
             rank: 'protected field',
           },
           line: 15,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    public static G() {}
-    private static I() {}
-    public J() {}
-    protected static H() {}
-    private L() {}
-    protected K() {}
-    public D: string = "";
-    constructor() {}
-    public static A: string;
-    protected static B: string = "";
-    protected E: string = "";
-    private static C: string = "";
-    private F: string = "";
-}
-            `,
+  public static G() {}
+  private static I() {}
+  public J() {}
+  protected static H() {}
+  private L() {}
+  protected K() {}
+  public D: string = '';
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  protected E: string = '';
+  private static C: string = '';
+  private F: string = '';
+};
+      `,
       options: [
         {
           classExpressions: [
@@ -3531,7 +3548,7 @@ const foo = class {
             rank: 'public instance method',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3540,28 +3557,28 @@ const foo = class {
             rank: 'public field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    public J() {}
-    public static G() {}
-    public D: string = "";
-    public static A: string = "";
-    private L() {}
-    constructor() {}
-    protected K() {}
-    protected static H() {}
-    private static I() {}
-    protected static B: string = "";
-    private static C: string = "";
-    protected E: string = "";
-    private F: string = "";
-}
-            `,
+  public J() {}
+  public static G() {}
+  public D: string = '';
+  public static A: string = '';
+  private L() {}
+  constructor() {}
+  protected K() {}
+  protected static H() {}
+  private static I() {}
+  protected static B: string = '';
+  private static C: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
       options: [
         {
           default: [
@@ -3581,28 +3598,28 @@ const foo = class {
             rank: 'method',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    public J() {}
-    private static I() {}
-    public static G() {}
-    protected static H() {}
-    protected K() {}
-    private L() {}
-    constructor() {}
-    public static A: string;
-    private F: string = "";
-    protected static B: string = "";
-    public D: string = "";
-    private static C: string = "";
-    protected E: string = "";
-}
-            `,
+  public J() {}
+  private static I() {}
+  public static G() {}
+  protected static H() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  public static A: string;
+  private F: string = '';
+  protected static B: string = '';
+  public D: string = '';
+  private static C: string = '';
+  protected E: string = '';
+};
+      `,
       options: [
         {
           classExpressions: [
@@ -3624,7 +3641,7 @@ const foo = class {
             rank: 'private static method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3633,29 +3650,28 @@ const foo = class {
             rank: 'private static method',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    private static I() {}
-    protected static H() {}
-    protected static B: string = "";
-    public static G() {}
-    public J() {}
-    protected K() {}
-    private static C: string = "";
-    private L() {}
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-
-}
-            `,
+  private static I() {}
+  protected static H() {}
+  protected static B: string = '';
+  public static G() {}
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private L() {}
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+};
+      `,
       options: [
         {
           classExpressions: [
@@ -3672,29 +3688,28 @@ const foo = class {
             rank: 'protected static field',
           },
           line: 10,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 const foo = class {
-    private L() {}
-    private static I() {}
-    protected static H() {}
-    public static G() {}
-    protected static B: string = "";
-    public J() {}
-    protected K() {}
-    private static C: string = "";
-    private F: string = "";
-    protected E: string = "";
-    public static A: string;
-    public D: string = "";
-    constructor() {}
-
-}
-            `,
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  protected static B: string = '';
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+};
+      `,
       options: [
         {
           default: ['public-instance-method', 'protected-static-field'],
@@ -3708,20 +3723,20 @@ const foo = class {
             rank: 'protected static field',
           },
           line: 8,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    K = () => {}
-    A: string;
-    constructor () {}
-    [Z: string]: any;
-    J() {}
+  K = () => {};
+  A: string;
+  constructor() {}
+  [Z: string]: any;
+  J() {}
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -3730,7 +3745,7 @@ class Foo {
             rank: 'public instance method',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3739,7 +3754,7 @@ class Foo {
             rank: 'public instance method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3748,20 +3763,20 @@ class Foo {
             rank: 'public instance method',
           },
           line: 6,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    J() {}
-    constructor () {}
-    K = () => {}
-    A: string;
-    [Z: string]: any;
+  J() {}
+  constructor() {}
+  K = () => {};
+  A: string;
+  [Z: string]: any;
 }
-            `,
+      `,
       options: [{ default: ['method', 'constructor', 'field', 'signature'] }],
       errors: [
         {
@@ -3771,20 +3786,20 @@ class Foo {
             rank: 'constructor',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    J() {}
-    constructor () {}
-    K = () => {}
-    L: () => {}
-    A: string;
+  J() {}
+  constructor() {}
+  K = () => {};
+  L: () => {};
+  A: string;
 }
-            `,
+      `,
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
@@ -3794,18 +3809,18 @@ class Foo {
             rank: 'constructor',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 interface Foo {
-    K: () => {}
-    J();
-    A: string;
+  K: () => {};
+  J();
+  A: string;
 }
-            `,
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -3814,18 +3829,18 @@ interface Foo {
             rank: 'method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 type Foo = {
-    K: () => {}
-    J();
-    A: string;
-}
-            `,
+  K: () => {};
+  J();
+  A: string;
+};
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -3834,18 +3849,18 @@ type Foo = {
             rank: 'method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 type Foo = {
-    A: string;
-    K: () => {}
-    J();
-}
-            `,
+  A: string;
+  K: () => {};
+  J();
+};
+      `,
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
@@ -3855,17 +3870,17 @@ type Foo = {
             rank: 'field',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 abstract class Foo {
-    abstract A(): void;
-    B: string;
+  abstract A(): void;
+  B: string;
 }
-          `,
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -3874,17 +3889,17 @@ abstract class Foo {
             rank: 'public abstract method',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 abstract class Foo {
-    abstract A: () => {};
-    B: string;
+  abstract A: () => {};
+  B: string;
 }
-          `,
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -3893,20 +3908,20 @@ abstract class Foo {
             rank: 'public abstract field',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 abstract class Foo {
-    abstract A: () => {};
-    B: string;
-    public C() {};
-    private D() {};
-    abstract E() {};
+  abstract A: () => {};
+  B: string;
+  public C() {}
+  private D() {}
+  abstract E() {}
 }
-          `,
+      `,
       errors: [
         {
           messageId: 'incorrectGroupOrder',
@@ -3915,19 +3930,19 @@ abstract class Foo {
             rank: 'public abstract field',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    C: number;
-    [A:string]: number;
-    public static D(): {};
-    private static [B:string]: number;
+  C: number;
+  [A: string]: number;
+  public static D(): {};
+  private static [B: string]: number;
 }
-          `,
+      `,
       options: [
         {
           default: [
@@ -3947,18 +3962,18 @@ class Foo {
             rank: 'signature',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 abstract class Foo {
-    abstract B: string;
-    abstract A(): void;
-    public C(): {};
+  abstract B: string;
+  abstract A(): void;
+  public C(): {};
 }
-          `,
+      `,
       options: [{ default: ['method', 'constructor', 'field'] }],
       errors: [
         {
@@ -3968,7 +3983,7 @@ abstract class Foo {
             rank: 'field',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
         {
           messageId: 'incorrectGroupOrder',
@@ -3977,7 +3992,7 @@ abstract class Foo {
             rank: 'field',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -3985,13 +4000,14 @@ abstract class Foo {
       code: `
 // no accessibility === public
 class Foo {
-    B: string;
-    @Dec() A: string = "";
-    C: string = "";
-    constructor() {}
-    D() {}
-    E() {}
-}           `,
+  B: string;
+  @Dec() A: string = '';
+  C: string = '';
+  constructor() {}
+  D() {}
+  E() {}
+}
+      `,
       options: [{ default: ['decorated-field', 'field'] }],
       errors: [
         {
@@ -4001,18 +4017,19 @@ class Foo {
             rank: 'field',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    A() {}
+  A() {}
 
-    @Decorator()
-    B() {}
-}           `,
+  @Decorator()
+  B() {}
+}
+      `,
       options: [{ default: ['decorated-method', 'method'] }],
       errors: [
         {
@@ -4022,16 +4039,17 @@ class Foo {
             rank: 'method',
           },
           line: 5, // Symbol starts at the line with decorator
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    @Decorator() C() {}
-    A() {}
-}           `,
+  @Decorator() C() {}
+  A() {}
+}
+      `,
       options: [{ default: ['public-method', 'decorated-method'] }],
       errors: [
         {
@@ -4041,19 +4059,20 @@ class Foo {
             rank: 'decorated method',
           },
           line: 4,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    A(): void;
-    B(): void;
-    private C() {}
-    constructor() {}
-    @Dec() private D() {}
-}           `,
+  A(): void;
+  B(): void;
+  private C() {}
+  constructor() {}
+  @Dec() private D() {}
+}
+      `,
       options: [
         {
           classes: ['public-method', 'decorated-method', 'private-method'],
@@ -4067,21 +4086,22 @@ class Foo {
             rank: 'private method',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    A: string;
-    get B() {}
-    constructor() {}
-    set B() {}
-    get C() {}
-    set C() {}
-    D(): void;
-}           `,
+  A: string;
+  get B() {}
+  constructor() {}
+  set B() {}
+  get C() {}
+  set C() {}
+  D(): void;
+}
+      `,
       options: [
         {
           default: ['field', 'constructor', ['get', 'set'], 'method'],
@@ -4095,20 +4115,21 @@ class Foo {
             rank: 'get, set',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    A: string;
-    private C(): void;
-    constructor() {}
-    @Dec() private B: string;
-    set D() {}
-    E(): void;
-}           `,
+  A: string;
+  private C(): void;
+  constructor() {}
+  @Dec() private B: string;
+  set D() {}
+  E(): void;
+}
+      `,
       options: [
         {
           default: [
@@ -4127,21 +4148,22 @@ class Foo {
             rank: 'private decorated field, public set, private method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
     {
       code: `
 class Foo {
-    A: string;
-    constructor() {}
-    get B() {}
-    set B() {}
-    get C() {}
-    set C() {}
-    D(): void;
-}           `,
+  A: string;
+  constructor() {}
+  get B() {}
+  set B() {}
+  get C() {}
+  set C() {}
+  D(): void;
+}
+      `,
       options: [
         {
           default: ['field', 'constructor', 'get', ['set'], 'method'],
@@ -4155,7 +4177,7 @@ class Foo {
             rank: 'set',
           },
           line: 7,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -4166,7 +4188,10 @@ class Foo {
   m() {}
   f = 1;
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
       errors: [
         {
@@ -4196,7 +4221,10 @@ class Foo {
   f = 1;
   static {}
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
       errors: [
         {
@@ -4217,7 +4245,10 @@ class Foo {
   static {}
   m() {}
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [{ default: ['static-initialization', 'field', 'method'] }],
       errors: [
         {
@@ -4238,7 +4269,10 @@ class Foo {
   f = 1;
   m() {}
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
       errors: [
         {
@@ -4261,7 +4295,10 @@ class Foo {
   @dec
   md() {}
 }
-            `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
       options: [
         { default: ['decorated-method', 'static-initialization', 'method'] },
       ],
@@ -4291,10 +4328,10 @@ class Foo {
       code: `
 // no accessibility === public
 class Foo {
-    #imPrivate() {};
-    imPublic() {};
+  #imPrivate() {}
+  imPublic() {}
 }
-        `,
+      `,
       options: [
         {
           default: {
@@ -4311,7 +4348,7 @@ class Foo {
             rank: '#private method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -4320,10 +4357,10 @@ class Foo {
       code: `
 // no accessibility === public
 class Foo {
-    #imPrivate() {};
-    private imPrivate() {};
+  #imPrivate() {}
+  private imPrivate() {}
 }
-        `,
+      `,
       options: [
         {
           default: {
@@ -4340,7 +4377,7 @@ class Foo {
             rank: '#private method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },
@@ -4349,10 +4386,10 @@ class Foo {
       code: `
 // no accessibility === public
 class Foo {
-    private imPrivate() {};
-    #imPrivate() {};
+  private imPrivate() {}
+  #imPrivate() {}
 }
-        `,
+      `,
       options: [
         {
           default: {
@@ -4369,7 +4406,7 @@ class Foo {
             rank: 'private method',
           },
           line: 5,
-          column: 5,
+          column: 3,
         },
       ],
     },

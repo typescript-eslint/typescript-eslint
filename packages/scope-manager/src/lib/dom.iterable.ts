@@ -13,6 +13,7 @@ export const dom_iterable = {
   CSSRuleList: TYPE,
   CSSStyleDeclaration: TYPE,
   Cache: TYPE,
+  CanvasPath: TYPE,
   CanvasPathDrawingStyles: TYPE,
   DOMRectList: TYPE,
   DOMStringList: TYPE,

@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression logical-no-parentheses Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: BinaryExpression {
+        type: "BinaryExpression",
+        left: Identifier {
+          type: "Identifier",
+          name: "foo",
+
+          range: [0, 3],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 3, line: 1 },
+          },
+        },
+        operator: "===",
+        right: TSSatisfiesExpression {
+          type: "TSSatisfiesExpression",
+          expression: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+          typeAnnotation: TSNumberKeyword {
+            type: "TSNumberKeyword",
+
+            range: [21, 27],
+            loc: {
+              start: { column: 21, line: 1 },
+              end: { column: 27, line: 1 },
+            },
+          },
+
+          range: [9, 27],
+          loc: {
+            start: { column: 9, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+
+        range: [0, 28],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 28, line: 1 },
+        },
+      },
+
+      range: [0, 29],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 29, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 30],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;
