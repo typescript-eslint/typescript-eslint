@@ -27,7 +27,11 @@ export default createRule<Options, MessageIds>({
     schema: baseRule.meta.schema,
   },
   defaultOptions: ['1tbs'],
-  create(context, [style, { allowSingleLine } = { allowSingleLine: false }]) {
+  create(context) {
+    const [style, { allowSingleLine } = { allowSingleLine: false }] =
+      // eslint-disable-next-line no-restricted-syntax -- Use raw options for extended rules.
+      context.options;
+
     const isAllmanStyle = style === 'allman';
     const sourceCode = context.getSourceCode();
     const rules = baseRule.create(context);
