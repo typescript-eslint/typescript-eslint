@@ -230,7 +230,7 @@ export default util.createRule<[Options], MessageIds>({
 function getNotReturnOrGenericMessageId(
   node: TSESTree.TSVoidKeyword,
 ): MessageIds {
-  return node.parent!.type === AST_NODE_TYPES.TSUnionType
+  return node.parent.type === AST_NODE_TYPES.TSUnionType
     ? 'invalidVoidUnionConstituent'
     : 'invalidVoidNotReturnOrGeneric';
 }
