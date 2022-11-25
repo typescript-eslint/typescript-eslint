@@ -19,16 +19,6 @@ function isFlagSet(flags: number, flag: number): boolean {
 }
 
 /**
- * @param flagsToCheck The composition of one or more `ts.SymbolFlags`.
- */
-export function isSymbolFlagSet(
-  symbol: ts.Symbol,
-  flagsToCheck: number | ts.SymbolFlags,
-): boolean {
-  return isFlagSet(symbol.flags, flagsToCheck);
-}
-
-/**
  * @param flagsToCheck The composition of one or more `ts.TypeFlags`.
  * @param isReceiver Whether the type is a receiving type (i.e. the type of a
  * called function's parameter).
@@ -49,15 +39,4 @@ export function isTypeFlagSet(
   }
 
   return isFlagSet(flags, flagsToCheck);
-}
-
-/**
- * Similar to the `isTypeFlagSet` function, but does not decompose unions.
- * Instead performs a single bit flag check.
- */
-export function isTypeFlagSetSimple(
-  type: ts.Type,
-  flagsToCheck: number | ts.TypeFlags,
-): boolean {
-  return isFlagSet(type.flags, flagsToCheck);
 }

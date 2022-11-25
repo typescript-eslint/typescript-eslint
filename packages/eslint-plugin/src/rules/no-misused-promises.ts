@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+import { isTypeFlagSet } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -655,7 +656,7 @@ function isVoidReturningFunctionType(
         return false;
       }
 
-      hadVoidReturn ||= util.isTypeFlagSet(returnType, ts.TypeFlags.Void);
+      hadVoidReturn ||= isTypeFlagSet(returnType, ts.TypeFlags.Void);
     }
   }
 

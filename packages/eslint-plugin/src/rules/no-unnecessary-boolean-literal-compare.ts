@@ -113,7 +113,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isBooleanType(expressionType: ts.Type): boolean {
-      return util.isTypeFlagSetSimple(
+      return tsutils.isTypeFlagSet(
         expressionType,
         ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
       );
@@ -134,7 +134,7 @@ export default util.createRule<Options, MessageIds>({
 
       const nonNullishTypes = types.filter(
         type =>
-          !util.isTypeFlagSetSimple(
+          !tsutils.isTypeFlagSet(
             type,
             ts.TypeFlags.Undefined | ts.TypeFlags.Null,
           ),

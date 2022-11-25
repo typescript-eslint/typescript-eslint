@@ -41,6 +41,7 @@ export = {
     '@typescript-eslint/prefer-return-this-type': 'warn',
     '@typescript-eslint/prefer-string-starts-ends-with': 'warn',
     '@typescript-eslint/prefer-ts-expect-error': 'warn',
+    '@typescript-eslint/strict-enums': 'warn',
     '@typescript-eslint/unified-signatures': 'warn',
   },
 };

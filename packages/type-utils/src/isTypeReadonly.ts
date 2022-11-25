@@ -4,13 +4,13 @@ import {
   isIntersectionType,
   isObjectType,
   isPropertyReadonlyInType,
+  isSymbolFlagSet,
   isUnionType,
   unionTypeParts,
 } from 'tsutils';
 import * as ts from 'typescript';
 
 import { getTypeOfPropertyOfType } from './propertyTypes';
-import { isSymbolFlagSet } from './typeFlagUtils';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */

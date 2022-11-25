@@ -60,7 +60,7 @@ export default util.createRule<Options, MessageIds>({
       mismatchedComparison:
         'The two things in the comparison do not have a shared enum type.',
       mismatchedFunctionArgument:
-        'The {{ ordinal }} argument in the function call does not match the declared enum type of the function signature.',
+        'Argument {{ ordinal }} in the function call does not match the declared enum type of the function signature.',
     },
     schema: [],
   },
@@ -87,7 +87,7 @@ export default util.createRule<Options, MessageIds>({
         return type;
       }
 
-      if (!util.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
+      if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
         return type;
       }
 
@@ -96,7 +96,7 @@ export default util.createRule<Options, MessageIds>({
         return type;
       }
 
-      const parentType = getTypeFromTSNode(valueDeclaration.parent);
+      const parentType = typeChecker.getTypeAtLocation(valueDeclaration.parent);
       if (parentType === undefined) {
         return type;
       }
@@ -233,21 +233,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function getTypeFromNode(node: TSESTree.Node): ts.Type {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      return getTypeFromTSNode(tsNode);
-    }
-
-    function getTypeFromTSNode(tsNode: ts.Node): ts.Type {
-      return typeChecker.getTypeAtLocation(tsNode);
-    }
-
-    function getTypeName(type: ts.Type): string {
-      return util.getTypeName(typeChecker, type);
+      return typeChecker.getTypeAtLocation(
+        parserServices.esTreeNodeToTSNodeMap.get(node),
+      );
     }
 
     function hasEnumTypes(type: ts.Type): boolean {
-      const enumTypes = getEnumTypes(type);
-      return enumTypes.size > 0;
+      return getEnumTypes(type).size > 0;
     }
 
     function hasIntersection(type: ts.Type): boolean {
@@ -369,7 +361,7 @@ export default util.createRule<Options, MessageIds>({
          */
         const parameter = declaration.parameters[i];
         if (parameter !== undefined) {
-          const parameterTSNode = getTypeFromTSNode(parameter);
+          const parameterTSNode = typeChecker.getTypeAtLocation(parameter);
           const constraint = parameterTSNode.getConstraint();
           if (constraint !== undefined) {
             parameterType = constraint;
@@ -389,9 +381,7 @@ export default util.createRule<Options, MessageIds>({
             node: node.arguments[i],
             messageId: 'mismatchedFunctionArgument',
             data: {
-              ordinal: getOrdinalSuffix(i + 1), // e.g. 0 --> 1st
-              argumentType: getTypeName(argumentType),
-              parameterType: getTypeName(parameterType),
+              ordinal: getOrdinalSuffix(i + 1),
             },
           });
         }
@@ -785,17 +775,13 @@ export default util.createRule<Options, MessageIds>({
          * expects a `ts.BindingName` instead of a `ts.VariableDeclaration`.
          * https://github.com/microsoft/TypeScript/issues/48878
          */
-        const leftType = getTypeFromTSNode(leftTSNode.name);
-        const rightType = getTypeFromTSNode(leftTSNode.initializer);
+        const leftType = typeChecker.getTypeAtLocation(leftTSNode.name);
+        const rightType = typeChecker.getTypeAtLocation(leftTSNode.initializer);
 
         if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
           context.report({
-            node,
             messageId: 'mismatchedAssignment',
-            data: {
-              assignmentType: getTypeName(rightType),
-              declaredType: getTypeName(leftType),
-            },
+            node,
           });
         }
       },
