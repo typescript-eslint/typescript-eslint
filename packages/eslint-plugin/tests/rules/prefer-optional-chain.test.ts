@@ -205,6 +205,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     '!a.b.#a || a;',
     '!new A().#b || a;',
     '!(await a).#b || a;',
+    "!(foo as any).bar || 'anything';",
     // currently do not handle complex computed properties
     'foo && foo[bar as string] && foo[bar as string].baz;',
     'foo && foo[1 + 2] && foo[1 + 2].baz;',

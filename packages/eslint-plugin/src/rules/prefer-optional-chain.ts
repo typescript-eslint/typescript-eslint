@@ -368,6 +368,15 @@ export default util.createRule({
      * Gets a normalized representation of the given MemberExpression
      */
     function getMemberExpressionText(node: TSESTree.MemberExpression): string {
+      if (
+        [
+          AST_NODE_TYPES.TSAsExpression,
+          AST_NODE_TYPES.AwaitExpression,
+          AST_NODE_TYPES.NewExpression,
+        ].includes(node.object.type)
+      ) {
+        return '';
+      }
       let objectText: string;
 
       // cases should match the list in ALLOWED_MEMBER_OBJECT_TYPES
@@ -429,6 +438,8 @@ export default util.createRule({
               ![
                 AST_NODE_TYPES.Identifier,
                 AST_NODE_TYPES.ThisExpression,
+                AST_NODE_TYPES.CallExpression,
+                AST_NODE_TYPES.MemberExpression,
               ].includes(node.object.type)
             ) {
               throw new Error(
