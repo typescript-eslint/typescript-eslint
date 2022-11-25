@@ -1,6 +1,6 @@
 import debug from 'debug';
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 import type { ParseSettings } from '.';
 
@@ -50,11 +50,11 @@ function existsSyncCached(filePath: string): boolean {
 }
 
 export function getProjectConfigFiles(
-  parseSettings: ParseSettings,
-  projects: string | string[] | true | undefined,
+  parseSettings: Pick<ParseSettings, 'filePath' | 'tsconfigRootDir'>,
+  project: string | string[] | true | undefined,
 ): string | string[] | undefined {
-  if (projects !== true) {
-    return projects;
+  if (project !== true) {
+    return project;
   }
 
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
@@ -68,13 +68,13 @@ export function getProjectConfigFiles(
       return [tsconfigPath];
     }
 
-    directory = path.basename(directory);
+    directory = path.dirname(directory);
   } while (
-    directory &&
-    directory.length < parseSettings.tsconfigRootDir.length
+    directory.length > 1 &&
+    directory.length >= parseSettings.tsconfigRootDir.length
   );
 
   throw new Error(
-    `project was set to \`true\` but couldn't find any tsconfig.json relative to '${parseSettings.filePath}' within '${parseSettings.tsconfigRootDir}.`,
+    `project was set to \`true\` but couldn't find any tsconfig.json relative to '${parseSettings.filePath}' within '${parseSettings.tsconfigRootDir}'.`,
   );
 }
