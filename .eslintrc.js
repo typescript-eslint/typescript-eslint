@@ -264,6 +264,16 @@ module.exports = {
 
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
+
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector:
+              'ExportDefaultDeclaration Property[key.name="create"] MemberExpression[object.name="context"][property.name="options"]',
+            message:
+              "Retrieve options from create's second parameter so that defaultOptions are applied.",
+          },
+        ],
       },
     },
     // plugin rule tests

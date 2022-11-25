@@ -22,6 +22,7 @@ const config: PlaywrightTestConfig = {
   webServer: {
     command: 'yarn start',
     port: 3000,
+    reuseExistingServer: !process.env.CI,
   },
   workers: process.env.CI ? 1 : undefined,
 };

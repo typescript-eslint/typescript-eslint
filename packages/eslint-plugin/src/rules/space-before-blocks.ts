@@ -29,9 +29,8 @@ export default util.createRule<Options, MessageIds>({
     },
   },
   defaultOptions: ['always'],
-  create(context) {
+  create(context, [config]) {
     const rules = baseRule.create(context);
-    const config = context.options[0];
     const sourceCode = context.getSourceCode();
 
     let requireSpace = true;
