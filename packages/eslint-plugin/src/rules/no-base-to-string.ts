@@ -48,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoredTypeNames: ['RegExp'],
+      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
   create(context, [option]) {

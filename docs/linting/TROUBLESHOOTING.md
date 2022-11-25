@@ -28,12 +28,48 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 > We release a new version our tooling every week.
 > _Please_ ensure that you [check our the latest list of "extension" rules](https://typescript-eslint.io/rules/#extension-rules) **_before_** filing an issue.
 
+## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
+
+### Fixing the Error
+
+- If you **do not** want to lint the file:
+  - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
+- If you **do** want to lint the file:
+  - If you **do not** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
+      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
+      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
+  - If you **do** want to lint the file with [type-aware linting](./TYPED_LINTING.md):
+    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
+    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
+      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
+      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+
+### More Details
+
+This error may appear from the combination of two things:
+
+- The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
+- None of those TSConfig files includes the source file being linted
+  - Note that files with the same name and different extension may not be recognized by TypeScript: see [`parserOptions.project` docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject)
+
+When TSConfig files are specified for parsing a source file, `@typescript-eslint/parser` will use the first TSConfig that is able to include that source file (per [aka.ms/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)) to generate type information.
+However, if no specified TSConfig includes the source file, the parser won't be able to generate type information.
+
+This error most commonly happens on config files or similar that are not included in their project TSConfig(s).
+For example, many projects have files like:
+
+- An `.eslintrc.cjs` with `parserOptions.project: ["./tsconfig.json"]`
+- A `tsconfig.json` with `include: ["src"]`
+
+In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
+
+See our docs on [type aware linting](./TYPED_LINTING.md) for more information.
+
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
-This error means that the file that's being linted is not included in any of the TSConfig files you provided us.
-This happens when users have test files, config files, or similar that are not included.
-
-See our docs on [type aware linting](./TYPED_LINTING.md#i-get-errors-telling-me-the-file-must-be-included-in-at-least-one-of-the-projects-provided) for solutions.
+You're using an outdated version of `@typescript-eslint/parser`.
+Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 
@@ -49,6 +85,21 @@ module.exports = {
   },
 };
 ```
+
+## I am running into errors when parsing TypeScript in my .vue files
+
+If you are running into issues parsing .vue files, it might be because parsers like [`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files. In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
+
+```diff
+- "parser": "@typescript-eslint/parser",
++ "parser": "vue-eslint-parser",
+  "parserOptions": {
++     "parser": "@typescript-eslint/parser",
+      "sourceType": "module"
+  }
+```
+
+The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the [`vue-eslint-parser` usage guide](https://eslint.vuejs.org/user-guide/#usage) for more details.
 
 ## One of my lint rules isn't working correctly on a pure JavaScript file
 
@@ -168,6 +219,25 @@ For example:
 - TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
 
 See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.
+
+## Changes to one file are not reflected when linting other files in my IDE
+
+> tl;dr: Restart your ESLint server to force an update.
+
+ESLint currently does not have any way of telling parsers such as ours when an arbitrary file is changed on disk.
+That means if you change file A that is imported by file B, it won't update lint caches for file B -- even if file B's text contents have changed.
+Sometimes the only solution is to restart your ESLint editor extension altogether.
+
+See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/5845#issuecomment-1283248238 'GitHub issue 5845, comment 1283248238: details on ESLint cross-file caching') for more information.
+
+:::tip
+[VS Code's ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) provides an `ESLint: Restart ESLint Server` action.
+:::
+
+### I get `no-unsafe-*` complaints for cross-file changes
+
+See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-in-linting-other-files-in-my-ide).
+Rules such as [`no-unsafe-argument`](https://typescript-eslint.io/rules/no-unsafe-argument), [`no-unsafe-assignment`](https://typescript-eslint.io/rules/no-unsafe-assignment), and [`no-unsafe-call`](https://typescript-eslint.io/rules/no-unsafe-call) are often impacted.
 
 ## My linting feels really slow
 

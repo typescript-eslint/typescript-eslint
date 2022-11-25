@@ -155,7 +155,7 @@ export = {
     '@typescript-eslint/return-await': 'error',
     semi: 'off',
     '@typescript-eslint/semi': 'error',
-    '@typescript-eslint/sort-type-union-intersection-members': 'error',
+    '@typescript-eslint/sort-type-constituents': 'error',
     'space-before-blocks': 'off',
     '@typescript-eslint/space-before-blocks': 'error',
     'space-before-function-paren': 'off',

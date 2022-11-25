@@ -127,11 +127,17 @@ class Foo<T = number> extends Bar<string> {}
 interface Bar<T = number> {}
 class Foo<T = number> implements Bar<string> {}
     `,
-    `
+    {
+      code: `
 import { F } from './missing';
 function bar<T = F>() {}
 bar<F<number>>();
-    `,
+      `,
+      dependencyConstraints: {
+        // TS 4.5 improved type resolution for unresolved generics
+        typescript: '4.5',
+      },
+    },
     `
 type A<T = Element> = T;
 type B = A<HTMLInputElement>;

@@ -24,7 +24,12 @@ type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
-  order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written';
+  order:
+    | 'alphabetically'
+    | 'alphabetically-case-insensitive'
+    | 'as-written'
+    | 'natural'
+    | 'natural-case-insensitive';
 }
 
 // See below for the more specific MemberType strings
@@ -49,12 +54,23 @@ The `OrderConfig` settings for each kind of construct may configure sorting on o
 You can define many different groups based on different attributes of members.
 The supported member attributes are, in order:
 
-- **Accessibility** (`'public' | 'protected' | 'private'`)
+- **Accessibility** (`'public' | 'protected' | 'private' | '#private'`)
 - **Decoration** (`'decorated'`): Whether the member has an explicit accessibility decorator
 - **Kind** (`'call-signature' | 'constructor' | 'field' | 'get' | 'method' | 'set' | 'signature'`)
 
 Member attributes may be joined with a `'-'` to combine into more specific groups.
 For example, `'public-field'` would come before `'private-field'`.
+
+### Orders
+
+The `order` value specifies what order members should be within a group.
+It defaults to `as-written`, meaning any order is fine.
+Other allowed values are:
+
+- `alphabetically`: Sorted in a-z alphabetical order, directly using string `<` comparison (so `B` comes before `a`)
+- `alphabetically-case-insensitive`: Sorted in a-z alphabetical order, ignoring case (so `a` comes before `B`)
+- `natural`: Same as `alphabetically`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
+- `natural-case-insensitive`: Same as `alphabetically-case-insensitive`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
 
 ### Default configuration
 
@@ -65,11 +81,13 @@ The default configuration looks as follows:
   "default": [
     // Index signature
     "signature",
+    "call-signature",
 
     // Fields
     "public-static-field",
     "protected-static-field",
     "private-static-field",
+    "#private-static-field",
 
     "public-decorated-field",
     "protected-decorated-field",
@@ -78,14 +96,15 @@ The default configuration looks as follows:
     "public-instance-field",
     "protected-instance-field",
     "private-instance-field",
+    "#private-instance-field",
 
     "public-abstract-field",
     "protected-abstract-field",
-    "private-abstract-field",
 
     "public-field",
     "protected-field",
     "private-field",
+    "#private-field",
 
     "static-field",
     "instance-field",
@@ -109,6 +128,7 @@ The default configuration looks as follows:
     "public-static-get",
     "protected-static-get",
     "private-static-get",
+    "#private-static-get",
 
     "public-decorated-get",
     "protected-decorated-get",
@@ -117,14 +137,15 @@ The default configuration looks as follows:
     "public-instance-get",
     "protected-instance-get",
     "private-instance-get",
+    "#private-instance-get",
 
     "public-abstract-get",
     "protected-abstract-get",
-    "private-abstract-get",
 
     "public-get",
     "protected-get",
     "private-get",
+    "#private-get",
 
     "static-get",
     "instance-get",
@@ -138,6 +159,7 @@ The default configuration looks as follows:
     "public-static-set",
     "protected-static-set",
     "private-static-set",
+    "#private-static-set",
 
     "public-decorated-set",
     "protected-decorated-set",
@@ -146,14 +168,15 @@ The default configuration looks as follows:
     "public-instance-set",
     "protected-instance-set",
     "private-instance-set",
+    "#private-instance-set",
 
     "public-abstract-set",
     "protected-abstract-set",
-    "private-abstract-set",
 
     "public-set",
     "protected-set",
     "private-set",
+    "#private-set",
 
     "static-set",
     "instance-set",
@@ -167,6 +190,7 @@ The default configuration looks as follows:
     "public-static-method",
     "protected-static-method",
     "private-static-method",
+    "#private-static-method",
 
     "public-decorated-method",
     "protected-decorated-method",
@@ -175,14 +199,15 @@ The default configuration looks as follows:
     "public-instance-method",
     "protected-instance-method",
     "private-instance-method",
+    "#private-instance-method",
 
     "public-abstract-method",
     "protected-abstract-method",
-    "private-abstract-method",
 
     "public-method",
     "protected-method",
     "private-method",
+    "#private-method",
 
     "static-method",
     "instance-method",
@@ -902,15 +927,32 @@ The most explicit and granular form is the following:
   "public-static-field",
   "protected-static-field",
   "private-static-field",
+  "#private-static-field",
+
   "public-decorated-field",
   "protected-decorated-field",
   "private-decorated-field",
+
   "public-instance-field",
   "protected-instance-field",
   "private-instance-field",
+  "#private-instance-field",
+
   "public-abstract-field",
   "protected-abstract-field",
-  "private-abstract-field",
+
+  "public-field",
+  "protected-field",
+  "private-field",
+  "#private-field",
+
+  "static-field",
+  "instance-field",
+  "abstract-field",
+
+  "decorated-field",
+
+  "field",
 
   // Static initialization
   "static-initialization",
@@ -924,6 +966,7 @@ The most explicit and granular form is the following:
   "public-static-get",
   "protected-static-get",
   "private-static-get",
+  "#private-static-get",
 
   "public-decorated-get",
   "protected-decorated-get",
@@ -932,14 +975,15 @@ The most explicit and granular form is the following:
   "public-instance-get",
   "protected-instance-get",
   "private-instance-get",
+  "#private-instance-get",
 
   "public-abstract-get",
   "protected-abstract-get",
-  "private-abstract-get",
 
   "public-get",
   "protected-get",
   "private-get",
+  "#private-get",
 
   "static-get",
   "instance-get",
@@ -953,6 +997,7 @@ The most explicit and granular form is the following:
   "public-static-set",
   "protected-static-set",
   "private-static-set",
+  "#private-static-set",
 
   "public-decorated-set",
   "protected-decorated-set",
@@ -961,10 +1006,10 @@ The most explicit and granular form is the following:
   "public-instance-set",
   "protected-instance-set",
   "private-instance-set",
+  "#private-instance-set",
 
   "public-abstract-set",
   "protected-abstract-set",
-  "private-abstract-set",
 
   "public-set",
   "protected-set",
@@ -982,15 +1027,16 @@ The most explicit and granular form is the following:
   "public-static-method",
   "protected-static-method",
   "private-static-method",
+  "#private-static-method",
   "public-decorated-method",
   "protected-decorated-method",
   "private-decorated-method",
   "public-instance-method",
   "protected-instance-method",
   "private-instance-method",
+  "#private-instance-method",
   "public-abstract-method",
-  "protected-abstract-method",
-  "private-abstract-method"
+  "protected-abstract-method"
 ]
 ```
 
