@@ -548,4 +548,4 @@ function maybeInvalidateProgram(
   return null;
 }
 
-export { clearWatchCaches, getProgramsForProjects };
+export { clearWatchCaches, createWatchProgram, getProgramsForProjects };
