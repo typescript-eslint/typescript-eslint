@@ -152,7 +152,7 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 - Accepted values:
 
   ```js
-  // true
+  // find the tsconfig.json nearest each source file
   project: true,
 
   // path
