@@ -1,4 +1,4 @@
-import { parseForESLint } from '@typescript-eslint/parser';
+import { clearCaches, parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import path from 'path';
 import type * as ts from 'typescript';
@@ -16,6 +16,7 @@ describe('isTypeReadonly', () => {
       type: ts.Type;
       checker: ts.TypeChecker;
     } {
+      clearCaches();
       const { ast, services } = parseForESLint(code, {
         project: './tsconfig.json',
         filePath: path.join(rootDir, 'file.ts'),
