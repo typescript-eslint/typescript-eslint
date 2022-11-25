@@ -50,7 +50,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the usage of unsafe enum code patterns',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
