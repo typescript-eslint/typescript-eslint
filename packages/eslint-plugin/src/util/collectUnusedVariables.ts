@@ -1,4 +1,7 @@
-import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
+import {
+  ImplicitLibVariable,
+  ScopeType,
+} from '@typescript-eslint/scope-manager';
 import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
 import type { TSESTree } from '@typescript-eslint/utils';
 import {

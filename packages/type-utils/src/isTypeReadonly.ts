@@ -4,7 +4,6 @@ import {
   isIntersectionType,
   isObjectType,
   isPropertyReadonlyInType,
-  isSymbolFlagSet,
   isUnionType,
   unionTypeParts,
 } from 'tsutils';
@@ -159,13 +158,7 @@ function isTypeReadonlyObject(
         }
       }
 
-      if (
-        tsutils.isPropertyReadonlyInType(
-          type,
-          property.getEscapedName(),
-          checker,
-        )
-      ) {
+      if (isPropertyReadonlyInType(type, property.getEscapedName(), checker)) {
         continue;
       }
 
@@ -229,21 +222,19 @@ function isTypeReadonlyRecurser(
 ): Readonlyness.Readonly | Readonlyness.Mutable {
   seenTypes.add(type);
 
-  if (tsutils.isUnionType(type)) {
+  if (isUnionType(type)) {
     // all types in the union must be readonly
-    const result = tsutils
-      .unionTypeParts(type)
-      .every(
-        t =>
-          seenTypes.has(t) ||
-          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
-            Readonlyness.Readonly,
-      );
+    const result = unionTypeParts(type).every(
+      t =>
+        seenTypes.has(t) ||
+        isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+          Readonlyness.Readonly,
+    );
     const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
     return readonlyness;
   }
 
-  if (tsutils.isIntersectionType(type)) {
+  if (isIntersectionType(type)) {
     // Special case for handling arrays/tuples (as readonly arrays/tuples always have mutable methods).
     if (
       type.types.some(t => checker.isArrayType(t) || checker.isTupleType(t))
@@ -269,7 +260,7 @@ function isTypeReadonlyRecurser(
     }
   }
 
-  if (tsutils.isConditionalType(type)) {
+  if (isConditionalType(type)) {
     const result = [type.root.node.trueType, type.root.node.falseType]
       .map(checker.getTypeFromTypeNode)
       .every(
@@ -285,7 +276,7 @@ function isTypeReadonlyRecurser(
 
   // all non-object, non-intersection types are readonly.
   // this should only be primitive types
-  if (!tsutils.isObjectType(type)) {
+  if (!isObjectType(type)) {
     return Readonlyness.Readonly;
   }
 

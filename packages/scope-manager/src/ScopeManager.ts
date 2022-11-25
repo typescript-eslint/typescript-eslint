@@ -14,6 +14,7 @@ import {
   GlobalScope,
   MappedTypeScope,
   ModuleScope,
+  ScopeType,
   SwitchScope,
   TSEnumScope,
   TSModuleScope,

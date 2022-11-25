@@ -1,5 +1,6 @@
 import { unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
+
 import { getEnumValues } from './getEnum';
 
 const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;

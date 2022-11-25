@@ -1,7 +1,8 @@
-import * as util from '../util';
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
-import { TSESTree } from '@typescript-eslint/utils';
+
+import * as util from '../util';
 
 /**
  * TypeScript only allows number enums, string enums, or mixed enums with both
@@ -48,7 +49,7 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallows the usage of unsafe enum patterns',
+      description: 'Disallow the usage of unsafe enum code patterns',
       recommended: false,
       requiresTypeChecking: true,
     },
@@ -781,7 +782,7 @@ export default util.createRule<Options, MessageIds>({
         /**
          * We have to use `leftTSNode.name` instead of `leftTSNode` to avoid
          * runtime errors because the `typeChecker.getTypeAtLocation` method
-         * expects a `ts.BindingName` instead of a`ts.VariableDeclaration`.
+         * expects a `ts.BindingName` instead of a `ts.VariableDeclaration`.
          * https://github.com/microsoft/TypeScript/issues/48878
          */
         const leftType = getTypeFromTSNode(leftTSNode.name);
