@@ -1,10 +1,13 @@
-# `strict-enums`
+---
+description: 'Disallow the usage of unsafe enum code patterns.'
+---
 
-Disallows the usage of unsafe enum code patterns.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/strict-enums** for documentation.
 
-## Rule Details
-
-The TypeScript compiler will allow you to set any number to a variable containing a number enum, like this:
+The TypeScript compiler can be surprisingly lenient when working with enums.
+For example, it will allow you to assign any `number` value to a variable containing a numeric enum:
 
 ```ts
 enum Fruit {
@@ -18,14 +21,14 @@ fruit = 999; // No error
 
 This rule flags the following unsafe enum practices:
 
-- Incrementing or decrementing an enum value
-  - Enums are supposed to be resilient to reorganization, so you should explicitly assign a new value instead. Changing the values of the enum can potentially break code assumptions made on the original values.
-- The type of the assignment does not match the declared enum type of the variable.
-  - In other words, you are trying to assign a `Foo` enum value to a variable with a `Bar` type. Enums are supposed to be resilient to reorganization, so these kinds of assignments can be dangerous.
-- The two things in the comparison do not have a shared enum type.
-  - You might be trying to compare using a number literal, like `Foo.Value1 === 1`. Or, you might be trying to compare use a disparate enum type, like `Foo.Value1 === Bar.Value1`. Either way, you need to use a value that corresponds to the correct enum, like `foo === Foo.Value1`, where `foo` is type `Foo`. Enums are supposed to be resilient to reorganization, so these types of comparisons can be dangerous.
-- The argument in the function call does not match the declared enum type of the function signature.
-  - You might be trying to use a number literal, like `useFoo(1)`. Or, you might be trying to use a disparate enum type, like `useFoo(Bar.Value1)`. Either way, you need to use a value that corresponds to the correct enum, like `useFoo(Foo.Value1)`. Enums are supposed to be resilient to reorganization, so non-exact function calls like this can be dangerous.
+- Changing a numeric enum's value with math operators such as increments or multiplying
+  - TypeScript allows changing numeric enum values like `myValue++` as a convenience, even though the new value may not be in the enum.
+- Assigning a value of one enum type to a recipient that's a different enum type
+  - In other words, you are trying to assign a `Fruit` enum value to a variable with a `Vegetable` type.
+- Comparing an enum value with another value that is not its same enum type
+  - You might be trying to compare using a number literal, like `Fruit.Value1 === 1`. Or, you might be trying to compare use a disparate enum type, like `Fruit.Value1 === Vegetable.Value1`.
+- Providing a value to a location where only one of those two is a particular enum type
+  - You might be trying to use a number literal, like `useFruit(1)`. Or, you might be trying to use a disparate enum type, like `useFruit(Vegetable.Value1)`, where `useFruit` receives a parameter of type `Foo`.
 
 <!--tabs-->
 
@@ -80,7 +83,11 @@ function useFruit(fruit: Fruit) {}
 useFruit(Fruit.Apple);
 ```
 
-## Number Enums vs String Enums
+<!--/tabs-->
+
+## Rule Details
+
+### Number Enums vs String Enums
 
 Surprisingly, the TypeScript compiler deals with string enums in a safer way than it does with number enums. If we duplicate the first example above by using a string enum, the TypeScript compiler will correctly throw an error:
 
@@ -110,7 +117,7 @@ if (vegetable === Vegetable.Lettuce) {
 }
 ```
 
-## Comparison Operators
+### Comparison Operators
 
 Since it is a common pattern, this rule allows using greater than or less than to compare numeric enums, like this:
 
