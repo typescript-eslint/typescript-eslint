@@ -3,7 +3,7 @@ import {
   fruit2EnumDefinition,
   fruitEnumDefinition,
   strictEnumsRuleTester,
-} from './strict-enums';
+} from './shared';
 
 strictEnumsRuleTester.run('strict-enums-assignment', rule, {
   valid: [

@@ -5,7 +5,7 @@ import {
   strictEnumsRuleTester,
   vegetable2EnumDefinition,
   vegetableEnumDefinition,
-} from './strict-enums';
+} from './shared';
 
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid: [

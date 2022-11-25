@@ -1,5 +1,5 @@
 import rule from '../../../src/rules/strict-enums';
-import { fruitEnumDefinition, strictEnumsRuleTester } from './strict-enums';
+import { fruitEnumDefinition, strictEnumsRuleTester } from './shared';
 
 strictEnumsRuleTester.run('strict-enums-incrementing', rule, {
   valid: [

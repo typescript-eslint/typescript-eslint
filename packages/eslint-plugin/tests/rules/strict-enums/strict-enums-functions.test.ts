@@ -3,7 +3,7 @@ import {
   fruitEnumDefinition,
   strictEnumsRuleTester,
   vegetableEnumDefinition,
-} from './strict-enums';
+} from './shared';
 
 /** A function that takes a number enum. */
 const fruitFunctionDefinition =

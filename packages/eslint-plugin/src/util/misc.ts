@@ -158,10 +158,6 @@ type RequireKeys<
   TKeys extends keyof TObj,
 > = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };
 
-function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
-  return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
-}
-
 /**
  * Given an array of words, returns an English-friendly concatenation, separated with commas, with
  * the `and` clause inserted before the last item.
@@ -187,7 +183,6 @@ export {
   ExcludeKeys,
   findFirstResult,
   formatWordList,
-  getEnumNames,
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
