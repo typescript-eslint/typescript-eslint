@@ -12,8 +12,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   // Added lines start
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
+    project: true,
   },
   // Added lines end
   plugins: ['@typescript-eslint'],
@@ -28,13 +27,36 @@ module.exports = {
 
 In more detail:
 
-- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory.
-- `parserOptions.project` tells our parser the relative path where your project's `tsconfig.json` is.
-  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/MONOREPOS.md).
+- `parserOptions.project` tells our parser to use the closest `tsconfig.json` to each file for informing that file's type information.
 - `plugin:@typescript-eslint/recommended-requiring-type-checking` is another recommended configuration we provide. This one contains rules that specifically require type information.
 
 With that done, run the same lint command you ran before.
 You may see new rules reporting errors based on type information!
+
+## Specifying TSConfigs
+
+The `parserOptions.project` option can be turned on with either:
+
+- `true`: to always use `tsconfig.json`s nearest to source files
+- `string | string[]`: any number of glob paths to match TSConfig files relative to the
+
+For example, if you use a specific `tsconfig.eslint.json` for linting, you'd specify:
+
+```js title=".eslintrc.js"
+module.exports = {
+  // ...
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+  },
+  // ...
+};
+```
+
+See [the `@typescript-eslint/parser` docs for more details](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/README.md#parseroptionsproject).
+
+:::note
+If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/MONOREPOS.md).
+:::
 
 ## FAQs
 

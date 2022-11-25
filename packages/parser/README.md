@@ -152,6 +152,9 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 - Accepted values:
 
   ```js
+  // true
+  project: true,
+
   // path
   project: './tsconfig.json';
 
@@ -161,6 +164,10 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
   // array of paths and/or glob patterns
   project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
   ```
+
+- If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
+
+  - This is done by checking that source file's directory for a `tsconfig.json`, then the parent's directory for a `tsconfig.json`, and so on - until one is found or the current working directory is passed.
 
 - If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 
