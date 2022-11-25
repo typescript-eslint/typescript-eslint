@@ -108,18 +108,6 @@ export default util.createRule<Options, MessageIds>({
      * See the comment for the `EnumKind` enum.
      */
     function getEnumKind(type: ts.Type): EnumKind {
-      if (type.isUnion()) {
-        throw new Error(
-          'The "getEnumKind" function is not meant to be used on unions. Use the "getEnumKinds" function instead.',
-        );
-      }
-
-      if (type.isIntersection()) {
-        throw new Error(
-          'The "getEnumKind" function is not meant to be used on intersections.',
-        );
-      }
-
       if (!isEnum(type)) {
         return EnumKind.NON_ENUM;
       }
