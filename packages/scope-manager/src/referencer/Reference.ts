@@ -66,7 +66,7 @@ class Reference {
   /**
    * In some cases, a reference may be a type, value or both a type and value reference.
    */
-  readonly #referenceType: number | ReferenceTypeFlag;
+  readonly #referenceType: ReferenceTypeFlag;
 
   /**
    * True if this reference can reference types
@@ -89,7 +89,7 @@ class Reference {
     writeExpr?: TSESTree.Node | null,
     maybeImplicitGlobal?: ReferenceImplicitGlobal | null,
     init?: boolean,
-    referenceType: number | ReferenceTypeFlag = ReferenceTypeFlag.Value,
+    referenceType = ReferenceTypeFlag.Value,
   ) {
     this.identifier = identifier;
     this.from = scope;

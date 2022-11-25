@@ -6,8 +6,8 @@ const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 /**
  * Gets all of the type flags in a type, iterating through unions automatically.
  */
-export function getTypeFlags(type: ts.Type): number | ts.TypeFlags {
-  let flags = 0;
+export function getTypeFlags(type: ts.Type): ts.TypeFlags {
+  let flags = 0 as ts.TypeFlags;
   for (const t of unionTypeParts(type)) {
     flags |= t.flags;
   }
@@ -20,16 +20,16 @@ function isFlagSet(flags: number, flag: number): boolean {
 
 /**
  * @param flagsToCheck The composition of one or more `ts.TypeFlags`.
- * @param isReceiver Whether the type is a receiving type (i.e. the type of a
+ * @param isReceiver Whether the type is a receiving type (e.g. the type of a
  * called function's parameter).
  * @remarks
  * Note that if the type is a union, this function will decompose it into the
  * parts and get the flags of every union constituent. If this is not desired,
- * use the `isTypeFlagSetSimple` function instead.
+ * use the `isTypeFlag` function from tsutils.
  */
 export function isTypeFlagSet(
   type: ts.Type,
-  flagsToCheck: number | ts.TypeFlags,
+  flagsToCheck: ts.TypeFlags,
   isReceiver?: boolean,
 ): boolean {
   const flags = getTypeFlags(type);
