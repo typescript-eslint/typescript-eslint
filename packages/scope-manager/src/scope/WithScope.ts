@@ -1,9 +1,10 @@
-import { TSESTree } from '@typescript-eslint/types';
-import { Scope } from './Scope';
+import type { TSESTree } from '@typescript-eslint/types';
+
+import { assert } from '../assert';
+import type { ScopeManager } from '../ScopeManager';
+import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
-import { assert } from '../assert';
-import { ScopeManager } from '../ScopeManager';
 
 class WithScope extends ScopeBase<
   ScopeType.with,
@@ -22,10 +23,7 @@ class WithScope extends ScopeBase<
       return super.close(scopeManager);
     }
     assert(this.leftToResolve);
-    for (let i = 0; i < this.leftToResolve.length; ++i) {
-      const ref = this.leftToResolve[i];
-      this.delegateToUpperScope(ref);
-    }
+    this.leftToResolve.forEach(ref => this.delegateToUpperScope(ref));
     this.leftToResolve = null;
     return this.upper;
   }

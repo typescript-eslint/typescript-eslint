@@ -1,0 +1,18 @@
+name: '🏗 Suggest an Improvement with Repository Maintenance'
+description: Report a bug or request a feature related to developing the typescript-eslint monorepo
+title: 'Repo: <short description of the issue>'
+labels:
+  - 'repo maintenance'
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue form is specifically for work done in this repository. Only use it if you are suggesting a change to repository tooling. Don't use it for work in any other repository.
+  - type: textarea
+    attributes:
+      label: Suggestion
+      description: Tell us exactly what you'd like to see happen. Please be as specific as possible here.
+      placeholder: I want a new CI action that does X when Y ...
+    validations:
+      required: true

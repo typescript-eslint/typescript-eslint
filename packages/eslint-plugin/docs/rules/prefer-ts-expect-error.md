@@ -1,22 +1,20 @@
-# `prefer-ts-expect-error`
+---
+description: 'Enforce using `@ts-expect-error` over `@ts-ignore`.'
+---
 
-Recommends using `@ts-expect-error` over `@ts-ignore`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-ts-expect-error** for documentation.
 
-TypeScript allows you to suppress all errors on a line by placing a single-line comment or a comment block line starting with `@ts-ignore` immediately before the erroring line.
-While powerful, there is no way to know if a `@ts-ignore` is actually suppressing an error without manually investigating what happens when the `@ts-ignore` is removed.
+TypeScript allows you to suppress all errors on a line by placing a comment starting with `@ts-ignore` or `@ts-expect-error` immediately before the erroring line.
+The two directives work the same, except `@ts-expect-error` causes a type error if placed before a line that's not erroring in the first place.
 
 This means its easy for `@ts-ignore`s to be forgotten about, and remain in code even after the error they were suppressing is fixed.
 This is dangerous, as if a new error arises on that line it'll be suppressed by the forgotten about `@ts-ignore`, and so be missed.
 
-To address this, TS3.9 ships with a new single-line comment directive: `// @ts-expect-error`.
+## Examples
 
-This directive operates in the same manner as `@ts-ignore`, but will error if the line it's meant to be suppressing doesn't actually contain an error, making it a lot safer.
-
-## Rule Details
-
-This rule looks for usages of `@ts-ignore`, and flags them to be replaced with `@ts-expect-error`.
-
-Examples of code for this rule:
+This rule reports any usage of `@ts-ignore`, including a fixer to replace with `@ts-expect-error`.
 
 <!--tabs-->
 
@@ -64,14 +62,8 @@ const isOptionEnabled = (key: string): boolean => {
 
 ## When Not To Use It
 
-If you are **NOT** using TypeScript 3.9 (or greater), then you will not be able to use this rule, as the directive is not supported
+If you are compiling against multiple versions of TypeScript and using `@ts-ignore` to ignore version-specific type errors, this rule might get in your way.
 
 ## Further Reading
 
 - [Original Implementing PR](https://github.com/microsoft/TypeScript/pull/36014)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

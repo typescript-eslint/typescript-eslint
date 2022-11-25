@@ -1,10 +1,11 @@
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/prefer-optional-chain';
-import { RuleTester, noFormat } from '../RuleTester';
-import { TSESLint } from '@typescript-eslint/utils';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -63,6 +64,16 @@ const baseCases = [
     // case with a jump (i.e. a non-nullish prop)
     code: 'foo && foo[bar].baz && foo[bar].baz.buzz',
     output: 'foo?.[bar].baz?.buzz',
+  },
+  // case with a property access in computed property
+  {
+    code: 'foo && foo[bar.baz] && foo[bar.baz].buzz',
+    output: 'foo?.[bar.baz]?.buzz',
+  },
+  // case with this keyword
+  {
+    code: 'foo[this.bar] && foo[this.bar].baz',
+    output: 'foo[this.bar]?.baz',
   },
   // chained calls
   {
@@ -146,6 +157,14 @@ const baseCases = [
 
 ruleTester.run('prefer-optional-chain', rule, {
   valid: [
+    '!a || !b;',
+    '!a || a.b;',
+    '!a && a.b;',
+    '!a && !a.b;',
+    '!a.b || a.b?.();',
+    '!a.b || a.b();',
+    '!foo() || !foo().bar;',
+
     'foo || {};',
     'foo || ({} as any);',
     '(foo || {})?.bar;',
@@ -179,6 +198,19 @@ ruleTester.run('prefer-optional-chain', rule, {
     'foo && foo[bar as string] && foo[bar as string].baz;',
     'foo && foo[1 + 2] && foo[1 + 2].baz;',
     'foo && foo[typeof bar] && foo[typeof bar].baz;',
+    '!foo[1 + 1] || !foo[1 + 2];',
+    '!foo[1 + 1] || !foo[1 + 1].foo;',
+    '!foo || !foo[bar as string] || !foo[bar as string].baz;',
+    '!foo || !foo[1 + 2] || !foo[1 + 2].baz;',
+    '!foo || !foo[typeof bar] || !foo[typeof bar].baz;',
+    // currently do not handle 'this' as the first part of a chain
+    'this && this.foo;',
+    '!this || !this.foo;',
+    // intentionally do not handle mixed TSNonNullExpression in properties
+    '!entity.__helper!.__initialized || options.refresh;',
+    '!foo!.bar || !foo!.bar.baz;',
+    '!foo!.bar!.baz || !foo!.bar!.baz!.paz;',
+    '!foo.bar!.baz || !foo.bar!.baz!.paz;',
   ],
   invalid: [
     ...baseCases,
@@ -249,7 +281,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo?.bar?.baz || baz && baz.bar && baz.bar.foo`,
+              output: `foo?.bar?.baz || baz && baz.bar && baz.bar.foo`,
             },
           ],
         },
@@ -258,7 +290,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo && foo.bar && foo.bar.baz || baz?.bar?.foo`,
+              output: `foo && foo.bar && foo.bar.baz || baz?.bar?.foo`,
             },
           ],
         },
@@ -340,7 +372,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo?.["some long string"]?.baz`,
+              output: `foo?.["some long string"]?.baz`,
             },
           ],
         },
@@ -355,7 +387,7 @@ ruleTester.run('prefer-optional-chain', rule, {
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`foo?.[\`some long string\`]?.baz`,
+              output: `foo?.[\`some long string\`]?.baz`,
             },
           ],
         },
@@ -382,7 +414,7 @@ ruleTester.run('prefer-optional-chain', rule, {
 foo && foo.bar(/* comment */a,
   // comment2
   b, );
-      `.trimRight(),
+      `,
       output: null,
       errors: [
         {
@@ -390,11 +422,11 @@ foo && foo.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`
+              output: `
 foo?.bar(/* comment */a,
   // comment2
   b, );
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -441,6 +473,22 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: 'foo?.bar != null && baz;',
+            },
+          ],
+        },
+      ],
+    },
+    // case with this keyword at the start of expression
+    {
+      code: 'this.bar && this.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'this.bar?.baz;',
             },
           ],
         },
@@ -712,7 +760,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo) { foo?.bar; }`,
+              output: `if (foo) { foo?.bar; }`,
             },
           ],
         },
@@ -728,7 +776,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo?.bar) { foo.bar; }`,
+              output: `if (foo?.bar) { foo.bar; }`,
             },
           ],
         },
@@ -945,7 +993,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo) { foo?.bar; }`,
+              output: `if (foo) { foo?.bar; }`,
             },
           ],
         },
@@ -961,7 +1009,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`if (foo?.bar) { foo.bar; }`,
+              output: `if (foo?.bar) { foo.bar; }`,
             },
           ],
         },
@@ -1009,7 +1057,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`((typeof x) as string)?.bar;`,
+              output: `((typeof x) as string)?.bar;`,
             },
           ],
         },
@@ -1138,6 +1186,136 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: '(+foo)?.bar;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(this || {}).foo;',
+      errors: [
+        {
+          messageId: 'optionalChainSuggest',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'this?.foo;',
+            },
+          ],
+        },
+      ],
+    },
+    ...baseCases.map(c => ({
+      ...c,
+      code: c.code.replace(/foo/g, '!foo').replace(/&&/g, '||'),
+      errors: [
+        {
+          ...c.errors[0],
+          suggestions: [
+            {
+              ...c.errors[0].suggestions![0],
+              output: `!${c.errors[0].suggestions![0].output}`,
+            },
+          ],
+        },
+      ],
+    })),
+    // case with this keyword at the start of expression
+    {
+      code: '!this.bar || !this.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!this.bar?.baz;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!a.b || !a.b();',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!a.b?.();',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!foo.bar || !foo.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo.bar?.baz;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!foo[bar] || !foo[bar]?.[baz];',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo[bar]?.[baz];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '!foo || !foo?.bar.baz;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: '!foo?.bar.baz;',
+            },
+          ],
+        },
+      ],
+    },
+    // two  errors
+    {
+      code: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz || !baz.bar || !baz.bar.foo);`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`(!foo?.bar?.baz) && (!baz || !baz.bar || !baz.bar.foo);`,
+            },
+          ],
+        },
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz?.bar?.foo);`,
             },
           ],
         },

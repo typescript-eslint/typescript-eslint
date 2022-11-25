@@ -1,9 +1,7 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 const isStringLiteral = (
@@ -17,7 +15,7 @@ export default createRule({
     docs: {
       recommended: 'error',
       description:
-        'Ensures consistent usage of `AST_NODE_TYPES`, `AST_TOKEN_TYPES` and `DefinitionType` enums.',
+        'Enforce consistent usage of `AST_NODE_TYPES`, `AST_TOKEN_TYPES` and `DefinitionType` enums',
     },
     messages: {
       preferEnum: 'Prefer {{ enumName }}.{{ literal }} over raw literal',

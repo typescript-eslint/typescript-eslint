@@ -1,16 +1,16 @@
+import { useColorMode } from '@docusaurus/theme-common';
+import { createCompilerOptions } from '@site/src/components/editor/config';
+import type Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
-import type Monaco from 'monaco-editor';
-import type { LintMessage, WebLinter } from '@typescript-eslint/website-eslint';
-import type { RuleDetails } from '../types';
 import type {
   createTypeScriptSandbox,
   SandboxConfig,
 } from '../../vendor/sandbox';
-
-import { sandboxSingleton } from './loadSandbox';
+import { WebLinter } from '../linter/WebLinter';
+import type { RuleDetails } from '../types';
 import { editorEmbedId } from './EditorEmbed';
-import { useColorMode } from '@docusaurus/theme-common';
+import { sandboxSingleton } from './loadSandbox';
 
 export interface SandboxServicesProps {
   readonly jsx?: boolean;
@@ -24,7 +24,6 @@ export interface SandboxServicesProps {
 export type SandboxInstance = ReturnType<typeof createTypeScriptSandbox>;
 
 export interface SandboxServices {
-  fixes: Map<string, LintMessage>;
   main: typeof Monaco;
   sandboxInstance: SandboxInstance;
   webLinter: WebLinter;
@@ -33,9 +32,10 @@ export interface SandboxServices {
 export const useSandboxServices = (
   props: SandboxServicesProps,
 ): Error | SandboxServices | undefined => {
+  const { onLoaded } = props;
   const [services, setServices] = useState<Error | SandboxServices>();
   const [loadedTs, setLoadedTs] = useState<string>(props.ts);
-  const { isDarkTheme } = useColorMode();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (props.ts !== loadedTs) {
@@ -44,19 +44,12 @@ export const useSandboxServices = (
   }, [props.ts, loadedTs]);
 
   useEffect(() => {
-    const fixes = new Map<string, LintMessage>();
     let sandboxInstance: SandboxInstance | undefined;
     setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
-      .then(async ({ main, sandboxFactory, ts, linter }) => {
-        const compilerOptions: Monaco.languages.typescript.CompilerOptions = {
-          noResolve: true,
-          target: main.languages.typescript.ScriptTarget.ESNext,
-          jsx: props.jsx ? main.languages.typescript.JsxEmit.React : undefined,
-          lib: ['esnext'],
-          module: main.languages.typescript.ModuleKind.ESNext,
-        };
+      .then(async ({ main, sandboxFactory, ts, lintUtils }) => {
+        const compilerOptions = createCompilerOptions(props.jsx);
 
         const sandboxConfig: Partial<SandboxConfig> = {
           text: '',
@@ -66,7 +59,13 @@ export const useSandboxServices = (
             wordWrap: 'off',
             scrollBeyondLastLine: false,
             smoothScrolling: true,
+            autoIndent: 'full',
+            formatOnPaste: true,
+            formatOnType: true,
+            wrappingIndent: 'same',
+            hover: { above: false },
           },
+          acquireTypes: false,
           compilerOptions: compilerOptions,
           domID: editorEmbedId,
         };
@@ -77,22 +76,50 @@ export const useSandboxServices = (
           ts,
         );
         sandboxInstance.monaco.editor.setTheme(
-          isDarkTheme ? 'vs-dark' : 'vs-light',
+          colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
-        const libMap = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
-          sandboxInstance.getCompilerOptions(),
-          props.ts,
-          true,
-          window.ts,
+        let libEntries: Map<string, string> | undefined;
+        const worker = await sandboxInstance.getWorkerProcess();
+        if (worker.getLibFiles) {
+          libEntries = new Map(
+            Object.entries((await worker.getLibFiles()) ?? {}).map(item => [
+              '/' + item[0],
+              item[1],
+            ]),
+          );
+        } else {
+          // for some older version of playground we do not have definitions available
+          libEntries = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
+            {
+              lib: Array.from(window.ts.libMap.keys()),
+            },
+            props.ts,
+            true,
+            window.ts,
+          );
+          for (const pair of libEntries) {
+            sandboxInstance.languageServiceDefaults.addExtraLib(
+              pair[1],
+              'ts:' + pair[0],
+            );
+          }
+        }
+
+        const system = sandboxInstance.tsvfs.createSystem(libEntries);
+
+        const webLinter = new WebLinter(system, compilerOptions, lintUtils);
+
+        onLoaded(
+          webLinter.ruleNames,
+          Array.from(
+            new Set([...sandboxInstance.supportedVersions, window.ts.version]),
+          )
+            .filter(item => parseFloat(item) >= 3.3)
+            .sort((a, b) => b.localeCompare(a)),
         );
-
-        const webLinter = linter.loadLinter(libMap, compilerOptions);
-
-        props.onLoaded(webLinter.ruleNames, sandboxInstance.supportedVersions);
 
         setServices({
-          fixes,
           main,
           sandboxInstance,
           webLinter,
@@ -118,7 +145,7 @@ export const useSandboxServices = (
         model.dispose();
       }
     };
-  }, [props.ts]);
+  }, [props.ts, colorMode, props.jsx, onLoaded]);
 
   return services;
 };

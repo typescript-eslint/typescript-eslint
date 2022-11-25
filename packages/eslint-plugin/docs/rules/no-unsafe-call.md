@@ -1,15 +1,20 @@
-# `no-unsafe-call`
+---
+description: 'Disallow calling a value with type `any`.'
+---
 
-Disallows calling an any type value.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-call** for documentation.
+
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-The arguments to, and return value of calling an `any` typed variable are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+Calling an `any`-typed value as a function creates a potential type safety hole and source of bugs in your codebase.
 
-## Rule Details
+This rule disallows calling any value that is typed as `any`.
 
-This rule disallows calling any variable that is typed as `any`.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -48,26 +53,6 @@ new Map();
 String.raw`foo`;
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-call": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
-- TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

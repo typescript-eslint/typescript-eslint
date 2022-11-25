@@ -1,11 +1,17 @@
-# `space-before-blocks`
+---
+description: 'Enforce consistent spacing before blocks.'
+---
 
-Enforces consistent spacing before blocks.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/space-before-blocks** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks) rule.
-It adds support for interfaces and enums:
+It adds support for interfaces and enums.
+
+<!-- tabs -->
 
 ### ❌ Incorrect
 
@@ -31,30 +37,6 @@ interface State {
 }
 ```
 
-In case a more specific options object is passed these blocks will follow `classes` configuration option.
-
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "space-before-blocks": "off",
-  "@typescript-eslint/space-before-blocks": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/space-before-blocks` options](https://eslint.org/docs/rules/space-before-blocks#options).
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/master/docs/rules/space-before-blocks.md)
-
-</sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information
+In case a more specific options object is passed these blocks will follow `classes` configuration option.

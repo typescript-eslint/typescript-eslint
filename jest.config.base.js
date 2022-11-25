@@ -3,17 +3,35 @@
 // @ts-check
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  collectCoverage: false,
+  collectCoverage: true,
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
-  coverageReporters: ['text-summary', 'lcov'],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  coverageReporters: ['lcov'],
+  moduleFileExtensions: [
+    'ts',
+    'tsx',
+    'mts',
+    'mtsx',
+    'js',
+    'jsx',
+    'mjs',
+    'mjsx',
+    'json',
+    'node',
+  ],
   resolver: '<rootDir>/../../tests/jest-resolver.js',
+  setupFilesAfterEnv: ['console-fail-test/setup.js'],
+  testRegex: ['./tests/.+\\.test\\.ts$', './tests/.+\\.spec\\.ts$'],
   transform: {
     '^.+\\.(t|j)sx?$': [
       '@swc/jest',
       {
         jsc: {
           target: 'es2019',
+          transform: {
+            react: {
+              runtime: 'automatic',
+            },
+          },
         },
       },
     ],

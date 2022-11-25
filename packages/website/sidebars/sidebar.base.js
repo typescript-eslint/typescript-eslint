@@ -1,26 +1,49 @@
 module.exports = {
   docs: [
-    'README',
     {
-      type: 'category',
-      label: 'Linting',
-      collapsed: false,
+      collapsible: false,
       items: [
-        'linting/linting',
-        'linting/type-linting',
-        'linting/monorepo',
-        'linting/troubleshooting',
-        'linting/tslint',
+        {
+          label: 'Linting with Type Information',
+          items: ['linting/typed-linting/monorepos'],
+          collapsible: false,
+          link: {
+            id: 'linting/typed-linting',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+        'linting/configs',
+        {
+          label: 'Troubleshooting & FAQs',
+          link: {
+            id: 'linting/troubleshooting',
+            type: 'doc',
+          },
+          collapsible: false,
+          type: 'category',
+          items: [
+            'linting/troubleshooting/formatting',
+            'linting/troubleshooting/tslint',
+          ],
+        },
       ],
+      link: {
+        id: 'getting-started',
+        type: 'doc',
+      },
+      label: 'Getting Started',
+      type: 'category',
     },
     {
       type: 'category',
       label: 'Development',
-      collapsed: false,
+      collapsible: false,
       items: [
         {
           label: 'Architecture',
           type: 'category',
+          collapsible: false,
           items: [
             'development/architecture/asts',
             'development/architecture/packages',
@@ -28,6 +51,21 @@ module.exports = {
         },
         'development/custom-rules',
       ],
+    },
+    {
+      collapsible: false,
+      items: [
+        'maintenance/issues',
+        'maintenance/pull-requests',
+        'maintenance/releases',
+        'maintenance/versioning',
+      ],
+      label: 'Maintenance',
+      link: {
+        id: 'maintenance',
+        type: 'doc',
+      },
+      type: 'category',
     },
   ],
 };

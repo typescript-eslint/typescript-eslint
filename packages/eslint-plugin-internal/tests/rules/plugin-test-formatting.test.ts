@@ -1,9 +1,11 @@
 import rule from '../../src/rules/plugin-test-formatting';
-import { RuleTester } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: getFixturesRootDir(),
     sourceType: 'module',
   },
 });
@@ -25,26 +27,6 @@ ruleTester.run({
 });
   `;
 }
-function wrapWithOutput(
-  strings: TemplateStringsArray,
-  ...keys: string[]
-): string {
-  const lastIndex = strings.length - 1;
-  const code =
-    strings.slice(0, lastIndex).reduce((p, s, i) => p + s + keys[i], '') +
-    strings[lastIndex];
-  return `
-ruleTester.run({
-  invalid: [
-    {
-      code: ${code},
-      output: ${code},
-    },
-  ],
-});
-  `;
-}
-
 ruleTester.run('plugin-test-formatting', rule, {
   valid: [
     // sanity check for valid tests non-object style
@@ -152,6 +134,44 @@ ${CODE_INDENT}const a = 1;
 
 ${CODE_INDENT}const b = 1;
 ${PARENT_INDENT}\``,
+
+    // random, unannotated variables aren't checked
+    `
+const test1 = {
+  code: 'const badlyFormatted         = "code"',
+};
+const test2 = {
+  valid: [
+    'const badlyFormatted         = "code"',
+    {
+      code: 'const badlyFormatted         = "code"',
+    },
+  ],
+  invalid: [
+    {
+      code: 'const badlyFormatted         = "code"',
+      errors: [],
+    },
+  ],
+};
+    `,
+
+    // TODO - figure out how to handle this pattern
+    `
+import { TSESLint } from '@typescript-eslint/utils';
+
+const test = [
+  {
+    code: 'const badlyFormatted         = "code1"',
+  },
+  {
+    code: 'const badlyFormatted         = "code2"',
+  },
+].map<TSESLint.InvalidTestCase<[]>>(test => ({
+  code: test.code,
+  errors: [],
+}));
+    `,
   ],
   invalid: [
     // Literal
@@ -365,33 +385,12 @@ ${PARENT_INDENT}\``,
       code: wrap`\`
 ${CODE_INDENT}const a=\\\`\\\${a}\\\`;
 ${PARENT_INDENT}\``,
-      // make sure it escapes backticks
       output: wrap`\`
 ${CODE_INDENT}const a = \\\`\\\${a}\\\`;
 ${PARENT_INDENT}\``,
       errors: [
         {
           messageId: 'invalidFormatting',
-        },
-      ],
-    },
-
-    // sanity check that it runs on both output and code properties
-    {
-      code: wrapWithOutput`\`
-${CODE_INDENT}const a="1";
-${CODE_INDENT}          const b    =   "2";
-${PARENT_INDENT}\``,
-      output: wrapWithOutput`\`
-${CODE_INDENT}const a = '1';
-${CODE_INDENT}const b = '2';
-${PARENT_INDENT}\``,
-      errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-        {
-          messageId: 'invalidFormattingErrorTest',
         },
       ],
     },
@@ -431,7 +430,7 @@ ruleTester.run({
           suggestions: [
             {
               messageId: 'bar',
-              output: 'const x = 1;',
+              output: 'const x=1;',
             },
           ],
         },
@@ -441,9 +440,6 @@ ruleTester.run({
 });
       `,
       errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
         {
           messageId: 'invalidFormattingErrorTest',
         },
@@ -551,25 +547,171 @@ foo
       ],
     },
 
-    // checks tests with .trimRight calls
+    // annotated variables are checked
     {
-      code: wrap`'const a=1;'.trimRight()`,
-      output: wrap`'const a = 1;'.trimRight()`,
+      code: `
+const test: RunTests = {
+  valid: [
+    'const badlyFormatted         = "code"',
+    {
+      code: 'const badlyFormatted         = "code"',
+    },
+  ],
+  invalid: [
+    {
+      code: 'const badlyFormatted         = "code"',
+      errors: [],
+    },
+  ],
+};
+      `,
+      output: `
+const test: RunTests = {
+  valid: [
+    "const badlyFormatted = 'code';",
+    {
+      code: "const badlyFormatted = 'code';",
+    },
+  ],
+  invalid: [
+    {
+      code: "const badlyFormatted = 'code';",
+      errors: [],
+    },
+  ],
+};
+      `,
       errors: [
         {
           messageId: 'invalidFormatting',
         },
+        {
+          messageId: 'invalidFormatting',
+        },
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
       ],
     },
     {
-      code: wrap`\`const a = "1";
-${CODE_INDENT}\`.trimRight()`,
-      output: wrap`\`
-const a = "1";
-${CODE_INDENT}\`.trimRight()`,
+      code: `
+import { TSESLint } from '@typescript-eslint/utils';
+
+const test: TSESLint.RunTests<'', []> = {
+  valid: [
+    'const badlyFormatted         = "code"',
+    {
+      code: 'const badlyFormatted         = "code"',
+    },
+  ],
+  invalid: [
+    {
+      code: 'const badlyFormatted         = "code"',
+      errors: [],
+    },
+  ],
+};
+      `,
+      output: `
+import { TSESLint } from '@typescript-eslint/utils';
+
+const test: TSESLint.RunTests<'', []> = {
+  valid: [
+    "const badlyFormatted = 'code';",
+    {
+      code: "const badlyFormatted = 'code';",
+    },
+  ],
+  invalid: [
+    {
+      code: "const badlyFormatted = 'code';",
+      errors: [],
+    },
+  ],
+};
+      `,
       errors: [
         {
-          messageId: 'templateLiteralEmptyEnds',
+          messageId: 'invalidFormatting',
+        },
+        {
+          messageId: 'invalidFormatting',
+        },
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+      ],
+    },
+    {
+      code: `
+import { TSESLint } from '@typescript-eslint/utils';
+
+const test: TSESLint.ValidTestCase<[]> = {
+  code: 'const badlyFormatted         = "code"',
+};
+      `,
+      output: `
+import { TSESLint } from '@typescript-eslint/utils';
+
+const test: TSESLint.ValidTestCase<[]> = {
+  code: "const badlyFormatted = 'code';",
+};
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+      ],
+    },
+    {
+      code: `
+import { TSESLint } from '@typescript-eslint/utils';
+
+const test: TSESLint.InvalidTestCase<'', []> = {
+  code: 'const badlyFormatted         = "code1"',
+  errors: [
+    {
+      code: 'const badlyFormatted         = "code2"',
+      // shouldn't get fixed as per rule ignoring output
+      output: 'const badlyFormatted         = "code3"',
+      suggestions: [
+        {
+          messageId: '',
+          // shouldn't get fixed as per rule ignoring output
+          output: 'const badlyFormatted         = "code4"',
+        },
+      ],
+    },
+  ],
+};
+      `,
+      output: `
+import { TSESLint } from '@typescript-eslint/utils';
+
+const test: TSESLint.InvalidTestCase<'', []> = {
+  code: "const badlyFormatted = 'code1';",
+  errors: [
+    {
+      code: "const badlyFormatted = 'code2';",
+      // shouldn't get fixed as per rule ignoring output
+      output: 'const badlyFormatted         = "code3"',
+      suggestions: [
+        {
+          messageId: '',
+          // shouldn't get fixed as per rule ignoring output
+          output: 'const badlyFormatted         = "code4"',
+        },
+      ],
+    },
+  ],
+};
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+        {
+          messageId: 'invalidFormattingErrorTest',
         },
       ],
     },

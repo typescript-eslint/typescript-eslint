@@ -1,6 +1,15 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import {
+  isConditionalType,
+  isIntersectionType,
+  isObjectType,
+  isPropertyReadonlyInType,
+  isSymbolFlagSet,
+  isUnionType,
+  unionTypeParts,
+} from 'tsutils';
 import * as ts from 'typescript';
+
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import { isSymbolFlagSet } from './typeFlagUtils';
 
@@ -103,6 +112,10 @@ function isTypeReadonlyObject(
     if (indexInfo) {
       if (!indexInfo.isReadonly) {
         return Readonlyness.Mutable;
+      }
+
+      if (indexInfo.type === type || seenTypes.has(indexInfo.type)) {
+        return Readonlyness.Readonly;
       }
 
       return isTypeReadonlyRecurser(

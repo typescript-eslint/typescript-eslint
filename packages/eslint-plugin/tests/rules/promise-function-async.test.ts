@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/utils/src/eslint-utils';
+
 import rule from '../../src/rules/promise-function-async';
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
@@ -100,6 +101,13 @@ const invalidAsyncModifiers = {
       class Foo {
         constructor() {}
       }
+    `,
+    `
+class Foo {
+  async catch<T>(arg: Promise<T>) {
+    return arg;
+  }
+}
     `,
     {
       code: `
@@ -654,7 +662,7 @@ class Test {
         { line: 7, column: 3, messageId },
         { line: 10, column: 3, messageId },
       ],
-      output: noFormat`
+      output: `
 class Test {
   @decorator(async () => {})
   static protected async [(1)]() {
@@ -668,6 +676,81 @@ class Test {
   }
 }
       `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5729
+    {
+      code: `
+class Foo {
+  catch() {
+    return Promise.resolve(1);
+  }
+
+  public default() {
+    return Promise.resolve(2);
+  }
+
+  @decorator
+  private case<T>() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      output: `
+class Foo {
+  async catch() {
+    return Promise.resolve(1);
+  }
+
+  public async default() {
+    return Promise.resolve(2);
+  }
+
+  @decorator
+  private async case<T>() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 3,
+          messageId,
+        },
+        {
+          line: 7,
+          column: 3,
+          messageId,
+        },
+        {
+          line: 12,
+          column: 3,
+          messageId,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  catch() {
+    return Promise.resolve(1);
+  },
+};
+      `,
+      output: `
+const foo = {
+  async catch() {
+    return Promise.resolve(1);
+  },
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 3,
+          messageId,
+        },
+      ],
     },
   ],
 });

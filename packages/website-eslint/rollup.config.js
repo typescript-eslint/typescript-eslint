@@ -1,6 +1,8 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
+
 const replace = require('./rollup-plugin/replace');
 
 module.exports = {
@@ -9,10 +11,14 @@ module.exports = {
     format: 'amd',
     interop: 'auto',
     freeze: false,
+    sourcemap: true,
     file: 'dist/index.js',
   },
   external: ['vs/language/typescript/tsWorker'],
   plugins: [
+    terser({
+      keep_classnames: true,
+    }),
     replace({
       // verbose: true,
       alias: [
@@ -21,7 +27,7 @@ module.exports = {
           match: [
             /eslint\/lib\/(rule-tester|eslint|cli-engine|init)\//u,
             /eslint\/lib\/cli\.js$/,
-            /utils\/dist\/eslint-utils\/RuleTester\.js$/,
+            /utils\/dist\/eslint-utils\/rule-tester\/RuleTester\.js$/,
             /utils\/dist\/ts-eslint\/CLIEngine\.js$/,
             /utils\/dist\/ts-eslint\/RuleTester\.js$/,
             /typescript-estree\/dist\/create-program\/createWatchProgram\.js/,
@@ -30,6 +36,10 @@ module.exports = {
             /utils\/dist\/ts-eslint\/ESLint\.js/,
             // 'eslint/lib/shared/ajv.js',
             // 'eslint/lib/shared/runtime-info.js',
+            /ajv\/lib\/definition_schema\.js/,
+            /stream/,
+            /os/,
+            /fs/,
           ],
           target: './src/mock/empty.js',
         },
@@ -57,6 +67,14 @@ module.exports = {
           // semver simplified, solve issue with circular dependencies
           match: /semver$/u,
           target: './src/mock/semver.js',
+        },
+        {
+          match: /^globby$/u,
+          target: './src/mock/globby.js',
+        },
+        {
+          match: /^is-glob$/u,
+          target: './src/mock/is-glob.js',
         },
       ],
       replace: [

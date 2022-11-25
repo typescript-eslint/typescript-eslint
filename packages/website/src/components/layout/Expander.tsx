@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import styles from './Expander.module.css';
-
+import { Collapsible, useCollapsible } from '@docusaurus/theme-common';
 import ArrowIcon from '@site/src/icons/arrow.svg';
+import clsx from 'clsx';
+import React from 'react';
+
+import styles from './Expander.module.css';
 
 export interface ExpanderProps {
   readonly children?: React.ReactNode;
@@ -10,23 +12,21 @@ export interface ExpanderProps {
 }
 
 function Expander(props: ExpanderProps): JSX.Element {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true);
-
-  const handleToggle = (): void => {
-    setIsExpanded(!isExpanded);
-  };
+  const { collapsed, toggleCollapsed } = useCollapsible({
+    initialState: false,
+  });
 
   return (
-    <div className={`${styles.expander} ${props.className ?? ''}`}>
-      <button className={styles.heading} onClick={handleToggle}>
+    <div className={clsx(styles.expander, props.className)}>
+      <button className={styles.heading} onClick={toggleCollapsed}>
         <ArrowIcon
-          className={`${styles.arrow} ${
-            isExpanded ? styles.expandedArrow : ''
-          }`}
+          className={clsx(styles.arrow, !collapsed && styles.expandedArrow)}
         />
         <span className={styles.headerLabel}>{props.label}</span>
       </button>
-      {isExpanded && <div className={styles.children}>{props.children}</div>}
+      <Collapsible lazy={false} as="div" collapsed={collapsed}>
+        <div className={styles.children}>{props.children}</div>
+      </Collapsible>
     </div>
   );
 }

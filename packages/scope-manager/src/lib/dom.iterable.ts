@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import { ImplicitLibVariableOptions } from '../variable';
+import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const dom_iterable = {
@@ -13,11 +13,13 @@ export const dom_iterable = {
   CSSRuleList: TYPE,
   CSSStyleDeclaration: TYPE,
   Cache: TYPE,
+  CanvasPath: TYPE,
   CanvasPathDrawingStyles: TYPE,
   DOMRectList: TYPE,
   DOMStringList: TYPE,
   DOMTokenList: TYPE,
   DataTransferItemList: TYPE,
+  EventCounts: TYPE,
   FileList: TYPE,
   FontFaceSet: TYPE,
   FormData: TYPE,

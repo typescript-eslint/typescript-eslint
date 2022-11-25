@@ -1,4 +1,6 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -7,8 +9,8 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated',
-      recommended: false,
+        'Enforce the use of `for-of` loop over the standard `for` loop where possible',
+      recommended: 'strict',
     },
     messages: {
       preferForOf:

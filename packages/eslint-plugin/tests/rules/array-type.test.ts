@@ -1,6 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import * as parser from '@typescript-eslint/parser';
-import rule, { OptionString } from '../../src/rules/array-type';
+import { TSESLint } from '@typescript-eslint/utils';
+
+import type { OptionString } from '../../src/rules/array-type';
+import rule from '../../src/rules/array-type';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -1885,6 +1887,36 @@ interface FooInterface {
         },
       ],
     },
+    {
+      code: 'const foo: Array<new (...args: any[]) => void> = [];',
+      output: 'const foo: (new (...args: any[]) => void)[] = [];',
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
+    {
+      code: 'const foo: ReadonlyArray<new (...args: any[]) => void> = [];',
+      output: 'const foo: readonly (new (...args: any[]) => void)[] = [];',
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArray',
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'T',
+          },
+          line: 1,
+          column: 12,
+        },
+      ],
+    },
   ],
 });
 
@@ -1949,6 +1981,61 @@ class Foo<T = Bar[][]> extends Bar<T, T[]> implements Baz<T[]> {
     }
 }
       `,
+    );
+    testOutput(
+      'array',
+      `
+interface WorkingArray {
+  outerProperty: Array<
+    { innerPropertyOne: string } & { innerPropertyTwo: string }
+  >;
+}
+
+interface BrokenArray {
+  outerProperty: Array<
+    ({ innerPropertyOne: string } & { innerPropertyTwo: string })
+  >;
+}
+      `,
+      `
+interface WorkingArray {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+
+interface BrokenArray {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+      `,
+    );
+    testOutput(
+      'array',
+      `
+type WorkingArray = {
+  outerProperty: Array<
+    { innerPropertyOne: string } & { innerPropertyTwo: string }
+  >;
+}
+
+type BrokenArray = {
+  outerProperty: Array<
+    ({ innerPropertyOne: string } & { innerPropertyTwo: string })
+  >;
+}
+      `,
+      `
+type WorkingArray = {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+
+type BrokenArray = {
+  outerProperty: ({ innerPropertyOne: string } & { innerPropertyTwo: string })[];
+}
+      `,
+    );
+    testOutput(
+      'array',
+      'const a: Array<(string|number)>;',
+      'const a: (string|number)[];',
     );
     testOutput(
       'array-simple',

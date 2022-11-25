@@ -72,6 +72,17 @@ class Foo {
       `,
       options: [{ allow: ['decoratedFunctions'] }],
     },
+    {
+      code: `
+class Foo extends Base {
+  override foo() {}
+}
+      `,
+      dependencyConstraints: {
+        typescript: '4.3',
+      },
+      options: [{ allow: ['overrideMethods'] }],
+    },
   ],
 
   invalid: [
@@ -189,6 +200,26 @@ class Foo {
           },
           line: 4,
           column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Base {
+  override foo() {}
+}
+      `,
+      dependencyConstraints: {
+        typescript: '4.3',
+      },
+      errors: [
+        {
+          messageId: 'unexpected',
+          data: {
+            name: "method 'foo'",
+          },
+          line: 3,
+          column: 18,
         },
       ],
     },

@@ -153,6 +153,34 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          value:{prop:string}[] = [];
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+           value: string & number;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          optional? = false;
+        }
+      `,
+    },
+    {
+      code: `
         type Test =
         | string
         | boolean;
@@ -220,6 +248,18 @@ ruleTester.run('space-infix-ops', rule, {
         & (((() => boolean)))
         & (((() => void)));
       `,
+    },
+    {
+      code: 'type Baz<T> = T extends (bar: string) => void ? string : number',
+    },
+    {
+      code: 'type Foo<T> = T extends { bar: string } ? string : number',
+    },
+    {
+      code: 'type Baz<T> = T extends (bar: string) => void ? { x: string } : { y: string }',
+    },
+    {
+      code: 'type Foo<T extends (...args: any[]) => any> = T;',
     },
     {
       code: `
@@ -355,13 +395,6 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
-        class Test {
-           value: string & number;
-        }
-      `,
-    },
-    {
-      code: `
         function foo<T extends string & number>() {}
       `,
     },
@@ -469,6 +502,44 @@ ruleTester.run('space-infix-ops', rule, {
         {
           messageId: 'missingSpace',
           column: 33,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: { prop: string }[]= [];
+        }
+      `,
+      output: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 36,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          value: { prop: string }[] =[];
+        }
+      `,
+      output: `
+        class Test {
+          value: { prop: string }[] = [];
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 37,
           line: 3,
         },
       ],
@@ -922,6 +993,91 @@ ruleTester.run('space-infix-ops', rule, {
     },
     {
       code: `
+        type Test = |string|(((() => void)))|string;
+      `,
+      output: `
+        type Test = | string | (((() => void))) | string;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 21,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 28,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 45,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test=|string|(((() => void)))|string;
+      `,
+      output: `
+        type Test = |string | (((() => void))) | string;
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 19,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 26,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 43,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test=(string&number)|string|(((() => void)));
+      `,
+      output: `
+        type Test = (string & number) | string | (((() => void)));
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 18,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 26,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 34,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
         type Test =
         &string
         & number;
@@ -973,6 +1129,116 @@ ruleTester.run('space-infix-ops', rule, {
         {
           messageId: 'missingSpace',
           column: 9,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean?true:false
+      `,
+      output: `
+        type Test<T> = T extends boolean ? true : false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 46,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean? true :false
+      `,
+      output: `
+        type Test<T> = T extends boolean ? true : false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 48,
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean?
+          true :false
+      `,
+      output: `
+        type Test<T> = T extends boolean ?
+          true : false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 16,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean?
+          true
+          :false
+      `,
+      output: `
+        type Test<T> = T extends boolean ?
+          true
+          : false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 41,
+          line: 2,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 11,
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+        type Test<T> = T extends boolean
+          ?true:
+          false
+      `,
+      output: `
+        type Test<T> = T extends boolean
+          ? true :
+          false
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 11,
+          line: 3,
+        },
+        {
+          messageId: 'missingSpace',
+          column: 16,
           line: 3,
         },
       ],
@@ -1683,6 +1949,25 @@ ruleTester.run('space-infix-ops', rule, {
         {
           messageId: 'missingSpace',
           column: 24,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          optional?= false;
+        }
+      `,
+      output: `
+        class Test {
+          optional? = false;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingSpace',
+          column: 20,
           line: 3,
         },
       ],

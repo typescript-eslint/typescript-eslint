@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-floating-promises';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -500,7 +500,7 @@ doSomething();
 async function test() {
   Promise.resolve('value');
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           line: 3,
@@ -512,7 +512,7 @@ async function test() {
 async function test() {
   void Promise.resolve('value');
 }
-              `.trimRight(),
+      `,
             },
           ],
         },

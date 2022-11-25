@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
 import { createRule, forEachReturnStatement, getParserServices } from '../util';
 
 type ClassLikeDeclaration =
@@ -19,7 +21,7 @@ export default createRule({
     docs: {
       description:
         'Enforce that `this` is used when only `this` type is returned',
-      recommended: false,
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

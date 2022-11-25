@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
+import { codeFrameColumns } from '@babel/code-frame';
 import type babelParser from '@babel/parser';
 import type { ParserPlugin } from '@babel/parser';
-import { codeFrameColumns } from '@babel/code-frame';
 import type { File } from '@babel/types';
 import type { TSESTree } from '@typescript-eslint/types';
-import { AST, parseAndGenerateServices } from '../../src/parser';
+
 import type { TSError } from '../../src/node-utils';
+import type { AST } from '../../src/parser';
+import { parseAndGenerateServices } from '../../src/parser';
 
 function createError(
   message: string,
@@ -27,7 +29,6 @@ function parseWithBabelParser(text: string, jsx = true): File {
     [
       'estree',
       {
-        // @ts-expect-error -- this isn't exposed in the types yet
         classFeatures: true,
       },
     ],

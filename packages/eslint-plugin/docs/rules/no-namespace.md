@@ -1,26 +1,20 @@
-# `no-namespace`
+---
+description: 'Disallow TypeScript namespaces.'
+---
 
-Disallow the use of custom TypeScript modules and namespaces.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-namespace** for documentation.
 
-Custom TypeScript modules (`module foo {}`) and namespaces (`namespace foo {}`) are considered outdated
-ways to organize TypeScript code. ES2015 module syntax is now preferred (`import`/`export`).
+TypeScript historically allowed a form of code organization called "custom modules" (`module Example {}`), later renamed to "namespaces" (`namespace Example`).
+Namespaces are an outdated way to organize TypeScript code.
+ES2015 module syntax is now preferred (`import`/`export`).
 
-This rule still allows the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
+> This rule does not report on the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
 
-## Rule Details
+## Examples
 
-This rule aims to standardize the way modules are declared.
-
-## Options
-
-This rule, in its default state, does not require any argument. If you would like to enable one
-or more of the following you may pass an object with the options set as follows:
-
-- `allowDeclarations` set to `true` will allow you to `declare` custom TypeScript modules and namespaces (Default: `false`).
-- `allowDefinitionFiles` set to `true` will allow you to `declare` and use custom TypeScript modules and namespaces
-  inside definition files (Default: `true`).
-
-Examples of code for the default `{ "allowDeclarations": false, "allowDefinitionFiles": true }` options:
+Examples of code with the default options:
 
 <!--tabs-->
 
@@ -44,9 +38,11 @@ declare module 'foo' {}
 
 <!--/tabs-->
 
+## Options
+
 ### `allowDeclarations`
 
-Examples of code for the `{ "allowDeclarations": true }` option:
+Examples of code with the `{ "allowDeclarations": true }` option:
 
 <!--tabs-->
 
@@ -131,13 +127,3 @@ If you are using the ES2015 module syntax, then you will not need this rule.
 - [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
 - [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
 - [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
-
-## Related To
-
-- TSLint: [no-namespace](https://palantir.github.io/tslint/rules/no-namespace/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

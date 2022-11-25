@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as prettier from 'prettier';
 
 const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';
 
@@ -91,21 +92,9 @@ interface MemberAccount {
   website: string;
 }
 
-interface MemberAccountAndTier extends MemberAccount {
-  tier?: Tier;
-}
-
 const excludedNames = new Set([
   'Guest', // Apparent anonymous donor equivalent without an avatar
   'Josh Goldberg', // Team member 💖
-
-  // These names *seem* to be spam websites, but we're not sure.
-  // If your name is mistakenly on this list, we're sorry; please let us know!
-  'Deal Empire',
-  'Florian Studio',
-  'java',
-  'Loyalty Leo',
-  'Penalty.com',
 ]);
 
 async function requestGraphql<Data>(key: keyof typeof queries): Promise<Data> {
@@ -128,13 +117,12 @@ async function main(): Promise<void> {
   ]);
 
   const accountsById = account.orders.nodes.reduce<
-    Record<string, MemberAccountAndTier>
+    Record<string, MemberAccount>
   >((accumulator, account) => {
     const name = account.fromAccount.name || account.fromAccount.id;
     accumulator[name] = {
       ...accumulator[name],
       ...account.fromAccount,
-      tier: account.tier,
     };
     return accumulator;
   }, {});
@@ -152,30 +140,24 @@ async function main(): Promise<void> {
   const allSponsorsConfig = collective.members.nodes
     .map(member => {
       const name = member.account.name || member.account.id;
-      const fromAccount: MemberAccountAndTier = {
+      const fromAccount = {
         ...member.account,
         ...accountsById[name],
       };
       const totalDonations = totalDonationsById[name];
-      const slug = fromAccount.tier?.slug ?? 'contributor';
+      const website = fromAccount.website;
 
       return {
         id: name,
         image: fromAccount.imageUrl,
         name: fromAccount.name,
-        tier:
-          slug === 'sponsor' || totalDonations >= 750_00
-            ? 'sponsor'
-            : slug === 'supporter-plus' || totalDonations >= 150_00
-            ? 'supporter'
-            : slug,
         totalDonations,
         twitterHandle: fromAccount.twitterHandle,
-        website: fromAccount.website,
+        website,
       };
     })
-    .filter(({ id, totalDonations }) => {
-      if (uniqueNames.has(id) || totalDonations < 10_00) {
+    .filter(({ id, totalDonations, website }) => {
+      if (uniqueNames.has(id) || totalDonations < 10000 || !website) {
         return false;
       }
 
@@ -188,14 +170,24 @@ async function main(): Promise<void> {
     __dirname,
     '../packages/website/data/sponsors.json',
   );
-  fs.writeFileSync(
-    rcPath,
-    JSON.stringify(
-      allSponsorsConfig,
-      (_, value: unknown) => value ?? undefined,
-      2,
-    ),
+  fs.writeFileSync(rcPath, await stringifyObject(rcPath, allSponsorsConfig));
+}
+
+async function stringifyObject(
+  filePath: string,
+  data: unknown,
+): Promise<string> {
+  const config = await prettier.resolveConfig(filePath);
+  const text = JSON.stringify(
+    data,
+    (_, value: unknown) => value ?? undefined,
+    2,
   );
+
+  return prettier.format(text, {
+    ...config,
+    parser: 'json',
+  });
 }
 
 main().catch(error => {

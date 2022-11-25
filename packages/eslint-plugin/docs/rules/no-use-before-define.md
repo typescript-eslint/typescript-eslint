@@ -1,25 +1,18 @@
-# `no-use-before-define`
+---
+description: 'Disallow the use of variables before they are defined.'
+---
 
-Disallow the use of variables before they are defined.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-use-before-define** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-use-before-define`](https://eslint.org/docs/rules/no-use-before-define) rule.
 It adds support for `type`, `interface` and `enum` declarations.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-use-before-define": "off",
-  "@typescript-eslint/no-use-before-define": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/no-use-before-define` options](https://eslint.org/docs/rules/no-use-before-define#options).
 This rule adds the following options:
 
 ```ts
@@ -102,19 +95,3 @@ type StringOrNumber = string | number;
 let var2: Enum;
 enum Enum {}
 ```
-
-### Other Options
-
-See [`eslint/no-use-before-define` options](https://eslint.org/docs/rules/no-use-before-define#options).
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-use-before-define.md)
-
-</sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,6 +1,7 @@
-import { ScopeType } from './scope';
-import { TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+
 import { assert } from './assert';
+import type { Scope } from './scope';
 import {
   BlockScope,
   CatchScope,
@@ -13,7 +14,6 @@ import {
   GlobalScope,
   MappedTypeScope,
   ModuleScope,
-  Scope,
   SwitchScope,
   TSEnumScope,
   TSModuleScope,
@@ -22,8 +22,7 @@ import {
 } from './scope';
 import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
 import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
-
-import { Variable } from './variable';
+import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
@@ -136,17 +135,9 @@ class ScopeManager {
           return scope;
         }
       }
-    } else {
-      for (let i = 0; i < scopes.length; ++i) {
-        const scope = scopes[i];
-
-        if (predicate(scope)) {
-          return scope;
-        }
-      }
+      return null;
     }
-
-    return null;
+    return scopes.find(predicate) ?? null;
   }
 
   protected nestScope<T extends Scope>(scope: T): T;

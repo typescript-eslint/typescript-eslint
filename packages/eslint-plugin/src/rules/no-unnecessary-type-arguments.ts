@@ -1,5 +1,7 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 import { findFirstResult } from '../util';
 
@@ -11,7 +13,8 @@ type ParameterCapableTSNode =
   | ts.TypeReferenceNode
   | ts.ExpressionWithTypeArguments
   | ts.JsxOpeningElement
-  | ts.JsxSelfClosingElement;
+  | ts.JsxSelfClosingElement
+  | ts.TypeQueryNode;
 
 type MessageIds = 'unnecessaryTypeParameter';
 
@@ -19,9 +22,8 @@ export default util.createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
   meta: {
     docs: {
-      description:
-        'Enforces that type arguments will not be used if not required',
-      recommended: false,
+      description: 'Disallow type arguments that are equal to the default',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',

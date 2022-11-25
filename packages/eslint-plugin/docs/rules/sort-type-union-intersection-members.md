@@ -1,6 +1,15 @@
-# `sort-type-union-intersection-members`
+---
+description: 'Enforce members of a type union/intersection to be sorted alphabetically.'
+---
 
-Enforces that members of a type union/intersection are sorted alphabetically.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/sort-type-union-intersection-members** for documentation.
+
+:::danger Deprecated
+
+This rule has been renamed to [`sort-type-constituents`](./sort-type-constituents.md).
+:::
 
 Sorting union (`|`) and intersection (`&`) types can help:
 
@@ -8,24 +17,11 @@ Sorting union (`|`) and intersection (`&`) types can help:
 - find repeated types
 - reduce diff churn
 
-## Rule Details
+This rule reports on any types that aren't sorted alphabetically.
 
-Sorting within each group is done using the following code:
+> Types are sorted case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
 
-```ts
-const collator = new Intl.Collator('en', {
-  sensitivity: 'base',
-  numeric: true,
-});
-
-function compare(a, b) {
-  return collator.compare(a, b) || (a < b ? -1 : a > b ? 1 : 0);
-}
-```
-
-In other words, the types are sorted alphabetically, case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -91,49 +87,6 @@ type T4 =
 
 ## Options
 
-```ts
-type Options = {
-  // true to check intersection types, false otherwise
-  checkIntersections?: boolean;
-  // true to check union types, false otherwise
-  checkUnions?: boolean;
-  // the ordering of the groups
-  groupOrder?: (
-    | 'conditional'
-    | 'function'
-    | 'import'
-    | 'intersection'
-    | 'keyword'
-    | 'literal'
-    | 'named'
-    | 'object'
-    | 'operator'
-    | 'tuple'
-    | 'union'
-    | 'nullish'
-  )[];
-};
-
-const defaultOptions: Options = {
-  checkIntersections: true,
-  checkUnions: true,
-  groupOrder: [
-    'named',
-    'keyword',
-    'operator',
-    'literal',
-    'function',
-    'import',
-    'conditional',
-    'object',
-    'tuple',
-    'intersection',
-    'union',
-    'nullish',
-  ],
-};
-```
-
 ### `groupOrder`
 
 Each member of the type is placed into a group, and then the rule sorts alphabetically within each group.
@@ -151,9 +104,3 @@ The ordering of groups is determined by this option.
 - `tuple` - Tuple types (`[A, B, C]`)
 - `union` - Union types (`A | B`)
 - `nullish` - `null` and `undefined`
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

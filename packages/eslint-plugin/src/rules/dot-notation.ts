@@ -1,13 +1,13 @@
-import { TSESTree } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
-import {
-  createRule,
-  getParserServices,
+import * as ts from 'typescript';
+
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+import { createRule, getModifiers, getParserServices } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('dot-notation');
 
@@ -19,8 +19,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'enforce dot notation whenever possible',
-      recommended: false,
+      description: 'Enforce dot notation whenever possible',
+      recommended: 'strict',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },
@@ -95,13 +95,14 @@ export default createRule<Options, MessageIds>({
           const propertySymbol = typeChecker.getSymbolAtLocation(
             esTreeNodeToTSNodeMap.get(node.property),
           );
-          const modifierKind =
-            propertySymbol?.getDeclarations()?.[0]?.modifiers?.[0].kind;
+          const modifierKind = getModifiers(
+            propertySymbol?.getDeclarations()?.[0],
+          )?.[0].kind;
           if (
             (allowPrivateClassPropertyAccess &&
-              modifierKind == ts.SyntaxKind.PrivateKeyword) ||
+              modifierKind === ts.SyntaxKind.PrivateKeyword) ||
             (allowProtectedClassPropertyAccess &&
-              modifierKind == ts.SyntaxKind.ProtectedKeyword)
+              modifierKind === ts.SyntaxKind.ProtectedKeyword)
           ) {
             return;
           }
@@ -115,7 +116,7 @@ export default createRule<Options, MessageIds>({
             const indexType = objectType
               .getNonNullableType()
               .getStringIndexType();
-            if (indexType != undefined) {
+            if (indexType !== undefined) {
               return;
             }
           }

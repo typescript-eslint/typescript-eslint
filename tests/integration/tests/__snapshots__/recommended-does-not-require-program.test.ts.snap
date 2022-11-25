@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`recommended-does-not-require-program should lint successfully 1`] = `
-Array [
-  Object {
+[
+  {
     "errorCount": 0,
     "fatalErrorCount": 0,
     "filePath": "<root>/index.ts",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 7,
         "endColumn": 15,
         "endLine": 1,
@@ -20,7 +20,7 @@ Array [
         "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 1,
       },
-      Object {
+      {
         "column": 12,
         "endColumn": 15,
         "endLine": 1,
@@ -30,11 +30,11 @@ Array [
         "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 1,
-        "suggestions": Array [
-          Object {
+        "suggestions": [
+          {
             "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 11,
                 14,
               ],
@@ -42,10 +42,10 @@ Array [
             },
             "messageId": "suggestUnknown",
           },
-          Object {
+          {
             "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 11,
                 14,
               ],
@@ -58,7 +58,8 @@ Array [
     ],
     "output": "const foo: any = true;
 ",
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 2,
   },
 ]

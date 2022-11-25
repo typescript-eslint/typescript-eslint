@@ -1,5 +1,8 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export type Options = [
@@ -24,7 +27,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description:
-        'Requires expressions of type void to appear in statement position',
+        'Require expressions of type void to appear in statement position',
       recommended: false,
       requiresTypeChecking: true,
     },

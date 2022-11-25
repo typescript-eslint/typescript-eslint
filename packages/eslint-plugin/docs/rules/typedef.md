@@ -1,9 +1,16 @@
-# `typedef`
+---
+description: 'Require type annotations in certain places.'
+---
 
-Requires type annotations to exist.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/typedef** for documentation.
 
 TypeScript cannot always infer types for all places in code.
 Some locations require type annotations for their types to be inferred.
+
+This rule can enforce type annotations in locations regardless of whether they're required.
+This is typically used to maintain consistency for element types that sometimes require them.
 
 ```ts
 class ContainsText {
@@ -18,43 +25,18 @@ class ContainsText {
 }
 ```
 
-**_Note:_** requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
+> To enforce type definitions existing on call signatures, use [`explicit-function-return-type`](./explicit-function-return-type.md), or [`explicit-module-boundary-types`](./explicit-module-boundary-types.md).
+
+:::caution
+
+Requiring type annotations unnecessarily can be cumbersome to maintain and generally reduces code readability.
 TypeScript is often better at inferring types than easily written type annotations would allow.
 
 **Instead of enabling `typedef`, it is generally recommended to use the `--noImplicitAny` and `--strictPropertyInitialization` compiler options to enforce type annotations only when useful.**
 
-## Rule Details
-
-This rule can enforce type annotations in locations regardless of whether they're required.
-This is typically used to maintain consistency for element types that sometimes require them.
-
-> To enforce type definitions existing on call signatures as per TSLint's `arrow-call-signature` and `call-signature` options, use `explicit-function-return-type`, or `explicit-module-boundary-types`.
+:::
 
 ## Options
-
-```ts
-type Options = {
-  arrayDestructuring?: boolean;
-  arrowParameter?: boolean;
-  memberVariableDeclaration?: boolean;
-  objectDestructuring?: boolean;
-  parameter?: boolean;
-  propertyDeclaration?: boolean;
-  variableDeclaration?: boolean;
-  variableDeclarationIgnoreFunction?: boolean;
-};
-
-const defaultOptions: Options = {
-  arrayDestructuring: false,
-  arrowParameter: false,
-  memberVariableDeclaration: false,
-  objectDestructuring: false,
-  parameter: false,
-  propertyDeclaration: false,
-  variableDeclaration: false,
-  variableDeclarationIgnoreFunction: false,
-};
-```
 
 For example, with the following configuration:
 
@@ -336,13 +318,3 @@ In general, if you do not consider the cost of writing unnecessary type annotati
 
 - [TypeScript Type System](https://basarat.gitbooks.io/typescript/docs/types/type-system.html)
 - [Type Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
-
-## Related To
-
-- TSLint: [`typedef`](https://palantir.github.io/tslint/rules/typedef)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

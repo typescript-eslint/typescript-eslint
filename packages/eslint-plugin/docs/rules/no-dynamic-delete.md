@@ -1,14 +1,18 @@
-# `no-dynamic-delete`
+---
+description: 'Disallow using the `delete` operator on computed key expressions.'
+---
 
-Disallow the delete operator with computed key expressions.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-dynamic-delete** for documentation.
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
-
-## Rule Details
-
 Using the `delete` operator on keys that aren't runtime constants could be a sign that you're using the wrong data structures.
 Using `Object`s with added and removed keys can cause occasional edge case bugs, such as if a key is named `"hasOwnProperty"`.
-Consider using a `Map` or `Set` if you’re storing collections of objects.
+
+> Consider using a `Map` or `Set` if you’re storing collections of objects.
+
+## Examples
 
 <!--tabs-->
 
@@ -47,13 +51,3 @@ Some environments such as older browsers might not support `Map` and `Set`.
 
 Do not consider this rule as performance advice before profiling your code's bottlenecks.
 Even repeated minor performance slowdowns likely do not significantly affect your application's general perceived speed.
-
-## Related To
-
-- TSLint: [no-dynamic-delete](https://palantir.github.io/tslint/rules/no-dynamic-delete)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

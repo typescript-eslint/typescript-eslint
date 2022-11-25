@@ -1,25 +1,18 @@
-# `no-shadow`
+---
+description: 'Disallow variable declarations from shadowing variables declared in the outer scope.'
+---
 
-Disallow variable declarations from shadowing variables declared in the outer scope.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-shadow** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-shadow`](https://eslint.org/docs/rules/no-shadow) rule.
 It adds support for TypeScript's `this` parameters and global augmentation, and adds options for TypeScript features.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-shadow": "off",
-  "@typescript-eslint/no-shadow": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/no-shadow` options](https://eslint.org/docs/rules/no-shadow#options).
 This rule adds the following options:
 
 ```ts
@@ -86,14 +79,23 @@ const test = 1;
 type Func = (test: string) => typeof test;
 ```
 
-<sup>
+## FAQ
 
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-shadow.md)
+### Why does the rule report on enum members that share the same name as a variable in a parent scope?
 
-</sup>
+Reporting on this case isn't a bug - it is completely intentional and correct reporting! The rule reports due to a relatively unknown feature of enums - enum members create a variable within the enum scope so that they can be referenced within the enum without a qualifier.
 
-## Attributes
+To illustrate this with an example:
 
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+```ts
+const A = 2;
+enum Test {
+  A = 1,
+  B = A,
+}
+
+console.log(Test.B);
+// what should be logged?
+```
+
+Naively looking at the above code, it might look like the log should output `2`, because the outer variable `A`'s value is `2` - however, the code instead outputs `1`, which is the value of `Test.A`. This is because the unqualified code `B = A` is equivalent to the fully-qualified code `B = Test.A`. Due to this behavior, the enum member has **shadowed** the outer variable declaration.

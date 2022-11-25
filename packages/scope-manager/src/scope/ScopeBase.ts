@@ -1,21 +1,24 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/types';
-import { FunctionScope } from './FunctionScope';
-import { GlobalScope } from './GlobalScope';
-import { ScopeType } from './ScopeType';
-import { ScopeManager } from '../ScopeManager';
-import { Scope } from './Scope';
-import { ModuleScope } from './ModuleScope';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { assert } from '../assert';
-import { Definition, DefinitionType } from '../definition';
+import type { Definition } from '../definition';
+import { DefinitionType } from '../definition';
 import { createIdGenerator } from '../ID';
+import type { ReferenceImplicitGlobal } from '../referencer/Reference';
 import {
   Reference,
   ReferenceFlag,
-  ReferenceImplicitGlobal,
   ReferenceTypeFlag,
 } from '../referencer/Reference';
+import type { ScopeManager } from '../ScopeManager';
 import { Variable } from '../variable';
-import { TSModuleScope } from './TSModuleScope';
+import type { FunctionScope } from './FunctionScope';
+import type { GlobalScope } from './GlobalScope';
+import type { ModuleScope } from './ModuleScope';
+import type { Scope } from './Scope';
+import { ScopeType } from './ScopeType';
+import type { TSModuleScope } from './TSModuleScope';
 
 /**
  * Test if scope is strict
@@ -81,9 +84,7 @@ function isStrictScope(
   }
 
   // Search 'use strict' directive.
-  for (let i = 0; i < body.body.length; ++i) {
-    const stmt = body.body[i];
-
+  for (const stmt of body.body) {
     if (stmt.type !== AST_NODE_TYPES.ExpressionStatement) {
       break;
     }
@@ -358,7 +359,7 @@ abstract class ScopeBase<
   };
 
   public close(scopeManager: ScopeManager): Scope | null {
-    let closeRef;
+    let closeRef: (ref: Reference, scopeManager: ScopeManager) => void;
 
     if (this.shouldStaticallyClose()) {
       closeRef = this.#staticCloseRef;
@@ -370,11 +371,7 @@ abstract class ScopeBase<
 
     // Try Resolving all references in this scope.
     assert(this.leftToResolve);
-    for (let i = 0; i < this.leftToResolve.length; ++i) {
-      const ref = this.leftToResolve[i];
-
-      closeRef(ref, scopeManager);
-    }
+    this.leftToResolve.forEach(ref => closeRef(ref, scopeManager));
     this.leftToResolve = null;
 
     return this.upper;

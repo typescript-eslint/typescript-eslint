@@ -1,8 +1,10 @@
-# `no-redundant-type-constituents`
+---
+description: 'Disallow members of unions and intersections that do nothing or override type information.'
+---
 
-Disallow members of unions and intersections that do nothing or override type information.
-
-## Rule Details
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redundant-type-constituents** for documentation.
 
 Some types can override some other types ("constituents") in a union or intersection and/or be overridden by some other types.
 TypeScript's set theory of types includes cases where a constituent type might be useless in the parent union or intersection.
@@ -20,7 +22,7 @@ Within `&` intersections:
 - literal types "override" any primitive types in an intersection
 - literal types such as `""` "override" any of their primitive types such as `string`
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -62,14 +64,11 @@ type IntersectionNever = string;
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;
 type IntersectionStringLiteral = 'foo';
-
-type ReturnUnionNever = () => string | never;
 ```
 
 ## Limitations
 
 This rule plays it safe and only works with bottom types, top types, and comparing literal types to primitive types.
-It also does not provide an auto-fixer just yet.
 
 ## Further Reading
 
@@ -77,9 +76,3 @@ It also does not provide an auto-fixer just yet.
 - [Intersection Types](https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types)
 - [Bottom Types](https://en.wikipedia.org/wiki/Bottom_type)
 - [Top Types](https://en.wikipedia.org/wiki/Top_type)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

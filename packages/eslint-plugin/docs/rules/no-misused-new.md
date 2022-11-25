@@ -1,19 +1,25 @@
-# `no-misused-new`
+---
+description: 'Enforce valid definition of `new` and `constructor`.'
+---
 
-Enforce valid definition of `new` and `constructor`.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misused-new** for documentation.
 
-Warns on apparent attempts to define constructors for interfaces or `new` for classes.
+JavaScript classes may define a `constructor` method that runs when a class instance is newly created.
+TypeScript allows interfaces that describe a static class object to define a `new()` method (though this is rarely used in real world code).
+Developers new to JavaScript classes and/or TypeScript interfaces may sometimes confuse when to use `constructor` or `new`.
 
-## Rule Details
+This rule reports when a class defines a method named `new` or an interface defines a method named `constructor`.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
 ### ❌ Incorrect
 
 ```ts
-class C {
+declare class C {
   new(): C;
 }
 
@@ -26,33 +32,15 @@ interface I {
 ### ✅ Correct
 
 ```ts
-class C {
-  constructor() {}
+declare class C {
+  constructor();
 }
+
 interface I {
   new (): C;
 }
 ```
 
-## Options
+## When Not To Use It
 
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-misused-new": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
-## Related To
-
-- TSLint: [no-misused-new](https://palantir.github.io/tslint/rules/no-misused-new/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information
+If you intentionally want a class with a `new` method, and you're confident nobody working in your code will mistake it with a constructor.

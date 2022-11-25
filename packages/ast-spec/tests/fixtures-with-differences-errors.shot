@@ -4,8 +4,23 @@ exports[`AST Fixtures List fixtures with Error differences 1`] = `
 Object {
   "Babel errored but TSESTree didn't": Set {
     "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
+    "declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture.ts",
+    "declaration/ClassDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
+    "declaration/ExportAllDeclaration/fixtures/_error_/kind-type/fixture.ts",
     "declaration/ExportAllDeclaration/fixtures/_error_/type-kind/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/anonymous-class/fixture.ts",
+    "declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture.ts",
+    "declaration/FunctionDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
+    "declaration/TSDeclareFunction/fixtures/_error_/async/fixture.ts",
+    "declaration/TSDeclareFunction/fixtures/_error_/declare-with-body/fixture.ts",
+    "declaration/TSDeclareFunction/fixtures/_error_/missing-type-param/fixture.ts",
+    "declaration/TSImportEqualsDeclaration/fixtures/_error_/external-module-ref-non-string/fixture.ts",
+    "declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture.ts",
+    "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-extends/fixture.ts",
+    "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
+    "declaration/TSInterfaceDeclaration/fixtures/_error_/non-identifier-extends/fixture.ts",
+    "declaration/TSTypeAliasDeclaration/fixtures/_error_/missing-type-parameter/fixture.ts",
+    "declaration/VariableDeclaration/fixtures/_error_/missing-id-without-value/fixture.ts",
   },
   "TSESTree errored but Babel didn't": Set {
     "declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture.ts",

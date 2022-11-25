@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 interface VisitorKeys {
@@ -100,6 +100,7 @@ const additionalKeys: AdditionalKeys = {
   TSIndexedAccessType: ['indexType', 'objectType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],
+  TSInstantiationExpression: ['expression', 'typeParameters'],
   TSInterfaceBody: ['body'],
   TSInterfaceDeclaration: ['id', 'typeParameters', 'extends', 'body'],
   TSInterfaceHeritage: ['expression', 'typeParameters'],
@@ -126,6 +127,7 @@ const additionalKeys: AdditionalKeys = {
   TSQualifiedName: ['left', 'right'],
   TSReadonlyKeyword: [],
   TSRestType: ['typeAnnotation'],
+  TSSatisfiesExpression: ['typeAnnotation', 'expression'],
   TSStaticKeyword: [],
   TSStringKeyword: [],
   TSSymbolKeyword: [],
@@ -141,7 +143,7 @@ const additionalKeys: AdditionalKeys = {
   TSTypeParameterDeclaration: ['params'],
   TSTypeParameterInstantiation: ['params'],
   TSTypePredicate: ['typeAnnotation', 'parameterName'],
-  TSTypeQuery: ['exprName'],
+  TSTypeQuery: ['exprName', 'typeParameters'],
   TSTypeReference: ['typeName', 'typeParameters'],
   TSUndefinedKeyword: [],
   TSUnionType: ['types'],

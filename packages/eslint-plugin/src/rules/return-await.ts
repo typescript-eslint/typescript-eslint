@@ -1,7 +1,9 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
@@ -19,7 +21,7 @@ export default util.createRule({
   name: 'return-await',
   meta: {
     docs: {
-      description: 'Enforces consistent returning of awaited values',
+      description: 'Enforce consistent returning of awaited values',
       recommended: false,
       requiresTypeChecking: true,
       extendsBaseRule: 'no-return-await',
@@ -307,7 +309,7 @@ export default util.createRule({
       },
       ReturnStatement(node): void {
         const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
-        if (!scopeInfo || !scopeInfo.hasAsync || !node.argument) {
+        if (!scopeInfo?.hasAsync || !node.argument) {
           return;
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {

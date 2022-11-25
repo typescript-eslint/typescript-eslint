@@ -1,6 +1,7 @@
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
-import { TSESLint } from '@typescript-eslint/utils';
-import { ScopeType } from '@typescript-eslint/scope-manager';
 
 type Options = [
   {
@@ -16,7 +17,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the declaration of empty interfaces',
       recommended: 'error',
-      suggestion: true,
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -74,29 +74,39 @@ export default util.createRule<Options, MessageIds>({
                 )}${typeParam} = ${sourceCode.getText(extend[0])}`,
               );
             };
+            const scope = context.getScope();
 
-            // Check if interface is within ambient declaration
-            let useAutoFix = true;
-            if (util.isDefinitionFile(filename)) {
-              const scope = context.getScope();
-              if (scope.type === ScopeType.tsModule && scope.block.declare) {
-                useAutoFix = false;
-              }
-            }
+            const mergedWithClassDeclaration = scope.set
+              .get(node.id.name)
+              ?.defs?.some(
+                def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
+              );
+
+            const isInAmbientDeclaration = !!(
+              util.isDefinitionFile(filename) &&
+              scope.type === 'tsModule' &&
+              scope.block.declare
+            );
+
+            const useAutoFix = !(
+              isInAmbientDeclaration || mergedWithClassDeclaration
+            );
 
             context.report({
               node: node.id,
               messageId: 'noEmptyWithSuper',
               ...(useAutoFix
                 ? { fix }
-                : {
+                : !mergedWithClassDeclaration
+                ? {
                     suggest: [
                       {
                         messageId: 'noEmptyWithSuper',
                         fix,
                       },
                     ],
-                  }),
+                  }
+                : null),
             });
           }
         }

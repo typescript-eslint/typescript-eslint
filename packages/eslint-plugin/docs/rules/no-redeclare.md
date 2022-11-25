@@ -1,25 +1,18 @@
-# `no-redeclare`
+---
+description: 'Disallow variable redeclaration.'
+---
 
-Disallow variable redeclaration.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redeclare** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/no-redeclare`](https://eslint.org/docs/rules/no-redeclare) rule.
 It adds support for TypeScript function overloads, and declaration merging.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "no-redeclare": "off",
-  "@typescript-eslint/no-redeclare": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/no-redeclare` options](https://eslint.org/docs/rules/no-redeclare#options).
 This rule adds the following options:
 
 ```ts
@@ -78,15 +71,3 @@ type something = string;
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- intentionally naming the variable the same as the type
 const something = 2;
 ```
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/no-redeclare.md)
-
-</sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -1,4 +1,6 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -16,8 +18,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Forbids the use of classes as namespaces',
-      recommended: false,
+      description: 'Disallow classes used as namespaces',
+      recommended: 'strict',
     },
     schema: [
       {
@@ -25,15 +27,23 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowConstructorOnly: {
+            description:
+              'Whether to allow extraneous classes that contain only a constructor.',
             type: 'boolean',
           },
           allowEmpty: {
+            description:
+              'Whether to allow extraneous classes that have no body (i.e. are empty).',
             type: 'boolean',
           },
           allowStaticOnly: {
+            description:
+              'Whether to allow extraneous classes that only contain static members.',
             type: 'boolean',
           },
           allowWithDecorator: {
+            description:
+              'Whether to allow extraneous classes that include a decorator.',
             type: 'boolean',
           },
         },

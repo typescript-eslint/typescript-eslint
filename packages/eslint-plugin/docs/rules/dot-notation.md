@@ -1,8 +1,12 @@
-# `dot-notation`
+---
+description: 'Enforce dot notation whenever possible.'
+---
 
-enforce dot notation whenever possible.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/dot-notation** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation) rule.
 It adds:
@@ -10,19 +14,8 @@ It adds:
 - Support for optionally ignoring computed `private` and/or `protected` member access.
 - Compatibility with TypeScript's `noPropertyAccessFromIndexSignature` option.
 
-## How to Use
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "dot-notation": "off",
-  "@typescript-eslint/dot-notation": ["error"]
-}
-```
-
 ## Options
 
-See [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation#options) options.
 This rule adds the following options:
 
 ```ts
@@ -31,6 +24,7 @@ interface Options extends BaseDotNotationOptions {
   allowProtectedClassPropertyAccess?: boolean;
   allowIndexSignaturePropertyAccess?: boolean;
 }
+
 const defaultOptions: Options = {
   ...baseDotNotationDefaultOptions,
   allowPrivateClassPropertyAccess: false,
@@ -43,7 +37,7 @@ If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to
 
 ### `allowPrivateClassPropertyAccess`
 
-Example of a correct code when `allowPrivateClassPropertyAccess` is set to `true`
+Example of a correct code when `allowPrivateClassPropertyAccess` is set to `true`:
 
 ```ts
 class X {
@@ -56,7 +50,7 @@ x['priv_prop'] = 123;
 
 ### `allowProtectedClassPropertyAccess`
 
-Example of a correct code when `allowProtectedClassPropertyAccess` is set to `true`
+Example of a correct code when `allowProtectedClassPropertyAccess` is set to `true`:
 
 ```ts
 class X {
@@ -69,7 +63,7 @@ x['protected_prop'] = 123;
 
 ### `allowIndexSignaturePropertyAccess`
 
-Example of correct code when `allowIndexSignaturePropertyAccess` is set to `true`
+Example of correct code when `allowIndexSignaturePropertyAccess` is set to `true`:
 
 ```ts
 class X {
@@ -81,15 +75,3 @@ x['hello'] = 123;
 ```
 
 If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to `true`, then the above code is always allowed, even if `allowIndexSignaturePropertyAccess` is `false`.
-
-<sup>
-
-Taken with ❤️ [from ESLint core](https://github.com/eslint/eslint/blob/main/docs/rules/dot-notation.md)
-
-</sup>
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

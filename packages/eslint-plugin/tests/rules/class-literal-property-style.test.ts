@@ -1,5 +1,5 @@
 import rule from '../../src/rules/class-literal-property-style';
-import { RuleTester, noFormat } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -311,7 +311,7 @@ class Mx {
   public readonly [myValue] = 'a literal value';
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   public get [myValue]() { return 'a literal value'; }
 }
@@ -331,7 +331,7 @@ class Mx {
   readonly p1 = 'hello world';
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   get p1() { return 'hello world'; }
 }
@@ -351,7 +351,7 @@ class Mx {
   readonly p1 = \`hello world\`;
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   get p1() { return \`hello world\`; }
 }
@@ -371,7 +371,7 @@ class Mx {
   static readonly p1 = 'hello world';
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   static get p1() { return 'hello world'; }
 }
@@ -413,7 +413,7 @@ class Mx {
   protected readonly p1 = 'hello world';
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   protected get p1() { return 'hello world'; }
 }
@@ -454,7 +454,7 @@ class Mx {
   public static readonly p1 = 'hello world';
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   public static get p1() { return 'hello world'; }
 }
@@ -483,7 +483,7 @@ class Mx {
   }
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   public readonly myValue = gql\`
       {
@@ -516,7 +516,7 @@ class Mx {
   \`;
 }
       `,
-      output: noFormat`
+      output: `
 class Mx {
   public get myValue() { return gql\`
     {

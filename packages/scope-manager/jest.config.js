@@ -2,18 +2,13 @@
 
 // @ts-check
 
+const baseConfig = require('../../jest.config.base.js');
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  displayName: 'scope-manager',
-  preset: '../../jest.preset.js',
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]sx?$': [
-      '@swc/jest',
-      { jsc: { transform: { react: { runtime: 'automatic' } } } },
-    ],
-  },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '<rootDir>/coverage',
-  setupFilesAfterEnv: ['./tests/util/serializers/index.ts'],
+  ...baseConfig,
+  setupFilesAfterEnv: [
+    ...baseConfig.setupFilesAfterEnv,
+    './tests/util/serializers/index.ts',
+  ],
 };

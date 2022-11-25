@@ -1,5 +1,5 @@
 import rule from '../../src/rules/typedef';
-import { RuleTester, getFixturesRootDir, noFormat } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -47,7 +47,57 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: 'const [a] = 1;',
+      code: '[a] = [1];',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'b = [a] = [1];',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const [b]: [number] = ([a] = [1]);',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const [[a]]: number[][] = [[1]];',
+      options: [
+        {
+          arrayDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const foo = ([{ bar }]: { bar: string }[]) => {};',
+      options: [
+        {
+          arrayDestructuring: true,
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const foo = ([{ bar }]: [{ bar: string }]) => {};',
+      options: [
+        {
+          arrayDestructuring: true,
+          objectDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const [a] = [1];',
       options: [
         {
           arrayDestructuring: false,

@@ -1,11 +1,14 @@
 // The following tests are adapted from the tests in eslint.
 // Original Code: https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/tests/lib/rules/no-unused-vars.js
-// Licence      : https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/LICENSE
+// License      : https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/LICENSE
 
 'use strict';
 
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import rule, { MessageIds } from '../../../src/rules/no-unused-vars';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
+import type { MessageIds } from '../../../src/rules/no-unused-vars';
+import rule from '../../../src/rules/no-unused-vars';
 import { RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -1753,8 +1756,8 @@ foo.forEach(item => {
         },
         {
           ...assignedError('b'),
-          line: 4,
-          column: 7,
+          line: 2,
+          column: 9,
         },
       ],
     },
@@ -2601,7 +2604,7 @@ myArray = myArray.filter(x => x == 1);
         {
           ...assignedError('myArray'),
           line: 3,
-          column: 11,
+          column: 1,
         },
       ],
     },
@@ -2628,8 +2631,8 @@ var a = function () {
       errors: [
         {
           ...assignedError('a'),
-          line: 3,
-          column: 3,
+          line: 2,
+          column: 5,
         },
       ],
     },
@@ -2644,7 +2647,7 @@ var a = function () {
       errors: [
         {
           ...assignedError('a'),
-          line: 4,
+          line: 2,
           column: 5,
         },
       ],
@@ -2659,8 +2662,8 @@ const a = () => {
       errors: [
         {
           ...assignedError('a'),
-          line: 3,
-          column: 3,
+          line: 2,
+          column: 7,
         },
       ],
     },
@@ -2674,10 +2677,17 @@ const a = () => () => {
       errors: [
         {
           ...assignedError('a'),
-          line: 3,
-          column: 3,
+          line: 2,
+          column: 7,
         },
       ],
+    },
+
+    // https://github.com/eslint/eslint/issues/14324
+    {
+      code: 'let x = [];\nx = x.concat(x);',
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 2, column: 1 }],
     },
     {
       code: `
@@ -2693,16 +2703,38 @@ function foo() {
       parserOptions: { ecmaVersion: 2020 },
       errors: [
         {
+          ...assignedError('a'),
+          line: 3,
+          column: 1,
+        },
+        {
           ...definedError('foo'),
           line: 4,
           column: 10,
         },
-        {
-          ...assignedError('a'),
-          line: 7,
-          column: 5,
-        },
       ],
+    },
+    {
+      code: `
+let foo;
+init();
+foo = foo + 2;
+function init() {
+  foo = 1;
+}
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('foo'), line: 4, column: 1 }],
+    },
+    {
+      code: `
+function foo(n) {
+  if (n < 2) return 1;
+  return n * foo(n - 1);
+}
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...definedError('foo'), line: 2, column: 10 }],
     },
     {
       code: `

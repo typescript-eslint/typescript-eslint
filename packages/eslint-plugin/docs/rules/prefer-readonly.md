@@ -1,15 +1,17 @@
-# `prefer-readonly`
+---
+description: "Require private members to be marked as `readonly` if they're never modified outside of the constructor."
+---
 
-Requires that private members are marked as `readonly` if they're never modified outside of the constructor.
-
-This rule enforces that private members are marked as `readonly` if they're never modified outside of the constructor.
-
-## Rule Details
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-readonly** for documentation.
 
 Member variables with the privacy `private` are never permitted to be modified outside of their declaring class.
 If that class never modifies their value, they may safely be marked as `readonly`.
 
-Examples of code for this rule:
+This rule reports on private members are marked as `readonly` if they're never modified outside of the constructor.
+
+## Examples
 
 <!--tabs-->
 
@@ -52,8 +54,6 @@ class Container {
 
 ## Options
 
-This rule, in its default state, does not require any argument.
-
 ### `onlyInlineLambdas`
 
 You may pass `"onlyInlineLambdas": true` as a rule option within an object to restrict checking only to members immediately assigned a lambda value.
@@ -85,13 +85,3 @@ class Container {
   private neverModifiedPrivate = 'unchanged';
 }
 ```
-
-## Related To
-
-- TSLint: ['prefer-readonly'](https://palantir.github.io/tslint/rules/prefer-readonly)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [x] 💭 Requires type information

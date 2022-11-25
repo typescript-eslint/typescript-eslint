@@ -1,72 +1,66 @@
-# `ban-types`
+---
+description: 'Disallow certain types.'
+---
 
-Bans specific types from being used.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/ban-types** for documentation.
 
-Some builtin types have aliases, some types are considered dangerous or harmful.
+Some built-in types have aliases, while some types are considered dangerous or harmful.
 It's often a good idea to ban certain types to help with consistency and safety.
-
-## Rule Details
 
 This rule bans specific types and can suggest alternatives.
 Note that it does not ban the corresponding runtime objects from being used.
 
-## Options
+## Examples
+
+Examples of code with the default options:
+
+<!--tabs-->
+
+### ❌ Incorrect
 
 ```ts
-type Options = {
-  types?: {
-    [typeName: string]:
-      | false
-      | string
-      | {
-          message: string;
-          fixWith?: string;
-        };
-  };
-  extendDefaults?: boolean;
-};
+// use lower-case primitives for consistency
+const str: String = 'foo';
+const bool: Boolean = true;
+const num: Number = 1;
+const symb: Symbol = Symbol('foo');
+const bigInt: BigInt = 1n;
+
+// use a proper function type
+const func: Function = () => 1;
+
+// use safer object types
+const lowerObj: Object = {};
+const capitalObj: Object = { a: 'string' };
+
+const curly1: {} = 1;
+const curly2: {} = { a: 'string' };
 ```
 
-The rule accepts a single object as options, with the following keys:
+### ✅ Correct
 
-- `types` - An object whose keys are the types you want to ban, and the values are error messages.
-  - The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), the empty object literal (`{}`), or the empty tuple type (`[]`).
-  - The values can be a string, which is the error message to be reported, `false` to specifically disable this type
-    or it can be an object with the following properties:
-    - `message: string` - the message to display when the type is matched.
-    - `fixWith?: string` - a string to replace the banned type with when the fixer is run. If this is omitted, no fix will be done.
-- `extendDefaults` - if you're specifying custom `types`, you can set this to `true` to extend the default `types` configuration.
-  - This is a convenience option to save you copying across the defaults when adding another type.
-  - If this is `false`, the rule will _only_ use the types defined in your configuration.
+```ts
+// use lower-case primitives for consistency
+const str: string = 'foo';
+const bool: boolean = true;
+const num: number = 1;
+const symb: symbol = Symbol('foo');
+const bigInt: bigint = 1n;
 
-Example configuration:
+// use a proper function type
+const func: () => number = () => 1;
 
-```jsonc
-{
-  "@typescript-eslint/ban-types": [
-    "error",
-    {
-      "types": {
-        // add a custom message to help explain why not to use it
-        "Foo": "Don't use Foo because it is unsafe",
+// use safer object types
+const lowerObj: object = {};
+const capitalObj: { a: string } = { a: 'string' };
 
-        // add a custom message, AND tell the plugin how to fix it
-        "String": {
-          "message": "Use string instead",
-          "fixWith": "string"
-        },
-
-        "{}": {
-          "message": "Use object instead",
-          "fixWith": "object"
-        }
-      }
-    }
-  ]
-}
+const curly1: number = 1;
+const curly2: Record<'a', string> = { a: 'string' };
 ```
 
-### Default Options
+## Options
 
 The default options provide a set of "best practices", intended to provide safety and standardization in your codebase:
 
@@ -105,7 +99,10 @@ const defaultTypes = {
     message: 'Use symbol instead',
     fixWith: 'symbol',
   },
-
+  BigInt: {
+    message: 'Use bigint instead',
+    fixWith: 'bigint',
+  },
   Function: {
     message: [
       'The `Function` type accepts any function-like value.',
@@ -114,7 +111,6 @@ const defaultTypes = {
       'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
     ].join('\n'),
   },
-
   // object typing
   Object: {
     message: [
@@ -135,60 +131,48 @@ const defaultTypes = {
 
 </details>
 
-### Examples
+### `types`
 
-Examples of code with the default options:
+An object whose keys are the types you want to ban, and the values are error messages.
 
-<!--tabs-->
+The type can either be a type name literal (`Foo`), a type name with generic parameter instantiation(s) (`Foo<Bar>`), the empty object literal (`{}`), or the empty tuple type (`[]`).
 
-#### ❌ Incorrect
+The values can be:
 
-```ts
-// use lower-case primitives for consistency
-const str: String = 'foo';
-const bool: Boolean = true;
-const num: Number = 1;
-const symb: Symbol = Symbol('foo');
+- A string, which is the error message to be reported; or
+- `false` to specifically un-ban this type (useful when you are using `extendDefaults`); or
+- An object with the following properties:
+  - `message: string` - the message to display when the type is matched.
+  - `fixWith?: string` - a string to replace the banned type with when the fixer is run. If this is omitted, no fix will be done.
 
-// use a proper function type
-const func: Function = () => 1;
+### `extendDefaults`
 
-// use safer object types
-const capitalObj1: Object = 1;
-const capitalObj2: Object = { a: 'string' };
+If you're specifying custom `types`, you can set this to `true` to extend the default `types` configuration. This is a convenience option to save you copying across the defaults when adding another type.
 
-const curly1: {} = 1;
-const curly2: {} = { a: 'string' };
+If this is `false`, the rule will _only_ use the types defined in your configuration.
+
+Example configuration:
+
+```jsonc
+{
+  "@typescript-eslint/ban-types": [
+    "error",
+    {
+      "types": {
+        // add a custom message to help explain why not to use it
+        "Foo": "Don't use Foo because it is unsafe",
+
+        // add a custom message, AND tell the plugin how to fix it
+        "OldAPI": {
+          "message": "Use NewAPI instead",
+          "fixWith": "NewAPI"
+        },
+
+        // un-ban a type that's banned by default
+        "{}": false
+      },
+      "extendDefaults": true
+    }
+  ]
+}
 ```
-
-#### ✅ Correct
-
-```ts
-// use lower-case primitives for consistency
-const str: string = 'foo';
-const bool: boolean = true;
-const num: number = 1;
-const symb: symbol = Symbol('foo');
-
-// use a proper function type
-const func: () => number = () => 1;
-
-// use safer object types
-const lowerObj: object = {};
-
-const capitalObj1: number = 1;
-const capitalObj2: { a: string } = { a: 'string' };
-
-const curly1: number = 1;
-const curly2: Record<'a', string> = { a: 'string' };
-```
-
-## Related To
-
-- TSLint: [ban-types](https://palantir.github.io/tslint/rules/ban-types)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

@@ -5,6 +5,8 @@ import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
+export type RuleRecommendation = 'error' | 'strict' | 'warn' | false;
+
 interface RuleMetaDataDocs {
   /**
    * Concise description of the rule
@@ -12,10 +14,10 @@ interface RuleMetaDataDocs {
   description: string;
   /**
    * The recommendation level for the rule.
-   * Used by the build tools to generate the recommended config.
+   * Used by the build tools to generate the recommended and strict configs.
    * Set to false to not include it as a recommendation
    */
-  recommended: 'error' | 'warn' | false;
+  recommended: 'error' | 'strict' | 'warn' | false;
   /**
    * The URL of the rule's docs
    */
@@ -431,6 +433,11 @@ interface RuleModule<
   // for extending base rules
   TRuleListener extends RuleListener = RuleListener,
 > {
+  /**
+   * Default options the rule will be run with
+   */
+  defaultOptions: TOptions;
+
   /**
    * Metadata about the rule
    */

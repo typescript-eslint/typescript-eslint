@@ -1,6 +1,10 @@
-# `no-misused-promises`
+---
+description: 'Disallow Promises in places not designed to handle them.'
+---
 
-Avoid using Promises in places not designed to handle them.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misused-promises** for documentation.
 
 This rule forbids providing Promises to logical locations such as if statements in places where the TypeScript compiler allows them but they are not handled properly.
 These situations can often arise due to a missing `await` keyword or just a misunderstanding of the way async
@@ -11,37 +15,7 @@ functions are handled/awaited.
 See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled Promise _statements_.
 :::
 
-## Rule Details
-
-This rule accepts a single option which is an object with `checksConditionals`
-and `checksVoidReturn` properties indicating which types of misuse to flag.
-Both are enabled by default.
-
 ## Options
-
-```ts
-type Options = [
-  {
-    checksConditionals?: boolean;
-    checksVoidReturn?: boolean | ChecksVoidReturnOptions;
-  },
-];
-
-interface ChecksVoidReturnOptions {
-  arguments?: boolean;
-  attributes?: boolean;
-  properties?: boolean;
-  returns?: boolean;
-  variables?: boolean;
-}
-
-const defaultOptions: Options = [
-  {
-    checksConditionals: true,
-    checksVoidReturn: true,
-  },
-];
-```
 
 ### `"checksConditionals"`
 
@@ -59,6 +33,45 @@ If you don't want to check conditionals, you can configure the rule with `"check
 ```
 
 Doing so prevents the rule from looking at code like `if (somePromise)`.
+
+Examples of code for this rule with `checksConditionals: true`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+const promise = Promise.resolve('value');
+
+if (promise) {
+  // Do something
+}
+
+const val = promise ? 123 : 456;
+
+while (promise) {
+  // Do something
+}
+```
+
+#### ✅ Correct
+
+```ts
+const promise = Promise.resolve('value');
+
+// Always `await` the Promise in a conditional
+if (await promise) {
+  // Do something
+}
+
+const val = (await promise) ? 123 : 456;
+
+while (await promise) {
+  // Do something
+}
+```
+
+<!--/tabs-->
 
 ### `"checksVoidReturn"`
 
@@ -100,49 +113,6 @@ For example, if you don't mind that passing a `() => Promise<void>` to a `() => 
   ]
 }
 ```
-
-### `checksConditionals: true`
-
-Examples of code for this rule with `checksConditionals: true`:
-
-<!--tabs-->
-
-#### ❌ Incorrect
-
-```ts
-const promise = Promise.resolve('value');
-
-if (promise) {
-  // Do something
-}
-
-const val = promise ? 123 : 456;
-
-while (promise) {
-  // Do something
-}
-```
-
-#### ✅ Correct
-
-```ts
-const promise = Promise.resolve('value');
-
-// Always `await` the Promise in a conditional
-if (await promise) {
-  // Do something
-}
-
-const val = (await promise) ? 123 : 456;
-
-while (await promise) {
-  // Do something
-}
-```
-
-<!--/tabs-->
-
-### `checksVoidReturn: true`
 
 Examples of code for this rule with `checksVoidReturn: true`:
 
@@ -212,6 +182,55 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
+### `"checksSpreads"`
+
+If you don't want to check object spreads, you can add this configuration:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksSpreads": false
+    }
+  ]
+}
+```
+
+Examples of code for this rule with `checksSpreads: true`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...getData() };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...getData2() };
+```
+
+#### ✅ Correct
+
+```ts
+const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...(await getData()) };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...(await getData2()) };
+```
+
+<!--tabs-->
+
 ## When Not To Use It
 
 If you do not use Promises in your codebase or are not concerned with possible
@@ -224,9 +243,3 @@ misuses of them outside of what the TypeScript compiler will check.
 ## Related To
 
 - [`no-floating-promises`](./no-floating-promises.md)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

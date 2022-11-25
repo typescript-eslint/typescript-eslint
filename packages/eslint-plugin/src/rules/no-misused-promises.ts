@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -8,6 +9,7 @@ type Options = [
   {
     checksConditionals?: boolean;
     checksVoidReturn?: boolean | ChecksVoidReturnOptions;
+    checksSpreads?: boolean;
   },
 ];
 
@@ -25,7 +27,8 @@ type MessageId =
   | 'voidReturnVariable'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
-  | 'voidReturnAttribute';
+  | 'voidReturnAttribute'
+  | 'spread';
 
 function parseChecksVoidReturn(
   checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
@@ -59,7 +62,7 @@ export default util.createRule<Options, MessageId>({
   name: 'no-misused-promises',
   meta: {
     docs: {
-      description: 'Avoid using Promises in places not designed to handle them',
+      description: 'Disallow Promises in places not designed to handle them',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -75,6 +78,7 @@ export default util.createRule<Options, MessageId>({
       voidReturnAttribute:
         'Promise-returning function provided to attribute where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
+      spread: 'Expected a non-Promise value to be spreaded in an object.',
     },
     schema: [
       {
@@ -99,6 +103,9 @@ export default util.createRule<Options, MessageId>({
               },
             ],
           },
+          checksSpreads: {
+            type: 'boolean',
+          },
         },
       },
     ],
@@ -108,10 +115,11 @@ export default util.createRule<Options, MessageId>({
     {
       checksConditionals: true,
       checksVoidReturn: true,
+      checksSpreads: true,
     },
   ],
 
-  create(context, [{ checksConditionals, checksVoidReturn }]) {
+  create(context, [{ checksConditionals, checksVoidReturn, checksSpreads }]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
@@ -152,6 +160,10 @@ export default util.createRule<Options, MessageId>({
           }),
         }
       : {};
+
+    const spreadChecks: TSESLint.RuleListener = {
+      SpreadElement: checkSpread,
+    };
 
     function checkTestConditional(node: {
       test: TSESTree.Expression | null;
@@ -201,13 +213,13 @@ export default util.createRule<Options, MessageId>({
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const voidParams = voidFunctionParams(checker, tsNode);
-      if (voidParams.size === 0) {
+      const voidArgs = voidFunctionArguments(checker, tsNode);
+      if (voidArgs.size === 0) {
         return;
       }
 
       for (const [index, argument] of node.arguments.entries()) {
-        if (!voidParams.has(index)) {
+        if (!voidArgs.has(index)) {
           continue;
         }
 
@@ -376,12 +388,36 @@ export default util.createRule<Options, MessageId>({
       }
     }
 
+    function checkSpread(node: TSESTree.SpreadElement): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+
+      if (isSometimesThenable(checker, tsNode.expression)) {
+        context.report({
+          messageId: 'spread',
+          node: node.argument,
+        });
+      }
+    }
+
     return {
       ...(checksConditionals ? conditionalChecks : {}),
       ...(checksVoidReturn ? voidReturnChecks : {}),
+      ...(checksSpreads ? spreadChecks : {}),
     };
   },
 });
+
+function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
+  const type = checker.getTypeAtLocation(node);
+
+  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+    if (tsutils.isThenableType(checker, node, subType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 // Variation on the thenable check which requires all forms of the type (read:
 // alternates in a union) to be thenable. Otherwise, you might be trying to
@@ -450,13 +486,40 @@ function isFunctionParam(
   return false;
 }
 
-// Get the positions of parameters which are void functions (and not also
+function checkThenableOrVoidArgument(
+  checker: ts.TypeChecker,
+  node: ts.CallExpression | ts.NewExpression,
+  type: ts.Type,
+  index: number,
+  thenableReturnIndices: Set<number>,
+  voidReturnIndices: Set<number>,
+): void {
+  if (isThenableReturningFunctionType(checker, node.expression, type)) {
+    thenableReturnIndices.add(index);
+  } else if (isVoidReturningFunctionType(checker, node.expression, type)) {
+    // If a certain argument accepts both thenable and void returns,
+    // a promise-returning function is valid
+    if (!thenableReturnIndices.has(index)) {
+      voidReturnIndices.add(index);
+    }
+  }
+}
+
+// Get the positions of arguments which are void functions (and not also
 // thenable functions). These are the candidates for the void-return check at
 // the current call site.
-function voidFunctionParams(
+// If the function parameters end with a 'rest' parameter, then we consider
+// the array type parameter (e.g. '...args:Array<SomeType>') when determining
+// if trailing arguments are candidates.
+function voidFunctionArguments(
   checker: ts.TypeChecker,
   node: ts.CallExpression | ts.NewExpression,
 ): Set<number> {
+  // 'new' can be used without any arguments, as in 'let b = new Object;'
+  // In this case, there are no argument positions to check, so return early.
+  if (!node.arguments) {
+    return new Set<number>();
+  }
   const thenableReturnIndices = new Set<number>();
   const voidReturnIndices = new Set<number>();
   const type = checker.getTypeAtLocation(node.expression);
@@ -471,17 +534,60 @@ function voidFunctionParams(
       : subType.getConstructSignatures();
     for (const signature of signatures) {
       for (const [index, parameter] of signature.parameters.entries()) {
-        const type = checker.getTypeOfSymbolAtLocation(
+        const decl = parameter.valueDeclaration;
+        let type = checker.getTypeOfSymbolAtLocation(
           parameter,
           node.expression,
         );
-        if (isThenableReturningFunctionType(checker, node.expression, type)) {
-          thenableReturnIndices.add(index);
-        } else if (
-          !thenableReturnIndices.has(index) &&
-          isVoidReturningFunctionType(checker, node.expression, type)
-        ) {
-          voidReturnIndices.add(index);
+
+        // If this is a array 'rest' parameter, check all of the argument indices
+        // from the current argument to the end.
+        // Note - we currently do not support 'spread' arguments - adding support for them
+        // is tracked in https://github.com/typescript-eslint/typescript-eslint/issues/5744
+        if (decl && ts.isParameter(decl) && decl.dotDotDotToken) {
+          if (checker.isArrayType(type)) {
+            // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
+            // so that we'll handle it in the same way as a non-rest
+            // 'param: MaybeVoidFunction'
+            type = checker.getTypeArguments(type)[0];
+            for (let i = index; i < node.arguments.length; i++) {
+              checkThenableOrVoidArgument(
+                checker,
+                node,
+                type,
+                i,
+                thenableReturnIndices,
+                voidReturnIndices,
+              );
+            }
+          } else if (checker.isTupleType(type)) {
+            // Check each type in the tuple - for example, [boolean, () => void] would
+            // add the index of the second tuple parameter to 'voidReturnIndices'
+            const typeArgs = checker.getTypeArguments(type);
+            for (
+              let i = index;
+              i < node.arguments.length && i - index < typeArgs.length;
+              i++
+            ) {
+              checkThenableOrVoidArgument(
+                checker,
+                node,
+                typeArgs[i - index],
+                i,
+                thenableReturnIndices,
+                voidReturnIndices,
+              );
+            }
+          }
+        } else {
+          checkThenableOrVoidArgument(
+            checker,
+            node,
+            type,
+            index,
+            thenableReturnIndices,
+            voidReturnIndices,
+          );
         }
       }
     }

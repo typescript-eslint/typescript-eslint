@@ -1,12 +1,13 @@
-# `member-ordering`
+---
+description: 'Require a consistent member declaration order.'
+---
 
-Require a consistent member declaration order.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/member-ordering** for documentation.
 
-A consistent ordering of fields, methods and constructors can make interfaces, type literals, classes and class expressions easier to read, navigate, and edit.
-
-## Rule Details
-
-This rule aims to standardize the way class declarations, class expressions, interfaces and type literals are structured and ordered.
+This rule aims to standardize the way classes, interfaces, and type literals are structured and ordered.
+A consistent ordering of fields, methods and constructors can make code easier to read, navigate, and edit.
 
 ## Options
 
@@ -23,7 +24,12 @@ type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
-  order: 'alphabetically' | 'alphabetically-case-insensitive' | 'as-written';
+  order:
+    | 'alphabetically'
+    | 'alphabetically-case-insensitive'
+    | 'as-written'
+    | 'natural'
+    | 'natural-case-insensitive';
 }
 
 // See below for the more specific MemberType strings
@@ -40,7 +46,7 @@ You can configure `OrderConfig` options for:
 
 The `OrderConfig` settings for each kind of construct may configure sorting on one or both two levels:
 
-- **`memberType`**: organizing on member type groups such as methods vs. properties
+- **`memberTypes`**: organizing on member type groups such as methods vs. properties
 - **`order`**: organizing based on member names, such as alphabetically
 
 ### Groups
@@ -48,12 +54,23 @@ The `OrderConfig` settings for each kind of construct may configure sorting on o
 You can define many different groups based on different attributes of members.
 The supported member attributes are, in order:
 
-- **Accessibility** (`'public' | 'protected' | 'private'`)
+- **Accessibility** (`'public' | 'protected' | 'private' | '#private'`)
 - **Decoration** (`'decorated'`): Whether the member has an explicit accessibility decorator
 - **Kind** (`'call-signature' | 'constructor' | 'field' | 'get' | 'method' | 'set' | 'signature'`)
 
 Member attributes may be joined with a `'-'` to combine into more specific groups.
 For example, `'public-field'` would come before `'private-field'`.
+
+### Orders
+
+The `order` value specifies what order members should be within a group.
+It defaults to `as-written`, meaning any order is fine.
+Other allowed values are:
+
+- `alphabetically`: Sorted in a-z alphabetical order, directly using string `<` comparison (so `B` comes before `a`)
+- `alphabetically-case-insensitive`: Sorted in a-z alphabetical order, ignoring case (so `a` comes before `B`)
+- `natural`: Same as `alphabetically`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
+- `natural-case-insensitive`: Same as `alphabetically-case-insensitive`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
 
 ### Default configuration
 
@@ -64,11 +81,13 @@ The default configuration looks as follows:
   "default": [
     // Index signature
     "signature",
+    "call-signature",
 
     // Fields
     "public-static-field",
     "protected-static-field",
     "private-static-field",
+    "#private-static-field",
 
     "public-decorated-field",
     "protected-decorated-field",
@@ -77,14 +96,15 @@ The default configuration looks as follows:
     "public-instance-field",
     "protected-instance-field",
     "private-instance-field",
+    "#private-instance-field",
 
     "public-abstract-field",
     "protected-abstract-field",
-    "private-abstract-field",
 
     "public-field",
     "protected-field",
     "private-field",
+    "#private-field",
 
     "static-field",
     "instance-field",
@@ -93,6 +113,9 @@ The default configuration looks as follows:
     "decorated-field",
 
     "field",
+
+    // Static initialization
+    "static-initialization",
 
     // Constructors
     "public-constructor",
@@ -105,6 +128,7 @@ The default configuration looks as follows:
     "public-static-get",
     "protected-static-get",
     "private-static-get",
+    "#private-static-get",
 
     "public-decorated-get",
     "protected-decorated-get",
@@ -113,14 +137,15 @@ The default configuration looks as follows:
     "public-instance-get",
     "protected-instance-get",
     "private-instance-get",
+    "#private-instance-get",
 
     "public-abstract-get",
     "protected-abstract-get",
-    "private-abstract-get",
 
     "public-get",
     "protected-get",
     "private-get",
+    "#private-get",
 
     "static-get",
     "instance-get",
@@ -134,6 +159,7 @@ The default configuration looks as follows:
     "public-static-set",
     "protected-static-set",
     "private-static-set",
+    "#private-static-set",
 
     "public-decorated-set",
     "protected-decorated-set",
@@ -142,14 +168,15 @@ The default configuration looks as follows:
     "public-instance-set",
     "protected-instance-set",
     "private-instance-set",
+    "#private-instance-set",
 
     "public-abstract-set",
     "protected-abstract-set",
-    "private-abstract-set",
 
     "public-set",
     "protected-set",
     "private-set",
+    "#private-set",
 
     "static-set",
     "instance-set",
@@ -163,6 +190,7 @@ The default configuration looks as follows:
     "public-static-method",
     "protected-static-method",
     "private-static-method",
+    "#private-static-method",
 
     "public-decorated-method",
     "protected-decorated-method",
@@ -171,14 +199,15 @@ The default configuration looks as follows:
     "public-instance-method",
     "protected-instance-method",
     "private-instance-method",
+    "#private-instance-method",
 
     "public-abstract-method",
     "protected-abstract-method",
-    "private-abstract-method",
 
     "public-method",
     "protected-method",
     "private-method",
+    "#private-method",
 
     "static-method",
     "instance-method",
@@ -898,15 +927,35 @@ The most explicit and granular form is the following:
   "public-static-field",
   "protected-static-field",
   "private-static-field",
+  "#private-static-field",
+
   "public-decorated-field",
   "protected-decorated-field",
   "private-decorated-field",
+
   "public-instance-field",
   "protected-instance-field",
   "private-instance-field",
+  "#private-instance-field",
+
   "public-abstract-field",
   "protected-abstract-field",
-  "private-abstract-field",
+
+  "public-field",
+  "protected-field",
+  "private-field",
+  "#private-field",
+
+  "static-field",
+  "instance-field",
+  "abstract-field",
+
+  "decorated-field",
+
+  "field",
+
+  // Static initialization
+  "static-initialization",
 
   // Constructors
   "public-constructor",
@@ -917,6 +966,7 @@ The most explicit and granular form is the following:
   "public-static-get",
   "protected-static-get",
   "private-static-get",
+  "#private-static-get",
 
   "public-decorated-get",
   "protected-decorated-get",
@@ -925,14 +975,15 @@ The most explicit and granular form is the following:
   "public-instance-get",
   "protected-instance-get",
   "private-instance-get",
+  "#private-instance-get",
 
   "public-abstract-get",
   "protected-abstract-get",
-  "private-abstract-get",
 
   "public-get",
   "protected-get",
   "private-get",
+  "#private-get",
 
   "static-get",
   "instance-get",
@@ -946,6 +997,7 @@ The most explicit and granular form is the following:
   "public-static-set",
   "protected-static-set",
   "private-static-set",
+  "#private-static-set",
 
   "public-decorated-set",
   "protected-decorated-set",
@@ -954,10 +1006,10 @@ The most explicit and granular form is the following:
   "public-instance-set",
   "protected-instance-set",
   "private-instance-set",
+  "#private-instance-set",
 
   "public-abstract-set",
   "protected-abstract-set",
-  "private-abstract-set",
 
   "public-set",
   "protected-set",
@@ -975,15 +1027,16 @@ The most explicit and granular form is the following:
   "public-static-method",
   "protected-static-method",
   "private-static-method",
+  "#private-static-method",
   "public-decorated-method",
   "protected-decorated-method",
   "private-decorated-method",
   "public-instance-method",
   "protected-instance-method",
   "private-instance-method",
+  "#private-instance-method",
   "public-abstract-method",
-  "protected-abstract-method",
-  "private-abstract-method"
+  "protected-abstract-method"
 ]
 ```
 
@@ -1005,6 +1058,9 @@ It is also possible to group member types by their accessibility (`static`, `ins
   "public-field", // = ["public-static-field", "public-instance-field"]
   "protected-field", // = ["protected-static-field", "protected-instance-field"]
   "private-field", // = ["private-static-field", "private-instance-field"]
+
+  // Static initialization
+  // No accessibility for static initialization.
 
   // Constructors
   // Only the accessibility of constructors is configurable. See below.
@@ -1043,6 +1099,9 @@ their accessibility.
 
   "decorated-field", // = ["public-decorated-field", "protected-decorated-field", "private-decorated-field"]
 
+  // Static initialization
+  // No decorators for static initialization.
+
   // Constructors
   // There are no decorators for constructors.
 
@@ -1051,14 +1110,14 @@ their accessibility.
   "protected-decorated-get",
   "private-decorated-get",
 
-  "decorated-get" // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
+  "decorated-get", // = ["public-decorated-get", "protected-decorated-get", "private-decorated-get"]
 
   // Setters
   "public-decorated-set",
   "protected-decorated-set",
   "private-decorated-set",
 
-  "decorated-set" // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
+  "decorated-set", // = ["public-decorated-set", "protected-decorated-set", "private-decorated-set"]
 
   // Methods
   "public-decorated-method",
@@ -1083,18 +1142,21 @@ Another option is to group the member types by their scope (`public`, `protected
   "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
   "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
 
+  // Static initialization
+  // No scope for static initialization.
+
   // Constructors
   "constructor", // = ["public-constructor", "protected-constructor", "private-constructor"]
 
   // Getters
   "static-get", // = ["public-static-get", "protected-static-get", "private-static-get"]
   "instance-get", // = ["public-instance-get", "protected-instance-get", "private-instance-get"]
-  "abstract-get" // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+  "abstract-get", // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
 
   // Setters
   "static-set", // = ["public-static-set", "protected-static-set", "private-static-set"]
   "instance-set", // = ["public-instance-set", "protected-instance-set", "private-instance-set"]
-  "abstract-set" // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+  "abstract-set", // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
 
   // Methods
   "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
@@ -1116,15 +1178,18 @@ The third grouping option is to ignore both scope and accessibility.
   "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
   //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
 
+  // Static initialization
+  // No grouping for static initialization.
+
   // Constructors
   // Only the accessibility of constructors is configurable.
 
   // Getters
-  "get" // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
+  "get", // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
   //                "public-abstract-get", "protected-abstract-get", "private-abstract-get"]
 
   // Setters
-  "set" // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
+  "set", // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
   //                "public-abstract-set", "protected-abstract-set", "private-abstract-set"]
 
   // Methods
@@ -1145,6 +1210,9 @@ It is also possible to group different member types at the same rank.
   // Fields
   "field",
 
+  // Static initialization
+  "static-initialization",
+
   // Constructors
   "constructor",
 
@@ -1159,13 +1227,3 @@ It is also possible to group different member types at the same rank.
 ## When Not To Use It
 
 If you don't care about the general order of your members, then you will not need this rule.
-
-## Related To
-
-- TSLint: [member-ordering](https://palantir.github.io/tslint/rules/member-ordering/)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [ ] 🔧 Fixable
-- [ ] 💭 Requires type information

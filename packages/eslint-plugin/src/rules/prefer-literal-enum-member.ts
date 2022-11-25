@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 export default createRule({
@@ -6,9 +7,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Require that all enum members be literal values to prevent unintended enum member name shadow issues',
-      recommended: false,
+      description: 'Require all enum members to be literal values',
+      recommended: 'strict',
       requiresTypeChecking: false,
     },
     messages: {

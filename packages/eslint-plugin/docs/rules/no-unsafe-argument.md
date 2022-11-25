@@ -1,17 +1,24 @@
-# `no-unsafe-argument`
+---
+description: 'Disallow calling a function with a value with type `any`.'
+---
 
-Disallows calling a function with an any type value.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-argument** for documentation.
+
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Call a function with `any` typed argument are not checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
+Calling a function with an `any` typed argument creates a potential safety hole and source of bugs.
 
-## Rule Details
+This rule disallows calling a function with `any` in its arguments.
+That includes spreading arrays or tuples with `any` typed elements as function arguments.
 
-This rule disallows calling a function with `any` in its arguments, and it will disallow spreading `any[]`.
-This rule also disallows spreading a tuple type with one of its elements typed as `any`.
-This rule also compares the argument's type to the variable's type to ensure you don't pass an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you assign `Set<any>` to an argument declared as `Set<string>`.
+This rule also compares generic type argument types to ensure you don't pass an unsafe `any` in a generic position to a receiver that's expecting a specific type.
+For example, it will error if you pass `Set<any>` as an argument to a parameter declared as `Set<string>`.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -64,33 +71,13 @@ foo(new Set<string>(), new Map<string, string>());
 
 There are cases where the rule allows passing an argument of `any` to `unknown`.
 
-Example of `any` to `unknown` assignment that are allowed.
+Example of `any` to `unknown` assignment that are allowed:
 
 ```ts
 declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-argument": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
-- TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

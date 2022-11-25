@@ -2,8 +2,10 @@
 // this rule tests the spacing, which prettier will want to fix and break the tests
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, { MessageIds, Options } from '../../src/rules/keyword-spacing';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/keyword-spacing';
+import rule from '../../src/rules/keyword-spacing';
 import { RuleTester } from '../RuleTester';
 
 //------------------------------------------------------------------------------
@@ -112,6 +114,16 @@ ruleTester.run('keyword-spacing', rule, {
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
+    {
+      code: 'import type { foo } from "foo";',
+      options: [{ overrides: { as: {} } }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: "import type * as Foo from 'foo'",
+      options: [{ overrides: { as: {} } }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
   ],
   invalid: [
     //----------------------------------------------------------------------
@@ -149,6 +161,34 @@ ruleTester.run('keyword-spacing', rule, {
       options: [{ overrides: { as: {} } }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: expectedAfter('as'),
+    },
+    {
+      code: 'import type{ foo } from "foo";',
+      output: 'import type { foo } from "foo";',
+      options: [{ after: true, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'expectedBefore', data: { value: '{' } }],
+    },
+    {
+      code: 'import type { foo } from"foo";',
+      output: 'import type{ foo } from"foo";',
+      options: [{ after: false, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'unexpectedBefore', data: { value: '{' } }],
+    },
+    {
+      code: 'import type* as foo from "foo";',
+      output: 'import type * as foo from "foo";',
+      options: [{ after: true, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'expectedBefore', data: { value: '*' } }],
+    },
+    {
+      code: 'import type * as foo from"foo";',
+      output: 'import type* as foo from"foo";',
+      options: [{ after: false, before: true }],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'unexpectedBefore', data: { value: '*' } }],
     },
   ],
 });

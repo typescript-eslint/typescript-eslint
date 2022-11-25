@@ -1,16 +1,23 @@
-# `no-unsafe-assignment`
+---
+description: 'Disallow assigning a value with type `any` to variables and properties.'
+---
 
-Disallows assigning any to variables and properties.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-assignment** for documentation.
+
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 
 Despite your best intentions, the `any` type can sometimes leak into your codebase.
-Assigning an `any` typed value to a variable can be hard to pick up on, particularly if it leaks in from an external library. Operations on the variable will not be checked at all by TypeScript, so it creates a potential safety hole, and source of bugs in your codebase.
-
-## Rule Details
+Assigning an `any` typed value to a variable can be hard to pick up on, particularly if it leaks in from an external library.
 
 This rule disallows assigning `any` to a variable, and assigning `any[]` to an array destructuring.
-This rule also compares the assigned type to the variable's type to ensure you don't assign an unsafe `any` in a generic position to a receiver that's expecting a specific type. For example, it will error if you assign `Set<any>` to a variable declared as `Set<string>`.
 
-Examples of code for this rule:
+This rule also compares generic type argument types to ensure you don't pass an unsafe `any` in a generic position to a receiver that's expecting a specific type.
+For example, it will error if you assign `Set<any>` to a variable declared as `Set<string>`.
+
+## Examples
 
 <!--tabs-->
 
@@ -66,7 +73,7 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<string>>>();
 
 There are cases where the rule allows assignment of `any` to `unknown`.
 
-Example of `any` to `unknown` assignment that are allowed.
+Example of `any` to `unknown` assignment that are allowed:
 
 ```ts
 const x: unknown = y as any;
@@ -74,26 +81,6 @@ const x: unknown[] = y as any[];
 const x: Set<unknown> = y as Set<any>;
 ```
 
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/no-unsafe-assignment": "error"
-  }
-}
-```
-
-This rule is not configurable.
-
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
-- TSLint: [`no-unsafe-any`](https://palantir.github.io/tslint/rules/no-unsafe-any/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [ ] 🔧 Fixable
-- [x] 💭 Requires type information

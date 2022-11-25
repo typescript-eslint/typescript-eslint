@@ -1,33 +1,16 @@
-# `array-type`
+---
+description: 'Require consistently using either `T[]` or `Array<T>` for arrays.'
+---
 
-Requires using either `T[]` or `Array<T>` for arrays.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/array-type** for documentation.
 
-Using the same style for array definitions across your codebase makes it easier for your developers to read and understand the types.
-
-## Rule Details
-
-This rule aims to standardize usage of array types within your codebase.
+TypeScript provides two equivalent ways to define an array type: `T[]` and `Array<T>`.
+The two styles are functionally equivalent.
+Using the same style consistently across your codebase makes it easier for developers to read and understand array types.
 
 ## Options
-
-```ts
-type ArrayOption = 'array' | 'generic' | 'array-simple';
-type Options = {
-  default: ArrayOption;
-  readonly?: ArrayOption;
-};
-
-const defaultOptions: Options = {
-  default: 'array',
-};
-```
-
-The rule accepts an options object with the following properties:
-
-- `default` - sets the array type expected for mutable cases.
-- `readonly` - sets the array type expected for readonly arrays. If this is omitted, then the value for `default` will be used.
-
-Each property can be set to one of three strings: `'array' | 'generic' | 'array-simple'`.
 
 The default config will enforce that all mutable and readonly arrays use the `'array'` syntax.
 
@@ -118,13 +101,3 @@ This matrix lists all possible option combinations and their expected results fo
 | `generic`      | `array`        | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `readonly (Foo & Bar)[]`            |
 | `generic`      | `array-simple` | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
 | `generic`      | `generic`      | `Array<number>`        | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
-
-## Related To
-
-- TSLint: [array-type](https://palantir.github.io/tslint/rules/array-type/)
-
-## Attributes
-
-- [ ] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

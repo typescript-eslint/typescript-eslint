@@ -1,17 +1,18 @@
-# `no-explicit-any`
+---
+description: 'Disallow the `any` type.'
+---
 
-Disallow usage of the `any` type.
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.
 
-Using the `any` type defeats the purpose of using TypeScript.
-When `any` is used, all compiler type checks around that value are ignored.
+The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
+This rule reports on explicit uses of the `any` keyword as a type annotation.
 
-## Rule Details
+> TypeScript's `--noImplicitAny` compiler option prevents an implied `any`, but doesn't prevent `any` from being explicitly used the way this rule does.
 
-This rule doesn't allow `any` types to be defined.
-It aims to keep TypeScript maximally useful.
-TypeScript has a compiler flag for `--noImplicitAny` that will prevent
-an `any` type from being implied by the compiler, but doesn't prevent
-`any` from being explicitly used.
+## Examples
 
 <!--tabs-->
 
@@ -93,22 +94,6 @@ function greet(param: Array<string>): Array<string> {}
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, auto-fixing will be made available in which the "any" type is converted to an "unknown" type
-  fixToUnknown: boolean;
-  // specify if arrays from the rest operator are considered okay
-  ignoreRestArgs: boolean;
-};
-
-const defaults = {
-  fixToUnknown: false,
-  ignoreRestArgs: false,
-};
-```
-
 ### `ignoreRestArgs`
 
 A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
@@ -176,16 +161,14 @@ interface Garply {
 If an unknown type or a library without typings is used
 and you want to be able to specify `any`.
 
+## Related To
+
+- [`no-unsafe-argument`](./no-unsafe-argument.md)
+- [`no-unsafe-assignment`](./no-unsafe-assignment.md)
+- [`no-unsafe-call`](./no-unsafe-call.md)
+- [`no-unsafe-member-access`](./no-unsafe-member-access.md)
+- [`no-unsafe-return`](./no-unsafe-return.md)
+
 ## Further Reading
 
 - TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
-
-## Related To
-
-- TSLint: [no-any](https://palantir.github.io/tslint/rules/no-any/)
-
-## Attributes
-
-- [x] ✅ Recommended
-- [x] 🔧 Fixable
-- [ ] 💭 Requires type information

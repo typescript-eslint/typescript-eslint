@@ -1,5 +1,7 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type MessageIds = 'unusedVar';
@@ -82,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
     },
   },
   defaultOptions: [{}],
-  create(context) {
+  create(context, [firstOption]) {
     const filename = context.getFilename();
     const sourceCode = context.getSourceCode();
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
@@ -94,8 +96,6 @@ export default util.createRule<Options, MessageIds>({
         ignoreRestSiblings: false,
         caughtErrors: 'none',
       };
-
-      const [firstOption] = context.options;
 
       if (firstOption) {
         if (typeof firstOption === 'string') {
@@ -419,15 +419,18 @@ export default util.createRule<Options, MessageIds>({
 
         const unusedVars = collectUnusedVariables();
 
-        for (let i = 0, l = unusedVars.length; i < l; ++i) {
-          const unusedVar = unusedVars[i];
-
+        for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
+            const writeReferences = unusedVar.references.filter(
+              ref =>
+                ref.isWrite() &&
+                ref.from.variableScope === unusedVar.scope.variableScope,
+            );
+
             context.report({
-              node: unusedVar.references.length
-                ? unusedVar.references[unusedVar.references.length - 1]
-                    .identifier
+              node: writeReferences.length
+                ? writeReferences[writeReferences.length - 1].identifier
                 : unusedVar.identifiers[0],
               messageId: 'unusedVar',
               data: unusedVar.references.some(ref => ref.isWrite())

@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/no-empty-interface, @typescript-eslint/no-explicit-any */
 
 import {
-  Scope as ESLintScope,
+  BlockScope as ESLintBlockScope,
+  CatchScope as ESLintCatchScope,
+  ClassScope as ESLintClassScope,
+  ForScope as ESLintForScope,
+  FunctionExpressionNameScope as ESLintFunctionExpressionNameScope,
+  FunctionScope as ESLintFunctionScope,
   GlobalScope as ESLintGlobalScope,
   ModuleScope as ESLintModuleScope,
-  FunctionExpressionNameScope as ESLintFunctionExpressionNameScope,
-  CatchScope as ESLintCatchScope,
-  WithScope as ESLintWithScope,
-  BlockScope as ESLintBlockScope,
+  Scope as ESLintScope,
   SwitchScope as ESLintSwitchScope,
-  FunctionScope as ESLintFunctionScope,
-  ForScope as ESLintForScope,
-  ClassScope as ESLintClassScope,
+  WithScope as ESLintWithScope,
 } from 'eslint-scope/lib/scope';
-import { TSESTree } from '../ts-estree';
-import { Definition } from './Definition';
-import { Reference, ReferenceFlag } from './Reference';
-import { ScopeManager } from './ScopeManager';
-import { Variable } from './Variable';
+
+import type { TSESTree } from '../ts-estree';
+import type { Definition } from './Definition';
+import type { Reference, ReferenceFlag } from './Reference';
+import type { ScopeManager } from './ScopeManager';
+import type { Variable } from './Variable';
 
 type ScopeType =
   | 'block'
