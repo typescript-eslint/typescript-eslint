@@ -211,6 +211,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     '!foo!.bar || !foo!.bar.baz;',
     '!foo!.bar!.baz || !foo!.bar!.baz!.paz;',
     '!foo.bar!.baz || !foo.bar!.baz!.paz;',
+    '!import.meta.url || true;',
   ],
   invalid: [
     ...baseCases,

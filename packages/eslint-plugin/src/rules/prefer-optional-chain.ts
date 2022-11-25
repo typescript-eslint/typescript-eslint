@@ -381,6 +381,10 @@ export default util.createRule({
           objectText = getMemberExpressionText(node.object);
           break;
 
+        case AST_NODE_TYPES.MetaProperty:
+          objectText = getText(node.object.meta);
+          break;
+
         case AST_NODE_TYPES.ThisExpression:
           objectText = getText(node.object);
           break;
