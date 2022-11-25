@@ -111,7 +111,7 @@ export default util.createRule<Options, MessageIds>({
       function* fix(
         fixer: TSESLint.RuleFixer,
       ): IterableIterator<TSESLint.RuleFix> {
-        if (node.parent && util.isLogicalOrOperator(node.parent)) {
+        if (util.isLogicalOrOperator(node.parent)) {
           // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
           if (
             node.left.type === AST_NODE_TYPES.LogicalExpression &&

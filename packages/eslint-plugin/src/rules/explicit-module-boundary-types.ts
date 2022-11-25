@@ -269,7 +269,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isExportedHigherOrderFunction(node: FunctionNode): boolean {
-      let current = node.parent;
+      let current: TSESTree.Node | undefined = node.parent;
       while (current) {
         if (current.type === AST_NODE_TYPES.ReturnStatement) {
           // the parent of a return will always be a block statement, so we can skip over it

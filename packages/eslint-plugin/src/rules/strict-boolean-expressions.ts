@@ -508,7 +508,7 @@ export default util.createRule<Options, MessageId>({
       if (is('number') || is('truthy number')) {
         if (!options.allowNumber) {
           if (isArrayLengthExpression(node, typeChecker, parserServices)) {
-            if (isLogicalNegationExpression(node.parent!)) {
+            if (isLogicalNegationExpression(node.parent)) {
               // if (!array.length)
               context.report({
                 node,

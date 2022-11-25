@@ -1,5 +1,6 @@
 export * from './base/Accessibility';
 export * from './base/BaseNode'; // this is exported so that the `types` package can merge the decl and add the `parent` property
+export * from './base/NodeOrTokenData';
 export * from './base/OptionalRangeAndLoc';
 export * from './base/Position';
 export * from './base/Range';

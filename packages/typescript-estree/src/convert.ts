@@ -249,16 +249,13 @@ export class Converter {
   }
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
-    node: TSESTreeToTSNode<T>,
-    data: TSESTree.OptionalRangeAndLoc<T>,
+    // The 'parent' property will be added later if specified
+    node: Omit<TSESTreeToTSNode<T>, 'parent'>,
+    data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
     const result = data;
     if (!result.range) {
-      result.range = getRange(
-        // this is completely valid, but TS hates it
-        node as never,
-        this.ast,
-      );
+      result.range = getRange(node, this.ast);
     }
     if (!result.loc) {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -310,7 +307,7 @@ export class Converter {
       loc,
       range: [annotationStartCol, child.end],
       typeAnnotation: this.convertType(child),
-    };
+    } as TSESTree.TSTypeAnnotation;
   }
 
   /**
@@ -389,7 +386,7 @@ export class Converter {
       params: typeParameters.map(typeParameter =>
         this.convertType(typeParameter),
       ),
-    };
+    } as TSESTree.TSTypeParameterDeclaration;
   }
 
   /**
