@@ -14,10 +14,6 @@ export function getTypeFlags(type: ts.Type): ts.TypeFlags {
   return flags;
 }
 
-function isFlagSet(flags: number, flag: number): boolean {
-  return (flags & flag) !== 0;
-}
-
 /**
  * @param flagsToCheck The composition of one or more `ts.TypeFlags`.
  * @param isReceiver Whether the type is a receiving type (e.g. the type of a
@@ -34,9 +30,9 @@ export function isTypeFlagSet(
 ): boolean {
   const flags = getTypeFlags(type);
 
-  if (isReceiver && isFlagSet(flags, ANY_OR_UNKNOWN)) {
+  if (isReceiver && flags & ANY_OR_UNKNOWN) {
     return true;
   }
 
-  return isFlagSet(flags, flagsToCheck);
+  return (flags & flagsToCheck) !== 0;
 }
