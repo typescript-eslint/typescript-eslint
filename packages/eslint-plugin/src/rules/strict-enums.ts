@@ -13,16 +13,14 @@ import * as util from '../util';
  */
 enum EnumKind {
   NON_ENUM,
-  HAS_NUMBER_VALUES,
-  HAS_STRING_VALUES,
+  HasNumberValues,
+  HasStringValues,
 }
 
-/** These operators are always considered to be safe. */
-const ALLOWED_ENUM_OPERATORS = new Set(['in', '|', '&', '^', '|=', '&=', '^=']);
+/** These bitwise operators are always considered to be safe comparisons. */
+const ALLOWED_ENUM_OPERATORS = new Set(['|=', '&=', '^=']);
 
 /**
- * See the comment for `EnumKind`.
- *
  * This rule can safely ignore other kinds of types (and leave the validation in
  * question to the TypeScript compiler).
  */
@@ -56,11 +54,11 @@ function getEnumKind(type: ts.Type): EnumKind {
   const isNumberLiteral = util.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral);
 
   if (isStringLiteral && !isNumberLiteral) {
-    return EnumKind.HAS_STRING_VALUES;
+    return EnumKind.HasStringValues;
   }
 
   if (isNumberLiteral && !isStringLiteral) {
-    return EnumKind.HAS_NUMBER_VALUES;
+    return EnumKind.HasNumberValues;
   }
 
   throw new Error(
@@ -73,11 +71,9 @@ function getEnumKind(type: ts.Type): EnumKind {
  * a set containing N `EnumKind` (if it is a union).
  */
 function getEnumKinds(type: ts.Type): Set<EnumKind> {
-  if (type.isUnion()) {
-    return new Set(tsutils.unionTypeParts(type).map(getEnumKind));
-  }
-
-  return new Set([getEnumKind(type)]);
+  return type.isUnion()
+    ? new Set(tsutils.unionTypeParts(type).map(getEnumKind))
+    : new Set([getEnumKind(type)]);
 }
 
 function setHasAnyElementFromSet<T>(set1: Set<T>, set2: Set<T>): boolean {
@@ -162,7 +158,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
-     * A thing can have 0 or more enum types. For example:
+     * A type can have 0 or more enum types. For example:
      * - 123 --> []
      * - {} --> []
      * - Fruit.Apple --> [Fruit]
@@ -171,29 +167,18 @@ export default util.createRule<Options, MessageIds>({
      * - T extends Fruit --> [Fruit]
      */
     function getEnumTypes(type: ts.Type): Set<ts.Type> {
-      /**
-       * First, we get all the parts of the union. For non-union types, this
-       * will be an array with the type in it. For example:
-       * - Fruit --> [Fruit]
-       * - Fruit | Vegetable --> [Fruit, Vegetable]
-       */
-      const subTypes = tsutils.unionTypeParts(type);
-
-      /**
-       * Next, we must resolve generic types with constraints. For example:
-       * - Fruit --> Fruit
-       * - T extends Fruit --> Fruit
-       */
-      const subTypesConstraints = subTypes.map(subType => {
-        const constraint = subType.getConstraint();
-        return constraint === undefined ? subType : constraint;
-      });
-
-      const enumSubTypes = subTypesConstraints.filter(subType =>
-        util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral),
+      return new Set(
+        tsutils
+          // We resolve the type (or its constituents)...
+          .unionTypeParts(type)
+          // ...to any generic constraint...
+          .map(subType => subType.getConstraint() ?? subType)
+          // ...and only look at base types of enum types
+          .filter(subType =>
+            util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral),
+          )
+          .map(getBaseEnumType),
       );
-      const baseEnumSubTypes = enumSubTypes.map(getBaseEnumType);
-      return new Set(baseEnumSubTypes);
     }
 
     function getTypeFromNode(node: TSESTree.Node): ts.Type {
@@ -202,7 +187,7 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    function checkCallExpression(
+    function checkCallOrNewExpression(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
@@ -216,10 +201,8 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      /**
-       * Iterate through the arguments provided to the call function and cross
-       * reference their types to the types of the "real" function parameters.
-       */
+      // Iterate through the arguments provided to the call function and cross
+      // reference their types to the types of the "real" function parameters.
       for (let i = 0; i < node.arguments.length; i++) {
         const argument = node.arguments[i];
         const argumentType = getTypeFromNode(argument);
@@ -272,14 +255,12 @@ export default util.createRule<Options, MessageIds>({
       leftType: ts.Type,
       rightType: ts.Type,
     ): boolean {
-      /**
-       * First, recursively check for containers like the following:
-       *
-       * ```ts
-       * declare let fruits: Fruit[];
-       * fruits = [0, 1];
-       * ```
-       */
+      // First, recursively check for containers like the following:
+      //
+      // ```ts
+      // declare let fruits: Fruit[];
+      // fruits = [0, 1];
+      // ```
       if (
         util.isTypeReferenceType(leftType) &&
         util.isTypeReferenceType(rightType)
@@ -287,20 +268,15 @@ export default util.createRule<Options, MessageIds>({
         const leftTypeArguments = typeChecker.getTypeArguments(leftType);
         const rightTypeArguments = typeChecker.getTypeArguments(rightType);
 
-        for (let i = 0; i < leftTypeArguments.length; i++) {
-          const leftTypeArgument = leftTypeArguments[i];
-          const rightTypeArgument = rightTypeArguments[i];
-          if (
-            leftTypeArgument === undefined ||
-            rightTypeArgument === undefined
-          ) {
-            continue;
-          }
-
+        for (
+          let i = 0;
+          i < Math.min(leftTypeArguments.length, rightTypeArguments.length);
+          i += 1
+        ) {
           if (
             isAssigningNonEnumValueToEnumVariable(
-              leftTypeArgument,
-              rightTypeArgument,
+              leftTypeArguments[i],
+              rightTypeArguments[i],
             )
           ) {
             return true;
@@ -310,16 +286,14 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
+      // If the recipient is not an enum, this is not an enum assignment.
       const leftEnumTypes = getEnumTypes(leftType);
       if (leftEnumTypes.size === 0) {
-        // This is not an enum assignment
         return false;
       }
 
-      /**
-       * As a special case, allow assignment of bottom and top types that the
-       * TypeScript compiler should handle properly.
-       */
+      // As a special case, allow assignment of bottom and top types that the
+      // TypeScript compiler should handle properly.
       if (isNullOrUndefinedOrAnyOrUnknownOrNever(rightType)) {
         return false;
       }
@@ -332,33 +306,28 @@ export default util.createRule<Options, MessageIds>({
       leftType: ts.Type,
       rightType: ts.Type,
     ): boolean {
-      /** Allow comparisons with whitelisted operators. */
+      // Allow comparisons with allowlisted operators.
       if (ALLOWED_ENUM_OPERATORS.has(operator)) {
         return false;
       }
 
-      /** Allow comparisons that don't have anything to do with enums. */
+      // Allow comparisons that don't have anything to do with enums.
       const leftEnumTypes = getEnumTypes(leftType);
       const rightEnumTypes = getEnumTypes(rightType);
       if (leftEnumTypes.size === 0 && rightEnumTypes.size === 0) {
         return false;
       }
 
-      /**
-       * Allow comparisons to any intersection. Enum intersections would be rare
-       * in real-life code, so they are out of scope for this rule.
-       */
+      // Allow comparisons to any intersection. Enum intersections would be rare
+      // in real-life code, so they are out of scope for this rule.
       if (typeHasIntersection(leftType) || typeHasIntersection(rightType)) {
         return false;
       }
 
-      /**
-       * Allow comparisons to things with a type that can never be an enum (like
-       * a function).
-       *
-       * (The TypeScript compiler should properly type-check these cases, so the
-       * lint rule is unneeded.)
-       */
+      // Allow comparisons to types that can never be an enum (like a function).
+      //
+      // (The TypeScript compiler should properly type-check these cases, so the
+      // lint rule is unneeded.)
       if (
         util.isTypeFlagSet(leftType, IMPOSSIBLE_ENUM_TYPES) ||
         util.isTypeFlagSet(rightType, IMPOSSIBLE_ENUM_TYPES)
@@ -366,34 +335,30 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      /**
-       * Allow exact comparisons to some standard types, like null and
-       * undefined.
-       *
-       * The TypeScript compiler should properly type-check these cases, so the
-       * lint rule is unneeded.
-       */
+      // Allow exact comparisons to some standard types, like null and
+      // undefined.
+      //
+      // The TypeScript compiler should properly type-check these cases, so the
+      // lint rule is unneeded.
       if (isNullOrUndefinedOrAnyOrUnknownOrNever(leftType, rightType)) {
         return false;
       }
 
-      /**
-       * Allow number enums to be compared with strings and string enums to be
-       * compared with numbers.
-       *
-       * (The TypeScript compiler should properly type-check these cases, so the
-       * lint rule is unneeded.)
-       */
+      // Allow number enums to be compared with strings and string enums to be
+      // compared with numbers.
+      //
+      // (The TypeScript compiler should properly type-check these cases, so the
+      // lint rule is unneeded.)
       const leftEnumKinds = getEnumKinds(leftType);
       if (
-        leftEnumKinds.has(EnumKind.HAS_STRING_VALUES) &&
+        leftEnumKinds.has(EnumKind.HasStringValues) &&
         leftEnumKinds.size === 1 &&
         util.isTypeFlagSet(rightType, ts.TypeFlags.NumberLike)
       ) {
         return false;
       }
       if (
-        leftEnumKinds.has(EnumKind.HAS_NUMBER_VALUES) &&
+        leftEnumKinds.has(EnumKind.HasNumberValues) &&
         leftEnumKinds.size === 1 &&
         util.isTypeFlagSet(rightType, ts.TypeFlags.StringLike)
       ) {
@@ -402,27 +367,25 @@ export default util.createRule<Options, MessageIds>({
 
       const rightEnumKinds = getEnumKinds(rightType);
       if (
-        rightEnumKinds.has(EnumKind.HAS_STRING_VALUES) &&
+        rightEnumKinds.has(EnumKind.HasStringValues) &&
         rightEnumKinds.size === 1 &&
         util.isTypeFlagSet(leftType, ts.TypeFlags.NumberLike)
       ) {
         return false;
       }
       if (
-        rightEnumKinds.has(EnumKind.HAS_NUMBER_VALUES) &&
+        rightEnumKinds.has(EnumKind.HasNumberValues) &&
         rightEnumKinds.size === 1 &&
         util.isTypeFlagSet(leftType, ts.TypeFlags.StringLike)
       ) {
         return false;
       }
 
-      /**
-       * Disallow mismatched comparisons, like the following:
-       *
-       * ```ts
-       * if (fruit === 0) {}
-       * ```
-       */
+      // Disallow mismatched comparisons, like the following:
+      //
+      // ```ts
+      // if (fruit === 0) {}
+      // ```
       return setHasAnyElementFromSet(leftEnumTypes, rightEnumTypes);
     }
 
@@ -564,10 +527,6 @@ export default util.createRule<Options, MessageIds>({
       return true;
     }
 
-    // ------------------
-    // AST node callbacks
-    // ------------------
-
     return {
       AssignmentExpression(node): void {
         const leftType = getTypeFromNode(node.left);
@@ -575,55 +534,41 @@ export default util.createRule<Options, MessageIds>({
 
         if (isAssigningNonEnumValueToEnumVariable(leftType, rightType)) {
           context.report({
-            node,
             messageId: 'mismatchedAssignment',
+            node,
           });
         }
       },
 
-      BinaryExpression(node): void {
+      'BinaryExpression[operator=/=/]'(node: TSESTree.BinaryExpression): void {
         const leftType = getTypeFromNode(node.left);
         const rightType = getTypeFromNode(node.right);
 
         if (isMismatchedEnumComparison(node.operator, leftType, rightType)) {
           context.report({
-            node,
             messageId: 'mismatchedComparison',
+            node,
           });
         }
       },
 
-      'CallExpression, NewExpression': checkCallExpression,
+      'CallExpression, NewExpression': checkCallOrNewExpression,
 
       UpdateExpression(node): void {
-        /**
-         * Disallow using enums with unary operators, like the following:
-         *
-         * ```ts
-         * const fruit = Fruit.Apple;
-         * fruit++;
-         * ```
-         */
+        // Disallow using enums with unary operators, like the following:
+        //
+        // ```ts
+        // const fruit = Fruit.Apple;
+        // fruit++;
+        // ```
         if (getEnumTypes(getTypeFromNode(node.argument)).size > 0) {
           context.report({
-            node,
             messageId: 'incorrectIncrement',
+            node,
           });
         }
       },
 
-      /**
-       * Allow enum declarations without an initializer, like the following:
-       *
-       * ```ts
-       * let fruit: Fruit;
-       * if (something()) {
-       *   fruit = Fruit.Apple;
-       * } else {
-       *   fruit = Fruit.Banana;
-       * }
-       * ```
-       */
       'VariableDeclarator[init]'(
         node: TSESTree.VariableDeclarator & { init: TSESTree.Expression },
       ): void {
