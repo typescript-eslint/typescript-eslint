@@ -129,12 +129,14 @@ export default util.createRule<Options, MessageIds>({
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
-    // If passed an enum member, returns the type of the parent. Otherwise,
-    // returns itself.
-    //
-    // For example:
-    // - `Fruit` --> `Fruit`
-    // - `Fruit.Apple` --> `Fruit`
+    /*
+     * If passed an enum member, returns the type of the parent. Otherwise,
+     * returns itself.
+     *
+     * For example:
+     * - `Fruit` --> `Fruit`
+     * - `Fruit.Apple` --> `Fruit`
+     */
     function getBaseEnumType(type: ts.Type): ts.Type {
       const symbol = type.getSymbol();
       if (
@@ -152,13 +154,15 @@ export default util.createRule<Options, MessageIds>({
       return typeChecker.getTypeAtLocation(valueDeclaration.parent) ?? type;
     }
 
-    // A type can have 0 or more enum types. For example:
-    // - 123 --> []
-    // - {} --> []
-    // - Fruit.Apple --> [Fruit]
-    // - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
-    // - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
-    // - T extends Fruit --> [Fruit]
+    /**
+     * A type can have 0 or more enum types. For example:
+     * - 123 --> []
+     * - {} --> []
+     * - Fruit.Apple --> [Fruit]
+     * - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
+     * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
+     * - T extends Fruit --> [Fruit]
+     */
     function getEnumTypes(type: ts.Type): Set<ts.Type> {
       return new Set(
         tsutils
