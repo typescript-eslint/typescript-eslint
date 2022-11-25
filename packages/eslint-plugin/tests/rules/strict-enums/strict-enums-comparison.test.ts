@@ -1,8 +1,10 @@
-import {
+import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/utils/src/ts-eslint';
-import rule, { MessageIds } from '../../../src/rules/strict-enums';
+
+import type { MessageIds } from '../../../src/rules/strict-enums';
+import rule from '../../../src/rules/strict-enums';
 import {
   fruit2EnumDefinition,
   fruitEnumDefinition,
@@ -326,9 +328,16 @@ fruitOrBoolean === true;
 valid.push({
   name: "Comparing various valid types (Brad's test)",
   code: `
-enum Str { A = 'a' }
-enum Num { B = 1 }
-enum Mixed { A = 'a', B = 1 }
+enum Str {
+  A = 'a',
+}
+enum Num {
+  B = 1,
+}
+enum Mixed {
+  A = 'a',
+  B = 1,
+}
 
 declare const str: Str;
 declare const strOrString: Str | string;
@@ -361,15 +370,22 @@ str === someFunction;
 num === someFunction;
 mixed === someFunction;
 */
-        `,
+  `,
 });
 
 invalid.push({
   name: "Comparing various invalid types (Brad's test)",
   code: `
-enum Str { A = 'a' }
-enum Num { B = 1 }
-enum Mixed { A = 'a', B = 1 }
+enum Str {
+  A = 'a',
+}
+enum Num {
+  B = 1,
+}
+enum Mixed {
+  A = 'a',
+  B = 1,
+}
 
 declare const str: Str;
 declare const num: Num;
@@ -380,7 +396,7 @@ str === 'a';
 num === 1;
 mixed === 'a';
 mixed === 1;
-        `,
+  `,
   errors: [
     { messageId: 'mismatchedComparison' },
     { messageId: 'mismatchedComparison' },

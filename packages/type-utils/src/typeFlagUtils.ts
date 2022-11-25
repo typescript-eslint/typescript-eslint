@@ -1,8 +1,6 @@
 import { unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
 
-import { getEnumValues } from './getEnum';
-
 const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
 /**
@@ -14,24 +12,6 @@ export function getTypeFlags(type: ts.Type): number | ts.TypeFlags {
     flags |= t.flags;
   }
   return flags;
-}
-
-/**
- * Returns an array containing the names of every type flag that matches the
- * given type flags.
- *
- * Useful for debugging and inspecting the AST.
- */
-export function getTypeFlagNames(type: ts.Type): string[] {
-  const flagNames: string[] = [];
-  for (const flag of getEnumValues(ts.TypeFlags)) {
-    if (isTypeFlagSet(type, flag)) {
-      const flagName = ts.TypeFlags[flag];
-      flagNames.push(flagName);
-    }
-  }
-
-  return flagNames;
 }
 
 function isFlagSet(flags: number, flag: number): boolean {
@@ -49,13 +29,13 @@ export function isSymbolFlagSet(
 }
 
 /**
+ * @param flagsToCheck The composition of one or more `ts.TypeFlags`.
+ * @param isReceiver Whether the type is a receiving type (i.e. the type of a
+ * called function's parameter).
+ * @remarks
  * Note that if the type is a union, this function will decompose it into the
  * parts and get the flags of every union constituent. If this is not desired,
  * use the `isTypeFlagSetSimple` function instead.
- *
- * @param flagsToCheck The composition of one or more `ts.TypeFlags`.
- * @param isReceiver True if the type is a receiving type (i.e. the type of a
- * called function's parameter).
  */
 export function isTypeFlagSet(
   type: ts.Type,
@@ -73,8 +53,7 @@ export function isTypeFlagSet(
 
 /**
  * Similar to the `isTypeFlagSet` function, but does not decompose unions.
- *
- * This is just a very simple bit flag check.
+ * Instead performs a single bit flag check.
  */
 export function isTypeFlagSetSimple(
   type: ts.Type,

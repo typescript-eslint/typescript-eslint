@@ -2,7 +2,7 @@ export * from './containsAllTypesByName';
 export * from './getConstrainedTypeAtLocation';
 export * from './getContextualType';
 export * from './getDeclaration';
-export * from './getEnum';
+export * from './getEnumNames';
 export * from './getSourceFileOfNode';
 export * from './getTokenAtPosition';
 export * from './getTypeArguments';

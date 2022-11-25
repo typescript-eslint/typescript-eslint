@@ -1,8 +1,10 @@
-import {
+import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/utils/src/ts-eslint';
-import rule, { MessageIds } from '../../../src/rules/strict-enums';
+
+import type { MessageIds } from '../../../src/rules/strict-enums';
+import rule from '../../../src/rules/strict-enums';
 import { fruitEnumDefinition, strictEnumsRuleTester } from './strict-enums';
 
 const valid: ValidTestCase<unknown[]>[] = [];

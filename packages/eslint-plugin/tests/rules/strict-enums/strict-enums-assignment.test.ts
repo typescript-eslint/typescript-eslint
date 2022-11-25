@@ -1,8 +1,10 @@
-import {
+import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/utils/src/ts-eslint';
-import rule, { MessageIds } from '../../../src/rules/strict-enums';
+
+import type { MessageIds } from '../../../src/rules/strict-enums';
+import rule from '../../../src/rules/strict-enums';
 import {
   fruit2EnumDefinition,
   fruitEnumDefinition,
@@ -36,7 +38,7 @@ valid.push({
   code: `
   const myArray = [1];
   const [firstElement] = myArray;
-    `,
+  `,
 });
 
 valid.push({

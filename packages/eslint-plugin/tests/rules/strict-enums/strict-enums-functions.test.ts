@@ -1,8 +1,10 @@
-import {
+import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/utils/src/ts-eslint';
-import rule, { MessageIds } from '../../../src/rules/strict-enums';
+
+import type { MessageIds } from '../../../src/rules/strict-enums';
+import rule from '../../../src/rules/strict-enums';
 import {
   fruitEnumDefinition,
   strictEnumsRuleTester,
@@ -999,12 +1001,8 @@ toEqual<Fruit>(0, 0);
 valid.push({
   name: 'Using JSON.stringify',
   code: `
-JSON.stringify(
-  {},
-  (_, value: unknown) => value ?? undefined,
-  2,
-);
-        `,
+JSON.stringify({}, (_, value: unknown) => value ?? undefined, 2);
+  `,
 });
 
 valid.push({
@@ -1013,7 +1011,7 @@ valid.push({
 function flatten<T>(arr: T[][]): T[] {
   return arr.reduce((acc, a) => acc.concat(a), []);
 }
-        `,
+  `,
 });
 
 strictEnumsRuleTester.run('strict-enums-functions', rule, {

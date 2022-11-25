@@ -174,7 +174,6 @@ export default util.createRule({
         ts.SyntaxKind.AwaitExpression,
         ts.SyntaxKind.Unknown,
       );
-
       return nodePrecedence > awaitPrecedence;
     }
 
