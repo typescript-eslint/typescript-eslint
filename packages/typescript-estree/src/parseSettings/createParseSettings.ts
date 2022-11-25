@@ -8,6 +8,7 @@ import {
   getCanonicalFileName,
 } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
+import { getProjectConfigFiles } from './getProjectConfigFiles';
 import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
@@ -112,7 +113,7 @@ export function createParseSettings(
 
     parseSettings.projects = prepareAndTransformProjects(
       tsconfigRootDir,
-      options.project,
+      getProjectConfigFiles(parseSettings, options.project),
       projectFolderIgnoreList,
     );
   }

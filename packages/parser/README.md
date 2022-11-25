@@ -59,7 +59,7 @@ interface ParserOptions {
   jsxFragmentName?: string | null;
   lib?: string[];
 
-  project?: string | string[];
+  project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   extraFileExtensions?: string[];
