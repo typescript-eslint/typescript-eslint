@@ -62,7 +62,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           .
         </>
       ),
-      emoji: '🛠',
+      emoji: '🔧',
     });
   }
 

@@ -1,9 +1,9 @@
 import debug from 'debug';
 import fs from 'fs';
-import semver from 'semver';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
+import { getCodeText } from '../source-files';
 import type { CanonicalPath } from './shared';
 import {
   canonicalDirname,
@@ -90,7 +90,10 @@ function saveWatchCallback(
 /**
  * Holds information about the file currently being linted
  */
-const currentLintOperationState: { code: string; filePath: CanonicalPath } = {
+const currentLintOperationState: {
+  code: string | ts.SourceFile;
+  filePath: CanonicalPath;
+} = {
   code: '',
   filePath: '' as CanonicalPath,
 };
@@ -148,7 +151,7 @@ function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
 
   // Update file version if necessary
   const fileWatchCallbacks = fileWatchCallbackTrackingMap.get(filePath);
-  const codeHash = createHash(parseSettings.code);
+  const codeHash = createHash(getCodeText(parseSettings.code));
   if (
     parsedFilesSeenHash.get(filePath) !== codeHash &&
     fileWatchCallbacks &&
@@ -159,11 +162,21 @@ function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
     );
   }
 
+  const currentProjectsFromSettings = new Set(parseSettings.projects);
+
   /*
    * before we go into the process of attempting to find and update every program
    * see if we know of a program that contains this file
    */
   for (const [tsconfigPath, existingWatch] of knownWatchProgramMap.entries()) {
+    if (!currentProjectsFromSettings.has(tsconfigPath)) {
+      // the current parser run doesn't specify this tsconfig in parserOptions.project
+      // so we don't want to consider it for caching purposes.
+      //
+      // if we did consider it we might return a program for a project
+      // that wasn't specified in the current parser run (which is obv bad!).
+      continue;
+    }
     let fileList = programFileListCache.get(tsconfigPath);
     let updatedProgram: ts.Program | null = null;
     if (!fileList) {
@@ -249,10 +262,6 @@ function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
   return results;
 }
 
-const isRunningNoTimeoutFix = semver.satisfies(ts.version, '>=3.9.0-beta', {
-  includePrerelease: true,
-});
-
 function createWatchProgram(
   tsconfigPath: string,
   parseSettings: ParseSettings,
@@ -281,7 +290,7 @@ function createWatchProgram(
     const filePath = getCanonicalFileName(filePathIn);
     const fileContent =
       filePath === currentLintOperationState.filePath
-        ? currentLintOperationState.code
+        ? getCodeText(currentLintOperationState.code)
         : oldReadFile(filePath, encoding);
     if (fileContent !== undefined) {
       parsedFilesSeenHash.set(filePath, createHash(fileContent));
@@ -363,34 +372,9 @@ function createWatchProgram(
 
   // Since we don't want to asynchronously update program we want to disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch
-  let callback: (() => void) | undefined;
-  if (isRunningNoTimeoutFix) {
-    watchCompilerHost.setTimeout = undefined;
-    watchCompilerHost.clearTimeout = undefined;
-  } else {
-    log('Running without timeout fix');
-    // But because of https://github.com/microsoft/TypeScript/pull/37308 we cannot just set it to undefined
-    // instead save it and call before getProgram is called
-    watchCompilerHost.setTimeout = (cb, _ms, ...args: unknown[]): unknown => {
-      callback = cb.bind(/*this*/ undefined, ...args);
-      return callback;
-    };
-    watchCompilerHost.clearTimeout = (): void => {
-      callback = undefined;
-    };
-  }
-  const watch = ts.createWatchProgram(watchCompilerHost);
-  if (!isRunningNoTimeoutFix) {
-    const originalGetProgram = watch.getProgram;
-    watch.getProgram = (): ts.BuilderProgram => {
-      if (callback) {
-        callback();
-      }
-      callback = undefined;
-      return originalGetProgram.call(watch);
-    };
-  }
-  return watch;
+  watchCompilerHost.setTimeout = undefined;
+  watchCompilerHost.clearTimeout = undefined;
+  return ts.createWatchProgram(watchCompilerHost);
 }
 
 function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {

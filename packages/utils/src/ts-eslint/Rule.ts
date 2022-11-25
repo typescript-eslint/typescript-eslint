@@ -23,10 +23,6 @@ interface RuleMetaDataDocs {
    */
   url?: string;
   /**
-   * Specifies whether the rule can return suggestions.
-   */
-  suggestion?: boolean;
-  /**
    * Does the rule require us to create a full TypeScript Program in order for it
    * to type-check code. This is only used for documentation purposes.
    */

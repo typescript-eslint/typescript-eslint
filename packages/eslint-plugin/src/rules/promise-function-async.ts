@@ -172,7 +172,10 @@ export default util.createRule<Options, MessageIds>({
             }
 
             // if current token is a keyword like `static` or `public` then skip it
-            while (keyToken.type === AST_TOKEN_TYPES.Keyword) {
+            while (
+              keyToken.type === AST_TOKEN_TYPES.Keyword &&
+              keyToken.range[0] < method.key.range[0]
+            ) {
               keyToken = sourceCode.getTokenAfter(keyToken)!;
             }
 

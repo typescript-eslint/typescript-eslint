@@ -1,5 +1,8 @@
 replies:
   - body: |
+      👋 Hey @{{ author }}! Just checking in, is this still something you have time for? No worries if not - I just don't want to leave it hanging.
+    name: Checking In
+  - body: |
       Thanks for posting! This is a duplicate of #<insert issue>. Before filing an issue, please [use our issue search](https://github.com/typescript-eslint/typescript-eslint/issues) to check for open and closed issues that already address what you're looking for.
     name: Clearly Duplicate Issue
   - body: |
@@ -18,6 +21,25 @@ replies:
       If you need it sooner, please try the `canary` tag on NPM.
     name: Fix Has Been Merged
   - body: |
+      Thanks for the report @<reporter>!\
+      This might be a valid issue, but we can't tell because you haven't filled in enough information.\
+      Please fill in the rest of the issue template so we can take a look.\
+      Thanks!
+    name: Needs More Info
+  - body: |
+      Thanks for the report @<reporter>!\
+      I can't reproduce the issue using the repository you provided.\
+      Could you please comment with instructions on how to reproduce the issue?\
+      Thanks!
+    name: Needs Full Reproduction
+  - body: |
+      Thanks for the report @<reporter>!\
+      I can't reproduce the issue using the code you provided.\
+      Could you please create an isolated reproduction in our playground (https://typescript-eslint.io/play) and comment back when you've got one?\
+      We prefer an isolated reproduction so that we as volunteer maintainers can quickly reproduce the issue and more easily find the cause.\
+      Thanks!
+    name: Needs Playground Reproduction
+  - body: |
       With any issue opened in this project — it either has visible progress in the form of an attached PR, or it has no progress.\
       \
       We are a community-run project. The volunteer maintainers spend most of their time triaging issues and reviewing PRs. This means that most issues will not progress unless a member of the community steps up and champions it.\
@@ -33,6 +55,12 @@ replies:
       If this issue is important to you — consider being that champion.
       If not — please use the subscribe function and wait patiently for someone else to implement this.
     name: Progress - Nice
+  - body: |
+      Closing this issue as it's been stale for ~6 weeks without activity. Feel free to reopen @{{ author }} if you have time - but no worries if not! If anybody wants to drive it forward, please do either post here or in a new issue with the info we asked about. Thanks! 😊
+    name: Pruning Stale Issue
+  - body: |
+      Closing this PR as it's been stale for ~6 weeks without activity. Feel free to reopen @{{ author }} if you have time - but no worries if not! If anybody wants to drive it forward, please do post your own PR - and if you use this as a start, consider adding `Co-authored-by: @{{ author }}` at the end of your PR description. Thanks! 😊
+    name: Pruning Stale PR
   - body: |
       As per [our contributing guidelines](https://github.com/typescript-eslint/typescript-eslint/blob/master/CONTRIBUTING.md#addressing-feedback-and-beyond) this PR is in the queue of PRs to reviewed, and will be reviewed when we are able.
       \

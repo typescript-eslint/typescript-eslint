@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression logical-with-parentheses Babel - Tokens 1`] = `
+Array [
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [0, 1],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 1, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [1, 4],
+    loc: {
+      start: { column: 1, line: 1 },
+      end: { column: 4, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "===",
+
+    range: [5, 8],
+    loc: {
+      start: { column: 5, line: 1 },
+      end: { column: 8, line: 1 },
+    },
+  },
+  Numeric {
+    type: "Numeric",
+    value: "1",
+
+    range: [9, 10],
+    loc: {
+      start: { column: 9, line: 1 },
+      end: { column: 10, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "satisfies",
+
+    range: [12, 21],
+    loc: {
+      start: { column: 12, line: 1 },
+      end: { column: 21, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "boolean",
+
+    range: [22, 29],
+    loc: {
+      start: { column: 22, line: 1 },
+      end: { column: 29, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [29, 30],
+    loc: {
+      start: { column: 29, line: 1 },
+      end: { column: 30, line: 1 },
+    },
+  },
+]
+`;

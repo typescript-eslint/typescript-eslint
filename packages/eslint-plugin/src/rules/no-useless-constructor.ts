@@ -52,10 +52,7 @@ export default util.createRule<Options, MessageIds>({
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
-    messages: baseRule.meta.messages ?? {
-      noUselessConstructor: 'Useless constructor.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {
@@ -63,8 +60,7 @@ export default util.createRule<Options, MessageIds>({
     return {
       MethodDefinition(node): void {
         if (
-          node.value &&
-          node.value.type === AST_NODE_TYPES.FunctionExpression &&
+          node.value?.type === AST_NODE_TYPES.FunctionExpression &&
           node.value.body &&
           checkAccessibility(node) &&
           checkParams(node)

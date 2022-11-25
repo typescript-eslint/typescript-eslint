@@ -6,7 +6,7 @@ import type { ParseSettings } from './index';
  * This needs to be kept in sync with the top-level README.md in the
  * typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <4.9.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.2.4 <5.0.0';
 
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one

@@ -33,7 +33,6 @@ import type {
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 import { AST_NODE_TYPES } from './ts-estree';
-import { typescriptVersionIsAtLeast } from './version-check';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -2148,13 +2147,6 @@ export class Converter {
         });
 
       case SyntaxKind.NullKeyword: {
-        if (!typescriptVersionIsAtLeast['4.0'] && this.inTypeMode) {
-          // 4.0 started nesting null types inside a LiteralType node, but we still need to support pre-4.0
-          return this.createNode<TSESTree.TSNullKeyword>(node, {
-            type: AST_NODE_TYPES.TSNullKeyword,
-          });
-        }
-
         return this.createNode<TSESTree.NullLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: null,
@@ -2766,10 +2758,7 @@ export class Converter {
         });
       }
       case SyntaxKind.LiteralType: {
-        if (
-          typescriptVersionIsAtLeast['4.0'] &&
-          node.literal.kind === SyntaxKind.NullKeyword
-        ) {
+        if (node.literal.kind === SyntaxKind.NullKeyword) {
           // 4.0 started nesting null types inside a LiteralType node
           // but our AST is designed around the old way of null being a keyword
           return this.createNode<TSESTree.TSNullKeyword>(
@@ -2900,6 +2889,14 @@ export class Converter {
           type: AST_NODE_TYPES.ImportAttribute,
           key: this.convertChild(node.name),
           value: this.convertChild(node.value),
+        });
+      }
+
+      case SyntaxKind.SatisfiesExpression: {
+        return this.createNode<TSESTree.TSSatisfiesExpression>(node, {
+          type: AST_NODE_TYPES.TSSatisfiesExpression,
+          expression: this.convertChild(node.expression),
+          typeAnnotation: this.convertChild(node.type),
         });
       }
 

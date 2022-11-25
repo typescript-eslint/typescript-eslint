@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-no-parentheses Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ArrowFunctionExpression {
+        type: "ArrowFunctionExpression",
+        async: false,
+        body: TSSatisfiesExpression {
+          type: "TSSatisfiesExpression",
+          expression: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [6, 7],
+            loc: {
+              start: { column: 6, line: 1 },
+              end: { column: 7, line: 1 },
+            },
+          },
+          typeAnnotation: TSNumberKeyword {
+            type: "TSNumberKeyword",
+
+            range: [18, 24],
+            loc: {
+              start: { column: 18, line: 1 },
+              end: { column: 24, line: 1 },
+            },
+          },
+
+          range: [6, 24],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 24, line: 1 },
+          },
+        },
+        expression: true,
+        generator: false,
+        id: null,
+        params: Array [],
+
+        range: [0, 24],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 24, line: 1 },
+        },
+      },
+
+      range: [0, 24],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 24, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 25],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;
