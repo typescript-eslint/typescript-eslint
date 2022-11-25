@@ -8,11 +8,11 @@ import * as util from '../util';
  * TypeScript only allows number enums, string enums, or mixed enums with both
  * numbers and strings.
  *
- * Mixed enums are be a union of a number enum and a string enum, so there is
+ * Mixed enums are a union of a number enum and a string enum, so there is
  * no separate kind for them.
  */
 enum EnumKind {
-  NON_ENUM,
+  NonEnum,
   HasNumberValues,
   HasStringValues,
 }
@@ -42,12 +42,9 @@ export type MessageIds =
   | 'mismatchedComparison'
   | 'mismatchedFunctionArgument';
 
-/**
- * See the comment for the `EnumKind` enum.
- */
 function getEnumKind(type: ts.Type): EnumKind {
   if (!util.isTypeFlagSet(type, ts.TypeFlags.EnumLike)) {
-    return EnumKind.NON_ENUM;
+    return EnumKind.NonEnum;
   }
 
   const isStringLiteral = util.isTypeFlagSet(type, ts.TypeFlags.StringLiteral);
@@ -132,14 +129,12 @@ export default util.createRule<Options, MessageIds>({
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
-    /**
-     * If passed an enum member, returns the type of the parent. Otherwise,
-     * returns itself.
-     *
-     * For example:
-     * - `Fruit` --> `Fruit`
-     * - `Fruit.Apple` --> `Fruit`
-     */
+    // If passed an enum member, returns the type of the parent. Otherwise,
+    // returns itself.
+    //
+    // For example:
+    // - `Fruit` --> `Fruit`
+    // - `Fruit.Apple` --> `Fruit`
     function getBaseEnumType(type: ts.Type): ts.Type {
       const symbol = type.getSymbol();
       if (
@@ -157,15 +152,13 @@ export default util.createRule<Options, MessageIds>({
       return typeChecker.getTypeAtLocation(valueDeclaration.parent) ?? type;
     }
 
-    /**
-     * A type can have 0 or more enum types. For example:
-     * - 123 --> []
-     * - {} --> []
-     * - Fruit.Apple --> [Fruit]
-     * - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
-     * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
-     * - T extends Fruit --> [Fruit]
-     */
+    // A type can have 0 or more enum types. For example:
+    // - 123 --> []
+    // - {} --> []
+    // - Fruit.Apple --> [Fruit]
+    // - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
+    // - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
+    // - T extends Fruit --> [Fruit]
     function getEnumTypes(type: ts.Type): Set<ts.Type> {
       return new Set(
         tsutils
@@ -208,22 +201,20 @@ export default util.createRule<Options, MessageIds>({
         const argumentType = getTypeFromNode(argument);
         let parameterType = signature.getTypeParameterAtPosition(i);
 
-        /**
-         * If this function parameter is a generic type that extends another
-         * type, we want to compare the calling argument to the constraint
-         * instead.
-         *
-         * For example:
-         *
-         * ```ts
-         * function useFruit<FruitType extends Fruit>(fruitType: FruitType) {}
-         * useFruit(0)
-         * ```
-         *
-         * Here, we want to compare `Fruit.Apple` to `Fruit`, not `FruitType`,
-         * because `FruitType` would just be equal to 0 in this case (and
-         * would be unsafe).
-         */
+        // If this function parameter is a generic type that extends another
+        // type, we want to compare the calling argument to the constraint
+        // instead.
+        //
+        // For example:
+        //
+        // ```ts
+        // function useFruit<FruitType extends Fruit>(fruitType: FruitType) {}
+        // useFruit(0)
+        // ```
+        //
+        // Here, we want to compare `Fruit.Apple` to `Fruit`, not `FruitType`,
+        // because `FruitType` would just be equal to 0 in this case (and
+        // would be unsafe).
         const parameter = declaration.parameters[i];
         if (parameter !== undefined) {
           const parameterTSNode = typeChecker.getTypeAtLocation(parameter);
@@ -233,14 +224,12 @@ export default util.createRule<Options, MessageIds>({
           }
         }
 
-        /**
-         * Disallow mismatched function calls, like the following:
-         *
-         * ```ts
-         * function useFruit(fruit: Fruit) {}
-         * useFruit(0);
-         * ```
-         */
+        // Disallow mismatched function calls, like the following:
+        //
+        // ```ts
+        // function useFruit(fruit: Fruit) {}
+        // useFruit(0);
+        // ```
         if (isMismatchedEnumFunctionArgument(argumentType, parameterType)) {
           context.report({
             node: node.arguments[i],
@@ -393,15 +382,13 @@ export default util.createRule<Options, MessageIds>({
       argumentType: ts.Type, // From the function call
       parameterType: ts.Type, // From the function itself
     ): boolean {
-      /**
-       * First, recursively check for functions with type containers like the
-       * following:
-       *
-       * ```ts
-       * function useFruits(fruits: Fruit[]) {}
-       * useFruits([0, 1]);
-       * ```
-       */
+      // First, recursively check for functions with type containers like the
+      // following:
+      //
+      // ```ts
+      // function useFruits(fruits: Fruit[]) {}
+      // useFruits([0, 1]);
+      // ```
       if (util.isTypeReferenceType(argumentType)) {
         const argumentTypeArguments =
           typeChecker.getTypeArguments(argumentType);
@@ -438,30 +425,26 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      /**
-       * Allow function calls that have nothing to do with enums, like the
-       * following:
-       *
-       * ```ts
-       * function useNumber(num: number) {}
-       * useNumber(0);
-       * ```
-       */
+      // Allow function calls that have nothing to do with enums, like the
+      // following:
+      //
+      // ```ts
+      // function useNumber(num: number) {}
+      // useNumber(0);
+      // ```
       const parameterEnumTypes = getEnumTypes(parameterType);
       if (parameterEnumTypes.size === 0) {
         return false;
       }
 
-      /**
-       * Allow passing enum values into functions that take in the "any" type
-       * and similar types that should basically match any enum, like the
-       * following:
-       *
-       * ```ts
-       * function useNumber(num: number) {}
-       * useNumber(Fruit.Apple);
-       * ```
-       */
+      // Allow passing enum values into functions that take in the "any" type
+      // and similar types that should basically match any enum, like the
+      // following:
+      //
+      // ```ts
+      // function useNumber(num: number) {}
+      // useNumber(Fruit.Apple);
+      // ```
       const parameterSubTypes = tsutils.unionTypeParts(parameterType);
       for (const parameterSubType of parameterSubTypes) {
         if (
@@ -474,16 +457,14 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
-      /**
-       * Disallow passing number literals or string literals into functions that
-       * take in an enum, like the following:
-       *
-       * ```ts
-       * function useFruit(fruit: Fruit) {}
-       * declare const fruit: Fruit.Apple | 1;
-       * useFruit(fruit)
-       * ```
-       */
+      // Disallow passing number literals or string literals into functions that
+      // take in an enum, like the following:
+      //
+      // ```ts
+      // function useFruit(fruit: Fruit) {}
+      // declare const fruit: Fruit.Apple | 1;
+      // useFruit(fruit)
+      // ```
       const argumentSubTypes = tsutils.unionTypeParts(argumentType);
       for (const argumentSubType of argumentSubTypes) {
         if (
@@ -494,30 +475,26 @@ export default util.createRule<Options, MessageIds>({
         }
       }
 
-      /**
-       * Allow function calls that match one of the types in a union, like the
-       * following:
-       *
-       * ```ts
-       * function useApple(fruitOrNull: Fruit | null) {}
-       * useApple(null);
-       * ```
-       */
+      // Allow function calls that match one of the types in a union, like the
+      // following:
+      //
+      // ```ts
+      // function useApple(fruitOrNull: Fruit | null) {}
+      // useApple(null);
+      // ```
       const argumentSubTypesSet = new Set(argumentSubTypes);
       const parameterSubTypesSet = new Set(parameterSubTypes);
       if (setHasAnyElementFromSet(argumentSubTypesSet, parameterSubTypesSet)) {
         return false;
       }
 
-      /**
-       * Allow function calls that have a base enum that match the function
-       * type, like the following:
-       *
-       * ```ts
-       * function useFruit(fruit: Fruit) {}
-       * useFruit(Fruit.Apple);
-       * ```
-       */
+      // Allow function calls that have a base enum that match the function
+      // type, like the following:
+      //
+      // ```ts
+      // function useFruit(fruit: Fruit) {}
+      // useFruit(Fruit.Apple);
+      // ```
       if (
         setHasAnyElementFromSet(getEnumTypes(argumentType), parameterEnumTypes)
       ) {
