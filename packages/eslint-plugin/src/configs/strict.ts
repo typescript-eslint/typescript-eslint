@@ -28,6 +28,8 @@ export = {
     '@typescript-eslint/no-unnecessary-condition': 'warn',
     '@typescript-eslint/no-unnecessary-type-arguments': 'warn',
     '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
+    '@typescript-eslint/no-unsafe-enum-assignment': 'warn',
+    '@typescript-eslint/no-unsafe-enum-comparison': 'warn',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'warn',
     '@typescript-eslint/non-nullable-type-assertion-style': 'warn',
@@ -41,7 +43,6 @@ export = {
     '@typescript-eslint/prefer-return-this-type': 'warn',
     '@typescript-eslint/prefer-string-starts-ends-with': 'warn',
     '@typescript-eslint/prefer-ts-expect-error': 'warn',
-    '@typescript-eslint/strict-enums': 'warn',
     '@typescript-eslint/unified-signatures': 'warn',
   },
 };

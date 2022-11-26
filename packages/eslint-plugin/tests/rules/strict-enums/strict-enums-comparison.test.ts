@@ -1,4 +1,4 @@
-import rule from '../../../src/rules/strict-enums';
+import rule from '../../../src/rules/no-unsafe-enum-comparison';
 import {
   fruit2EnumDefinition,
   fruitEnumDefinition,

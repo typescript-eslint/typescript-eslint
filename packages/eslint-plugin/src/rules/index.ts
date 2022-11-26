@@ -79,6 +79,8 @@ import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
+import noUnsafeEnumAssignment from './no-unsafe-enum-assignment';
+import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnusedExpressions from './no-unused-expressions';
@@ -121,7 +123,6 @@ import spaceBeforeBlocks from './space-before-blocks';
 import spaceBeforeFunctionParen from './space-before-function-paren';
 import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
-import strictEnums from './strict-enums';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
@@ -211,6 +212,8 @@ export default {
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
+  'no-unsafe-enum-assignment': noUnsafeEnumAssignment,
+  'no-unsafe-enum-comparison': noUnsafeEnumComparison,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unused-expressions': noUnusedExpressions,
@@ -253,7 +256,6 @@ export default {
   'space-before-function-paren': spaceBeforeFunctionParen,
   'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,
-  'strict-enums': strictEnums,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,

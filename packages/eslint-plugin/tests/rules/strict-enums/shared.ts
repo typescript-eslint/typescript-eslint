@@ -12,11 +12,7 @@ export const strictEnumsRuleTester = new RuleTester({
 
 /** A number enum. */
 export const fruitEnumDefinition = `
-enum Fruit {
-  Apple,
-  Banana,
-  Pear,
-}
+enum Fruit { Apple, Banana, Cherry }
 `;
 
 /** A different number enum. */
@@ -24,7 +20,7 @@ export const fruit2EnumDefinition = `
 enum Fruit2 {
   Apple2,
   Banana2,
-  Pear2,
+  Cherry2,
 }
 `;
 
