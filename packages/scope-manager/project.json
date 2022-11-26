@@ -1,10 +1,10 @@
 {
-  "root": "packages/scope-manager",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/scope-manager/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": [
         "packages/scope-manager/dist",
         "packages/scope-manager/_ts3.4"
@@ -20,7 +20,7 @@
       }
     },
     "typecheck": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "parallel": true,
         "cwd": "packages/scope-manager",
@@ -31,7 +31,7 @@
       }
     },
     "clean": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
@@ -44,7 +44,7 @@
       }
     },
     "clean-fixtures": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
@@ -55,8 +55,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/scope-manager/**/*.{ts,js}"],
-        "ignorePath": ".eslintignore"
+        "lintFilePatterns": ["packages/scope-manager/**/*.ts"]
       }
     },
     "test": {
@@ -68,7 +67,7 @@
       }
     },
     "generate-lib": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",

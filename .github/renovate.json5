@@ -1,0 +1,72 @@
+{
+  enabledManagers: ['github-actions', 'npm'],
+  ignoreDeps: [
+    // globby is ESM so we can't go any higher right now
+    'globby',
+    // this dep now uses package.json exports - we will be removing it next major
+    'eslint-scope',
+    // this dep is now ESM only
+    'execa',
+    // the nx packages get updated using the nx migrate CLI
+    '@nrwl/cli',
+    '@nrwl/devkit',
+    '@nrwl/jest',
+    '@nrwl/nx-cloud',
+    '@nrwl/tao',
+  ],
+  ignorePaths: [
+    // integration test package.json's should never be updated as they're purposely fixed tests
+    'tests/integration/fixtures',
+  ],
+  internalChecksFilter: 'strict',
+  labels: ['dependencies'],
+  packageRules: [
+    // automerge everything but major updates
+    {
+      matchUpdateTypes: ['minor', 'patch', 'pin', 'digest'],
+      automerge: true,
+      automergeStrategy: 'squash',
+    },
+
+    // label PRs appropriately
+    {
+      matchManagers: ['npm'],
+      addLabels: ['javascript'],
+    },
+    {
+      matchManagers: ['github-actions'],
+      addLabels: ['github-actions'],
+    },
+
+    // batch package sets together
+    {
+      extends: ['packages:react'],
+      groupName: 'react',
+    },
+    {
+      extends: ['monorepo:docusaurus'],
+      groupName: 'docusaurus',
+    },
+    {
+      extends: ['monorepo:babel'],
+      matchPackagePrefixes: ['@types/babel'],
+      groupName: 'babel',
+    },
+    {
+      extends: ['monorepo:jest'],
+      matchPackageNames: ['ts-jest', 'pretty-format'],
+      matchPackagePrefixes: ['@types/jest'],
+      groupName: 'jest',
+    },
+    {
+      matchPackagePrefixes: ['@rollup', 'rollup-'],
+      matchPackageNames: ['rollup'],
+      groupName: 'rollup',
+    },
+  ],
+  postUpdateOptions: [
+    // run yarn dedupe to cleanup the lockfile after updates
+    'yarnDedupeHighest',
+  ],
+  stabilityDays: 3,
+}

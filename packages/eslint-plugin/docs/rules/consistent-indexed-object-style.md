@@ -6,7 +6,7 @@ description: 'Require or disallow the `Record` type.'
 >
 > See **https://typescript-eslint.io/rules/consistent-indexed-object-style** for documentation.
 
-TypeScript supports defining object show keys can be flexible using an index signature. TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature. For example, the following types are equal:
+TypeScript supports defining arbitrary object keys using an index signature. TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature. For example, the following types are equal:
 
 ```ts
 interface Foo {
@@ -20,9 +20,7 @@ type Foo = {
 type Foo = Record<string, unknown>;
 ```
 
-## Rule Details
-
-This rule enforces a consistent way to define records.
+Keeping to one declaration form consistently improve code readability.
 
 ## Options
 

@@ -301,7 +301,10 @@ class Referencer extends Visitor {
   }
 
   protected visitTypeAssertion(
-    node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    node:
+      | TSESTree.TSAsExpression
+      | TSESTree.TSTypeAssertion
+      | TSESTree.TSSatisfiesExpression,
   ): void {
     this.visit(node.expression);
     this.visitType(node.typeAnnotation);
@@ -675,7 +678,7 @@ class Referencer extends Visitor {
         member.id.type === AST_NODE_TYPES.Literal &&
         typeof member.id.value === 'string'
       ) {
-        const name = member.id as TSESTree.StringLiteral;
+        const name = member.id;
         this.currentScope().defineLiteralIdentifier(
           name,
           new TSEnumMemberDefinition(name, member),
@@ -722,6 +725,10 @@ class Referencer extends Visitor {
     this.visit(node.body);
 
     this.close(node);
+  }
+
+  protected TSSatisfiesExpression(node: TSESTree.TSSatisfiesExpression): void {
+    this.visitTypeAssertion(node);
   }
 
   protected TSTypeAliasDeclaration(

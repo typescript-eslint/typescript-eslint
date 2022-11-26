@@ -125,6 +125,15 @@ interface TestCaseError<TMessageIds extends string> {
   // readonly message?: string | RegExp;
 }
 
+/**
+ * @param text a string describing the rule
+ * @param callback the test callback
+ */
+type RuleTesterTestFrameworkFunction = (
+  text: string,
+  callback: () => void,
+) => void;
+
 interface RunTests<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>,
@@ -161,23 +170,26 @@ declare class RuleTesterBase {
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
    * the global namespace.
-   * @param text a string describing the rule
-   * @param callback the test callback
    */
-  static describe?: (text: string, callback: () => void) => void;
+  static get describe(): RuleTesterTestFrameworkFunction;
+  static set describe(value: RuleTesterTestFrameworkFunction | undefined);
 
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
    * the global namespace.
-   * @param text a string describing the test case
-   * @param callback the test callback
    */
-  static it?: (text: string, callback: () => void) => void;
+  static get it(): RuleTesterTestFrameworkFunction;
+  static set it(value: RuleTesterTestFrameworkFunction | undefined);
+
+  /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   */
+  static get itOnly(): RuleTesterTestFrameworkFunction;
+  static set itOnly(value: RuleTesterTestFrameworkFunction | undefined);
 
   /**
    * Define a rule for one particular run of tests.
-   * @param name The name of the rule to define.
-   * @param rule The rule definition.
    */
   defineRule<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,
@@ -194,6 +206,7 @@ export {
   SuggestionOutput,
   RuleTester,
   RuleTesterConfig,
+  RuleTesterTestFrameworkFunction,
   RunTests,
   TestCaseError,
   ValidTestCase,

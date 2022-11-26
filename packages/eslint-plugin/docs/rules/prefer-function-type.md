@@ -6,36 +6,35 @@ description: 'Enforce using function types instead of interfaces with call signa
 >
 > See **https://typescript-eslint.io/rules/prefer-function-type** for documentation.
 
-## Rule Details
+TypeScript allows for two common ways to declare a type for a function:
+
+- Function type: `() => string`
+- Object type with a signature: `{ (): string }`
+
+The function type form is generally preferred when possible for being more succinct.
 
 This rule suggests using a function type instead of an interface or object type literal with a single call signature.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
 ### ❌ Incorrect
 
 ```ts
-interface Foo {
+interface Example {
   (): string;
 }
 ```
 
 ```ts
-function foo(bar: { (): number }): number {
-  return bar();
+function foo(example: { (): number }): number {
+  return example();
 }
 ```
 
 ```ts
-interface Foo extends Function {
-  (): void;
-}
-```
-
-```ts
-interface MixinMethod {
+interface ReturnsSelf {
   // returns the function itself, not the `this` argument.
   (arg: string): this;
 }
@@ -44,10 +43,18 @@ interface MixinMethod {
 ### ✅ Correct
 
 ```ts
-interface Foo {
-  (): void;
-  bar: number;
+type Example = () => string;
+```
+
+```ts
+function foo(example: () => number): number {
+  return bar();
 }
+```
+
+```ts
+// returns the function itself, not the `this` argument.
+type ReturnsSelf = (arg: string) => ReturnsSelf;
 ```
 
 ```ts
@@ -63,13 +70,6 @@ interface Foo {
 interface Bar extends Foo {
   (): void;
 }
-```
-
-```ts
-// returns the `this` argument of function, retaining it's type.
-type MixinMethod = <TSelf>(this: TSelf, arg: string) => TSelf;
-// a function that returns itself is much clearer in this form.
-type ReturnsSelf = (arg: string) => ReturnsSelf;
 ```
 
 ```ts

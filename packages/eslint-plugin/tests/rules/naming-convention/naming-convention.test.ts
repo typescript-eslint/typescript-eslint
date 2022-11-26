@@ -768,6 +768,105 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const obj = {
+          Bar() {
+            return 42;
+          },
+          async async_bar() {
+            return 42;
+          },
+        };
+        class foo {
+          public Bar() {
+            return 42;
+          }
+          public async async_bar() {
+            return 42;
+          }
+        }
+        abstract class foo {
+          public abstract Bar() {
+            return 42;
+          }
+          public abstract async async_bar() {
+            return 42;
+          }
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['method', 'objectLiteralMethod'],
+          format: ['snake_case'],
+          modifiers: ['async'],
+        },
+        {
+          selector: 'method',
+          format: ['PascalCase'],
+        },
+      ],
+    },
+    {
+      code: `
+        const async_bar1 = async () => {};
+        async function async_bar2() {}
+        const async_bar3 = async function async_bar4() {};
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: 'method',
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['variable'],
+          format: ['snake_case'],
+          modifiers: ['async'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public someAttribute = 1;
+          public override some_attribute_override = 1;
+          public someMethod() {
+            return 42;
+          }
+          public override some_method_override2() {
+            return 42;
+          }
+        }
+        abstract class foo extends bar {
+          public abstract someAttribute: string;
+          public abstract override some_attribute_override: string;
+          public abstract someMethod(): string;
+          public abstract override some_method_override2(): string;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['override'],
+          format: ['snake_case'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1525,6 +1624,353 @@ ruleTester.run('naming-convention', rule, {
       `,
       // 6, not 7 because 'foo' is valid
       errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
+    },
+    {
+      code: `
+        class foo {
+          public Bar() {
+            return 42;
+          }
+          public async async_bar() {
+            return 42;
+          }
+          // ❌ error
+          public async asyncBar() {
+            return 42;
+          }
+          // ❌ error
+          public AsyncBar2 = async () => {
+            return 42;
+          };
+          // ❌ error
+          public AsyncBar3 = async function () {
+            return 42;
+          };
+        }
+        abstract class foo {
+          public abstract Bar(): number;
+          public abstract async async_bar(): number;
+          // ❌ error
+          public abstract async ASYNC_BAR(): number;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: 'method',
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['method', 'objectLiteralMethod'],
+          format: ['snake_case'],
+          modifiers: ['async'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'asyncBar',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'AsyncBar2',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'AsyncBar3',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'ASYNC_BAR',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const obj = {
+          Bar() {
+            return 42;
+          },
+          async async_bar() {
+            return 42;
+          },
+          // ❌ error
+          async AsyncBar() {
+            return 42;
+          },
+          // ❌ error
+          AsyncBar2: async () => {
+            return 42;
+          },
+          // ❌ error
+          AsyncBar3: async function () {
+            return 42;
+          },
+        };
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: 'method',
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['method', 'objectLiteralMethod'],
+          format: ['snake_case'],
+          modifiers: ['async'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Object Literal Method',
+            name: 'AsyncBar',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Object Literal Method',
+            name: 'AsyncBar2',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Object Literal Method',
+            name: 'AsyncBar3',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const syncbar1 = () => {};
+        function syncBar2() {}
+        const syncBar3 = function syncBar4() {};
+
+        // ❌ error
+        const AsyncBar1 = async () => {};
+        const async_bar1 = async () => {};
+        const async_bar3 = async function async_bar4() {};
+        async function async_bar2() {}
+        // ❌ error
+        const asyncBar5 = async function async_bar6() {};
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'variableLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['variableLike'],
+          modifiers: ['async'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Variable',
+            name: 'AsyncBar1',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Variable',
+            name: 'asyncBar5',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const syncbar1 = () => {};
+        function syncBar2() {}
+        const syncBar3 = function syncBar4() {};
+
+        const async_bar1 = async () => {};
+        // ❌ error
+        async function asyncBar2() {}
+        const async_bar3 = async function async_bar4() {};
+        async function async_bar2() {}
+        // ❌ error
+        const async_bar3 = async function ASYNC_BAR4() {};
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'variableLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['variableLike'],
+          modifiers: ['async'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Function',
+            name: 'asyncBar2',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Function',
+            name: 'ASYNC_BAR4',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public someAttribute = 1;
+          public override some_attribute_override = 1;
+          // ❌ error
+          public override someAttributeOverride = 1;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['override'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Property',
+            name: 'someAttributeOverride',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public override some_method_override() {
+            return 42;
+          }
+          // ❌ error
+          public override someMethodOverride() {
+            return 42;
+          }
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['override'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'someMethodOverride',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public get someGetter(): string;
+          public override get some_getter_override(): string;
+          // ❌ error
+          public override get someGetterOverride(): string;
+          public set someSetter(val: string);
+          public override set some_setter_override(val: string);
+          // ❌ error
+          public override set someSetterOverride(val: string);
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['override'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Accessor',
+            name: 'someGetterOverride',
+            formats: 'snake_case',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Accessor',
+            name: 'someSetterOverride',
+            formats: 'snake_case',
+          },
+        },
+      ],
     },
   ],
 });

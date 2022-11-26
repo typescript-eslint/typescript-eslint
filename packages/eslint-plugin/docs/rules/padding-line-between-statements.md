@@ -6,7 +6,7 @@ description: 'Require or disallow padding lines between statements.'
 >
 > See **https://typescript-eslint.io/rules/padding-line-between-statements** for documentation.
 
-## Rule Details
+## Examples
 
 This rule extends the base [`eslint/padding-line-between-statements`](https://eslint.org/docs/rules/padding-line-between-statements) rule.
 It adds support for TypeScript constructs such as `interface` and `type`.

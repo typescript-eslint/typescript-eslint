@@ -78,6 +78,7 @@ import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
+import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnusedExpressions from './no-unused-expressions';
@@ -114,6 +115,7 @@ import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
+import sortTypeConstituents from './sort-type-constituents';
 import sortTypeUnionIntersectionMembers from './sort-type-union-intersection-members';
 import spaceBeforeBlocks from './space-before-blocks';
 import spaceBeforeFunctionParen from './space-before-function-paren';
@@ -207,6 +209,7 @@ export default {
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
+  'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unused-expressions': noUnusedExpressions,
@@ -243,6 +246,7 @@ export default {
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
   semi: semi,
+  'sort-type-constituents': sortTypeConstituents,
   'sort-type-union-intersection-members': sortTypeUnionIntersectionMembers,
   'space-before-blocks': spaceBeforeBlocks,
   'space-before-function-paren': spaceBeforeFunctionParen,

@@ -90,7 +90,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require using either `T[]` or `Array<T>` for arrays',
+      description:
+        'Require consistently using either `T[]` or `Array<T>` for arrays',
       recommended: 'strict',
     },
     fixable: 'code',
@@ -251,8 +252,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const type = typeParams[0];
-        const typeParens =
-          !util.isParenthesized(type, sourceCode) && typeNeedsParentheses(type);
+        const typeParens = typeNeedsParentheses(type);
         const parentParens =
           readonlyPrefix &&
           node.parent?.type === AST_NODE_TYPES.TSArrayType &&

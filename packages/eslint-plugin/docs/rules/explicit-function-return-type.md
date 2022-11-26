@@ -6,14 +6,15 @@ description: 'Require explicit return types on functions and class methods.'
 >
 > See **https://typescript-eslint.io/rules/explicit-function-return-type** for documentation.
 
-Explicit types for function return values makes it clear to any calling code what type is returned.
-This ensures that the return value is assigned to a variable of the correct type; or in the case
-where there is no return value, that the calling code doesn't try to use the undefined value when it
-shouldn't.
+Functions in TypeScript often don't need to be given an explicit return type annotation.
+Leaving off the return type is less code to read or write and allows the compiler to infer it from the contents of the function.
 
-## Rule Details
+However, explicit return types do make it visually more clear what type is returned by a function.
+They can also speed up TypeScript type checking performance in large codebases with many large functions.
 
-This rule aims to ensure that the values returned from functions are of the expected type.
+This rule enforces that functions do have an explicit return type annotation.
+
+## Examples
 
 <!--tabs-->
 

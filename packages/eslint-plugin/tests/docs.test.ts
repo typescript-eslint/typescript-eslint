@@ -26,11 +26,15 @@ function tokenIs<Type extends TokenType>(
   return token.type === type;
 }
 
-function tokenIsH2(token: marked.Token): token is marked.Tokens.Heading {
+function tokenIsHeading(token: marked.Token): token is marked.Tokens.Heading {
+  return tokenIs(token, 'heading');
+}
+
+function tokenIsH2(
+  token: marked.Token,
+): token is marked.Tokens.Heading & { depth: 2 } {
   return (
-    tokenIs(token, 'heading') &&
-    token.depth === 2 &&
-    !/[a-z]+: /.test(token.text)
+    tokenIsHeading(token) && token.depth === 2 && !/[a-z]+: /.test(token.text)
   );
 }
 
@@ -92,6 +96,23 @@ describe('Validating rule docs', () => {
         headers.forEach(header =>
           expect(header.text).toBe(titleCase(header.text)),
         );
+      });
+
+      const importantHeadings = new Set([
+        'How to Use',
+        'Options',
+        'Related To',
+        'When Not To Use It',
+      ]);
+
+      test('important headings must be h2s', () => {
+        const headers = tokens.filter(tokenIsHeading);
+
+        for (const header of headers) {
+          if (importantHeadings.has(header.raw.replace(/#/g, '').trim())) {
+            expect(header.depth).toBe(2);
+          }
+        }
       });
     });
   }
