@@ -4,12 +4,18 @@ import type * as ts from 'typescript';
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
 declare module 'typescript' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
+  // added in TS 4.0
   export interface NamedTupleMember extends ts.Node {}
+  // added in TS 4.1
   export interface TemplateLiteralTypeNode extends ts.Node {}
+  // added in TS 4.3
   export interface PrivateIdentifier extends ts.Node {}
   export interface ClassStaticBlockDeclaration extends ts.Node {}
+  // added in TS 4.5
   export interface AssertClause extends ts.Node {}
   export interface AssertEntry extends ts.Node {}
+  // added in TS 4.9
+  export interface SatisfiesExpression extends ts.Node {}
   /* eslint-enable @typescript-eslint/no-empty-interface */
 }
 
