@@ -152,10 +152,10 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
     {
       code: `
-        declare const x: string[] | null;
-        // eslint-disable-next-line
-        if (x) {
-        }
+declare const x: string[] | null;
+// eslint-disable-next-line
+if (x) {
+}
       `,
       options: [
         {
@@ -1117,12 +1117,12 @@ if (x) {
         { messageId: 'conditionErrorNullableObject', line: 6, column: 9 },
       ],
       output: `
-            declare const obj: { x: number } | null;
-            (obj == null) ? 1 : 0
-            obj == null
-            ;(obj != null) || 0
-            ;(obj != null) && 1 || 0
-          `,
+        declare const obj: { x: number } | null;
+        (obj == null) ? 1 : 0
+        obj == null
+        ;(obj != null) || 0
+        ;(obj != null) && 1 || 0
+      `,
     },
   ],
 });
