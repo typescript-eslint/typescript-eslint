@@ -860,7 +860,9 @@ export default util.createRule<Options, MessageId>({
         ),
       );
 
-      if (enums.length) variantTypes.add('enum');
+      if (enums.length) {
+        variantTypes.add('enum');
+      }
 
       if (
         types.some(

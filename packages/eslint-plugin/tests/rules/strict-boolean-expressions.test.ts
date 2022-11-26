@@ -136,26 +136,27 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // nullable enum in boolean context
     {
       code: `
-    enum ExampleEnum {
-      This = 0,
-      That = 1,
-    };
-    const rand = Math.random();
-    let theEnum: ExampleEnum | null = null;
-    if (rand < .3) {
-      theEnum = ExampleEnum.This;
-    }
-    if (theEnum) {}
-    `,
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (theEnum) {
+        }
+      `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-    declare const x: string[] | null;
-    // eslint-disable-next-line
-    if (x) {
-    }
-          `,
+        declare const x: string[] | null;
+        // eslint-disable-next-line
+        if (x) {
+        }
+      `,
       options: [
         {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
@@ -167,24 +168,24 @@ ruleTester.run('strict-boolean-expressions', rule, {
     },
 
     `
-    function f(arg: 'a' | null) {
-      if (arg) console.log(arg);
-    }
-        `,
+function f(arg: 'a' | null) {
+  if (arg) console.log(arg);
+}
+    `,
     `
-    function f(arg: 'a' | 'b' | null) {
-      if (arg) console.log(arg);
-    }
-        `,
+function f(arg: 'a' | 'b' | null) {
+  if (arg) console.log(arg);
+}
+    `,
     {
       code: `
-    declare const x: 1 | null;
-    declare const y: 1;
-    if (x) {
-    }
-    if (y) {
-    }
-          `,
+declare const x: 1 | null;
+declare const y: 1;
+if (x) {
+}
+if (y) {
+}
+      `,
       options: [
         {
           allowNumber: true,
@@ -192,38 +193,38 @@ ruleTester.run('strict-boolean-expressions', rule, {
       ],
     },
     `
-    function f(arg: 1 | null) {
-      if (arg) console.log(arg);
-    }
-        `,
+function f(arg: 1 | null) {
+  if (arg) console.log(arg);
+}
+    `,
     `
-    function f(arg: 1 | 2 | null) {
-      if (arg) console.log(arg);
-    }
-        `,
+function f(arg: 1 | 2 | null) {
+  if (arg) console.log(arg);
+}
+    `,
     `
-    interface Options {
-      readonly enableSomething?: true;
-    }
+interface Options {
+  readonly enableSomething?: true;
+}
 
-    function f(opts: Options): void {
-      if (opts.enableSomething) console.log('Do something');
-    }
-        `,
+function f(opts: Options): void {
+  if (opts.enableSomething) console.log('Do something');
+}
+    `,
     `
-    declare const x: true | null;
-    if (x) {
-    }
-        `,
+declare const x: true | null;
+if (x) {
+}
+    `,
     {
       code: `
-    declare const x: 'a' | null;
-    declare const y: 'a';
-    if (x) {
-    }
-    if (y) {
-    }
-          `,
+declare const x: 'a' | null;
+declare const y: 'a';
+if (x) {
+}
+if (y) {
+}
+      `,
       options: [
         {
           allowString: true,
@@ -985,16 +986,17 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       options: [{ allowNullableEnum: false }],
       code: `
-      enum ExampleEnum {
-        This = 0,
-        That = 1,
-      };
-      const rand = Math.random();
-      let theEnum: ExampleEnum | null = null;
-      if (rand < .3) {
-        theEnum = ExampleEnum.This;
-      }
-      if (theEnum) {}
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (theEnum) {
+        }
       `,
       errors: [
         {
@@ -1077,10 +1079,10 @@ ruleTester.run('strict-boolean-expressions', rule, {
     // noStrictNullCheck
     {
       code: `
-    declare const x: string[] | null;
-    if (x) {
-    }
-          `,
+declare const x: string[] | null;
+if (x) {
+}
+      `,
       errors: [
         {
           messageId: 'noStrictNullCheck',
@@ -1102,12 +1104,12 @@ ruleTester.run('strict-boolean-expressions', rule, {
     {
       options: [{ allowNullableObject: false }],
       code: noFormat`
-            declare const obj: { x: number } | null;
-            !obj ? 1 : 0
-            !obj
-            obj || 0
-            obj && 1 || 0
-          `,
+        declare const obj: { x: number } | null;
+        !obj ? 1 : 0
+        !obj
+        obj || 0
+        obj && 1 || 0
+      `,
       errors: [
         { messageId: 'conditionErrorNullableObject', line: 3, column: 10 },
         { messageId: 'conditionErrorNullableObject', line: 4, column: 10 },
