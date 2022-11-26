@@ -1001,10 +1001,10 @@ if (y) {
       errors: [
         {
           line: 11,
-          column: 11,
+          column: 13,
           messageId: 'conditionErrorNullableEnum',
           endLine: 11,
-          endColumn: 18,
+          endColumn: 20,
         },
       ],
       output: `
