@@ -779,16 +779,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           public test(): void {
             this.testObj.prop = '';
-            this.testObj.prop;
-            this.testObj?.prop;
-            this.testObj!.prop;
-            this.testObj!.prop = '';
-            this.testObj.prop.prop = '';
-            this.testObj.prop.doesSomething();
-            this.testObj?.prop.prop;
-            this.testObj?.prop?.prop;
-            this.testObj.prop?.prop;
-            this.testObj!.prop?.prop;
           }
         }
       `,
@@ -800,16 +790,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           public test(): void {
             this.testObj.prop = '';
-            this.testObj.prop;
-            this.testObj?.prop;
-            this.testObj!.prop;
-            this.testObj!.prop = '';
-            this.testObj.prop.prop = '';
-            this.testObj.prop.doesSomething();
-            this.testObj?.prop.prop;
-            this.testObj?.prop?.prop;
-            this.testObj.prop?.prop;
-            this.testObj!.prop?.prop;
           }
         }
       `,
@@ -876,6 +856,253 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
             name: 'testObj',
           },
           line: 7,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {
+            prop: '',
+          };
+          public test(): void {
+            this.testObj.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {
+            prop: '',
+          };
+          public test(): void {
+            this.testObj.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj?.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj!.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj!.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj.prop.prop = '';
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj.prop.prop = '';
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj.prop.doesSomething();
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj.prop.doesSomething();
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj?.prop.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj?.prop.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj?.prop?.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj?.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj.prop?.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj!.prop?.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj!.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'testObj',
+          },
+          line: 3,
           messageId: 'preferReadonly',
         },
       ],
