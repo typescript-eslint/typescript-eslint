@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
@@ -56,6 +56,11 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         const typeToken = sourceCode.getFirstToken(node, { skip: 1 })!;
         const punctuatorToken = sourceCode.getTokenAfter(typeToken)!;
+        if (
+          node.specifiers?.[0]?.type === AST_NODE_TYPES.ImportDefaultSpecifier
+        ) {
+          return;
+        }
         const spacesBetweenTypeAndPunctuator =
           punctuatorToken.range[0] - typeToken.range[1];
         if (after && spacesBetweenTypeAndPunctuator === 0) {

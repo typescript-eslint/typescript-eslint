@@ -116,12 +116,82 @@ ruleTester.run('keyword-spacing', rule, {
     },
     {
       code: 'import type { foo } from "foo";',
-      options: [{ overrides: { as: {} } }],
+      options: [BOTH],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
     {
       code: "import type * as Foo from 'foo'",
-      options: [{ overrides: { as: {} } }],
+      options: [BOTH],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: "import type{SavedQueries} from './SavedQueries.js';",
+      options: [
+        {
+          before: true,
+          after: false,
+          overrides: {
+            from: { after: true },
+            import: { after: true },
+            export: { after: true },
+          },
+        },
+      ],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: "import type{SavedQueries} from'./SavedQueries.js';",
+      options: [
+        {
+          before: true,
+          after: false,
+        },
+      ],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: "import type http from 'node:http';",
+      options: [
+        {
+          before: true,
+          after: false,
+          overrides: {
+            from: { after: true },
+            import: { after: true },
+            export: { after: true },
+          },
+        },
+      ],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: "import type http from'node:http';",
+      options: [
+        {
+          before: true,
+          after: false,
+        },
+      ],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: 'import type {} from "foo";',
+      options: [BOTH],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: 'import type { foo1, foo2 } from "foo";',
+      options: [BOTH],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: 'import type { foo1 as _foo1, foo2 as _foo2 } from "foo";',
+      options: [BOTH],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
+      code: 'import type { foo as bar } from "foo";',
+      options: [BOTH],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
   ],
@@ -189,6 +259,38 @@ ruleTester.run('keyword-spacing', rule, {
       options: [{ after: false, before: true }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: [{ messageId: 'unexpectedBefore', data: { value: '*' } }],
+    },
+    {
+      code: "import type {SavedQueries} from './SavedQueries.js';",
+      output: "import type{SavedQueries} from './SavedQueries.js';",
+      options: [
+        {
+          before: true,
+          after: false,
+          overrides: {
+            from: { after: true },
+            import: { after: true },
+            export: { after: true },
+          },
+        },
+      ],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [{ messageId: 'unexpectedBefore', data: { value: '{' } }],
+    },
+    {
+      code: "import type {SavedQueries} from './SavedQueries.js';",
+      output: "import type{SavedQueries} from'./SavedQueries.js';",
+      options: [
+        {
+          before: true,
+          after: false,
+        },
+      ],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      errors: [
+        { messageId: 'unexpectedBefore', data: { value: '{' } },
+        { messageId: 'unexpectedAfter', data: { value: 'from' } },
+      ],
     },
   ],
 });
