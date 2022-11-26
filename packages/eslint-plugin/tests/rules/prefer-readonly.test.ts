@@ -814,16 +814,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           public test(): void {
             this.testObj.prop = 10;
-            this.testObj.prop;
-            this.testObj?.prop;
-            this.testObj!.prop;
-            this.testObj!.prop = '';
-            this.testObj.prop.prop = '';
-            this.testObj.prop.doesSomething();
-            this.testObj?.prop.prop;
-            this.testObj?.prop?.prop;
-            this.testObj.prop?.prop;
-            this.testObj!.prop?.prop;
           }
         }
       `,
@@ -837,16 +827,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           public test(): void {
             this.testObj.prop = 10;
-            this.testObj.prop;
-            this.testObj?.prop;
-            this.testObj!.prop;
-            this.testObj!.prop = '';
-            this.testObj.prop.prop = '';
-            this.testObj.prop.doesSomething();
-            this.testObj?.prop.prop;
-            this.testObj?.prop?.prop;
-            this.testObj.prop?.prop;
-            this.testObj!.prop?.prop;
           }
         }
       `,
