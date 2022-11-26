@@ -132,8 +132,6 @@ ruleTester.run('keyword-spacing', rule, {
           after: false,
           overrides: {
             from: { after: true },
-            import: { after: true },
-            export: { after: true },
           },
         },
       ],
@@ -157,8 +155,6 @@ ruleTester.run('keyword-spacing', rule, {
           after: false,
           overrides: {
             from: { after: true },
-            import: { after: true },
-            export: { after: true },
           },
         },
       ],
@@ -269,8 +265,6 @@ ruleTester.run('keyword-spacing', rule, {
           after: false,
           overrides: {
             from: { after: true },
-            import: { after: true },
-            export: { after: true },
           },
         },
       ],
