@@ -1011,13 +1011,14 @@ if (y) {
         enum ExampleEnum {
           This = 0,
           That = 1,
-        };
+        }
         const rand = Math.random();
         let theEnum: ExampleEnum | null = null;
-        if (rand < .3) {
+        if (rand < 0.3) {
           theEnum = ExampleEnum.This;
         }
-        if (theEnum != null) {}
+        if (theEnum != null) {
+        }
       `,
     },
     // any in boolean context
