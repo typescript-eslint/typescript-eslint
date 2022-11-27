@@ -29,7 +29,6 @@ export = {
     '@typescript-eslint/no-unnecessary-type-arguments': 'warn',
     '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
     '@typescript-eslint/no-unsafe-enum-assignment': 'warn',
-    '@typescript-eslint/no-unsafe-enum-comparison': 'warn',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'warn',
     '@typescript-eslint/non-nullable-type-assertion-style': 'warn',
