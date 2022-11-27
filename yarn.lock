@@ -9178,7 +9178,7 @@ jest-runtime@^29.1.2:
     slash "^3.0.0"
     strip-bom "^4.0.0"
 
-jest-snapshot@*, jest-snapshot@^28.0.0, jest-snapshot@^29, jest-snapshot@^29.0.3, jest-snapshot@^29.1.2:
+jest-snapshot@*, jest-snapshot@^29, jest-snapshot@^29.0.0, jest-snapshot@^29.0.3, jest-snapshot@^29.1.2:
   version "29.1.2"
   resolved "https://registry.yarnpkg.com/jest-snapshot/-/jest-snapshot-29.1.2.tgz#7dd277e88c45f2d2ff5888de1612e63c7ceb575b"
   integrity sha512-rYFomGpVMdBlfwTYxkUp3sjD6usptvZcONFYNqVlaz4EpHPnDvlWjvmOQ9OCSNKqYZqLM2aS3wq01tWujLg7gg==
@@ -9208,12 +9208,12 @@ jest-snapshot@*, jest-snapshot@^28.0.0, jest-snapshot@^29, jest-snapshot@^29.0.3
     pretty-format "^29.1.2"
     semver "^7.3.5"
 
-jest-specific-snapshot@*, jest-specific-snapshot@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/jest-specific-snapshot/-/jest-specific-snapshot-6.0.0.tgz#8373589825234fbbeef1bf054f5a6720a15a54f3"
-  integrity sha512-IiAfq0bmuXNwRkfCO3mLTCMhZJBdU05y/zEUKRk0KDhW6WQ7ZL0xTgjjtMrfLb0h+o/i+1/N68Ls3NrIFTykiA==
+jest-specific-snapshot@*, jest-specific-snapshot@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/jest-specific-snapshot/-/jest-specific-snapshot-7.0.0.tgz#c8851bc263b780c0fa750462f61bd98fe956fc64"
+  integrity sha512-Ut2YItOYFC88Pir/JPN8Cgjvf60N4ZPmIqGJ2iZI+c9SLR27hwJxaEngKpW4RurPb+p45BbSuZoKe9SlVIylQA==
   dependencies:
-    jest-snapshot "^28.0.0"
+    jest-snapshot "^29.0.0"
 
 jest-util@28.1.1, jest-util@^29, jest-util@^29.1.2:
   version "29.1.2"
