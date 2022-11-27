@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import ts from 'typescript';
 
 import * as util from '../util';
 
@@ -15,6 +16,7 @@ export default util.createRule({
       description:
         'Enforce using function types instead of interfaces with call signatures',
       recommended: 'strict',
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {
@@ -29,6 +31,8 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
+    const parserServices = util.getParserServices(context);
+    const typeChecker = parserServices.program.getTypeChecker();
 
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'
@@ -184,6 +188,16 @@ export default util.createRule({
               return fixes;
             };
 
+        // One last check: is this declaration is actually merging any another,
+        // and does any other merged declaration add new information?
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const type = typeChecker.getTypeAtLocation(tsNode);
+        for (const declaration of type.getSymbol()!.getDeclarations()!) {
+          if (declaration !== tsNode && declarationAddsToType(declaration)) {
+            return;
+          }
+        }
+
         context.report({
           node: member,
           messageId: 'functionTypeOverCallableType',
@@ -194,6 +208,19 @@ export default util.createRule({
         });
       }
     }
+
+    /**
+     * @returns Whether the declaration is either not an interface, or is an
+     * interface with members other than a single call signature declaration.
+     */
+    function declarationAddsToType(declaration: ts.Declaration): boolean {
+      return (
+        !ts.isInterfaceDeclaration(declaration) ||
+        declaration.members.length > 1 ||
+        !declaration.members.every(ts.isCallSignatureDeclaration)
+      );
+    }
+
     let tsThisTypes: TSESTree.TSThisType[] | null = null;
     let literalNesting = 0;
     return {

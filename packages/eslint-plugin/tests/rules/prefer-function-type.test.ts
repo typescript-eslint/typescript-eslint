@@ -1,14 +1,16 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule, { phrases } from '../../src/rules/prefer-function-type';
-import { noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
-    ecmaVersion: 2015,
+    tsconfigRootDir: getFixturesRootDir(),
+    project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
 });
+
 ruleTester.run('prefer-function-type', rule, {
   valid: [
     `
@@ -42,6 +44,34 @@ interface Foo {
 }
 interface Bar extends Function, Foo {
   (): void;
+}
+    `,
+    `
+export {};
+declare global {
+  interface Function {
+    (...args: any[]): any;
+  }
+}
+    `,
+    `
+interface A {
+  a: number;
+}
+
+interface A {
+  (...args: any[]): any;
+}
+    `,
+    `
+interface Test {
+  (): any;
+}
+
+class Test {
+  constructor() {
+    return (): null => null;
+  }
 }
     `,
   ],
@@ -405,6 +435,64 @@ type X = {} & { (): void; };
       ],
       output: `
 type X = {} & (() => void);
+      `,
+    },
+
+    {
+      code: `
+interface A {}
+
+interface A {
+  (...args: any[]): any;
+}
+      `,
+      errors: [{ messageId: 'functionTypeOverCallableType' }],
+      output: `
+interface A {}
+
+type A = (...args: any[]) => any;
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: number;
+}
+
+interface B {
+  (...args: any[]): any;
+}
+      `,
+      errors: [{ messageId: 'functionTypeOverCallableType' }],
+      output: `
+interface A {
+  a: number;
+}
+
+type B = (...args: any[]) => any;
+      `,
+    },
+    {
+      code: `
+interface TestA {
+  (): any;
+}
+
+class TestB {
+  constructor() {
+    return (): null => null;
+  }
+}
+      `,
+      errors: [{ messageId: 'functionTypeOverCallableType' }],
+      output: `
+type TestA = () => any;
+
+class TestB {
+  constructor() {
+    return (): null => null;
+  }
+}
       `,
     },
   ],
