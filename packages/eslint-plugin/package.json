@@ -38,7 +38,7 @@
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:breaking-changes": "../../node_modules/.bin/ts-node tools/generate-breaking-changes.ts",
-    "generate:configs": "../../node_modules/.bin/ts-node tools/generate-configs.ts",
+    "generate:configs": "node --loader ts-node/esm ./tools/generate-configs.mts",
     "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"

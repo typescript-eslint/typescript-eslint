@@ -298,7 +298,7 @@ module.exports = {
     },
     // tools and tests
     {
-      files: ['**/tools/**/*.ts', '**/tests/**/*.ts'],
+      files: ['**/tools/**/*.*t*', '**/tests/**/*.ts'],
       rules: {
         // allow console logs in tools and tests
         'no-console': 'off',
