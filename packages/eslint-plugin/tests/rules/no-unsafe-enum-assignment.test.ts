@@ -300,6 +300,36 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
           Apple,
         }
         let fruit = Fruit.Apple;
+        fruit |= 1;
+      `,
+      errors: [{ messageId: 'provided' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        let fruit = Fruit.Apple;
+        fruit &= 1;
+      `,
+      errors: [{ messageId: 'provided' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        let fruit = Fruit.Apple;
+        fruit ^= 1;
+      `,
+      errors: [{ messageId: 'provided' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        let fruit = Fruit.Apple;
         fruit = 1;
       `,
       errors: [
@@ -464,16 +494,22 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
         },
       ],
     },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const values = new Set<Fruit>();
+        values.add(0);
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 21,
+          line: 6,
+          messageId: 'provided',
+        },
+      ],
+    },
   ],
 });
-
-// recursive types:
-// different number of type arguments, each way? (2 tests)
-
-// assignments:
-// number literals and unions thereof
-// with Math.random()
-// [number][]
-// Set<T>
-// Map<Key, Value>
-// Map<Set<T>, Set<Value[]>>

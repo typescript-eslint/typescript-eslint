@@ -3,6 +3,7 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
+import { getBaseEnumType, getEnumTypes } from './enum-utils/shared';
 
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Unknown | ts.TypeFlags.Number | ts.TypeFlags.String;
@@ -27,44 +28,6 @@ export default util.createRule({
   create(context) {
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
-
-    /*
-     * If passed an enum member, returns the type of the parent. Otherwise,
-     * returns itself.
-     *
-     * For example:
-     * - `Fruit` --> `Fruit`
-     * - `Fruit.Apple` --> `Fruit`
-     */
-    function getBaseEnumType(type: ts.Type): ts.Type {
-      const symbol = type.getSymbol();
-      if (
-        !symbol?.valueDeclaration?.parent ||
-        !tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)
-      ) {
-        return type;
-      }
-
-      return typeChecker.getTypeAtLocation(symbol.valueDeclaration.parent);
-    }
-
-    /**
-     * A type can have 0 or more enum types. For example:
-     * - 123 --> []
-     * - {} --> []
-     * - Fruit.Apple --> [Fruit]
-     * - Fruit.Apple | Vegetable.Lettuce --> [Fruit, Vegetable]
-     * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit, Vegetable]
-     * - T extends Fruit --> [Fruit]
-     */
-    function getEnumTypes(type: ts.Type): ts.Type[] {
-      return tsutils
-        .unionTypeParts(type)
-        .filter(subType =>
-          util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral),
-        )
-        .map(getBaseEnumType);
-    }
 
     /**
      * Similar to `getEnumTypes`, but returns early as soon as it finds one.
@@ -116,7 +79,9 @@ export default util.createRule({
       }
 
       // If the recipient is not an enum, we don't care about it.
-      const recipientEnumTypes = new Set(getEnumTypes(recipientType));
+      const recipientEnumTypes = new Set(
+        getEnumTypes(typeChecker, recipientType),
+      );
       if (recipientEnumTypes.size === 0) {
         return false;
       }
@@ -126,7 +91,7 @@ export default util.createRule({
       // Either every provided type should match the recipient enum...
       if (
         providedUnionTypes.every(providedType =>
-          recipientEnumTypes.has(getBaseEnumType(providedType)),
+          recipientEnumTypes.has(getBaseEnumType(typeChecker, providedType)),
         )
       ) {
         return false;
@@ -242,7 +207,7 @@ export default util.createRule({
       // declare function useNumber(num: number);
       // useNumber(0);
       // ```
-      const parameterEnumTypes = getEnumTypes(parameterType);
+      const parameterEnumTypes = getEnumTypes(typeChecker, parameterType);
       if (parameterEnumTypes.length === 0) {
         return false;
       }
