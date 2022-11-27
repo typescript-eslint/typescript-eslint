@@ -46,7 +46,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow type aliases',
       // too opinionated to be recommended
-      recommended: false,
     },
     messages: {
       noTypeAlias: 'Type {{alias}} are not allowed.',

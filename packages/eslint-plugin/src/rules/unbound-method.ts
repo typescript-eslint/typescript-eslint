@@ -130,7 +130,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce unbound methods are called with their expected scope',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -288,7 +288,7 @@ function checkMethod(
           !(
             ignoreStatic &&
             tsutils.hasModifier(
-              getModifiers(valueDeclaration),
+              getModifiers(valueDeclaration) as ts.ModifiersArray | undefined,
               ts.SyntaxKind.StaticKeyword,
             )
           ),

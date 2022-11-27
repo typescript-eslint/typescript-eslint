@@ -20,7 +20,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforce dot notation whenever possible',
-      recommended: 'strict',
+      recommended: 'stylistic',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },

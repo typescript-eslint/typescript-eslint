@@ -45,7 +45,6 @@ const MAX_RULE_NAME_LENGTH = Object.keys(rules).reduce(
   (acc, name) => Math.max(acc, name.length),
   0,
 );
-const DEFAULT_RULE_SETTING = 'warn';
 const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
   Object.entries(rules)
     .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
@@ -66,37 +65,33 @@ type RuleEntry = [
   TSESLint.RuleModule<string, unknown[], TSESLint.RuleListener>,
 ];
 
-const ruleEntries: RuleEntry[] = Object.entries(rules).sort((a, b) =>
+const allRuleEntries: RuleEntry[] = Object.entries(rules).sort((a, b) =>
   a[0].localeCompare(b[0]),
 );
 
-interface ReducerSettings {
-  errorLevel?: 'error' | 'warn';
-  filterDeprecated?: boolean;
-  filterTypeChecked?: 'include' | 'exclude';
+interface ruleFilter {
+  deprecated?: 'exclude';
+  typeChecked?: 'include' | 'exclude';
 }
 
 /**
  * Helper function reduces records to key - value pairs.
- * @param config
- * @param entry
- * @param settings
  */
 function reducer<TMessageIds extends string>(
   config: LinterConfigRules,
   entry: [string, TSESLint.RuleModule<TMessageIds, unknown[]>],
-  settings: ReducerSettings,
+  settings: ruleFilter = {},
 ): LinterConfigRules {
   const key = entry[0];
   const value = entry[1];
 
-  if (settings.filterDeprecated && value.meta.deprecated) {
+  if (settings.deprecated && value.meta.deprecated) {
     return config;
   }
 
   // Explicitly exclude rules requiring type-checking
   if (
-    settings.filterTypeChecked === 'exclude' &&
+    settings.typeChecked === 'exclude' &&
     value.meta.docs?.requiresTypeChecking === true
   ) {
     return config;
@@ -104,22 +99,13 @@ function reducer<TMessageIds extends string>(
 
   // Explicitly include rules requiring type-checking
   if (
-    settings.filterTypeChecked === 'include' &&
+    settings.typeChecked === 'include' &&
     value.meta.docs?.requiresTypeChecking !== true
   ) {
     return config;
   }
 
   const ruleName = `${RULE_NAME_PREFIX}${key}`;
-  const recommendation = value.meta.docs?.recommended;
-
-  const usedSetting = settings.errorLevel
-    ? settings.errorLevel
-    : !recommendation
-    ? DEFAULT_RULE_SETTING
-    : recommendation === 'strict'
-    ? 'warn'
-    : recommendation;
 
   if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
     const baseRuleName = BASE_RULES_TO_BE_OVERRIDDEN.get(key)!;
@@ -135,11 +121,9 @@ function reducer<TMessageIds extends string>(
   console.log(
     `${chalk.dim(RULE_NAME_PREFIX)}${key.padEnd(MAX_RULE_NAME_LENGTH)}`,
     '=',
-    usedSetting === 'error'
-      ? chalk.red(usedSetting)
-      : chalk.yellow(usedSetting),
+    chalk.red('error'),
   );
-  config[ruleName] = usedSetting;
+  config[ruleName] = 'error';
 
   return config;
 }
@@ -163,34 +147,36 @@ function writeConfig(getConfig: () => LinterConfig, name: string): void {
   );
 }
 
-const recommendedValues = new Set<TSESLint.RuleRecommendation | undefined>([
-  'error',
-  'warn',
-]);
-
-function entryIsRecommended(entry: RuleEntry): boolean {
-  return recommendedValues.has(entry[1].meta.docs?.recommended);
+interface ExtendedConfigSettings {
+  extraExtends?: string[];
+  name: string;
+  filters?: ruleFilter;
+  ruleEntries: RuleEntry[];
 }
 
-function entryIsStrict(entry: RuleEntry): boolean {
-  return (
-    entryIsRecommended(entry) || entry[1].meta.docs?.recommended === 'strict'
+function writeExtendedConfig({
+  extraExtends = [],
+  filters: ruleFilter,
+  name,
+  ruleEntries,
+}: ExtendedConfigSettings): void {
+  writeConfig(
+    () => ({
+      extends: [...EXTENDS, ...extraExtends],
+      rules: ruleEntries.reduce(
+        (config, entry) => reducer(config, entry, ruleFilter),
+        {},
+      ),
+    }),
+    name,
   );
 }
 
-function writeExtendedConfig(
-  name: string,
-  filter: (entry: RuleEntry) => boolean,
-  reducerSettings: ReducerSettings,
-): void {
-  writeConfig(
-    () => ({
-      extends: EXTENDS,
-      rules: ruleEntries
-        .filter(filter)
-        .reduce((config, entry) => reducer(config, entry, reducerSettings), {}),
-    }),
-    name,
+function filterRuleEntriesTo(
+  recommended: TSESLint.RuleRecommendation,
+): RuleEntry[] {
+  return allRuleEntries.filter(
+    ([, rule]) => rule.meta.docs?.recommended === recommended,
   );
 }
 
@@ -216,23 +202,58 @@ writeConfig((): LinterConfig => {
   return baseConfig;
 }, 'base');
 
-writeExtendedConfig('all', () => true, {
-  errorLevel: 'error',
-  filterDeprecated: true,
+writeExtendedConfig({
+  name: 'all',
+  filters: {
+    deprecated: 'exclude',
+  },
+  ruleEntries: allRuleEntries,
 });
 
-writeExtendedConfig('recommended', entryIsRecommended, {
-  filterTypeChecked: 'exclude',
+writeExtendedConfig({
+  filters: {
+    typeChecked: 'exclude',
+  },
+  name: 'recommended',
+  ruleEntries: filterRuleEntriesTo('recommended'),
 });
 
-writeExtendedConfig('recommended-type-checked', entryIsRecommended, {
-  filterTypeChecked: 'include',
+writeExtendedConfig({
+  filters: {
+    typeChecked: 'include',
+  },
+  name: 'recommended-type-checked',
+  ruleEntries: filterRuleEntriesTo('recommended'),
 });
 
-writeExtendedConfig('strict', entryIsStrict, {
-  filterTypeChecked: 'exclude',
+writeExtendedConfig({
+  filters: {
+    typeChecked: 'exclude',
+  },
+  name: 'strict',
+  ruleEntries: filterRuleEntriesTo('strict'),
 });
 
-writeExtendedConfig('strict-type-checked', entryIsStrict, {
-  filterTypeChecked: 'include',
+writeExtendedConfig({
+  filters: {
+    typeChecked: 'include',
+  },
+  name: 'strict-type-checked',
+  ruleEntries: filterRuleEntriesTo('strict'),
+});
+
+writeExtendedConfig({
+  filters: {
+    typeChecked: 'exclude',
+  },
+  name: 'stylistic',
+  ruleEntries: filterRuleEntriesTo('stylistic'),
+});
+
+writeExtendedConfig({
+  filters: {
+    typeChecked: 'include',
+  },
+  name: 'stylistic-type-checked',
+  ruleEntries: filterRuleEntriesTo('stylistic'),
 });

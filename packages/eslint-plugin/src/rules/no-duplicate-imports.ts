@@ -17,7 +17,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow duplicate imports',
-      recommended: false,
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,

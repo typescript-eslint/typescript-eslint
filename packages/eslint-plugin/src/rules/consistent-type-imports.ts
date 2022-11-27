@@ -58,7 +58,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforce consistent usage of type imports',
-      recommended: false,
     },
     messages: {
       typeOverValue:

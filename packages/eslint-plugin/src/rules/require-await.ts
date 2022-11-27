@@ -23,7 +23,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow async functions which have no `await` expression',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
       extendsBaseRule: true,
     },

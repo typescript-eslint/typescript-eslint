@@ -16,7 +16,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow member access on a value with type `any`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {

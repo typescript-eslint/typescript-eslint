@@ -65,7 +65,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint', // eslint-disable-line eslint-plugin/require-meta-docs-description
-      recommended: false,
     },
     fixable: 'code',
     type: 'problem',

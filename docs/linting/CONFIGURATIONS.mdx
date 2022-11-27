@@ -9,18 +9,52 @@ title: Configurations
 > With the exception of `strict` and `strict-type-checked`, all configurations are considered "stable".
 > Rule additions and removals are treated as breaking changes and will only be done in major version bumps.
 
+## Getting Started
+
+### Projects Without Type Checking
+
+If your project does not enable [typed linting](./TYPED_LINTING.md), we suggest enabling the [`recommended`](#recommended) and [`stylistic`](#stylistic) configurations to start:
+
+```json
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/stylistic"
+  ]
+}
+```
+
+If a majority of developers working on your project are comfortable with TypeScript and TypeScript-ESLint, consider replacing `recommended` with `strict`.
+
+### Projects With Type Checking
+
+If your project enables [typed linting](./TYPED_LINTING.md), we suggest:
+
+```json
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked"
+  ]
+}
+```
+
+If a majority of developers working on your project are comfortable with TypeScript and TypeScript-ESLint, consider replacing `recommended-type-checked` with `strict-type-checked`.
+
 ## Recommended Configurations
 
-We recommend that most projects should extend from at least one of:
+We recommend that most projects should extend from one of:
 
 - [`recommended`](#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
 - [`recommended-type-checked`](#recommended-type-checked): Additional recommended rules that require type information.
 - [`strict`](#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
 - [`strict-type-checked`](#strict-type-checked): Additional strict rules require type information.
 
-:::tip
-We recommend most projects use [`recommended-type-checked`](#recommended-type-checked) (which requires [typed linting](./TYPED_LINTING.md)).
-:::
+Additionally, we provide a [`stylistic`](#stylistic) config that enforces concise and consistent code.
+We recommend that most projects should extend from either:
+
+- [`stylistic`](#stylistic): Stylistic rules you can drop in without additional configuration.
+- [`stylistic-type-checked`](#stylistic-type-checked): Additional stylistic rules that require type information.
 
 :::note
 These configurations are our recommended starting points, but **you don't need to use them as-is**.
@@ -80,6 +114,32 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 ```
 
 See [`configs/strict-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked.ts) for the exact contents of this config.
+
+### `stylistic`
+
+Rules considered to be best practice for modern TypeScript codebases, but that do not impact program logic.
+These rules are generally opinionated about enforcing simpler code patterns.
+
+```json
+{
+  "extends": ["plugin:@typescript-eslint/stylistic"]
+}
+```
+
+See [`configs/stylistic.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic.ts) for the exact contents of this config.
+
+### `stylistic-type-checked`
+
+Contains all of `stylistic`, along with additional stylistic rules that require type information.
+Rules newly added in this configuration are similarly opinionated to those in `stylistic`.
+
+```json
+{
+  "extends": ["plugin:@typescript-eslint/stylistic-type-checked"]
+}
+```
+
+See [`configs/stylistic-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked.ts) for the exact contents of this config.
 
 ## Other Configurations
 

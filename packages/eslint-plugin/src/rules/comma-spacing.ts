@@ -22,7 +22,6 @@ export default createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after commas',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',

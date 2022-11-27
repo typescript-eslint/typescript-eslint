@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow usage of the implicit `any` type in catch clauses',
-      recommended: false,
     },
     fixable: 'code',
     hasSuggestions: true,

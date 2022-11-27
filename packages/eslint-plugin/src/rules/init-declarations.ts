@@ -20,7 +20,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow initialization in variable declarations',
-      recommended: false,
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,

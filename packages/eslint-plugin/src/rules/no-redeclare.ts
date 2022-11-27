@@ -17,7 +17,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow variable redeclaration',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: [

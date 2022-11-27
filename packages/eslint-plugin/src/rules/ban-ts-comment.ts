@@ -29,7 +29,7 @@ export default util.createRule<[Options], MessageIds>({
     docs: {
       description:
         'Disallow `@ts-<directive>` comments or require descriptions after directives',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     messages: {
       tsDirectiveComment:

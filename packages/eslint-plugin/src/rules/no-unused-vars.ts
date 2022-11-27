@@ -37,7 +37,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow unused variables',
-      recommended: 'warn',
+      recommended: 'strict',
       extendsBaseRule: true,
     },
     schema: [

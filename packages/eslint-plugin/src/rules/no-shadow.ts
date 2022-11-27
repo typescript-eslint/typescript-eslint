@@ -27,7 +27,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: [

@@ -32,7 +32,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow unnecessary constraints on generic types',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     hasSuggestions: true,
     messages: {

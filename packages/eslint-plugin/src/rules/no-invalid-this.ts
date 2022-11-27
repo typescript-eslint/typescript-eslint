@@ -20,7 +20,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow `this` keywords outside of classes or class-like objects',
-      recommended: false,
       extendsBaseRule: true,
     },
     // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
