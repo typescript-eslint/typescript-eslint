@@ -147,6 +147,8 @@ ruleTester.run('strict-boolean-expressions', rule, {
         }
         if (theEnum) {
         }
+        if (!theEnum) {
+        }
       `,
       options: [{ allowNullableEnum: true }],
     },
@@ -997,6 +999,8 @@ if (y) {
         }
         if (theEnum) {
         }
+        if (!theEnum) {
+        }
       `,
       errors: [
         {
@@ -1005,6 +1009,13 @@ if (y) {
           messageId: 'conditionErrorNullableEnum',
           endLine: 11,
           endColumn: 20,
+        },
+        {
+          line: 13,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 13,
+          endColumn: 21,
         },
       ],
       output: `
@@ -1018,6 +1029,8 @@ if (y) {
           theEnum = ExampleEnum.This;
         }
         if (theEnum != null) {
+        }
+        if (theEnum == null) {
         }
       `,
     },
