@@ -149,7 +149,7 @@ ruleTester.run('no-mixed-enums', rule, {
     },
     {
       code: `
-        const getValue = () => 0,
+        const getValue = () => 0;
         enum Fruit {
           Apple = getValue(),
           Banana = 'banana',
@@ -166,7 +166,7 @@ ruleTester.run('no-mixed-enums', rule, {
     },
     {
       code: `
-        const getValue = () => '',
+        const getValue = () => '';
         enum Fruit {
           Apple,
           Banana = getValue(),
@@ -183,7 +183,7 @@ ruleTester.run('no-mixed-enums', rule, {
     },
     {
       code: `
-        const getValue = () => '',
+        const getValue = () => '';
         enum Fruit {
           Apple = getValue(),
           Banana = 0,
