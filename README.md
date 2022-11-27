@@ -51,22 +51,36 @@ The latest version under the `canary` tag **(latest commit to `main`)** is:
 
 ### Supported TypeScript Version
 
-**The version range of TypeScript currently supported by this parser is `>=3.3.1 <5.0.0`.**
+**The version range of TypeScript currently supported by this parser is `>=4.2.0 <5.0.0`.**
 
-These versions are what we test against.
+Note that we mirror [DefinitelyTyped's version support window](https://github.com/DefinitelyTyped/DefinitelyTyped/#support-window) - meaning we only support versions of TypeScript less than 2 years old.
 
-We will always endeavor to support the latest stable version of TypeScript.
-Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
-In some cases, we may even be able to support additional pre-releases (i.e. betas and release candidates) of TypeScript, but only if doing so does not require us to compromise on support for the latest stable version.
+You may find that our tooling works on older TypeScript versions however we provide no guarantees and **_we will not accept issues against unsupported versions_**.
+
+#### Supporting New TypeScript Releases
+
+With each new TypeScript release we file an issue to track the changes in the new version. The issue should always be pinned, and you can also [find the issues by searching for issues tagged with "New TypeScript Version"](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3A%22New+TypeScript+Version%22+sort%3Acreated-desc). If the issue is open, we do not have official support yet - please be patient.
+
+In terms of what versions we support:
+
+- We do not support the `beta` releases.
+- We _generally_ do not officially support the `rc` releases.
+- We endeavor to support the latest stable TypeScript versions as soon as possible after the release.
+
+Generally we will begin working on supporting the next release when the `rc` version is released.
+
+#### Version Warning Logs
 
 Note that our packages have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
 
-If you use a non-supported version of TypeScript, the parser will log a warning to the console.
+However if you use a non-supported version of TypeScript, the parser will log a warning to the console.
 If you want to disable this warning, you can configure this in your `parserOptions`. See: [`@typescript-eslint/parser`](./packages/parser/) and [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/).
 
 **Please ensure that you are using a supported version before submitting any issues/bug reports.**
 
 ### Supported ESLint Version
+
+We endeavour to support the latest stable ESLint versions as soon as possible after the release.
 
 See the value of `eslint` declared in `@typescript-eslint/eslint-plugin`'s [package.json](./packages/eslint-plugin/package.json).
 

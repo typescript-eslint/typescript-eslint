@@ -166,11 +166,6 @@ export default util.createRule<[Options], MessageIds>({
 
     return {
       TSVoidKeyword(node: TSESTree.TSVoidKeyword): void {
-        /* istanbul ignore next */
-        if (!node.parent?.parent) {
-          return;
-        }
-
         // checks T<..., void, ...> against specification of allowInGenericArguments option
         if (
           node.parent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
@@ -211,7 +206,7 @@ export default util.createRule<[Options], MessageIds>({
         // default cases
         if (
           validParents.includes(node.parent.type) &&
-          !invalidGrandParents.includes(node.parent.parent.type)
+          !invalidGrandParents.includes(node.parent.parent!.type)
         ) {
           return;
         }
@@ -235,7 +230,7 @@ export default util.createRule<[Options], MessageIds>({
 function getNotReturnOrGenericMessageId(
   node: TSESTree.TSVoidKeyword,
 ): MessageIds {
-  return node.parent!.type === AST_NODE_TYPES.TSUnionType
+  return node.parent.type === AST_NODE_TYPES.TSUnionType
     ? 'invalidVoidUnionConstituent'
     : 'invalidVoidNotReturnOrGeneric';
 }

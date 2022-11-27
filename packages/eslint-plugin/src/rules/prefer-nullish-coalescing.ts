@@ -23,17 +23,17 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce using the nullish coalescing operator instead of logical chaining',
+        'Enforce using the nullish coalescing operator instead of logical assignments or chaining',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
     messages: {
       preferNullishOverOr:
-        'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
+        'Prefer using nullish coalescing operator (`??{{ equals }}`) instead of a logical {{ description }} (`||{{ equals }}`), as it is a safer operator.',
       preferNullishOverTernary:
-        'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
-      suggestNullish: 'Fix to nullish coalescing operator (`??`).',
+        'Prefer using nullish coalescing operator (`??{{ equals }}`) instead of a ternary expression, as it is simpler to read.',
+      suggestNullish: 'Fix to nullish coalescing operator (`??{{ equals }}`).',
     },
     schema: [
       {
@@ -74,6 +74,75 @@ export default util.createRule<Options, MessageIds>({
     const sourceCode = context.getSourceCode();
     const checker = parserServices.program.getTypeChecker();
 
+    // todo: rename to something more specific?
+    function checkAssignmentOrLogicalExpression(
+      node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
+      description: string,
+      equals: string,
+    ): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const type = checker.getTypeAtLocation(tsNode.left);
+      const isNullish = util.isNullableType(type, { allowUndefined: true });
+      if (!isNullish) {
+        return;
+      }
+
+      if (ignoreConditionalTests === true && isConditionalTest(node)) {
+        return;
+      }
+
+      if (
+        ignoreMixedLogicalExpressions === true &&
+        isMixedLogicalExpression(node)
+      ) {
+        return;
+      }
+
+      const barBarOperator = util.nullThrows(
+        sourceCode.getTokenAfter(
+          node.left,
+          token =>
+            token.type === AST_TOKEN_TYPES.Punctuator &&
+            token.value === node.operator,
+        ),
+        util.NullThrowsReasons.MissingToken('operator', node.type),
+      );
+
+      function* fix(
+        fixer: TSESLint.RuleFixer,
+      ): IterableIterator<TSESLint.RuleFix> {
+        if (util.isLogicalOrOperator(node.parent)) {
+          // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
+          if (
+            node.left.type === AST_NODE_TYPES.LogicalExpression &&
+            !util.isLogicalOrOperator(node.left.left)
+          ) {
+            yield fixer.insertTextBefore(node.left.right, '(');
+          } else {
+            yield fixer.insertTextBefore(node.left, '(');
+          }
+          yield fixer.insertTextAfter(node.right, ')');
+        }
+        yield fixer.replaceText(
+          barBarOperator,
+          node.operator.replace('||', '??'),
+        );
+      }
+
+      context.report({
+        data: { equals, description },
+        node: barBarOperator,
+        messageId: 'preferNullishOverOr',
+        suggest: [
+          {
+            data: { equals },
+            messageId: 'suggestNullish',
+            fix,
+          },
+        ],
+      });
+    }
+
     return {
       ConditionalExpression(node: TSESTree.ConditionalExpression): void {
         if (ignoreTernaryTests) {
@@ -103,7 +172,7 @@ export default util.createRule<Options, MessageIds>({
             node.test.right.left,
             node.test.right.right,
           ];
-          if (node.test.operator === '||') {
+          if (['||', '||='].includes(node.test.operator)) {
             if (
               node.test.left.operator === '===' &&
               node.test.right.operator === '==='
@@ -205,10 +274,13 @@ export default util.createRule<Options, MessageIds>({
 
         if (isFixable) {
           context.report({
+            // TODO: also account for = in the ternary clause
+            data: { equals: '' },
             node,
             messageId: 'preferNullishOverTernary',
             suggest: [
               {
+                data: { equals: '' },
                 messageId: 'suggestNullish',
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
@@ -231,64 +303,15 @@ export default util.createRule<Options, MessageIds>({
           });
         }
       },
-
+      'AssignmentExpression[operator = "||="]'(
+        node: TSESTree.AssignmentExpression,
+      ): void {
+        checkAssignmentOrLogicalExpression(node, 'assignment', '=');
+      },
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
       ): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullish = util.isNullableType(type, { allowUndefined: true });
-        if (!isNullish) {
-          return;
-        }
-
-        if (ignoreConditionalTests === true && isConditionalTest(node)) {
-          return;
-        }
-
-        const isMixedLogical = isMixedLogicalExpression(node);
-        if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
-          return;
-        }
-
-        const barBarOperator = util.nullThrows(
-          sourceCode.getTokenAfter(
-            node.left,
-            token =>
-              token.type === AST_TOKEN_TYPES.Punctuator &&
-              token.value === node.operator,
-          ),
-          util.NullThrowsReasons.MissingToken('operator', node.type),
-        );
-
-        function* fix(
-          fixer: TSESLint.RuleFixer,
-        ): IterableIterator<TSESLint.RuleFix> {
-          if (node.parent && util.isLogicalOrOperator(node.parent)) {
-            // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
-            if (
-              node.left.type === AST_NODE_TYPES.LogicalExpression &&
-              !util.isLogicalOrOperator(node.left.left)
-            ) {
-              yield fixer.insertTextBefore(node.left.right, '(');
-            } else {
-              yield fixer.insertTextBefore(node.left, '(');
-            }
-            yield fixer.insertTextAfter(node.right, ')');
-          }
-          yield fixer.replaceText(barBarOperator, '??');
-        }
-
-        context.report({
-          node: barBarOperator,
-          messageId: 'preferNullishOverOr',
-          suggest: [
-            {
-              messageId: 'suggestNullish',
-              fix,
-            },
-          ],
-        });
+        checkAssignmentOrLogicalExpression(node, 'or', '');
       },
     };
   },
@@ -331,7 +354,9 @@ function isConditionalTest(node: TSESTree.Node): boolean {
   return false;
 }
 
-function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
+function isMixedLogicalExpression(
+  node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
+): boolean {
   const seen = new Set<TSESTree.Node | undefined>();
   const queue = [node.parent, node.left, node.right];
   for (const current of queue) {
@@ -343,7 +368,7 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
     if (current && current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
-      } else if (current.operator === '||') {
+      } else if (['||', '||='].includes(current.operator)) {
         // check the pieces of the node to catch cases like `a || b || c && d`
         queue.push(current.parent, current.left, current.right);
       }

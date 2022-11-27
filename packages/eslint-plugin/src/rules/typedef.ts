@@ -153,7 +153,7 @@ export default util.createRule<[Options], MessageIds>({
     function isAncestorHasTypeAnnotation(
       node: TSESTree.ObjectPattern | TSESTree.ArrayPattern,
     ): boolean {
-      let ancestor = node.parent;
+      let ancestor: TSESTree.Node | undefined = node.parent;
 
       while (ancestor) {
         if (

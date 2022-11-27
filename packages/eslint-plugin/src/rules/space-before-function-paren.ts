@@ -78,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
         return true;
       }
 
-      const parent = node.parent!;
+      const parent = node.parent;
 
       return (
         parent.type === AST_NODE_TYPES.MethodDefinition ||

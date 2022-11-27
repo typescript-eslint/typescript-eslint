@@ -49,7 +49,7 @@ export default util.createRule({
               {
                 messageId: 'variableSuggest',
                 fix: (fixer): TSESLint.RuleFix[] => [
-                  fixer.remove(typeNode.parent!),
+                  fixer.remove(typeNode.parent),
                   fixer.insertTextAfter(valueNode, ' as const'),
                 ],
               },

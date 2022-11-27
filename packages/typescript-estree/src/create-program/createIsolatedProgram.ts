@@ -43,7 +43,7 @@ function createIsolatedProgram(parseSettings: ParseSettings): ASTAndProgram {
     getSourceFile(filename: string) {
       return ts.createSourceFile(
         filename,
-        parseSettings.code,
+        parseSettings.codeFullText,
         ts.ScriptTarget.Latest,
         /* setParentNodes */ true,
         getScriptKind(parseSettings.filePath, parseSettings.jsx),

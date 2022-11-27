@@ -165,10 +165,10 @@ export default util.createRule<Options, MessageIds>({
       ): boolean {
         if (options.ignoreRestSiblings) {
           const hasRestSiblingDefinition = variable.defs.some(def =>
-            hasRestSibling(def.name.parent!),
+            hasRestSibling(def.name.parent),
           );
           const hasRestSiblingReference = variable.references.some(ref =>
-            hasRestSibling(ref.identifier.parent!),
+            hasRestSibling(ref.identifier.parent),
           );
 
           return hasRestSiblingDefinition || hasRestSiblingReference;

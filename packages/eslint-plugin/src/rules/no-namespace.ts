@@ -67,8 +67,7 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.TSModuleDeclaration,
       ): void {
         if (
-          (node.parent &&
-            node.parent.type === AST_NODE_TYPES.TSModuleDeclaration) ||
+          node.parent.type === AST_NODE_TYPES.TSModuleDeclaration ||
           (allowDefinitionFiles && util.isDefinitionFile(filename)) ||
           (allowDeclarations && isDeclaration(node))
         ) {

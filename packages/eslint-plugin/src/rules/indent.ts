@@ -209,6 +209,7 @@ export default util.createRule<Options, MessageIds>({
         return rules.ConditionalExpression({
           type: AST_NODE_TYPES.ConditionalExpression,
           test: {
+            parent: node,
             type: AST_NODE_TYPES.BinaryExpression,
             operator: 'extends',
             left: node.checkType as any,
@@ -370,6 +371,7 @@ export default util.createRule<Options, MessageIds>({
           type: AST_NODE_TYPES.ObjectExpression,
           properties: [
             {
+              parent: node,
               type: AST_NODE_TYPES.Property,
               key: node.typeParameter as any,
               value: node.typeAnnotation as any,
