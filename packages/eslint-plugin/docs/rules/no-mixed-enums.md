@@ -1,5 +1,5 @@
 ---
-description: 'Disallow enums to have both number and string members.'
+description: 'Disallow enums from having both number and string members.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
