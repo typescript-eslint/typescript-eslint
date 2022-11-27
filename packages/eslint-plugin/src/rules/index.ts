@@ -79,7 +79,6 @@ import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
-import noUnsafeEnumAssignment from './no-unsafe-enum-assignment';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
@@ -212,7 +211,6 @@ export default {
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
-  'no-unsafe-enum-assignment': noUnsafeEnumAssignment,
   'no-unsafe-enum-comparison': noUnsafeEnumComparison,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
