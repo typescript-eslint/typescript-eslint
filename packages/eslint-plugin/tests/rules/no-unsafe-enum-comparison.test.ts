@@ -14,8 +14,12 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('strict-enums-comparison', rule, {
   valid: [
+    "'a' > 'b';",
+    "'a' < 'b';",
     "'a' == 'b';",
     "'a' === 'b';",
+    '1 > 2;',
+    '1 < 2;',
     '1 == 2;',
     '1 === 2;',
     `
@@ -288,6 +292,24 @@ ruleTester.run('strict-enums-comparison', rule, {
     `,
   ],
   invalid: [
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        Fruit.Apple < 1;
+      `,
+      errors: [{ messageId: 'mismatched' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        Fruit.Apple > 1;
+      `,
+      errors: [{ messageId: 'mismatched' }],
+    },
     {
       code: `
         enum Fruit {

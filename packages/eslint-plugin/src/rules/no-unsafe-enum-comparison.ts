@@ -63,7 +63,9 @@ export default util.createRule({
     }
 
     return {
-      'BinaryExpression[operator=/=/]'(node: TSESTree.BinaryExpression): void {
+      'BinaryExpression[operator=/=|<|>/]'(
+        node: TSESTree.BinaryExpression,
+      ): void {
         const left = getTypeFromNode(node.left);
         const right = getTypeFromNode(node.right);
 

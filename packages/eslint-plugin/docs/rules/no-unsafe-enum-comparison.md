@@ -26,26 +26,45 @@ This rule flags when an enum typed value is compared to a non-enum `number`.
 ### ❌ Incorrect
 
 ```ts
+enum Fruit {
+  Apple,
+}
+
 let fruit = Fruit.Apple;
 fruit === 999;
+```
+
+```ts
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+let vegetable = Vegetable.Asparagus;
+vegetable === 'asparagus';
 ```
 
 ### ✅ Correct
 
 ```ts
+enum Fruit {
+  Apple,
+}
+
 let fruit = Fruit.Apple;
 fruit === Fruit.Banana;
 ```
 
-<!--/tabs-->
-
-## To Do: Add Option For Comparison Operators
-
-Since it is a common pattern, this rule allows using greater than or less than to compare numeric enums, like this:
-
 ```ts
-if (fruit > Fruit.Banana) {
+enum Vegetable {
+  Asparagus = 'asparagus',
 }
+
+let vegetable = Vegetable.Asparagus;
+vegetable === Vegetable.Asparagus;
 ```
 
-This pattern allows you to select a subset of enums. However, it can lead to bugs when enum values are arbitrarily changed, because the subset will also change. The TypeScript compiler cannot warn you about this, so you should use this pattern with care.
+<!--/tabs-->
+
+## When Not to Use It
+
+If you don't mind number and/or literal string constants being compared against enums, you likely don't need this rule.
