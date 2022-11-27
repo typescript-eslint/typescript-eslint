@@ -277,7 +277,7 @@ function checkMethod(
       const firstParam = decl.parameters[0];
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
-        firstParam?.name.escapedText === ts.InternalSymbolName.This;
+        firstParam?.name.escapedText === 'this';
       const thisArgIsVoid =
         firstParamIsThis &&
         firstParam?.type?.kind === ts.SyntaxKind.VoidKeyword;

@@ -35,7 +35,7 @@ abstract class VisitorBase {
     node: T | null | undefined,
     excludeArr: (keyof T)[] = [],
   ): void {
-    if (node == null || node.type === null) {
+    if (node == null || node.type == null) {
       return;
     }
 

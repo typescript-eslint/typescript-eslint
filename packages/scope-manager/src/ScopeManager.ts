@@ -14,7 +14,6 @@ import {
   GlobalScope,
   MappedTypeScope,
   ModuleScope,
-  ScopeType,
   SwitchScope,
   TSEnumScope,
   TSModuleScope,
@@ -107,10 +106,7 @@ class ScopeManager {
    */
   public acquire(node: TSESTree.Node, inner = false): Scope | null {
     function predicate(testScope: Scope): boolean {
-      if (
-        testScope.type === ScopeType.function &&
-        testScope.functionExpressionScope
-      ) {
+      if (testScope.type === 'function' && testScope.functionExpressionScope) {
         return false;
       }
       return true;
