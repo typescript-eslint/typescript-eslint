@@ -254,7 +254,7 @@ export default util.createRule({
       // declare function useNumber(num: number);
       // useNumber(Fruit.Apple);
       // ```
-      const parameterSubTypes = tsutils.unionTypeParts(parameterType);
+      const parameterSubTypes = new Set(tsutils.unionTypeParts(parameterType));
       for (const parameterSubType of parameterSubTypes) {
         if (
           util.isTypeFlagSet(
@@ -273,13 +273,19 @@ export default util.createRule({
       // declare const fruit: Fruit.Apple | 1;
       // useFruit(fruit)
       // ```
-      return tsutils
-        .unionTypeParts(argumentType)
-        .some(
-          argumentSubType =>
-            argumentSubType.isLiteral() &&
-            !util.isTypeFlagSet(argumentSubType, ts.TypeFlags.EnumLiteral),
-        );
+      return tsutils.unionTypeParts(argumentType).some(
+        argumentSubType =>
+          argumentSubType.isLiteral() &&
+          !util.isTypeFlagSet(argumentSubType, ts.TypeFlags.EnumLiteral) &&
+          // Permit the argument if it's a number the parameter allows, like:
+          //
+          // ```ts
+          // declare function useFruit(fruit: Fruit | -1);
+          // useFruit(-1)
+          // ```
+          // that's ok too
+          !parameterSubTypes.has(argumentSubType),
+      );
     }
 
     /**

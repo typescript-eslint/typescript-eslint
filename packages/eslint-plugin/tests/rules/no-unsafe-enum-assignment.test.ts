@@ -114,6 +114,13 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
     `,
     `
       enum Fruit {
+        Apple,
+      }
+      declare function useFruit(fruit: Fruit | -1): void;
+      useFruit(-1);
+    `,
+    `
+      enum Fruit {
         Apple = 0,
         Banana = '',
       }
@@ -183,6 +190,27 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
       enum Fruit {
         Apple,
       }
+      declare function useFruit(fruit: Fruit, a: number): void;
+      useFruit(Fruit.Apple, -1);
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare function useFruit(fruit: Fruit, a: number, b: number): void;
+      useFruit(Fruit.Apple, -1, -1);
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare function useFruit(a: number, fruit: Fruit, b: number): void;
+      useFruit(-1, Fruit.Apple, -1);
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
       declare function useFruits(fruits: Fruit[]): void;
       useFruit([Fruit.Apple]);
     `,
@@ -193,6 +221,14 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
       }
       declare function useFruits(...fruits: Fruit[]): void;
       useFruit(Fruit.Apple, Fruit.Banana);
+    `,
+    `
+      enum Fruit {
+        Apple,
+        Banana,
+      }
+      declare function useFruits(a: number, ...fruits: Fruit[]): void;
+      useFruit(1, Fruit.Apple, Fruit.Banana);
     `,
   ],
   invalid: [
@@ -406,6 +442,23 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
         {
           column: 19,
           endColumn: 20,
+          line: 6,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare function useFruits(a: number, ...fruits: Fruit[]): void;
+        useFruits(0, Fruit.Apple, 0);
+      `,
+      errors: [
+        {
+          column: 35,
+          endColumn: 36,
           line: 6,
           messageId: 'provided',
         },

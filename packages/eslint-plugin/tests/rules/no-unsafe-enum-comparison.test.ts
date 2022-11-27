@@ -1,11 +1,11 @@
-import rule from '../../../src/rules/no-unsafe-enum-comparison';
+import rule from '../../src/rules/no-unsafe-enum-comparison';
 import {
   fruit2EnumDefinition,
   fruitEnumDefinition,
   strictEnumsRuleTester,
   vegetable2EnumDefinition,
   vegetableEnumDefinition,
-} from './shared';
+} from './strict-enums/shared';
 
 strictEnumsRuleTester.run('strict-enums-comparison', rule, {
   valid: [

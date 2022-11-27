@@ -12,9 +12,10 @@ import * as util from '../util';
  * no separate kind for them.
  */
 enum EnumKind {
-  NonEnum,
+  HasBothValues,
   HasNumberValues,
   HasStringValues,
+  NonEnum,
 }
 
 /** These bitwise operators are always considered to be safe comparisons. */
@@ -37,17 +38,11 @@ function getEnumKind(type: ts.Type): EnumKind {
   const isStringLiteral = util.isTypeFlagSet(type, ts.TypeFlags.StringLiteral);
   const isNumberLiteral = util.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral);
 
-  if (isStringLiteral && !isNumberLiteral) {
-    return EnumKind.HasStringValues;
-  }
-
-  if (isNumberLiteral && !isStringLiteral) {
-    return EnumKind.HasNumberValues;
-  }
-
-  throw new Error(
-    'Failed to derive the type of enum, since it did not have string values or number values.',
-  );
+  return isNumberLiteral
+    ? isStringLiteral
+      ? EnumKind.HasBothValues
+      : EnumKind.HasNumberValues
+    : EnumKind.HasStringValues;
 }
 
 /**
