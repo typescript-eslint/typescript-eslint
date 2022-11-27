@@ -71,14 +71,14 @@ You can also use [`eslint:recommended`](https://eslint.org/docs/rules/) (the set
 
 As of version 2 of this plugin, _by design_, none of the rules in the main `recommended` config require type-checking in order to run. This means that they are more lightweight and faster to run.
 
-Some highly valuable rules require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-requiring-type-checking`. You would apply this _in addition_ to the recommended configs previously mentioned, e.g.:
+Some highly valuable rules require type-checking in order to be implemented correctly, however, so we provide an additional config you can extend from called `recommended-type-checked`. You would apply this _in addition_ to the recommended configs previously mentioned, e.g.:
 
 ```json
 {
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    "plugin:@typescript-eslint/recommended-type-checked"
   ]
 }
 ```

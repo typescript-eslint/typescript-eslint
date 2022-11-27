@@ -21,7 +21,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     // Add this line
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/recommended-type-checked',
   ],
 };
 ```
@@ -31,7 +31,7 @@ In more detail:
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory.
 - `parserOptions.project` tells our parser the relative path where your project's `tsconfig.json` is.
   - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/MONOREPOS.md).
-- `plugin:@typescript-eslint/recommended-requiring-type-checking` is another recommended configuration we provide. This one contains rules that specifically require type information.
+- `plugin:@typescript-eslint/recommended-type-checked` is another recommended configuration we provide. This one contains rules that specifically require type information.
 
 With that done, run the same lint command you ran before.
 You may see new rules reporting errors based on type information!

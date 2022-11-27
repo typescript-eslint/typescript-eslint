@@ -472,6 +472,11 @@ tester.addFixturePatternConfig('typescript/expressions', {
      * @see https://github.com/babel/babel/issues/14613
      */
     'instantiation-expression',
+    /**
+     * TS 4.9 `satisfies` operator has not been implemented in Babel yet.
+     * @see https://github.com/babel/babel/pull/14211
+     */
+    'satisfies-expression',
   ],
 });
 

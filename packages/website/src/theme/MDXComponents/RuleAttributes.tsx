@@ -10,7 +10,7 @@ const getRecommendation = (docs: RuleMetaDataDocs): [string, string] => {
   return docs.recommended === 'strict'
     ? ['🔒', 'strict']
     : docs.requiresTypeChecking
-    ? ['🧠', 'recommended-requiring-type-checking']
+    ? ['🧠', 'recommended-type-checked']
     : ['✅', 'recommended'];
 };
 
@@ -62,7 +62,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           .
         </>
       ),
-      emoji: '🛠',
+      emoji: '🔧',
     });
   }
 

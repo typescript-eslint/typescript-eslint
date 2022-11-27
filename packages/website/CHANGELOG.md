@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.44.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.43.0...v5.44.0) (2022-11-21)
+
+**Note:** Version bump only for package website
+
+# [5.43.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.1...v5.43.0) (2022-11-14)
+
+**Note:** Version bump only for package website
+
+## [5.42.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.0...v5.42.1) (2022-11-07)
+
+**Note:** Version bump only for package website
+
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+### Bug Fixes
+
+- **eslint-plugin:** enable react/jsx-curly-brace-presence lint rule in website package ([#5894](https://github.com/typescript-eslint/typescript-eslint/issues/5894)) ([344322a](https://github.com/typescript-eslint/typescript-eslint/commit/344322add846d03c6c9981e486b09e6ba1196555))
+
+### Features
+
+- **scope-manager:** ignore ECMA version ([#5881](https://github.com/typescript-eslint/typescript-eslint/issues/5881)) ([3b8d449](https://github.com/typescript-eslint/typescript-eslint/commit/3b8d449696c319690536a18a48ef32749dc2f559))
+- **website:** Add a happy message to playground output pane when no errors or AST ([#5868](https://github.com/typescript-eslint/typescript-eslint/issues/5868)) ([#5873](https://github.com/typescript-eslint/typescript-eslint/issues/5873)) ([c4e0d86](https://github.com/typescript-eslint/typescript-eslint/commit/c4e0d8678e0398f3ab85510f40ad6f97832b9e6d))
+
+### Reverts
+
+- Revert "feat(scope-manager): ignore ECMA version" (#5888) ([2ee81df](https://github.com/typescript-eslint/typescript-eslint/commit/2ee81df5a365d82ef4b3dfc124d4ec39c7bcb725)), closes [#5888](https://github.com/typescript-eslint/typescript-eslint/issues/5888) [#5881](https://github.com/typescript-eslint/typescript-eslint/issues/5881)
+
 # [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
 
 **Note:** Version bump only for package website

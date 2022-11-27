@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.44.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.43.0...v5.44.0) (2022-11-21)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+# [5.43.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.1...v5.43.0) (2022-11-14)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+## [5.42.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.0...v5.42.1) (2022-11-07)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
+# [5.42.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.41.0...v5.42.0) (2022-10-31)
+
+**Note:** Version bump only for package @typescript-eslint/experimental-utils
+
 # [5.41.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.40.1...v5.41.0) (2022-10-24)
 
 **Note:** Version bump only for package @typescript-eslint/experimental-utils
@@ -894,7 +910,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - explicitly support eslint v6 ([#645](https://github.com/typescript-eslint/typescript-eslint/issues/645)) ([34a7cf6](https://github.com/typescript-eslint/typescript-eslint/commit/34a7cf6))
 
-- feat(eslint-plugin)!: recommended-requiring-type-checking config (#846) ([d3470c9](https://github.com/typescript-eslint/typescript-eslint/commit/d3470c9)), closes [#846](https://github.com/typescript-eslint/typescript-eslint/issues/846)
+- feat(eslint-plugin)!: recommended-type-checked config (#846) ([d3470c9](https://github.com/typescript-eslint/typescript-eslint/commit/d3470c9)), closes [#846](https://github.com/typescript-eslint/typescript-eslint/issues/846)
 - feat(eslint-plugin)!: change recommended config (#729) ([428567d](https://github.com/typescript-eslint/typescript-eslint/commit/428567d)), closes [#729](https://github.com/typescript-eslint/typescript-eslint/issues/729)
 - feat(eslint-plugin)!: add rule `consistent-type-assertions` (#731) ([92e98de](https://github.com/typescript-eslint/typescript-eslint/commit/92e98de)), closes [#731](https://github.com/typescript-eslint/typescript-eslint/issues/731)
 

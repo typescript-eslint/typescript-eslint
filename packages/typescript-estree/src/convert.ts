@@ -2906,6 +2906,14 @@ export class Converter {
         });
       }
 
+      case SyntaxKind.SatisfiesExpression: {
+        return this.createNode<TSESTree.TSSatisfiesExpression>(node, {
+          type: AST_NODE_TYPES.TSSatisfiesExpression,
+          expression: this.convertChild(node.expression),
+          typeAnnotation: this.convertChild(node.type),
+        });
+      }
+
       default:
         return this.deeplyCopy(node);
     }

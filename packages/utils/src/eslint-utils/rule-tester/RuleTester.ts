@@ -1,9 +1,13 @@
 import type * as TSESLintParserType from '@typescript-eslint/parser';
+import assert from 'assert';
 import { version as eslintVersion } from 'eslint/package.json';
 import * as path from 'path';
 import * as semver from 'semver';
 
-import * as TSESLint from '../../ts-eslint';
+import type { ParserOptions } from '../../ts-eslint/ParserOptions';
+import type { RuleModule } from '../../ts-eslint/Rule';
+import type { RuleTesterTestFrameworkFunction } from '../../ts-eslint/RuleTester';
+import * as BaseRuleTester from '../../ts-eslint/RuleTester';
 import { deepMerge } from '../deepMerge';
 import type { DependencyConstraint } from './dependencyConstraints';
 import { satisfiesAllDependencyConstraints } from './dependencyConstraints';
@@ -11,18 +15,28 @@ import { satisfiesAllDependencyConstraints } from './dependencyConstraints';
 const TS_ESLINT_PARSER = '@typescript-eslint/parser';
 const ERROR_MESSAGE = `Do not set the parser at the test level unless you want to use a parser other than ${TS_ESLINT_PARSER}`;
 
-type RuleTesterConfig = Omit<TSESLint.RuleTesterConfig, 'parser'> & {
+type RuleTesterConfig = Omit<BaseRuleTester.RuleTesterConfig, 'parser'> & {
   parser: typeof TS_ESLINT_PARSER;
+  /**
+   * Constraints that must pass in the current environment for any tests to run
+   */
+  dependencyConstraints?: DependencyConstraint;
 };
 
 interface InvalidTestCase<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>,
-> extends TSESLint.InvalidTestCase<TMessageIds, TOptions> {
+> extends BaseRuleTester.InvalidTestCase<TMessageIds, TOptions> {
+  /**
+   * Constraints that must pass in the current environment for the test to run
+   */
   dependencyConstraints?: DependencyConstraint;
 }
 interface ValidTestCase<TOptions extends Readonly<unknown[]>>
-  extends TSESLint.ValidTestCase<TOptions> {
+  extends BaseRuleTester.ValidTestCase<TOptions> {
+  /**
+   * Constraints that must pass in the current environment for the test to run
+   */
   dependencyConstraints?: DependencyConstraint;
 }
 interface RunTests<
@@ -36,27 +50,48 @@ interface RunTests<
 
 type AfterAll = (fn: () => void) => void;
 
-class RuleTester extends TSESLint.RuleTester {
+function isDescribeWithSkip(
+  value: unknown,
+): value is RuleTesterTestFrameworkFunction & {
+  skip: RuleTesterTestFrameworkFunction;
+} {
+  return (
+    typeof value === 'object' &&
+    value != null &&
+    'skip' in value &&
+    typeof (value as Record<string, unknown>).skip === 'function'
+  );
+}
+
+class RuleTester extends BaseRuleTester.RuleTester {
   readonly #baseOptions: RuleTesterConfig;
 
-  static #afterAll: AfterAll;
+  static #afterAll: AfterAll | undefined;
   /**
    * If you supply a value to this property, the rule tester will call this instead of using the version defined on
    * the global namespace.
    */
   static get afterAll(): AfterAll {
     return (
-      this.#afterAll ||
+      this.#afterAll ??
       (typeof afterAll === 'function' ? afterAll : (): void => {})
     );
   }
-  static set afterAll(value) {
+  static set afterAll(value: AfterAll | undefined) {
     this.#afterAll = value;
   }
 
+  private get staticThis(): typeof RuleTester {
+    // the cast here is due to https://github.com/microsoft/TypeScript/issues/3841
+    return this.constructor as typeof RuleTester;
+  }
+
   constructor(baseOptions: RuleTesterConfig) {
+    // eslint will hard-error if you include non-standard top-level properties
+    const { dependencyConstraints: _, ...baseOptionsSafeForESLint } =
+      baseOptions;
     super({
-      ...baseOptions,
+      ...baseOptionsSafeForESLint,
       parserOptions: {
         ...baseOptions.parserOptions,
         warnOnUnsupportedTypeScriptVersion:
@@ -73,8 +108,7 @@ class RuleTester extends TSESLint.RuleTester {
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
-    // the cast here is due to https://github.com/microsoft/TypeScript/issues/3841
-    (this.constructor as typeof RuleTester).afterAll(() => {
+    this.staticThis.afterAll(() => {
       try {
         // instead of creating a hard dependency, just use a soft require
         // a bit weird, but if they're using this tooling, it'll be installed
@@ -85,11 +119,11 @@ class RuleTester extends TSESLint.RuleTester {
       }
     });
   }
-  private getFilename(testOptions?: TSESLint.ParserOptions): string {
+  private getFilename(testOptions?: ParserOptions): string {
     const resolvedOptions = deepMerge(
       this.#baseOptions.parserOptions,
       testOptions,
-    ) as TSESLint.ParserOptions;
+    ) as ParserOptions;
     const filename = `file.ts${resolvedOptions.ecmaFeatures?.jsx ? 'x' : ''}`;
     if (resolvedOptions.project) {
       return path.join(
@@ -107,9 +141,41 @@ class RuleTester extends TSESLint.RuleTester {
   // This is a lot more explicit
   run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     name: string,
-    rule: TSESLint.RuleModule<TMessageIds, TOptions>,
+    rule: RuleModule<TMessageIds, TOptions>,
     testsReadonly: RunTests<TMessageIds, TOptions>,
   ): void {
+    if (
+      this.#baseOptions.dependencyConstraints &&
+      !satisfiesAllDependencyConstraints(
+        this.#baseOptions.dependencyConstraints,
+      )
+    ) {
+      if (isDescribeWithSkip(this.staticThis.describe)) {
+        // for frameworks like mocha or jest that have a "skip" version of their function
+        // we can provide a nice skipped test!
+        this.staticThis.describe.skip(name, () => {
+          this.staticThis.it(
+            'All tests skipped due to unsatisfied constructor dependency constraints',
+            () => {},
+          );
+        });
+      } else {
+        // otherwise just declare an empty test
+        this.staticThis.describe(name, () => {
+          this.staticThis.it(
+            'All tests skipped due to unsatisfied constructor dependency constraints',
+            () => {
+              // some frameworks error if there are no assertions
+              assert.equal(true, true);
+            },
+          );
+        });
+      }
+
+      // don't run any tests because we don't match the base constraint
+      return;
+    }
+
     const tests = {
       // standardize the valid tests as objects
       valid: testsReadonly.valid.map(test => {
@@ -141,14 +207,16 @@ class RuleTester extends TSESLint.RuleTester {
     single test case.
     Hugely helps with the string-based valid test cases as it means they don't
     need to be made objects!
+    Also removes dependencyConstraints, which we support but ESLint core doesn't.
     */
-    const addFilename = <
+    const normalizeTest = <
       T extends
         | ValidTestCase<TOptions>
         | InvalidTestCase<TMessageIds, TOptions>,
-    >(
-      test: T,
-    ): T => {
+    >({
+      dependencyConstraints: _,
+      ...test
+    }: T): Omit<T, 'dependencyConstraints'> => {
       if (test.parser === TS_ESLINT_PARSER) {
         throw new Error(ERROR_MESSAGE);
       }
@@ -160,8 +228,8 @@ class RuleTester extends TSESLint.RuleTester {
       }
       return test;
     };
-    tests.valid = tests.valid.map(addFilename);
-    tests.invalid = tests.invalid.map(addFilename);
+    tests.valid = tests.valid.map(normalizeTest);
+    tests.invalid = tests.invalid.map(normalizeTest);
 
     const hasOnly = ((): boolean => {
       for (const test of allTestsIterator) {

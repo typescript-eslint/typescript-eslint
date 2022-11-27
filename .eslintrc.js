@@ -17,7 +17,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/recommended-type-checked',
   ],
   parserOptions: {
     sourceType: 'module',
@@ -256,8 +256,23 @@ module.exports = {
         './packages/eslint-plugin/src/rules/**/*.ts',
       ],
       rules: {
+        'eslint-plugin/require-meta-docs-description': [
+          'error',
+          { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },
+        ],
+
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
+
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector:
+              'ExportDefaultDeclaration Property[key.name="create"] MemberExpression[object.name="context"][property.name="options"]',
+            message:
+              "Retrieve options from create's second parameter so that defaultOptions are applied.",
+          },
+        ],
       },
     },
     // plugin rule tests
@@ -307,7 +322,7 @@ module.exports = {
       rules: {
         // disallow ALL unused vars
         '@typescript-eslint/no-unused-vars': 'error',
-        '@typescript-eslint/sort-type-union-intersection-members': 'error',
+        '@typescript-eslint/sort-type-constituents': 'error',
       },
     },
     {

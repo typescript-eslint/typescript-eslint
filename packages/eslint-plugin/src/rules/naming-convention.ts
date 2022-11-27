@@ -138,6 +138,9 @@ export default util.createRule<Options, MessageIds>({
       if ('readonly' in node && node.readonly) {
         modifiers.add(Modifiers.readonly);
       }
+      if ('override' in node && node.override) {
+        modifiers.add(Modifiers.override);
+      }
       if (
         node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
@@ -182,6 +185,34 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
+    function isAsyncMemberOrProperty(
+      propertyOrMemberNode:
+        | TSESTree.PropertyNonComputedName
+        | TSESTree.TSMethodSignatureNonComputedName
+        | TSESTree.PropertyDefinitionNonComputedName
+        | TSESTree.TSAbstractPropertyDefinitionNonComputedName
+        | TSESTree.MethodDefinitionNonComputedName
+        | TSESTree.TSAbstractMethodDefinitionNonComputedName,
+    ): boolean {
+      return Boolean(
+        'value' in propertyOrMemberNode &&
+          propertyOrMemberNode.value &&
+          'async' in propertyOrMemberNode.value &&
+          propertyOrMemberNode.value.async,
+      );
+    }
+
+    function isAsyncVariableIdentifier(id: TSESTree.Identifier): boolean {
+      return Boolean(
+        id.parent &&
+          (('async' in id.parent && id.parent.async) ||
+            ('init' in id.parent &&
+              id.parent.init &&
+              'async' in id.parent.init &&
+              id.parent.init.async)),
+      );
+    }
+
     return {
       // #region variable
 
@@ -219,6 +250,10 @@ export default util.createRule<Options, MessageIds>({
             modifiers.add(Modifiers.unused);
           }
 
+          if (isAsyncVariableIdentifier(id)) {
+            modifiers.add(Modifiers.async);
+          }
+
           validator(id, modifiers);
         });
       },
@@ -252,6 +287,10 @@ export default util.createRule<Options, MessageIds>({
 
         if (isUnused(node.id.name, scope)) {
           modifiers.add(Modifiers.unused);
+        }
+
+        if (node.async) {
+          modifiers.add(Modifiers.async);
         }
 
         validator(node.id, modifiers);
@@ -360,6 +399,11 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.TSMethodSignatureNonComputedName,
       ): void {
         const modifiers = new Set<Modifiers>([Modifiers.public]);
+
+        if (isAsyncMemberOrProperty(node)) {
+          modifiers.add(Modifiers.async);
+        }
+
         handleMember(validators.objectLiteralMethod, node, modifiers);
       },
 
@@ -376,6 +420,11 @@ export default util.createRule<Options, MessageIds>({
           | TSESTree.TSAbstractMethodDefinitionNonComputedName,
       ): void {
         const modifiers = getMemberModifiers(node);
+
+        if (isAsyncMemberOrProperty(node)) {
+          modifiers.add(Modifiers.async);
+        }
+
         handleMember(validators.classMethod, node, modifiers);
       },
 

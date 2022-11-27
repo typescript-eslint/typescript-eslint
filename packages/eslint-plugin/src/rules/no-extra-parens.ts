@@ -141,8 +141,30 @@ export default util.createRule<Options, MessageIds>({
       },
       BinaryExpression: binaryExp,
       CallExpression: callExp,
-      // ClassDeclaration
-      // ClassExpression
+      ClassDeclaration(node) {
+        if (node.superClass?.type === AST_NODE_TYPES.TSAsExpression) {
+          return rules.ClassDeclaration({
+            ...node,
+            superClass: {
+              ...node.superClass,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+        return rules.ClassDeclaration(node);
+      },
+      ClassExpression(node) {
+        if (node.superClass?.type === AST_NODE_TYPES.TSAsExpression) {
+          return rules.ClassExpression({
+            ...node,
+            superClass: {
+              ...node.superClass,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+        return rules.ClassExpression(node);
+      },
       ConditionalExpression(node) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
         if (util.isTypeAssertion(node.test)) {

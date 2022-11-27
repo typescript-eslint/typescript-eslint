@@ -210,7 +210,7 @@ writeConfig(
 
 console.log();
 console.log(
-  '--------------------------------- recommended-requiring-type-checking.ts ---------------------------------',
+  '--------------------------------- recommended-type-checked.ts ---------------------------------',
 );
 const recommendedRulesRequiringProgram = ruleEntries
   .filter(entryIsRecommended)
@@ -227,10 +227,7 @@ const recommendedRequiringTypeCheckingConfig: LinterConfig = {
 };
 writeConfig(
   recommendedRequiringTypeCheckingConfig,
-  path.resolve(
-    __dirname,
-    '../src/configs/recommended-requiring-type-checking.ts',
-  ),
+  path.resolve(__dirname, '../src/configs/recommended-type-checked.ts'),
 );
 
 console.log();

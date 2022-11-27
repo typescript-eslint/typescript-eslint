@@ -84,9 +84,9 @@ describe('recommended.json config', () => {
   itHasBaseRulesOverriden(unfilteredConfigRules);
 });
 
-describe('recommended-requiring-type-checking.json config', () => {
+describe('recommended-type-checked.json config', () => {
   const unfilteredConfigRules: Record<string, string> =
-    plugin.configs['recommended-requiring-type-checking'].rules;
+    plugin.configs['recommended-type-checked'].rules;
   const configRules = filterRules(unfilteredConfigRules);
   // note: include deprecated rules so that the config doesn't change between major bumps
   const ruleConfigs = Object.entries(rules)

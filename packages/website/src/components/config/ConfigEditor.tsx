@@ -129,8 +129,12 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
                 <label className={styles.searchResult} key={item.key}>
                   <span className={styles.searchResultDescription}>
                     <span className={styles.searchResultName}>{item.key}</span>
-                    {item.label && <br />}
-                    {item.label && <span>{item.label}</span>}
+                    {item.label && (
+                      <>
+                        <br />
+                        <span> {item.label}</span>
+                      </>
+                    )}
                   </span>
                   {item.type === 'boolean' && (
                     <Checkbox
