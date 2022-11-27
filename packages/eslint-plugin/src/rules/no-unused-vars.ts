@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
     },
   },
   defaultOptions: [{}],
-  create(context) {
+  create(context, [firstOption]) {
     const filename = context.getFilename();
     const sourceCode = context.getSourceCode();
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
@@ -96,8 +96,6 @@ export default util.createRule<Options, MessageIds>({
         ignoreRestSiblings: false,
         caughtErrors: 'none',
       };
-
-      const [firstOption] = context.options;
 
       if (firstOption) {
         if (typeof firstOption === 'string') {
