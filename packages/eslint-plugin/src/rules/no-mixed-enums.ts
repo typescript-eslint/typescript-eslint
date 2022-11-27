@@ -41,9 +41,7 @@ export default util.createRule({
     }
 
     return {
-      'TSEnumDeclaration:has(TSEnumMember ~ TSEnumMember)'(
-        node: TSESTree.TSEnumDeclaration,
-      ): void {
+      'TSEnumDeclaration[members.1]'(node: TSESTree.TSEnumDeclaration): void {
         const [firstMember, ...remainingMembers] = node.members;
         const allowedMemberType = getMemberType(firstMember.initializer);
 
