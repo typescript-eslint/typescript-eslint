@@ -75,16 +75,16 @@ exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-with-parenthes
           },
         },
 
-        range: [0, 32],
+        range: [0, 33],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 32, line: 1 },
+          end: { column: 33, line: 1 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [0, 33],
+    range: [0, 34],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
