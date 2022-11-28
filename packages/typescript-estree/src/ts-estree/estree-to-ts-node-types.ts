@@ -54,8 +54,6 @@ export interface EstreeToTsNodeTypes {
     | ts.ClassDeclaration
     | ts.ClassExpression
     | ts.TypeAliasDeclaration
-    // note for pr
-    // yup, that's it
     | ts.ImportEqualsDeclaration
     | ts.InterfaceDeclaration
     | ts.EnumDeclaration
