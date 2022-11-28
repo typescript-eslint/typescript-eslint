@@ -7,6 +7,10 @@ const ruleTester = new RuleTester({
     ecmaVersion: 2020,
     sourceType: 'module',
   },
+  // type-only imports were first added in TS3.8
+  dependencyConstraints: {
+    typescript: '3.8',
+  },
 });
 
 const withMetaParserOptions = {
@@ -191,6 +195,9 @@ ruleTester.run('consistent-type-imports', rule, {
         const b = B;
       `,
       options: [{ prefer: 'no-type-imports', fixStyle: 'inline-type-imports' }],
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
     },
     // exports
     `
@@ -1891,6 +1898,9 @@ import { A, B } from 'foo';
 type T = A;
 const b = B;
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ prefer: 'no-type-imports' }],
       errors: [
         {
@@ -1911,6 +1921,9 @@ import { B, type C } from 'foo';
 type T = A | C;
 const b = B;
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ prefer: 'type-imports' }],
       errors: [
         {

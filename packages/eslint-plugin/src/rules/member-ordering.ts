@@ -25,15 +25,17 @@ type NonCallableMemberKind = Exclude<MemberKind, 'constructor' | 'signature'>;
 
 type MemberScope = 'static' | 'instance' | 'abstract';
 
+type Accessibility = TSESTree.Accessibility | '#private';
+
 type BaseMemberType =
   | MemberKind
-  | `${TSESTree.Accessibility}-${Exclude<
+  | `${Accessibility}-${Exclude<
       MemberKind,
       'signature' | 'static-initialization'
     >}`
-  | `${TSESTree.Accessibility}-decorated-${DecoratedMemberKind}`
+  | `${Accessibility}-decorated-${DecoratedMemberKind}`
   | `decorated-${DecoratedMemberKind}`
-  | `${TSESTree.Accessibility}-${MemberScope}-${NonCallableMemberKind}`
+  | `${Accessibility}-${MemberScope}-${NonCallableMemberKind}`
   | `${MemberScope}-${NonCallableMemberKind}`;
 
 type MemberType = BaseMemberType | BaseMemberType[];
@@ -122,6 +124,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-field',
   'protected-static-field',
   'private-static-field',
+  '#private-static-field',
 
   'public-decorated-field',
   'protected-decorated-field',
@@ -130,14 +133,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-field',
   'protected-instance-field',
   'private-instance-field',
+  '#private-instance-field',
 
   'public-abstract-field',
   'protected-abstract-field',
-  'private-abstract-field',
 
   'public-field',
   'protected-field',
   'private-field',
+  '#private-field',
 
   'static-field',
   'instance-field',
@@ -161,6 +165,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-get',
   'protected-static-get',
   'private-static-get',
+  '#private-static-get',
 
   'public-decorated-get',
   'protected-decorated-get',
@@ -169,14 +174,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-get',
   'protected-instance-get',
   'private-instance-get',
+  '#private-instance-get',
 
   'public-abstract-get',
   'protected-abstract-get',
-  'private-abstract-get',
 
   'public-get',
   'protected-get',
   'private-get',
+  '#private-get',
 
   'static-get',
   'instance-get',
@@ -190,6 +196,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-set',
   'protected-static-set',
   'private-static-set',
+  '#private-static-set',
 
   'public-decorated-set',
   'protected-decorated-set',
@@ -198,14 +205,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-set',
   'protected-instance-set',
   'private-instance-set',
+  '#private-instance-set',
 
   'public-abstract-set',
   'protected-abstract-set',
-  'private-abstract-set',
 
   'public-set',
   'protected-set',
   'private-set',
+  '#private-set',
 
   'static-set',
   'instance-set',
@@ -219,6 +227,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-method',
   'protected-static-method',
   'private-static-method',
+  '#private-static-method',
 
   'public-decorated-method',
   'protected-decorated-method',
@@ -227,14 +236,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-method',
   'protected-instance-method',
   'private-instance-method',
+  '#private-instance-method',
 
   'public-abstract-method',
   'protected-abstract-method',
-  'private-abstract-method',
 
   'public-method',
   'protected-method',
   'private-method',
+  '#private-method',
 
   'static-method',
   'instance-method',
@@ -260,30 +270,49 @@ const allMemberTypes = Array.from(
   ).reduce<Set<MemberType>>((all, type) => {
     all.add(type);
 
-    (['public', 'protected', 'private'] as const).forEach(accessibility => {
-      if (type !== 'signature' && type !== 'static-initialization') {
-        all.add(`${accessibility}-${type}`); // e.g. `public-field`
-      }
+    (['public', 'protected', 'private', '#private'] as const).forEach(
+      accessibility => {
+        if (
+          type !== 'signature' &&
+          type !== 'static-initialization' &&
+          type !== 'call-signature' &&
+          !(type === 'constructor' && accessibility === '#private')
+        ) {
+          all.add(`${accessibility}-${type}`); // e.g. `public-field`
+        }
 
-      // Only class instance fields, methods, get and set can have decorators attached to them
-      if (
-        type === 'field' ||
-        type === 'method' ||
-        type === 'get' ||
-        type === 'set'
-      ) {
-        all.add(`${accessibility}-decorated-${type}`);
-        all.add(`decorated-${type}`);
-      }
+        // Only class instance fields, methods, get and set can have decorators attached to them
+        if (
+          accessibility !== '#private' &&
+          (type === 'field' ||
+            type === 'method' ||
+            type === 'get' ||
+            type === 'set')
+        ) {
+          all.add(`${accessibility}-decorated-${type}`);
+          all.add(`decorated-${type}`);
+        }
 
-      if (type !== 'constructor' && type !== 'signature') {
-        // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-        (['static', 'instance', 'abstract'] as const).forEach(scope => {
-          all.add(`${scope}-${type}`);
-          all.add(`${accessibility}-${scope}-${type}`);
-        });
-      }
-    });
+        if (
+          type !== 'constructor' &&
+          type !== 'signature' &&
+          type !== 'call-signature'
+        ) {
+          // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+          if (accessibility === '#private' || accessibility === 'private') {
+            (['static', 'instance'] as const).forEach(scope => {
+              all.add(`${scope}-${type}`);
+              all.add(`${accessibility}-${scope}-${type}`);
+            });
+          } else {
+            (['static', 'instance', 'abstract'] as const).forEach(scope => {
+              all.add(`${scope}-${type}`);
+              all.add(`${accessibility}-${scope}-${type}`);
+            });
+          }
+        }
+      },
+    );
 
     return all;
   }, new Set<MemberType>()),
@@ -437,6 +466,16 @@ function getRankOrder(
   return rank;
 }
 
+function getAccessibility(node: Member): Accessibility {
+  if ('accessibility' in node && node.accessibility) {
+    return node.accessibility;
+  }
+  if ('key' in node && node.key?.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return '#private';
+  }
+  return 'public';
+}
+
 /**
  * Gets the rank of the node given the order.
  * @param node the node to be evaluated.
@@ -465,10 +504,7 @@ function getRank(
       : abstract
       ? 'abstract'
       : 'instance';
-  const accessibility =
-    'accessibility' in node && node.accessibility
-      ? node.accessibility
-      : 'public';
+  const accessibility = getAccessibility(node);
 
   // Collect all existing member groups that apply to this node...
   // (e.g. 'public-instance-field', 'instance-field', 'public-field', 'constructor' etc.)

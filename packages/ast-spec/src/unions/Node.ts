@@ -12,11 +12,13 @@ import type { TSModuleDeclaration } from '../declaration/TSModuleDeclaration/spe
 import type { TSNamespaceExportDeclaration } from '../declaration/TSNamespaceExportDeclaration/spec';
 import type { TSTypeAliasDeclaration } from '../declaration/TSTypeAliasDeclaration/spec';
 import type { VariableDeclaration } from '../declaration/VariableDeclaration/spec';
+import type { AccessorProperty } from '../element/AccessorProperty/spec';
 import type { MethodDefinition } from '../element/MethodDefinition/spec';
 import type { Property } from '../element/Property/spec';
 import type { PropertyDefinition } from '../element/PropertyDefinition/spec';
 import type { SpreadElement } from '../element/SpreadElement/spec';
 import type { StaticBlock } from '../element/StaticBlock/spec';
+import type { TSAbstractAccessorProperty } from '../element/TSAbstractAccessorProperty/spec';
 import type { TSAbstractMethodDefinition } from '../element/TSAbstractMethodDefinition/spec';
 import type { TSAbstractPropertyDefinition } from '../element/TSAbstractPropertyDefinition/spec';
 import type { TSCallSignatureDeclaration } from '../element/TSCallSignatureDeclaration/spec';
@@ -53,6 +55,7 @@ import type { TSAsExpression } from '../expression/TSAsExpression/spec';
 import type { TSEmptyBodyFunctionExpression } from '../expression/TSEmptyBodyFunctionExpression/spec';
 import type { TSInstantiationExpression } from '../expression/TSInstantiationExpression/spec';
 import type { TSNonNullExpression } from '../expression/TSNonNullExpression/spec';
+import type { TSSatisfiesExpression } from '../expression/TSSatisfiesExpression/spec';
 import type { TSTypeAssertion } from '../expression/TSTypeAssertion/spec';
 import type { UnaryExpression } from '../expression/UnaryExpression/spec';
 import type { UpdateExpression } from '../expression/UpdateExpression/spec';
@@ -169,6 +172,7 @@ import type { Literal } from './Literal';
  */
 
 export type Node =
+  | AccessorProperty
   | ArrayExpression
   | ArrayPattern
   | ArrowFunctionExpression
@@ -250,6 +254,7 @@ export type Node =
   | ThisExpression
   | ThrowStatement
   | TryStatement
+  | TSAbstractAccessorProperty
   | TSAbstractKeyword
   | TSAbstractMethodDefinition
   | TSAbstractPropertyDefinition
@@ -305,6 +310,7 @@ export type Node =
   | TSQualifiedName
   | TSReadonlyKeyword
   | TSRestType
+  | TSSatisfiesExpression
   | TSStaticKeyword
   | TSStringKeyword
   | TSSymbolKeyword

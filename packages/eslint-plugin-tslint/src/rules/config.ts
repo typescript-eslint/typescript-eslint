@@ -64,7 +64,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Wraps a TSLint configuration and lints the whole source using TSLint',
+        'Wraps a TSLint configuration and lints the whole source using TSLint', // eslint-disable-line eslint-plugin/require-meta-docs-description
       recommended: false,
     },
     fixable: 'code',
@@ -98,18 +98,13 @@ export default createRule<Options, MessageIds>({
     ],
   },
   defaultOptions: [{}],
-  create(context) {
+  create(
+    context,
+    [{ rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile }],
+  ) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
     const parserServices = ESLintUtils.getParserServices(context);
-
-    /**
-     * The TSLint rules configuration passed in by the user
-     */
-    const [
-      { rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile },
-    ] = context.options;
-
     const program = parserServices.program;
 
     /**
