@@ -360,5 +360,21 @@ type T = 1 | string | {} | A;
       ],
     },
   ],
-  invalid: [...invalid('|'), ...invalid('&')],
+  invalid: [
+    ...invalid('|'),
+    ...invalid('&'),
+    {
+      code: 'type T = (B | C) & A;',
+      output: `type T = A & (B | C);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Intersection',
+            name: 'T',
+          },
+        },
+      ],
+    },
+  ],
 });

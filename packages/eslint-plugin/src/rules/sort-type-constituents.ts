@@ -220,7 +220,9 @@ export default util.createRule<Options, MessageIds>({
           const fix: TSESLint.ReportFixFunction = fixer => {
             const sorted = expectedOrder
               .map(t =>
-                typeNodeRequiresParentheses(t.node, t.text)
+                typeNodeRequiresParentheses(t.node, t.text) ||
+                (node.type === AST_NODE_TYPES.TSIntersectionType &&
+                  t.node.type === AST_NODE_TYPES.TSUnionType)
                   ? `(${t.text})`
                   : t.text,
               )
