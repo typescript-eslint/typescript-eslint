@@ -48,12 +48,14 @@ type Order = AlphabeticalOrder | 'as-written';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
+  optionalityOrder?: OptionalityOrder;
   order: Order;
-  required?: 'first' | 'last';
 }
 
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 type Member = TSESTree.ClassElement | TSESTree.TypeElement;
+
+type OptionalityOrder = 'optional-first' | 'required-first';
 
 export type Options = [
   {
@@ -103,9 +105,9 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
         'natural-case-insensitive',
       ],
     },
-    required: {
+    optionalityOrder: {
       type: 'string',
-      enum: ['first', 'last'],
+      enum: ['optional-first', 'required-first'],
     },
   },
   additionalProperties: false,
@@ -723,12 +725,13 @@ export default util.createRule<Options, MessageIds>({
      * on the given 'required' parameter.
      *
      * @param members Members to be validated.
+     * @param optionalityOrder Where to place optional members, if not intermixed.
      *
      * @return True if all required and optional members are correctly sorted.
      */
     function checkRequiredOrder(
       members: Member[],
-      required: 'first' | 'last' | undefined,
+      optionalityOrder: OptionalityOrder | undefined,
     ): boolean {
       const switchIndex = members.findIndex(
         (member, i) =>
@@ -741,14 +744,18 @@ export default util.createRule<Options, MessageIds>({
           loc: member.loc,
           data: {
             member: getMemberName(member, context.getSourceCode()),
-            optionalOrRequired: required === 'first' ? 'required' : 'optional',
+            optionalOrRequired:
+              optionalityOrder === 'optional-first' ? 'required' : 'optional',
           },
         });
 
-      // if the optionality of the first item is correct (based on required)
+      // if the optionality of the first item is correct (based on optionalityOrder)
       // then the first 0 inclusive to switchIndex exclusive members all
       // have the correct optionality
-      if (isMemberOptional(members[0]) !== (required === 'last')) {
+      if (
+        isMemberOptional(members[0]) !==
+        (optionalityOrder === 'required-first')
+      ) {
         report(members[0]);
         return false;
       }
@@ -785,7 +792,7 @@ export default util.createRule<Options, MessageIds>({
       // Standardize config
       let order: Order | undefined;
       let memberTypes: string | MemberType[] | undefined;
-      let required: 'first' | 'last' | undefined;
+      let optionalityOrder: OptionalityOrder | undefined;
 
       // returns true if everything is good and false if an error was reported
       const checkOrder = (memberSet: Member[]): boolean => {
@@ -821,10 +828,10 @@ export default util.createRule<Options, MessageIds>({
       } else {
         order = orderConfig.order;
         memberTypes = orderConfig.memberTypes;
-        required = orderConfig.required;
+        optionalityOrder = orderConfig.optionalityOrder;
       }
 
-      if (!required) {
+      if (!optionalityOrder) {
         checkOrder(members);
         return;
       }
@@ -835,7 +842,7 @@ export default util.createRule<Options, MessageIds>({
       );
 
       if (switchIndex !== -1) {
-        if (!checkRequiredOrder(members, required)) {
+        if (!checkRequiredOrder(members, optionalityOrder)) {
           return;
         }
         checkOrder(members.slice(0, switchIndex));
