@@ -20,11 +20,7 @@ export default util.createRule<Options, MessageIds>({
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
-    messages: baseRule.meta.messages ?? {
-      unusedExpression:
-        'Expected an assignment or function call and instead saw an expression.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {

@@ -33,7 +33,6 @@ import type {
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 import { AST_NODE_TYPES } from './ts-estree';
-import { typescriptVersionIsAtLeast } from './version-check';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -254,16 +253,13 @@ export class Converter {
   }
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
-    node: TSESTreeToTSNode<T>,
-    data: TSESTree.OptionalRangeAndLoc<T>,
+    // The 'parent' property will be added later if specified
+    node: Omit<TSESTreeToTSNode<T>, 'parent'>,
+    data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
     const result = data;
     if (!result.range) {
-      result.range = getRange(
-        // this is completely valid, but TS hates it
-        node as never,
-        this.ast,
-      );
+      result.range = getRange(node, this.ast);
     }
     if (!result.loc) {
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
@@ -315,7 +311,7 @@ export class Converter {
       loc,
       range: [annotationStartCol, child.end],
       typeAnnotation: this.convertType(child),
-    };
+    } as TSESTree.TSTypeAnnotation;
   }
 
   /**
@@ -394,7 +390,7 @@ export class Converter {
       params: typeParameters.map(typeParameter =>
         this.convertType(typeParameter),
       ),
-    };
+    } as TSESTree.TSTypeParameterDeclaration;
   }
 
   /**
@@ -2155,13 +2151,6 @@ export class Converter {
         });
 
       case SyntaxKind.NullKeyword: {
-        if (!typescriptVersionIsAtLeast['4.0'] && this.inTypeMode) {
-          // 4.0 started nesting null types inside a LiteralType node, but we still need to support pre-4.0
-          return this.createNode<TSESTree.TSNullKeyword>(node, {
-            type: AST_NODE_TYPES.TSNullKeyword,
-          });
-        }
-
         return this.createNode<TSESTree.NullLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           value: null,
@@ -2773,10 +2762,7 @@ export class Converter {
         });
       }
       case SyntaxKind.LiteralType: {
-        if (
-          typescriptVersionIsAtLeast['4.0'] &&
-          node.literal.kind === SyntaxKind.NullKeyword
-        ) {
+        if (node.literal.kind === SyntaxKind.NullKeyword) {
           // 4.0 started nesting null types inside a LiteralType node
           // but our AST is designed around the old way of null being a keyword
           return this.createNode<TSESTree.TSNullKeyword>(

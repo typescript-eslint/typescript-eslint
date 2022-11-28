@@ -15,26 +15,26 @@ Program {
             raw: "0",
             value: 0,
 
-            range: [10, 11],
+            range: [11, 12],
             loc: {
-              start: { column: 10, line: 1 },
-              end: { column: 11, line: 1 },
+              start: { column: 11, line: 1 },
+              end: { column: 12, line: 1 },
             },
           },
           typeAnnotation: TSNumberKeyword {
             type: "TSNumberKeyword",
 
-            range: [22, 28],
+            range: [23, 29],
             loc: {
-              start: { column: 22, line: 1 },
-              end: { column: 28, line: 1 },
+              start: { column: 23, line: 1 },
+              end: { column: 29, line: 1 },
             },
           },
 
-          range: [10, 28],
+          range: [11, 29],
           loc: {
-            start: { column: 10, line: 1 },
-            end: { column: 28, line: 1 },
+            start: { column: 11, line: 1 },
+            end: { column: 29, line: 1 },
           },
         },
         consequent: Literal {
@@ -59,23 +59,23 @@ Program {
           },
         },
 
-        range: [0, 28],
+        range: [0, 30],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 28, line: 1 },
+          end: { column: 30, line: 1 },
         },
       },
 
-      range: [0, 29],
+      range: [0, 31],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 29, line: 1 },
+        end: { column: 31, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 30],
+  range: [0, 32],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },

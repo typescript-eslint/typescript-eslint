@@ -287,7 +287,7 @@ describe('semanticInfo', () => {
   it('default program produced with option', () => {
     const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
       ...createOptions('<input>'),
-      createDefaultProgram: true,
+      DEPRECATED__createDefaultProgram: true,
     });
 
     expect(parseResult.services.program).toBeDefined();

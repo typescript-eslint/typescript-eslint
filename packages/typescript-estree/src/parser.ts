@@ -44,7 +44,9 @@ function getProgramAndAST(
       useProvidedPrograms(parseSettings.programs, parseSettings)) ||
     (shouldProvideParserServices && createProjectProgram(parseSettings)) ||
     (shouldProvideParserServices &&
-      parseSettings.createDefaultProgram &&
+      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+      parseSettings.DEPRECATED__createDefaultProgram &&
+      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
       createDefaultProgram(parseSettings)) ||
     createIsolatedProgram(parseSettings)
   );
@@ -75,7 +77,7 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
 }
 
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string,
+  code: string | ts.SourceFile,
   options: T | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
@@ -128,7 +130,7 @@ function clearParseAndGenerateServicesCalls(): void {
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string,
+  code: string | ts.SourceFile,
   options: T,
 ): ParseAndGenerateServicesResult<T> {
   /**

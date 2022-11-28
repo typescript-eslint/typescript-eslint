@@ -154,7 +154,6 @@ export default util.createRule<Options, MessageIds>({
     return {
       TSArrayType(node): void {
         const isReadonly =
-          node.parent &&
           node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
           node.parent.operator === 'readonly';
 
@@ -171,7 +170,7 @@ export default util.createRule<Options, MessageIds>({
           currentOption === 'generic'
             ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
-        const errorNode = isReadonly ? node.parent! : node;
+        const errorNode = isReadonly ? node.parent : node;
 
         context.report({
           node: errorNode,
@@ -252,8 +251,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const type = typeParams[0];
-        const typeParens =
-          !util.isParenthesized(type, sourceCode) && typeNeedsParentheses(type);
+        const typeParens = typeNeedsParentheses(type);
         const parentParens =
           readonlyPrefix &&
           node.parent?.type === AST_NODE_TYPES.TSArrayType &&

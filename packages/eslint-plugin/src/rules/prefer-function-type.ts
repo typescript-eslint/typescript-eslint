@@ -99,7 +99,6 @@ export default util.createRule({
         }
 
         const fixable =
-          node.parent &&
           node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
 
         const fix = fixable
@@ -137,7 +136,6 @@ export default util.createRule({
               }
 
               const isParentExported =
-                node.parent &&
                 node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration;
 
               if (
@@ -154,12 +152,7 @@ export default util.createRule({
                   );
                 }, '');
                 // comments should move before export and not between export and interface declaration
-                fixes.push(
-                  fixer.insertTextBefore(
-                    node.parent as TSESTree.Node | TSESTree.Token,
-                    commentsText,
-                  ),
-                );
+                fixes.push(fixer.insertTextBefore(node.parent, commentsText));
               } else {
                 comments.forEach(comment => {
                   let commentText =

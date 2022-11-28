@@ -221,7 +221,7 @@ export default util.createRule<Options, MessageIds>({
                 ? 'Intersection'
                 : 'Union',
           };
-          if (node.parent?.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
+          if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
             messageId = 'notSortedNamed';
             data.name = node.parent.id.name;
           }

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "5.43.0",
+  "version": "5.44.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -8,7 +8,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
   "files": [
     "dist",
@@ -34,22 +34,22 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "eslint . --ignore-path='../../.eslintignore'",
+    "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "5.43.0",
-    "@typescript-eslint/utils": "5.43.0",
+    "@typescript-eslint/typescript-estree": "5.44.0",
+    "@typescript-eslint/utils": "5.44.0",
     "debug": "^4.3.4",
     "tsutils": "^3.21.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "5.43.0",
+    "@typescript-eslint/parser": "5.44.0",
     "typescript": "*"
   },
   "peerDependencies": {
-    "eslint": "*"
+    "eslint": "^7.0.0 || ^8.0.0"
   },
   "peerDependenciesMeta": {
     "typescript": {

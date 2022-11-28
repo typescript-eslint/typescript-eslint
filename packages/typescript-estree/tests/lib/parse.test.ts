@@ -773,10 +773,10 @@ describe('parseAndGenerateServices', () => {
       tsconfigRootDir: PROJECT_DIR,
       filePath: resolve(PROJECT_DIR, 'file.ts'),
     };
-    const withDefaultProgramConfig: TSESTreeOptions = {
+    const withDeprecatedDefaultProgramConfig: TSESTreeOptions = {
       ...config,
       project: './tsconfig.defaultProgram.json',
-      createDefaultProgram: true,
+      DEPRECATED__createDefaultProgram: true,
     };
 
     describe('when file is in the project', () => {
@@ -818,11 +818,11 @@ describe('parseAndGenerateServices', () => {
       });
     });
 
-    describe('when file is not in the project and createDefaultProgram=true', () => {
+    describe('when file is not in the project and DEPRECATED__createDefaultProgram=true', () => {
       it('returns error because __PLACEHOLDER__ can not be resolved', () => {
         expect(
           parser
-            .parseAndGenerateServices(code, withDefaultProgramConfig)
+            .parseAndGenerateServices(code, withDeprecatedDefaultProgramConfig)
             .services.program.getSemanticDiagnostics(),
         ).toHaveProperty(
           [0, 'messageText'],
@@ -834,7 +834,7 @@ describe('parseAndGenerateServices', () => {
         expect(
           parser
             .parseAndGenerateServices(code, {
-              ...withDefaultProgramConfig,
+              ...withDeprecatedDefaultProgramConfig,
               moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
             })
             .services.program.getSemanticDiagnostics(),

@@ -1,1 +1,1 @@
-({ prop: 'string' }) satisfies { prop: string };
+({ prop: 'string' } satisfies { prop: string });

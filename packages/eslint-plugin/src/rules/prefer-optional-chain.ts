@@ -122,7 +122,7 @@ export default util.createRule({
       ): void {
         // selector guarantees this cast
         const initialExpression = (
-          initialIdentifierOrNotEqualsExpr.parent!.type ===
+          initialIdentifierOrNotEqualsExpr.parent.type ===
           AST_NODE_TYPES.ChainExpression
             ? initialIdentifierOrNotEqualsExpr.parent.parent
             : initialIdentifierOrNotEqualsExpr.parent

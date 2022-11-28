@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
     },
   },
   defaultOptions: [{}],
-  create(context) {
+  create(context, [firstOption]) {
     const filename = context.getFilename();
     const sourceCode = context.getSourceCode();
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
@@ -96,8 +96,6 @@ export default util.createRule<Options, MessageIds>({
         ignoreRestSiblings: false,
         caughtErrors: 'none',
       };
-
-      const [firstOption] = context.options;
 
       if (firstOption) {
         if (typeof firstOption === 'string') {
@@ -167,10 +165,10 @@ export default util.createRule<Options, MessageIds>({
       ): boolean {
         if (options.ignoreRestSiblings) {
           const hasRestSiblingDefinition = variable.defs.some(def =>
-            hasRestSibling(def.name.parent!),
+            hasRestSibling(def.name.parent),
           );
           const hasRestSiblingReference = variable.references.some(ref =>
-            hasRestSibling(ref.identifier.parent!),
+            hasRestSibling(ref.identifier.parent),
           );
 
           return hasRestSiblingDefinition || hasRestSiblingReference;
