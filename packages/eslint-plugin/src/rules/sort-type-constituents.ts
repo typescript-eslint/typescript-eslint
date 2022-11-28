@@ -96,10 +96,18 @@ function getGroup(node: TSESTree.TypeNode): Group {
   }
 }
 
-function requiresParentheses(node: TSESTree.TypeNode): boolean {
+interface Constituent {
+  group: number;
+  node: TSESTree.TypeNode;
+  text: string;
+}
+
+function requiresParentheses({ node, text }: Constituent): boolean {
   return (
     node.type === AST_NODE_TYPES.TSFunctionType ||
-    node.type === AST_NODE_TYPES.TSConstructorType
+    node.type === AST_NODE_TYPES.TSConstructorType ||
+    (node.type === AST_NODE_TYPES.TSUnionType && text.startsWith('|')) ||
+    (node.type === AST_NODE_TYPES.TSIntersectionType && text.startsWith('&'))
   );
 }
 
@@ -183,7 +191,7 @@ export default util.createRule<Options, MessageIds>({
     function checkSorting(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const sourceOrder = node.types.map(type => {
+      const sourceOrder = node.types.map((type): Constituent => {
         const group = groupOrder?.indexOf(getGroup(type)) ?? -1;
         return {
           group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
@@ -226,7 +234,7 @@ export default util.createRule<Options, MessageIds>({
 
           const fix: TSESLint.ReportFixFunction = fixer => {
             const sorted = expectedOrder
-              .map(t => (requiresParentheses(t.node) ? `(${t.text})` : t.text))
+              .map(t => (requiresParentheses(t) ? `(${t.text})` : t.text))
               .join(
                 node.type === AST_NODE_TYPES.TSIntersectionType ? ' & ' : ' | ',
               );

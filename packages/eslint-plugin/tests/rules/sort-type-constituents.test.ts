@@ -287,6 +287,32 @@ type T =
         },
       ],
     },
+    {
+      code: `type T = (| A) ${operator} B`,
+      output: `type T = B ${operator} (| A)`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = (& A) ${operator} B`,
+      output: `type T = B ${operator} (& A)`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
   ];
 };
 
