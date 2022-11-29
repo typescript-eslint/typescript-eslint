@@ -3,16 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Types = Record<
-  string,
-  | null
-  | false
-  | string
+type Types =
+  | object
   | {
       message: string;
       fixWith?: string;
-    }
->;
+    };
 
 export type Options = [
   {
@@ -33,9 +29,10 @@ function stringifyNode(
   return removeSpaces(sourceCode.getText(node));
 }
 
-function getCustomMessage(
-  bannedType: null | string | { message?: string; fixWith?: string },
-): string {
+function getCustomMessage(bannedType: {
+  message?: string;
+  fixWith?: string;
+}): string {
   if (bannedType === null) {
     return '';
   }
