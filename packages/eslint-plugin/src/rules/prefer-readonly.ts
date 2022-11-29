@@ -119,7 +119,10 @@ export default util.createRule<Options, MessageIds>({
             ts.isArrayLiteralExpression(parent.parent))
         ) {
           current = parent;
-        } else if (ts.isBinaryExpression(parent)) {
+        } else if (
+          ts.isBinaryExpression(parent) &&
+          !ts.isPropertyAccessExpression(current)
+        ) {
           return (
             parent.left === current &&
             parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
