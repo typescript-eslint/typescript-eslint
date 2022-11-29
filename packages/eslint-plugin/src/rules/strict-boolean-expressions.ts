@@ -856,7 +856,7 @@ export default util.createRule<Options, MessageId>({
       const enums = types.filter(type =>
         tsutils.isTypeFlagSet(
           type,
-          ts.TypeFlags.Enum | ts.TypeFlags.EnumLike | ts.TypeFlags.EnumLiteral,
+          ts.TypeFlags.EnumLike,
         ),
       );
 
