@@ -113,6 +113,12 @@ Putting together all the terms introduces in this article:
 - **Parser**: A tool that reads in a string and outputs an AST.
 - **TSESTree**: Our extension to the ESTree AST format that also includes TypeScript-specific syntax.
 
+### TypeScript Lint Rules and ASTs
+
+Interested in how these ASTs work with ESLint rules?
+We collaborated with our friends at Sourcegraph on a [Tour de Source on TypeScript ESLint](https://sourcegraph.com/notebooks/Tm90ZWJvb2s6MTA2OA==).
+Read on to learn how ESLint rules use ASTs to analyze code files and, thanks to `@typescript-eslint/parser`, call TypeScript's type checking APIs to analyze code.
+
 [astexplorer.net]: https://astexplorer.net
 [espree]: https://github.com/eslint/espree
 [estree]: https://github.com/ESTree/ESTree
