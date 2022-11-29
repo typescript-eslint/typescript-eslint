@@ -6,8 +6,10 @@ import * as util from '../util';
 type Types =
   | object
   | {
-      message: string;
-      fixWith?: string;
+      [key: string]: {
+        message: string;
+        fixWith?: string;
+      };
     };
 
 export type Options = [
