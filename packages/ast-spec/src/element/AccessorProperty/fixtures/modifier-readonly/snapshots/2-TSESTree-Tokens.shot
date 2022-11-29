@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty modifier-readonly TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [6, 9],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "readonly",
+
+    range: [14, 22],
+    loc: {
+      start: { column: 2, line: 2 },
+      end: { column: 10, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "accessor",
+
+    range: [23, 31],
+    loc: {
+      start: { column: 11, line: 2 },
+      end: { column: 19, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [32, 35],
+    loc: {
+      start: { column: 20, line: 2 },
+      end: { column: 23, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [36, 37],
+    loc: {
+      start: { column: 24, line: 2 },
+      end: { column: 25, line: 2 },
+    },
+  },
+  Numeric {
+    type: "Numeric",
+    value: "2",
+
+    range: [38, 39],
+    loc: {
+      start: { column: 26, line: 2 },
+      end: { column: 27, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [39, 40],
+    loc: {
+      start: { column: 27, line: 2 },
+      end: { column: 28, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [41, 42],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+]
+`;

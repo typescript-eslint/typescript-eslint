@@ -7132,7 +7132,7 @@ events@^3.2.0:
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
-execa@^5.0.0:
+execa@5.1.1, execa@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
   integrity sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==
@@ -9178,7 +9178,7 @@ jest-runtime@^29.1.2:
     slash "^3.0.0"
     strip-bom "^4.0.0"
 
-jest-snapshot@*, jest-snapshot@^28.0.0, jest-snapshot@^29, jest-snapshot@^29.0.3, jest-snapshot@^29.1.2:
+jest-snapshot@*, jest-snapshot@^29, jest-snapshot@^29.0.0, jest-snapshot@^29.0.3, jest-snapshot@^29.1.2:
   version "29.1.2"
   resolved "https://registry.yarnpkg.com/jest-snapshot/-/jest-snapshot-29.1.2.tgz#7dd277e88c45f2d2ff5888de1612e63c7ceb575b"
   integrity sha512-rYFomGpVMdBlfwTYxkUp3sjD6usptvZcONFYNqVlaz4EpHPnDvlWjvmOQ9OCSNKqYZqLM2aS3wq01tWujLg7gg==
@@ -9208,12 +9208,12 @@ jest-snapshot@*, jest-snapshot@^28.0.0, jest-snapshot@^29, jest-snapshot@^29.0.3
     pretty-format "^29.1.2"
     semver "^7.3.5"
 
-jest-specific-snapshot@*, jest-specific-snapshot@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/jest-specific-snapshot/-/jest-specific-snapshot-6.0.0.tgz#8373589825234fbbeef1bf054f5a6720a15a54f3"
-  integrity sha512-IiAfq0bmuXNwRkfCO3mLTCMhZJBdU05y/zEUKRk0KDhW6WQ7ZL0xTgjjtMrfLb0h+o/i+1/N68Ls3NrIFTykiA==
+jest-specific-snapshot@*, jest-specific-snapshot@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/jest-specific-snapshot/-/jest-specific-snapshot-7.0.0.tgz#c8851bc263b780c0fa750462f61bd98fe956fc64"
+  integrity sha512-Ut2YItOYFC88Pir/JPN8Cgjvf60N4ZPmIqGJ2iZI+c9SLR27hwJxaEngKpW4RurPb+p45BbSuZoKe9SlVIylQA==
   dependencies:
-    jest-snapshot "^28.0.0"
+    jest-snapshot "^29.0.0"
 
 jest-util@28.1.1, jest-util@^29, jest-util@^29.1.2:
   version "29.1.2"
@@ -11560,10 +11560,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier@*, prettier@2.7.1, prettier@^2.6.2:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
-  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
+prettier@*, prettier@2.8.0, prettier@^2.6.2:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.0.tgz#c7df58393c9ba77d6fba3921ae01faf994fb9dc9"
+  integrity sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"
