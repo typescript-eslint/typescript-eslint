@@ -211,7 +211,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     '!foo!.bar || !foo!.bar.baz;',
     '!foo!.bar!.baz || !foo!.bar!.baz!.paz;',
     '!foo.bar!.baz || !foo.bar!.baz!.paz;',
-    '!import.meta.url || true;',
+    'import.meta || import.meta.foo;',
+    '!import.meta && !import.meta.foo;',
   ],
   invalid: [
     ...baseCases,
@@ -1317,6 +1318,52 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz?.bar?.foo);`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`import.meta && import.meta?.baz;`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`import.meta?.baz;`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`!import.meta || !import.meta?.baz;`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`!import.meta?.baz;`,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: noFormat`import.meta && import.meta?.() && import.meta?.().baz;`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`import.meta?.()?.baz;`,
             },
           ],
         },
