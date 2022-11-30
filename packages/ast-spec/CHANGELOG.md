@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.45.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.44.0...v5.45.0) (2022-11-28)
+
+### Features
+
+- support Auto Accessor syntax ([#5926](https://github.com/typescript-eslint/typescript-eslint/issues/5926)) ([becd1f8](https://github.com/typescript-eslint/typescript-eslint/commit/becd1f8581c0013399dfe71be6c265e96cedb57a))
+
+# [5.44.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.43.0...v5.44.0) (2022-11-21)
+
+### Features
+
+- support parsing `satisfies` operators ([#5717](https://github.com/typescript-eslint/typescript-eslint/issues/5717)) ([20d7cae](https://github.com/typescript-eslint/typescript-eslint/commit/20d7caee35ab84ae6381fdf04338c9e2b9e2bc48))
+
 # [5.43.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.1...v5.43.0) (2022-11-14)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec

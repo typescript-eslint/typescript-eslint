@@ -25,7 +25,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
 
-  create(context) {
+  create(context, [{ after }]) {
     const sourceCode = context.getSourceCode();
     const baseRules = baseRule.create(context);
     return {
@@ -58,7 +58,7 @@ export default util.createRule<Options, MessageIds>({
         const punctuatorToken = sourceCode.getTokenAfter(typeToken)!;
         const spacesBetweenTypeAndPunctuator =
           punctuatorToken.range[0] - typeToken.range[1];
-        if (context.options[0].after && spacesBetweenTypeAndPunctuator === 0) {
+        if (after && spacesBetweenTypeAndPunctuator === 0) {
           context.report({
             loc: punctuatorToken.loc,
             messageId: 'expectedBefore',
@@ -68,7 +68,7 @@ export default util.createRule<Options, MessageIds>({
             },
           });
         }
-        if (!context.options[0].after && spacesBetweenTypeAndPunctuator > 0) {
+        if (!after && spacesBetweenTypeAndPunctuator > 0) {
           context.report({
             loc: punctuatorToken.loc,
             messageId: 'unexpectedBefore',

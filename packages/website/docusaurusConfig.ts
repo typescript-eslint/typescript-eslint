@@ -8,6 +8,7 @@ import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-se
 import type { Config } from '@docusaurus/types';
 import tabsPlugin from 'remark-docusaurus-tabs';
 
+import { version } from './package.json';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
@@ -87,6 +88,11 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         to: 'blog/',
         label: 'Blog',
         position: 'left',
+      },
+      {
+        position: 'right',
+        value: `v${version}`,
+        type: 'html',
       },
       {
         to: 'play',
