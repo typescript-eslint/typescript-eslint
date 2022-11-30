@@ -73,5 +73,5 @@ replies:
       The configurability also leads to huge fanout [making tests huge, and awful to maintain](https://github.com/typescript-eslint/typescript-eslint/blob/b814e635c1f34139c89e0176727480935dd45cac/packages/eslint-plugin/tests/rules/type-annotation-spacing.test.ts).
       \
       It's for these reasons that [eslint has frozen all stylistic lint rule options, and will not accept any new ones](https://eslint.org/blog/2020/05/changes-to-rules-policies).
-      See also our [What About Formatting?](https://typescript-eslint.io/docs/linting/troubleshooting/formatting) docs.
+      See also our [What About Formatting?](https://typescript-eslint.io/linting/troubleshooting/formatting) docs.
     name: Use Prettier

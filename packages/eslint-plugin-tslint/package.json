@@ -3,7 +3,7 @@
   "version": "5.45.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
-  "description": "TSLint wrapper plugin for ESLint",
+  "description": "ESLint plugin that wraps a TSLint configuration and lints the whole source using TSLint",
   "keywords": [
     "eslint",
     "eslintplugin",

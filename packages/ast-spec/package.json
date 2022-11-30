@@ -1,7 +1,7 @@
 {
   "name": "@typescript-eslint/ast-spec",
   "version": "5.45.0",
-  "description": "TypeScript-ESTree AST spec",
+  "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
     "eslint",

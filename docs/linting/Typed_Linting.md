@@ -30,7 +30,7 @@ In more detail:
 
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory.
 - `parserOptions.project` tells our parser the relative path where your project's `tsconfig.json` is.
-  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/MONOREPOS.md).
+  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.md).
 - `plugin:@typescript-eslint/recommended-requiring-type-checking` is another recommended configuration we provide. This one contains rules that specifically require type information.
 
 With that done, run the same lint command you ran before.
@@ -53,8 +53,8 @@ This means that generally they usually only run a complete lint before a push, o
 ### I get errors telling me "The file must be included in at least one of the projects provided"
 
 You're using an outdated version of `@typescript-eslint/parser`.
-Update to the latest version to see a more informative version of this error message, explained [Troubleshooting and FAQs](./TROUBLESHOOTING.md##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+Update to the latest version to see a more informative version of this error message, explained in our [Troubleshooting and FAQs page](./Troubleshooting.md#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](./TROUBLESHOOTING.md).
+If you're having problems getting this working, please have a look at our [Troubleshooting and FAQs page](./Troubleshooting.md).

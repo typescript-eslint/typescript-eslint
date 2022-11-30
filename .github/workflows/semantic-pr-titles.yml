@@ -16,7 +16,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # keep this synchronized with the /CONTRIBUTING.md
+          # keep this synchronized with /docs/contributing/Pull_Requests.mdx
           types: |
             docs
             feat
