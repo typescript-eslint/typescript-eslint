@@ -23,3 +23,7 @@
 [[redirects]]
   from = "/docs/linting/tslint"
   to = "/docs/linting/troubleshooting/tslint"
+
+[[redirects]]
+  from = "/docs/development/architecture/asts"
+  to = "/blog/asts-and-typescript-eslint"
