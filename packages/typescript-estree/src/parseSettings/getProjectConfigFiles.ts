@@ -12,8 +12,7 @@ interface TSConfigMatch {
 }
 
 /**
- * How many milliseconds we will respect a cache for checking an fs.existsSync
- * check for a file file on disk.
+ * How many milliseconds we will respect the cache of an fs.existsSync check.
  */
 const RECHECK_FILE_THRESHOLD_MS = 50;
 
