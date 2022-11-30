@@ -3,16 +3,14 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Types = Record<
-  string,
-  | null
-  | false
-  | string
+type Index = string | number | boolean | undefined | null;
+type Types =
+  | object
   | {
+      [key: string]: Index;
       message: string;
       fixWith?: string;
-    }
->;
+    };
 
 export type Options = [
   {
@@ -173,7 +171,11 @@ export default util.createRule<Options, MessageIds>({
       typeNode: TSESTree.Node,
       name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
-      const bannedType = bannedTypes.get(name);
+      type checkrequiredTypes =
+        | string
+        | false
+        | { fixWith?: string; message: string };
+      const bannedType = bannedTypes.get(name) as checkrequiredTypes;
 
       if (bannedType === undefined || bannedType === false) {
         return;
