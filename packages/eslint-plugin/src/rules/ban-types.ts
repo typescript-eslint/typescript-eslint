@@ -3,14 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Types =
-  | object
-  | {
-      [key: string]: {
-        message: string;
-        fixWith?: string;
-      };
-    };
+type Index = string | number | boolean | undefined | null;
+type Types = Index | object | { fixWith: string; message: string };
+// | {
+//     message: string;
+//     fixWith?: string;
+//   };
 
 export type Options = [
   {
@@ -31,10 +29,9 @@ function stringifyNode(
   return removeSpaces(sourceCode.getText(node));
 }
 
-function getCustomMessage(bannedType: {
-  message?: string;
-  fixWith?: string;
-}): string {
+function getCustomMessage(
+  bannedType: null | string | { message?: string; fixWith?: string },
+): string {
   if (bannedType === null) {
     return '';
   }
@@ -85,14 +82,14 @@ const defaultTypes: Types = {
   Object: {
     message: [
       'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-      '- If you want a type meaning "any object", you probably want `object` instead.',
+      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
     ].join('\n'),
   },
   '{}': {
     message: [
       '`{}` actually means "any non-nullish value".',
-      '- If you want a type meaning "any object", you probably want `object` instead.',
+      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
     ].join('\n'),
@@ -172,7 +169,8 @@ export default util.createRule<Options, MessageIds>({
       typeNode: TSESTree.Node,
       name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
-      const bannedType = bannedTypes.get(name);
+      type m = { fixWith?: string; message: string } | false;
+      const bannedType: m = bannedTypes.get(name);
 
       if (bannedType === undefined || bannedType === false) {
         return;
