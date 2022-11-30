@@ -5,10 +5,6 @@ import * as util from '../util';
 
 type Index = string | number | boolean | undefined | null;
 type Types = Index | object | { fixWith: string; message: string };
-// | {
-//     message: string;
-//     fixWith?: string;
-//   };
 
 export type Options = [
   {
@@ -169,8 +165,8 @@ export default util.createRule<Options, MessageIds>({
       typeNode: TSESTree.Node,
       name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
-      type m = { fixWith?: string; message: string } | false;
-      const bannedType: m = bannedTypes.get(name);
+      type total = { fixWith?: string; message: string } | false;
+      const bannedType: total = bannedTypes.get(name);
 
       if (bannedType === undefined || bannedType === false) {
         return;
