@@ -21,6 +21,8 @@ Object {
     "declaration/TSInterfaceDeclaration/fixtures/_error_/non-identifier-extends/fixture.ts",
     "declaration/TSTypeAliasDeclaration/fixtures/_error_/missing-type-parameter/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/missing-id-without-value/fixture.ts",
+    "element/AccessorProperty/fixtures/_error_/modifier-declare/fixture.ts",
+    "element/AccessorProperty/fixtures/_error_/modifier-override-with-no-extends/fixture.ts",
   },
   "TSESTree errored but Babel didn't": Set {
     "declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture.ts",
