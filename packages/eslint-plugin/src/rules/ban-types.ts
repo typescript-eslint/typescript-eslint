@@ -164,8 +164,8 @@ export default util.createRule<Options, MessageIds>({
       typeNode: TSESTree.Node,
       name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
-      type total = string | false | { fixWith?: string; message: string };
-      const bannedType = bannedTypes.get(name) as total;
+      type checkTypes = string | false | { fixWith?: string; message: string };
+      const bannedType = bannedTypes.get(name) as checkTypes;
 
       if (bannedType === undefined || bannedType === false) {
         return;
