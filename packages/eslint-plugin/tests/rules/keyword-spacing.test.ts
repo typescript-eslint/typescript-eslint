@@ -155,6 +155,20 @@ ruleTester.run('keyword-spacing', rule, {
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
     },
     {
+      // Space after import is not configurable from option since it's invalid syntax with import type
+      code: 'import type { SavedQueries } from "./SavedQueries.js";',
+      options: [
+        {
+          before: true,
+          after: true,
+          overrides: {
+            import: { after: false },
+          },
+        },
+      ],
+      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+    },
+    {
       code: "import type{SavedQueries} from './SavedQueries.js';",
       options: [
         {
@@ -263,28 +277,28 @@ ruleTester.run('keyword-spacing', rule, {
       output: 'import type { foo } from "foo";',
       options: [{ after: true, before: true }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      errors: [{ messageId: 'expectedAfter', data: { value: 'type' } }],
+      errors: expectedAfter('type'),
     },
     {
       code: 'import type { foo } from"foo";',
       output: 'import type{ foo } from"foo";',
       options: [{ after: false, before: true }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      errors: [{ messageId: 'unexpectedAfter', data: { value: 'type' } }],
+      errors: unexpectedAfter('type'),
     },
     {
       code: 'import type* as foo from "foo";',
       output: 'import type * as foo from "foo";',
       options: [{ after: true, before: true }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      errors: [{ messageId: 'expectedAfter', data: { value: 'type' } }],
+      errors: expectedAfter('type'),
     },
     {
       code: 'import type * as foo from"foo";',
       output: 'import type* as foo from"foo";',
       options: [{ after: false, before: true }],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      errors: [{ messageId: 'unexpectedAfter', data: { value: 'type' } }],
+      errors: unexpectedAfter('type'),
     },
     {
       code: "import type {SavedQueries} from './SavedQueries.js';",
@@ -299,7 +313,7 @@ ruleTester.run('keyword-spacing', rule, {
         },
       ],
       parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      errors: [{ messageId: 'unexpectedAfter', data: { value: 'type' } }],
+      errors: unexpectedAfter('type'),
     },
     {
       code: "import type {SavedQueries} from './SavedQueries.js';",
