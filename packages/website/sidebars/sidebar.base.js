@@ -67,6 +67,7 @@ module.exports = {
     },
     {
       items: [
+        'maintenance/branding',
         'maintenance/issues',
         'maintenance/pull-requests',
         'maintenance/releases',

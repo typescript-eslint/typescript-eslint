@@ -1,6 +1,6 @@
 <h1 align="center">TypeScript ESLint</h1>
 
-<p align="center">Monorepo for all the tooling which enables ESLint to support TypeScript</p>
+<p align="center">Monorepo for the tooling that enables ESLint and Prettier to support TypeScript</p>
 
 <p align="center">
     <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />

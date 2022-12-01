@@ -212,7 +212,7 @@ If you see more than one version installed, then you will have to either use [ya
 You can't, and you don't want to.
 
 You should use the same version of TypeScript for linting as the rest of your project.
-TypeScript versions often have slight differences in edge cases that can cause contradictory information between typescript-eslint rules and editor information.
+TypeScript versions often have slight differences in edge cases that can cause contradictory information between TypeScript-ESLint rules and editor information.
 For example:
 
 - `@typescript-eslint/strict-boolean-expressions` might be operating with TypeScript version _X_ and think a variable is `string[] | undefined`

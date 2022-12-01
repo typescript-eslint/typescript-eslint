@@ -233,7 +233,8 @@ const pluginPwaOptions: PluginPwaOptions = {
 
 const config: Config = {
   title: 'TypeScript ESLint',
-  tagline: 'Tooling which enables ESLint to support TypeScript',
+  tagline:
+    'The tooling that enables ESLint and Prettier to support TypeScript.',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -274,6 +275,11 @@ const config: Config = {
     {
       rel: 'manifest',
       href: '/img/favicon/site.webmanifest',
+    },
+    {
+      color: '#2656c7',
+      href: '/img/favicon/safari-pinned-tab.svg',
+      rel: 'mask-icon',
     },
   ],
 };

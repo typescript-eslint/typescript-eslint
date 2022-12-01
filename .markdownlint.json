@@ -99,11 +99,11 @@
   // MD044/proper-names - Proper names should have the correct capitalization
   "MD044": {
     "names": [
-      "JavaScript",
-      "TypeScript",
-      "TSLint",
       "ESLint",
-      "typescript-eslint"
+      "JavaScript",
+      "TSLint",
+      "TypeScript-ESLint",
+      "TypeScript"
     ],
     "code_blocks": false
   },
