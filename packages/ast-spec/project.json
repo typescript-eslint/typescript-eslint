@@ -3,6 +3,9 @@
   "type": "library",
   "implicitDependencies": [],
   "targets": {
+    "build": {
+      "outputs": ["packages/ast-spec/dist/*.ts"]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
