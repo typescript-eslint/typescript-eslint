@@ -4,9 +4,11 @@
   "implicitDependencies": [],
   "targets": {
     "build": {
-      "cwd": "packages/ast-spec",
-      "commands": ["yarn build"],
       "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/ast-spec",
+        "commands": ["yarn build"]
+      },
       "outputs": ["packages/ast-spec/dist/*.ts"]
     },
     "lint": {
