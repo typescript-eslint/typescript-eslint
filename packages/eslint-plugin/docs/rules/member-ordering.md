@@ -24,6 +24,7 @@ type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
+  optionalityOrder?: 'optional-first' | 'required-first';
   order:
     | 'alphabetically'
     | 'alphabetically-case-insensitive'
@@ -44,9 +45,10 @@ You can configure `OrderConfig` options for:
 - **`interfaces`**?: override ordering specifically for interfaces
 - **`typeLiterals`**?: override ordering specifically for type literals
 
-The `OrderConfig` settings for each kind of construct may configure sorting on one or both two levels:
+The `OrderConfig` settings for each kind of construct may configure sorting on up to three levels:
 
 - **`memberTypes`**: organizing on member type groups such as methods vs. properties
+- **`optionalityOrder`**: whether to put all optional members first or all required members first
 - **`order`**: organizing based on member names, such as alphabetically
 
 ### Groups
@@ -910,6 +912,96 @@ interface Foo {
   (): Baz; // Order doesn't matter (no sortable identifier)
 }
 ```
+
+#### Sorting Optional Members First or Last
+
+The `optionalityOrder` option may be enabled to place all optional members in a group at the beginning or end of that group.
+
+This config places all optional members before all required members:
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      {
+        "default": {
+          "optionalityOrder": "optional-first",
+          "order": "alphabetically"
+        }
+      }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+interface Foo {
+  a: boolean;
+  b?: number;
+  c: string;
+}
+```
+
+##### ✅ Correct
+
+```ts
+interface Foo {
+  b?: number;
+  a: boolean;
+  c: string;
+}
+```
+
+<!--/tabs-->
+
+This config places all required members before all optional members:
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      {
+        "default": {
+          "optionalityOrder": "required-first",
+          "order": "alphabetically"
+        }
+      }
+    ]
+  }
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+interface Foo {
+  a: boolean;
+  b?: number;
+  c: string;
+}
+```
+
+##### ✅ Correct
+
+```ts
+interface Foo {
+  a: boolean;
+  c: string;
+  b?: number;
+}
+```
+
+<!--/tabs-->
 
 ## All Supported Options
 

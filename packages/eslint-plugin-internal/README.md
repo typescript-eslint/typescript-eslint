@@ -1,9 +1,10 @@
-<h1 align="center">Internal ESLint Plugin</h1>
+# `@typescript-eslint/eslint-plugin-internal`
 
-<p align="center">An ESLint plugin used internally in this project to ensure consistency.</p>
+> An ESLint plugin used internally in this project to ensure consistency.
 
-<p align="center">
-    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
-</p>
+## ✋ Internal Package
 
-This plugin is not intended to be used externally.
+This is an _internal package_ to the [typescript-eslint monorepo](https://github.com/typescript-eslint/typescript-eslint).
+You likely don't want to use it directly.
+
+👉 See **https://typescript-eslint.io** for docs on typescript-eslint.

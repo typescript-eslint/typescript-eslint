@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty modifier-private AST Alignment - Token 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+    Keyword {
+      type: 'Keyword',
+      value: 'class',
+
+      range: [0, 5],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 5, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'Foo',
+
+      range: [6, 9],
+      loc: {
+        start: { column: 6, line: 1 },
+        end: { column: 9, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [10, 11],
+      loc: {
+        start: { column: 10, line: 1 },
+        end: { column: 11, line: 1 },
+      },
+    },
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'private',
+
+      range: [14, 21],
+      loc: {
+        start: { column: 2, line: 2 },
+        end: { column: 9, line: 2 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'accessor',
+
+      range: [22, 30],
+      loc: {
+        start: { column: 10, line: 2 },
+        end: { column: 18, line: 2 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'foo',
+
+      range: [31, 34],
+      loc: {
+        start: { column: 19, line: 2 },
+        end: { column: 22, line: 2 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '=',
+
+      range: [35, 36],
+      loc: {
+        start: { column: 23, line: 2 },
+        end: { column: 24, line: 2 },
+      },
+    },
+    Numeric {
+      type: 'Numeric',
+      value: '2',
+
+      range: [37, 38],
+      loc: {
+        start: { column: 25, line: 2 },
+        end: { column: 26, line: 2 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [38, 39],
+      loc: {
+        start: { column: 26, line: 2 },
+        end: { column: 27, line: 2 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [40, 41],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 3 },
+      },
+    },
+  ]"
+`;
