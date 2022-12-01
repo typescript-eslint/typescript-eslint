@@ -52,4 +52,4 @@ Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2
 > Stylistic rules are those related to spacing, conventions, and generally anything that does not highlight an error or a better way to do something.
 
 We support the ESLint team's decision and backing logic to move away from stylistic rules.
-With the exception of bug fixes, no new formatting-related pull requests will be accepted into typescript-eslint.
+With the exception of bug fixes, no new formatting-related pull requests will be accepted into TypeScript-ESLint.

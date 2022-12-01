@@ -5,7 +5,7 @@ title: Custom Rules
 ---
 
 :::important
-This page describes how to write your own custom ESLint rules using typescript-eslint.
+This page describes how to write your own custom ESLint rules using TypeScript-ESLint.
 You should be familiar with [ESLint's developer guide](https://eslint.org/docs/developer-guide) and [ASTs](https://typescript-eslint.io/blog/asts-and-typescript-eslint) before writing custom rules.
 :::
 
