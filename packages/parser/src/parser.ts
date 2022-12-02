@@ -136,30 +136,28 @@ function parseForESLint(
       analyzeOptions.lib = getLib(compilerOptions);
       log('Resolved libs from program: %o', analyzeOptions.lib);
     }
-    if (parserOptions.jsx === true) {
-      if (
-        analyzeOptions.jsxPragma === undefined &&
-        compilerOptions.jsxFactory != null
-      ) {
-        // in case the user has specified something like "preact.h"
-        const factory = compilerOptions.jsxFactory.split('.')[0].trim();
-        analyzeOptions.jsxPragma = factory;
-        log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
-      }
-      if (
-        analyzeOptions.jsxFragmentName === undefined &&
-        compilerOptions.jsxFragmentFactory != null
-      ) {
-        // in case the user has specified something like "preact.Fragment"
-        const fragFactory = compilerOptions.jsxFragmentFactory
-          .split('.')[0]
-          .trim();
-        analyzeOptions.jsxFragmentName = fragFactory;
-        log(
-          'Resolved jsxFragmentName from program: %s',
-          analyzeOptions.jsxFragmentName,
-        );
-      }
+    if (
+      analyzeOptions.jsxPragma === undefined &&
+      compilerOptions.jsxFactory != null
+    ) {
+      // in case the user has specified something like "preact.h"
+      const factory = compilerOptions.jsxFactory.split('.')[0].trim();
+      analyzeOptions.jsxPragma = factory;
+      log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
+    }
+    if (
+      analyzeOptions.jsxFragmentName === undefined &&
+      compilerOptions.jsxFragmentFactory != null
+    ) {
+      // in case the user has specified something like "preact.Fragment"
+      const fragFactory = compilerOptions.jsxFragmentFactory
+        .split('.')[0]
+        .trim();
+      analyzeOptions.jsxFragmentName = fragFactory;
+      log(
+        'Resolved jsxFragmentName from program: %s',
+        analyzeOptions.jsxFragmentName,
+      );
     }
     if (compilerOptions.emitDecoratorMetadata === true) {
       emitDecoratorMetadata = true;
