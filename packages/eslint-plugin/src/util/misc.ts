@@ -203,6 +203,18 @@ function findLastIndex<T>(
   return -1;
 }
 
+function typeNodeRequiresParentheses(
+  node: TSESTree.TypeNode,
+  text: string,
+): boolean {
+  return (
+    node.type === AST_NODE_TYPES.TSFunctionType ||
+    node.type === AST_NODE_TYPES.TSConstructorType ||
+    (node.type === AST_NODE_TYPES.TSUnionType && text.startsWith('|')) ||
+    (node.type === AST_NODE_TYPES.TSIntersectionType && text.startsWith('&'))
+  );
+}
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -216,6 +228,7 @@ export {
   isDefinitionFile,
   MemberNameType,
   RequireKeys,
+  typeNodeRequiresParentheses,
   upperCaseFirst,
   findLastIndex,
 };
