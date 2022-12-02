@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 
 import { firstDefined } from '../node-utils';
 import type { ParseSettings } from '../parseSettings';
-import { getProgramsForProjects } from './createWatchProgram';
+import { getWatchProgramsForProjects } from './getWatchProgramsForProjects';
 import type { ASTAndProgram } from './shared';
 import { getAstFromProgram } from './shared';
 
@@ -30,7 +30,7 @@ function createProjectProgram(
 ): ASTAndProgram | undefined {
   log('Creating project program for: %s', parseSettings.filePath);
 
-  const programsForProjects = getProgramsForProjects(parseSettings);
+  const programsForProjects = getWatchProgramsForProjects(parseSettings);
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
     getAstFromProgram(currentProgram, parseSettings),
   );
