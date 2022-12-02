@@ -42,9 +42,9 @@ jobs:
           # we allow "cross package" PRs with no scope
           requireScope: false
           # ensure that the subject is lower-case first
-          # also allows "[rule-name] " prefix for eslint-plugin rule PRs
-          # https://regexr.com/733ed
-          subjectPattern: ^(\[[a-z\-]+\] )?[a-z].+[^\.]$
+          # also allows "[rule-name] " / "[rule-name, rule-name] " prefix for eslint-plugin rule PRs
+          # https://regexr.com/73m7b
+          subjectPattern: ^(\[[a-z\-]+(, [a-z\-]+)*\] )?[a-z].+[^\.]$
           subjectPatternError: |
             The "subject" must start with a lower-case letter and must not
             end with a full-stop.
