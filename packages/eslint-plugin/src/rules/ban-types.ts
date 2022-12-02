@@ -3,14 +3,16 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Index = string | number | boolean | undefined | null;
-type Types =
-  | object
+type Types = Record<
+  string,
+  | null
+  | false
+  | string
   | {
-      [key: string]: Index;
       message: string;
       fixWith?: string;
-    };
+    }
+>;
 
 export type Options = [
   {
@@ -84,14 +86,14 @@ const defaultTypes: Types = {
   Object: {
     message: [
       'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
     ].join('\n'),
   },
   '{}': {
     message: [
       '`{}` actually means "any non-nullish value".',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
     ].join('\n'),
@@ -171,11 +173,7 @@ export default util.createRule<Options, MessageIds>({
       typeNode: TSESTree.Node,
       name = stringifyNode(typeNode, context.getSourceCode()),
     ): void {
-      type checkrequiredTypes =
-        | string
-        | false
-        | { fixWith?: string; message: string };
-      const bannedType = bannedTypes.get(name) as checkrequiredTypes;
+      const bannedType = bannedTypes.get(name);
 
       if (bannedType === undefined || bannedType === false) {
         return;
