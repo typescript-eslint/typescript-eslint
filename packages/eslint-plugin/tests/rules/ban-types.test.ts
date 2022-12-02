@@ -388,39 +388,6 @@ let b: Foo<NS.Good>;
         },
       ],
     },
-
-    {
-      code: noFormat`
-declare let j: unknown;
-let m3 = { ...(j as Record<string, never>) };
-      `,
-      output: `
-declare let j: unknown;
-let m3 = { ...(j as object) };
-      `,
-      options: [
-        {
-          types: {
-            'Record<string, never>': {
-              message: 'Use object instead.',
-              fixWith: 'object',
-            },
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'bannedTypeMessage',
-          data: {
-            name: 'Record<string,never>',
-            customMessage: ' Use object instead.',
-          },
-          line: 3,
-          column: 21,
-        },
-      ],
-    },
-
     {
       code: noFormat`
 let foo: {} = {};
