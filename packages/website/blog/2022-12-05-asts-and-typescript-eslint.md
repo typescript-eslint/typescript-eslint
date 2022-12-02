@@ -7,7 +7,7 @@ authors:
 description: Describing what an AST (Abstract Syntax Tree) is and why it's useful for ESLint and TypeScript tooling.
 slug: asts-and-typescript-eslint
 tags: [ast, abstract syntax tree, parser, parsing, prettier]
-title: ASTs and TypeScript-ESLint
+title: ASTs and typescript-eslint
 ---
 
 Programmers who work with tools like [ESLint](https://eslint.org) and [Prettier](https://prettier.io) often refer to ASTs.
@@ -79,14 +79,14 @@ On the other hand, TypeScript's type checking APIs require nodes in the TypeScri
 
 ### Enter TSESTree
 
-To resolve the incompatibilities between ESTrees and the TypeScript AST TypeScript-ESLint provides its own [`@typescript-eslint/parser` package](https://typescript-eslint.io/architecture/Parser.mdx) which:
+To resolve the incompatibilities between ESTrees and the TypeScript AST typescript-eslint provides its own [`@typescript-eslint/parser` package](https://typescript-eslint.io/architecture/Parser.mdx) which:
 
 1. First parses TypeScript syntax into a TypeScript AST
 1. Creates an ESTree AST based on that TypeScript AST
 1. Keeps track of equivalent nodes across each AST
 
-By creating both an ESTree AST and a TypeScript AST, the TypeScript-ESLint parser allows ESLint rules to work with TypeScript code.
-That's why the [Getting Started guide](https://typescript-eslint.io/getting-started) for TypeScript-ESLint has you specify `parser: '@typescript-eslint/parser'` in your ESLint config!
+By creating both an ESTree AST and a TypeScript AST, the typescript-eslint parser allows ESLint rules to work with TypeScript code.
+That's why the [Getting Started guide](https://typescript-eslint.io/getting-started) for typescript-eslint has you specify `parser: '@typescript-eslint/parser'` in your ESLint config!
 
 We commonly refer to the ESTree format that also includes TypeScript-specific syntax as **TSESTree**.
 

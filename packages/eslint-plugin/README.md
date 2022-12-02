@@ -7,4 +7,4 @@ An ESLint plugin which provides lint rules for TypeScript codebases.
 
 👉 See **https://typescript-eslint.io/architecture/utils** for our Getting Started docs.
 
-> See https://typescript-eslint.io for general documentation on TypeScript-ESLint, the tooling that allows you to run ESLint and Prettier on TypeScript code.
+> See https://typescript-eslint.io for general documentation on typescript-eslint, the tooling that allows you to run ESLint and Prettier on TypeScript code.

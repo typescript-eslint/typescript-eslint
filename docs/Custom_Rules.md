@@ -5,7 +5,7 @@ title: Custom Rules
 ---
 
 :::important
-This page describes how to write your own custom ESLint rules using TypeScript-ESLint.
+This page describes how to write your own custom ESLint rules using typescript-eslint.
 You should be familiar with [ESLint's developer guide](https://eslint.org/docs/developer-guide) and [ASTs](https://typescript-eslint.io/blog/asts-and-typescript-eslint) before writing custom rules.
 :::
 
@@ -18,17 +18,17 @@ The main three changes to custom rules writing are:
 
 ## Utils Package
 
-The [`@typescript-eslint/utils`](./architecture/Utils.mdx) package acts as a replacement package for `eslint` that exports all the same objects and types, but with TypeScript-ESLint support.
-It also exports common utility functions and constants most custom TypeScript-ESLint rules tend to use.
+The [`@typescript-eslint/utils`](./architecture/Utils.mdx) package acts as a replacement package for `eslint` that exports all the same objects and types, but with typescript-eslint support.
+It also exports common utility functions and constants most custom typescript-eslint rules tend to use.
 
 :::caution
-`@types/eslint` types are based on `@types/estree` and do not recognize TypeScript-ESLint nodes and properties.
-You should generally not need to import from `eslint` when writing custom TypeScript-ESLint rules in TypeScript.
+`@types/eslint` types are based on `@types/estree` and do not recognize typescript-eslint nodes and properties.
+You should generally not need to import from `eslint` when writing custom typescript-eslint rules in TypeScript.
 :::
 
 ### `RuleCreator`
 
-The recommended way to create custom ESLint rules that make use of TypeScript-ESLint features and/or syntax is with the `ESLintUtils.RuleCreator` function exported by `@typescript-eslint/utils`.
+The recommended way to create custom ESLint rules that make use of typescript-eslint features and/or syntax is with the `ESLintUtils.RuleCreator` function exported by `@typescript-eslint/utils`.
 
 It takes in a function that transforms a rule name into its documentation URL, then returns a function that takes in a rule module object.
 `RuleCreator` will infer the allowed message IDs the rule is allowed to emit from the provided `meta.messages` object.
@@ -208,7 +208,7 @@ export const rule = createRule({
 Read TypeScript's [Compiler APIs > Using the Type Checker](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#using-the-type-checker) section for how to use a program's type checker.
 :::
 
-The biggest addition TypeScript-ESLint brings to ESLint rules is the ability to use TypeScript's type checker APIs.
+The biggest addition typescript-eslint brings to ESLint rules is the ability to use TypeScript's type checker APIs.
 
 `@typescript-eslint/utils` exports an `ESLintUtils` namespace containing a `getParserServices` function that takes in an ESLint context and returns a `parserServices` object.
 
@@ -220,7 +220,7 @@ That `parserServices` object contains:
 
 By mapping from ESTree nodes to TypeScript nodes and retrieving the TypeScript program from the parser services, rules are able to ask TypeScript for full type information on those nodes.
 
-This rule bans for-of looping over an enum by using the type-checker via TypeScript-ESLint and TypeScript APIs:
+This rule bans for-of looping over an enum by using the type-checker via typescript-eslint and TypeScript APIs:
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';

@@ -3,17 +3,24 @@ id: branding
 title: Branding
 ---
 
-This document serves as a guide for how we generally describe or represent TypeScript-ESLint.
+This document serves as a guide for how we generally describe or represent typescript-eslint.
 It's fine if you don't always adhere to it.
 
 ## Terminology
 
 ### Name
 
-Our project name is **_"TypeScript-ESLint"_**.
-We sometimes refer to it as _"TSESLint"_ for short.
+Our project name is **_"typescript-eslint"_**.
+We sometimes refer to it as _"tseslint"_ for short.
 
-_"`typescript-eslint`"_ refers to the code repository, GitHub organization, and NPM organization.
+<!-- markdownlint-disable proper-names -->
+
+_"typescript-eslint"_ is preferred over _"TypeScript ESLint"_ or _"TypeScript-ESLint"_ because:
+
+<!-- markdownlint-enable proper-names -->
+
+- The name already has to be `typescript-eslint` in many code contexts (e.g. domain, GitHub, npm).
+- ESLint and TypeScript are written in abbreviated Pascal Case, so combining lowercase with a dash helps differentiate us.
 
 ### Slogan
 
@@ -26,7 +33,7 @@ You can call it _blurple_ if you want.
 
 Our logo is also a halfway between [ESLint's logo](https://en.wikipedia.org/wiki/ESLint#/media/File:ESLint_logo.svg) and [TypeScript's logo](https://en.wikipedia.org/wiki/TypeScript#/media/File:Typescript.svg):
 
-<img alt="TypeScript-ESLint logo" src="/img/logo.svg" height="128px" width="128px" />
+<img alt="typescript-eslint logo" src="/img/logo.svg" height="128px" width="128px" />
 
 - [Logo PNG download](/img/logo.png)
 - [Logo SVG download](/img/logo.svg)

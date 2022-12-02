@@ -102,8 +102,7 @@
       "ESLint",
       "JavaScript",
       "TSLint",
-      "typescript-eslint.io",
-      "TypeScript-ESLint",
+      "typescript-eslint",
       "TypeScript"
     ],
     "code_blocks": false

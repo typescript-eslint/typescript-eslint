@@ -59,14 +59,14 @@ ESLint will lint all TypeScript compatible files within the current folder, and 
 
 - You can read more about configuring ESLint [in their documentation on configuration](https://eslint.org/docs/user-guide/configuring).
 - You can read more about the rules provided by ESLint [in their documentation on their rules](https://eslint.org/docs/rules/).
-- You can read more about the rules provided by TypeScript-ESLint in [our rules documentation](/rules).
+- You can read more about the rules provided by typescript-eslint in [our rules documentation](/rules).
 
 ### Configuration Values
 
 - `parser: '@typescript-eslint/parser'` tells ESLint to use the [`@typescript-eslint/parser`](./architecture/Parser.mdx) package you installed to parse your source files.
   - This is required, or else ESLint will throw errors as it tries to parse TypeScript code as if it were regular JavaScript.
 - `plugins: ['@typescript-eslint']` tells ESLint to load the [`@typescript-eslint/eslint-plugin`](./architecture/ESLint_Plugin.mdx) package as a plugin.
-  - This allows you to use TypeScript-ESLint's rules within your codebase.
+  - This allows you to use typescript-eslint's rules within your codebase.
 - `extends: [ ... ]` tells ESLint that your config extends the given configurations.
   - `eslint:recommended` is ESLint's inbuilt "recommended" config - it turns on a small, sensible set of rules which lint for well-known best-practices.
   - `plugin:@typescript-eslint/recommended` is our "recommended" config - it's similar to `eslint:recommended`, except it turns on TypeScript-specific rules from our plugin.
