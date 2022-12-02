@@ -3,7 +3,7 @@ import glob from 'glob';
 import * as path from 'path';
 import * as ts from 'typescript';
 
-import { clearWatchCaches } from '../../src/create-program/createWatchProgram';
+import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
 import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';

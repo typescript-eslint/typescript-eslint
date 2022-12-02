@@ -138,7 +138,9 @@ function updateCachedFileList(
  * @param parseSettings Internal settings for parsing the file
  * @returns The programs corresponding to the supplied tsconfig paths
  */
-function getProgramsForProjects(parseSettings: ParseSettings): ts.Program[] {
+function getWatchProgramsForProjects(
+  parseSettings: ParseSettings,
+): ts.Program[] {
   const filePath = getCanonicalFileName(parseSettings.filePath);
   const results = [];
 
@@ -548,4 +550,4 @@ function maybeInvalidateProgram(
   return null;
 }
 
-export { clearWatchCaches, createWatchProgram, getProgramsForProjects };
+export { clearWatchCaches, getWatchProgramsForProjects };
