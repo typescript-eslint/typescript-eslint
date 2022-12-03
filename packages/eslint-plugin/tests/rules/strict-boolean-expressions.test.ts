@@ -1019,11 +1019,7 @@ if (y) {
           This = 0,
           That = 1,
         }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum != null) {
         }
         if (theEnum == null) {
