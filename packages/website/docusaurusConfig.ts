@@ -66,7 +66,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   ],
   image: 'img/logo-twitter-card.png',
   navbar: {
-    title: 'TypeScript ESLint',
+    title: 'typescript-eslint',
     logo: {
       alt: '',
       height: '32px',
@@ -142,7 +142,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         ],
       },
     ],
-    copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
+    copyright: `Copyright © ${new Date().getFullYear()} typescript-eslint, Inc. Built with Docusaurus.`,
   },
   prism: {
     theme: {
@@ -232,7 +232,7 @@ const pluginPwaOptions: PluginPwaOptions = {
 };
 
 const config: Config = {
-  title: 'TypeScript ESLint',
+  title: 'typescript-eslint',
   tagline:
     'The tooling that enables ESLint and Prettier to support TypeScript.',
   url: 'https://typescript-eslint.io',

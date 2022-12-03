@@ -1,4 +1,4 @@
-<h1 align="center">TypeScript ESLint</h1>
+<h1 align="center">typescript-eslint</h1>
 
 <p align="center">Monorepo for the tooling that enables ESLint and Prettier to support TypeScript</p>
 
@@ -38,4 +38,4 @@ In addition to submitting code and documentation updates, you can help us sustai
 
 ## License
 
-TypeScript ESLint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+typescript-eslint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.

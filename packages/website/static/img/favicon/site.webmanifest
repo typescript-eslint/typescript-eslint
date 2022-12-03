@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "name": "TypeScript ESLint",
-  "short_name": "TypeScript ESLint",
+  "name": "typescript-eslint",
+  "short_name": "typescript-eslint",
   "theme_color": "#443fd4"
 }

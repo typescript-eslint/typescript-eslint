@@ -2,7 +2,7 @@
 authors:
   - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
     name: Josh Goldberg
-    title: TypeScript ESLint Maintainer
+    title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
 description: Describing what an AST (Abstract Syntax Tree) is and why it's useful for ESLint and TypeScript tooling.
 slug: asts-and-typescript-eslint
@@ -92,7 +92,7 @@ We commonly refer to the ESTree format that also includes TypeScript-specific sy
 
 ### AST Playground
 
-The [TypeScript ESLint playground](https://typescript-eslint.io/play#showAST=es) contains an AST explorer that generates an interactive AST for any code entered into the playground.
+The [typescript-eslint playground](https://typescript-eslint.io/play#showAST=es) contains an AST explorer that generates an interactive AST for any code entered into the playground.
 You can activate it under _Options_ > _AST Explorer_ on its left sidebar by selecting the value of _AST Viewer_.
 
 ## Further Resources
@@ -116,7 +116,7 @@ Putting together all the terms introduces in this article:
 ### TypeScript Lint Rules and ASTs
 
 Interested in how these ASTs work with ESLint rules?
-We collaborated with our friends at Sourcegraph on a [Tour de Source on TypeScript ESLint](https://sourcegraph.com/notebooks/Tm90ZWJvb2s6MTA2OA==).
+We collaborated with our friends at Sourcegraph on a [Tour de Source on typescript-eslint](https://sourcegraph.com/notebooks/Tm90ZWJvb2s6MTA2OA==).
 Read on to learn how ESLint rules use ASTs to analyze code files and, thanks to `@typescript-eslint/parser`, call TypeScript's type checking APIs to analyze code.
 
 [astexplorer.net]: https://astexplorer.net
