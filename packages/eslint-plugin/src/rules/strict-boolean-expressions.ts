@@ -854,13 +854,10 @@ export default util.createRule<Options, MessageId>({
       }
 
       const enums = types.filter(type =>
-        tsutils.isTypeFlagSet(
-          type,
-          ts.TypeFlags.EnumLike,
-        ),
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike),
       );
 
-      if (enums.length) {
+      if (enums.some(e => e)) {
         variantTypes.add('enum');
       }
 
