@@ -15,7 +15,8 @@ We sometimes refer to it as _"tseslint"_ for short.
 
 <!-- markdownlint-disable proper-names -->
 
-_"typescript-eslint"_ is preferred over _"TypeScript ESLint"_ or _"TypeScript-ESLint"_ because ESLint and TypeScript are written in abbreviated Pascal Case, so combining lowercase with a dash helps differentiate us.
+_"typescript-eslint"_ is preferred over _"TypeScript ESLint"_ or _"TypeScript-ESLint"_ because ESLint and TypeScript are written in abbreviated Pascal Case.
+Combining lowercase with a dash helps differentiate us.
 
 <!-- markdownlint-enable proper-names -->
 
