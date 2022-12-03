@@ -56,7 +56,7 @@ module.exports = {
 See [the `@typescript-eslint/parser` docs for more details](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/README.md#parseroptionsproject).
 
 :::note
-If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/MONOREPOS.md).
+If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.md).
 :::
 
 ## FAQs
