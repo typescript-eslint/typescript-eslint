@@ -6,10 +6,10 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowNumber?: boolean;
-    allowBoolean?: boolean;
     allowAny?: boolean;
+    allowBoolean?: boolean;
     allowNullish?: boolean;
+    allowNumber?: boolean;
     allowRegExp?: boolean;
   },
 ];
@@ -33,9 +33,9 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          allowNumber: {
+          allowAny: {
             description:
-              'Whether to allow `number` typed values in template expressions.',
+              'Whether to allow `any` typed values in template expressions.',
             type: 'boolean',
           },
           allowBoolean: {
@@ -43,14 +43,14 @@ export default util.createRule<Options, MessageId>({
               'Whether to allow `boolean` typed values in template expressions.',
             type: 'boolean',
           },
-          allowAny: {
-            description:
-              'Whether to allow `any` typed values in template expressions.',
-            type: 'boolean',
-          },
           allowNullish: {
             description:
               'Whether to allow `nullish` typed values in template expressions.',
+            type: 'boolean',
+          },
+          allowNumber: {
+            description:
+              'Whether to allow `number` typed values in template expressions.',
             type: 'boolean',
           },
           allowRegExp: {
