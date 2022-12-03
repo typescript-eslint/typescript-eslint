@@ -147,6 +147,20 @@ ruleTester.run('strict-boolean-expressions', rule, {
         }
         if (theEnum) {
         }
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
         if (!theEnum) {
         }
       `,
@@ -995,23 +1009,14 @@ if (y) {
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum) {
         }
-        if (!theEnum) {
-        }
       `,
       errors: [
         {
-          line: 11,
+          line: 7,
           column: 13,
           messageId: 'conditionErrorNullableEnum',
-          endLine: 11,
+          endLine: 7,
           endColumn: 20,
-        },
-        {
-          line: 13,
-          column: 14,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 13,
-          endColumn: 21,
         },
       ],
       output: `
@@ -1022,6 +1027,34 @@ if (y) {
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum != null) {
         }
+      `,
+    },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum == null) {
         }
       `,
