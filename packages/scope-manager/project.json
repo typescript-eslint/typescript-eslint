@@ -1,5 +1,5 @@
 {
-  "name": "@typescript-eslint/scope-manager",
+  "name": "scope-manager",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/scope-manager/src",
   "projectType": "library",
