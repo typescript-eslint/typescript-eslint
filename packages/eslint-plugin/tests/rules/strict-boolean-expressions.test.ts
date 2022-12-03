@@ -992,7 +992,7 @@ if (y) {
           This = 0,
           That = 1,
         }
-        const theEnum = Math.random () < 0.3 ? ExampleEnum.This : null;
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum) {
         }
         if (!theEnum) {
