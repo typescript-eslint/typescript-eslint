@@ -1,17 +1,19 @@
+type SnapshotPathFn = (i: number) => string;
+
 interface SuccessSnapshotPaths {
-  readonly ast: string;
-  readonly tokens: string;
+  readonly ast: SnapshotPathFn;
+  readonly tokens: SnapshotPathFn;
 }
 
 export interface Fixture {
   readonly absolute: string;
-  readonly name: string;
+  readonly config: ASTFixtureConfig;
   readonly ext: string;
   readonly isError: boolean;
   readonly isJSX: boolean;
+  readonly name: string;
   readonly relative: string;
   readonly segments: string[];
-  readonly snapshotPath: string;
   readonly snapshotFiles: {
     readonly success: {
       readonly tsestree: SuccessSnapshotPaths;
@@ -19,11 +21,12 @@ export interface Fixture {
       readonly alignment: SuccessSnapshotPaths;
     };
     readonly error: {
-      readonly tsestree: string;
-      readonly babel: string;
-      readonly alignment: string;
+      readonly tsestree: SnapshotPathFn;
+      readonly babel: SnapshotPathFn;
+      readonly alignment: SnapshotPathFn;
     };
   };
+  readonly snapshotPath: string;
 }
 
 export enum ParserResponseType {
