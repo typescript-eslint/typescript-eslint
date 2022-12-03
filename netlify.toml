@@ -8,22 +8,35 @@
   YARN_FLAGS = "--ignore-scripts"
 
 # https://docs.netlify.com/configure-builds/file-based-configuration/#redirects
-[[redirects]]
-  from = "/docs/linting"
-  to = "/docs"
 
 [[redirects]]
-  from = "/docs/linting/type-linting"
-  to = "/docs/linting/typed-linting"
-
-[[redirects]]
-  from = "/docs/linting/monorepo"
-  to = "/docs/linting/typed-linting/monorepos"
-
-[[redirects]]
-  from = "/docs/linting/tslint"
-  to = "/docs/linting/troubleshooting/tslint"
+  from = "/docs"
+  to = "/getting-started"
 
 [[redirects]]
   from = "/docs/development/architecture/asts"
   to = "/blog/asts-and-typescript-eslint"
+
+[[redirects]]
+  from = "/docs/development/architecture/packages"
+  to = "/architecture"
+
+[[redirects]]
+  from = "/docs/development/custom-rules"
+  to = "/custom-rules"
+
+[[redirects]]
+  from = "/docs/linting/type-linting"
+  to = "/linting/typed-linting"
+
+[[redirects]]
+  from = "/docs/linting/monorepo"
+  to = "/linting/typed-linting/monorepos"
+
+[[redirects]]
+  from = "/docs/linting/tslint"
+  to = "/linting/troubleshooting/tslint"
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/"

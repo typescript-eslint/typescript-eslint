@@ -5,6 +5,7 @@ title: Custom Rules
 ---
 
 :::important
+This page describes how to write your own custom ESLint rules using typescript-eslint.
 You should be familiar with [ESLint's developer guide](https://eslint.org/docs/developer-guide) and [ASTs](https://typescript-eslint.io/blog/asts-and-typescript-eslint) before writing custom rules.
 :::
 
@@ -17,7 +18,7 @@ The main three changes to custom rules writing are:
 
 ## Utils Package
 
-The `@typescript-eslint/utils` package acts as a replacement package for `eslint` that exports all the same objects and types, but with typescript-eslint support.
+The [`@typescript-eslint/utils`](./architecture/Utils.mdx) package acts as a replacement package for `eslint` that exports all the same objects and types, but with typescript-eslint support.
 It also exports common utility functions and constants most custom typescript-eslint rules tend to use.
 
 :::caution

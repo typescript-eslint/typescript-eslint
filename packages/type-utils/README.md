@@ -1,15 +1,12 @@
-<h1 align="center">Type utils for ESLint Plugins</h1>
+# `@typescript-eslint/type-utils`
 
-<p align="center">Type utilities for working with TypeScript within ESLint rules.</p>
+> Type utilities for working with TypeScript within ESLint rules.
 
-<p align="center">
-    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
-    <a href="https://www.npmjs.com/package/@typescript-eslint/type-utils"><img src="https://img.shields.io/npm/v/@typescript-eslint/type-utils.svg?style=flat-square" alt="NPM Version" /></a>
-    <a href="https://www.npmjs.com/package/@typescript-eslint/type-utils"><img src="https://img.shields.io/npm/dm/@typescript-eslint/type-utils.svg?style=flat-square" alt="NPM Downloads" /></a>
-</p>
+The utilities in this package are separated from `@typescript-eslint/utils` so that that package does not require a dependency on `typescript`.
 
-This utilities in this package are separated from `@typescript-eslint/utils` so that that package does not require a dependency on `typescript`.
+## ✋ Internal Package
 
-## Contributing
+This is an _internal package_ to the [typescript-eslint monorepo](https://github.com/typescript-eslint/typescript-eslint).
+You likely don't want to use it directly.
 
-[See the contributing guide here](../../CONTRIBUTING.md)
+👉 See **https://typescript-eslint.io** for docs on typescript-eslint.
