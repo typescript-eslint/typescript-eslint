@@ -72,7 +72,7 @@ See the typescript-eslint docs for more info: https://typescript-eslint.io/linti
 `;
 
 exports[`parseAndGenerateServices invalid project error messages throws when non of multiple projects include the file 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
+"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
 - <tsconfigRootDir>/tsconfig.json
 - <tsconfigRootDir>/tsconfig.extra.json
 However, none of those TSConfigs include this file. Either:
