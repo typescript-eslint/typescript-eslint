@@ -145,6 +145,27 @@ type Fn = (Foo: string) => typeof Foo;
         Foo: 'writable',
       },
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6098
+    {
+      code: `
+const arg = 0;
+
+interface Test {
+  (arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+interface Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2724
     {
       code: `
@@ -521,6 +542,48 @@ type Fn = (Foo: string) => typeof Foo;
           messageId: 'noShadowGlobal',
           data: {
             name: 'Foo',
+          },
+        },
+      ],
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6098
+    {
+      code: `
+const arg = 0;
+
+interface Test {
+  (arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'arg',
+            shadowedLine: 2,
+            shadowedColumn: 7,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const arg = 0;
+
+interface Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+      errors: [
+        {
+          messageId: 'noShadow',
+          data: {
+            name: 'arg',
+            shadowedLine: 2,
+            shadowedColumn: 7,
           },
         },
       ],

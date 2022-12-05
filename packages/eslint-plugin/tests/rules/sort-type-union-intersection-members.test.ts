@@ -287,6 +287,32 @@ type T =
         },
       ],
     },
+    {
+      code: `type T = (| A) ${operator} B;`,
+      output: `type T = B ${operator} (| A);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = (& A) ${operator} B;`,
+      output: `type T = B ${operator} (& A);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
   ];
 };
 
@@ -334,5 +360,21 @@ type T = 1 | string | {} | A;
       ],
     },
   ],
-  invalid: [...invalid('|'), ...invalid('&')],
+  invalid: [
+    ...invalid('|'),
+    ...invalid('&'),
+    {
+      code: 'type T = (B | C) & A;',
+      output: `type T = A & (B | C);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Intersection',
+            name: 'T',
+          },
+        },
+      ],
+    },
+  ],
 });

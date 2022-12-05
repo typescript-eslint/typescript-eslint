@@ -80,7 +80,7 @@ export const generatedRuleDocs: Plugin = () => {
 <admonition type="warning">
   We strongly recommend you do not use this rule or any other formatting linter rules.
   Use a separate dedicated formatter instead.
-  See <a href="/docs/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
+  See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
 </admonition>
 `,
         type: 'jsx',

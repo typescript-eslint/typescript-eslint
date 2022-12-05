@@ -11,7 +11,8 @@ type ValidChainTarget =
   | TSESTree.ChainExpression
   | TSESTree.Identifier
   | TSESTree.MemberExpression
-  | TSESTree.ThisExpression;
+  | TSESTree.ThisExpression
+  | TSESTree.MetaProperty;
 
 /*
 The AST is always constructed such the first element is always the deepest element.
@@ -115,10 +116,12 @@ export default util.createRule({
         'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > Identifier',
         'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > MemberExpression',
         'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > ChainExpression > MemberExpression',
+        'LogicalExpression[operator="||"] > UnaryExpression[operator="!"] > MetaProperty',
       ].join(',')](
         initialIdentifierOrNotEqualsExpr:
           | TSESTree.Identifier
-          | TSESTree.MemberExpression,
+          | TSESTree.MemberExpression
+          | TSESTree.MetaProperty,
       ): void {
         // selector guarantees this cast
         const initialExpression = (
@@ -190,13 +193,15 @@ export default util.createRule({
         'LogicalExpression[operator="&&"] > Identifier',
         'LogicalExpression[operator="&&"] > MemberExpression',
         'LogicalExpression[operator="&&"] > ChainExpression > MemberExpression',
+        'LogicalExpression[operator="&&"] > MetaProperty',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!=="]',
         'LogicalExpression[operator="&&"] > BinaryExpression[operator="!="]',
       ].join(',')](
         initialIdentifierOrNotEqualsExpr:
           | TSESTree.BinaryExpression
           | TSESTree.Identifier
-          | TSESTree.MemberExpression,
+          | TSESTree.MemberExpression
+          | TSESTree.MetaProperty,
       ): void {
         // selector guarantees this cast
         const initialExpression = (
@@ -342,6 +347,10 @@ export default util.createRule({
         return node.name;
       }
 
+      if (node.type === AST_NODE_TYPES.MetaProperty) {
+        return `${node.meta.name}.${node.property.name}`;
+      }
+
       if (node.type === AST_NODE_TYPES.ThisExpression) {
         return 'this';
       }
@@ -390,6 +399,7 @@ export default util.createRule({
           objectText = getMemberExpressionText(node.object);
           break;
 
+        case AST_NODE_TYPES.MetaProperty:
         case AST_NODE_TYPES.ThisExpression:
           objectText = getText(node.object);
           break;
@@ -460,6 +470,7 @@ const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.ThisExpression,
+  AST_NODE_TYPES.MetaProperty,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
@@ -628,7 +639,8 @@ function isValidChainTarget(
   if (
     allowIdentifier &&
     (node.type === AST_NODE_TYPES.Identifier ||
-      node.type === AST_NODE_TYPES.ThisExpression)
+      node.type === AST_NODE_TYPES.ThisExpression ||
+      node.type === AST_NODE_TYPES.MetaProperty)
   ) {
     return true;
   }
