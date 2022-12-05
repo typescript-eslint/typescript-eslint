@@ -13,12 +13,6 @@ export type Options = [
 
 export type MessageIds = 'duplicate';
 
-const isRecordType = (
-  object: object,
-): object is Record<string | symbol, unknown> => {
-  return object.constructor === Object;
-};
-
 const astIgnoreKeys = ['range', 'loc', 'parent'];
 
 const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
@@ -42,9 +36,6 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
         (nodeEle, index) => !isSameAstNode(nodeEle, expectedNode[index]),
       );
     }
-    if (!isRecordType(actualNode) || !isRecordType(expectedNode)) {
-      return false;
-    }
     const actualNodeKeys = Object.keys(actualNode).filter(
       key => !astIgnoreKeys.includes(key),
     );
@@ -66,8 +57,8 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
       actualNodeKeys.some(
         actualNodeKey =>
           !isSameAstNode(
-            actualNode[actualNodeKey],
-            expectedNode[actualNodeKey],
+            actualNode[actualNodeKey as keyof typeof actualNode],
+            expectedNode[actualNodeKey as keyof typeof expectedNode],
           ),
       )
     ) {
