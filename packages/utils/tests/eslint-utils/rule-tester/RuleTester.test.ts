@@ -365,56 +365,32 @@ describe('RuleTester', () => {
           "invalid": [
             {
               "code": "failing - major",
-              "dependencyConstraints": {
-                "totally-real-dependency": "999",
-              },
               "errors": [],
               "filename": "file.ts",
-              "only": false,
             },
             {
               "code": "failing - major.minor",
-              "dependencyConstraints": {
-                "totally-real-dependency": "999.0",
-              },
               "errors": [],
               "filename": "file.ts",
-              "only": false,
             },
             {
               "code": "failing - major.minor.patch",
-              "dependencyConstraints": {
-                "totally-real-dependency": "999.0.0",
-              },
               "errors": [],
               "filename": "file.ts",
-              "only": false,
             },
           ],
           "valid": [
             {
               "code": "passing - major",
-              "dependencyConstraints": {
-                "totally-real-dependency": "10",
-              },
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "passing - major.minor",
-              "dependencyConstraints": {
-                "totally-real-dependency": "10.0",
-              },
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "passing - major.minor.patch",
-              "dependencyConstraints": {
-                "totally-real-dependency": "10.0.0",
-              },
               "filename": "file.ts",
-              "only": true,
             },
           ],
         }
@@ -485,61 +461,28 @@ describe('RuleTester', () => {
           "invalid": [
             {
               "code": "failing - major",
-              "dependencyConstraints": {
-                "totally-real-dependency": {
-                  "range": "^999",
-                },
-              },
               "errors": [],
               "filename": "file.ts",
-              "only": false,
             },
             {
               "code": "failing - major.minor",
-              "dependencyConstraints": {
-                "totally-real-dependency": {
-                  "range": ">=999.0",
-                },
-              },
               "errors": [],
               "filename": "file.ts",
-              "only": false,
             },
             {
               "code": "failing with options",
-              "dependencyConstraints": {
-                "totally-real-dependency-prerelease": {
-                  "options": {
-                    "includePrerelease": false,
-                  },
-                  "range": "^10",
-                },
-              },
               "errors": [],
               "filename": "file.ts",
-              "only": false,
             },
           ],
           "valid": [
             {
               "code": "passing - major",
-              "dependencyConstraints": {
-                "totally-real-dependency": {
-                  "range": "^10",
-                },
-              },
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "passing - major.minor",
-              "dependencyConstraints": {
-                "totally-real-dependency": {
-                  "range": "<999",
-                },
-              },
               "filename": "file.ts",
-              "only": true,
             },
           ],
         }
@@ -595,49 +538,34 @@ describe('RuleTester', () => {
               "code": "no constraints is always run",
               "errors": [],
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "empty object is always run",
-              "dependencyConstraints": {},
               "errors": [],
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "failing constraint",
-              "dependencyConstraints": {
-                "totally-real-dependency": "99999",
-              },
               "errors": [],
               "filename": "file.ts",
-              "only": false,
             },
           ],
           "valid": [
             {
               "code": "string based is always run",
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "no constraints is always run",
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "empty object is always run",
-              "dependencyConstraints": {},
               "filename": "file.ts",
-              "only": true,
             },
             {
               "code": "passing constraint",
-              "dependencyConstraints": {
-                "totally-real-dependency": "10",
-              },
               "filename": "file.ts",
-              "only": true,
             },
           ],
         }
@@ -691,10 +619,12 @@ describe('RuleTester', () => {
         {
           "invalid": [
             {
+              "code": "failing",
+              "errors": [],
+              "filename": "file.ts",
+            },
+            {
               "code": "passing",
-              "dependencyConstraints": {
-                "totally-real-dependency": "10",
-              },
               "errors": [],
               "filename": "file.ts",
             },
@@ -705,10 +635,11 @@ describe('RuleTester', () => {
               "filename": "file.ts",
             },
             {
+              "code": "failing",
+              "filename": "file.ts",
+            },
+            {
               "code": "passing",
-              "dependencyConstraints": {
-                "totally-real-dependency": "10",
-              },
               "filename": "file.ts",
             },
           ],

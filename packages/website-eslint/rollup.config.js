@@ -30,7 +30,7 @@ module.exports = {
             /utils\/dist\/eslint-utils\/rule-tester\/RuleTester\.js$/,
             /utils\/dist\/ts-eslint\/CLIEngine\.js$/,
             /utils\/dist\/ts-eslint\/RuleTester\.js$/,
-            /typescript-estree\/dist\/create-program\/createWatchProgram\.js/,
+            /typescript-estree\/dist\/create-program\/getWatchProgramsForProjects\.js/,
             /typescript-estree\/dist\/create-program\/createProjectProgram\.js/,
             /typescript-estree\/dist\/create-program\/createIsolatedProgram\.js/,
             /utils\/dist\/ts-eslint\/ESLint\.js/,

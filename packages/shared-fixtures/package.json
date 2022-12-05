@@ -1,5 +1,6 @@
 {
+  "description": "Code fixtures used to test the typescript-estree parser.",
   "name": "@typescript-eslint/shared-fixtures",
-  "version": "5.42.1",
+  "version": "5.45.0",
   "private": true
 }

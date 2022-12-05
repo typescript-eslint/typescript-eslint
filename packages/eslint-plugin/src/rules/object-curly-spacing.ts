@@ -31,6 +31,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['never'],
   create(context) {
+    // eslint-disable-next-line no-restricted-syntax -- Use raw options for extended rules.
     const [firstOption, secondOption] = context.options;
     const spaced = firstOption === 'always';
     const sourceCode = context.getSourceCode();

@@ -198,6 +198,8 @@ ruleTester.run('prefer-optional-chain', rule, {
     'foo && foo[bar as string] && foo[bar as string].baz;',
     'foo && foo[1 + 2] && foo[1 + 2].baz;',
     'foo && foo[typeof bar] && foo[typeof bar].baz;',
+    '!foo[1 + 1] || !foo[1 + 2];',
+    '!foo[1 + 1] || !foo[1 + 1].foo;',
     '!foo || !foo[bar as string] || !foo[bar as string].baz;',
     '!foo || !foo[1 + 2] || !foo[1 + 2].baz;',
     '!foo || !foo[typeof bar] || !foo[typeof bar].baz;',
@@ -209,6 +211,12 @@ ruleTester.run('prefer-optional-chain', rule, {
     '!foo!.bar || !foo!.bar.baz;',
     '!foo!.bar!.baz || !foo!.bar!.baz!.paz;',
     '!foo.bar!.baz || !foo.bar!.baz!.paz;',
+    'import.meta || true;',
+    'import.meta || import.meta.foo;',
+    '!import.meta && false;',
+    '!import.meta && !import.meta.foo;',
+    'new.target || new.target.length;',
+    '!new.target || true;',
   ],
   invalid: [
     ...baseCases,
@@ -1314,6 +1322,79 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz?.bar?.foo);`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {
+          constructor() {
+            new.target && new.target.length;
+          }
+        }
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: `
+        class Foo {
+          constructor() {
+            new.target?.length;
+          }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`import.meta && import.meta?.baz;`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`import.meta?.baz;`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`!import.meta || !import.meta?.baz;`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`!import.meta?.baz;`,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: noFormat`import.meta && import.meta?.() && import.meta?.().baz;`,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: noFormat`import.meta?.()?.baz;`,
             },
           ],
         },

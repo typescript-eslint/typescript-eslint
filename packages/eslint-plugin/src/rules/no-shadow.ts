@@ -20,6 +20,12 @@ type Options = [
   },
 ];
 
+const allowedFunctionVariableDefTypes = new Set([
+  AST_NODE_TYPES.TSCallSignatureDeclaration,
+  AST_NODE_TYPES.TSFunctionType,
+  AST_NODE_TYPES.TSMethodSignature,
+]);
+
 export default util.createRule<Options, MessageIds>({
   name: 'no-shadow',
   meta: {
@@ -147,8 +153,9 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      const id = variable.identifiers[0];
-      return util.isFunctionType(id.parent);
+      return variable.defs.every(def =>
+        allowedFunctionVariableDefTypes.has(def.node.type),
+      );
     }
 
     function isGenericOfStaticMethod(

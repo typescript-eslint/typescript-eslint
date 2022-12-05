@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty key-computed-string Babel - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [6, 9],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "accessor",
+
+    range: [14, 22],
+    loc: {
+      start: { column: 2, line: 2 },
+      end: { column: 10, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "[",
+
+    range: [23, 24],
+    loc: {
+      start: { column: 11, line: 2 },
+      end: { column: 12, line: 2 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'prop'",
+
+    range: [24, 30],
+    loc: {
+      start: { column: 12, line: 2 },
+      end: { column: 18, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "]",
+
+    range: [30, 31],
+    loc: {
+      start: { column: 18, line: 2 },
+      end: { column: 19, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [32, 33],
+    loc: {
+      start: { column: 20, line: 2 },
+      end: { column: 21, line: 2 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'value'",
+
+    range: [34, 41],
+    loc: {
+      start: { column: 22, line: 2 },
+      end: { column: 29, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [41, 42],
+    loc: {
+      start: { column: 29, line: 2 },
+      end: { column: 30, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [43, 44],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+]
+`;

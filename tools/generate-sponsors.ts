@@ -92,10 +92,6 @@ interface MemberAccount {
   website: string;
 }
 
-interface MemberAccountAndTier extends MemberAccount {
-  tier?: Tier;
-}
-
 const excludedNames = new Set([
   'Guest', // Apparent anonymous donor equivalent without an avatar
   'Josh Goldberg', // Team member 💖
@@ -121,13 +117,12 @@ async function main(): Promise<void> {
   ]);
 
   const accountsById = account.orders.nodes.reduce<
-    Record<string, MemberAccountAndTier>
+    Record<string, MemberAccount>
   >((accumulator, account) => {
     const name = account.fromAccount.name || account.fromAccount.id;
     accumulator[name] = {
       ...accumulator[name],
       ...account.fromAccount,
-      tier: account.tier,
     };
     return accumulator;
   }, {});
@@ -145,7 +140,7 @@ async function main(): Promise<void> {
   const allSponsorsConfig = collective.members.nodes
     .map(member => {
       const name = member.account.name || member.account.id;
-      const fromAccount: MemberAccountAndTier = {
+      const fromAccount = {
         ...member.account,
         ...accountsById[name],
       };
@@ -156,14 +151,13 @@ async function main(): Promise<void> {
         id: name,
         image: fromAccount.imageUrl,
         name: fromAccount.name,
-        tier: getReportedTierSlug(totalDonations, website),
         totalDonations,
         twitterHandle: fromAccount.twitterHandle,
         website,
       };
     })
-    .filter(({ id, tier }) => {
-      if (uniqueNames.has(id) || !tier) {
+    .filter(({ id, totalDonations, website }) => {
+      if (uniqueNames.has(id) || totalDonations < 10000 || !website) {
         return false;
       }
 
@@ -194,28 +188,6 @@ async function stringifyObject(
     ...config,
     parser: 'json',
   });
-}
-
-function getReportedTierSlug(
-  totalDonations: number,
-  website: string,
-): string | undefined {
-  if (!website) {
-    return undefined;
-  }
-
-  if (totalDonations >= 1_000_00) {
-    return 'sponsor';
-  }
-  if (totalDonations >= 500_00) {
-    return 'supporter';
-  }
-
-  if (totalDonations >= 100_00) {
-    return 'contributor';
-  }
-
-  return undefined;
 }
 
 main().catch(error => {

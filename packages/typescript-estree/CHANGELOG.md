@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.45.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.44.0...v5.45.0) (2022-11-28)
+
+### Bug Fixes
+
+- **typescript-estree:** stub out `ts.SatisfiesExpression` on old TS versions ([#6076](https://github.com/typescript-eslint/typescript-eslint/issues/6076)) ([1302b30](https://github.com/typescript-eslint/typescript-eslint/commit/1302b30ecad9eb55aa9f1daa5068d9fb72c3688e))
+
+### Features
+
+- support Auto Accessor syntax ([#5926](https://github.com/typescript-eslint/typescript-eslint/issues/5926)) ([becd1f8](https://github.com/typescript-eslint/typescript-eslint/commit/becd1f8581c0013399dfe71be6c265e96cedb57a))
+
+# [5.44.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.43.0...v5.44.0) (2022-11-21)
+
+### Bug Fixes
+
+- **typescript-estree:** don't consider a cached program unless it's specified in the current `parserOptions.project` config ([#5999](https://github.com/typescript-eslint/typescript-eslint/issues/5999)) ([530e0e6](https://github.com/typescript-eslint/typescript-eslint/commit/530e0e618cdf4bb956149bf8a8484848e1b9a1f5))
+
+### Features
+
+- support parsing `satisfies` operators ([#5717](https://github.com/typescript-eslint/typescript-eslint/issues/5717)) ([20d7cae](https://github.com/typescript-eslint/typescript-eslint/commit/20d7caee35ab84ae6381fdf04338c9e2b9e2bc48))
+- update to TypeScript 4.9 ([#5716](https://github.com/typescript-eslint/typescript-eslint/issues/5716)) ([4d744ea](https://github.com/typescript-eslint/typescript-eslint/commit/4d744ea10ba03c66eebcb63e8722e9f0165fbeed))
+
+# [5.43.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.1...v5.43.0) (2022-11-14)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
 ## [5.42.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.42.0...v5.42.1) (2022-11-07)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

@@ -1,7 +1,7 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "5.42.1",
-  "description": "TypeScript-ESTree AST spec",
+  "version": "5.45.0",
+  "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
     "eslint",
@@ -34,7 +34,7 @@
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf .rollup.cache && rimraf coverage",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "eslint . --ignore-path='../../.eslintignore'",
+    "lint": "nx lint",
     "test": "jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
