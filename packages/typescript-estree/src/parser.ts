@@ -7,6 +7,8 @@ import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import { createSourceFile } from './create-program/createSourceFile';
+import { getLanguageServiceProgram } from './create-program/getLanguageServiceProgram';
+import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
@@ -39,15 +41,44 @@ function getProgramAndAST(
   parseSettings: ParseSettings,
   shouldProvideParserServices: boolean,
 ): ASTAndProgram {
-  return (
-    (parseSettings.programs &&
-      useProvidedPrograms(parseSettings.programs, parseSettings)) ||
-    (shouldProvideParserServices && createProjectProgram(parseSettings)) ||
-    (shouldProvideParserServices &&
-      parseSettings.createDefaultProgram &&
-      createDefaultProgram(parseSettings)) ||
-    createIsolatedProgram(parseSettings)
-  );
+  if (parseSettings.programs) {
+    const providedPrograms = useProvidedPrograms(
+      parseSettings.programs,
+      parseSettings,
+    );
+    if (providedPrograms) {
+      return providedPrograms;
+    }
+  }
+
+  if (shouldProvideParserServices) {
+    if (parseSettings.EXPERIMENTAL_useLanguageService) {
+      const languageServiceProgram = createProjectProgram(
+        parseSettings,
+        getLanguageServiceProgram(parseSettings),
+      );
+      if (languageServiceProgram) {
+        return languageServiceProgram;
+      }
+    } else {
+      const watchProgram = createProjectProgram(
+        parseSettings,
+        getWatchProgramsForProjects(parseSettings),
+      );
+      if (watchProgram) {
+        return watchProgram;
+      }
+    }
+
+    if (parseSettings.createDefaultProgram) {
+      const defaultProgram = createDefaultProgram(parseSettings);
+      if (defaultProgram) {
+        return defaultProgram;
+      }
+    }
+  }
+
+  return createIsolatedProgram(parseSettings);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

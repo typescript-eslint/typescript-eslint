@@ -4,22 +4,27 @@ import semver from 'semver';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
-import type { CanonicalPath } from './shared';
+import type { CanonicalPath, FileHash, TSConfigCanonicalPath } from './shared';
 import {
   canonicalDirname,
   createDefaultCompilerOptionsFromExtra,
+  createHash,
   getCanonicalFileName,
   getModuleResolver,
+  hasTSConfigChanged,
+  registerAdditionalCacheClearer,
 } from './shared';
 import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
-const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
+const log = debug(
+  'typescript-eslint:typescript-estree:getWatchProgramsForProjects',
+);
 
 /**
  * Maps tsconfig paths to their corresponding file contents and resulting watches
  */
 const knownWatchProgramMap = new Map<
-  CanonicalPath,
+  TSConfigCanonicalPath,
   ts.WatchOfConfigFile<ts.BuilderProgram>
 >();
 
@@ -39,27 +44,23 @@ const folderWatchCallbackTrackingMap = new Map<
 /**
  * Stores the list of known files for each program
  */
-const programFileListCache = new Map<CanonicalPath, Set<CanonicalPath>>();
+const programFileListCache = new Map<
+  TSConfigCanonicalPath,
+  Set<CanonicalPath>
+>();
 
 /**
- * Caches the last modified time of the tsconfig files
+ * Stores the hashes of files so we know if we need to inform TS of file changes.
  */
-const tsconfigLastModifiedTimestampCache = new Map<CanonicalPath, number>();
+const parsedFilesSeenHash = new Map<CanonicalPath, FileHash>();
 
-const parsedFilesSeenHash = new Map<CanonicalPath, string>();
-
-/**
- * Clear all of the parser caches.
- * This should only be used in testing to ensure the parser is clean between tests.
- */
-function clearWatchCaches(): void {
+registerAdditionalCacheClearer(() => {
   knownWatchProgramMap.clear();
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
   parsedFilesSeenHash.clear();
   programFileListCache.clear();
-  tsconfigLastModifiedTimestampCache.clear();
-}
+});
 
 function saveWatchCallback(
   trackingMap: Map<string, Set<ts.FileWatcherCallback>>,
@@ -105,21 +106,8 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
   );
 }
 
-/**
- * Hash content for compare content.
- * @param content hashed contend
- * @returns hashed result
- */
-function createHash(content: string): string {
-  // No ts.sys in browser environments.
-  if (ts.sys?.createHash) {
-    return ts.sys.createHash(content);
-  }
-  return content;
-}
-
 function updateCachedFileList(
-  tsconfigPath: CanonicalPath,
+  tsconfigPath: TSConfigCanonicalPath,
   program: ts.Program,
   parseSettings: ParseSettings,
 ): Set<CanonicalPath> {
@@ -142,7 +130,6 @@ function getWatchProgramsForProjects(
   parseSettings: ParseSettings,
 ): ts.Program[] {
   const filePath = getCanonicalFileName(parseSettings.filePath);
-  const results = [];
 
   // preserve reference to code and file being linted
   currentLintOperationState.code = parseSettings.code;
@@ -202,6 +189,8 @@ function getWatchProgramsForProjects(
     'File did not belong to any existing programs, moving to create/update. %s',
     filePath,
   );
+
+  const results = [];
 
   /*
    * We don't know of a program that contains the file, this means that either:
@@ -405,25 +394,10 @@ function createWatchProgram(
   return watch;
 }
 
-function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
-  const stat = fs.statSync(tsconfigPath);
-  const lastModifiedAt = stat.mtimeMs;
-  const cachedLastModifiedAt =
-    tsconfigLastModifiedTimestampCache.get(tsconfigPath);
-
-  tsconfigLastModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
-
-  if (cachedLastModifiedAt === undefined) {
-    return false;
-  }
-
-  return Math.abs(cachedLastModifiedAt - lastModifiedAt) > Number.EPSILON;
-}
-
 function maybeInvalidateProgram(
   existingWatch: ts.WatchOfConfigFile<ts.BuilderProgram>,
   filePath: CanonicalPath,
-  tsconfigPath: CanonicalPath,
+  tsconfigPath: TSConfigCanonicalPath,
 ): ts.Program | null {
   /*
    * By calling watchProgram.getProgram(), it will trigger a resync of the program based on
@@ -550,4 +524,4 @@ function maybeInvalidateProgram(
   return null;
 }
 
-export { clearWatchCaches, getWatchProgramsForProjects };
+export { getWatchProgramsForProjects };

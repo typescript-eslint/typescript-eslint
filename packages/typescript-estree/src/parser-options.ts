@@ -93,6 +93,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean;
 
   /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
+   * Manage type-aware parsing using a `ts.LanguageService` instead of a `ts.BuilderProgram`.
+   */
+  EXPERIMENTAL_useLanguageService?: boolean;
+
+  /**
    * When `project` is provided, this controls the non-standard file extensions which will be parsed.
    * It accepts an array of file extensions, each preceded by a `.`.
    */

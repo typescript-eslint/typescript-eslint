@@ -2,10 +2,11 @@ import debug from 'debug';
 import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
 
-import type { CanonicalPath } from '../create-program/shared';
+import type { TSConfigCanonicalPath } from '../create-program/shared';
 import {
   ensureAbsolutePath,
   getCanonicalFileName,
+  getTsconfigCanonicalFileName,
 } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
 import type { MutableParseSettings } from './index';
@@ -39,6 +40,8 @@ export function createParseSettings(
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
+    EXPERIMENTAL_useLanguageService:
+      options.EXPERIMENTAL_useLanguageService === true,
     extraFileExtensions:
       Array.isArray(options.extraFileExtensions) &&
       options.extraFileExtensions.every(ext => typeof ext === 'string')
@@ -65,7 +68,7 @@ export function createParseSettings(
     range: options.range === true,
     singleRun: inferSingleRun(options),
     tokens: options.tokens === true ? [] : null,
-    tsconfigRootDir,
+    tsconfigRootDir: getCanonicalFileName(tsconfigRootDir),
   };
 
   // debug doesn't support multiple `enable` calls, so have to do it all at once
@@ -148,8 +151,8 @@ function getFileName(jsx?: boolean): string {
 function getTsconfigPath(
   tsconfigPath: string,
   tsconfigRootDir: string,
-): CanonicalPath {
-  return getCanonicalFileName(
+): TSConfigCanonicalPath {
+  return getTsconfigCanonicalFileName(
     ensureAbsolutePath(tsconfigPath, tsconfigRootDir),
   );
 }
@@ -161,7 +164,7 @@ function prepareAndTransformProjects(
   tsconfigRootDir: string,
   projectsInput: string | string[] | undefined,
   ignoreListInput: string[],
-): CanonicalPath[] {
+): TSConfigCanonicalPath[] {
   const sanitizedProjects: string[] = [];
 
   // Normalize and sanitize the project paths

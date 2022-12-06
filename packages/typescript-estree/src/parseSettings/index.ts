@@ -1,6 +1,9 @@
 import type * as ts from 'typescript';
 
-import type { CanonicalPath } from '../create-program/shared';
+import type {
+  CanonicalPath,
+  TSConfigCanonicalPath,
+} from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 
 type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
@@ -54,6 +57,11 @@ export interface MutableParseSettings {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
 
   /**
+   * Whether to use a LanguageService for program management or not.
+   */
+  EXPERIMENTAL_useLanguageService: boolean;
+
+  /**
    * Any non-standard file extensions which will be parsed.
    */
   extraFileExtensions: string[];
@@ -61,7 +69,7 @@ export interface MutableParseSettings {
   /**
    * Path of the file being parsed.
    */
-  filePath: string;
+  filePath: CanonicalPath;
 
   /**
    * Whether parsing of JSX is enabled.
@@ -98,7 +106,7 @@ export interface MutableParseSettings {
   /**
    * Normalized paths to provided project paths.
    */
-  projects: CanonicalPath[];
+  projects: TSConfigCanonicalPath[];
 
   /**
    * Whether to add the `range` property to AST nodes.
@@ -118,7 +126,7 @@ export interface MutableParseSettings {
   /**
    * The absolute path to the root directory for all provided `project`s.
    */
-  tsconfigRootDir: string;
+  tsconfigRootDir: CanonicalPath;
 }
 
 export type ParseSettings = Readonly<MutableParseSettings>;

@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import type { Program } from 'typescript';
 import * as ts from 'typescript';
@@ -33,7 +34,7 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
 };
 
-function createDefaultCompilerOptionsFromExtra(
+function createDefaultCompilerOptionsFromParseSettings(
   parseSettings: ParseSettings,
 ): ts.CompilerOptions {
   if (parseSettings.debugLevel.has('typescript')) {
@@ -47,7 +48,10 @@ function createDefaultCompilerOptionsFromExtra(
 }
 
 // This narrows the type so we can be sure we're passing canonical names in the correct places
-type CanonicalPath = string & { __brand: unknown };
+type CanonicalPath = string & { __canonicalPathBrand: unknown };
+type TSConfigCanonicalPath = CanonicalPath & {
+  __tsconfigCanonicalPathBrand: unknown;
+};
 
 // typescript doesn't provide a ts.sys implementation for browser environments
 const useCaseSensitiveFileNames =
@@ -64,10 +68,14 @@ function getCanonicalFileName(filePath: string): CanonicalPath {
   return correctPathCasing(normalized) as CanonicalPath;
 }
 
-function ensureAbsolutePath(p: string, tsconfigRootDir: string): string {
-  return path.isAbsolute(p)
-    ? p
-    : path.join(tsconfigRootDir || process.cwd(), p);
+function getTsconfigCanonicalFileName(filePath: string): TSConfigCanonicalPath {
+  return getCanonicalFileName(filePath) as TSConfigCanonicalPath;
+}
+
+function ensureAbsolutePath(p: string, tsconfigRootDir: string): CanonicalPath {
+  return getCanonicalFileName(
+    path.isAbsolute(p) ? p : path.join(tsconfigRootDir || process.cwd(), p),
+  );
 }
 
 function canonicalDirname(p: CanonicalPath): CanonicalPath {
@@ -124,14 +132,88 @@ function getModuleResolver(moduleResolverPath: string): ModuleResolver {
   return moduleResolver;
 }
 
+/**
+ * Same fallback hashing algorithm TS uses:
+ * https://github.com/microsoft/TypeScript/blob/00dc0b6674eef3fbb3abb86f9d71705b11134446/src/compiler/sys.ts#L54-L66
+ */
+function generateDjb2Hash(data: string): string {
+  let acc = 5381;
+  for (let i = 0; i < data.length; i++) {
+    acc = (acc << 5) + acc + data.charCodeAt(i);
+  }
+  return acc.toString();
+}
+
+type FileHash = string & { __fileHashBrand: unknown };
+/**
+ * Hash content for compare content.
+ * @param content hashed contend
+ * @returns hashed result
+ */
+function createHash(content: string): FileHash {
+  // No ts.sys in browser environments.
+  if (ts.sys?.createHash) {
+    return ts.sys.createHash(content) as FileHash;
+  }
+  return generateDjb2Hash(content) as FileHash;
+}
+
+/**
+ * Caches the last modified time of the tsconfig files
+ */
+const tsconfigLastModifiedTimestampCache = new Map<
+  TSConfigCanonicalPath,
+  number
+>();
+
+function hasTSConfigChanged(tsconfigPath: TSConfigCanonicalPath): boolean {
+  const stat = fs.statSync(tsconfigPath);
+  const lastModifiedAt = stat.mtimeMs;
+  const cachedLastModifiedAt =
+    tsconfigLastModifiedTimestampCache.get(tsconfigPath);
+
+  tsconfigLastModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
+
+  if (cachedLastModifiedAt === undefined) {
+    return false;
+  }
+
+  return Math.abs(cachedLastModifiedAt - lastModifiedAt) > Number.EPSILON;
+}
+
+type CacheClearer = () => void;
+const additionalCacheClearers: CacheClearer[] = [];
+
+/**
+ * Clear all of the parser caches.
+ * This should only be used in testing to ensure the parser is clean between tests.
+ */
+function clearWatchCaches(): void {
+  tsconfigLastModifiedTimestampCache.clear();
+  for (const fn of additionalCacheClearers) {
+    fn();
+  }
+}
+function registerAdditionalCacheClearer(fn: CacheClearer): void {
+  additionalCacheClearers.push(fn);
+}
+
 export {
   ASTAndProgram,
   CORE_COMPILER_OPTIONS,
   canonicalDirname,
   CanonicalPath,
-  createDefaultCompilerOptionsFromExtra,
+  clearWatchCaches,
+  createDefaultCompilerOptionsFromParseSettings as createDefaultCompilerOptionsFromExtra,
+  createHash,
   ensureAbsolutePath,
+  FileHash,
   getCanonicalFileName,
   getAstFromProgram,
   getModuleResolver,
+  getTsconfigCanonicalFileName,
+  hasTSConfigChanged,
+  registerAdditionalCacheClearer,
+  TSConfigCanonicalPath,
+  useCaseSensitiveFileNames,
 };
