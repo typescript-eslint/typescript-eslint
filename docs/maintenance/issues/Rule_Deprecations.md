@@ -31,4 +31,4 @@ Provide it an `## Overview` containing:
    - `deprecated: true`
    - `replacedBy`, if applicable
 2. In the next major version, you may delete the rule
-   - If the rule is relatively popular with users, consider leaving a documentation page pointing to relevant docs
+   - If the rule is relatively popular with users, consider leaving a documentation page as a tombstone pointing to the new relevant rule or docs (see [`camelcase`](https://typescript-eslint.io/rules/camelcase/) as an example)
