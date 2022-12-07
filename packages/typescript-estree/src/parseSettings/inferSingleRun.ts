@@ -1,3 +1,4 @@
+import { ESLintParsingContext } from '@typescript-eslint/types';
 import { normalize } from 'path';
 
 import type { TSESTreeOptions } from '../parser-options';
@@ -14,7 +15,17 @@ import type { TSESTreeOptions } from '../parser-options';
  *
  * @returns Whether this is part of a single run, rather than a long-running process.
  */
-export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
+export function inferSingleRun(
+  options: TSESTreeOptions | undefined,
+  parsingContext: ESLintParsingContext | undefined,
+): boolean {
+  // If a version of ESLint that supports providing contexts is used by a consumer
+  // that also knows to specify the parsing context is provided, rejoice!
+  // We can explicitly determine process style from the parsing context.
+  if (parsingContext) {
+    return parsingContext.mode === 'single' && !parsingContext.options.fix;
+  }
+
   if (
     // single-run implies type-aware linting - no projects means we can't be in single-run mode
     options?.project == null ||

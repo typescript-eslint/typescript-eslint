@@ -62,4 +62,13 @@ interface ParserOptions {
   [additionalProperties: string]: unknown;
 }
 
+export interface ESLintOptions {
+  fix?: boolean;
+}
+
+export interface ESLintParsingContext {
+  mode: 'persistent' | 'single';
+  options: ESLintOptions;
+}
+
 export { DebugLevel, EcmaVersion, ParserOptions, SourceType };

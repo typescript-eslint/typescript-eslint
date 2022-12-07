@@ -1,3 +1,4 @@
+import { ESLintParsingContext } from '@typescript-eslint/types';
 import debug from 'debug';
 import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
@@ -18,8 +19,11 @@ const log = debug(
 
 export function createParseSettings(
   code: string,
-  options: Partial<TSESTreeOptions> = {},
+  options: Partial<TSESTreeOptions> | undefined,
+  parsingContext: ESLintParsingContext | undefined,
 ): MutableParseSettings {
+  options ??= {};
+
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
@@ -63,7 +67,7 @@ export function createParseSettings(
     programs: Array.isArray(options.programs) ? options.programs : null,
     projects: [],
     range: options.range === true,
-    singleRun: inferSingleRun(options),
+    singleRun: inferSingleRun(options, parsingContext),
     tokens: options.tokens === true ? [] : null,
     tsconfigRootDir,
   };

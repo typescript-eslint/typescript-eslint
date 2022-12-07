@@ -1,3 +1,4 @@
+import { ESLintParsingContext } from '@typescript-eslint/types';
 import debug from 'debug';
 import type * as ts from 'typescript';
 
@@ -69,20 +70,27 @@ interface ParseWithNodeMapsResult<T extends TSESTreeOptions> {
 function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options?: T,
+  parserContext?: ESLintParsingContext,
 ): AST<T> {
-  const { ast } = parseWithNodeMapsInternal(code, options, false);
+  const { ast } = parseWithNodeMapsInternal(
+    code,
+    options,
+    parserContext,
+    false,
+  );
   return ast;
 }
 
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options: T | undefined,
+  parsingContext: ESLintParsingContext | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
   /**
    * Reset the parse configuration
    */
-  const parseSettings = createParseSettings(code, options);
+  const parseSettings = createParseSettings(code, options, parsingContext);
 
   /**
    * Ensure users do not attempt to use parse() when they need parseAndGenerateServices()
@@ -117,8 +125,9 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
 function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options?: T,
+  parsingContext?: ESLintParsingContext,
 ): ParseWithNodeMapsResult<T> {
-  return parseWithNodeMapsInternal(code, options, true);
+  return parseWithNodeMapsInternal(code, options, parsingContext, true);
 }
 
 let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
@@ -130,11 +139,12 @@ function clearParseAndGenerateServicesCalls(): void {
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options: T,
+  parsingContext: ESLintParsingContext | undefined,
 ): ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
    */
-  const parseSettings = createParseSettings(code, options);
+  const parseSettings = createParseSettings(code, options, parsingContext);
 
   if (typeof options !== 'undefined') {
     if (

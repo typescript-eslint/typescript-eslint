@@ -3,7 +3,11 @@ import type {
   ScopeManager,
 } from '@typescript-eslint/scope-manager';
 import { analyze } from '@typescript-eslint/scope-manager';
-import type { Lib, TSESTree } from '@typescript-eslint/types';
+import type {
+  ESLintParsingContext,
+  Lib,
+  TSESTree,
+} from '@typescript-eslint/types';
 import { ParserOptions } from '@typescript-eslint/types';
 import type {
   ParserServices,
@@ -85,6 +89,7 @@ function parse(
 function parseForESLint(
   code: string,
   options?: ParserOptions | null,
+  parserContext?: ESLintParsingContext,
 ): ParseForESLintResult {
   if (!options || typeof options !== 'object') {
     options = {};
@@ -125,7 +130,11 @@ function parseForESLint(
     parserOptions.loggerFn = false;
   }
 
-  const { ast, services } = parseAndGenerateServices(code, parserOptions);
+  const { ast, services } = parseAndGenerateServices(
+    code,
+    parserOptions,
+    parserContext,
+  );
   ast.sourceType = options.sourceType;
 
   let emitDecoratorMetadata = options.emitDecoratorMetadata === true;

@@ -150,7 +150,7 @@ const SharedVisitorKeys = (() => {
 })();
 
 const additionalKeys: AdditionalKeys = {
-  AccessorProperty: SharedVisitorKeys.PropertyDefinition,
+  // AccessorProperty: SharedVisitorKeys.PropertyDefinition,
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: SharedVisitorKeys.AnonymousFunction,
   AssignmentPattern: ['decorators', 'left', 'right', 'typeAnnotation'],
@@ -177,7 +177,7 @@ const additionalKeys: AdditionalKeys = {
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
   StaticBlock: ['body'],
   TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
-  TSAbstractAccessorProperty: SharedVisitorKeys.AbstractPropertyDefinition,
+  // TSAbstractAccessorProperty: SharedVisitorKeys.AbstractPropertyDefinition,
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
   TSAbstractPropertyDefinition: SharedVisitorKeys.AbstractPropertyDefinition,
