@@ -107,6 +107,13 @@ This is to be expected - ESLint rules do not check file extensions on purpose, a
 
 If you have some pure JavaScript code that you do not want to apply certain lint rules to, then you can use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to turn off certain rules, or even change the parser based on glob patterns.
 
+## Should I run ESLint on transpiled output JavaScript files?
+
+No.
+
+Source TypeScript files have all the content of output JavaScript files, plus type annotations.
+There's no benefit to also linting output JavaScript files.
+
 ## TypeScript should be installed locally
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
