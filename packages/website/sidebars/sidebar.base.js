@@ -67,6 +67,7 @@ module.exports = {
     },
     {
       items: [
+        'maintenance/branding',
         {
           collapsible: false,
           items: ['maintenance/issues/rule-deprecations'],
