@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.46.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.1...v5.46.0) (2022-12-08)
+
+### Bug Fixes
+
+- **eslint-plugin:** [ban-types] update message to suggest `object` instead of `Record<string, unknown>` ([#6079](https://github.com/typescript-eslint/typescript-eslint/issues/6079)) ([d91a5fc](https://github.com/typescript-eslint/typescript-eslint/commit/d91a5fc41be5bc2a0625574e9c9496f61fb7471d))
+
+### Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] logic and test for strict null checks ([#6174](https://github.com/typescript-eslint/typescript-eslint/issues/6174)) ([8a91cbd](https://github.com/typescript-eslint/typescript-eslint/commit/8a91cbd9fbe5bc4cf750cd949d2b8d48ff4c311d))
+
 ## [5.45.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.0...v5.45.1) (2022-12-05)
 
 ### Bug Fixes
