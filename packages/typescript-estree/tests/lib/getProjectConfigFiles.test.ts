@@ -1,4 +1,7 @@
-import { getProjectConfigFiles } from '../../src/parseSettings/getProjectConfigFiles';
+import {
+  clearMatchCacheForTests,
+  getProjectConfigFiles,
+} from '../../src/parseSettings/getProjectConfigFiles';
 
 const mockExistsSync = jest.fn<boolean, [string]>();
 
@@ -11,6 +14,11 @@ const parseSettings = {
   filePath: './repos/repo/packages/package/file.ts',
   tsconfigRootDir: './repos/repo',
 };
+
+beforeEach(() => {
+  clearMatchCacheForTests();
+  jest.clearAllMocks();
+});
 
 describe('getProjectConfigFiles', () => {
   it('returns the project when given as a string', () => {
@@ -38,10 +46,6 @@ describe('getProjectConfigFiles', () => {
   });
 
   describe('when caching hits', () => {
-    beforeAll(() => {
-      Date.now = (): number => 0;
-    });
-
     it('returns a local tsconfig.json without calling existsSync a second time', () => {
       mockExistsSync.mockReturnValue(true);
 
@@ -51,15 +55,35 @@ describe('getProjectConfigFiles', () => {
       expect(actual).toEqual(['repos/repo/packages/package/tsconfig.json']);
       expect(mockExistsSync).toHaveBeenCalledTimes(1);
     });
+
+    it('returns a parent tsconfig.json when it was previously cached by a different directory search', () => {
+      mockExistsSync.mockImplementation(input => input === 'a/tsconfig.json');
+
+      // This should call to fs.existsSync three times: c, b, a
+      getProjectConfigFiles(
+        {
+          filePath: './a/b/c/d.ts',
+          tsconfigRootDir: './a',
+        },
+        true,
+      );
+
+      // This should call to fs.existsSync once: e
+      // Then it should retrieve c from cache, pointing to a
+      const actual = getProjectConfigFiles(
+        {
+          filePath: './a/b/c/e/f.ts',
+          tsconfigRootDir: './a',
+        },
+        true,
+      );
+
+      expect(actual).toEqual(['a/tsconfig.json']);
+      expect(mockExistsSync).toHaveBeenCalledTimes(4);
+    });
   });
 
   describe('when caching misses', () => {
-    beforeAll(() => {
-      // Tricks Date.now-based caching into always calling to fs.existsSync
-      let lastDateNow = 0;
-      Date.now = (): number => (lastDateNow += 1000);
-    });
-
     it('returns a local tsconfig.json when matched', () => {
       mockExistsSync.mockReturnValue(true);
 

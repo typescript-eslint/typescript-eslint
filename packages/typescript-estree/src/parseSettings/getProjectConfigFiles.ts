@@ -6,48 +6,24 @@ import type { ParseSettings } from '.';
 
 const log = debug('typescript-eslint:typescript-estree:getProjectConfigFiles');
 
-interface TSConfigMatch {
-  exists: boolean;
-  timestamp: number;
+const tsconfigMatchCache = new Map<string, string | undefined>();
+
+/**
+ * @remarks Only use this for tests!
+ */
+export function clearMatchCacheForTests() {
+  tsconfigMatchCache.clear();
 }
 
 /**
- * How many milliseconds we will respect the cache of an fs.existsSync check.
- */
-const RECHECK_FILE_THRESHOLD_MS = 50;
-
-const tsconfigMatchCache = new Map<string, TSConfigMatch>();
-
-/**
- * Checks for a file file on disk, respecting a limited-time cache.
- * This keeps a caches checked paths with existence and `Date.now()` timestamp.
- * After `RECHECK_FILE_THRESHOLD_MS`, cache entries are ignored.
+ * Checks for a matching TSConfig to a file including its parent directories,
+ * permanently caching results under each directory it checks.
  *
- * @param filePath File path to check for existence on disk.
- * @returns Whether the file exists on disk.
  * @remarks
  * We don't (yet!) have a way to attach file watchers on disk, but still need to
  * cache file checks for rapid subsequent calls to fs.existsSync. See discussion
  * in https://github.com/typescript-eslint/typescript-eslint/issues/101.
  */
-function existsSyncCached(filePath: string): boolean {
-  const cached = tsconfigMatchCache.get(filePath);
-  const now = Date.now();
-
-  if (cached && now - cached.timestamp < RECHECK_FILE_THRESHOLD_MS) {
-    return cached.exists;
-  }
-
-  const exists = fs.existsSync(filePath);
-
-  tsconfigMatchCache.set(filePath, {
-    exists,
-    timestamp: now,
-  });
-
-  return exists;
-}
-
 export function getProjectConfigFiles(
   parseSettings: Pick<ParseSettings, 'filePath' | 'tsconfigRootDir'>,
   project: string | string[] | true | undefined,
@@ -58,16 +34,24 @@ export function getProjectConfigFiles(
 
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
   let directory = path.dirname(parseSettings.filePath);
+  const checkedDirectories = [directory];
 
   do {
+    log('Checking tsconfig.json path: %s', directory);
     const tsconfigPath = path.join(directory, 'tsconfig.json');
-    log('Checking tsconfig.json path: %s', tsconfigPath);
+    const cached =
+      tsconfigMatchCache.get(directory) ??
+      (fs.existsSync(tsconfigPath) && tsconfigPath);
 
-    if (existsSyncCached(tsconfigPath)) {
-      return [tsconfigPath];
+    if (cached) {
+      for (const directory of checkedDirectories) {
+        tsconfigMatchCache.set(directory, cached);
+      }
+      return [cached];
     }
 
     directory = path.dirname(directory);
+    checkedDirectories.push(directory);
   } while (
     directory.length > 1 &&
     directory.length >= parseSettings.tsconfigRootDir.length
