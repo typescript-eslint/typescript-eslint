@@ -10,10 +10,10 @@ It's fine if you don't always adhere to it.
 
 ### Name
 
-Our project name is **_"typescript-eslint"_**.
-We sometimes refer to it as _"tseslint"_ for short.
-
 <!-- markdownlint-disable proper-names -->
+
+Our project name is **_"typescript-eslint"_**.
+We sometimes refer to it as _"ts-eslint"_ for short.
 
 _"typescript-eslint"_ is preferred over _"TypeScript ESLint"_ or _"TypeScript-ESLint"_ because ESLint and TypeScript are written in abbreviated Pascal Case.
 Combining lowercase with a dash helps differentiate us.
