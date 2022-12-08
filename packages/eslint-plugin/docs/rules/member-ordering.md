@@ -1232,7 +1232,7 @@ Another option is to group the member types by their scope (`public`, `protected
   // Fields
   "static-field", // = ["public-static-field", "protected-static-field", "private-static-field"]
   "instance-field", // = ["public-instance-field", "protected-instance-field", "private-instance-field"]
-  "abstract-field", // = ["public-abstract-field", "protected-abstract-field", "private-abstract-field"]
+  "abstract-field", // = ["public-abstract-field", "protected-abstract-field"]
 
   // Static initialization
   // No scope for static initialization.
@@ -1243,17 +1243,17 @@ Another option is to group the member types by their scope (`public`, `protected
   // Getters
   "static-get", // = ["public-static-get", "protected-static-get", "private-static-get"]
   "instance-get", // = ["public-instance-get", "protected-instance-get", "private-instance-get"]
-  "abstract-get", // = ["public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+  "abstract-get", // = ["public-abstract-get", "protected-abstract-get"]
 
   // Setters
   "static-set", // = ["public-static-set", "protected-static-set", "private-static-set"]
   "instance-set", // = ["public-instance-set", "protected-instance-set", "private-instance-set"]
-  "abstract-set", // = ["public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+  "abstract-set", // = ["public-abstract-set", "protected-abstract-set"]
 
   // Methods
   "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
   "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
-  "abstract-method" // = ["public-abstract-method", "protected-abstract-method", "private-abstract-method"]
+  "abstract-method" // = ["public-abstract-method", "protected-abstract-method"]
 ]
 ```
 
@@ -1268,7 +1268,7 @@ The third grouping option is to ignore both scope and accessibility.
 
   // Fields
   "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field",
-  //              "public-abstract-field", "protected-abstract-field", private-abstract-field"]
+  //              "public-abstract-field", "protected-abstract-field"]
 
   // Static initialization
   // No grouping for static initialization.
@@ -1278,15 +1278,15 @@ The third grouping option is to ignore both scope and accessibility.
 
   // Getters
   "get", // = ["public-static-get", "protected-static-get", "private-static-get", "public-instance-get", "protected-instance-get", "private-instance-get",
-  //                "public-abstract-get", "protected-abstract-get", "private-abstract-get"]
+  //                "public-abstract-get", "protected-abstract-get"]
 
   // Setters
   "set", // = ["public-static-set", "protected-static-set", "private-static-set", "public-instance-set", "protected-instance-set", "private-instance-set",
-  //                "public-abstract-set", "protected-abstract-set", "private-abstract-set"]
+  //                "public-abstract-set", "protected-abstract-set"]
 
   // Methods
   "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
-  //                "public-abstract-method", "protected-abstract-method", "private-abstract-method"]
+  //                "public-abstract-method", "protected-abstract-method"]
 ]
 ```
 

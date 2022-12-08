@@ -9,16 +9,22 @@
     <a href="https://codecov.io/gh/typescript-eslint/typescript-eslint"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/typescript-eslint/typescript-eslint.svg?style=flat-square"></a>
 </p>
 
+<!-- markdownlint-disable MD033 -->
 <p align="center">
 👇
 </p>
 <p align="center">
-  <!-- markdownlint-disable MD033 -->
-  See <strong><a href="https://typescript-eslint.io">typescript-eslint.io</a></strong> for documentation.
+  See <strong><a href="https://typescript-eslint.io">typescript-eslint.io</a></strong> for documentation on the latest released version.
+</p>
+<p align="center">
+<small>
+  See <strong><a href="https://main--typescript-eslint.netlify.app">main--typescript-eslint.netlify.app</a></strong> for documentation on the latest <a href="https://main--typescript-eslint.netlify.app/maintenance/versioning">canary release</a>.
+</small>
 </p>
 <p align="center">
 👆
 </p>
+<!-- markdownlint-enable MD033 -->
 
 ## Code Contributors
 
