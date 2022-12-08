@@ -56,7 +56,7 @@ describe('getProjectConfigFiles', () => {
       expect(mockExistsSync).toHaveBeenCalledTimes(1);
     });
 
-    it('returns a parent tsconfig.json when it was previously cached by a different directory search', () => {
+    it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
       mockExistsSync.mockImplementation(input => input === 'a/tsconfig.json');
 
       // This should call to fs.existsSync three times: c, b, a
@@ -80,6 +80,32 @@ describe('getProjectConfigFiles', () => {
 
       expect(actual).toEqual(['a/tsconfig.json']);
       expect(mockExistsSync).toHaveBeenCalledTimes(4);
+    });
+
+    it('returns a distant parent tsconfig.json when it was previously cached by a different directory search', () => {
+      mockExistsSync.mockImplementation(input => input === 'a/tsconfig.json');
+
+      // This should call to fs.existsSync 4 times: d, c, b, a
+      getProjectConfigFiles(
+        {
+          filePath: './a/b/c/d/e.ts',
+          tsconfigRootDir: './a',
+        },
+        true,
+      );
+
+      // This should call to fs.existsSync 2: g, f
+      // Then it should retrieve b from cache, pointing to a
+      const actual = getProjectConfigFiles(
+        {
+          filePath: './a/b/f/g/h.ts',
+          tsconfigRootDir: './a',
+        },
+        true,
+      );
+
+      expect(actual).toEqual(['a/tsconfig.json']);
+      expect(mockExistsSync).toHaveBeenCalledTimes(6);
     });
   });
 
