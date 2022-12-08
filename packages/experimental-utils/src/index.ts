@@ -1,2 +1,8 @@
-// TODO (#4139): Once typescript-eslint hits v7, this package will console.warn to switch...
+/* eslint-disable no-console */
+console.warn(
+  'This package is purely a re-export of `@typescript-eslint/utils`.',
+);
+console.warn(
+  'You should switch to importing from that non-experimental package instead.',
+);
 export * from '@typescript-eslint/utils';
