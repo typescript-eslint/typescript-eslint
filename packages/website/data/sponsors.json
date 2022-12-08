@@ -173,5 +173,12 @@
     "name": "Laserhub",
     "totalDonations": 10000,
     "website": "https://laserhub.com/"
+  },
+  {
+    "id": "DeepSource",
+    "image": "https://images.opencollective.com/deepsource/0f18cea/logo.png",
+    "name": "DeepSource",
+    "totalDonations": 10000,
+    "website": "https://deepsource.io/"
   }
 ]
