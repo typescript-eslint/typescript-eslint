@@ -29,7 +29,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prebuild": "yarn ts-node --transpile-only ./tools/copy-ast-spec.ts",
+    "prebuild": "node --loader ts-node/esm ./tools/copy-ast-spec.ts",
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts3.4/dist",
     "clean": "tsc -b tsconfig.build.json --clean",
