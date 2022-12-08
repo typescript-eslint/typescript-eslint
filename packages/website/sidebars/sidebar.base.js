@@ -68,7 +68,16 @@ module.exports = {
     {
       items: [
         'maintenance/branding',
-        'maintenance/issues',
+        {
+          collapsible: false,
+          items: ['maintenance/issues/rule-deprecations'],
+          label: 'Issues',
+          link: {
+            id: 'maintenance/issues',
+            type: 'doc',
+          },
+          type: 'category',
+        },
         'maintenance/pull-requests',
         'maintenance/releases',
         'maintenance/versioning',
