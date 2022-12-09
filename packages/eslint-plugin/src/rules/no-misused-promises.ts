@@ -269,6 +269,9 @@ export default util.createRule<Options, MessageId>({
     function checkProperty(node: TSESTree.Property): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       if (ts.isPropertyAssignment(tsNode)) {
+        if (!returnsThenable(checker, tsNode.initializer)) {
+          return;
+        }
         const contextualType = checker.getContextualType(tsNode.initializer);
         if (
           contextualType !== undefined &&
@@ -276,8 +279,7 @@ export default util.createRule<Options, MessageId>({
             checker,
             tsNode.initializer,
             contextualType,
-          ) &&
-          returnsThenable(checker, tsNode.initializer)
+          )
         ) {
           context.report({
             messageId: 'voidReturnProperty',
@@ -285,11 +287,13 @@ export default util.createRule<Options, MessageId>({
           });
         }
       } else if (ts.isShorthandPropertyAssignment(tsNode)) {
+        if (!returnsThenable(checker, tsNode.name)) {
+          return;
+        }
         const contextualType = checker.getContextualType(tsNode.name);
         if (
           contextualType !== undefined &&
-          isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
-          returnsThenable(checker, tsNode.name)
+          isVoidReturningFunctionType(checker, tsNode.name, contextualType)
         ) {
           context.report({
             messageId: 'voidReturnProperty',
@@ -312,6 +316,9 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
+        if (!returnsThenable(checker, tsNode)) {
+          return;
+        }
         const objType = checker.getContextualType(obj);
         if (objType === undefined) {
           return;
@@ -329,10 +336,7 @@ export default util.createRule<Options, MessageId>({
           tsNode.name,
         );
 
-        if (
-          isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
-          returnsThenable(checker, tsNode)
-        ) {
+        if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
           context.report({
             messageId: 'voidReturnProperty',
             node: node.value,
@@ -347,15 +351,13 @@ export default util.createRule<Options, MessageId>({
       if (tsNode.expression === undefined || node.argument === null) {
         return;
       }
+      if (!returnsThenable(checker, tsNode.expression)) {
+        return;
+      }
       const contextualType = checker.getContextualType(tsNode.expression);
       if (
         contextualType !== undefined &&
-        isVoidReturningFunctionType(
-          checker,
-          tsNode.expression,
-          contextualType,
-        ) &&
-        returnsThenable(checker, tsNode.expression)
+        isVoidReturningFunctionType(checker, tsNode.expression, contextualType)
       ) {
         context.report({
           messageId: 'voidReturnReturnValue',
@@ -375,11 +377,13 @@ export default util.createRule<Options, MessageId>({
       ) {
         return;
       }
+      if (!returnsThenable(checker, value.expression)) {
+        return;
+      }
       const contextualType = checker.getContextualType(value);
       if (
         contextualType !== undefined &&
-        isVoidReturningFunctionType(checker, value, contextualType) &&
-        returnsThenable(checker, value.expression)
+        isVoidReturningFunctionType(checker, value, contextualType)
       ) {
         context.report({
           messageId: 'voidReturnAttribute',
