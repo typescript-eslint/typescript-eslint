@@ -98,7 +98,7 @@
     "make-dir": "^3.1.0",
     "markdownlint-cli": "^0.32.0",
     "ncp": "^2.0.0",
-    "nx": "15.2.4",
+    "nx": "15.3.0",
     "patch-package": "^6.4.7",
     "prettier": "2.8.0",
     "pretty-format": "^29.0.3",
