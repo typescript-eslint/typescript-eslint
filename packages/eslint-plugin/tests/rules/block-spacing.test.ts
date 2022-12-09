@@ -47,8 +47,14 @@ ruleTester.run('block-spacing', rule, {
   invalid: [
     ...options.flatMap(options =>
       typeDeclaration.flatMap(typeDec =>
-        singlePropertyBlocks.map<InvalidBlockSpacingTestCase>(
+        singlePropertyBlocks.flatMap<InvalidBlockSpacingTestCase>(
           (blockType, blockIndex) => {
+            if (
+              (options[0] === 'always' && blockType.startsWith('{ ')) ||
+              (options[0] === 'never' && blockType.startsWith('{bar'))
+            ) {
+              return [];
+            }
             return {
               code: typeDec.stringPrefix + blockType,
               options,
@@ -59,14 +65,14 @@ ruleTester.run('block-spacing', rule, {
                   type: typeDec.nodeType,
                   // line: 1,
                   // column: 1,
-                  messageId: 'missing',
+                  messageId: options[0] === 'always' ? 'missing' : 'extra',
                   data: { location: 'after', token: '{' },
                 },
                 {
                   type: typeDec.nodeType,
                   // line: 1,
                   // column: 8,
-                  messageId: 'missing',
+                  messageId: options[0] === 'always' ? 'missing' : 'extra',
                   data: { location: 'before', token: '}' },
                 },
               ],
@@ -75,6 +81,5 @@ ruleTester.run('block-spacing', rule, {
         ),
       ),
     ),
-    // .filter(_case => JSON.stringify(_case).includes('type ')),
   ],
 });
