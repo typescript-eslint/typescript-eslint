@@ -9,4 +9,4 @@ description: 'Enforce consistent spacing before and after keywords.'
 ## Examples
 
 This rule extends the base [`eslint/block-spacing`](https://eslint.org/docs/rules/block-spacing) rule.
-This version adds support for typescript related blocks (interfaces, object type literals and enums).
+This version adds support for TypeScript related blocks (interfaces, object type literals and enums).
