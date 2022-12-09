@@ -51,11 +51,17 @@ ruleTester.run('block-spacing', rule, {
             ) {
               return [];
             }
+            const code =
+              typeDec.stringPrefix + blockType + `;  /* ${option} */`;
+            const output =
+              typeDec.stringPrefix +
+              singlePropertyBlocks[1 - blockIndex] +
+              `;  /* ${option} */`;
+
             return {
-              code: typeDec.stringPrefix + blockType,
+              code,
               options: [option],
-              output:
-                typeDec.stringPrefix + singlePropertyBlocks[1 - blockIndex],
+              output,
               errors: [
                 {
                   type: typeDec.nodeType,
