@@ -14,7 +14,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'layout',
     docs: {
-      description: 'Enforce consistent spacing before and after keywords',
+      description:
+        'Disallow or enforce spaces inside of blocks after opening block and before closing block',
       recommended: false,
       extendsBaseRule: true,
     },
