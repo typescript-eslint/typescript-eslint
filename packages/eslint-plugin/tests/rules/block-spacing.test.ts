@@ -59,11 +59,9 @@ ruleTester.run('block-spacing', rule, {
             ) {
               return [];
             }
-            let code = typeDec.stringPrefix + blockType + `;  /* ${option} */`;
-            let output =
-              typeDec.stringPrefix +
-              singlePropertyBlocks[1 - blockIndex] +
-              `;  /* ${option} */`;
+            const reverseBlockType = singlePropertyBlocks[1 - blockIndex];
+            let code = `${typeDec.stringPrefix}${blockType};  /* ${option} */`;
+            let output = `${typeDec.stringPrefix}${reverseBlockType};  /* ${option} */`;
             if (typeDec.nodeType === AST_NODE_TYPES.TSEnumDeclaration) {
               output = output.replace(':', '=');
               code = code.replace(':', '=');
