@@ -23,6 +23,14 @@ const typeDeclaration = [
     nodeType: AST_NODE_TYPES.TSTypeLiteral,
     stringPrefix: 'type Foo = ',
   },
+  {
+    nodeType: AST_NODE_TYPES.TSEnumDeclaration,
+    stringPrefix: 'enum Foo ',
+  },
+  {
+    nodeType: AST_NODE_TYPES.TSEnumDeclaration,
+    stringPrefix: 'const enum Foo ',
+  },
 ];
 const emptyBlocks = ['{}', '{ }'];
 const singlePropertyBlocks = ['{bar: true}', '{ bar: true }'];
@@ -41,8 +49,8 @@ ruleTester.run('block-spacing', rule, {
   ],
   invalid: [
     ...options.flatMap(option =>
-      typeDeclaration.flatMap(typeDec =>
-        singlePropertyBlocks.flatMap<InvalidBlockSpacingTestCase>(
+      typeDeclaration.flatMap(typeDec => {
+        return singlePropertyBlocks.flatMap<InvalidBlockSpacingTestCase>(
           (blockType, blockIndex) => {
             // These are actually valid, so filter them out
             if (
@@ -51,12 +59,15 @@ ruleTester.run('block-spacing', rule, {
             ) {
               return [];
             }
-            const code =
-              typeDec.stringPrefix + blockType + `;  /* ${option} */`;
-            const output =
+            let code = typeDec.stringPrefix + blockType + `;  /* ${option} */`;
+            let output =
               typeDec.stringPrefix +
               singlePropertyBlocks[1 - blockIndex] +
               `;  /* ${option} */`;
+            if (typeDec.nodeType === AST_NODE_TYPES.TSEnumDeclaration) {
+              output = output.replace(':', '=');
+              code = code.replace(':', '=');
+            }
 
             return {
               code,
@@ -76,8 +87,8 @@ ruleTester.run('block-spacing', rule, {
               ],
             };
           },
-        ),
-      ),
+        );
+      }),
     ),
   ],
 });
