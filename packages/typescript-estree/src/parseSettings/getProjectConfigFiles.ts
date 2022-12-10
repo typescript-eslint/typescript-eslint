@@ -11,7 +11,7 @@ const tsconfigMatchCache = new Map<string, string | undefined>();
 /**
  * @remarks Only use this for tests!
  */
-export function clearMatchCacheForTests() {
+export function clearMatchCacheForTests(): void {
   tsconfigMatchCache.clear();
 }
 
