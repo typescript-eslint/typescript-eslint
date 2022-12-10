@@ -61,6 +61,9 @@ const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
     code: `type T = [1, 2, 3] ${operator} [1, 2, 3, 4];`,
   },
   {
+    code: `type T = "A" ${operator} string[];`,
+  },
+  {
     code: `type T = (() => string) ${operator} (() => void);`,
   },
   {
