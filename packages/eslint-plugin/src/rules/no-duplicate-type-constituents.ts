@@ -25,9 +25,6 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
     typeof actualNode == 'object' &&
     typeof expectedNode == 'object'
   ) {
-    if (actualNode.constructor !== expectedNode.constructor) {
-      return false;
-    }
     if (Array.isArray(actualNode) && Array.isArray(expectedNode)) {
       if (actualNode.length != expectedNode.length) {
         return false;
