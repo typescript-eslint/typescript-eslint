@@ -46,6 +46,15 @@ const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
     code: `type T = Set<string> ${operator} Set<number>;`,
   },
   {
+    code: `type T = Class<string> ${operator} Class<number>;`,
+  },
+  {
+    code: `type T = string[] ${operator} number[];`,
+  },
+  {
+    code: `type T = string[][] ${operator} string[];`,
+  },
+  {
     code: `type T = [1, 2, 3] ${operator} [1, 2, 4];`,
   },
   {
@@ -221,6 +230,45 @@ const invalid = (
           data: {
             type,
             name: 'Set<string>',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = Class<string> ${operator} Class<string>;`,
+      output: `type T = Class<string>  ;`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: 'Class<string>',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = string[] ${operator} string[];`,
+      output: `type T = string[]  ;`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: 'string[]',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = string[][] ${operator} string[][];`,
+      output: `type T = string[][]  ;`,
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            name: 'string[][]',
           },
         },
       ],
