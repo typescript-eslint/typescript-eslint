@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -9,13 +10,15 @@ export type Options = [
     ignoreConditionalTests?: boolean;
     ignoreTernaryTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
 ];
 
 export type MessageIds =
   | 'preferNullishOverOr'
   | 'preferNullishOverTernary'
-  | 'suggestNullish';
+  | 'suggestNullish'
+  | 'noStrictNullCheck';
 
 export default util.createRule<Options, MessageIds>({
   name: 'prefer-nullish-coalescing',
@@ -34,6 +37,8 @@ export default util.createRule<Options, MessageIds>({
       preferNullishOverTernary:
         'Prefer using nullish coalescing operator (`??{{ equals }}`) instead of a ternary expression, as it is simpler to read.',
       suggestNullish: 'Fix to nullish coalescing operator (`??{{ equals }}`).',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
     schema: [
       {
@@ -48,6 +53,9 @@ export default util.createRule<Options, MessageIds>({
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
           },
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -58,6 +66,7 @@ export default util.createRule<Options, MessageIds>({
       ignoreConditionalTests: true,
       ignoreTernaryTests: true,
       ignoreMixedLogicalExpressions: true,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],
   create(
@@ -67,14 +76,32 @@ export default util.createRule<Options, MessageIds>({
         ignoreConditionalTests,
         ignoreTernaryTests,
         ignoreMixedLogicalExpressions,
+        allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
       },
     ],
   ) {
     const parserServices = util.getParserServices(context);
+    const compilerOptions = parserServices.program.getCompilerOptions();
     const sourceCode = context.getSourceCode();
     const checker = parserServices.program.getTypeChecker();
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'strictNullChecks',
+    );
 
-    // todo: rename to something more specific?
+    if (
+      !isStrictNullChecks &&
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
+    ) {
+      context.report({
+        loc: {
+          start: { line: 0, column: 0 },
+          end: { line: 0, column: 0 },
+        },
+        messageId: 'noStrictNullCheck',
+      });
+    }
+
     function checkAssignmentOrLogicalExpression(
       node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
       description: string,
@@ -274,7 +301,6 @@ export default util.createRule<Options, MessageIds>({
 
         if (isFixable) {
           context.report({
-            // TODO: also account for = in the ternary clause
             data: { equals: '' },
             node,
             messageId: 'preferNullishOverTernary',

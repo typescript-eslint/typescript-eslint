@@ -2,7 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
-import { getEnumNames } from '../util';
+import { getEnumNames, typeNodeRequiresParentheses } from '../util';
 
 enum Group {
   conditional = 'conditional',
@@ -94,13 +94,6 @@ function getGroup(node: TSESTree.TypeNode): Group {
       /* istanbul ignore next */
       throw new Error(`Unexpected Type ${node.type}`);
   }
-}
-
-function requiresParentheses(node: TSESTree.TypeNode): boolean {
-  return (
-    node.type === AST_NODE_TYPES.TSFunctionType ||
-    node.type === AST_NODE_TYPES.TSConstructorType
-  );
 }
 
 export type Options = [
@@ -226,7 +219,13 @@ export default util.createRule<Options, MessageIds>({
 
           const fix: TSESLint.ReportFixFunction = fixer => {
             const sorted = expectedOrder
-              .map(t => (requiresParentheses(t.node) ? `(${t.text})` : t.text))
+              .map(t =>
+                typeNodeRequiresParentheses(t.node, t.text) ||
+                (node.type === AST_NODE_TYPES.TSIntersectionType &&
+                  t.node.type === AST_NODE_TYPES.TSUnionType)
+                  ? `(${t.text})`
+                  : t.text,
+              )
               .join(
                 node.type === AST_NODE_TYPES.TSIntersectionType ? ' & ' : ' | ',
               );

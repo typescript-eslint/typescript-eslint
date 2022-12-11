@@ -24,7 +24,7 @@ If your project does not enable [typed linting](./TYPED_LINTING.md), we suggest 
 }
 ```
 
-> If a majority of developers working on your project are comfortable with TypeScript and TypeScript-ESLint, consider replacing `recommended` with `strict`.
+> If a majority of developers working on your project are comfortable with TypeScript and typescript-eslint, consider replacing `recommended` with `strict`.
 
 ### Projects With Type Checking
 
@@ -39,7 +39,7 @@ If your project enables [typed linting](./TYPED_LINTING.md), we suggest:
 }
 ```
 
-> If a majority of developers working on your project are comfortable with TypeScript and TypeScript-ESLint, consider replacing `recommended-type-checked` with `strict-type-checked`.
+> If a majority of developers working on your project are comfortable with TypeScript and typescript-eslint, consider replacing `recommended-type-checked` with `strict-type-checked`.
 
 ## Recommended Configurations
 
@@ -66,7 +66,7 @@ See [ESLint's Configuring Rules docs](https://eslint.org/docs/user-guide/configu
 
 Recommended rules for code correctness that you can drop in without additional configuration.
 These rules are those whose reports are almost always for a bad practice and/or likely bug.
-`recommended` also disables core ESLint rules known to conflict with TypeScript-ESLint rules or cause issues in TypeScript codebases.
+`recommended` also disables core ESLint rules known to conflict with typescript-eslint rules or cause issues in TypeScript codebases.
 
 ```json
 {
@@ -87,7 +87,12 @@ Rules newly added in this configuration are similarly useful to those in `recomm
 }
 ```
 
-See [`configs/recommended-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended-type-checked.ts) for the exact contents of this config.
+See [`configs/recommended-requiring-type-checking.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended-requiring-type-checking.ts) for the exact contents of this config.
+
+:::tip
+We recommend all TypeScript projects extend from `plugin:@typescript-eslint/recommended-requiring-type-checking`, with the caveat that rules using type information take longer to run.
+See [Linting with Type Information](/linting/typed-linting) for more details.
+:::
 
 ### `strict`
 
@@ -143,12 +148,12 @@ See [`configs/stylistic-type-checked.ts`](https://github.com/typescript-eslint/t
 
 ## Other Configurations
 
-TypeScript ESLint includes a scattering of utility configurations used by the recommended configurations.
+typescript-eslint includes a scattering of utility configurations used by the recommended configurations.
 We don't recommend using these directly; instead, extend from an earlier recommended rule.
 
 ### `all`
 
-Enables each the rules provided as a part of TypeScript ESLint.
+Enables each the rules provided as a part of typescript-eslint.
 Note that many rules are not applicable in all codebases, or are meant to be configured.
 
 See [`configs/all.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/all.ts) for the exact contents of this config.
@@ -160,8 +165,9 @@ Many rules conflict with each other and/or are intended to be configured per-pro
 
 ### `base`
 
-A minimal ruleset that sets only the required parser and plugin options needed to run TypeScript ESLint.
-It doesn't enable any rules.
+A minimal ruleset that sets only the required parser and plugin options needed to run typescript-eslint.
+
+<configuration-contents expanded name="base" />
 
 This config is automatically included if you use any of the recommended configurations.
 
@@ -192,6 +198,6 @@ If you feel strongly that a specific rule should (or should not) be one of these
 
 ## Formatting
 
-None of the preset configs provided by TypeScript ESLint enable formatting rules (rules that only serve to enforce code whitespace and other trivia).
+None of the preset configs provided by typescript-eslint enable formatting rules (rules that only serve to enforce code whitespace and other trivia).
 We strongly recommend you use Prettier or an equivalent for formatting your code, not ESLint formatting rules.
 See [What About Formatting? > Suggested Usage](./troubleshooting/formatting#suggested-usage).

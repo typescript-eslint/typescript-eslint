@@ -61,7 +61,7 @@ console.log(`## Table Key
       <td>Being added, deprecated, or removed</td>
       <td>
         <ul>
-          <li>🆕 = newly added to TypeScript-ESLint</li>
+          <li>🆕 = newly added to typescript-eslint</li>
           <li>🙅 = to be deprecated in the next major</li>
           <li>💀 = currently deprecated; to be removed in the next version</li>
         </ul>

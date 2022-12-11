@@ -16,7 +16,7 @@ export = {
         'no-dupe-keys': 'off', // ts(1117)
         'no-func-assign': 'off', // ts(2539)
         'no-import-assign': 'off', // ts(2539) & ts(2540)
-        'no-new-symbol': 'off', // ts(2588)
+        'no-new-symbol': 'off', // ts(7009)
         'no-obj-calls': 'off', // ts(2349)
         'no-redeclare': 'off', // ts(2451)
         'no-setter-return': 'off', // ts(2408)

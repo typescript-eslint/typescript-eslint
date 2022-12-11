@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import * as path from 'path';
 
 import type {
   MessageIds,
@@ -394,6 +395,25 @@ x ?? y;
         },
       ],
     })),
+
+    // noStrictNullCheck
+    {
+      code: `
+declare const x: string[] | null;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'noStrictNullCheck',
+          line: 0,
+          column: 1,
+        },
+      ],
+      parserOptions: {
+        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
+    },
 
     // ignoreConditionalTests
     ...nullishTypeInvalidTest((nullish, type, equals) => ({

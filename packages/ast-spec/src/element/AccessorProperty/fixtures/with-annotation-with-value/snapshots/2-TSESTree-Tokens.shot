@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty with-annotation-with-value TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [6, 9],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "accessor",
+
+    range: [14, 22],
+    loc: {
+      start: { column: 2, line: 2 },
+      end: { column: 10, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "prop",
+
+    range: [23, 27],
+    loc: {
+      start: { column: 11, line: 2 },
+      end: { column: 15, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [27, 28],
+    loc: {
+      start: { column: 15, line: 2 },
+      end: { column: 16, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [29, 35],
+    loc: {
+      start: { column: 17, line: 2 },
+      end: { column: 23, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [36, 37],
+    loc: {
+      start: { column: 24, line: 2 },
+      end: { column: 25, line: 2 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'str'",
+
+    range: [38, 43],
+    loc: {
+      start: { column: 26, line: 2 },
+      end: { column: 31, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [43, 44],
+    loc: {
+      start: { column: 31, line: 2 },
+      end: { column: 32, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [45, 46],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+]
+`;
