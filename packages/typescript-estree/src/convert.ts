@@ -2804,10 +2804,6 @@ export class Converter {
         });
       }
       case SyntaxKind.ImportEqualsDeclaration: {
-        // to put as notes in the PR:
-        // re creating multiple nodes from one node
-        //  this is fine, you can create as many or as few as you'd like
-
         return this.fixExports(
           node,
           this.createNode<TSESTree.TSImportEqualsDeclaration>(node, {
