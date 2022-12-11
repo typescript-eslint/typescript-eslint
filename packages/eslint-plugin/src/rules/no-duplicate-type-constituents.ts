@@ -78,7 +78,8 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      duplicate: '{{type}} type member {{name}} is duplicated.',
+      duplicate:
+        '{{type}} type member {{duplicated}} is duplicated with {{previous}}.',
     },
     schema: [
       {
@@ -108,39 +109,42 @@ export default util.createRule<Options, MessageIds>({
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const uniqConstituentTypes = new Set<Type>();
-      const duplicateConstituentNodes: TSESTree.TypeNode[] = [];
+      const duplicateConstituents: {
+        duplicated: TSESTree.TypeNode;
+        duplicatePrevious: TSESTree.TypeNode;
+      }[] = [];
 
-      node.types.reduce<TSESTree.TypeNode[]>(
-        (uniqConstituentNodes, constituentNode) => {
-          const type = checker.getTypeAtLocation(
-            parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
-          );
-          if (
-            uniqConstituentNodes.some(ele =>
-              isSameAstNode(ele, constituentNode),
-            ) ||
-            uniqConstituentTypes.has(type)
-          ) {
-            duplicateConstituentNodes.push(constituentNode);
-            uniqConstituentTypes.add(type);
-            return uniqConstituentNodes;
-          }
-          uniqConstituentTypes.add(type);
-          return [...uniqConstituentNodes, constituentNode];
-        },
-        [],
-      );
+      node.types.reduce<
+        {
+          node: TSESTree.TypeNode;
+          type: Type;
+        }[]
+      >((uniqConstituents, constituentNode) => {
+        const type = checker.getTypeAtLocation(
+          parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
+        );
+        const duplicatePreviousConstituent = uniqConstituents.find(
+          ele => isSameAstNode(ele.node, constituentNode) || ele.type === type,
+        );
+        if (duplicatePreviousConstituent) {
+          duplicateConstituents.push({
+            duplicated: constituentNode,
+            duplicatePrevious: duplicatePreviousConstituent.node,
+          });
+          return uniqConstituents;
+        }
+        return [...uniqConstituents, { node: constituentNode, type }];
+      }, []);
 
       const fix: TSESLint.ReportFixFunction = fixer => {
-        return duplicateConstituentNodes
-          .map(duplicateConstituentNode => {
+        return duplicateConstituents
+          .map(duplicateConstituent => {
             const fixes: TSESLint.RuleFix[] = [];
             const beforeTokens = sourceCode.getTokensBefore(
-              duplicateConstituentNode,
+              duplicateConstituent.duplicated,
             );
             const afterTokens = sourceCode.getTokensAfter(
-              duplicateConstituentNode,
+              duplicateConstituent.duplicated,
             );
             const beforeUnionOrIntersectionToken = beforeTokens
               .reverse()
@@ -149,7 +153,7 @@ export default util.createRule<Options, MessageIds>({
             if (beforeUnionOrIntersectionToken) {
               const bracketBeforeTokens = sourceCode.getTokensBetween(
                 beforeUnionOrIntersectionToken,
-                duplicateConstituentNode,
+                duplicateConstituent.duplicated,
               );
               const bracketAfterTokens = afterTokens.slice(
                 0,
@@ -158,7 +162,7 @@ export default util.createRule<Options, MessageIds>({
               [
                 beforeUnionOrIntersectionToken,
                 ...bracketBeforeTokens,
-                duplicateConstituentNode,
+                duplicateConstituent.duplicated,
                 ...bracketAfterTokens,
               ].forEach(token => fixes.push(fixer.remove(token)));
             }
@@ -167,14 +171,17 @@ export default util.createRule<Options, MessageIds>({
           .flat();
       };
 
-      duplicateConstituentNodes.forEach(duplicateConstituentNode => {
+      duplicateConstituents.forEach(duplicateConstituent => {
         context.report({
           data: {
-            name: sourceCode.getText(duplicateConstituentNode),
+            duplicated: sourceCode.getText(duplicateConstituent.duplicated),
             type:
               node.type === AST_NODE_TYPES.TSIntersectionType
                 ? 'Intersection'
                 : 'Union',
+            previous: sourceCode.getText(
+              duplicateConstituent.duplicatePrevious,
+            ),
           },
           messageId: 'duplicate',
           node,
