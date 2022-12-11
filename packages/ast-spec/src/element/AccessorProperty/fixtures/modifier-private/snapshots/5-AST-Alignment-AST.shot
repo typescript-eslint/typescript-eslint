@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty modifier-private AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+-           AccessorProperty {
+-             type: 'AccessorProperty',
++           ClassAccessorProperty {
++             type: 'ClassAccessorProperty',
+              accessibility: 'private',
+              computed: false,
+-             declare: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'foo',
+
+                range: [31, 34],
+                loc: {
+                  start: { column: 19, line: 2 },
+                  end: { column: 22, line: 2 },
+                },
+              },
+-             override: false,
+              static: false,
+              value: Literal {
+                type: 'Literal',
+                raw: '2',
+                value: 2,
+
+                range: [37, 38],
+                loc: {
+                  start: { column: 25, line: 2 },
+                  end: { column: 26, line: 2 },
+                },
+              },
+
+              range: [14, 39],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 27, line: 2 },
+              },
+            },
+          ],
+
+          range: [10, 41],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 1, line: 3 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+        superClass: null,
+
+        range: [0, 41],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 42],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

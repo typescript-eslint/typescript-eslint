@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty key-number TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [],
+  sourceType: "script",
+
+  range: [0, 0],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 1 },
+  },
+}
+`;
