@@ -1,1 +1,1 @@
-() => 1 satisfies number
+() => 1 satisfies number;

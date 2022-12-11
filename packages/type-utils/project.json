@@ -1,5 +1,15 @@
 {
+  "name": "type-utils",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "implicitDependencies": []
+  "implicitDependencies": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/type-utils/**/*.ts"]
+      }
+    }
+  }
 }

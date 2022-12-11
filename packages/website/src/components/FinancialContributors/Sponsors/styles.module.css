@@ -7,7 +7,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-end;
+  align-items: stretch;
   max-width: 800px;
   padding: 0;
 }
@@ -19,6 +19,7 @@
 }
 
 .sponsorsTier img {
+  background: white;
   display: block;
   margin: auto;
 }

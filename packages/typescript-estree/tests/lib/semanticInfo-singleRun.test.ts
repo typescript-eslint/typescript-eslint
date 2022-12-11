@@ -60,10 +60,12 @@ jest.mock('../../src/create-program/useProvidedPrograms.ts', () => {
   };
 });
 
-jest.mock('../../src/create-program/createWatchProgram', () => {
+jest.mock('../../src/create-program/getWatchProgramsForProjects', () => {
   return {
-    ...jest.requireActual('../../src/create-program/createWatchProgram'),
-    getProgramsForProjects: jest.fn(() => [mockProgram]),
+    ...jest.requireActual(
+      '../../src/create-program/getWatchProgramsForProjects',
+    ),
+    getWatchProgramsForProjects: jest.fn(() => [mockProgram]),
   };
 });
 
