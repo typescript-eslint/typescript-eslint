@@ -155,12 +155,12 @@ jobs:
       # would override the config
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version
-        run: npx nx test @typescript-eslint/${{ matrix.package }}
+        run: npx nx test ${{ matrix.package }}
         env:
           CI: true
       - name: Run unit tests for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version
-        run: npx nx test @typescript-eslint/${{ matrix.package }} --coverage=false
+        run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
 

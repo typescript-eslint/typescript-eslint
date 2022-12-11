@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.46.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.1...v5.46.0) (2022-12-08)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+## [5.45.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.0...v5.45.1) (2022-12-05)
+
+**Note:** Version bump only for package @typescript-eslint/visitor-keys
+
+# [5.45.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.44.0...v5.45.0) (2022-11-28)
+
+### Features
+
+- support Auto Accessor syntax ([#5926](https://github.com/typescript-eslint/typescript-eslint/issues/5926)) ([becd1f8](https://github.com/typescript-eslint/typescript-eslint/commit/becd1f8581c0013399dfe71be6c265e96cedb57a))
+
 # [5.44.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.43.0...v5.44.0) (2022-11-21)
 
 ### Features
