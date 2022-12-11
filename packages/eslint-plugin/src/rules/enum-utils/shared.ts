@@ -11,19 +11,13 @@ import * as util from '../../util';
  * - `Fruit` --> `Fruit`
  * - `Fruit.Apple` --> `Fruit`
  */
-export function getBaseEnumType(
-  typeChecker: ts.TypeChecker,
-  type: ts.Type,
-): ts.Type {
-  const symbol = type.getSymbol();
-  if (
-    !symbol?.valueDeclaration?.parent ||
-    !tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)
-  ) {
+function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
+  const symbol = type.getSymbol()!;
+  if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
     return type;
   }
 
-  return typeChecker.getTypeAtLocation(symbol.valueDeclaration.parent);
+  return typeChecker.getTypeAtLocation(symbol.valueDeclaration!.parent);
 }
 
 /**
