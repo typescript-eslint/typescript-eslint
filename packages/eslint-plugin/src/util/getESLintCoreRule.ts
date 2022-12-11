@@ -16,7 +16,6 @@ interface RuleMap {
   'lines-between-class-members': typeof import('eslint/lib/rules/lines-between-class-members');
   'no-dupe-args': typeof import('eslint/lib/rules/no-dupe-args');
   'no-dupe-class-members': typeof import('eslint/lib/rules/no-dupe-class-members');
-  'no-duplicate-imports': typeof import('eslint/lib/rules/no-duplicate-imports');
   'no-empty-function': typeof import('eslint/lib/rules/no-empty-function');
   'no-extra-parens': typeof import('eslint/lib/rules/no-extra-parens');
   'no-extra-semi': typeof import('eslint/lib/rules/no-extra-semi');

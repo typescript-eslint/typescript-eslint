@@ -16,9 +16,9 @@ body:
           required: true
         - label: I have updated to the latest version of the packages.
           required: true
-        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3Abug+label%3A%22package%3A+eslint-plugin%22) and found none that matched my issue.
+        - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3A%22package%3A+eslint-plugin%22) and found none that matched my issue.
           required: true
-        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+        - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
           required: true
   - type: input
     id: playground-link
@@ -98,17 +98,3 @@ body:
       description: |
         Any additional info you'd like to provide.
         If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. e.g. `eslint path/to/broken/file.ts --debug`
-  - type: textarea
-    id: versions
-    attributes:
-      label: Versions
-      value: |
-        | package                                | version |
-        | -------------------------------------- | ------- |
-        | `@typescript-eslint/eslint-plugin`     | `X.Y.Z` |
-        | `@typescript-eslint/parser`            | `X.Y.Z` |
-        | `TypeScript`                           | `X.Y.Z` |
-        | `ESLint`                               | `X.Y.Z` |
-        | `node`                                 | `X.Y.Z` |
-    validations:
-      required: true
