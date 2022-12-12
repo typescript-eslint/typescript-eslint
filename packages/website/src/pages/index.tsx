@@ -120,7 +120,7 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
       <p>{description}</p>
       <div className={styles.buttons}>
         <Link
-          className="button button--primary"
+          className={clsx('button button--primary', styles.buttonCentered)}
           to={useBaseUrl('getting-started')}
         >
           Get Started
@@ -140,7 +140,7 @@ function Home(): JSX.Element {
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
-              className={clsx('button button--primary', styles.buttonPrimary)}
+              className="button button--primary"
               to={useBaseUrl('getting-started')}
             >
               Get Started

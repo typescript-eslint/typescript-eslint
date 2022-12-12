@@ -35,6 +35,10 @@
   margin: 1rem 1rem;
 }
 
+.buttonCentered {
+  margin: auto;
+}
+
 .buttonPrimary {
   border: var(--ifm-button-border-width) solid var(--ifm-button-color);
 }
