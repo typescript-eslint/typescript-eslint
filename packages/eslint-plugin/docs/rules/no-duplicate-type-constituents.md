@@ -49,7 +49,7 @@ type T3 = { a: string } & { b: string };
 type T4 = [1, 2, 3] & [1, 2, 3, 4];
 
 type StringA = string;
-type NumberB = string;
+type NumberB = number;
 type T5 = StringA | NumberB;
 ```
 
