@@ -17,6 +17,11 @@
   text-align: center;
 }
 
+.hero__logo {
+  height: 10rem;
+  width: 10rem;
+}
+
 .hero__subtitle {
   margin-bottom: 24px;
 }
