@@ -51,6 +51,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    tsconfigRootDir: __dirname,
     // Remove this line
     project: true,
     // Add this line
@@ -75,6 +76,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    tsconfigRootDir: __dirname,
     // Remove this line
     project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
     // Add this line

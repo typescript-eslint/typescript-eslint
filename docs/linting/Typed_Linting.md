@@ -12,6 +12,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   // Added lines start
   parserOptions: {
+    tsconfigRootDir: __dirname,
     project: true,
   },
   // Added lines end
@@ -27,6 +28,8 @@ module.exports = {
 
 In more detail:
 
+- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory.
+  - This is helpful if ESLint is invoked from a different directory, such as a subdirectory within the project.
 - `parserOptions.project` tells our parser to use the closest `tsconfig.json` to each file for informing that file's type information.
   - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.md).
 - `plugin:@typescript-eslint/recommended-requiring-type-checking` is another recommended configuration we provide. This one contains rules that specifically require type information.
