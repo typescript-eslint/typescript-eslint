@@ -13,16 +13,38 @@ ruleTester.run('key-spacing', rule, {
   valid: [
     {
       code: 'interface X {\n  a:   number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
+      // A blank line between two keys resets the alignment
+      code: 'interface X {\n  a: number;\n\n  abc: string\n};',
+      options: [{ align: 'value' }],
     },
   ],
   invalid: [
     {
       code: 'interface X {\n  a: number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
       code: 'interface X {\n  a:   number;\n  abc:  string\n};',
+      options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      // A blank line between two keys resets the alignment
+      code: 'interface X {\n  a:   number;\n\n  abc     : string\n};',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: 'interface X {\n  [x: number]:  string;\n}',
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: 'interface X {\n  [x: number]:string;\n}',
+      errors: [{ messageId: 'missingValue' }],
     },
   ],
 });

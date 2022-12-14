@@ -150,7 +150,17 @@ declare module 'eslint/lib/rules/key-spacing' {
       beforeColon?: boolean;
       afterColon?: boolean;
       mode?: 'strict' | 'minimum';
-      align?: 'value' | 'colon';
+      align?:
+        | 'value'
+        | 'colon'
+        | {
+            on: 'value' | 'colon';
+            beforeColon?: boolean;
+            afterColon?: boolean;
+            mode?: 'strict' | 'minimum';
+          };
+      singleLine?: { beforeColon?: boolean; afterColon?: boolean };
+      multiLine?: { beforeColon?: boolean; afterColon?: boolean };
     },
   ];
   type MessageIds = 'extraKey' | 'extraValue' | 'missingKey' | 'missingValue';
