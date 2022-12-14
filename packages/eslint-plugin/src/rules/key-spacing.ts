@@ -39,11 +39,16 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
       key: TSESTree.PropertyName | TSESTree.Parameter,
       nBeforeColon: number,
+      mode: 'strict' | 'minimum',
     ): void {
       const colon = node.typeAnnotation!.loc.start.column;
       const keyEnd = key.loc.end.column;
       const expectedDiff = nBeforeColon;
-      if (colon - keyEnd !== expectedDiff) {
+      if (
+        mode === 'strict'
+          ? colon - keyEnd !== expectedDiff
+          : colon - keyEnd < expectedDiff
+      ) {
         context.report({
           node,
           messageId: colon - keyEnd > expectedDiff ? 'extraKey' : 'missingKey',
@@ -59,11 +64,16 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
       key: TSESTree.PropertyName | TSESTree.Parameter,
       nAfterColon: number,
+      mode: 'strict' | 'minimum',
     ): void {
       const colon = node.typeAnnotation!.loc.start.column;
       const typeStart = node.typeAnnotation!.typeAnnotation.loc.start.column;
       const expectedDiff = nAfterColon + 1;
-      if (typeStart - colon !== expectedDiff) {
+      if (
+        mode === 'strict'
+          ? typeStart - colon !== expectedDiff
+          : typeStart - colon < expectedDiff
+      ) {
         context.report({
           node,
           messageId:
@@ -81,7 +91,7 @@ export default util.createRule<Options, MessageIds>({
       const align =
         (typeof options.align === 'object'
           ? options.align.on
-          : options.align) ?? 'colon';
+          : options.multiLine?.align ?? options.align) ?? 'colon';
       const beforeColon =
         (typeof options.align === 'object'
           ? options.align.beforeColon
@@ -96,6 +106,12 @@ export default util.createRule<Options, MessageIds>({
           ? options.multiLine.afterColon
           : options.beforeColon) ?? true;
       const nAfterColon = afterColon ? 1 : 0;
+      const mode =
+        (typeof options.align === 'object'
+          ? options.align.mode
+          : options.multiLine
+          ? options.multiLine.mode
+          : options.mode) ?? 'strict';
 
       for (const node of group) {
         if (
@@ -146,9 +162,9 @@ export default util.createRule<Options, MessageIds>({
           }
 
           if (align === 'colon') {
-            checkAfterColon(node, key, nAfterColon);
+            checkAfterColon(node, key, nAfterColon, mode);
           } else {
-            checkBeforeColon(node, key, nBeforeColon);
+            checkBeforeColon(node, key, nBeforeColon, mode);
           }
         }
       }
@@ -176,6 +192,14 @@ export default util.createRule<Options, MessageIds>({
           ? options.multiLine.afterColon
           : options.afterColon) ?? true;
       const nAfterColon = afterColon ? 1 : 0;
+      const mode =
+        (singleLine
+          ? options.singleLine
+            ? options.singleLine.mode
+            : options.mode
+          : options.multiLine
+          ? options.multiLine.mode
+          : options.mode) ?? 'strict';
 
       if (
         (node.type === AST_NODE_TYPES.TSPropertySignature ||
@@ -187,8 +211,8 @@ export default util.createRule<Options, MessageIds>({
             ? node.key
             : node.parameters[node.parameters.length - 1];
 
-        checkBeforeColon(node, key, nBeforeColon);
-        checkAfterColon(node, key, nAfterColon);
+        checkBeforeColon(node, key, nBeforeColon, mode);
+        checkAfterColon(node, key, nAfterColon, mode);
       }
     }
 
@@ -202,7 +226,7 @@ export default util.createRule<Options, MessageIds>({
       let alignGroups: TSESTree.TypeElement[][] = [];
       let unalignedElements: TSESTree.TypeElement[] = [];
 
-      if (options.align) {
+      if (options.align || options.multiLine?.align) {
         let currentAlignGroup: TSESTree.TypeElement[] = [];
         alignGroups.push(currentAlignGroup);
 
