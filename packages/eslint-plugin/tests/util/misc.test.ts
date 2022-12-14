@@ -23,3 +23,17 @@ describe('formatWordList', () => {
     );
   });
 });
+
+describe('findLastIndex', () => {
+  it('returns -1 if there are no elements to iterate over', () => {
+    expect(misc.findLastIndex([], () => true)).toBe(-1);
+  });
+
+  it('returns the index of the last element if predicate just returns true for all values', () => {
+    expect(misc.findLastIndex([1, 2, 3], () => true)).toBe(2);
+  });
+
+  it('returns the index of the last occurance of a duplicate element', () => {
+    expect(misc.findLastIndex([1, 2, 3, 3, 5], n => n === 3)).toBe(3);
+  });
+});

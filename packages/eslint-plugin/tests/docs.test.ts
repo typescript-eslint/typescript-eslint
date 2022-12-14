@@ -40,10 +40,11 @@ function tokenIsH2(
 
 describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
-    // this rule doc was left behind on purpose for legacy reasons
-    'camelcase.md',
     'README.md',
     'TEMPLATE.md',
+    // these rule docs were left behind on purpose for legacy reasons
+    'camelcase.md',
+    'no-duplicate-imports.md',
   ]);
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
