@@ -125,7 +125,7 @@ See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) 
 ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
 This generic rule allows you to specify a [selector](https://eslint.org/docs/developer-guide/selectors) for the code you want to ban, along with a custom error message.
 
-You can use an AST visualization tool such as [TypeScript ESLint playground](https://typescript-eslint.io/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
+You can use an AST visualization tool such as [typescript-eslint playground](https://typescript-eslint.io/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
 
 For example, you can ban enums (or some variation of) using one of the following configs:
 

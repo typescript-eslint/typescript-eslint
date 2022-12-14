@@ -22,7 +22,7 @@ interface Example {
 }
 
 declare const example: Example;
-const includesBaz = foo.property!.includes('baz');
+const includesBaz = example.property!.includes('baz');
 ```
 
 ### ✅ Correct
@@ -33,7 +33,7 @@ interface Example {
 }
 
 declare const example: Example;
-const includesBaz = foo.property?.includes('baz') ?? false;
+const includesBaz = example.property?.includes('baz') ?? false;
 ```
 
 ## When Not To Use It
