@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -35,56 +34,56 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const sourceCode = context.getSourceCode();
     const baseRules = baseRule.create(context);
+
+    function validateBody(
+      body: TSESTree.TSTypeLiteral | TSESTree.TSInterfaceBody,
+    ): void {
+      let minStart = 0;
+
+      // In case of single-line interface declaration, skip rule
+      if (body.loc.start.line === body.loc.end.line) {
+        return;
+      }
+
+      const members = 'members' in body ? body.members : body.body;
+
+      for (const node of members) {
+        if (
+          (node.type === AST_NODE_TYPES.TSPropertySignature ||
+            node.type === AST_NODE_TYPES.TSIndexSignature) &&
+          node.typeAnnotation
+        ) {
+          minStart = Math.max(
+            minStart,
+            node.typeAnnotation.loc.start.column + ': '.length,
+          );
+        }
+      }
+
+      for (const node of members) {
+        if (
+          node.type === AST_NODE_TYPES.TSPropertySignature &&
+          node.typeAnnotation
+        ) {
+          const start = node.typeAnnotation.typeAnnotation.loc.start.column;
+
+          if (start !== minStart) {
+            context.report({
+              node,
+              messageId: start > minStart ? 'extraValue' : 'missingValue',
+              data: {
+                computed: '',
+                key: sourceCode.getText(node.key),
+              },
+            });
+          }
+        }
+      }
+    }
     return {
       ...baseRules,
-      "TSTypeAliasDeclaration[typeAnnotation.type='TSTypeLiteral']"(
-        node: TSESTree.TSTypeAliasDeclaration,
-      ): void {
-        console.log('...');
-        // Todo
-      },
-      TSInterfaceDeclaration(node): void {
-        const interfaceBody = node.body;
-
-        let minStart = 0;
-
-        for (const node of interfaceBody.body) {
-          if (
-            node.type === AST_NODE_TYPES.TSPropertySignature &&
-            node.typeAnnotation
-          ) {
-            // In case of single-line interface declaration, skip rule
-            if (node.loc.start.line === interfaceBody.loc.start.line) {
-              return;
-            }
-
-            minStart = Math.max(
-              minStart,
-              node.typeAnnotation.loc.start.column + ': '.length,
-            );
-          }
-        }
-
-        for (const node of interfaceBody.body) {
-          if (
-            node.type === AST_NODE_TYPES.TSPropertySignature &&
-            node.typeAnnotation
-          ) {
-            const start = node.typeAnnotation.typeAnnotation.loc.start.column;
-
-            if (start !== minStart) {
-              context.report({
-                node,
-                messageId: start > minStart ? 'extraValue' : 'missingValue',
-                data: {
-                  computed: '',
-                  key: sourceCode.getText(node.key),
-                },
-              });
-            }
-          }
-        }
-      },
+      TSTypeLiteral: validateBody,
+      TSInterfaceBody: validateBody,
     };
   },
 });
