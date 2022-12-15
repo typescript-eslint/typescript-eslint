@@ -45,6 +45,10 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value' }],
     },
     {
+      code: 'class X {\n  x:     number;\n  z = 1;\n  xbcef: number;\n  }',
+      options: [{ align: 'value' }],
+    },
+    {
       code: 'class X {\n  a: number;\n\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
@@ -67,8 +71,25 @@ interface X {
   prop: {
     abc: number;
     a:   number;
-  },
+  };
   abc: string
+}
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
+class X {
+  a:    number;
+  prop: {
+    abc: number;
+    a:   number;
+  };
+  abc: string
+  x = 1;
+  d:   number;
+  z:   number = 1;
+  ef:  string;
 }
       `,
       options: [{ align: 'value' }],
@@ -152,6 +173,12 @@ interface X {
       output: 'class X {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: 'class X {\n  x:   number;\n  z = 1;\n  xbcef: number;\n  }',
+      output: 'class X {\n  x:     number;\n  z = 1;\n  xbcef: number;\n  }',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
     },
     {
       code: 'interface X {\n  a:   number;\n\n  abc     : string\n};',
@@ -243,6 +270,44 @@ interface X {
       `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: `
+class X {
+  a:      number;
+  prop: {
+    abc: number;
+    a?: number;
+  };
+  abc: string;
+  x = 1;
+  d: number;
+  z:  number = 1;
+  ef: string;
+}
+      `,
+      output: `
+class X {
+  a:    number;
+  prop: {
+    abc: number;
+    a?:  number;
+  };
+  abc: string;
+  x = 1;
+  d:   number;
+  z:   number = 1;
+  ef:  string;
+}
+      `,
+      options: [{ align: 'value' }],
+      errors: [
+        { messageId: 'extraValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+      ],
     },
     // align: colon
     {
