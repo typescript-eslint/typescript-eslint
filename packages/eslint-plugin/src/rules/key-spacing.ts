@@ -39,10 +39,13 @@ export default util.createRule<Options, MessageIds>({
      * To handle index signatures, to get the whole text for the parameters
      */
     function getKeyText(
-      node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
+      node:
+        | TSESTree.TSIndexSignature
+        | TSESTree.TSPropertySignature
+        | TSESTree.PropertyDefinition,
     ): string {
       if ('key' in node) {
-        return sourceCode.getText(node);
+        return sourceCode.getText(node.key);
       }
 
       const code = sourceCode.getText(node);
@@ -57,7 +60,10 @@ export default util.createRule<Options, MessageIds>({
      * To handle index signatures, be able to get the end position of the parameters
      */
     function getKeyLocEnd(
-      node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
+      node:
+        | TSESTree.TSIndexSignature
+        | TSESTree.TSPropertySignature
+        | TSESTree.PropertyDefinition,
     ): TSESTree.Position {
       if ('key' in node) {
         return node.key.loc.end;
@@ -87,7 +93,10 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkBeforeColon(
-      node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
+      node:
+        | TSESTree.TSIndexSignature
+        | TSESTree.TSPropertySignature
+        | TSESTree.PropertyDefinition,
       nBeforeColon: number,
       mode: 'strict' | 'minimum',
     ): void {
@@ -112,7 +121,10 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkAfterColon(
-      node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
+      node:
+        | TSESTree.TSIndexSignature
+        | TSESTree.TSPropertySignature
+        | TSESTree.PropertyDefinition,
       nAfterColon: number,
       mode: 'strict' | 'minimum',
     ): void {
@@ -166,7 +178,8 @@ export default util.createRule<Options, MessageIds>({
       for (const node of group) {
         if (
           (node.type === AST_NODE_TYPES.TSPropertySignature ||
-            node.type === AST_NODE_TYPES.TSIndexSignature) &&
+            node.type === AST_NODE_TYPES.TSIndexSignature ||
+            node.type === AST_NODE_TYPES.PropertyDefinition) &&
           node.typeAnnotation
         ) {
           alignColumn = Math.max(
@@ -184,7 +197,8 @@ export default util.createRule<Options, MessageIds>({
       for (const node of group) {
         if (
           (node.type === AST_NODE_TYPES.TSPropertySignature ||
-            node.type === AST_NODE_TYPES.TSIndexSignature) &&
+            node.type === AST_NODE_TYPES.TSIndexSignature ||
+            node.type === AST_NODE_TYPES.PropertyDefinition) &&
           node.typeAnnotation
         ) {
           const start =

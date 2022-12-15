@@ -16,8 +16,15 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value' }],
     },
     {
-      // A blank line between two keys resets the alignment
       code: 'interface X {\n  a: number;\n\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
+      code: 'class X {\n  a:   number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
+      code: 'class X {\n  a: number;\n\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
   ],
@@ -28,12 +35,27 @@ ruleTester.run('key-spacing', rule, {
       errors: [{ messageId: 'missingValue' }],
     },
     {
+      code: 'class X {\n  a: number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
       code: 'interface X {\n  a:   number;\n  abc:  string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
     {
+      code: 'class X {\n  a:   number;\n  abc:  string\n};',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
       code: 'interface X {\n  a:   number;\n\n  abc     : string\n};',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
+    },
+    {
+      code: 'class X {\n  a:   number;\n\n  abc     : string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
     },
