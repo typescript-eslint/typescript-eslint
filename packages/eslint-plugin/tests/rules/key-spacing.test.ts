@@ -36,6 +36,10 @@ ruleTester.run('key-spacing', rule, {
       code: 'type X = {\n  a: number;\n\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
+    {
+      code: 'type X = {\n  a :  number;\n  abc: string\n};',
+      options: [{ align: 'value', mode: 'minimum' }],
+    },
     // align: colon
     {
       code: 'interface X {\n  a  : number;\n  abc: string\n};',
@@ -45,6 +49,10 @@ ruleTester.run('key-spacing', rule, {
       code: 'interface X {\n  a  :number;\n  abc:string\n};',
       options: [{ align: 'colon', afterColon: false }],
     },
+    {
+      code: 'interface X {\n  a  :   number;\n  abc: string\n};',
+      options: [{ align: 'colon', mode: 'minimum' }],
+    },
     // no align
     {
       code: 'interface X {\n  a: number;\n  abc: string\n};',
@@ -53,6 +61,25 @@ ruleTester.run('key-spacing', rule, {
     {
       code: 'interface X {\n  a : number;\n  abc : string\n};',
       options: [{ beforeColon: true }],
+    },
+    // singleLine / multiLine
+    {
+      code: 'interface X {\n  a : number;\n  abc : string\n};',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+    },
+    {
+      code: 'interface X { a:number; abc:string; };',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
     },
   ],
   invalid: [
@@ -65,6 +92,11 @@ ruleTester.run('key-spacing', rule, {
     {
       code: 'class X {\n  a: number;\n  abc: string\n};',
       options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code: 'class X {\n  a: number;\n  abc: string\n};',
+      options: [{ align: 'value', mode: 'minimum' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
@@ -106,6 +138,47 @@ ruleTester.run('key-spacing', rule, {
     {
       code: 'interface X {\n  [x: number]:string;\n}',
       errors: [{ messageId: 'missingValue' }],
+    },
+    // singleLine / multiLine
+    {
+      code: 'interface X {\n  a:number;\n  abc:string\n};',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+      errors: [
+        { messageId: 'missingKey' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingKey' },
+        { messageId: 'missingValue' },
+      ],
+    },
+    {
+      code: 'interface X { a : number; abc : string; };',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+      errors: [
+        { messageId: 'extraKey' },
+        { messageId: 'extraValue' },
+        { messageId: 'extraKey' },
+        { messageId: 'extraValue' },
+      ],
+    },
+    {
+      code: 'interface X { a : number; abc : string; };',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: true },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+      errors: [{ messageId: 'extraKey' }, { messageId: 'extraKey' }],
     },
   ],
 });
