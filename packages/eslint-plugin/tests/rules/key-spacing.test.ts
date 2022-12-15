@@ -17,6 +17,18 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value' }],
     },
     {
+      code: 'interface X {\n  a:   number;\n  // Some comment\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
+      code: 'interface X {\n  a:   number;\n  // Some comment\n  // on multiple lines\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
+      code: 'interface X {\n  a:   number;\n  /**\n   * Doc comment\n  */\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
       code: 'interface X {\n  a: number;\n\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
@@ -123,6 +135,11 @@ ruleTester.run('key-spacing', rule, {
       code: 'class X {\n  a:   number;\n\n  abc     : string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
+    },
+    {
+      code: 'interface X {\n  a:   number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'extraValue' }],
     },
     // align: colon
     {

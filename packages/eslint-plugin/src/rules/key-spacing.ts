@@ -46,14 +46,29 @@ export default util.createRule<Options, MessageIds>({
     }
 
     /**
+     * Relevant nodes to our rule
+     *
+     * node.typeAnnotation will aways be defined, but no way to enforce that and keep
+     * the type compatible with TSEstree.Node (except maybe TS 4.9' "satisfies" keyword)
+     */
+    type KeyTypeNode =
+      | TSESTree.TSIndexSignature
+      | TSESTree.TSPropertySignature
+      | TSESTree.PropertyDefinition;
+
+    function isKeyTypeNode(node: TSESTree.Node): node is KeyTypeNode {
+      return (
+        (node.type === AST_NODE_TYPES.TSPropertySignature ||
+          node.type === AST_NODE_TYPES.TSIndexSignature ||
+          node.type === AST_NODE_TYPES.PropertyDefinition) &&
+        !!node.typeAnnotation
+      );
+    }
+
+    /**
      * To handle index signatures, to get the whole text for the parameters
      */
-    function getKeyText(
-      node:
-        | TSESTree.TSIndexSignature
-        | TSESTree.TSPropertySignature
-        | TSESTree.PropertyDefinition,
-    ): string {
+    function getKeyText(node: KeyTypeNode): string {
       if ('key' in node) {
         return sourceCode.getText(node.key);
       }
@@ -85,10 +100,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkBeforeColon(
-      node:
-        | TSESTree.TSIndexSignature
-        | TSESTree.TSPropertySignature
-        | TSESTree.PropertyDefinition,
+      node: KeyTypeNode,
       nBeforeColon: number,
       mode: 'strict' | 'minimum',
     ): void {
@@ -113,10 +125,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkAfterColon(
-      node:
-        | TSESTree.TSIndexSignature
-        | TSESTree.TSPropertySignature
-        | TSESTree.PropertyDefinition,
+      node: KeyTypeNode,
       nAfterColon: number,
       mode: 'strict' | 'minimum',
     ): void {
@@ -138,6 +147,53 @@ export default util.createRule<Options, MessageIds>({
           },
         });
       }
+    }
+
+    // adapted from  https://github.com/eslint/eslint/blob/ba74253e8bd63e9e163bbee0540031be77e39253/lib/rules/key-spacing.js#L356
+    function continuesAlignGroup(
+      lastMember: TSESTree.Node,
+      candidate: TSESTree.Node,
+    ): boolean {
+      const groupEndLine = lastMember.loc.start.line;
+      const candidateValueStartLine = (
+        isKeyTypeNode(candidate) ? candidate.typeAnnotation! : candidate
+      ).loc.start.line;
+
+      if (candidateValueStartLine === groupEndLine) {
+        return false;
+      }
+
+      if (candidateValueStartLine - groupEndLine === 1) {
+        return true;
+      }
+
+      /*
+       * Check that the first comment is adjacent to the end of the group, the
+       * last comment is adjacent to the candidate property, and that successive
+       * comments are adjacent to each other.
+       */
+      const leadingComments = sourceCode.getCommentsBefore(candidate);
+
+      if (
+        leadingComments.length &&
+        leadingComments[0].loc.start.line - groupEndLine <= 1 &&
+        candidateValueStartLine -
+          leadingComments[leadingComments.length - 1].loc.end.line <=
+          1
+      ) {
+        for (let i = 1; i < leadingComments.length; i++) {
+          if (
+            leadingComments[i].loc.start.line -
+              leadingComments[i - 1].loc.end.line >
+            1
+          ) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      return false;
     }
 
     function checkAlignGroup(group: TSESTree.Node[]): void {
@@ -175,17 +231,12 @@ export default util.createRule<Options, MessageIds>({
           : options.mode) ?? 'strict';
 
       for (const node of group) {
-        if (
-          (node.type === AST_NODE_TYPES.TSPropertySignature ||
-            node.type === AST_NODE_TYPES.TSIndexSignature ||
-            node.type === AST_NODE_TYPES.PropertyDefinition) &&
-          node.typeAnnotation
-        ) {
+        if (isKeyTypeNode(node)) {
           alignColumn = Math.max(
             alignColumn,
             align === 'colon'
               ? getKeyLocEnd(node).column + nBeforeColon
-              : node.typeAnnotation.loc.start.column +
+              : node.typeAnnotation!.loc.start.column +
                   ':'.length +
                   nAfterColon +
                   nBeforeColon,
@@ -194,16 +245,11 @@ export default util.createRule<Options, MessageIds>({
       }
 
       for (const node of group) {
-        if (
-          (node.type === AST_NODE_TYPES.TSPropertySignature ||
-            node.type === AST_NODE_TYPES.TSIndexSignature ||
-            node.type === AST_NODE_TYPES.PropertyDefinition) &&
-          node.typeAnnotation
-        ) {
+        if (isKeyTypeNode(node)) {
           const start =
             align === 'colon'
-              ? node.typeAnnotation.loc.start.column
-              : node.typeAnnotation.typeAnnotation.loc.start.column;
+              ? node.typeAnnotation!.loc.start.column
+              : node.typeAnnotation!.typeAnnotation.loc.start.column;
 
           if (start !== alignColumn) {
             context.report({
@@ -263,12 +309,7 @@ export default util.createRule<Options, MessageIds>({
           ? options.multiLine.mode
           : options.mode) ?? 'strict';
 
-      if (
-        (node.type === AST_NODE_TYPES.TSPropertySignature ||
-          node.type === AST_NODE_TYPES.TSIndexSignature ||
-          node.type === AST_NODE_TYPES.PropertyDefinition) &&
-        node.typeAnnotation
-      ) {
+      if (isKeyTypeNode(node)) {
         checkBeforeColon(node, nBeforeColon, mode);
         checkAfterColon(node, nAfterColon, mode);
       }
@@ -296,7 +337,7 @@ export default util.createRule<Options, MessageIds>({
             ? currentAlignGroup[currentAlignGroup.length - 1]
             : null;
 
-          if (prevNode?.loc.start.line === node.loc.start.line - 1) {
+          if (prevNode && continuesAlignGroup(prevNode, node)) {
             currentAlignGroup.push(node);
           } else if (prevNode?.loc.start.line === node.loc.start.line) {
             if (currentAlignGroup.length) {
