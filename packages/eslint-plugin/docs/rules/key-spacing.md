@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent spacing after keys and before values / type annotations.'
+description: 'Enforce consistent spacing between property names and type annotations in types and interfaces.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -9,4 +9,4 @@ description: 'Enforce consistent spacing after keys and before values / type ann
 ## Examples
 
 This rule extends the base [`eslint/keyword-spacing`](https://eslint.org/docs/rules/key-spacing) rule.
-This version adds support for type annotations on interface, class and type literals properties.
+This version adds support for type annotations on interfaces, classes and type literals properties.
