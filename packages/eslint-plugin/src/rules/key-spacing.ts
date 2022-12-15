@@ -166,7 +166,7 @@ export default util.createRule<Options, MessageIds>({
           ? options.align.afterColon
           : options.multiLine
           ? options.multiLine.afterColon
-          : options.beforeColon) ?? true;
+          : options.afterColon) ?? true;
       const nAfterColon = afterColon ? 1 : 0;
       const mode =
         (typeof options.align === 'object'
@@ -209,7 +209,14 @@ export default util.createRule<Options, MessageIds>({
           if (start !== alignColumn) {
             context.report({
               node,
-              messageId: start > alignColumn ? 'extraValue' : 'missingValue',
+              messageId:
+                start > alignColumn
+                  ? align === 'colon'
+                    ? 'extraKey'
+                    : 'extraValue'
+                  : align === 'colon'
+                  ? 'missingKey'
+                  : 'missingValue',
               data: {
                 computed: '',
                 key: getKeyText(node),
@@ -259,7 +266,8 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         (node.type === AST_NODE_TYPES.TSPropertySignature ||
-          node.type === AST_NODE_TYPES.TSIndexSignature) &&
+          node.type === AST_NODE_TYPES.TSIndexSignature ||
+          node.type === AST_NODE_TYPES.PropertyDefinition) &&
         node.typeAnnotation
       ) {
         checkBeforeColon(node, nBeforeColon, mode);

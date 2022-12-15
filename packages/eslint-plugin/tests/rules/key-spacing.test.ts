@@ -11,6 +11,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('key-spacing', rule, {
   valid: [
+    // align: value
     {
       code: 'interface X {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value' }],
@@ -27,8 +28,35 @@ ruleTester.run('key-spacing', rule, {
       code: 'class X {\n  a: number;\n\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
+    {
+      code: 'type X = {\n  a:   number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
+      code: 'type X = {\n  a: number;\n\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    // align: colon
+    {
+      code: 'interface X {\n  a  : number;\n  abc: string\n};',
+      options: [{ align: 'colon' }],
+    },
+    {
+      code: 'interface X {\n  a  :number;\n  abc:string\n};',
+      options: [{ align: 'colon', afterColon: false }],
+    },
+    // no align
+    {
+      code: 'interface X {\n  a: number;\n  abc: string\n};',
+      options: [{}],
+    },
+    {
+      code: 'interface X {\n  a : number;\n  abc : string\n};',
+      options: [{ beforeColon: true }],
+    },
   ],
   invalid: [
+    // align: value
     {
       code: 'interface X {\n  a: number;\n  abc: string\n};',
       options: [{ align: 'value' }],
@@ -36,6 +64,11 @@ ruleTester.run('key-spacing', rule, {
     },
     {
       code: 'class X {\n  a: number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code: 'type X = {\n  a: number;\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
@@ -59,6 +92,13 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
     },
+    // align: colon
+    {
+      code: 'interface X {\n  a   : number;\n  abc: string\n};',
+      options: [{ align: 'colon' }],
+      errors: [{ messageId: 'extraKey' }],
+    },
+    // no align
     {
       code: 'interface X {\n  [x: number]:  string;\n}',
       errors: [{ messageId: 'extraValue' }],
