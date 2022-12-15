@@ -52,6 +52,20 @@ ruleTester.run('key-spacing', rule, {
       code: 'type X = {\n  a :  number;\n  abc: string\n};',
       options: [{ align: 'value', mode: 'minimum' }],
     },
+    {
+      code:
+`
+interface X {
+  a:    number;
+  prop: {
+    abc: number;
+    a:   number;
+  },
+  abc: string
+}
+`,
+      options: [{ align: 'value' }],
+    },
     // align: colon
     {
       code: 'interface X {\n  a  : number;\n  abc: string\n};',
@@ -138,6 +152,51 @@ ruleTester.run('key-spacing', rule, {
     },
     {
       code: 'interface X {\n  a:   number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code:
+`
+interface X {
+  a:   number;
+  prop: {
+    abc: number;
+    a:   number;
+  },
+  abc: string
+}
+`,
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code:
+`
+interface X {
+  a:    number;
+  prop: {
+    abc: number;
+    a:  number;
+  },
+  abc: string
+}
+`,
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code:
+`
+interface X {
+  a:    number;
+  prop: {
+    abc: number;
+    a:   number;
+  },
+  abc:  string
+}
+`,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
