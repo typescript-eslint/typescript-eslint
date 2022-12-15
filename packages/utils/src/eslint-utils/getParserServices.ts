@@ -22,8 +22,16 @@ function getParserServices<
   context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
   allowWithoutFullTypeInformation: TAllowWithoutFullTypeInformation = false as TAllowWithoutFullTypeInformation,
 ): GetParserServicesResult<TAllowWithoutFullTypeInformation> {
-  // backwards compatibility check
-  // old versions of the parser would not return any parserServices unless parserOptions.project was set
+  // This check is unnecessary if the user is using the latest version of our parser.
+  //
+  // However the world isn't perfect:
+  // - Users often use old parser versions.
+  //   Old versions of the parser would not return any parserServices unless parserOptions.project was set.
+  // - Users sometimes use parsers that aren't @typescript-eslint/parser
+  //   Other parsers won't return the parser services we expect (if they return any at all).
+  //
+  // This check allows us to handle bad user setups whilst providing a nice user-facing
+  // error message explaining the problem.
   if (
     context.parserServices == null ||
     context.parserServices.esTreeNodeToTSNodeMap == null ||
@@ -41,8 +49,7 @@ function getParserServices<
     throw new Error(ERROR_MESSAGE);
   }
 
-  // @ts-expect-error - this is safe and correct, TS just doesn't like the assignment to the conditional type
-  return context.parserServices;
+  return context.parserServices as GetParserServicesResult<TAllowWithoutFullTypeInformation>;
 }
 
 export { getParserServices };
