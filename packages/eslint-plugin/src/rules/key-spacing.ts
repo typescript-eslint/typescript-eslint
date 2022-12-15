@@ -48,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Relevant nodes to our rule
      *
-     * node.typeAnnotation will aways be defined, but no way to enforce that and keep
+     * node.typeAnnotation will always be defined, but no way to enforce that and keep
      * the type compatible with TSEstree.Node (except maybe TS 4.9' "satisfies" keyword)
      */
     type KeyTypeNode =
