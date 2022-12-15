@@ -53,8 +53,7 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value', mode: 'minimum' }],
     },
     {
-      code:
-`
+      code: `
 interface X {
   a:    number;
   prop: {
@@ -63,7 +62,7 @@ interface X {
   },
   abc: string
 }
-`,
+      `,
       options: [{ align: 'value' }],
     },
     // align: colon
@@ -160,13 +159,13 @@ interface X {
     },
     {
       code: 'interface X {\n  a:   number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
-      output: 'interface X {\n  a: number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
+      output:
+        'interface X {\n  a: number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
     {
-      code:
-`
+      code: `
 interface X {
   a:   number;
   prop: {
@@ -175,9 +174,8 @@ interface X {
   },
   abc: string
 }
-`,
-      output:
-`
+      `,
+      output: `
 interface X {
   a:    number;
   prop: {
@@ -186,13 +184,12 @@ interface X {
   },
   abc: string
 }
-`,
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
-      code:
-`
+      code: `
 interface X {
   a:    number;
   prop: {
@@ -201,9 +198,8 @@ interface X {
   },
   abc: string
 }
-`,
-      output:
-`
+      `,
+      output: `
 interface X {
   a:    number;
   prop: {
@@ -212,13 +208,12 @@ interface X {
   },
   abc: string
 }
-`,
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
-      code:
-`
+      code: `
 interface X {
   a:    number;
   prop: {
@@ -227,9 +222,8 @@ interface X {
   },
   abc:  string
 }
-`,
-      output:
-`
+      `,
+      output: `
 interface X {
   a:    number;
   prop: {
@@ -238,7 +232,7 @@ interface X {
   },
   abc: string
 }
-`,
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
