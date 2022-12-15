@@ -158,21 +158,28 @@ export default util.createRule<Options, MessageIds>({
         (typeof options.align === 'object'
           ? options.align.beforeColon
           : options.multiLine
-          ? options.multiLine.beforeColon
+          ? typeof options.multiLine.align === 'object'
+            ? options.multiLine.align.beforeColon
+            : options.multiLine.beforeColon
           : options.beforeColon) ?? false;
       const nBeforeColon = beforeColon ? 1 : 0;
       const afterColon =
         (typeof options.align === 'object'
           ? options.align.afterColon
           : options.multiLine
-          ? options.multiLine.afterColon
+          ? typeof options.multiLine.align === 'object'
+            ? options.multiLine.align.afterColon
+            : options.multiLine.afterColon
           : options.afterColon) ?? true;
       const nAfterColon = afterColon ? 1 : 0;
       const mode =
         (typeof options.align === 'object'
           ? options.align.mode
           : options.multiLine
-          ? options.multiLine.mode
+          ? typeof options.multiLine.align === 'object'
+            ? // same behavior as in original rule
+              options.multiLine.align.mode ?? options.multiLine.mode
+            : options.multiLine.mode
           : options.mode) ?? 'strict';
 
       for (const node of group) {

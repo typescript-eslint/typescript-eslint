@@ -168,7 +168,15 @@ declare module 'eslint/lib/rules/key-spacing' {
         beforeColon?: boolean;
         afterColon?: boolean;
         mode?: 'strict' | 'minimum';
-        align?: 'value' | 'colon';
+        align?:
+          | 'value'
+          | 'colon'
+          | {
+              on: 'value' | 'colon';
+              beforeColon?: boolean;
+              afterColon?: boolean;
+              mode?: 'strict' | 'minimum';
+            };
       };
     },
   ];
