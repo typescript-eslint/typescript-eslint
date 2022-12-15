@@ -271,8 +271,8 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   return {
     ast: estree as AST<T>,
     services: {
-      program: null,
-      // we still return the node maps because
+      program,
+      // we always return the node maps because
       // (a) they don't require type info and
       // (b) they can be useful when using some of TS's internal non-type-aware AST utils
       esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
