@@ -142,16 +142,19 @@ interface X {
     },
     {
       code: 'interface X {\n  a:   number;\n\n  abc     : string\n};',
+      output: 'interface X {\n  a: number;\n\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
     },
     {
       code: 'class X {\n  a:   number;\n\n  abc     : string\n};',
+      output: 'class X {\n  a: number;\n\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
     },
     {
       code: 'interface X {\n  a:   number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
+      output: 'interface X {\n  a: number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
@@ -197,6 +200,17 @@ interface X {
   abc:  string
 }
 `,
+      output:
+`
+interface X {
+  a:    number;
+  prop: {
+    abc: number;
+    a:   number;
+  },
+  abc: string
+}
+`,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
@@ -209,15 +223,18 @@ interface X {
     // no align
     {
       code: 'interface X {\n  [x: number]:  string;\n}',
+      output: 'interface X {\n  [x: number]: string;\n}',
       errors: [{ messageId: 'extraValue' }],
     },
     {
       code: 'interface X {\n  [x: number]:string;\n}',
+      output: 'interface X {\n  [x: number]: string;\n}',
       errors: [{ messageId: 'missingValue' }],
     },
     // singleLine / multiLine
     {
       code: 'interface X {\n  a:number;\n  abc:string\n};',
+      output: 'interface X {\n  a : number;\n  abc : string\n};',
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -233,6 +250,7 @@ interface X {
     },
     {
       code: 'interface X { a : number; abc : string; };',
+      output: 'interface X { a:number; abc:string; };',
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -248,6 +266,7 @@ interface X {
     },
     {
       code: 'interface X { a : number; abc : string; };',
+      output: 'interface X { a: number; abc: string; };',
       options: [
         {
           singleLine: { beforeColon: false, afterColon: true },

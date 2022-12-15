@@ -106,16 +106,24 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const colon = node.typeAnnotation!.loc.start.column;
       const keyEnd = getKeyLocEnd(node);
-      const expectedDiff = nBeforeColon;
-      if (
-        mode === 'strict'
-          ? colon - keyEnd.column !== expectedDiff
-          : colon - keyEnd.column < expectedDiff
-      ) {
+      const difference = colon - keyEnd.column - nBeforeColon;
+      if (mode === 'strict' ? difference : difference < 0) {
         context.report({
           node,
-          messageId:
-            colon - keyEnd.column > expectedDiff ? 'extraKey' : 'missingKey',
+          messageId: difference > 0 ? 'extraKey' : 'missingKey',
+          fix: fixer => {
+            if (difference > 0) {
+              return fixer.removeRange([
+                node.typeAnnotation!.range[0] - difference,
+                node.typeAnnotation!.range[0],
+              ]);
+            } else {
+              return fixer.insertTextBefore(
+                node.typeAnnotation!,
+                ' '.repeat(-difference),
+              );
+            }
+          },
           data: {
             computed: '',
             key: getKeyText(node),
@@ -131,16 +139,24 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const colon = node.typeAnnotation!.loc.start.column;
       const typeStart = node.typeAnnotation!.typeAnnotation.loc.start.column;
-      const expectedDiff = nAfterColon + 1;
-      if (
-        mode === 'strict'
-          ? typeStart - colon !== expectedDiff
-          : typeStart - colon < expectedDiff
-      ) {
+      const difference = typeStart - colon - 1 - nAfterColon;
+      if (mode === 'strict' ? difference : difference < 0) {
         context.report({
           node,
-          messageId:
-            typeStart - colon > expectedDiff ? 'extraValue' : 'missingValue',
+          messageId: difference > 0 ? 'extraValue' : 'missingValue',
+          fix: fixer => {
+            if (difference > 0) {
+              return fixer.removeRange([
+                node.typeAnnotation!.typeAnnotation.range[0] - difference,
+                node.typeAnnotation!.typeAnnotation.range[0],
+              ]);
+            } else {
+              return fixer.insertTextBefore(
+                node.typeAnnotation!.typeAnnotation,
+                ' '.repeat(-difference),
+              );
+            }
+          },
           data: {
             computed: '',
             key: getKeyText(node),
