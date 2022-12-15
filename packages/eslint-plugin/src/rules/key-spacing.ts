@@ -35,26 +35,77 @@ export default util.createRule<Options, MessageIds>({
     const sourceCode = context.getSourceCode();
     const baseRules = baseRule.create(context);
 
+    /**
+     * To handle index signatures, to get the whole text for the parameters
+     */
+    function getKeyText(
+      node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
+    ): string {
+      if ('key' in node) {
+        return sourceCode.getText(node);
+      }
+
+      const code = sourceCode.getText(node);
+      const lastParam = node.parameters[node.parameters.length - 1];
+      return code.slice(
+        0,
+        code.indexOf(']', lastParam.range[1] - node.range[0]) + 1,
+      );
+    }
+
+    /**
+     * To handle index signatures, be able to get the end position of the parameters
+     */
+    function getKeyLocEnd(
+      node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
+    ): TSESTree.Position {
+      if ('key' in node) {
+        return node.key.loc.end;
+      }
+
+      // For index signatures, there's no easy way to get the location of the ending ']', we need to look at the source code
+      const code = sourceCode.getText(node);
+      const lastParam = node.parameters[node.parameters.length - 1];
+
+      const remaining = code.slice(
+        lastParam.range[1] - node.range[0],
+        code.indexOf(']', lastParam.range[1] - node.range[0]) + 1,
+      );
+      const lines = remaining.split('\n');
+
+      if (lines.length === 1) {
+        return {
+          line: lastParam.loc.end.line,
+          column: lastParam.loc.end.column + remaining.length,
+        };
+      }
+
+      return {
+        line: lastParam.loc.end.line + lines.length - 1,
+        column: lines[lines.length - 1].length,
+      };
+    }
+
     function checkBeforeColon(
       node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
-      key: TSESTree.PropertyName | TSESTree.Parameter,
       nBeforeColon: number,
       mode: 'strict' | 'minimum',
     ): void {
       const colon = node.typeAnnotation!.loc.start.column;
-      const keyEnd = key.loc.end.column;
+      const keyEnd = getKeyLocEnd(node);
       const expectedDiff = nBeforeColon;
       if (
         mode === 'strict'
-          ? colon - keyEnd !== expectedDiff
-          : colon - keyEnd < expectedDiff
+          ? colon - keyEnd.column !== expectedDiff
+          : colon - keyEnd.column < expectedDiff
       ) {
         context.report({
           node,
-          messageId: colon - keyEnd > expectedDiff ? 'extraKey' : 'missingKey',
+          messageId:
+            colon - keyEnd.column > expectedDiff ? 'extraKey' : 'missingKey',
           data: {
             computed: '',
-            key: sourceCode.getText(key),
+            key: getKeyText(node),
           },
         });
       }
@@ -62,7 +113,6 @@ export default util.createRule<Options, MessageIds>({
 
     function checkAfterColon(
       node: TSESTree.TSIndexSignature | TSESTree.TSPropertySignature,
-      key: TSESTree.PropertyName | TSESTree.Parameter,
       nAfterColon: number,
       mode: 'strict' | 'minimum',
     ): void {
@@ -80,13 +130,13 @@ export default util.createRule<Options, MessageIds>({
             typeStart - colon > expectedDiff ? 'extraValue' : 'missingValue',
           data: {
             computed: '',
-            key: sourceCode.getText(key),
+            key: getKeyText(node),
           },
         });
       }
     }
 
-    function checkAlignGroup(group: TSESTree.TypeElement[]): void {
+    function checkAlignGroup(group: TSESTree.Node[]): void {
       let alignColumn = 0;
       const align =
         (typeof options.align === 'object'
@@ -119,14 +169,10 @@ export default util.createRule<Options, MessageIds>({
             node.type === AST_NODE_TYPES.TSIndexSignature) &&
           node.typeAnnotation
         ) {
-          const key =
-            'key' in node
-              ? node.key
-              : node.parameters[node.parameters.length - 1];
           alignColumn = Math.max(
             alignColumn,
             align === 'colon'
-              ? key.loc.end.column + nBeforeColon
+              ? getKeyLocEnd(node).column + nBeforeColon
               : node.typeAnnotation.loc.start.column +
                   ':'.length +
                   nAfterColon +
@@ -141,10 +187,6 @@ export default util.createRule<Options, MessageIds>({
             node.type === AST_NODE_TYPES.TSIndexSignature) &&
           node.typeAnnotation
         ) {
-          const key =
-            'key' in node
-              ? node.key
-              : node.parameters[node.parameters.length - 1];
           const start =
             align === 'colon'
               ? node.typeAnnotation.loc.start.column
@@ -156,22 +198,22 @@ export default util.createRule<Options, MessageIds>({
               messageId: start > alignColumn ? 'extraValue' : 'missingValue',
               data: {
                 computed: '',
-                key: sourceCode.getText(key),
+                key: getKeyText(node),
               },
             });
           }
 
           if (align === 'colon') {
-            checkAfterColon(node, key, nAfterColon, mode);
+            checkAfterColon(node, nAfterColon, mode);
           } else {
-            checkBeforeColon(node, key, nBeforeColon, mode);
+            checkBeforeColon(node, nBeforeColon, mode);
           }
         }
       }
     }
 
     function checkIndividualNode(
-      node: TSESTree.TypeElement,
+      node: TSESTree.Node,
       { singleLine }: { singleLine: boolean },
     ): void {
       const beforeColon =
@@ -206,28 +248,26 @@ export default util.createRule<Options, MessageIds>({
           node.type === AST_NODE_TYPES.TSIndexSignature) &&
         node.typeAnnotation
       ) {
-        const key =
-          'key' in node
-            ? node.key
-            : node.parameters[node.parameters.length - 1];
-
-        checkBeforeColon(node, key, nBeforeColon, mode);
-        checkAfterColon(node, key, nAfterColon, mode);
+        checkBeforeColon(node, nBeforeColon, mode);
+        checkAfterColon(node, nAfterColon, mode);
       }
     }
 
     function validateBody(
-      body: TSESTree.TSTypeLiteral | TSESTree.TSInterfaceBody,
+      body:
+        | TSESTree.TSTypeLiteral
+        | TSESTree.TSInterfaceBody
+        | TSESTree.ClassBody,
     ): void {
       const isSingleLine = body.loc.start.line === body.loc.end.line;
 
       const members = 'members' in body ? body.members : body.body;
 
-      let alignGroups: TSESTree.TypeElement[][] = [];
-      let unalignedElements: TSESTree.TypeElement[] = [];
+      let alignGroups: TSESTree.Node[][] = [];
+      let unalignedElements: TSESTree.Node[] = [];
 
       if (options.align || options.multiLine?.align) {
-        let currentAlignGroup: TSESTree.TypeElement[] = [];
+        let currentAlignGroup: TSESTree.Node[] = [];
         alignGroups.push(currentAlignGroup);
 
         for (const node of members) {
@@ -270,6 +310,7 @@ export default util.createRule<Options, MessageIds>({
       ...baseRules,
       TSTypeLiteral: validateBody,
       TSInterfaceBody: validateBody,
+      ClassBody: validateBody,
     };
   },
 });

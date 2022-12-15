@@ -33,10 +33,9 @@ ruleTester.run('key-spacing', rule, {
       errors: [{ messageId: 'extraValue' }],
     },
     {
-      // A blank line between two keys resets the alignment
       code: 'interface X {\n  a:   number;\n\n  abc     : string\n};',
       options: [{ align: 'value' }],
-      errors: [{ messageId: 'extraValue' }],
+      errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
     },
     {
       code: 'interface X {\n  [x: number]:  string;\n}',
