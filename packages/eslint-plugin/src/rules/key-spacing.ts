@@ -36,6 +36,16 @@ export default util.createRule<Options, MessageIds>({
     const baseRules = baseRule.create(context);
 
     /**
+     * Starting from the given a node (a property.key node here) looks forward
+     * until it finds the last token before a colon punctuator and returns it.
+     */
+    function getLastTokenBeforeColon(node: TSESTree.Node): TSESTree.Token {
+      const colonToken = sourceCode.getTokenAfter(node, util.isColonToken)!;
+
+      return sourceCode.getTokenBefore(colonToken)!;
+    }
+
+    /**
      * To handle index signatures, to get the whole text for the parameters
      */
     function getKeyText(
@@ -52,7 +62,7 @@ export default util.createRule<Options, MessageIds>({
       const lastParam = node.parameters[node.parameters.length - 1];
       return code.slice(
         0,
-        code.indexOf(']', lastParam.range[1] - node.range[0]) + 1,
+        getLastTokenBeforeColon(lastParam).range[1] - node.range[0],
       );
     }
 
@@ -69,27 +79,9 @@ export default util.createRule<Options, MessageIds>({
         return node.key.loc.end;
       }
 
-      // For index signatures, there's no easy way to get the location of the ending ']', we need to look at the source code
-      const code = sourceCode.getText(node);
-      const lastParam = node.parameters[node.parameters.length - 1];
-
-      const remaining = code.slice(
-        lastParam.range[1] - node.range[0],
-        code.indexOf(']', lastParam.range[1] - node.range[0]) + 1,
-      );
-      const lines = remaining.split('\n');
-
-      if (lines.length === 1) {
-        return {
-          line: lastParam.loc.end.line,
-          column: lastParam.loc.end.column + remaining.length,
-        };
-      }
-
-      return {
-        line: lastParam.loc.end.line + lines.length - 1,
-        column: lines[lines.length - 1].length,
-      };
+      return getLastTokenBeforeColon(
+        node.parameters[node.parameters.length - 1],
+      ).loc.end;
     }
 
     function checkBeforeColon(
