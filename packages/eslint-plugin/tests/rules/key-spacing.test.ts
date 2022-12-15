@@ -17,6 +17,10 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value' }],
     },
     {
+      code: 'interface X {\n  a?:  number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
       code: 'interface X {\n  a:   number;\n  // Some comment\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
@@ -34,6 +38,10 @@ ruleTester.run('key-spacing', rule, {
     },
     {
       code: 'class X {\n  a:   number;\n  abc: string\n};',
+      options: [{ align: 'value' }],
+    },
+    {
+      code: 'class X {\n  a?:  number;\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
     {

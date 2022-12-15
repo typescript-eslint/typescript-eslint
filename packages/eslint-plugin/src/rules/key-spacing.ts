@@ -77,25 +77,17 @@ export default util.createRule<Options, MessageIds>({
       const lastParam = node.parameters[node.parameters.length - 1];
       return code.slice(
         0,
-        getLastTokenBeforeColon(lastParam).range[1] - node.range[0],
+        sourceCode.getTokenAfter(lastParam, util.isClosingBracketToken)!
+          .range[1] - node.range[0],
       );
     }
 
     /**
      * To handle index signatures, be able to get the end position of the parameters
      */
-    function getKeyLocEnd(
-      node:
-        | TSESTree.TSIndexSignature
-        | TSESTree.TSPropertySignature
-        | TSESTree.PropertyDefinition,
-    ): TSESTree.Position {
-      if ('key' in node) {
-        return node.key.loc.end;
-      }
-
+    function getKeyLocEnd(node: KeyTypeNode): TSESTree.Position {
       return getLastTokenBeforeColon(
-        node.parameters[node.parameters.length - 1],
+        'key' in node ? node.key : node.parameters[node.parameters.length - 1],
       ).loc.end;
     }
 
