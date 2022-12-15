@@ -74,11 +74,12 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const code = sourceCode.getText(node);
-      const lastParam = node.parameters[node.parameters.length - 1];
       return code.slice(
         0,
-        sourceCode.getTokenAfter(lastParam, util.isClosingBracketToken)!
-          .range[1] - node.range[0],
+        sourceCode.getTokenAfter(
+          node.parameters.at(-1)!,
+          util.isClosingBracketToken,
+        )!.range[1] - node.range[0],
       );
     }
 
@@ -87,7 +88,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function getKeyLocEnd(node: KeyTypeNode): TSESTree.Position {
       return getLastTokenBeforeColon(
-        'key' in node ? node.key : node.parameters[node.parameters.length - 1],
+        'key' in node ? node.key : node.parameters.at(-1)!,
       ).loc.end;
     }
 
@@ -185,9 +186,7 @@ export default util.createRule<Options, MessageIds>({
       if (
         leadingComments.length &&
         leadingComments[0].loc.start.line - groupEndLine <= 1 &&
-        candidateValueStartLine -
-          leadingComments[leadingComments.length - 1].loc.end.line <=
-          1
+        candidateValueStartLine - leadingComments.at(-1)!.loc.end.line <= 1
       ) {
         for (let i = 1; i < leadingComments.length; i++) {
           if (
@@ -355,9 +354,7 @@ export default util.createRule<Options, MessageIds>({
         alignGroups.push(currentAlignGroup);
 
         for (const node of members) {
-          const prevNode = currentAlignGroup.length
-            ? currentAlignGroup[currentAlignGroup.length - 1]
-            : null;
+          const prevNode = currentAlignGroup.at(-1);
 
           if (prevNode && continuesAlignGroup(prevNode, node)) {
             currentAlignGroup.push(node);
