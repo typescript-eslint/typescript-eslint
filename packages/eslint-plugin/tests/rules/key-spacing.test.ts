@@ -112,31 +112,37 @@ interface X {
     // align: value
     {
       code: 'interface X {\n  a: number;\n  abc: string\n};',
+      output: 'interface X {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
       code: 'class X {\n  a: number;\n  abc: string\n};',
+      output: 'class X {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
       code: 'class X {\n  a: number;\n  abc: string\n};',
+      output: 'class X {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value', mode: 'minimum' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
       code: 'type X = {\n  a: number;\n  abc: string\n};',
+      output: 'type X = {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
       code: 'interface X {\n  a:   number;\n  abc:  string\n};',
+      output: 'interface X {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
     {
       code: 'class X {\n  a:   number;\n  abc:  string\n};',
+      output: 'class X {\n  a:   number;\n  abc: string\n};',
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
@@ -170,6 +176,17 @@ interface X {
   abc: string
 }
 `,
+      output:
+`
+interface X {
+  a:    number;
+  prop: {
+    abc: number;
+    a:   number;
+  },
+  abc: string
+}
+`,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
@@ -181,6 +198,17 @@ interface X {
   prop: {
     abc: number;
     a:  number;
+  },
+  abc: string
+}
+`,
+      output:
+`
+interface X {
+  a:    number;
+  prop: {
+    abc: number;
+    a:   number;
   },
   abc: string
 }
@@ -217,6 +245,7 @@ interface X {
     // align: colon
     {
       code: 'interface X {\n  a   : number;\n  abc: string\n};',
+      output: 'interface X {\n  a  : number;\n  abc: string\n};',
       options: [{ align: 'colon' }],
       errors: [{ messageId: 'extraKey' }],
     },

@@ -214,9 +214,11 @@ export default util.createRule<Options, MessageIds>({
 
     function checkAlignGroup(group: TSESTree.Node[]): void {
       let alignColumn = 0;
-      const align =
+      const align: 'value' | 'colon' =
         (typeof options.align === 'object'
           ? options.align.on
+          : typeof options.multiLine?.align === 'object'
+          ? options.multiLine.align.on
           : options.multiLine?.align ?? options.align) ?? 'colon';
       const beforeColon =
         (typeof options.align === 'object'
@@ -261,35 +263,47 @@ export default util.createRule<Options, MessageIds>({
       }
 
       for (const node of group) {
-        if (isKeyTypeNode(node)) {
-          const start =
-            align === 'colon'
-              ? node.typeAnnotation!.loc.start.column
-              : node.typeAnnotation!.typeAnnotation.loc.start.column;
+        if (!isKeyTypeNode(node)) {
+          continue;
+        }
+        const toCheck =
+          align === 'colon'
+            ? node.typeAnnotation!
+            : node.typeAnnotation!.typeAnnotation;
+        const difference = toCheck.loc.start.column - alignColumn;
 
-          if (start !== alignColumn) {
-            context.report({
-              node,
-              messageId:
-                start > alignColumn
-                  ? align === 'colon'
-                    ? 'extraKey'
-                    : 'extraValue'
-                  : align === 'colon'
-                  ? 'missingKey'
-                  : 'missingValue',
-              data: {
-                computed: '',
-                key: getKeyText(node),
-              },
-            });
-          }
+        if (difference) {
+          context.report({
+            node,
+            messageId:
+              difference > 0
+                ? align === 'colon'
+                  ? 'extraKey'
+                  : 'extraValue'
+                : align === 'colon'
+                ? 'missingKey'
+                : 'missingValue',
+            fix: fixer => {
+              if (difference > 0) {
+                return fixer.removeRange([
+                  toCheck.range[0] - difference,
+                  toCheck.range[0],
+                ]);
+              } else {
+                return fixer.insertTextBefore(toCheck, ' '.repeat(-difference));
+              }
+            },
+            data: {
+              computed: '',
+              key: getKeyText(node),
+            },
+          });
+        }
 
-          if (align === 'colon') {
-            checkAfterColon(node, nAfterColon, mode);
-          } else {
-            checkBeforeColon(node, nBeforeColon, mode);
-          }
+        if (align === 'colon') {
+          checkAfterColon(node, nAfterColon, mode);
+        } else {
+          checkBeforeColon(node, nBeforeColon, mode);
         }
       }
     }
