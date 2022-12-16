@@ -656,6 +656,147 @@ async function test() {
         {
           line: 3,
           messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function test() {
+  await Promise.resolve();
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  const promise = new Promise((resolve, reject) => resolve('value'));
+  promise;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function test() {
+  const promise = new Promise((resolve, reject) => resolve('value'));
+  await promise;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+void returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await returnsPromise();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+void /* ... */ returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await /* ... */ returnsPromise();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+1, returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await (1, returnsPromise());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+bool ? returnsPromise() : null;
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await (bool ? returnsPromise() : null);
+      `,
+            },
+          ],
         },
       ],
     },
