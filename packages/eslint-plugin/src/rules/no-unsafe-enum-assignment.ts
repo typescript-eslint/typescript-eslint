@@ -327,7 +327,7 @@ export default util.createRule({
       },
 
       'VariableDeclarator[init]'(
-        node: TSESTree.VariableDeclarator & { init: TSESTree.Expression },
+        node: TSESTree.VariableDeclarator & { init: NonNullable<TSESTree.VariableDeclarator['init']> },
       ): void {
         compareProvidedNode(node.init, node.id);
       },
