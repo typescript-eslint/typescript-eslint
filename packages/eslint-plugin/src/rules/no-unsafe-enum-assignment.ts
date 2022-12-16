@@ -1,9 +1,14 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
 import { getBaseEnumType, getEnumTypes } from './enum-utils/shared';
+
+type MakeRequiredNonNullable<Base, Key extends keyof Base> = Omit<Base, Key> & {
+  [K in Key]: NonNullable<Base[Key]>;
+};
 
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Unknown | ts.TypeFlags.Number | ts.TypeFlags.String;
@@ -361,9 +366,7 @@ export default util.createRule({
       },
 
       'VariableDeclarator[init]'(
-        node: TSESTree.VariableDeclarator & {
-          init: NonNullable<TSESTree.VariableDeclarator['init']>;
-        },
+        node: MakeRequiredNonNullable<TSESTree.VariableDeclarator, 'init'>,
       ): void {
         if (!NON_ENUM_TYPES.has(node.type)) {
           compareProvidedNode(node.init, node.id);
