@@ -8,44 +8,45 @@ interface RulesObject {
   default: RulesFile;
 }
 
-const {
-  default: { default: rules },
-} =
-  // @ts-expect-error -- We don't support ESM imports of local code yet.
-  (await import('../dist/rules/index.js')) as RulesObject;
+async function main(): Promise<void> {
+  const {
+    default: { default: rules },
+  } =
+    // @ts-expect-error -- We don't support ESM imports of local code yet.
+    (await import('../dist/rules/index.js')) as RulesObject;
 
-// Annotate which rules are new since the last version
-async function getNewRulesAsOfMajorVersion(
-  oldVersion: string,
-): Promise<Set<string>> {
-  // 1. Get the current list of rules (already done)
-  const newRuleNames = Object.keys(rules);
+  // Annotate which rules are new since the last version
+  async function getNewRulesAsOfMajorVersion(
+    oldVersion: string,
+  ): Promise<Set<string>> {
+    // 1. Get the current list of rules (already done)
+    const newRuleNames = Object.keys(rules);
 
-  // 2. Retrieve the old version of typescript-eslint from unpkg
-  const oldUrl = `https://unpkg.com/@typescript-eslint/eslint-plugin@${oldVersion}/dist/configs/all.js`;
-  const oldFileText = await (await fetch(oldUrl)).text();
-  const oldObjectText = oldFileText.substring(
-    oldFileText.indexOf('{'),
-    oldFileText.lastIndexOf('}') + 1,
-  );
-  // Normally we wouldn't condone using the 'eval' API...
-  // But this is an internal-only script and it's the easiest way to convert
-  // the JS raw text into a runtime object. 🤷
-  let oldRulesObject!: { rules: RulesFile };
-  eval('oldRulesObject = ' + oldObjectText);
-  const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
+    // 2. Retrieve the old version of typescript-eslint from unpkg
+    const oldUrl = `https://unpkg.com/@typescript-eslint/eslint-plugin@${oldVersion}/dist/configs/all.js`;
+    const oldFileText = await (await fetch(oldUrl)).text();
+    const oldObjectText = oldFileText.substring(
+      oldFileText.indexOf('{'),
+      oldFileText.lastIndexOf('}') + 1,
+    );
+    // Normally we wouldn't condone using the 'eval' API...
+    // But this is an internal-only script and it's the easiest way to convert
+    // the JS raw text into a runtime object. 🤷
+    let oldRulesObject!: { rules: RulesFile };
+    eval('oldRulesObject = ' + oldObjectText);
+    const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
 
-  // 3. Get the keys that exist in (1) (new version) and not (2) (old version)
-  return new Set(
-    newRuleNames.filter(
-      newRuleName => !oldRuleNames.has(`@typescript-eslint/${newRuleName}`),
-    ),
-  );
-}
+    // 3. Get the keys that exist in (1) (new version) and not (2) (old version)
+    return new Set(
+      newRuleNames.filter(
+        newRuleName => !oldRuleNames.has(`@typescript-eslint/${newRuleName}`),
+      ),
+    );
+  }
 
-const newRuleNames = await getNewRulesAsOfMajorVersion('5.0.0');
+  const newRuleNames = await getNewRulesAsOfMajorVersion('5.0.0');
 
-console.log(`## Table Key
+  console.log(`## Table Key
 
 <table>
   <thead>
@@ -126,23 +127,29 @@ console.log(`## Table Key
 > Hint: search for 🆕 to find newly added rules, and ➕ or ➖ to see config changes.
 `);
 
-console.log(
-  markdownTable([
-    ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style', 'Comment'],
-    ...Object.entries(rules).map(([ruleName, { meta }]) => {
-      const { deprecated } = meta;
-      const { extendsBaseRule, recommended, requiresTypeChecking } = meta.docs!;
+  console.log(
+    markdownTable([
+      ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style', 'Comment'],
+      ...Object.entries(rules).map(([ruleName, { meta }]) => {
+        const { deprecated } = meta;
+        const { extendsBaseRule, recommended, requiresTypeChecking } =
+          meta.docs!;
 
-      return [
-        `[\`${ruleName}\`](https://typescript-eslint.io/rules/${ruleName})`,
-        newRuleNames.has(ruleName) ? '🆕' : deprecated ? '💀' : '',
-        requiresTypeChecking ? '💭' : '',
-        extendsBaseRule ? '🧱' : '',
-        recommended === 'recommended' ? '🟩' : '',
-        recommended === 'strict' ? '🔵' : '',
-        recommended === 'stylistic' ? '🔸' : '',
-        meta.type === 'layout' ? 'layout 💩' : '(todo)',
-      ];
-    }),
-  ]),
-);
+        return [
+          `[\`${ruleName}\`](https://typescript-eslint.io/rules/${ruleName})`,
+          newRuleNames.has(ruleName) ? '🆕' : deprecated ? '💀' : '',
+          requiresTypeChecking ? '💭' : '',
+          extendsBaseRule ? '🧱' : '',
+          recommended === 'recommended' ? '🟩' : '',
+          recommended === 'strict' ? '🔵' : '',
+          recommended === 'stylistic' ? '🔸' : '',
+          meta.type === 'layout' ? 'layout 💩' : '(todo)',
+        ];
+      }),
+    ]),
+  );
+}
+
+main().catch(error => {
+  console.error(error);
+});
