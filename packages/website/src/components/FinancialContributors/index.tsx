@@ -10,8 +10,8 @@ export function FinancialContributors(): JSX.Element {
   return (
     <>
       <p>
-        The typescript-estlint project would not be possible without the
-        generous support of our financial contributors.
+        The typescript-eslint project would not be possible without the generous
+        support of our financial contributors.
       </p>
       <div className={styles.sponsorsContainer}>
         <Sponsors
