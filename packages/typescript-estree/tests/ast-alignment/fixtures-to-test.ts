@@ -89,7 +89,7 @@ class FixturesTester {
   }
 
   public getFixtures(): Fixture[] {
-    const wat = this.fixtures
+    return this.fixtures
       .map(fixture =>
         glob
           .sync(fixture.pattern, {
@@ -103,7 +103,6 @@ class FixturesTester {
           })),
       )
       .reduce((acc, x) => acc.concat(x), []);
-    return wat;
   }
 }
 
