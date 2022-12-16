@@ -37,8 +37,8 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate:breaking-changes": "node --loader ts-node/esm tools/generate-breaking-changes.mts",
-    "generate:configs": "node --loader ts-node/esm tools/generate-configs.mts",
+    "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
+    "generate:configs": "yarn tsx tools/generate-configs.mts",
     "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
