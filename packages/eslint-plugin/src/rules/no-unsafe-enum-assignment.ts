@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -7,6 +7,26 @@ import { getBaseEnumType, getEnumTypes } from './enum-utils/shared';
 
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Unknown | ts.TypeFlags.Number | ts.TypeFlags.String;
+
+/**
+ * Non-exhaustive list of node types that cannot reasonably compared to enums.
+ *
+ * @remarks
+ * This is used as a performance optimization, to skip asking TypeScript for
+ * type information when we can more quickly bail out of comparisons.
+ * @see https://github.com/typescript-eslint/typescript-eslint/pull/6091/files#r1050376706
+ */
+const NON_ENUM_TYPES = new Set([
+  AST_NODE_TYPES.ArrayExpression,
+  AST_NODE_TYPES.ArrowFunctionExpression,
+  AST_NODE_TYPES.ClassExpression,
+  AST_NODE_TYPES.ClassExpression,
+  AST_NODE_TYPES.FunctionExpression,
+  AST_NODE_TYPES.ImportExpression,
+  AST_NODE_TYPES.JSXElement,
+  AST_NODE_TYPES.NewExpression,
+  AST_NODE_TYPES.ObjectExpression,
+]);
 
 export default util.createRule({
   name: 'no-unsafe-enum-assignment',
@@ -38,7 +58,7 @@ export default util.createRule({
         .some(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral));
     }
 
-    function getTypeFromNode(node: TSESTree.Node): ts.Type {
+    function getTypeFromNode(node: TSESTree.Node): ts.Type | false {
       return typeChecker.getTypeAtLocation(
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
@@ -112,13 +132,12 @@ export default util.createRule({
       const providedTypeArguments = typeChecker.getTypeArguments(providedType);
       const recipientTypeArguments =
         typeChecker.getTypeArguments(recipientType);
+      const checkableArguments = Math.min(
+        recipientTypeArguments.length,
+        providedTypeArguments.length,
+      );
 
-      for (
-        let i = 0;
-        i <
-        Math.min(recipientTypeArguments.length, providedTypeArguments.length);
-        i += 1
-      ) {
+      for (let i = 0; i < checkableArguments; i += 1) {
         if (
           isProvidedTypeUnsafe(
             providedTypeArguments[i],
@@ -264,7 +283,14 @@ export default util.createRule({
       recipient: TSESTree.Node,
     ): void {
       const providedType = getTypeFromNode(provided);
+      if (!providedType) {
+        return;
+      }
+
       const recipientType = getTypeFromNode(recipient);
+      if (!recipientType) {
+        return;
+      }
 
       if (isProvidedTypeUnsafe(providedType, recipientType)) {
         context.report({
@@ -293,7 +319,10 @@ export default util.createRule({
         for (let i = 0; i < node.arguments.length; i++) {
           // any-typed arguments can be ignored altogether
           const argumentType = getTypeFromNode(node.arguments[i]);
-          if (tsutils.isTypeFlagSet(argumentType, ts.TypeFlags.Any)) {
+          if (
+            !argumentType ||
+            tsutils.isTypeFlagSet(argumentType, ts.TypeFlags.Any)
+          ) {
             continue;
           }
 
@@ -315,7 +344,12 @@ export default util.createRule({
       },
 
       UpdateExpression(node): void {
-        if (hasEnumType(getTypeFromNode(node.argument))) {
+        if (NON_ENUM_TYPES.has(node.type)) {
+          return;
+        }
+
+        const argumentType = getTypeFromNode(node.argument);
+        if (argumentType && hasEnumType(argumentType)) {
           context.report({
             data: {
               operator: node.operator,
@@ -331,7 +365,9 @@ export default util.createRule({
           init: NonNullable<TSESTree.VariableDeclarator['init']>;
         },
       ): void {
-        compareProvidedNode(node.init, node.id);
+        if (!NON_ENUM_TYPES.has(node.type)) {
+          compareProvidedNode(node.init, node.id);
+        }
       },
     };
   },
