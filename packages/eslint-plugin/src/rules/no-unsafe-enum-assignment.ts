@@ -29,7 +29,6 @@ const NON_ENUM_TYPES = new Set([
   AST_NODE_TYPES.FunctionExpression,
   AST_NODE_TYPES.ImportExpression,
   AST_NODE_TYPES.JSXElement,
-  AST_NODE_TYPES.NewExpression,
   AST_NODE_TYPES.ObjectExpression,
 ]);
 
@@ -63,7 +62,7 @@ export default util.createRule({
         .some(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral));
     }
 
-    function getTypeFromNode(node: TSESTree.Node): ts.Type | false {
+    function getTypeFromNode(node: TSESTree.Node): ts.Type {
       return typeChecker.getTypeAtLocation(
         parserServices.esTreeNodeToTSNodeMap.get(node),
       );
@@ -288,14 +287,7 @@ export default util.createRule({
       recipient: TSESTree.Node,
     ): void {
       const providedType = getTypeFromNode(provided);
-      if (!providedType) {
-        return;
-      }
-
       const recipientType = getTypeFromNode(recipient);
-      if (!recipientType) {
-        return;
-      }
 
       if (isProvidedTypeUnsafe(providedType, recipientType)) {
         context.report({
@@ -349,10 +341,6 @@ export default util.createRule({
       },
 
       UpdateExpression(node): void {
-        if (NON_ENUM_TYPES.has(node.type)) {
-          return;
-        }
-
         const argumentType = getTypeFromNode(node.argument);
         if (argumentType && hasEnumType(argumentType)) {
           context.report({
