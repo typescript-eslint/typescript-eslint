@@ -106,6 +106,13 @@ module.exports = {
     //
 
     curly: ['error', 'all'],
+    eqeqeq: [
+      'error',
+      'always',
+      {
+        null: 'ignore',
+      },
+    ],
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
