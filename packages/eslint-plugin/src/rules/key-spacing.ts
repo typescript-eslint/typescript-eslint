@@ -376,8 +376,8 @@ export default util.createRule<Options, MessageIds>({
           prevNode = node;
         }
 
-        unalignedElements.push(
-          ...alignGroups
+        unalignedElements = unalignedElements.concat(
+          alignGroups
             .filter(group => group.length === 1)
             .flatMap(group => group),
         );
