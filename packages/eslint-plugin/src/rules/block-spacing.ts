@@ -66,8 +66,6 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks and reports invalid spacing style inside braces.
-     * @param {ASTNode} node A BlockStatement/StaticBlock/SwitchStatement node to check.
-     * @returns
      */
     function checkSpacingInsideBraces(node: TSESTree.TSEnumDeclaration): void {
       // Gets braces and the first/last token of content.
@@ -96,7 +94,6 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      // Check.
       if (!isValid(openBrace, firstToken)) {
         let loc = openBrace.loc;
 
