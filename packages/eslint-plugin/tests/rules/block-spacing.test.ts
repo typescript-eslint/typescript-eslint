@@ -14,7 +14,7 @@ type InvalidBlockSpacingTestCase = InvalidTestCase<
 >;
 
 const options = ['always', 'never'] as const;
-const typeDeclaration = [
+const typeDeclarations = [
   {
     nodeType: AST_NODE_TYPES.TSInterfaceBody,
     stringPrefix: 'interface Foo ',
@@ -39,7 +39,7 @@ ruleTester.run('block-spacing', rule, {
   valid: [
     // Empty blocks don't apply
     ...options.flatMap(option =>
-      typeDeclaration.flatMap(typeDec =>
+      typeDeclarations.flatMap(typeDec =>
         emptyBlocks.map<ValidTestCase<['always' | 'never']>>(blockType => ({
           code: typeDec.stringPrefix + blockType,
           options: [option],
@@ -49,7 +49,7 @@ ruleTester.run('block-spacing', rule, {
   ],
   invalid: [
     ...options.flatMap(option =>
-      typeDeclaration.flatMap(typeDec => {
+      typeDeclarations.flatMap(typeDec => {
         return singlePropertyBlocks.flatMap<InvalidBlockSpacingTestCase>(
           (blockType, blockIndex) => {
             // These are actually valid, so filter them out
