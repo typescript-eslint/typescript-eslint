@@ -46,6 +46,28 @@ ruleTester.run('block-spacing', rule, {
         })),
       ),
     ),
+    ...typeDeclarations.flatMap<ValidTestCase<['always' | 'never']>>(
+      typeDec => {
+        const property =
+          typeDec.nodeType === AST_NODE_TYPES.TSEnumDeclaration
+            ? 'bar = 1'
+            : 'bar: true;';
+        return [
+          {
+            code: `${typeDec.stringPrefix}{ /* comment */ ${property} /* comment */ } // always`,
+            options: ['always'],
+          },
+          {
+            code: `${typeDec.stringPrefix}{/* comment */ ${property} /* comment */} // never`,
+            options: ['never'],
+          },
+          {
+            code: `${typeDec.stringPrefix}{ //comment\n ${property}}`,
+            options: ['never'],
+          },
+        ];
+      },
+    ),
   ],
   invalid: [
     ...options.flatMap(option =>
