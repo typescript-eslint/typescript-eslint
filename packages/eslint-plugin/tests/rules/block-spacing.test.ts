@@ -110,5 +110,49 @@ ruleTester.run('block-spacing', rule, {
         );
       }),
     ),
+
+    // With block comments
+    ...typeDeclarations.flatMap<InvalidBlockSpacingTestCase>(typeDec => {
+      const property =
+        typeDec.nodeType === AST_NODE_TYPES.TSEnumDeclaration
+          ? 'bar = 1'
+          : 'bar: true;';
+      return [
+        {
+          code: `${typeDec.stringPrefix}{ /* comment */ ${property} /* comment */ }  /* never */`,
+          output: `${typeDec.stringPrefix}{/* comment */ ${property} /* comment */}  /* never */`,
+          options: ['never'],
+          errors: [
+            {
+              type: typeDec.nodeType,
+              messageId: 'extra',
+              data: { location: 'after', token: '{' },
+            },
+            {
+              type: typeDec.nodeType,
+              messageId: 'extra',
+              data: { location: 'before', token: '}' },
+            },
+          ],
+        },
+        {
+          code: `${typeDec.stringPrefix}{/* comment */ ${property} /* comment */}  /* always */`,
+          output: `${typeDec.stringPrefix}{ /* comment */ ${property} /* comment */ }  /* always */`,
+          options: ['always'],
+          errors: [
+            {
+              type: typeDec.nodeType,
+              messageId: 'missing',
+              data: { location: 'after', token: '{' },
+            },
+            {
+              type: typeDec.nodeType,
+              messageId: 'missing',
+              data: { location: 'before', token: '}' },
+            },
+          ],
+        },
+      ];
+    }),
   ],
 });
