@@ -336,9 +336,7 @@ export default util.createRule({
       'VariableDeclarator[id.annotation][init]'(
         node: MakeRequiredNonNullable<TSESTree.VariableDeclarator, 'init'>,
       ): void {
-        if (node.id.typeAnnotation) {
-          compareProvidedNode(node.init, node.id);
-        }
+        compareProvidedNode(node.init, node.id);
       },
     };
   },
