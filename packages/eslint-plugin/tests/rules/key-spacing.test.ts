@@ -21,6 +21,10 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value' }],
     },
     {
+      code: 'interface X {\n  a: number;\n  abc: string; c: number; de: boolean;\n  abcef: number;\n};',
+      options: [{ align: 'colon' }],
+    },
+    {
       code: 'interface X {\n  a?:  number;\n  abc: string\n};',
       options: [{ align: 'value' }],
     },

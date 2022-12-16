@@ -353,13 +353,18 @@ export default util.createRule<Options, MessageIds>({
         let currentAlignGroup: TSESTree.Node[] = [];
         alignGroups.push(currentAlignGroup);
 
-        for (const node of members) {
-          const prevNode = currentAlignGroup.at(-1);
+        let prevNode: TSESTree.Node | undefined = undefined;
 
-          if (prevNode && continuesAlignGroup(prevNode, node)) {
+        for (const node of members) {
+          let prevAlignedNode = currentAlignGroup.at(-1);
+          if (prevAlignedNode !== prevNode) {
+            prevAlignedNode = undefined;
+          }
+
+          if (prevAlignedNode && continuesAlignGroup(prevAlignedNode, node)) {
             currentAlignGroup.push(node);
           } else if (prevNode?.loc.start.line === node.loc.start.line) {
-            if (currentAlignGroup.length) {
+            if (prevAlignedNode /* prevNode === prevAlignedNode */) {
               unalignedElements.push(currentAlignGroup.pop()!);
             }
             unalignedElements.push(node);
@@ -367,6 +372,8 @@ export default util.createRule<Options, MessageIds>({
             currentAlignGroup = [node];
             alignGroups.push(currentAlignGroup);
           }
+
+          prevNode = node;
         }
 
         unalignedElements.push(
