@@ -165,10 +165,10 @@ function writeExtendedConfig({
 }
 
 function filterRuleEntriesTo(
-  recommended: TSESLint.RuleRecommendation,
+  ...recommendations: (TSESLint.RuleRecommendation | undefined)[]
 ): RuleEntry[] {
-  return allRuleEntries.filter(
-    ([, rule]) => rule.meta.docs?.recommended === recommended,
+  return allRuleEntries.filter(([, rule]) =>
+    recommendations.includes(rule.meta.docs?.recommended),
   );
 }
 
@@ -220,12 +220,12 @@ writeExtendedConfig({
     typeChecked: 'exclude',
   },
   name: 'strict',
-  ruleEntries: filterRuleEntriesTo('strict'),
+  ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
 });
 
 writeExtendedConfig({
   name: 'strict-type-checked',
-  ruleEntries: filterRuleEntriesTo('strict'),
+  ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
 });
 
 writeExtendedConfig({
