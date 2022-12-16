@@ -245,7 +245,7 @@ export default util.createRule<Options, MessageIds>({
             alignColumn,
             align === 'colon'
               ? getKeyLocEnd(node).column + nBeforeColon
-              : node.typeAnnotation!.loc.start.column +
+              : getKeyLocEnd(node).column +
                   ':'.length +
                   nAfterColon +
                   nBeforeColon,

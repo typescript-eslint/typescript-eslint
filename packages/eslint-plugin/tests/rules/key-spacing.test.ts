@@ -17,6 +17,10 @@ ruleTester.run('key-spacing', rule, {
       options: [{ align: 'value' }],
     },
     {
+      code: 'interface X {\n  a: number;\n  abc: string; c: number;\n};',
+      options: [{ align: 'value' }],
+    },
+    {
       code: 'interface X {\n  a?:  number;\n  abc: string\n};',
       options: [{ align: 'value' }],
     },
@@ -123,6 +127,51 @@ class X {
         {
           singleLine: { beforeColon: false, afterColon: false },
           multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+    },
+    {
+      code: 'interface X {\n  a :   number;\n  abc : string\n};',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: { beforeColon: true, afterColon: true, align: 'value' },
+        },
+      ],
+    },
+    {
+      code: 'interface X {\n  a   : number;\n  abc : string\n};',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: {
+            beforeColon: true,
+            afterColon: true,
+            align: {
+              on: 'colon',
+              mode: 'strict',
+              afterColon: true,
+              beforeColon: true,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: 'interface X {\n  a  : number;\n  abc: string\n\n  xadzd : number;\n};',
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: {
+            beforeColon: true,
+            afterColon: true,
+            align: {
+              on: 'colon',
+              mode: 'strict',
+              afterColon: true,
+              beforeColon: false,
+            },
+          },
         },
       ],
     },
