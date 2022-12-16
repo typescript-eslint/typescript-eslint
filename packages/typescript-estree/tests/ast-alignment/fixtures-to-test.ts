@@ -89,7 +89,7 @@ class FixturesTester {
   }
 
   public getFixtures(): Fixture[] {
-    return this.fixtures
+    const wat = this.fixtures
       .map(fixture =>
         glob
           .sync(fixture.pattern, {
@@ -103,6 +103,7 @@ class FixturesTester {
           })),
       )
       .reduce((acc, x) => acc.concat(x), []);
+    return wat;
   }
 }
 
@@ -371,6 +372,15 @@ tester.addFixturePatternConfig('typescript/basics', {
     'class-with-two-methods-computed-constructor',
     'export-type-star-from',
     'import-type-error',
+
+    /**
+     *
+     */
+    'import-equal-declaration',
+    'import-export-equal-declaration',
+    'import-equal-type-declaration',
+    'import-export-equal-type-declaration',
+
     /**
      * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
      * This is intentional; babel is not checking types
