@@ -34,6 +34,7 @@ const typeDeclarations = [
 ];
 const emptyBlocks = ['{}', '{ }'];
 const singlePropertyBlocks = ['{bar: true}', '{ bar: true }'];
+const blockComment = '/* comment */';
 
 ruleTester.run('block-spacing', rule, {
   valid: [
@@ -110,49 +111,35 @@ ruleTester.run('block-spacing', rule, {
         );
       }),
     ),
-
     // With block comments
-    ...typeDeclarations.flatMap<InvalidBlockSpacingTestCase>(typeDec => {
-      const property =
-        typeDec.nodeType === AST_NODE_TYPES.TSEnumDeclaration
-          ? 'bar = 1'
-          : 'bar: true;';
-      return [
-        {
-          code: `${typeDec.stringPrefix}{ /* comment */ ${property} /* comment */ }  /* never */`,
-          output: `${typeDec.stringPrefix}{/* comment */ ${property} /* comment */}  /* never */`,
-          options: ['never'],
-          errors: [
-            {
-              type: typeDec.nodeType,
-              messageId: 'extra',
-              data: { location: 'after', token: '{' },
-            },
-            {
-              type: typeDec.nodeType,
-              messageId: 'extra',
-              data: { location: 'before', token: '}' },
-            },
-          ],
-        },
-        {
-          code: `${typeDec.stringPrefix}{/* comment */ ${property} /* comment */}  /* always */`,
-          output: `${typeDec.stringPrefix}{ /* comment */ ${property} /* comment */ }  /* always */`,
-          options: ['always'],
-          errors: [
-            {
-              type: typeDec.nodeType,
-              messageId: 'missing',
-              data: { location: 'after', token: '{' },
-            },
-            {
-              type: typeDec.nodeType,
-              messageId: 'missing',
-              data: { location: 'before', token: '}' },
-            },
-          ],
-        },
-      ];
-    }),
+    ...options.flatMap(option =>
+      typeDeclarations.flatMap<InvalidBlockSpacingTestCase>(typeDec => {
+        const property =
+          typeDec.nodeType === AST_NODE_TYPES.TSEnumDeclaration
+            ? 'bar = 1'
+            : 'bar: true;';
+        const alwaysSpace = option === 'always' ? '' : ' ';
+        const neverSpace = option === 'always' ? ' ' : '';
+        return [
+          {
+            code: `${typeDec.stringPrefix}{${alwaysSpace}${blockComment}${property}${blockComment}${alwaysSpace}}  /* ${option} */`,
+            output: `${typeDec.stringPrefix}{${neverSpace}${blockComment}${property}${blockComment}${neverSpace}}  /* ${option} */`,
+            options: [option],
+            errors: [
+              {
+                type: typeDec.nodeType,
+                messageId: option === 'always' ? 'missing' : 'extra',
+                data: { location: 'after', token: '{' },
+              },
+              {
+                type: typeDec.nodeType,
+                messageId: option === 'always' ? 'missing' : 'extra',
+                data: { location: 'before', token: '}' },
+              },
+            ],
+          },
+        ];
+      }),
+    ),
   ],
 });
