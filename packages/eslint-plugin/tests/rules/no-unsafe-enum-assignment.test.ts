@@ -55,6 +55,17 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
       fruit -= 1;
     `,
     `
+      let fruits;
+      fruits = [0];
+    `,
+    `
+    enum Fruit {
+      Apple,
+    }
+      let fruits;
+      fruits = [Fruit.Apple];
+    `,
+    `
       enum Fruit {
         Apple,
       }

@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -12,25 +11,6 @@ type MakeRequiredNonNullable<Base, Key extends keyof Base> = Omit<Base, Key> & {
 
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Unknown | ts.TypeFlags.Number | ts.TypeFlags.String;
-
-/**
- * Non-exhaustive list of node types that cannot reasonably compared to enums.
- *
- * @remarks
- * This is used as a performance optimization, to skip asking TypeScript for
- * type information when we can more quickly bail out of comparisons.
- * @see https://github.com/typescript-eslint/typescript-eslint/pull/6091/files#r1050376706
- */
-const NON_ENUM_TYPES = new Set([
-  AST_NODE_TYPES.ArrayExpression,
-  AST_NODE_TYPES.ArrowFunctionExpression,
-  AST_NODE_TYPES.ClassExpression,
-  AST_NODE_TYPES.ClassExpression,
-  AST_NODE_TYPES.FunctionExpression,
-  AST_NODE_TYPES.ImportExpression,
-  AST_NODE_TYPES.JSXElement,
-  AST_NODE_TYPES.ObjectExpression,
-]);
 
 export default util.createRule({
   name: 'no-unsafe-enum-assignment',
@@ -353,10 +333,10 @@ export default util.createRule({
         }
       },
 
-      'VariableDeclarator[init]'(
+      'VariableDeclarator[id.annotation][init]'(
         node: MakeRequiredNonNullable<TSESTree.VariableDeclarator, 'init'>,
       ): void {
-        if (!NON_ENUM_TYPES.has(node.type)) {
+        if (node.id.typeAnnotation) {
           compareProvidedNode(node.init, node.id);
         }
       },
