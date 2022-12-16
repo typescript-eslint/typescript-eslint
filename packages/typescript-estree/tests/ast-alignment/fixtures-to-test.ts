@@ -374,7 +374,8 @@ tester.addFixturePatternConfig('typescript/basics', {
     'import-type-error',
 
     /**
-     *
+     * Babel's 'typescript' transform gives these TypeScript-like properties
+     * such as `isExport: false`, but we don't include those in our AST.
      */
     'import-equal-declaration',
     'import-export-equal-declaration',
