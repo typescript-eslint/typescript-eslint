@@ -17,6 +17,17 @@
   --red-border-shadow: rgb(235, 107, 107);
 }
 
+.checkboxListArea {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.checkboxListArea + .checkboxListArea {
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .checkboxList {
   flex-wrap: wrap;
 }
