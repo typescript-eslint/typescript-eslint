@@ -1489,9 +1489,9 @@ const foo = (function () {
     {
       filename: 'test.ts',
       code: `
-function foo() {
+let foo = function () {
   return 'foo';
-}
+};
       `,
       options: [
         {
@@ -1503,8 +1503,8 @@ function foo() {
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 1,
-          endColumn: 15,
+          column: 11,
+          endColumn: 22,
         },
       ],
     },
