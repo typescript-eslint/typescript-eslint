@@ -35,7 +35,7 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
           : recommended === 'strict'
           ? '🔒'
           : recommended
-          ? '💅'
+          ? '🎨'
           : ''}
       </td>
       <td
@@ -175,7 +175,7 @@ export default function RulesTable({
           <RuleFilterCheckBox
             mode={showStylistic}
             setMode={setShowStylistic}
-            label="💅 stylistic"
+            label="🎨 stylistic"
           />
         </ul>
       </div>

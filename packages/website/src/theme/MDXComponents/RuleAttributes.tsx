@@ -9,7 +9,7 @@ import styles from './RuleAttributes.module.css';
 const recommendations = {
   recommended: ['✅', 'recommended'],
   strict: ['🔒', 'strict'],
-  stylistic: ['💅', 'stylistic'],
+  stylistic: ['🎨', 'stylistic'],
 };
 
 const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
