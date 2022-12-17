@@ -8,26 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": undefined,
-            "initializer": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 19,
-                  "line": 2,
-                },
-                "start": Object {
-                  "column": 16,
-                  "line": 2,
-                },
-              },
-              "range": Array [
-                32,
-                35,
-              ],
-              "raw": "'a'",
-              "type": "Literal",
-              "value": "a",
-            },
             "key": Object {
               "loc": Object {
                 "end": Object {

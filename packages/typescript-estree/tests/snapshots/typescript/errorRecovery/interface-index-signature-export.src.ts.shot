@@ -7,7 +7,6 @@ Object {
       "body": Object {
         "body": Array [
           Object {
-            "export": true,
             "loc": Object {
               "end": Object {
                 "column": 31,

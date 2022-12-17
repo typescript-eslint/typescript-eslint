@@ -673,10 +673,6 @@ export class Converter {
       result.accessibility = accessibility;
     }
 
-    if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-      result.export = true;
-    }
-
     if (hasModifier(SyntaxKind.StaticKeyword, node)) {
       result.static = true;
     }
@@ -1632,7 +1628,6 @@ export class Converter {
             readonly:
               hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
             static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-            export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
             override:
               hasModifier(SyntaxKind.OverrideKeyword, node) || undefined,
             parameter: result,
@@ -2484,14 +2479,8 @@ export class Converter {
           typeAnnotation: node.type
             ? this.convertTypeAnnotation(node.type, node)
             : undefined,
-          initializer:
-            this.convertChild(
-              // eslint-disable-next-line deprecation/deprecation -- TODO breaking change remove this from the AST
-              node.initializer,
-            ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-          export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
         });
 
         const accessibility = getTSNodeAccessibility(node);
@@ -2519,10 +2508,6 @@ export class Converter {
         const accessibility = getTSNodeAccessibility(node);
         if (accessibility) {
           result.accessibility = accessibility;
-        }
-
-        if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          result.export = true;
         }
 
         if (hasModifier(SyntaxKind.StaticKeyword, node)) {

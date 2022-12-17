@@ -134,7 +134,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 36,

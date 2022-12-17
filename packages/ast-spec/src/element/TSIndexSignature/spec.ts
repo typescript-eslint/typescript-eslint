@@ -10,6 +10,5 @@ export interface TSIndexSignature extends BaseNode {
   typeAnnotation?: TSTypeAnnotation;
   readonly?: boolean;
   accessibility?: Accessibility;
-  export?: boolean;
   static?: boolean;
 }

@@ -9,8 +9,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "export": undefined,
-            "initializer": undefined,
             "key": Object {
               "loc": Object {
                 "end": Object {

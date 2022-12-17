@@ -117,7 +117,6 @@ Object {
                       "type": "Decorator",
                     },
                   ],
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 34,

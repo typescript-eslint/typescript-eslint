@@ -20,7 +20,6 @@ Object {
             "params": Array [
               Object {
                 "accessibility": "public",
-                "export": undefined,
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -60,7 +59,6 @@ Object {
               },
               Object {
                 "accessibility": "private",
-                "export": undefined,
                 "loc": Object {
                   "end": Object {
                     "column": 28,

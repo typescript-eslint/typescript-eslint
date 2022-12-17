@@ -8,8 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": true,
-            "initializer": undefined,
             "key": Object {
               "loc": Object {
                 "end": Object {

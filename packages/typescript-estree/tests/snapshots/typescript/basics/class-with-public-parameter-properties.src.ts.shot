@@ -80,7 +80,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "public",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 38,
@@ -154,7 +153,6 @@ Object {
                 },
                 Object {
                   "accessibility": "public",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 46,
@@ -228,7 +226,6 @@ Object {
                 },
                 Object {
                   "accessibility": "public",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 37,
@@ -338,7 +335,6 @@ Object {
                 },
                 Object {
                   "accessibility": "public",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 54,

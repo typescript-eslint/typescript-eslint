@@ -80,7 +80,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 55,

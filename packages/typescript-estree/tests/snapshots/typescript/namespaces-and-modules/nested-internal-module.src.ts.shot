@@ -180,7 +180,6 @@ Object {
                       "params": Array [
                         Object {
                           "accessibility": "public",
-                          "export": undefined,
                           "loc": Object {
                             "end": Object {
                               "column": 36,
@@ -254,7 +253,6 @@ Object {
                         },
                         Object {
                           "accessibility": "public",
-                          "export": undefined,
                           "loc": Object {
                             "end": Object {
                               "column": 54,
@@ -417,8 +415,6 @@ Object {
                         "body": Array [
                           Object {
                             "computed": false,
-                            "export": undefined,
-                            "initializer": undefined,
                             "key": Object {
                               "loc": Object {
                                 "end": Object {

@@ -88,8 +88,6 @@ Object {
           "members": Array [
             Object {
               "computed": false,
-              "export": undefined,
-              "initializer": undefined,
               "key": Object {
                 "loc": Object {
                   "end": Object {
@@ -202,8 +200,6 @@ Object {
             },
             Object {
               "computed": false,
-              "export": undefined,
-              "initializer": undefined,
               "key": Object {
                 "loc": Object {
                   "end": Object {
