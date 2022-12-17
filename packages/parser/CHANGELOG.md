@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.46.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.46.0...v5.46.1) (2022-12-12)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+# [5.46.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.1...v5.46.0) (2022-12-08)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+## [5.45.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.0...v5.45.1) (2022-12-05)
+
+### Bug Fixes
+
+- **parser:** remove the jsx option requirement for automatic jsx pragma resolution ([#6134](https://github.com/typescript-eslint/typescript-eslint/issues/6134)) ([e777f5e](https://github.com/typescript-eslint/typescript-eslint/commit/e777f5e225b9ddfb6bb1eaa74cbc5171a17ac017))
+
 # [5.45.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.44.0...v5.45.0) (2022-11-28)
 
 **Note:** Version bump only for package @typescript-eslint/parser

@@ -133,6 +133,13 @@
     "website": "https://blacksheepcode.com"
   },
   {
+    "id": "THANKS.DEV",
+    "image": "https://images.opencollective.com/thanks-dev/ed78b39/logo.png",
+    "name": "THANKS.DEV",
+    "totalDonations": 14761,
+    "website": "https://thanks.dev"
+  },
+  {
     "id": "Joe Alden",
     "image": "https://images.opencollective.com/joealden/44a6738/avatar.png",
     "name": "Joe Alden",
@@ -173,5 +180,12 @@
     "name": "Laserhub",
     "totalDonations": 10000,
     "website": "https://laserhub.com/"
+  },
+  {
+    "id": "DeepSource",
+    "image": "https://images.opencollective.com/deepsource/0f18cea/logo.png",
+    "name": "DeepSource",
+    "totalDonations": 10000,
+    "website": "https://deepsource.io/"
   }
 ]

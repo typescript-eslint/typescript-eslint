@@ -1,6 +1,5 @@
 ---
 id: issues
-sidebar_label: Issues
 title: Issues
 ---
 
