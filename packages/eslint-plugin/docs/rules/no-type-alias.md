@@ -15,7 +15,7 @@ TypeScript type aliases are a commonly necessary language feature; banning it al
 
 :::note
 
-If you want to ban certain classifications of type alias, consider using [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
+If you want to ban certain classifications of type aliases, consider using [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
 See [Troubleshooting & FAQs](/linting/troubleshooting#how-can-i-ban-specific-language-feature).
 
 :::
