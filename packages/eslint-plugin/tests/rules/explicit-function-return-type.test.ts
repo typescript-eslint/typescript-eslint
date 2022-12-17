@@ -1486,5 +1486,27 @@ const foo = (function () {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+function foo() {
+  return 'foo';
+}
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 15,
+        },
+      ],
+    },
   ],
 });

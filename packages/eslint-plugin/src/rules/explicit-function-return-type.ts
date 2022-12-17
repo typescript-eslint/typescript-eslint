@@ -170,11 +170,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (
-          options.allowIIFEs &&
-          node.parent?.type === AST_NODE_TYPES.CallExpression &&
-          isIIFE(node)
-        ) {
+        if (options.allowIIFEs && isIIFE(node)) {
           return;
         }
 
