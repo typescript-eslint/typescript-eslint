@@ -555,6 +555,32 @@ const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (() => {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1411,6 +1437,52 @@ class Foo {
           endLine: 4,
           column: 3,
           endColumn: 18,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return 'foo';
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 14,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return () => {
+    return 1;
+  };
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 15,
         },
       ],
     },
