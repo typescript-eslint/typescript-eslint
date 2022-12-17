@@ -125,6 +125,7 @@ export default function RulesTable({
   const rules = useRulesMeta();
   const [showRecommended, setShowRecommended] = useState<FilterMode>('neutral');
   const [showStrict, setShowStrict] = useState<FilterMode>('neutral');
+  const [showStylistic, setShowStylistic] = useState<FilterMode>('neutral');
   const [showFixable, setShowFixable] = useState<FilterMode>('neutral');
   const [showHasSuggestions, setShowHasSuggestion] =
     useState<FilterMode>('neutral');
@@ -135,11 +136,13 @@ export default function RulesTable({
         .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
         .filter(r => {
           const opinions = [
+            match(showRecommended, r.docs?.recommended === 'recommended'),
             match(
-              showRecommended,
-              r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
+              showStrict,
+              r.docs?.recommended === 'recommended' ||
+                r.docs?.recommended === 'strict',
             ),
-            match(showStrict, r.docs?.recommended === 'strict'),
+            match(showStylistic, r.docs?.recommended === 'stylistic'),
             match(showFixable, !!r.fixable),
             match(showHasSuggestions, !!r.hasSuggestions),
             match(showTypeCheck, !!r.docs?.requiresTypeChecking),
@@ -151,6 +154,7 @@ export default function RulesTable({
       extensionRules,
       showRecommended,
       showStrict,
+      showStylistic,
       showFixable,
       showHasSuggestions,
       showTypeCheck,
@@ -161,25 +165,18 @@ export default function RulesTable({
       <ul className={clsx('clean-list', styles.checkboxList)}>
         <RuleFilterCheckBox
           mode={showRecommended}
-          setMode={(newMode): void => {
-            setShowRecommended(newMode);
-
-            if (newMode === 'include' && showStrict === 'include') {
-              setShowStrict('exclude');
-            }
-          }}
+          setMode={setShowRecommended}
           label="✅ recommended"
         />
         <RuleFilterCheckBox
           mode={showStrict}
-          setMode={(newMode): void => {
-            setShowStrict(newMode);
-
-            if (newMode === 'include' && showRecommended === 'include') {
-              setShowRecommended('exclude');
-            }
-          }}
+          setMode={setShowStrict}
           label="🔒 strict"
+        />
+        <RuleFilterCheckBox
+          mode={showStylistic}
+          setMode={setShowStylistic}
+          label="💅 stylistic"
         />
         <RuleFilterCheckBox
           mode={showFixable}

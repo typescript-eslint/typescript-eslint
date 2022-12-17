@@ -6,14 +6,14 @@ title: Configurations
 [ESLint shareable configurations](https://eslint.org/docs/latest/developer-guide/shareable-configs) exist to provide a comprehensive list of rules settings that you can start with.
 `@typescript-eslint/eslint-plugin` includes built-in configurations you can extend from to pull in the recommended starting rules.
 
-> With the exception of `strict` and `strict-type-checked`, all configurations are considered "stable".
+> With the exception of `all`, `strict`, and `strict-type-checked`, all configurations are considered "stable".
 > Rule additions and removals are treated as breaking changes and will only be done in major version bumps.
 
 ## Getting Started
 
 ### Projects Without Type Checking
 
-If your project does not enable [typed linting](./TYPED_LINTING.md), we suggest enabling the [`recommended`](#recommended) and [`stylistic`](#stylistic) configurations to start:
+If your project does not enable [typed linting](./Typed_Linting.md), we suggest enabling the [`recommended`](#recommended) and [`stylistic`](#stylistic) configurations to start:
 
 ```json
 {
@@ -28,7 +28,7 @@ If your project does not enable [typed linting](./TYPED_LINTING.md), we suggest 
 
 ### Projects With Type Checking
 
-If your project enables [typed linting](./TYPED_LINTING.md), we suggest:
+If your project enables [typed linting](./Typed_Linting.md), we suggest:
 
 ```json
 {
