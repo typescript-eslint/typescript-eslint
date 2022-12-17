@@ -110,7 +110,7 @@ module.exports = {
       'error',
       'always',
       {
-        null: 'ignore',
+        null: 'never',
       },
     ],
     'no-mixed-operators': 'error',

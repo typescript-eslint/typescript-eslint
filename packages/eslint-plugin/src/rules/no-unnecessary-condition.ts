@@ -384,7 +384,7 @@ export default createRule<Options, MessageId>({
         | TSESTree.ForStatement
         | TSESTree.WhileStatement,
     ): void {
-      if (node.test === null) {
+      if (node.test == null) {
         // e.g. `for(;;)`
         return;
       }
