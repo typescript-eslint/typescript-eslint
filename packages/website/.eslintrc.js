@@ -9,6 +9,7 @@ module.exports = {
   overrides: [
     {
       files: [
+        './*.config.*',
         './src/pages/*.tsx',
         './src/components/**/*.tsx',
         './src/components/hooks/*.ts',
@@ -22,6 +23,7 @@ module.exports = {
     'react/jsx-no-target-blank': 'off',
     'react/no-unescaped-entities': 'off',
     '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+    'react/jsx-curly-brace-presence': 'error',
   },
   settings: {
     react: {

@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression object-object-outer-parentheses Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: TSSatisfiesExpression {
+        type: "TSSatisfiesExpression",
+        expression: ObjectExpression {
+          type: "ObjectExpression",
+          properties: Array [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "prop",
+
+                range: [3, 7],
+                loc: {
+                  start: { column: 3, line: 1 },
+                  end: { column: 7, line: 1 },
+                },
+              },
+              kind: "init",
+              method: false,
+              shorthand: false,
+              value: Literal {
+                type: "Literal",
+                raw: "'string'",
+                value: "string",
+
+                range: [9, 17],
+                loc: {
+                  start: { column: 9, line: 1 },
+                  end: { column: 17, line: 1 },
+                },
+              },
+
+              range: [3, 17],
+              loc: {
+                start: { column: 3, line: 1 },
+                end: { column: 17, line: 1 },
+              },
+            },
+          ],
+
+          range: [1, 19],
+          loc: {
+            start: { column: 1, line: 1 },
+            end: { column: 19, line: 1 },
+          },
+        },
+        typeAnnotation: TSTypeLiteral {
+          type: "TSTypeLiteral",
+          members: Array [
+            TSPropertySignature {
+              type: "TSPropertySignature",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "prop",
+
+                range: [32, 36],
+                loc: {
+                  start: { column: 32, line: 1 },
+                  end: { column: 36, line: 1 },
+                },
+              },
+              typeAnnotation: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSStringKeyword {
+                  type: "TSStringKeyword",
+
+                  range: [38, 44],
+                  loc: {
+                    start: { column: 38, line: 1 },
+                    end: { column: 44, line: 1 },
+                  },
+                },
+
+                range: [36, 44],
+                loc: {
+                  start: { column: 36, line: 1 },
+                  end: { column: 44, line: 1 },
+                },
+              },
+
+              range: [32, 44],
+              loc: {
+                start: { column: 32, line: 1 },
+                end: { column: 44, line: 1 },
+              },
+            },
+          ],
+
+          range: [30, 46],
+          loc: {
+            start: { column: 30, line: 1 },
+            end: { column: 46, line: 1 },
+          },
+        },
+
+        range: [1, 46],
+        loc: {
+          start: { column: 1, line: 1 },
+          end: { column: 46, line: 1 },
+        },
+      },
+
+      range: [0, 48],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 48, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 49],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

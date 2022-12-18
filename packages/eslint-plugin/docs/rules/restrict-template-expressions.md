@@ -6,9 +6,11 @@ description: 'Enforce template literal expressions to be of `string` type.'
 >
 > See **https://typescript-eslint.io/rules/restrict-template-expressions** for documentation.
 
-## Rule Details
+JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
+The default Object `.toString()` returns `"[object Object]"`, which is often not what was intended.
+This rule reports on values used in a template literal string that aren't primitives and don't define a more useful `.toString()` method.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -87,3 +89,8 @@ const msg1 = `arg = ${arg}`;
 const arg = /foo/;
 const msg1 = `arg = ${arg}`;
 ```
+
+## Related To
+
+- [`no-base-to-string`](./no-base-to-string.md)
+- [`restrict-plus-operands`](./restrict-plus-operands.md)

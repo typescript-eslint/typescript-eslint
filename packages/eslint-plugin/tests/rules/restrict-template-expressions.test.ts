@@ -358,6 +358,11 @@ ruleTester.run('restrict-template-expressions', rule, {
           return \`arg = \${arg}\`;
         }
       `,
+      dependencyConstraints: {
+        // TS 4.5 improved type printing to print the type T as `T`
+        // before that it was printed as `any`
+        typescript: '4.5',
+      },
       errors: [
         {
           messageId: 'invalidType',

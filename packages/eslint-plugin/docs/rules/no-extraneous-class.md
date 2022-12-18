@@ -6,23 +6,21 @@ description: 'Disallow classes used as namespaces.'
 >
 > See **https://typescript-eslint.io/rules/no-extraneous-class** for documentation.
 
-This rule warns when a class has no non-static members, such as for a class used exclusively as a static namespace.
-
-## Rule Details
+This rule reports when a class has no non-static members, such as for a class used exclusively as a static namespace.
 
 Users who come from a [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming) paradigm may wrap their utility functions in an extra class, instead of putting them at the top level of an ECMAScript module.
 Doing so is generally unnecessary in JavaScript and TypeScript projects.
 
 - Wrapper classes add extra cognitive complexity to code without adding any structural improvements
   - Whatever would be put on them, such as utility functions, are already organized by virtue of being in a module.
-  - As an alternative, you can always `import * as ...` the module to get all of them in a single object.
+  - As an alternative, you can `import * as ...` the module to get all of them in a single object.
 - IDEs can't provide as good suggestions for static class or namespace imported properties when you start typing property names
 - It's more difficult to statically analyze code for unused variables, etc. when they're all on the class (see: [Finding dead code (and dead types) in TypeScript](https://effectivetypescript.com/2020/10/20/tsprune)).
 
-This rule also flags classes that have only a constructor and no fields.
+This rule also reports classes that have only a constructor and no fields.
 Those classes can generally be replaced with a standalone function.
 
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 

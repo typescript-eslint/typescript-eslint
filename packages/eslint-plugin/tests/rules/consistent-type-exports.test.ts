@@ -266,6 +266,9 @@ export { type T, T };
 type T = 1;
 export type { T, T };
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       errors: [
         {
           messageId: 'typeOverValue',
@@ -283,6 +286,9 @@ export { type/* */T, type     /* */T, T };
 type T = 1;
 export type { /* */T, /* */T, T };
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       errors: [
         {
           messageId: 'typeOverValue',
@@ -303,6 +309,9 @@ const x = 1;
 export type { T, T };
 export { x };
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       errors: [
         {
           messageId: 'singleExportIsType',
@@ -322,6 +331,9 @@ type T = 1;
 const x = 1;
 export { type T, x };
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
       errors: [
         {
@@ -340,6 +352,9 @@ export { type T, T };
 type T = 1;
 export type { T, T };
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
       errors: [
         {
@@ -362,6 +377,9 @@ export {
 export type { AnalyzeOptions, Definition as Foo, BlockScope as BScope } from '@typescript-eslint/scope-manager';
 export { CatchScope as CScope } from '@typescript-eslint/scope-manager';
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: false }],
       errors: [
         {
@@ -388,6 +406,9 @@ export {
   CatchScope as CScope,
 } from '@typescript-eslint/scope-manager';
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
       errors: [
         {

@@ -1,0 +1,51 @@
+diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
+index 54e4c65..aa00912 100644
+--- a/node_modules/typescript/lib/typescript.d.ts
++++ b/node_modules/typescript/lib/typescript.d.ts
+@@ -428,8 +428,8 @@ declare namespace ts {
+         JSDocFunctionType = 320,
+         JSDocVariadicType = 321,
+         JSDocNamepathType = 322,
++        /** @deprecated This was only added in 4.7 */
+         JSDoc = 323,
+-        /** @deprecated Use SyntaxKind.JSDoc */
+         JSDocComment = 323,
+         JSDocText = 324,
+         JSDocTypeLiteral = 325,
+@@ -4395,7 +4395,13 @@ declare namespace ts {
+     function symbolName(symbol: Symbol): string;
+     function getNameOfJSDocTypedef(declaration: JSDocTypedefTag): Identifier | PrivateIdentifier | undefined;
+     function getNameOfDeclaration(declaration: Declaration | Expression | undefined): DeclarationName | undefined;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getModifiers from `@typescript-eslint/type-utils`.
++     */
+     function getDecorators(node: HasDecorators): readonly Decorator[] | undefined;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getDecorators from `@typescript-eslint/type-utils`.
++     */
+     function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
+     /**
+      * Gets the JSDoc parameter tags for the node if present.
+@@ -4857,7 +4863,13 @@ declare namespace ts {
+ }
+ declare namespace ts {
+     function setTextRange<T extends TextRange>(range: T, location: TextRange | undefined): T;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getModifiers from `@typescript-eslint/type-utils`.
++     */
+     function canHaveModifiers(node: Node): node is HasModifiers;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getDecorators from `@typescript-eslint/type-utils`.
++     */
+     function canHaveDecorators(node: Node): node is HasDecorators;
+ }
+ declare namespace ts {
+@@ -7958,7 +7970,7 @@ declare namespace ts {
+          * const decorators = ts.canHaveDecorators(node) ? ts.getDecorators(node) : undefined;
+          * ```
+          */
+-        readonly decorators?: undefined;
++        readonly decorators?: NodeArray<Decorator> | undefined;
+         /**
+          * @deprecated `modifiers` has been removed from `Node` and moved to the `Node` subtypes that support them.
+          * Use `ts.canHaveModifiers()` to test whether a `Node` can have modifiers.

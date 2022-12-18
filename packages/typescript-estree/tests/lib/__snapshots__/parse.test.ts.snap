@@ -1,59 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is empty the extension does not match 1`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: other/unknownFileType.unknown.
-The extension for the file (.unknown) is non-standard. You should add "parserOptions.extraFileExtensions" to your config."
+"ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+The extension for the file (\`.unknown\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty invalid extension 1`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: other/unknownFileType.unknown.
-Found unexpected extension "unknown" specified with the "extraFileExtensions" option. Did you mean ".unknown"?
-The extension for the file (.unknown) is non-standard. It should be added to your existing "parserOptions.extraFileExtensions"."
+"ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+Found unexpected extension \`unknown\` specified with the \`parserOptions.extraFileExtensions\` option. Did you mean \`.unknown\`?
+The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension does not match 1`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: other/unknownFileType.unknown.
-The extension for the file (.unknown) is non-standard. It should be added to your existing "parserOptions.extraFileExtensions"."
+"ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches duplicate extension 1`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: ts/notIncluded.ts.
-You unnecessarily included the extension ".ts" with the "extraFileExtensions" option. This extension is already handled by the parser by default.
-The file must be included in at least one of the projects provided."
+"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+You unnecessarily included the extension \`.ts\` with the \`parserOptions.extraFileExtensions\` option. This extension is already handled by the parser by default.
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches the file isn't included 1`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: other/notIncluded.vue.
-The file must be included in at least one of the projects provided."
+"ESLint was configured to run on \`<tsconfigRootDir>/other/notIncluded.vue\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 1`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: ts/notIncluded0j1.ts.
-The file must be included in at least one of the projects provided."
+"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 2`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: ts/notIncluded02.tsx.
-The file must be included in at least one of the projects provided."
+"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded02.tsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 3`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: js/notIncluded01.js.
-The file must be included in at least one of the projects provided."
+"ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded01.js\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 4`] = `
-""parserOptions.project" has been set for @typescript-eslint/parser.
-The file does not match your project config: js/notIncluded02.jsx.
-The file must be included in at least one of the projects provided."
+"ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded02.jsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+However, that TSConfig does not include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change that TSConfig to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+`;
+
+exports[`parseAndGenerateServices invalid project error messages throws when non of multiple projects include the file 1`] = `
+"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+- <tsconfigRootDir>/tsconfig.json
+- <tsconfigRootDir>/tsconfig.extra.json
+However, none of those TSConfigs include this file. Either:
+- Change ESLint's list of included files to not include this file
+- Change one of those TSConfigs to include this file
+- Create a new TSConfig that includes this file and include it in your parserOptions.project
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .js file - with JSX content - parserOptions.jsx = false 1`] = `

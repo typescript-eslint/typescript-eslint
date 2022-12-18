@@ -8,7 +8,8 @@ type RuleNode =
   | TSESTree.Program
   | TSESTree.TSModuleBlock
   | TSESTree.TSTypeLiteral
-  | TSESTree.TSInterfaceBody;
+  | TSESTree.TSInterfaceBody
+  | TSESTree.BlockStatement;
 type Member =
   | TSESTree.ClassElement
   | TSESTree.ProgramStatement
@@ -19,7 +20,7 @@ export default util.createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require that member overloads be consecutive',
+      description: 'Require that function overload signatures be consecutive',
       recommended: 'error',
     },
     schema: [],
@@ -121,6 +122,7 @@ export default util.createRule({
         case AST_NODE_TYPES.Program:
         case AST_NODE_TYPES.TSModuleBlock:
         case AST_NODE_TYPES.TSInterfaceBody:
+        case AST_NODE_TYPES.BlockStatement:
           return node.body;
 
         case AST_NODE_TYPES.TSTypeLiteral:
@@ -172,6 +174,7 @@ export default util.createRule({
       TSModuleBlock: checkBodyForOverloadMethods,
       TSTypeLiteral: checkBodyForOverloadMethods,
       TSInterfaceBody: checkBodyForOverloadMethods,
+      BlockStatement: checkBodyForOverloadMethods,
     };
   },
 });
