@@ -3,7 +3,7 @@
 exports[`recommended-does-not-require-program should lint successfully 1`] = `
 [
   {
-    "errorCount": 0,
+    "errorCount": 1,
     "fatalErrorCount": 0,
     "filePath": "<root>/index.ts",
     "fixableErrorCount": 0,
@@ -17,7 +17,7 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
         "message": "'foo' is assigned a value but never used.",
         "messageId": "unusedVar",
         "nodeType": "Identifier",
-        "ruleId": "@typescript-eslint/no-unused-vars",
+        "ruleId": "no-unused-vars",
         "severity": 1,
       },
     ],
@@ -25,7 +25,7 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
 ",
     "suppressedMessages": [],
     "usedDeprecatedRules": [],
-    "warningCount": 1,
+    "warningCount": 0,
   },
 ]
 `;
