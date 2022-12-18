@@ -150,10 +150,7 @@ export default util.createRule<Options, MessageIds>({
     function isIIFE(
       node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): boolean {
-      return (
-        node.parent?.type === AST_NODE_TYPES.CallExpression &&
-        node.parent.callee === node
-      );
+      return node.parent?.type === AST_NODE_TYPES.CallExpression;
     }
 
     return {
