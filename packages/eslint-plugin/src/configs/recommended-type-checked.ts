@@ -35,7 +35,6 @@ export = {
     '@typescript-eslint/no-unsafe-return': 'error',
     '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
-    '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/restrict-plus-operands': 'error',

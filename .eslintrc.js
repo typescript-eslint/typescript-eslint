@@ -18,6 +18,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
+    // TODO: consider enabling strict-type-checked and/or stylistic-type-checked
   ],
   parserOptions: {
     sourceType: 'module',
@@ -112,6 +113,7 @@ module.exports = {
       'warn',
       { commentPattern: '.*intentional fallthrough.*' },
     ],
+    'no-unused-vars': 'off',
 
     //
     // eslint-plugin-eslint-comment

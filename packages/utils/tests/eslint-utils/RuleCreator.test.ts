@@ -31,7 +31,7 @@ describe('RuleCreator', () => {
       docs: {
         description: 'some description',
         url: 'test/test',
-        recommended: 'error',
+        recommended: 'recommended',
         requiresTypeChecking: true,
       },
       messages: {
