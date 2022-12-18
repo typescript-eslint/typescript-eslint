@@ -244,6 +244,23 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
+  private convertChildNonNull(
+    child: ts.Node | undefined,
+    parent: ts.Node,
+    message: string,
+  ): any | null {
+    if (!child) {
+      throw createError(this.ast, parent.pos, message);
+    }
+    return this.converter(child, parent, this.inTypeMode, false);
+  }
+
+  /**
+   * Converts a TypeScript node into an ESTree node.
+   * @param child the child ts.Node
+   * @param parent parentNode
+   * @returns the converted ESTree node
+   */
   private convertType(child?: ts.Node, parent?: ts.Node): any | null {
     return this.converter(child, parent, true, false);
   }
@@ -851,7 +868,11 @@ export class Converter {
       case SyntaxKind.ThrowStatement:
         return this.createNode<TSESTree.ThrowStatement>(node, {
           type: AST_NODE_TYPES.ThrowStatement,
-          argument: this.convertChild(node.expression),
+          argument: this.convertChildNonNull(
+            node.expression,
+            node,
+            'A throw statement must throw an argument.',
+          ),
         });
 
       case SyntaxKind.TryStatement:
@@ -990,6 +1011,12 @@ export class Converter {
           ),
           kind: getDeclarationKind(node.declarationList),
         });
+
+        if (result.declarations.length) {
+          throw createError(
+            'A variable declaration list must have at least one variable declarator.',
+          );
+        }
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
@@ -1743,7 +1770,11 @@ export class Converter {
 
         const result = this.createNode<TSESTree.ImportDeclaration>(node, {
           type: AST_NODE_TYPES.ImportDeclaration,
-          source: this.convertChild(node.moduleSpecifier),
+          source: this.convertChildNonNull(
+            node.moduleSpecifier,
+            node,
+            'An import statement must import an argument.',
+          ),
           specifiers: [],
           importKind: 'value',
           assertions: this.convertAssertClasue(node.assertClause),
