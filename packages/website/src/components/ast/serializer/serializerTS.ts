@@ -47,8 +47,8 @@ function expandFlags(
   flags: number,
 ): string {
   return Object.entries(allFlags[1])
-    .filter(([f, _]) => (Number(f) & flags) !== 0)
-    .map(([_, name]) => `${allFlags[0]}.${name}`)
+    .filter(([f]) => (Number(f) & flags) !== 0)
+    .map(([name]) => `${allFlags[0]}.${name}`)
     .join('\n');
 }
 
