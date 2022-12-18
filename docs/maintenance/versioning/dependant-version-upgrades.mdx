@@ -1,0 +1,121 @@
+---
+id: dependant-version-upgrades
+title: Dependant Version Upgrades
+---
+
+## ESLint
+
+The typescript-eslint repository contains four kinds of version ranges for the `eslint` package:
+
+- Integration tests: Pinned to our lowest supported ESLint version
+- Packages with a `*` `peerDependency` version: These fall back to the explicit `peerDependency` versions
+- Packages with explicit `peerDependency` versions: The full range of supported ESLint major versions
+- [Root `package.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/package.json)'s' `devDependency`: A relatively recent release, used only for repository development
+
+:::tip
+Whenever you discover any new areas of work that are blocked by dropping an old ESLint version, such as new ESLint API deprecations, add a _TODO_ comment that will be caught by the regular expressions under [Removing Support for an Old ESLint Version](#removing-support-for-an-old-eslint-version).
+:::
+
+### Adding Support for a New ESLint Version
+
+1. Upgrade the root `package.json` `devDependency` to the latest ESLint
+1. Add the new major version to the explicit `peerDependency` versions
+1. Check [`eslint-visitor-keys`](https://www.npmjs.com/package/eslint-visitor-keys) for a new version to be upgraded to as well.
+1. Update [Versioning > ESLint](../Versioning.md#eslint)
+
+### Removing Support for an Old ESLint Version
+
+1. Increase the integration tests to the next lowest supported major version (`*.0.0`)
+1. Remove the old major versions from packages with explicit `peerDependency` versions
+1. Search for source code comments (excluding `CHANGELOG.md` files) that mention a now-unsupported version of ESLint.
+   - For example, to remove support for v5, searches might include:
+     - `/eslint.*5/i`
+     - `/todo.*eslint.*5/i`
+     - `/todo.*eslint/i`
+1. Update [Versioning > ESLint](../Versioning.md#eslint)
+
+See [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972) for reference.
+
+## Node
+
+The typescript-eslint repository contains three kinds of version ranges for Node:
+
+- [`.github/workflows/ci.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml)'s `PRIMARY_NODE_VERSION`: Set to the highest Node version we support
+- `node-version`: Set to a tuple of our [lowest, highest] supported versions for our unit tests in CI
+- `engines` field in all `package.json`s: explicitly lists all supported Node ranges
+
+Change those numbers accordingly when adding support for a new Node version or removing support for an old Node version.
+
+See [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918) + [chore: test node v14 on ci.yml](https://github.com/typescript-eslint/typescript-eslint/pull/5512) for reference.
+
+## TypeScript
+
+### Adding Support for a New TypeScript Version
+
+We generally start the process of supporting a new TypeScript version just after the first beta release for that version is made available.
+
+1. Create and pin an issue with a title like _TypeScript X.Y Support_, `accepting prs`, `AST`, `dependencies`, and `New TypeScript Version` labels, and the following contents:
+
+   1. A link to the _TypeScript X.Y Iteration Plan_ issue from the Microsoft issue tracker
+   2. The following text:
+
+      ```md
+      This issue is just to track all of the new features and their implementation state in this project.
+      As with all releases, we will not necessarily to support all features until closer to the full release when everything the features are stabilised.
+
+      _Please be patient._
+      ```
+
+   3. A heading starting with `🔲 ` for each new TypeScript feature called out in the iteration plan that will impact us
+   4. A heading titled _🔲 `lib.d.ts` Updates_ and the content _We will need to regenerate our types within `scope-manager`_
+   5. A heading titled _Other changes with no impact to us_ containing a list of other changes that we don't believe will impact us
+
+1. At this stage, it's fine to send and/or review PRs that implement necessary features, but wait to merge them until the new TypeScript version's RC is released
+   - Whenever a PR is created, add ` (#1234)` to its respective heading, and change the heading's emoji from 🔲 to 🏗
+   - Search for `expectBabelToNotSupport` to see how to support syntaxes not yet supported by Babel
+1. Once the TypeScript RC version is released, start merging PRs
+   - Whenever a PR is merged, change the respective heading's emoji from 🏗 to ✅
+1. Create a PR with a title like `feat: update TypeScript to X.Y-rc` and the following changes:
+   - In the root `package.json`, add `|| X.Y.2-rc2` to the `dependency` on `typescript`
+   - In the root `package.json`, change the `devDependency` on `typescript` to `~X.Y.2-rc2`
+   - Change the `SUPPORTED_TYPESCRIPT_VERSIONS` constant's `<` version to the next version of TypeScript
+   - Change the `SUPPORTED_PRERELEASE_RANGES` constant to equal `['X.Y.2-rc']`
+   - Rename and update `patches/typescript*` to the new TypeScript version
+   - Run `yarn generate:lib` to update `scope-manager`
+1. Once all PRs needed for the RC update PR are merged, merge the RC update PR
+1. Once TypeScript releases the stable X.Y version, create and merge a PR with a title like `chore: bump TypeScript from X.YRC to X.Y` and the following changes:
+   - In the root `package.json`, remove `|| X.Y.2-rc2` from the `dependency` on `typescript`, and bump its `<` version to the next version of TypeScript
+   - In the root `package.json`, change the `devDependency` on `typescript` to `~X.Y.3`
+   - Rename and update `patches/typescript*` to the new TypeScript version
+   - Any other changes made necessary due to changes in TypeScript between the RC version and stable version
+   - Update the supported version range in [Versioning](../Versioning.md)
+1. Update [Versioning > TypeScript](../Versioning.md#typescript)
+1. Send a PR that updates this documentation page to point to your newer issues and PRs
+   - Also update any of these steps if you go with a different process
+
+See for reference (caveat: these don't follow the exact process described here):
+
+- [TypeScript 4.7 Support](https://github.com/typescript-eslint/typescript-eslint/issues/4800)
+- [TypeScript 4.8 Support](https://github.com/typescript-eslint/typescript-eslint/issues/5227)
+- [feat: support TypeScript 4.8](https://github.com/typescript-eslint/typescript-eslint/pull/5551)
+- [feat: support TypeScript 4.9](https://github.com/typescript-eslint/typescript-eslint/pull/5716)
+- [chore: bump TS from 4.9RC to 4.9](https://github.com/typescript-eslint/typescript-eslint/commit/a40a311bb52a2b1cfac43851b201f8cfc96c8d5d)
+
+### Removing Support for an Old TypeScript Version
+
+A single PR can remove support for old TypeScript versions as a breaking change:
+
+1. Update the root `package.json` `devDependency`
+1. Update the `SUPPORTED_TYPESCRIPT_VERSIONS` constant in `warnAboutTSVersion.ts`
+1. Update the `versions` constant in `version-check.ts`
+1. Update [Versioning > TypeScript](../Versioning.md#typescript)
+1. Search for source code comments (excluding `CHANGELOG.md` files) that mention a now-unsupported version of TypeScript.
+   - For example, to remove support for v4.3, searches might include:
+     - `4.3`
+     - `/is.*4.*3/i`
+     - `/semver.*4.*3/i`
+     - `/semver.satisfies/`
+     - `/todo.*ts/i`
+     - `/todo.*typescript/i`
+
+See [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915).
