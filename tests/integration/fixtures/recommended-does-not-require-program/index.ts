@@ -1,1 +1,2 @@
-var foo: any = true;
+let foo = true;
+console.log(foo);
