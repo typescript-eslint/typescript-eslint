@@ -72,7 +72,7 @@ export default util.createRule<Options, MessageIds>({
           },
           allowIIFEs: {
             description:
-              'Whether to ignore functions immediately invoked (IIFEs).',
+              'Whether to ignore immediately invoked function expressions (IIFEs).',
             type: 'boolean',
           },
         },
@@ -152,7 +152,7 @@ export default util.createRule<Options, MessageIds>({
     ): boolean {
       return (
         node.parent?.type === AST_NODE_TYPES.CallExpression &&
-        node.parent?.callee === node
+        node.parent.callee === node
       );
     }
 

@@ -581,6 +581,30 @@ const foo = (() => {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = ((arg: number): number => {
+  return arg;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (() => (() => 'foo')())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
