@@ -17,8 +17,8 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
         "message": "'foo' is assigned a value but never used.",
         "messageId": "unusedVar",
         "nodeType": "Identifier",
-        "ruleId": "no-unused-vars",
-        "severity": 1,
+        "ruleId": "@typescript-eslint/no-unused-vars",
+        "severity": 2,
       },
     ],
     "output": "const foo: any = true;
