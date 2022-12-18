@@ -49,8 +49,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const classScopeStack: ClassScope[] = [];
 
     function handlePropertyAccessExpression(
@@ -146,7 +146,7 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (ts.isConstructorDeclaration(tsNode)) {
         return false;
       }
@@ -161,16 +161,14 @@ export default util.createRule<Options, MessageIds>({
         ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
       ) {
         return {
-          esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
-          nameNode: parserServices.tsNodeToESTreeNodeMap.get(
-            violatingNode.name,
-          ),
+          esNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
+          nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
         };
       }
 
       return {
-        esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode),
-        nameNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
+        esNode: services.tsNodeToESTreeNodeMap.get(violatingNode),
+        nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
       };
     }
 
@@ -181,7 +179,7 @@ export default util.createRule<Options, MessageIds>({
         classScopeStack.push(
           new ClassScope(
             checker,
-            parserServices.esTreeNodeToTSNodeMap.get(node),
+            services.esTreeNodeToTSNodeMap.get(node),
             onlyInlineLambdas,
           ),
         );
@@ -205,7 +203,7 @@ export default util.createRule<Options, MessageIds>({
       },
       MemberExpression(node): void {
         if (classScopeStack.length !== 0 && !node.computed) {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+          const tsNode = services.esTreeNodeToTSNodeMap.get(
             node,
           ) as ts.PropertyAccessExpression;
           handlePropertyAccessExpression(
@@ -224,7 +222,7 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
-            parserServices.esTreeNodeToTSNodeMap.get(node),
+            services.esTreeNodeToTSNodeMap.get(node),
           );
         } else if (isFunctionScopeBoundaryInStack(node)) {
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();

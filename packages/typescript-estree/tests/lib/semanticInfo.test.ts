@@ -7,7 +7,10 @@ import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForPr
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
 import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
-import type { TSESTreeOptions } from '../../src/parser-options';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESTreeOptions,
+} from '../../src/parser-options';
 import type { TSESTree } from '../../src/ts-estree';
 import {
   createSnapshotTestBlock,
@@ -80,8 +83,17 @@ describe('semanticInfo', () => {
       ...options,
       project: ['./tsconfig.json'],
     };
-    expect(parseAndGenerateServices(code, optionsProjectString)).toEqual(
-      parseAndGenerateServices(code, optionsProjectArray),
+    const fromString = parseAndGenerateServices(code, optionsProjectString);
+    const fromArray = parseAndGenerateServices(code, optionsProjectArray);
+
+    expect(fromString.services.program).toBe(fromArray.services.program);
+
+    expect(fromString.ast).toEqual(fromArray.ast);
+    expect(fromString.services.esTreeNodeToTSNodeMap).toEqual(
+      fromArray.services.esTreeNodeToTSNodeMap,
+    );
+    expect(fromString.services.tsNodeToESTreeNodeMap).toEqual(
+      fromArray.services.tsNodeToESTreeNodeMap,
     );
   });
 

@@ -435,11 +435,10 @@ function isCorrectType(
     return true;
   }
 
-  const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
-  const checker = program.getTypeChecker();
-  const tsNode = esTreeNodeToTSNodeMap.get(node);
-  const type = checker
-    .getTypeAtLocation(tsNode)
+  const services = util.getParserServices(context);
+  const checker = services.program.getTypeChecker();
+  const type = services
+    .getTypeAtLocation(node)
     // remove null and undefined from the type, as we don't care about it here
     .getNonNullableType();
 

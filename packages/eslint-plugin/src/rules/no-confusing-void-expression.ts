@@ -80,10 +80,8 @@ export default util.createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+        const services = util.getParserServices(context);
+        const type = util.getConstrainedTypeAtLocation(services, node);
         if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;

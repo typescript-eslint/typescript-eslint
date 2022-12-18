@@ -46,8 +46,8 @@ export default util.createRule({
   defaultOptions: ['in-try-catch'],
 
   create(context, [option]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     const scopeInfoStack: ScopeInfo[] = [];
@@ -301,7 +301,7 @@ export default util.createRule({
       ): void {
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
           findPossiblyReturnedNodes(node.body).forEach(node => {
-            const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+            const tsNode = services.esTreeNodeToTSNodeMap.get(node);
             test(node, tsNode);
           });
         }
@@ -312,7 +312,7 @@ export default util.createRule({
           return;
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+          const tsNode = services.esTreeNodeToTSNodeMap.get(node);
           test(node, tsNode);
         });
       },

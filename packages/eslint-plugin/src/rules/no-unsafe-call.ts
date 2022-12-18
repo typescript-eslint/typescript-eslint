@@ -32,9 +32,8 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
-    const compilerOptions = program.getCompilerOptions();
+    const services = util.getParserServices(context);
+    const compilerOptions = services.program.getCompilerOptions();
     const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
@@ -45,8 +44,7 @@ export default util.createRule<[], MessageIds>({
       reportingNode: TSESTree.Node,
       messageId: MessageIds,
     ): void {
-      const tsNode = esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+      const type = util.getConstrainedTypeAtLocation(services, node);
 
       if (util.isTypeAnyType(type)) {
         if (!isNoImplicitThis) {
@@ -55,10 +53,7 @@ export default util.createRule<[], MessageIds>({
           if (
             thisExpression &&
             util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
-                checker,
-                esTreeNodeToTSNodeMap.get(thisExpression),
-              ),
+              util.getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeCallThis';

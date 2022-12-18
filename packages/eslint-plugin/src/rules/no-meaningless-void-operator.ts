@@ -47,8 +47,8 @@ export default util.createRule<
   defaultOptions: [{ checkNever: false }],
 
   create(context, [{ checkNever }]) {
-    const parserServices = ESLintUtils.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = ESLintUtils.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     return {
@@ -60,10 +60,7 @@ export default util.createRule<
           ]);
         };
 
-        const argTsNode = parserServices.esTreeNodeToTSNodeMap.get(
-          node.argument,
-        );
-        const argType = checker.getTypeAtLocation(argTsNode);
+        const argType = services.getTypeAtLocation(node.argument);
         const unionParts = tsutils.unionTypeParts(argType);
         if (
           unionParts.every(

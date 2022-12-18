@@ -59,8 +59,8 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     return {
@@ -137,9 +137,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       // Check the type. At this point it can't be unhandled if it isn't a promise
-      if (
-        !isPromiseLike(checker, parserServices.esTreeNodeToTSNodeMap.get(node))
-      ) {
+      if (!isPromiseLike(checker, services.esTreeNodeToTSNodeMap.get(node))) {
         return false;
       }
 

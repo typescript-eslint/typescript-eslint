@@ -192,7 +192,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
+    const services = util.getParserServices(context);
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
     function getTypeNodeTypePartFlags(
@@ -228,9 +228,7 @@ export default util.createRule({
         return typeNode.types.flatMap(getTypeNodeTypePartFlags);
       }
 
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(typeNode);
-      const checker = parserServices.program.getTypeChecker();
-      const nodeType = checker.getTypeAtLocation(tsNode);
+      const nodeType = services.getTypeAtLocation(typeNode);
       const typeParts = unionTypePartsUnlessBoolean(nodeType);
 
       return typeParts.map(typePart => ({

@@ -40,18 +40,16 @@ export default createRule({
   create(context) {
     const globalScope = context.getScope();
     const sourceCode = context.getSourceCode();
-    const service = getParserServices(context);
-    const typeChecker = service.program.getTypeChecker();
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     /**
      * Check if a given node is a string.
      * @param node The node to check.
      */
     function isStringType(node: TSESTree.LeftHandSideExpression): boolean {
-      const objectType = typeChecker.getTypeAtLocation(
-        service.esTreeNodeToTSNodeMap.get(node),
-      );
-      return getTypeName(typeChecker, objectType) === 'string';
+      const objectType = services.getTypeAtLocation(node);
+      return getTypeName(checker, objectType) === 'string';
     }
 
     /**

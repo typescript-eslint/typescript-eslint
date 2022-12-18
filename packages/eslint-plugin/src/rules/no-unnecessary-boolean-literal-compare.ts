@@ -80,8 +80,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -91,9 +90,7 @@ export default util.createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const expressionType = checker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(comparison.expression),
-      );
+      const expressionType = services.getTypeAtLocation(comparison.expression);
 
       if (isBooleanType(expressionType)) {
         return {
