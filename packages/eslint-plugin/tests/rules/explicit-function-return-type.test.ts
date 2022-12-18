@@ -558,6 +558,19 @@ const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
     {
       filename: 'test.ts',
       code: `
+let foo = function (): number {
+  return 1;
+};
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
 const foo = (function () {
   return 1;
 })();
