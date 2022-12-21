@@ -377,28 +377,16 @@ export default util.createRule({
      * Gets a normalized representation of the given MemberExpression
      */
     function getMemberExpressionText(node: TSESTree.MemberExpression): string {
-      if (
-        [
-          AST_NODE_TYPES.TSAsExpression,
-          AST_NODE_TYPES.AwaitExpression,
-          AST_NODE_TYPES.NewExpression,
-        ].includes(node.object.type)
-      ) {
-        return '';
-      }
       let objectText: string;
 
       // cases should match the list in ALLOWED_MEMBER_OBJECT_TYPES
       switch (node.object.type) {
-        case AST_NODE_TYPES.CallExpression:
-        case AST_NODE_TYPES.Identifier:
-          objectText = getText(node.object);
-          break;
-
         case AST_NODE_TYPES.MemberExpression:
           objectText = getMemberExpressionText(node.object);
           break;
 
+        case AST_NODE_TYPES.CallExpression:
+        case AST_NODE_TYPES.Identifier:
         case AST_NODE_TYPES.MetaProperty:
         case AST_NODE_TYPES.ThisExpression:
           objectText = getText(node.object);
@@ -406,7 +394,7 @@ export default util.createRule({
 
         /* istanbul ignore next */
         default:
-          throw new Error(`Unexpected member object type: ${node.object.type}`);
+          return '';
       }
 
       let propertyText: string;
@@ -429,9 +417,7 @@ export default util.createRule({
 
           /* istanbul ignore next */
           default:
-            throw new Error(
-              `Unexpected member property type: ${node.object.type}`,
-            );
+            return '';
         }
 
         return `${objectText}${node.optional ? '?.' : ''}[${propertyText}]`;
@@ -442,20 +428,7 @@ export default util.createRule({
             propertyText = getText(node.property);
             break;
 
-          /* istanbul ignore next */
           default:
-            if (
-              ![
-                AST_NODE_TYPES.Identifier,
-                AST_NODE_TYPES.ThisExpression,
-                AST_NODE_TYPES.CallExpression,
-                AST_NODE_TYPES.MemberExpression,
-              ].includes(node.object.type)
-            ) {
-              throw new Error(
-                `Unexpected member property type: ${node.object.type}`,
-              );
-            }
             propertyText = sourceCode.getText(node.property);
         }
 
