@@ -1673,6 +1673,18 @@ export class Converter {
 
       case SyntaxKind.ClassDeclaration:
       case SyntaxKind.ClassExpression: {
+        if (
+          this.options.errorOnInvalidAST &&
+          node.modifiers?.length === 1 &&
+          node.modifiers[0].kind === ts.SyntaxKind.ExportKeyword
+        ) {
+          throw createError(
+            this.ast,
+            node.pos,
+            "A class declaration without the 'default' modifier must have a name.",
+          );
+        }
+
         const heritageClauses = node.heritageClauses ?? [];
         const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration

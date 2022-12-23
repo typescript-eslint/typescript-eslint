@@ -285,6 +285,12 @@ describe('convert', () => {
     );
 
     generateTest(
+      'an exported class declaration without a name',
+      'export class { }',
+      "A class declaration without the 'default' modifier must have a name.",
+    );
+
+    generateTest(
       'a variable declaration with no variables',
       'const;',
       'A variable declaration list must have at least one variable declarator.',
