@@ -7,6 +7,12 @@ import type {
 } from '../../src/util';
 import { noFormat, RuleTester } from '../RuleTester';
 
+type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
+type InvalidTestCase = TSESLint.InvalidTestCase<
+  MessageIds,
+  InferOptionsTypeFromRule<typeof rule>
+>;
+
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
@@ -149,10 +155,7 @@ const baseCases = [
           ],
         },
       ],
-    } as TSESLint.InvalidTestCase<
-      InferMessageIdsTypeFromRule<typeof rule>,
-      InferOptionsTypeFromRule<typeof rule>
-    >),
+    } as InvalidTestCase),
 );
 
 ruleTester.run('prefer-optional-chain', rule, {
@@ -233,32 +236,12 @@ ruleTester.run('prefer-optional-chain', rule, {
     ...baseCases.map(c => ({
       ...c,
       code: `${c.code} && bing`,
-      errors: [
-        {
-          ...c.errors[0],
-          suggestions: [
-            {
-              ...c.errors[0].suggestions![0],
-              output: `${c.errors[0].suggestions![0].output} && bing`,
-            },
-          ],
-        },
-      ],
+      errors: errorsWithOutput(c, o => `${o} && bing`),
     })),
     ...baseCases.map(c => ({
       ...c,
       code: `${c.code} && bing.bong`,
-      errors: [
-        {
-          ...c.errors[0],
-          suggestions: [
-            {
-              ...c.errors[0].suggestions![0],
-              output: `${c.errors[0].suggestions![0].output} && bing.bong`,
-            },
-          ],
-        },
-      ],
+      errors: errorsWithOutput(c, o => `${o} && bing.bong`),
     })),
     // strict nullish equality checks x !== null && x.y !== null
     ...baseCases.map(c => ({
@@ -1214,17 +1197,7 @@ foo?.bar(/* comment */a,
     ...baseCases.map(c => ({
       ...c,
       code: c.code.replace(/foo/g, '!foo').replace(/&&/g, '||'),
-      errors: [
-        {
-          ...c.errors[0],
-          suggestions: [
-            {
-              ...c.errors[0].suggestions![0],
-              output: `!${c.errors[0].suggestions![0].output}`,
-            },
-          ],
-        },
-      ],
+      errors: errorsWithOutput(c, o => `!${o}`),
     })),
     // case with this keyword at the start of expression
     {
@@ -1402,3 +1375,21 @@ foo?.bar(/* comment */a,
     },
   ],
 });
+
+function errorsWithOutput(
+  c: InvalidTestCase,
+  adjustOutput: (output: string) => string,
+): InvalidTestCase['errors'] {
+  const error = (c.errors as TSESLint.TestCaseError<MessageIds>[])[0];
+  return [
+    {
+      ...error,
+      suggestions: [
+        {
+          ...error.suggestions![0],
+          output: adjustOutput(error.suggestions![0].output),
+        },
+      ],
+    },
+  ];
+}

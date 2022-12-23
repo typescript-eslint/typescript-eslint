@@ -1208,9 +1208,10 @@ const test = <T extends Partial<never>>() => {};
         output: code.replace(/any/, 'never'),
       },
     ];
+    const errors = testCase.errors as TSESLint.TestCaseError<MessageIds>[];
     acc.push({
       ...testCase,
-      errors: testCase.errors.map(e => ({
+      errors: errors.map(e => ({
         ...e,
         suggestions: e.suggestions ?? suggestions(testCase.code),
       })),
@@ -1221,7 +1222,7 @@ const test = <T extends Partial<never>>() => {};
       code,
       output: code.replace(/any/g, 'unknown'),
       options: [{ ...options[0], fixToUnknown: true }],
-      errors: testCase.errors.map(err => {
+      errors: errors.map(err => {
         if (err.line === undefined) {
           return err;
         }
