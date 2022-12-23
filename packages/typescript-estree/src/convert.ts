@@ -24,6 +24,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  nodeHasIllegalDecorators,
   unescapeStringLiteralText,
 } from './node-utils';
 import type {
@@ -37,8 +38,9 @@ import { AST_NODE_TYPES } from './ts-estree';
 const SyntaxKind = ts.SyntaxKind;
 
 interface ConverterOptions {
-  errorOnUnknownASTType: boolean;
-  shouldPreserveNodeMaps: boolean;
+  errorOnInvalidAST?: boolean;
+  errorOnUnknownASTType?: boolean;
+  shouldPreserveNodeMaps?: boolean;
 }
 
 /**
@@ -76,7 +78,7 @@ export class Converter {
    * @param options additional options for the conversion
    * @returns the converted ESTreeNode
    */
-  constructor(ast: ts.SourceFile, options: ConverterOptions) {
+  constructor(ast: ts.SourceFile, options: ConverterOptions = {}) {
     this.ast = ast;
     this.options = { ...options };
   }
@@ -239,17 +241,16 @@ export class Converter {
   }
 
   /**
-   * Converts a TypeScript node into an ESTree node.
-   * @param child the child ts.Node
-   * @param parent parentNode
-   * @returns the converted ESTree node
+   * Converts a TypeScript child node into an ESTree node, throwing an error
+   * if the child is not defined and options.errorOnInvalidAST is true.
+   * @returns The converted ESTree node.
    */
-  private convertChildNonNull(
+  private convertChildStrict(
     child: ts.Node | undefined,
     parent: ts.Node,
     message: string,
   ): any | null {
-    if (!child) {
+    if (!child && this.options.errorOnInvalidAST) {
       throw createError(this.ast, parent.pos, message);
     }
     return this.converter(child, parent, this.inTypeMode, false);
@@ -868,11 +869,7 @@ export class Converter {
       case SyntaxKind.ThrowStatement:
         return this.createNode<TSESTree.ThrowStatement>(node, {
           type: AST_NODE_TYPES.ThrowStatement,
-          argument: this.convertChildNonNull(
-            node.expression,
-            node,
-            'A throw statement must throw an argument.',
-          ),
+          argument: this.convertChild(node.expression),
         });
 
       case SyntaxKind.TryStatement:
@@ -1004,6 +1001,8 @@ export class Converter {
       }
 
       case SyntaxKind.VariableStatement: {
+        this.#checkIllegalDecorators(node);
+
         const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: node.declarationList.declarations.map(el =>
@@ -1012,8 +1011,10 @@ export class Converter {
           kind: getDeclarationKind(node.declarationList),
         });
 
-        if (result.declarations.length) {
+        if (this.options.errorOnInvalidAST && !result.declarations.length) {
           throw createError(
+            this.ast,
+            node.pos,
             'A variable declaration list must have at least one variable declarator.',
           );
         }
@@ -1770,11 +1771,7 @@ export class Converter {
 
         const result = this.createNode<TSESTree.ImportDeclaration>(node, {
           type: AST_NODE_TYPES.ImportDeclaration,
-          source: this.convertChildNonNull(
-            node.moduleSpecifier,
-            node,
-            'An import statement must import an argument.',
-          ),
+          source: this.convertChild(node.moduleSpecifier),
           specifiers: [],
           importKind: 'value',
           assertions: this.convertAssertClasue(node.assertClause),
@@ -2726,6 +2723,8 @@ export class Converter {
       }
 
       case SyntaxKind.EnumDeclaration: {
+        this.#checkIllegalDecorators(node);
+
         const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
           type: AST_NODE_TYPES.TSEnumDeclaration,
           id: this.convertChild(node.name),
@@ -2951,6 +2950,12 @@ export class Converter {
 
       default:
         return this.deeplyCopy(node);
+    }
+  }
+
+  #checkIllegalDecorators(node: ts.Node): void {
+    if (this.options.errorOnInvalidAST && nodeHasIllegalDecorators(node)) {
+      throw createError(this.ast, node.pos, 'Decorators are not valid here.');
     }
   }
 }

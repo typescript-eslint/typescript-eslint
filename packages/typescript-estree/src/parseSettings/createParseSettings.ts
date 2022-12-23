@@ -41,6 +41,7 @@ export function createParseSettings(
         : Array.isArray(options.debugLevel)
         ? new Set(options.debugLevel)
         : new Set(),
+    errorOnInvalidAST: options.errorOnInvalidAST === true,
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:

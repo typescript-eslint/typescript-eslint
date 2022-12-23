@@ -42,6 +42,11 @@ export interface MutableParseSettings {
   debugLevel: Set<DebugModule>;
 
   /**
+   * Whether to throw an error when a required node child does not exist.
+   */
+  errorOnInvalidAST: boolean;
+
+  /**
    * Whether to error if TypeScript reports a semantic or syntactic error diagnostic.
    */
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;

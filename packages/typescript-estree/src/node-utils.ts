@@ -628,6 +628,13 @@ export function createError(
   return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
 }
 
+export function nodeHasIllegalDecorators(node: ts.Node): boolean {
+  return !!(
+    'illegalDecorators' in node &&
+    (node.illegalDecorators as unknown[] | undefined)?.length
+  );
+}
+
 /**
  * @param n the TSNode
  * @param ast the TS AST
