@@ -267,6 +267,18 @@ describe('convert', () => {
     );
 
     generateTest(
+      'a decorator on an interface declaration',
+      '@decl interface _ {};',
+      'Decorators are not valid here.',
+    );
+
+    generateTest(
+      'a decorator on a type alias declaration',
+      '@decl type _ = {};',
+      'Decorators are not valid here.',
+    );
+
+    generateTest(
       'a decorator on a variable statement',
       '@decl let value;',
       'Decorators are not valid here.',

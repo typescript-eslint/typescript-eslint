@@ -2477,6 +2477,8 @@ export class Converter {
         return this.convertChild(node.expression, parent);
 
       case SyntaxKind.TypeAliasDeclaration: {
+        this.#checkIllegalDecorators(node);
+
         const result = this.createNode<TSESTree.TSTypeAliasDeclaration>(node, {
           type: AST_NODE_TYPES.TSTypeAliasDeclaration,
           id: this.convertChild(node.name),
@@ -2633,6 +2635,8 @@ export class Converter {
       }
 
       case SyntaxKind.InterfaceDeclaration: {
+        this.#checkIllegalDecorators(node);
+
         const interfaceHeritageClauses = node.heritageClauses ?? [];
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
           type: AST_NODE_TYPES.TSInterfaceDeclaration,
