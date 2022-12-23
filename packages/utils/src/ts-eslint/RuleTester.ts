@@ -80,7 +80,9 @@ interface InvalidTestCase<
   /**
    * Expected errors.
    */
-  readonly errors: readonly TestCaseError<TMessageIds>[];
+  readonly errors:
+    | readonly (TestCaseError<TMessageIds> | TMessageIds)[]
+    | number;
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
