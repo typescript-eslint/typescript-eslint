@@ -2,6 +2,7 @@ import type {
   InvalidTestCase,
   ValidTestCase,
 } from '../eslint-utils/rule-tester/RuleTester';
+import type { TestCaseError } from '../ts-eslint';
 
 /**
  * Converts a batch of single line tests into a number of separate test cases.
@@ -29,13 +30,19 @@ function batchedSingleLineTests<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>,
 >(
-  test: InvalidTestCase<TMessageIds, TOptions>,
+  test: Omit<InvalidTestCase<TMessageIds, TOptions>, 'errors'> & {
+    errors: readonly TestCaseError<TMessageIds>[];
+  },
 ): InvalidTestCase<TMessageIds, TOptions>[];
 function batchedSingleLineTests<
   TMessageIds extends string,
   TOptions extends Readonly<unknown[]>,
 >(
-  options: ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>,
+  options:
+    | ValidTestCase<TOptions>
+    | (Omit<InvalidTestCase<TMessageIds, TOptions>, 'errors'> & {
+        errors: readonly TestCaseError<TMessageIds>[];
+      }),
 ): (ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>)[] {
   // -- eslint counts lines from 1
   const lineOffset = options.code.startsWith('\n') ? 2 : 1;
