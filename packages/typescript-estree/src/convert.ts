@@ -254,12 +254,8 @@ export class Converter {
     data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
     const result = data;
-    if (!result.range) {
-      result.range = getRange(node, this.ast);
-    }
-    if (!result.loc) {
-      result.loc = getLocFor(result.range[0], result.range[1], this.ast);
-    }
+    result.range ??= getRange(node, this.ast);
+    result.loc ??= getLocFor(result.range[0], result.range[1], this.ast);
 
     if (result && this.options.shouldPreserveNodeMaps) {
       this.esTreeNodeToTSNodeMap.set(result, node);
@@ -733,6 +729,41 @@ export class Converter {
         'Module specifier must be a string literal.',
       );
     }
+  }
+
+  /**
+   * @remarks
+   * TypeScript produces a nested body AST for Identifier names like `abc.def`.
+   * This unravels their body blocks and accumulates the name if necessary.
+   */
+  private collectModuleDeclaration(
+    node: ts.ModuleDeclaration,
+  ): [ts.Identifier | ts.ModuleBlock | undefined, TSESTree.Identifier] {
+    const startingNode = node;
+
+    // String literal names (e.g. `declare module "abc"`) won't be nested.
+    if (ts.isStringLiteral(startingNode.name)) {
+      return [
+        node.body as ts.ModuleBlock | undefined,
+        this.convertChild(node.name),
+      ];
+    }
+
+    let name = node.name.text;
+
+    while (node.body && ts.isModuleDeclaration(node.body)) {
+      node = node.body;
+      name = `${name}.${node.name.text}`;
+    }
+
+    return [
+      node.body,
+      this.createNode(startingNode.name, {
+        name,
+        range: [startingNode.name.getStart(this.ast), node.name.getEnd()],
+        type: AST_NODE_TYPES.Identifier,
+      }),
+    ];
   }
 
   /**
@@ -2728,12 +2759,13 @@ export class Converter {
       }
 
       case SyntaxKind.ModuleDeclaration: {
+        const [body, id] = this.collectModuleDeclaration(node);
         const result = this.createNode<TSESTree.TSModuleDeclaration>(node, {
           type: AST_NODE_TYPES.TSModuleDeclaration,
-          id: this.convertChild(node.name),
+          id,
         });
-        if (node.body) {
-          result.body = this.convertChild(node.body);
+        if (body) {
+          result.body = this.convertChild(body);
         }
         // apply modifiers first...
         if (hasModifier(SyntaxKind.DeclareKeyword, node)) {

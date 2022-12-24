@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-name TSESTree - AST 1`] = `
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: Array [
@@ -10,33 +10,33 @@ Program {
         type: "TSModuleBlock",
         body: Array [],
 
-        range: [16, 18],
+        range: [22, 24],
         loc: {
-          start: { column: 16, line: 1 },
-          end: { column: 18, line: 1 },
+          start: { column: 22, line: 1 },
+          end: { column: 24, line: 1 },
         },
       },
       id: Identifier {
         type: "Identifier",
-        name: "A.B.C",
+        name: "abc.def.ghi",
 
-        range: [10, 15],
+        range: [10, 21],
         loc: {
           start: { column: 10, line: 1 },
-          end: { column: 15, line: 1 },
+          end: { column: 21, line: 1 },
         },
       },
 
-      range: [0, 18],
+      range: [0, 24],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 18, line: 1 },
+        end: { column: 24, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 19],
+  range: [0, 25],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },
