@@ -133,6 +133,23 @@ const baseCases = [
     code: 'foo.bar && foo.bar?.() && foo.bar?.().baz',
     output: 'foo.bar?.()?.baz',
   },
+  // private properties
+  {
+    code: 'foo.#bar && foo.#bar.baz',
+    output: 'foo.#bar?.baz',
+  },
+  {
+    code: 'foo && foo.#bar',
+    output: 'foo?.#bar',
+  },
+  {
+    code: 'foo && foo[bar.#baz]',
+    output: 'foo?.[bar.#baz]',
+  },
+  {
+    code: 'foo[bar.#baz] && foo[bar.#baz].buzz',
+    output: 'foo[bar.#baz]?.buzz',
+  },
 ].map(
   c =>
     ({
@@ -197,8 +214,6 @@ ruleTester.run('prefer-optional-chain', rule, {
     // private properties
     'this.#a && this.#b;',
     '!this.#a || !this.#b;',
-    'a.#foo && a.#foo.bar;',
-    '!a.#foo || !a.#foo.bar;',
     'a.#foo?.bar;',
     '!a.#foo?.bar;',
     '!foo().#a || a;',
@@ -1396,7 +1411,6 @@ foo?.bar(/* comment */a,
         },
       ],
     },
-
     {
       code: noFormat`import.meta && import.meta?.() && import.meta?.().baz;`,
       output: null,
@@ -1407,6 +1421,21 @@ foo?.bar(/* comment */a,
             {
               messageId: 'optionalChainSuggest',
               output: noFormat`import.meta?.()?.baz;`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'a[a.#b] && a[a.#b].c;',
+      output: null,
+      errors: [
+        {
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: 'a[a.#b]?.c;',
             },
           ],
         },

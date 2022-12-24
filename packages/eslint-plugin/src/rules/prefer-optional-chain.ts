@@ -10,6 +10,7 @@ type ValidChainTarget =
   | TSESTree.CallExpression
   | TSESTree.ChainExpression
   | TSESTree.Identifier
+  | TSESTree.PrivateIdentifier
   | TSESTree.MemberExpression
   | TSESTree.ThisExpression
   | TSESTree.MetaProperty;
@@ -343,7 +344,10 @@ export default util.createRule({
         return `${calleeText}${argumentsText}`;
       }
 
-      if (node.type === AST_NODE_TYPES.Identifier) {
+      if (
+        node.type === AST_NODE_TYPES.Identifier ||
+        node.type === AST_NODE_TYPES.PrivateIdentifier
+      ) {
         return node.name;
       }
 
@@ -427,6 +431,9 @@ export default util.createRule({
           case AST_NODE_TYPES.Identifier:
             propertyText = getText(node.property);
             break;
+          case AST_NODE_TYPES.PrivateIdentifier:
+            propertyText = '#' + getText(node.property);
+            break;
 
           default:
             propertyText = sourceCode.getText(node.property);
@@ -441,18 +448,21 @@ export default util.createRule({
 const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.CallExpression,
   AST_NODE_TYPES.Identifier,
+  AST_NODE_TYPES.PrivateIdentifier,
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.ThisExpression,
   AST_NODE_TYPES.MetaProperty,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
+  AST_NODE_TYPES.PrivateIdentifier,
   AST_NODE_TYPES.Literal,
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.TemplateLiteral,
 ]);
 const ALLOWED_NON_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
+  AST_NODE_TYPES.PrivateIdentifier,
 ]);
 
 interface ReportIfMoreThanOneOptions {
@@ -612,6 +622,7 @@ function isValidChainTarget(
   if (
     allowIdentifier &&
     (node.type === AST_NODE_TYPES.Identifier ||
+      node.type === AST_NODE_TYPES.PrivateIdentifier ||
       node.type === AST_NODE_TYPES.ThisExpression ||
       node.type === AST_NODE_TYPES.MetaProperty)
   ) {
