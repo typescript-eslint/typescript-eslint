@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "x",
+        "optional": false,
         "range": Array [
           9,
           10,
@@ -65,6 +66,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
@@ -80,6 +82,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   13,
                   14,
@@ -98,6 +101,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 13,
                 14,
@@ -116,6 +120,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   13,
                   14,
@@ -137,6 +142,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   16,
                   17,
@@ -155,6 +161,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 16,
                 17,
@@ -173,6 +180,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   16,
                   17,

@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "static",
+              "optional": false,
               "range": Array [
                 16,
                 22,
@@ -114,6 +115,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

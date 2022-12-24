@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "f",
+        "optional": false,
         "range": Array [
           9,
           10,
@@ -67,6 +68,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               11,
               12,
@@ -83,6 +85,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             11,
             16,

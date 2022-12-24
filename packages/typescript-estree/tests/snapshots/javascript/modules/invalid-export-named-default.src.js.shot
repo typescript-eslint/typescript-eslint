@@ -37,6 +37,7 @@ Object {
               },
             },
             "name": "default",
+            "optional": false,
             "range": Array [
               8,
               15,
@@ -65,6 +66,7 @@ Object {
               },
             },
             "name": "default",
+            "optional": false,
             "range": Array [
               8,
               15,

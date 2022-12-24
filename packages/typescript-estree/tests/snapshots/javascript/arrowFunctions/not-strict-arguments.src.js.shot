@@ -51,6 +51,7 @@ Object {
               },
             },
             "name": "arguments",
+            "optional": false,
             "range": Array [
               0,
               9,

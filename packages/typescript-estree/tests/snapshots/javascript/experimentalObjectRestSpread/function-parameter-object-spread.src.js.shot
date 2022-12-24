@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           9,
           12,
@@ -65,6 +66,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "argument": Object {
@@ -79,6 +81,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   17,
                   20,
@@ -95,6 +98,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 14,
                 20,

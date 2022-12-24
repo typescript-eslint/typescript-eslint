@@ -54,6 +54,7 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               8,
               11,
@@ -82,6 +83,7 @@ Object {
               },
             },
             "name": "baz",
+            "optional": false,
             "range": Array [
               15,
               18,

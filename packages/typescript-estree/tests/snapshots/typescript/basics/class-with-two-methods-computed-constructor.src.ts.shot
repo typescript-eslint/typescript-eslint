@@ -156,6 +156,7 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         26,
                         27,
@@ -328,6 +329,7 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         64,
                         65,
@@ -379,6 +381,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

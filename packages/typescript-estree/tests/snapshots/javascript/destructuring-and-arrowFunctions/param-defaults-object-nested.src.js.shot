@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 30,
                 31,
@@ -38,6 +39,7 @@ Object {
                 },
               },
               "name": "z",
+              "optional": false,
               "range": Array [
                 33,
                 34,
@@ -86,6 +88,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "properties": Array [
               Object {
                 "computed": false,
@@ -101,6 +104,7 @@ Object {
                     },
                   },
                   "name": "x",
+                  "optional": false,
                   "range": Array [
                     2,
                     3,
@@ -119,6 +123,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   2,
                   8,
@@ -138,6 +143,7 @@ Object {
                       },
                     },
                     "name": "x",
+                    "optional": false,
                     "range": Array [
                       2,
                       3,
@@ -154,6 +160,7 @@ Object {
                       "line": 1,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     2,
                     8,
@@ -194,6 +201,7 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     10,
                     11,
@@ -212,6 +220,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   10,
                   23,
@@ -229,6 +238,7 @@ Object {
                       "line": 1,
                     },
                   },
+                  "optional": false,
                   "properties": Array [
                     Object {
                       "computed": false,
@@ -244,6 +254,7 @@ Object {
                           },
                         },
                         "name": "z",
+                        "optional": false,
                         "range": Array [
                           15,
                           16,
@@ -262,6 +273,7 @@ Object {
                         },
                       },
                       "method": false,
+                      "optional": false,
                       "range": Array [
                         15,
                         21,
@@ -281,6 +293,7 @@ Object {
                             },
                           },
                           "name": "z",
+                          "optional": false,
                           "range": Array [
                             15,
                             16,
@@ -297,6 +310,7 @@ Object {
                             "line": 1,
                           },
                         },
+                        "optional": false,
                         "range": Array [
                           15,
                           21,

@@ -17,6 +17,7 @@ Object {
             },
           },
           "name": "a",
+          "optional": false,
           "range": Array [
             0,
             1,
@@ -78,6 +79,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   2,
                   3,
@@ -125,6 +127,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               8,
               9,
@@ -186,6 +189,7 @@ Object {
                     },
                   },
                   "name": "b",
+                  "optional": false,
                   "range": Array [
                     10,
                     11,
@@ -257,6 +261,7 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   14,
                   15,
@@ -305,6 +310,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               19,
               20,
@@ -366,6 +372,7 @@ Object {
                     },
                   },
                   "name": "b",
+                  "optional": false,
                   "range": Array [
                     21,
                     22,
@@ -438,6 +445,7 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   25,
                   26,
@@ -488,6 +496,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   32,
                   33,
@@ -549,6 +558,7 @@ Object {
                         },
                       },
                       "name": "b",
+                      "optional": false,
                       "range": Array [
                         34,
                         35,
@@ -620,6 +630,7 @@ Object {
                       },
                     },
                     "name": "c",
+                    "optional": false,
                     "range": Array [
                       38,
                       39,
@@ -714,6 +725,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   47,
                   48,
@@ -733,6 +745,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   50,
                   51,
@@ -816,6 +829,7 @@ Object {
                     },
                   },
                   "name": "c",
+                  "optional": false,
                   "range": Array [
                     52,
                     53,
@@ -888,6 +902,7 @@ Object {
                   },
                 },
                 "name": "d",
+                "optional": false,
                 "range": Array [
                   56,
                   57,
@@ -936,6 +951,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               67,
               68,
@@ -997,6 +1013,7 @@ Object {
                     },
                   },
                   "name": "b",
+                  "optional": false,
                   "range": Array [
                     69,
                     70,
@@ -1068,6 +1085,7 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   73,
                   74,

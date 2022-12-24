@@ -51,6 +51,7 @@ Object {
               },
             },
             "name": "eval",
+            "optional": false,
             "range": Array [
               0,
               4,

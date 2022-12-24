@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 12,
                 23,
@@ -94,6 +95,7 @@ Object {
                           },
                         },
                         "name": "d",
+                        "optional": false,
                         "range": Array [
                           25,
                           26,
@@ -117,7 +119,7 @@ Object {
                       "type": "Decorator",
                     },
                   ],
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 34,
@@ -128,7 +130,7 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -141,6 +143,7 @@ Object {
                       },
                     },
                     "name": "x",
+                    "optional": false,
                     "range": Array [
                       35,
                       44,
@@ -185,8 +188,8 @@ Object {
                     24,
                     44,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -226,6 +229,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

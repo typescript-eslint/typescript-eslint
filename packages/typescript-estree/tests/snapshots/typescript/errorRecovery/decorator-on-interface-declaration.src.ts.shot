@@ -22,6 +22,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -34,6 +35,7 @@ Object {
           },
         },
         "name": "M",
+        "optional": false,
         "range": Array [
           18,
           19,

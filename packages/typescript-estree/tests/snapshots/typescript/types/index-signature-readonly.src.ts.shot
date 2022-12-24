@@ -4,6 +4,7 @@ exports[`typescript types index-signature-readonly.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           5,
           8,
@@ -50,6 +52,7 @@ Object {
         },
         "members": Array [
           Object {
+            "export": false,
             "loc": Object {
               "end": Object {
                 "column": 33,
@@ -73,6 +76,7 @@ Object {
                   },
                 },
                 "name": "key",
+                "optional": false,
                 "range": Array [
                   25,
                   36,
@@ -119,6 +123,7 @@ Object {
               46,
             ],
             "readonly": true,
+            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {

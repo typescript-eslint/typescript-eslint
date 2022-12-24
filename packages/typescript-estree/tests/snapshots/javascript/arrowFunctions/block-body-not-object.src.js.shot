@@ -57,6 +57,7 @@ Object {
                   },
                 },
                 "name": "label",
+                "optional": false,
                 "range": Array [
                   7,
                   12,
@@ -122,6 +123,7 @@ Object {
               },
             },
             "name": "e",
+            "optional": false,
             "range": Array [
               0,
               1,

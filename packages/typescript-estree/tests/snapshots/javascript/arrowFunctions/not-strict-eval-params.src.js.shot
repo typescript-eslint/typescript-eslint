@@ -51,6 +51,7 @@ Object {
               },
             },
             "name": "eval",
+            "optional": false,
             "range": Array [
               1,
               5,
@@ -69,6 +70,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               7,
               8,

@@ -60,6 +60,7 @@ Object {
                 },
               },
               "name": "undefined",
+              "optional": false,
               "range": Array [
                 33,
                 42,
@@ -96,6 +97,7 @@ Object {
           },
         },
         "name": "X",
+        "optional": false,
         "range": Array [
           6,
           7,

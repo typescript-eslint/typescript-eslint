@@ -64,6 +64,7 @@ Object {
             },
           },
           "name": "e",
+          "optional": false,
           "range": Array [
             16,
             25,

@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
@@ -132,6 +133,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           6,
           9,

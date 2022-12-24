@@ -4,6 +4,7 @@ exports[`typescript types conditional-infer-with-constraint.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "X3",
+        "optional": false,
         "range": Array [
           5,
           7,
@@ -66,6 +68,7 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               13,
               14,
@@ -134,6 +137,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     30,
                     31,
@@ -224,6 +228,7 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               50,
               62,
@@ -270,6 +275,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     63,
                     64,
@@ -326,6 +332,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 8,
                 9,
@@ -348,6 +355,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -360,6 +368,7 @@ Object {
           },
         },
         "name": "X4",
+        "optional": false,
         "range": Array [
           80,
           82,
@@ -410,6 +419,7 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               88,
               89,
@@ -478,6 +488,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     105,
                     106,
@@ -550,6 +561,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     129,
                     130,
@@ -640,6 +652,7 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               149,
               161,
@@ -686,6 +699,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     162,
                     163,
@@ -742,6 +756,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 83,
                 84,
@@ -764,6 +779,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -776,6 +792,7 @@ Object {
           },
         },
         "name": "X5",
+        "optional": false,
         "range": Array [
           179,
           181,
@@ -826,6 +843,7 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               187,
               188,
@@ -894,6 +912,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     204,
                     205,
@@ -950,6 +969,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     228,
                     229,
@@ -1040,6 +1060,7 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               233,
               245,
@@ -1086,6 +1107,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     246,
                     247,
@@ -1142,6 +1164,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 182,
                 183,
@@ -1164,6 +1187,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -1176,6 +1200,7 @@ Object {
           },
         },
         "name": "X6",
+        "optional": false,
         "range": Array [
           263,
           265,
@@ -1226,6 +1251,7 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               271,
               272,
@@ -1278,6 +1304,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     288,
                     289,
@@ -1350,6 +1377,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     297,
                     298,
@@ -1440,6 +1468,7 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               317,
               329,
@@ -1486,6 +1515,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     330,
                     331,
@@ -1542,6 +1572,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 266,
                 267,
@@ -1564,6 +1595,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -1576,6 +1608,7 @@ Object {
           },
         },
         "name": "X7",
+        "optional": false,
         "range": Array [
           347,
           349,
@@ -1626,6 +1659,7 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               355,
               356,
@@ -1694,6 +1728,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     372,
                     373,
@@ -1766,6 +1801,7 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     396,
                     397,
@@ -1856,6 +1892,7 @@ Object {
               },
             },
             "name": "U",
+            "optional": false,
             "range": Array [
               416,
               417,
@@ -1904,6 +1941,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 350,
                 351,

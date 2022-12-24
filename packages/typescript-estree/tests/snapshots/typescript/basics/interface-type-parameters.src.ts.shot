@@ -22,6 +22,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -34,6 +35,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,
@@ -93,6 +95,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 14,
                 15,

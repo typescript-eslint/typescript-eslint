@@ -29,6 +29,7 @@ Object {
               },
             },
             "name": "module",
+            "optional": false,
             "range": Array [
               0,
               6,
@@ -48,6 +49,7 @@ Object {
               },
             },
             "name": "exports",
+            "optional": false,
             "range": Array [
               7,
               14,
@@ -126,6 +128,7 @@ Object {
                                           },
                                         },
                                         "name": "node",
+                                        "optional": false,
                                         "range": Array [
                                           172,
                                           176,
@@ -145,6 +148,7 @@ Object {
                                           },
                                         },
                                         "name": "expressions",
+                                        "optional": false,
                                         "range": Array [
                                           177,
                                           188,
@@ -195,6 +199,7 @@ Object {
                                               },
                                             },
                                             "name": "node",
+                                            "optional": false,
                                             "range": Array [
                                               189,
                                               193,
@@ -214,6 +219,7 @@ Object {
                                               },
                                             },
                                             "name": "expressions",
+                                            "optional": false,
                                             "range": Array [
                                               194,
                                               205,
@@ -239,6 +245,7 @@ Object {
                                             },
                                           },
                                           "name": "length",
+                                          "optional": false,
                                           "range": Array [
                                             206,
                                             212,
@@ -306,6 +313,7 @@ Object {
                                     },
                                   },
                                   "name": "isConstant",
+                                  "optional": false,
                                   "range": Array [
                                     161,
                                     171,
@@ -406,6 +414,7 @@ Object {
                             },
                           },
                           "name": "node",
+                          "optional": false,
                           "range": Array [
                             86,
                             90,
@@ -425,6 +434,7 @@ Object {
                             },
                           },
                           "name": "type",
+                          "optional": false,
                           "range": Array [
                             91,
                             95,
@@ -520,6 +530,7 @@ Object {
                     },
                   },
                   "name": "isConstant",
+                  "optional": false,
                   "range": Array [
                     51,
                     61,
@@ -549,6 +560,7 @@ Object {
                       },
                     },
                     "name": "node",
+                    "optional": false,
                     "range": Array [
                       62,
                       66,
@@ -605,6 +617,7 @@ Object {
                 },
               },
               "name": "context",
+              "optional": false,
               "range": Array [
                 26,
                 33,

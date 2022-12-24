@@ -239,6 +239,7 @@ Object {
             },
           },
           "name": "raw",
+          "optional": false,
           "range": Array [
             0,
             3,

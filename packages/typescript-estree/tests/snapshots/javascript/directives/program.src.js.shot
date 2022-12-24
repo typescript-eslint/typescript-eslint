@@ -43,6 +43,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -55,6 +56,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               18,
               19,
@@ -97,6 +99,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

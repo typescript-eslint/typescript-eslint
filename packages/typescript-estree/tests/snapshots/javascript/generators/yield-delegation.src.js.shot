@@ -22,6 +22,7 @@ Object {
                     },
                   },
                   "name": "v",
+                  "optional": false,
                   "range": Array [
                     23,
                     24,

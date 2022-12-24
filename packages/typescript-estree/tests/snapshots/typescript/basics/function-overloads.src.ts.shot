@@ -22,6 +22,7 @@ Object {
             },
           },
           "name": "f",
+          "optional": false,
           "range": Array [
             16,
             17,
@@ -51,6 +52,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               18,
               27,
@@ -170,6 +172,7 @@ Object {
             },
           },
           "name": "f",
+          "optional": false,
           "range": Array [
             54,
             55,
@@ -199,6 +202,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               56,
               65,
@@ -318,6 +322,7 @@ Object {
                   },
                 },
                 "name": "x",
+                "optional": false,
                 "range": Array [
                   142,
                   143,
@@ -371,6 +376,7 @@ Object {
             },
           },
           "name": "f",
+          "optional": false,
           "range": Array [
             92,
             93,
@@ -400,6 +406,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               94,
               112,

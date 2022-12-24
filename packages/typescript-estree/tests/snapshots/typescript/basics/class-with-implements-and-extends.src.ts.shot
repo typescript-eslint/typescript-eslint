@@ -34,6 +34,7 @@ Object {
           },
         },
         "name": "ClassWithParentAndInterface",
+        "optional": false,
         "range": Array [
           6,
           33,
@@ -54,6 +55,7 @@ Object {
               },
             },
             "name": "MyInterface",
+            "optional": false,
             "range": Array [
               45,
               56,
@@ -103,6 +105,7 @@ Object {
           },
         },
         "name": "MyOtherClass",
+        "optional": false,
         "range": Array [
           65,
           77,

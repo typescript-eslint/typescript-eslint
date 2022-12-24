@@ -9,7 +9,7 @@ export interface RestElement extends BaseNode {
   type: AST_NODE_TYPES.RestElement;
   argument: DestructuringPattern;
   typeAnnotation?: TSTypeAnnotation;
-  optional?: boolean;
+  optional: boolean;
   value?: AssignmentPattern;
   decorators?: Decorator[];
 }

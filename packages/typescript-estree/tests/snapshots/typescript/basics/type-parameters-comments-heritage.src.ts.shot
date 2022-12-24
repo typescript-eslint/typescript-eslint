@@ -34,6 +34,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           6,
           9,
@@ -66,6 +67,7 @@ Object {
           },
         },
         "name": "bar",
+        "optional": false,
         "range": Array [
           43,
           46,
@@ -112,6 +114,7 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 59,
                 60,
@@ -166,6 +169,7 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 22,
                 23,
@@ -218,6 +222,7 @@ Object {
           },
         },
         "name": "foo2",
+        "optional": false,
         "range": Array [
           81,
           85,
@@ -250,6 +255,7 @@ Object {
           },
         },
         "name": "bar",
+        "optional": false,
         "range": Array [
           133,
           136,
@@ -296,6 +302,7 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 149,
                 150,
@@ -385,6 +392,7 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 98,
                 99,
@@ -425,6 +433,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "extends": Array [
         Object {
           "expression": Object {
@@ -439,6 +448,7 @@ Object {
               },
             },
             "name": "bar2",
+            "optional": false,
             "range": Array [
               212,
               216,
@@ -500,6 +510,7 @@ Object {
                     },
                   },
                   "name": "A",
+                  "optional": false,
                   "range": Array [
                     229,
                     230,
@@ -529,6 +540,7 @@ Object {
           },
         },
         "name": "bar",
+        "optional": false,
         "range": Array [
           175,
           178,
@@ -588,6 +600,7 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 191,
                 192,
@@ -628,6 +641,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "extends": Array [
         Object {
           "expression": Object {
@@ -642,6 +656,7 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               307,
               310,
@@ -703,6 +718,7 @@ Object {
                     },
                   },
                   "name": "A",
+                  "optional": false,
                   "range": Array [
                     323,
                     324,
@@ -732,6 +748,7 @@ Object {
           },
         },
         "name": "bar2",
+        "optional": false,
         "range": Array [
           255,
           259,
@@ -826,6 +843,7 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 272,
                 273,

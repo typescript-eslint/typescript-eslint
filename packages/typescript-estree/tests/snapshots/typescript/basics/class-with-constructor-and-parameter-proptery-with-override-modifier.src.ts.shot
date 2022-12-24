@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 53,
                 64,
@@ -134,7 +135,7 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 36,
@@ -158,6 +159,7 @@ Object {
                       },
                     },
                     "name": "param",
+                    "optional": false,
                     "range": Array [
                       74,
                       87,
@@ -202,8 +204,8 @@ Object {
                     65,
                     87,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -243,6 +245,7 @@ Object {
           },
         },
         "name": "SpecializedComponent",
+        "optional": false,
         "range": Array [
           6,
           26,
@@ -275,6 +278,7 @@ Object {
           },
         },
         "name": "SomeComponent",
+        "optional": false,
         "range": Array [
           35,
           48,

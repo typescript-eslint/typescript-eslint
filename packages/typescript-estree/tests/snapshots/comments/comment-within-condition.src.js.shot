@@ -49,6 +49,7 @@ Object {
           },
         },
         "name": "a",
+        "optional": false,
         "range": Array [
           25,
           26,

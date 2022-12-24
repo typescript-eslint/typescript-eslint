@@ -88,6 +88,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               15,
               16,
@@ -106,6 +107,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               18,
               19,

@@ -22,6 +22,7 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 22,
                 25,
@@ -98,6 +99,7 @@ Object {
                 },
               },
               "name": "baz",
+              "optional": false,
               "range": Array [
                 52,
                 55,
@@ -173,6 +175,7 @@ Object {
                 },
               },
               "name": "getBar",
+              "optional": false,
               "range": Array [
                 75,
                 81,
@@ -244,6 +247,7 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           103,
                           106,
@@ -325,6 +329,7 @@ Object {
                 },
               },
               "name": "setBar",
+              "optional": false,
               "range": Array [
                 124,
                 130,
@@ -397,6 +402,7 @@ Object {
                             },
                           },
                           "name": "bar",
+                          "optional": false,
                           "range": Array [
                             157,
                             160,
@@ -436,6 +442,7 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           163,
                           166,
@@ -503,6 +510,7 @@ Object {
                     },
                   },
                   "name": "bar",
+                  "optional": false,
                   "range": Array [
                     132,
                     144,
@@ -580,6 +588,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

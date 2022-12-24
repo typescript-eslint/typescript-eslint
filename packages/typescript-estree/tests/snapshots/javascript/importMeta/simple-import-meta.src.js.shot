@@ -39,6 +39,7 @@ Object {
               },
             },
             "name": "import",
+            "optional": false,
             "range": Array [
               0,
               6,
@@ -57,6 +58,7 @@ Object {
               },
             },
             "name": "meta",
+            "optional": false,
             "range": Array [
               7,
               11,
@@ -82,6 +84,7 @@ Object {
             },
           },
           "name": "url",
+          "optional": false,
           "range": Array [
             12,
             15,

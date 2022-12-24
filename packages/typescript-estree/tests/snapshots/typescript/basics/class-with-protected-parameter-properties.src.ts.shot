@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
@@ -80,7 +81,7 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 41,
@@ -91,7 +92,7 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -104,6 +105,7 @@ Object {
                       },
                     },
                     "name": "firstName",
+                    "optional": false,
                     "range": Array [
                       36,
                       53,
@@ -148,13 +150,13 @@ Object {
                     26,
                     53,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 49,
@@ -165,7 +167,7 @@ Object {
                       "line": 3,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -178,6 +180,7 @@ Object {
                       },
                     },
                     "name": "lastName",
+                    "optional": false,
                     "range": Array [
                       88,
                       104,
@@ -223,12 +226,12 @@ Object {
                     104,
                   ],
                   "readonly": true,
-                  "static": undefined,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -239,7 +242,7 @@ Object {
                       "line": 4,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "left": Object {
                       "loc": Object {
@@ -253,6 +256,7 @@ Object {
                         },
                       },
                       "name": "age",
+                      "optional": false,
                       "range": Array [
                         130,
                         141,
@@ -303,6 +307,7 @@ Object {
                         "line": 4,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       130,
                       146,
@@ -332,13 +337,13 @@ Object {
                     120,
                     146,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 57,
@@ -349,7 +354,7 @@ Object {
                       "line": 5,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "left": Object {
                       "loc": Object {
@@ -363,6 +368,7 @@ Object {
                         },
                       },
                       "name": "student",
+                      "optional": false,
                       "range": Array [
                         181,
                         197,
@@ -413,6 +419,7 @@ Object {
                         "line": 5,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       181,
                       205,
@@ -443,7 +450,7 @@ Object {
                     205,
                   ],
                   "readonly": true,
-                  "static": undefined,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -483,6 +490,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

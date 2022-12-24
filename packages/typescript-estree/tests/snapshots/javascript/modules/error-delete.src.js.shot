@@ -63,6 +63,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               7,
               8,
@@ -92,6 +93,7 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             26,
             27,

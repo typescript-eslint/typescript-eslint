@@ -64,6 +64,7 @@ Object {
             },
           },
           "name": "e",
+          "optional": false,
           "range": Array [
             16,
             22,
@@ -187,6 +188,7 @@ Object {
             },
           },
           "name": "e",
+          "optional": false,
           "range": Array [
             46,
             56,

@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "test",
+        "optional": false,
         "range": Array [
           9,
           13,
@@ -66,6 +67,7 @@ Object {
             },
           },
           "name": "abc",
+          "optional": false,
           "range": Array [
             14,
             38,
@@ -115,6 +117,7 @@ Object {
                   },
                 },
                 "name": "Map",
+                "optional": false,
                 "range": Array [
                   19,
                   22,

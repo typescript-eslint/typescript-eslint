@@ -22,6 +22,7 @@ Object {
                     },
                   },
                   "name": "adminonly",
+                  "optional": false,
                   "range": Array [
                     18,
                     27,
@@ -57,6 +58,7 @@ Object {
                 },
               },
               "name": "y",
+              "optional": false,
               "range": Array [
                 43,
                 44,
@@ -129,6 +131,7 @@ Object {
                             },
                           },
                           "name": "_y",
+                          "optional": false,
                           "range": Array [
                             63,
                             65,
@@ -168,6 +171,7 @@ Object {
                           },
                         },
                         "name": "a",
+                        "optional": false,
                         "range": Array [
                           68,
                           69,
@@ -235,6 +239,7 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     45,
                     46,
@@ -278,6 +283,7 @@ Object {
           },
         },
         "name": "User",
+        "optional": false,
         "range": Array [
           6,
           10,

@@ -33,6 +33,7 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "properties": Array [
           Object {
             "computed": false,
@@ -48,6 +49,7 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 7,
                 8,
@@ -66,6 +68,7 @@ Object {
               },
             },
             "method": false,
+            "optional": false,
             "range": Array [
               7,
               12,
@@ -84,6 +87,7 @@ Object {
                 },
               },
               "name": "xx",
+              "optional": false,
               "range": Array [
                 10,
                 12,
@@ -104,6 +108,7 @@ Object {
                 },
               },
               "name": "rrestOff",
+              "optional": false,
               "range": Array [
                 17,
                 25,
@@ -120,6 +125,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               14,
               25,
@@ -159,6 +165,7 @@ Object {
           },
         },
         "name": "array",
+        "optional": false,
         "range": Array [
           31,
           36,

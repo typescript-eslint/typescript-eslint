@@ -9,6 +9,7 @@ Object {
           "body": Array [
             Object {
               "computed": false,
+              "export": false,
               "key": Object {
                 "loc": Object {
                   "end": Object {
@@ -21,6 +22,7 @@ Object {
                   },
                 },
                 "name": "method1",
+                "optional": false,
                 "range": Array [
                   31,
                   38,
@@ -38,11 +40,13 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": false,
               "params": Array [],
               "range": Array [
                 31,
                 47,
               ],
+              "readonly": false,
               "returnType": Object {
                 "loc": Object {
                   "end": Object {
@@ -77,6 +81,7 @@ Object {
                   "type": "TSVoidKeyword",
                 },
               },
+              "static": false,
               "type": "TSMethodSignature",
             },
           ],
@@ -96,6 +101,7 @@ Object {
           ],
           "type": "TSInterfaceBody",
         },
+        "declare": false,
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -108,6 +114,7 @@ Object {
             },
           },
           "name": "T",
+          "optional": false,
           "range": Array [
             25,
             26,

@@ -31,6 +31,7 @@ Object {
                   },
                 },
                 "name": "baz",
+                "optional": false,
                 "range": Array [
                   26,
                   37,
@@ -76,6 +77,8 @@ Object {
               18,
               47,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -129,6 +132,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -141,6 +145,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,

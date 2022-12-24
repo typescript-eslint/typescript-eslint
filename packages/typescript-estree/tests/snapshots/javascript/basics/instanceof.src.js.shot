@@ -51,6 +51,7 @@ Object {
             },
           },
           "name": "Set",
+          "optional": false,
           "range": Array [
             14,
             17,

@@ -4,6 +4,7 @@ exports[`typescript types optional-variance-in-and-out.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "Mapper",
+        "optional": false,
         "range": Array [
           5,
           11,
@@ -61,6 +63,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               28,
               32,
@@ -110,6 +113,7 @@ Object {
                     },
                   },
                   "name": "T",
+                  "optional": false,
                   "range": Array [
                     31,
                     32,
@@ -169,6 +173,7 @@ Object {
                 },
               },
               "name": "U",
+              "optional": false,
               "range": Array [
                 37,
                 38,
@@ -218,6 +223,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 15,
                 16,
@@ -257,6 +263,7 @@ Object {
                 },
               },
               "name": "U",
+              "optional": false,
               "range": Array [
                 22,
                 23,

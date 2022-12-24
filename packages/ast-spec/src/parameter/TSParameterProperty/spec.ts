@@ -9,10 +9,10 @@ import type { RestElement } from '../RestElement/spec';
 export interface TSParameterProperty extends BaseNode {
   type: AST_NODE_TYPES.TSParameterProperty;
   accessibility?: Accessibility;
-  readonly?: boolean;
-  static?: boolean;
-  export?: boolean;
-  override?: boolean;
+  readonly: boolean;
+  static: boolean;
+  export: boolean;
+  override: boolean;
   parameter: AssignmentPattern | BindingName | RestElement;
   decorators?: Decorator[];
 }

@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 29,
                 32,
@@ -115,6 +116,7 @@ Object {
                             },
                           },
                           "name": "special",
+                          "optional": false,
                           "range": Array [
                             34,
                             41,
@@ -166,6 +168,7 @@ Object {
                     },
                   },
                   "name": "baz",
+                  "optional": false,
                   "range": Array [
                     48,
                     59,
@@ -243,6 +246,7 @@ Object {
           },
         },
         "name": "StaticFoo",
+        "optional": false,
         "range": Array [
           6,
           15,

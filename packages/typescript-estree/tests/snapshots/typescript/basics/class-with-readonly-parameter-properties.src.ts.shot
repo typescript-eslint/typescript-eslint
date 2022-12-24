@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
@@ -80,7 +81,7 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -91,7 +92,7 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -104,6 +105,7 @@ Object {
                       },
                     },
                     "name": "firstName",
+                    "optional": false,
                     "range": Array [
                       35,
                       52,
@@ -149,12 +151,12 @@ Object {
                     52,
                   ],
                   "readonly": true,
-                  "static": undefined,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 49,
@@ -165,7 +167,7 @@ Object {
                       "line": 3,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "left": Object {
                       "loc": Object {
@@ -179,6 +181,7 @@ Object {
                         },
                       },
                       "name": "lastName",
+                      "optional": false,
                       "range": Array [
                         77,
                         93,
@@ -229,6 +232,7 @@ Object {
                         "line": 3,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       77,
                       103,
@@ -259,7 +263,7 @@ Object {
                     103,
                   ],
                   "readonly": true,
-                  "static": undefined,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -299,6 +303,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

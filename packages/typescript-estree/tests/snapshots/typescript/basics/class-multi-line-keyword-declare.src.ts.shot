@@ -16,6 +16,7 @@ Object {
           },
         },
         "name": "declare",
+        "optional": false,
         "range": Array [
           0,
           7,
@@ -69,6 +70,7 @@ Object {
           },
         },
         "name": "B",
+        "optional": false,
         "range": Array [
           14,
           15,

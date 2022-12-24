@@ -4,6 +4,7 @@ exports[`typescript basics call-signatures-with-generics.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           5,
           8,
@@ -73,6 +75,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   19,
                   28,
@@ -191,6 +194,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       16,
                       17,
@@ -236,6 +240,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   47,
                   56,
@@ -354,6 +359,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       44,
                       45,

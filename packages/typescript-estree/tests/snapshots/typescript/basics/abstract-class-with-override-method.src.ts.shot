@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "show",
+              "optional": false,
               "range": Array [
                 80,
                 84,
@@ -98,6 +99,7 @@ Object {
           },
         },
         "name": "SpecializedComponent",
+        "optional": false,
         "range": Array [
           15,
           35,
@@ -130,6 +132,7 @@ Object {
           },
         },
         "name": "SomeComponent",
+        "optional": false,
         "range": Array [
           44,
           57,

@@ -15,13 +15,13 @@ interface TSMethodSignatureBase extends BaseNode {
   key: PropertyName;
   computed: boolean;
   params: Parameter[];
-  optional?: boolean;
+  optional: boolean;
   returnType?: TSTypeAnnotation;
-  readonly?: boolean;
+  readonly: boolean;
   typeParameters?: TSTypeParameterDeclaration;
   accessibility?: Accessibility;
-  export?: boolean;
-  static?: boolean;
+  export: boolean;
+  static: boolean;
   kind: 'get' | 'method' | 'set';
 }
 

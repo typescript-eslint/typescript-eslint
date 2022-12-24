@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "friends",
+              "optional": false,
               "range": Array [
                 31,
                 38,
@@ -74,6 +75,7 @@ Object {
           },
         },
         "name": "x",
+        "optional": false,
         "range": Array [
           9,
           10,

@@ -63,6 +63,7 @@ Object {
               },
             },
             "name": "React",
+            "optional": false,
             "range": Array [
               12,
               17,
@@ -79,6 +80,7 @@ Object {
       "type": "ImportDeclaration",
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -91,6 +93,7 @@ Object {
           },
         },
         "name": "Props",
+        "optional": false,
         "range": Array [
           36,
           41,
@@ -126,7 +129,7 @@ Object {
         "members": Array [
           Object {
             "computed": false,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -140,6 +143,7 @@ Object {
                 },
               },
               "name": "title",
+              "optional": false,
               "range": Array [
                 48,
                 53,
@@ -156,13 +160,13 @@ Object {
                 "line": 3,
               },
             },
-            "optional": undefined,
+            "optional": false,
             "range": Array [
               48,
               61,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -261,6 +265,7 @@ Object {
                           },
                         },
                         "name": "props",
+                        "optional": false,
                         "range": Array [
                           136,
                           141,
@@ -280,6 +285,7 @@ Object {
                           },
                         },
                         "name": "title",
+                        "optional": false,
                         "range": Array [
                           142,
                           147,
@@ -466,6 +472,7 @@ Object {
             },
           },
           "name": "App",
+          "optional": false,
           "range": Array [
             89,
             92,
@@ -495,6 +502,7 @@ Object {
               },
             },
             "name": "props",
+            "optional": false,
             "range": Array [
               93,
               105,
@@ -544,6 +552,7 @@ Object {
                     },
                   },
                   "name": "Props",
+                  "optional": false,
                   "range": Array [
                     100,
                     105,

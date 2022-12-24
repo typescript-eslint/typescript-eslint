@@ -61,6 +61,7 @@ Object {
                 },
               },
               "name": "method",
+              "optional": false,
               "range": Array [
                 24,
                 30,
@@ -136,6 +137,7 @@ Object {
                           },
                         },
                         "name": "arg",
+                        "optional": false,
                         "range": Array [
                           59,
                           62,
@@ -203,6 +205,7 @@ Object {
                     },
                   },
                   "name": "arg",
+                  "optional": false,
                   "range": Array [
                     31,
                     34,
@@ -246,6 +249,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

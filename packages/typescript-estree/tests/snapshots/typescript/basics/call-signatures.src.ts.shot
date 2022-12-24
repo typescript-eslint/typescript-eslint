@@ -4,6 +4,7 @@ exports[`typescript basics call-signatures.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           5,
           8,
@@ -73,6 +75,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   16,
                   25,
@@ -178,6 +181,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   41,
                   50,

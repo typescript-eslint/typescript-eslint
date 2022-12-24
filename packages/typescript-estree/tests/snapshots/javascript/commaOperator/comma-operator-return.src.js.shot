@@ -10,6 +10,7 @@ Object {
           Object {
             "declarations": Array [
               Object {
+                "definite": false,
                 "id": Object {
                   "loc": Object {
                     "end": Object {
@@ -22,6 +23,7 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     22,
                     23,
@@ -64,6 +66,7 @@ Object {
                 "type": "VariableDeclarator",
               },
             ],
+            "declare": false,
             "kind": "var",
             "loc": Object {
               "end": Object {
@@ -96,6 +99,7 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     38,
                     39,
@@ -114,6 +118,7 @@ Object {
                     },
                   },
                   "name": "v1",
+                  "optional": false,
                   "range": Array [
                     41,
                     43,
@@ -132,6 +137,7 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     45,
                     46,
@@ -202,6 +208,7 @@ Object {
           },
         },
         "name": "f1",
+        "optional": false,
         "range": Array [
           9,
           11,

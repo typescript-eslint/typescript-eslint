@@ -22,6 +22,7 @@ Object {
                     },
                   },
                   "name": "hidden",
+                  "optional": false,
                   "range": Array [
                     15,
                     21,
@@ -57,6 +58,7 @@ Object {
                 },
               },
               "name": "z",
+              "optional": false,
               "range": Array [
                 30,
                 31,
@@ -128,6 +130,7 @@ Object {
                           },
                         },
                         "name": "_z",
+                        "optional": false,
                         "range": Array [
                           48,
                           50,
@@ -223,6 +226,7 @@ Object {
           },
         },
         "name": "P",
+        "optional": false,
         "range": Array [
           6,
           7,

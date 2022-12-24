@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "consturctor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
@@ -92,6 +93,7 @@ Object {
                         },
                       },
                       "name": "foo",
+                      "optional": false,
                       "range": Array [
                         27,
                         30,
@@ -110,6 +112,7 @@ Object {
                         },
                       },
                       "name": "bar",
+                      "optional": false,
                       "range": Array [
                         32,
                         35,
@@ -127,6 +130,7 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     26,
                     36,
@@ -170,6 +174,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

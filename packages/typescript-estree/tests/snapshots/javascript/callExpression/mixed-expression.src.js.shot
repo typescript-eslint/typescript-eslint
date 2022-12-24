@@ -137,6 +137,7 @@ Object {
                                   },
                                 },
                                 "name": "call",
+                                "optional": false,
                                 "range": Array [
                                   41,
                                   45,

@@ -55,6 +55,7 @@ Object {
           },
         },
         "name": "a",
+        "optional": false,
         "range": Array [
           9,
           10,

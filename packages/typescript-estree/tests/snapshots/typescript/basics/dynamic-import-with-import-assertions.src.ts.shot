@@ -31,6 +31,7 @@ Object {
                   },
                 },
                 "name": "assert",
+                "optional": false,
                 "range": Array [
                   16,
                   22,
@@ -49,6 +50,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 16,
                 40,
@@ -81,6 +83,7 @@ Object {
                         },
                       },
                       "name": "type",
+                      "optional": false,
                       "range": Array [
                         26,
                         30,
@@ -99,6 +102,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       26,
                       38,

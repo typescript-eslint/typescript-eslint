@@ -44,6 +44,7 @@ Object {
                       },
                     },
                     "name": "Foo",
+                    "optional": false,
                     "range": Array [
                       15,
                       18,
@@ -96,6 +97,7 @@ Object {
                 },
               },
               "name": "staticMethod",
+              "optional": false,
               "range": Array [
                 37,
                 49,
@@ -190,6 +192,7 @@ Object {
           },
         },
         "name": "C",
+        "optional": false,
         "range": Array [
           6,
           7,

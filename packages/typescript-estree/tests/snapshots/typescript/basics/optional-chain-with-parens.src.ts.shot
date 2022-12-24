@@ -33,6 +33,7 @@ Object {
                     },
                   },
                   "name": "one",
+                  "optional": false,
                   "range": Array [
                     47,
                     50,
@@ -52,6 +53,7 @@ Object {
                     },
                   },
                   "name": "two",
+                  "optional": false,
                   "range": Array [
                     52,
                     55,
@@ -134,6 +136,7 @@ Object {
                       },
                     },
                     "name": "one",
+                    "optional": false,
                     "range": Array [
                       61,
                       64,
@@ -153,6 +156,7 @@ Object {
                       },
                     },
                     "name": "two",
+                    "optional": false,
                     "range": Array [
                       66,
                       69,
@@ -194,6 +198,7 @@ Object {
                   },
                 },
                 "name": "three",
+                "optional": false,
                 "range": Array [
                   71,
                   76,
@@ -260,6 +265,7 @@ Object {
                       },
                     },
                     "name": "one",
+                    "optional": false,
                     "range": Array [
                       81,
                       84,
@@ -279,6 +285,7 @@ Object {
                       },
                     },
                     "name": "two",
+                    "optional": false,
                     "range": Array [
                       85,
                       88,
@@ -304,6 +311,7 @@ Object {
                     },
                   },
                   "name": "three",
+                  "optional": false,
                   "range": Array [
                     90,
                     95,
@@ -398,6 +406,7 @@ Object {
                         },
                       },
                       "name": "one",
+                      "optional": false,
                       "range": Array [
                         101,
                         104,
@@ -417,6 +426,7 @@ Object {
                         },
                       },
                       "name": "two",
+                      "optional": false,
                       "range": Array [
                         105,
                         108,
@@ -442,6 +452,7 @@ Object {
                       },
                     },
                     "name": "three",
+                    "optional": false,
                     "range": Array [
                       110,
                       115,
@@ -483,6 +494,7 @@ Object {
                   },
                 },
                 "name": "four",
+                "optional": false,
                 "range": Array [
                   117,
                   121,
@@ -561,6 +573,7 @@ Object {
                         },
                       },
                       "name": "one",
+                      "optional": false,
                       "range": Array [
                         126,
                         129,
@@ -580,6 +593,7 @@ Object {
                         },
                       },
                       "name": "two",
+                      "optional": false,
                       "range": Array [
                         130,
                         133,
@@ -605,6 +619,7 @@ Object {
                       },
                     },
                     "name": "three",
+                    "optional": false,
                     "range": Array [
                       135,
                       140,
@@ -630,6 +645,7 @@ Object {
                     },
                   },
                   "name": "four",
+                  "optional": false,
                   "range": Array [
                     142,
                     146,
@@ -736,6 +752,7 @@ Object {
                           },
                         },
                         "name": "one",
+                        "optional": false,
                         "range": Array [
                           152,
                           155,
@@ -755,6 +772,7 @@ Object {
                           },
                         },
                         "name": "two",
+                        "optional": false,
                         "range": Array [
                           156,
                           159,
@@ -780,6 +798,7 @@ Object {
                         },
                       },
                       "name": "three",
+                      "optional": false,
                       "range": Array [
                         161,
                         166,
@@ -805,6 +824,7 @@ Object {
                       },
                     },
                     "name": "four",
+                    "optional": false,
                     "range": Array [
                       168,
                       172,
@@ -846,6 +866,7 @@ Object {
                   },
                 },
                 "name": "five",
+                "optional": false,
                 "range": Array [
                   174,
                   178,
@@ -905,6 +926,7 @@ Object {
           },
         },
         "name": "processOptionalParens",
+        "optional": false,
         "range": Array [
           9,
           30,

@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 20,
                 31,
@@ -92,6 +93,7 @@ Object {
                             },
                           },
                           "name": "title",
+                          "optional": false,
                           "range": Array [
                             86,
                             91,
@@ -143,6 +145,7 @@ Object {
                             },
                           },
                           "name": "config",
+                          "optional": false,
                           "range": Array [
                             94,
                             100,
@@ -162,6 +165,7 @@ Object {
                             },
                           },
                           "name": "title",
+                          "optional": false,
                           "range": Array [
                             101,
                             106,
@@ -240,6 +244,7 @@ Object {
                               },
                             },
                             "name": "APP_CONFIG",
+                            "optional": false,
                             "range": Array [
                               40,
                               50,
@@ -259,6 +264,7 @@ Object {
                             },
                           },
                           "name": "Inject",
+                          "optional": false,
                           "range": Array [
                             33,
                             39,
@@ -310,6 +316,7 @@ Object {
                     },
                   },
                   "name": "config",
+                  "optional": false,
                   "range": Array [
                     52,
                     69,
@@ -359,6 +366,7 @@ Object {
                           },
                         },
                         "name": "AppConfig",
+                        "optional": false,
                         "range": Array [
                           60,
                           69,
@@ -406,6 +414,7 @@ Object {
           },
         },
         "name": "Service",
+        "optional": false,
         "range": Array [
           6,
           13,

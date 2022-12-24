@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "prop1",
+              "optional": false,
               "range": Array [
                 28,
                 33,
@@ -97,6 +98,7 @@ Object {
                 },
               },
               "name": "prop2",
+              "optional": false,
               "range": Array [
                 60,
                 65,
@@ -172,6 +174,7 @@ Object {
                 },
               },
               "name": "prop3",
+              "optional": false,
               "range": Array [
                 92,
                 97,
@@ -247,6 +250,7 @@ Object {
                 },
               },
               "name": "prop3",
+              "optional": false,
               "range": Array [
                 126,
                 131,
@@ -323,6 +327,7 @@ Object {
                 },
               },
               "name": "prop4",
+              "optional": false,
               "range": Array [
                 167,
                 172,
@@ -399,6 +404,7 @@ Object {
                 },
               },
               "name": "prop5",
+              "optional": false,
               "range": Array [
                 206,
                 211,
@@ -475,6 +481,7 @@ Object {
                 },
               },
               "name": "prop6",
+              "optional": false,
               "range": Array [
                 254,
                 259,
@@ -564,6 +571,7 @@ Object {
           },
         },
         "name": "DeclProps",
+        "optional": false,
         "range": Array [
           6,
           15,

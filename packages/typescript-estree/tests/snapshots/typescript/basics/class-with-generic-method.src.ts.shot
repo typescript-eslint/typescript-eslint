@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "getBar",
+              "optional": false,
               "range": Array [
                 14,
                 20,
@@ -121,6 +122,7 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         21,
                         22,
@@ -172,6 +174,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

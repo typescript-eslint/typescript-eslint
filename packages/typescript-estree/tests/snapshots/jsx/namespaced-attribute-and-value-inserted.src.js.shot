@@ -38,6 +38,7 @@ Object {
                 },
               },
               "name": "value",
+              "optional": false,
               "range": Array [
                 17,
                 22,

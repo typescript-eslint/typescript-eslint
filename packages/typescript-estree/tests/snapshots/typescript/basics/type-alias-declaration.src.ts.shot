@@ -4,6 +4,7 @@ exports[`typescript basics type-alias-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "Result",
+        "optional": false,
         "range": Array [
           5,
           11,
@@ -82,6 +84,7 @@ Object {
                 },
               },
               "name": "Success",
+              "optional": false,
               "range": Array [
                 17,
                 24,
@@ -128,6 +131,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       25,
                       26,
@@ -172,6 +176,7 @@ Object {
                 },
               },
               "name": "Failure",
+              "optional": false,
               "range": Array [
                 30,
                 37,
@@ -220,6 +225,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 12,
                 13,

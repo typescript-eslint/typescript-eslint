@@ -16,6 +16,7 @@ Object {
           },
         },
         "name": "fooz",
+        "optional": false,
         "range": Array [
           7,
           11,

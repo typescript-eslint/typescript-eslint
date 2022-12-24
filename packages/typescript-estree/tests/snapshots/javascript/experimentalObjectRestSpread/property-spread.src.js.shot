@@ -6,6 +6,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -18,6 +19,7 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               4,
               7,
@@ -42,6 +44,7 @@ Object {
           "type": "VariableDeclarator",
         },
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -54,6 +57,7 @@ Object {
               },
             },
             "name": "get",
+            "optional": false,
             "range": Array [
               13,
               16,
@@ -78,6 +82,7 @@ Object {
           "type": "VariableDeclarator",
         },
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -90,6 +95,7 @@ Object {
               },
             },
             "name": "set",
+            "optional": false,
             "range": Array [
               22,
               25,
@@ -114,6 +120,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -134,6 +141,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -146,6 +154,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               32,
               33,
@@ -178,6 +187,7 @@ Object {
                     },
                   },
                   "name": "foo",
+                  "optional": false,
                   "range": Array [
                     42,
                     45,
@@ -196,6 +206,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   42,
                   50,
@@ -214,6 +225,7 @@ Object {
                     },
                   },
                   "name": "foo",
+                  "optional": false,
                   "range": Array [
                     47,
                     50,
@@ -235,6 +247,7 @@ Object {
                     },
                   },
                   "name": "get",
+                  "optional": false,
                   "range": Array [
                     56,
                     59,
@@ -253,6 +266,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   56,
                   64,
@@ -271,6 +285,7 @@ Object {
                     },
                   },
                   "name": "get",
+                  "optional": false,
                   "range": Array [
                     61,
                     64,
@@ -303,6 +318,7 @@ Object {
                       },
                     },
                     "name": "set",
+                    "optional": false,
                     "range": Array [
                       73,
                       76,
@@ -322,6 +338,7 @@ Object {
                       },
                     },
                     "name": "foo",
+                    "optional": false,
                     "range": Array [
                       77,
                       80,
@@ -374,6 +391,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

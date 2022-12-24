@@ -22,6 +22,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "extends": Array [
         Object {
           "expression": Object {
@@ -36,6 +37,7 @@ Object {
               },
             },
             "name": "Bar",
+            "optional": false,
             "range": Array [
               25,
               28,
@@ -97,6 +99,7 @@ Object {
                     },
                   },
                   "name": "J",
+                  "optional": false,
                   "range": Array [
                     29,
                     30,
@@ -126,6 +129,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,
@@ -185,6 +189,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 14,
                 15,

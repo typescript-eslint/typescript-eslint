@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "f",
+              "optional": false,
               "range": Array [
                 22,
                 23,
@@ -51,6 +52,7 @@ Object {
                   Object {
                     "declarations": Array [
                       Object {
+                        "definite": false,
                         "id": Object {
                           "loc": Object {
                             "end": Object {
@@ -63,6 +65,7 @@ Object {
                             },
                           },
                           "name": "x",
+                          "optional": false,
                           "range": Array [
                             42,
                             43,
@@ -84,6 +87,7 @@ Object {
                                 },
                               },
                               "name": "g",
+                              "optional": false,
                               "range": Array [
                                 53,
                                 54,
@@ -141,6 +145,7 @@ Object {
                         "type": "VariableDeclarator",
                       },
                     ],
+                    "declare": false,
                     "kind": "const",
                     "loc": Object {
                       "end": Object {
@@ -225,6 +230,7 @@ Object {
           },
         },
         "name": "C",
+        "optional": false,
         "range": Array [
           6,
           7,

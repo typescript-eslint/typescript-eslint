@@ -17,6 +17,7 @@ Object {
             },
           },
           "name": "f",
+          "optional": false,
           "range": Array [
             0,
             1,
@@ -84,6 +85,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "properties": Array [
                   Object {
                     "computed": false,
@@ -99,6 +101,7 @@ Object {
                         },
                       },
                       "name": "x",
+                      "optional": false,
                       "range": Array [
                         14,
                         15,
@@ -117,6 +120,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       14,
                       15,
@@ -135,6 +139,7 @@ Object {
                         },
                       },
                       "name": "x",
+                      "optional": false,
                       "range": Array [
                         14,
                         15,
@@ -159,6 +164,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 13,
                 26,
@@ -189,6 +195,7 @@ Object {
                         },
                       },
                       "name": "x",
+                      "optional": false,
                       "range": Array [
                         20,
                         21,
@@ -207,6 +214,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       20,
                       25,

@@ -22,6 +22,7 @@ Object {
                     },
                   },
                   "name": "e",
+                  "optional": false,
                   "range": Array [
                     56,
                     57,
@@ -41,6 +42,7 @@ Object {
                   },
                 },
                 "name": "validateEntity",
+                "optional": false,
                 "range": Array [
                   41,
                   55,
@@ -83,6 +85,7 @@ Object {
           Object {
             "declarations": Array [
               Object {
+                "definite": false,
                 "id": Object {
                   "loc": Object {
                     "end": Object {
@@ -95,6 +98,7 @@ Object {
                     },
                   },
                   "name": "s",
+                  "optional": false,
                   "range": Array [
                     68,
                     69,
@@ -126,6 +130,7 @@ Object {
                         },
                       },
                       "name": "e",
+                      "optional": false,
                       "range": Array [
                         72,
                         73,
@@ -161,6 +166,7 @@ Object {
                       },
                     },
                     "name": "name",
+                    "optional": false,
                     "range": Array [
                       75,
                       79,
@@ -190,6 +196,7 @@ Object {
                 "type": "VariableDeclarator",
               },
             ],
+            "declare": false,
             "kind": "let",
             "loc": Object {
               "end": Object {
@@ -238,6 +245,7 @@ Object {
           },
         },
         "name": "processEntity",
+        "optional": false,
         "range": Array [
           9,
           22,
@@ -317,6 +325,7 @@ Object {
                   },
                 },
                 "name": "Entity",
+                "optional": false,
                 "range": Array [
                   27,
                   33,

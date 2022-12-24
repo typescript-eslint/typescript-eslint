@@ -32,6 +32,7 @@ Object {
                   },
                 },
                 "name": "props",
+                "optional": false,
                 "range": Array [
                   9,
                   14,

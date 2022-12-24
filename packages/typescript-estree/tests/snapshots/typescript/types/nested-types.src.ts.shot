@@ -4,6 +4,7 @@ exports[`typescript types nested-types.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           5,
           8,

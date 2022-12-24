@@ -19,6 +19,7 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 7,
                 8,
@@ -54,6 +55,7 @@ Object {
             },
           },
           "name": "foo",
+          "optional": false,
           "range": Array [
             0,
             3,

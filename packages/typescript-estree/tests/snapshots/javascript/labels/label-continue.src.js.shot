@@ -20,6 +20,7 @@ Object {
                   },
                 },
                 "name": "loop1",
+                "optional": false,
                 "range": Array [
                   36,
                   41,
@@ -124,6 +125,7 @@ Object {
           },
         },
         "name": "loop1",
+        "optional": false,
         "range": Array [
           0,
           5,

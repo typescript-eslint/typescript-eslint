@@ -20,6 +20,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   4,
                   5,
@@ -36,6 +37,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 1,
                 5,
@@ -53,6 +55,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             6,
@@ -86,6 +89,7 @@ Object {
             },
           },
           "name": "b",
+          "optional": false,
           "range": Array [
             9,
             10,

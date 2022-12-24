@@ -63,6 +63,7 @@ Object {
               },
             },
             "name": "type",
+            "optional": false,
             "range": Array [
               62,
               66,

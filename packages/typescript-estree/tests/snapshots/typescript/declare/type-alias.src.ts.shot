@@ -17,6 +17,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           13,
           16,

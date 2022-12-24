@@ -4,6 +4,7 @@ exports[`typescript declare enum.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "const": false,
       "declare": true,
       "id": Object {
         "loc": Object {
@@ -17,6 +18,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           13,
           16,
@@ -35,6 +37,7 @@ Object {
       },
       "members": Array [
         Object {
+          "computed": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -47,6 +50,7 @@ Object {
               },
             },
             "name": "Bar",
+            "optional": false,
             "range": Array [
               23,
               26,
@@ -70,6 +74,7 @@ Object {
           "type": "TSEnumMember",
         },
         Object {
+          "computed": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -82,6 +87,7 @@ Object {
               },
             },
             "name": "Baz",
+            "optional": false,
             "range": Array [
               32,
               35,

@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           9,
           12,
@@ -65,6 +66,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
@@ -80,6 +82,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   14,
                   17,
@@ -98,6 +101,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 14,
                 17,
@@ -116,6 +120,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   14,
                   17,
@@ -137,6 +142,7 @@ Object {
                   },
                 },
                 "name": "baz",
+                "optional": false,
                 "range": Array [
                   19,
                   22,
@@ -155,6 +161,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 19,
                 22,
@@ -173,6 +180,7 @@ Object {
                   },
                 },
                 "name": "baz",
+                "optional": false,
                 "range": Array [
                   19,
                   22,
@@ -216,7 +224,7 @@ Object {
               "members": Array [
                 Object {
                   "computed": false,
-                  "export": undefined,
+                  "export": false,
                   "initializer": undefined,
                   "key": Object {
                     "loc": Object {
@@ -230,6 +238,7 @@ Object {
                       },
                     },
                     "name": "bar",
+                    "optional": false,
                     "range": Array [
                       26,
                       29,
@@ -251,8 +260,8 @@ Object {
                     26,
                     39,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSPropertySignature",
                   "typeAnnotation": Object {
                     "loc": Object {
@@ -291,7 +300,7 @@ Object {
                 },
                 Object {
                   "computed": false,
-                  "export": undefined,
+                  "export": false,
                   "initializer": undefined,
                   "key": Object {
                     "loc": Object {
@@ -305,6 +314,7 @@ Object {
                       },
                     },
                     "name": "baz",
+                    "optional": false,
                     "range": Array [
                       40,
                       43,
@@ -326,8 +336,8 @@ Object {
                     40,
                     44,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSPropertySignature",
                   "typeAnnotation": undefined,
                 },

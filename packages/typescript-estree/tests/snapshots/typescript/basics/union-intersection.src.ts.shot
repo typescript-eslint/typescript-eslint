@@ -6,6 +6,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -18,6 +19,7 @@ Object {
               },
             },
             "name": "union",
+            "optional": false,
             "range": Array [
               4,
               36,
@@ -129,6 +131,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -149,6 +152,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -161,6 +165,7 @@ Object {
               },
             },
             "name": "intersection",
+            "optional": false,
             "range": Array [
               42,
               71,
@@ -255,6 +260,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -275,6 +281,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -287,6 +294,7 @@ Object {
               },
             },
             "name": "precedence1",
+            "optional": false,
             "range": Array [
               77,
               115,
@@ -417,6 +425,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -437,6 +446,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -449,6 +459,7 @@ Object {
               },
             },
             "name": "precedence2",
+            "optional": false,
             "range": Array [
               121,
               159,
@@ -579,6 +590,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -597,6 +609,7 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -609,6 +622,7 @@ Object {
           },
         },
         "name": "unionLeading",
+        "optional": false,
         "range": Array [
           167,
           179,
@@ -685,6 +699,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -697,6 +712,7 @@ Object {
           },
         },
         "name": "intersectionLeading",
+        "optional": false,
         "range": Array [
           206,
           225,
@@ -792,6 +808,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -804,6 +821,7 @@ Object {
           },
         },
         "name": "unionLeadingSingle",
+        "optional": false,
         "range": Array [
           252,
           270,
@@ -863,6 +881,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -875,6 +894,7 @@ Object {
           },
         },
         "name": "intersectionLeadingSingle",
+        "optional": false,
         "range": Array [
           288,
           313,

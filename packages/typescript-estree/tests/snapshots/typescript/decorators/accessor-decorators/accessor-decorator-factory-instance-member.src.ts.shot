@@ -44,6 +44,7 @@ Object {
                       },
                     },
                     "name": "configurable",
+                    "optional": false,
                     "range": Array [
                       19,
                       31,
@@ -96,6 +97,7 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 47,
                 48,
@@ -167,6 +169,7 @@ Object {
                           },
                         },
                         "name": "_x",
+                        "optional": false,
                         "range": Array [
                           65,
                           67,
@@ -262,6 +265,7 @@ Object {
           },
         },
         "name": "Point",
+        "optional": false,
         "range": Array [
           6,
           11,

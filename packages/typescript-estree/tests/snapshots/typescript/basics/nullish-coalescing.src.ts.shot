@@ -10,6 +10,7 @@ Object {
           Object {
             "declarations": Array [
               Object {
+                "definite": false,
                 "id": Object {
                   "loc": Object {
                     "end": Object {
@@ -22,6 +23,7 @@ Object {
                     },
                   },
                   "name": "len",
+                  "optional": false,
                   "range": Array [
                     52,
                     55,
@@ -41,6 +43,7 @@ Object {
                       },
                     },
                     "name": "s",
+                    "optional": false,
                     "range": Array [
                       59,
                       60,
@@ -100,6 +103,7 @@ Object {
                 "type": "VariableDeclarator",
               },
             ],
+            "declare": false,
             "kind": "let",
             "loc": Object {
               "end": Object {
@@ -148,6 +152,7 @@ Object {
           },
         },
         "name": "processNullishCoalesce",
+        "optional": false,
         "range": Array [
           9,
           31,

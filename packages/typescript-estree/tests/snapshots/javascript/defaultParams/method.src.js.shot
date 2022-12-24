@@ -17,6 +17,7 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             0,
             1,
@@ -64,6 +65,7 @@ Object {
                   },
                 },
                 "name": "f",
+                "optional": false,
                 "range": Array [
                   6,
                   7,
@@ -82,6 +84,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 6,
                 25,
@@ -135,6 +138,7 @@ Object {
                         },
                       },
                       "name": "a",
+                      "optional": false,
                       "range": Array [
                         18,
                         19,
@@ -151,6 +155,7 @@ Object {
                         "line": 1,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       18,
                       21,

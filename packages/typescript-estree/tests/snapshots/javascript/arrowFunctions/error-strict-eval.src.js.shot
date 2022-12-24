@@ -124,6 +124,7 @@ Object {
               },
             },
             "name": "eval",
+            "optional": false,
             "range": Array [
               1,
               5,

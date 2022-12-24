@@ -57,6 +57,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 31,
                 42,
@@ -174,6 +175,7 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 85,
                 88,
@@ -291,6 +293,7 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 131,
                 134,
@@ -399,6 +402,7 @@ Object {
                     },
                   },
                   "name": "value",
+                  "optional": false,
                   "range": Array [
                     136,
                     141,
@@ -427,6 +431,7 @@ Object {
                 },
               },
               "name": "method",
+              "optional": false,
               "range": Array [
                 178,
                 184,
@@ -559,6 +564,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           21,
           24,

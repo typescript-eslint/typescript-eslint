@@ -88,6 +88,7 @@ Object {
               },
             },
             "name": "eval",
+            "optional": false,
             "range": Array [
               15,
               19,
@@ -106,6 +107,7 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               21,
               22,

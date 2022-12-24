@@ -33,6 +33,7 @@ Object {
                     },
                   },
                   "name": "one",
+                  "optional": false,
                   "range": Array [
                     54,
                     57,
@@ -135,6 +136,7 @@ Object {
                       },
                     },
                     "name": "one",
+                    "optional": false,
                     "range": Array [
                       68,
                       71,
@@ -263,6 +265,7 @@ Object {
                       },
                     },
                     "name": "one",
+                    "optional": false,
                     "range": Array [
                       85,
                       88,
@@ -403,6 +406,7 @@ Object {
                         },
                       },
                       "name": "one",
+                      "optional": false,
                       "range": Array [
                         102,
                         105,
@@ -569,6 +573,7 @@ Object {
                         },
                       },
                       "name": "one",
+                      "optional": false,
                       "range": Array [
                         122,
                         125,
@@ -747,6 +752,7 @@ Object {
                           },
                         },
                         "name": "one",
+                        "optional": false,
                         "range": Array [
                           144,
                           147,
@@ -920,6 +926,7 @@ Object {
           },
         },
         "name": "processOptionalElementParens",
+        "optional": false,
         "range": Array [
           9,
           37,

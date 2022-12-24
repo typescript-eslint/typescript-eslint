@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "compare",
+        "optional": false,
         "range": Array [
           9,
           16,
@@ -97,6 +98,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 28,
                 29,

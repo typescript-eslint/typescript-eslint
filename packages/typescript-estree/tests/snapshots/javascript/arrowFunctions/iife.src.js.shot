@@ -32,6 +32,7 @@ Object {
                   },
                 },
                 "name": "property",
+                "optional": false,
                 "range": Array [
                   8,
                   16,
@@ -50,6 +51,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 8,
                 20,
@@ -109,6 +111,7 @@ Object {
               },
             },
             "name": "e",
+            "optional": false,
             "range": Array [
               0,
               1,

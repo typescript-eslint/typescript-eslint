@@ -63,6 +63,7 @@ Object {
               },
             },
             "name": "house",
+            "optional": false,
             "range": Array [
               7,
               12,
@@ -96,6 +97,7 @@ Object {
                     },
                   },
                   "name": "roof",
+                  "optional": false,
                   "range": Array [
                     56,
                     60,
@@ -127,6 +129,7 @@ Object {
                     },
                   },
                   "name": "console",
+                  "optional": false,
                   "range": Array [
                     44,
                     51,
@@ -146,6 +149,7 @@ Object {
                     },
                   },
                   "name": "log",
+                  "optional": false,
                   "range": Array [
                     52,
                     55,
@@ -230,6 +234,7 @@ Object {
           },
         },
         "name": "house",
+        "optional": false,
         "range": Array [
           34,
           39,

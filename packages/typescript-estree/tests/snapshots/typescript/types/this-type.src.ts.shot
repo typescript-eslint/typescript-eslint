@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "clone",
+              "optional": false,
               "range": Array [
                 18,
                 23,
@@ -183,6 +184,7 @@ Object {
           },
         },
         "name": "Message",
+        "optional": false,
         "range": Array [
           6,
           13,

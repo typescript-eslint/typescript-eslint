@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "g",
+              "optional": false,
               "range": Array [
                 27,
                 28,
@@ -38,6 +39,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -51,6 +53,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   29,
                   40,
@@ -96,6 +99,7 @@ Object {
               20,
               48,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -130,6 +134,7 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
         ],
@@ -149,6 +154,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -161,6 +167,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,

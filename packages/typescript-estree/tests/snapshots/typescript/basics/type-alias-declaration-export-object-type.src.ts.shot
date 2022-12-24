@@ -6,6 +6,7 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
+        "declare": false,
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -18,6 +19,7 @@ Object {
             },
           },
           "name": "TestClassProps",
+          "optional": false,
           "range": Array [
             12,
             26,
@@ -53,7 +55,7 @@ Object {
           "members": Array [
             Object {
               "computed": false,
-              "export": undefined,
+              "export": false,
               "initializer": undefined,
               "key": Object {
                 "loc": Object {
@@ -67,6 +69,7 @@ Object {
                   },
                 },
                 "name": "count",
+                "optional": false,
                 "range": Array [
                   35,
                   40,
@@ -83,13 +86,13 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": undefined,
+              "optional": false,
               "range": Array [
                 35,
                 48,
               ],
-              "readonly": undefined,
-              "static": undefined,
+              "readonly": false,
+              "static": false,
               "type": "TSPropertySignature",
               "typeAnnotation": Object {
                 "loc": Object {

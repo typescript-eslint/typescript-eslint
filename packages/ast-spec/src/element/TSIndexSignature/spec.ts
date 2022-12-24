@@ -8,8 +8,8 @@ export interface TSIndexSignature extends BaseNode {
   type: AST_NODE_TYPES.TSIndexSignature;
   parameters: Parameter[];
   typeAnnotation?: TSTypeAnnotation;
-  readonly?: boolean;
+  readonly: boolean;
   accessibility?: Accessibility;
-  export?: boolean;
-  static?: boolean;
+  export: boolean;
+  static: boolean;
 }

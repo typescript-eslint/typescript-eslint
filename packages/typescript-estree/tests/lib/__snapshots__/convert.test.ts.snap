@@ -75,6 +75,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
             },
           },
           "name": "foo",
+          "optional": false,
           "range": [
             4,
             7,
@@ -136,6 +137,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": [
                   8,
                   9,
@@ -252,6 +254,7 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
           },
         },
         "name": "test",
+        "optional": false,
         "range": [
           1,
           5,
@@ -298,6 +301,7 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
       },
     },
     "name": "foo",
+    "optional": false,
     "range": [
       12,
       15,
@@ -328,6 +332,7 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
       },
     },
     "name": "foo",
+    "optional": false,
     "range": [
       4,
       7,
@@ -389,6 +394,7 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
             },
           },
           "name": "T",
+          "optional": false,
           "range": [
             8,
             9,
@@ -432,6 +438,7 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
       },
     },
     "name": "foo",
+    "optional": false,
     "range": [
       6,
       9,
@@ -481,6 +488,7 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
             },
           },
           "name": "T",
+          "optional": false,
           "range": [
             10,
             11,

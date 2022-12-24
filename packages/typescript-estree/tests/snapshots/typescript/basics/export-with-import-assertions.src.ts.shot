@@ -18,6 +18,7 @@ Object {
               },
             },
             "name": "type",
+            "optional": false,
             "range": Array [
               35,
               39,
@@ -110,6 +111,7 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               9,
               12,
@@ -138,6 +140,7 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               9,
               12,

@@ -4,6 +4,8 @@ exports[`typescript errorRecovery decorator-on-enum-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "const": false,
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +18,7 @@ Object {
           },
         },
         "name": "E",
+        "optional": false,
         "range": Array [
           10,
           11,

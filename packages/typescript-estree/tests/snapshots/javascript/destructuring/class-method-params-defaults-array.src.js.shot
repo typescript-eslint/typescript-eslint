@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 14,
                 17,
@@ -93,6 +94,7 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           19,
                           22,
@@ -109,6 +111,7 @@ Object {
                           "line": 2,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         19,
                         24,
@@ -147,6 +150,7 @@ Object {
                           },
                         },
                         "name": "baz",
+                        "optional": false,
                         "range": Array [
                           26,
                           29,
@@ -163,6 +167,7 @@ Object {
                           "line": 2,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         26,
                         31,
@@ -199,6 +204,7 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     18,
                     32,
@@ -242,6 +248,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

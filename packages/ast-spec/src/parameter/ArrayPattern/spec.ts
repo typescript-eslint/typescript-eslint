@@ -8,6 +8,6 @@ export interface ArrayPattern extends BaseNode {
   type: AST_NODE_TYPES.ArrayPattern;
   elements: (DestructuringPattern | null)[];
   typeAnnotation?: TSTypeAnnotation;
-  optional?: boolean;
+  optional: boolean;
   decorators?: Decorator[];
 }

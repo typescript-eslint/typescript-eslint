@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "count",
+              "optional": false,
               "range": Array [
                 21,
                 26,
@@ -85,6 +86,7 @@ Object {
                             },
                           },
                           "name": "count",
+                          "optional": false,
                           "range": Array [
                             76,
                             81,
@@ -170,6 +172,7 @@ Object {
                       },
                     },
                     "name": "someCondition",
+                    "optional": false,
                     "range": Array [
                       51,
                       64,
@@ -241,6 +244,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

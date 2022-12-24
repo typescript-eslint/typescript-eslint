@@ -9,6 +9,7 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -21,6 +22,7 @@ Object {
                 },
               },
               "name": "g",
+              "optional": false,
               "range": Array [
                 28,
                 29,
@@ -38,6 +40,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -51,6 +54,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   30,
                   41,
@@ -96,6 +100,7 @@ Object {
               20,
               49,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -130,6 +135,7 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
         ],
@@ -149,6 +155,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -161,6 +168,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,

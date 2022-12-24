@@ -4,6 +4,7 @@ exports[`typescript types conditional-infer.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "Element",
+        "optional": false,
         "range": Array [
           5,
           12,
@@ -66,6 +68,7 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               18,
               19,
@@ -117,6 +120,7 @@ Object {
                   },
                 },
                 "name": "U",
+                "optional": false,
                 "range": Array [
                   35,
                   36,
@@ -175,6 +179,7 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               46,
               47,
@@ -225,6 +230,7 @@ Object {
               },
             },
             "name": "U",
+            "optional": false,
             "range": Array [
               42,
               43,
@@ -273,6 +279,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 13,
                 14,

@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 12,
                 23,
@@ -121,6 +122,7 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         24,
                         25,
@@ -259,6 +261,7 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         52,
                         53,
@@ -310,6 +313,7 @@ Object {
           },
         },
         "name": "C",
+        "optional": false,
         "range": Array [
           6,
           7,

@@ -18,6 +18,7 @@ Object {
               },
             },
             "name": "type",
+            "optional": false,
             "range": Array [
               29,
               33,

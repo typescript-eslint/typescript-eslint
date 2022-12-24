@@ -8,6 +8,7 @@ Object {
         "body": Array [
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -20,6 +21,7 @@ Object {
                 },
               },
               "name": "test",
+              "optional": false,
               "range": Array [
                 18,
                 22,
@@ -37,11 +39,14 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [],
             "range": Array [
               18,
               27,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSMethodSignature",
             "typeParameters": Object {
               "loc": Object {
@@ -79,6 +84,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -91,6 +97,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           10,
           13,

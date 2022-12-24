@@ -195,6 +195,7 @@ Object {
                       },
                     },
                     "name": "x",
+                    "optional": false,
                     "range": Array [
                       6,
                       7,

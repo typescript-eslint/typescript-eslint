@@ -4,6 +4,7 @@ exports[`typescript types template-literal-type-3.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "Color",
+        "optional": false,
         "range": Array [
           5,
           10,
@@ -130,6 +132,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -142,6 +145,7 @@ Object {
           },
         },
         "name": "Quantity",
+        "optional": false,
         "range": Array [
           34,
           42,
@@ -256,6 +260,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -268,6 +273,7 @@ Object {
           },
         },
         "name": "SeussFish",
+        "optional": false,
         "range": Array [
           65,
           74,
@@ -397,6 +403,7 @@ Object {
                     },
                   },
                   "name": "Quantity",
+                  "optional": false,
                   "range": Array [
                     80,
                     88,
@@ -433,6 +440,7 @@ Object {
                     },
                   },
                   "name": "Color",
+                  "optional": false,
                   "range": Array [
                     91,
                     96,

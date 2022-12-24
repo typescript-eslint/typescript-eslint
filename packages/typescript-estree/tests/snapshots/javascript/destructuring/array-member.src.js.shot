@@ -31,6 +31,7 @@ Object {
                   },
                 },
                 "name": "ok",
+                "optional": false,
                 "range": Array [
                   1,
                   3,
@@ -50,6 +51,7 @@ Object {
                   },
                 },
                 "name": "v",
+                "optional": false,
                 "range": Array [
                   4,
                   5,
@@ -73,6 +75,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             6,

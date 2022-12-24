@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 14,
                 17,
@@ -205,6 +206,7 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 58,
                 61,
@@ -277,6 +279,7 @@ Object {
                   },
                 },
                 "name": "test",
+                "optional": false,
                 "range": Array [
                   78,
                   82,
@@ -333,6 +336,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

@@ -34,6 +34,7 @@ Object {
                     },
                   },
                   "name": "arr",
+                  "optional": false,
                   "range": Array [
                     45,
                     48,
@@ -53,6 +54,7 @@ Object {
                     },
                   },
                   "name": "slice",
+                  "optional": false,
                   "range": Array [
                     49,
                     54,
@@ -145,6 +147,7 @@ Object {
                     },
                   },
                   "name": "arr",
+                  "optional": false,
                   "range": Array [
                     75,
                     78,
@@ -164,6 +167,7 @@ Object {
                     },
                   },
                   "name": "push",
+                  "optional": false,
                   "range": Array [
                     79,
                     83,
@@ -240,6 +244,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           9,
           12,
@@ -269,6 +274,7 @@ Object {
             },
           },
           "name": "arr",
+          "optional": false,
           "range": Array [
             13,
             39,
@@ -318,6 +324,7 @@ Object {
                   },
                 },
                 "name": "ReadonlyArray",
+                "optional": false,
                 "range": Array [
                   18,
                   31,
@@ -401,6 +408,7 @@ Object {
                     },
                   },
                   "name": "arr",
+                  "optional": false,
                   "range": Array [
                     149,
                     152,
@@ -420,6 +428,7 @@ Object {
                     },
                   },
                   "name": "slice",
+                  "optional": false,
                   "range": Array [
                     153,
                     158,
@@ -512,6 +521,7 @@ Object {
                     },
                   },
                   "name": "arr",
+                  "optional": false,
                   "range": Array [
                     179,
                     182,
@@ -531,6 +541,7 @@ Object {
                     },
                   },
                   "name": "push",
+                  "optional": false,
                   "range": Array [
                     183,
                     187,
@@ -607,6 +618,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           117,
           120,
@@ -636,6 +648,7 @@ Object {
             },
           },
           "name": "arr",
+          "optional": false,
           "range": Array [
             121,
             143,

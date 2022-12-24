@@ -20,6 +20,7 @@ Object {
               },
             },
             "name": "doSomething",
+            "optional": false,
             "range": Array [
               22,
               33,
@@ -62,6 +63,7 @@ Object {
       "left": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -74,6 +76,7 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 9,
                 10,
@@ -98,6 +101,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "let",
         "loc": Object {
           "end": Object {

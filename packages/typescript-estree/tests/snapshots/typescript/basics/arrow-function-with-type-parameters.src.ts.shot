@@ -21,6 +21,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   29,
                   30,
@@ -86,6 +87,7 @@ Object {
               },
             },
             "name": "b",
+            "optional": false,
             "range": Array [
               4,
               8,
@@ -135,6 +137,7 @@ Object {
                     },
                   },
                   "name": "X",
+                  "optional": false,
                   "range": Array [
                     7,
                     8,
@@ -194,6 +197,7 @@ Object {
                 },
               },
               "name": "X",
+              "optional": false,
               "range": Array [
                 11,
                 12,
@@ -242,6 +246,7 @@ Object {
                   },
                 },
                 "name": "X",
+                "optional": false,
                 "range": Array [
                   1,
                   2,

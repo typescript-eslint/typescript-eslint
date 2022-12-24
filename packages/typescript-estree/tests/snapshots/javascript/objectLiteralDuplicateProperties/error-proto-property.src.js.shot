@@ -43,6 +43,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -55,6 +56,7 @@ Object {
               },
             },
             "name": "proto",
+            "optional": false,
             "range": Array [
               19,
               24,
@@ -96,6 +98,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -116,6 +119,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -128,6 +132,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               36,
               37,
@@ -160,6 +165,7 @@ Object {
                     },
                   },
                   "name": "__proto__",
+                  "optional": false,
                   "range": Array [
                     43,
                     52,
@@ -178,6 +184,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   43,
                   59,
@@ -196,6 +203,7 @@ Object {
                     },
                   },
                   "name": "proto",
+                  "optional": false,
                   "range": Array [
                     54,
                     59,
@@ -217,6 +225,7 @@ Object {
                     },
                   },
                   "name": "__proto__",
+                  "optional": false,
                   "range": Array [
                     62,
                     71,
@@ -235,6 +244,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   62,
                   78,
@@ -253,6 +263,7 @@ Object {
                     },
                   },
                   "name": "proto",
+                  "optional": false,
                   "range": Array [
                     73,
                     78,
@@ -284,6 +295,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

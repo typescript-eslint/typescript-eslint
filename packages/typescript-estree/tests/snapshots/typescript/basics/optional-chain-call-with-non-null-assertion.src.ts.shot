@@ -36,6 +36,7 @@ Object {
                         },
                       },
                       "name": "one",
+                      "optional": false,
                       "range": Array [
                         40,
                         43,
@@ -55,6 +56,7 @@ Object {
                         },
                       },
                       "name": "two",
+                      "optional": false,
                       "range": Array [
                         45,
                         48,
@@ -173,6 +175,7 @@ Object {
                           },
                         },
                         "name": "one",
+                        "optional": false,
                         "range": Array [
                           55,
                           58,
@@ -192,6 +195,7 @@ Object {
                           },
                         },
                         "name": "two",
+                        "optional": false,
                         "range": Array [
                           60,
                           63,
@@ -233,6 +237,7 @@ Object {
                       },
                     },
                     "name": "three",
+                    "optional": false,
                     "range": Array [
                       65,
                       70,
@@ -323,6 +328,7 @@ Object {
                         },
                       },
                       "name": "one",
+                      "optional": false,
                       "range": Array [
                         77,
                         80,
@@ -342,6 +348,7 @@ Object {
                         },
                       },
                       "name": "two",
+                      "optional": false,
                       "range": Array [
                         82,
                         85,
@@ -460,6 +467,7 @@ Object {
                           },
                         },
                         "name": "one",
+                        "optional": false,
                         "range": Array [
                           94,
                           97,
@@ -479,6 +487,7 @@ Object {
                           },
                         },
                         "name": "two",
+                        "optional": false,
                         "range": Array [
                           99,
                           102,
@@ -536,6 +545,7 @@ Object {
                     },
                   },
                   "name": "three",
+                  "optional": false,
                   "range": Array [
                     105,
                     110,
@@ -610,6 +620,7 @@ Object {
                         },
                       },
                       "name": "one",
+                      "optional": false,
                       "range": Array [
                         117,
                         120,
@@ -629,6 +640,7 @@ Object {
                         },
                       },
                       "name": "two",
+                      "optional": false,
                       "range": Array [
                         122,
                         125,
@@ -747,6 +759,7 @@ Object {
                           },
                         },
                         "name": "one",
+                        "optional": false,
                         "range": Array [
                           134,
                           137,
@@ -766,6 +779,7 @@ Object {
                           },
                         },
                         "name": "two",
+                        "optional": false,
                         "range": Array [
                           139,
                           142,
@@ -823,6 +837,7 @@ Object {
                     },
                   },
                   "name": "three",
+                  "optional": false,
                   "range": Array [
                     145,
                     150,
@@ -899,6 +914,7 @@ Object {
           },
         },
         "name": "processOptional",
+        "optional": false,
         "range": Array [
           9,
           24,

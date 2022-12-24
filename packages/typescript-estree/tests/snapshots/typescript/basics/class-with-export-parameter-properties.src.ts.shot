@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 16,
                 27,
@@ -91,7 +92,7 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -104,6 +105,7 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       35,
                       44,
@@ -148,8 +150,8 @@ Object {
                     28,
                     44,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -189,6 +191,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

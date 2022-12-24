@@ -89,6 +89,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -101,6 +102,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -181,6 +183,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -379,6 +382,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -391,6 +395,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -471,6 +476,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -669,6 +675,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -681,6 +688,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -723,6 +731,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -849,6 +858,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -861,6 +871,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -903,6 +914,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -1072,6 +1084,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
                 },
               },
               "method": false,
+              "optional": false,
               "range": [
                 2,
                 8,
@@ -1248,6 +1261,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -1260,6 +1274,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -1340,6 +1355,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -1538,6 +1554,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -1550,6 +1567,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -1630,6 +1648,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -1828,6 +1847,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -1840,6 +1860,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -1882,6 +1903,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2008,6 +2030,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -2020,6 +2043,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -2062,6 +2086,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2188,6 +2213,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -2200,6 +2226,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -2242,6 +2269,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2368,6 +2396,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -2380,6 +2409,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -2422,6 +2452,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2548,6 +2579,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -2560,6 +2592,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -2640,6 +2673,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2838,6 +2872,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -2850,6 +2885,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -2930,6 +2966,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3128,6 +3165,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -3140,6 +3178,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -3182,6 +3221,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3308,6 +3348,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -3320,6 +3361,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -3362,6 +3404,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3488,6 +3531,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -3500,6 +3544,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -3580,6 +3625,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3778,6 +3824,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -3790,6 +3837,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -3832,6 +3880,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3958,6 +4007,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
               "loc": {
                 "end": {
@@ -3970,6 +4020,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
@@ -4012,6 +4063,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -4137,8 +4189,10 @@ exports[`parseWithNodeMaps() general output should not contain loc 1`] = `
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
             "name": "foo",
+            "optional": false,
             "range": [
               4,
               7,
@@ -4147,6 +4201,7 @@ exports[`parseWithNodeMaps() general output should not contain loc 1`] = `
           },
           "init": {
             "name": "bar",
+            "optional": false,
             "range": [
               10,
               13,
@@ -4160,6 +4215,7 @@ exports[`parseWithNodeMaps() general output should not contain loc 1`] = `
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "range": [
         0,
@@ -4183,6 +4239,7 @@ exports[`parseWithNodeMaps() general output should not contain range 1`] = `
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
             "loc": {
               "end": {
@@ -4195,6 +4252,7 @@ exports[`parseWithNodeMaps() general output should not contain range 1`] = `
               },
             },
             "name": "foo",
+            "optional": false,
             "type": "Identifier",
           },
           "init": {
@@ -4209,6 +4267,7 @@ exports[`parseWithNodeMaps() general output should not contain range 1`] = `
               },
             },
             "name": "bar",
+            "optional": false,
             "type": "Identifier",
           },
           "loc": {
@@ -4224,6 +4283,7 @@ exports[`parseWithNodeMaps() general output should not contain range 1`] = `
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": {
         "end": {
@@ -4259,6 +4319,7 @@ exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges w
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
             "loc": {
               "end": {
@@ -4271,6 +4332,7 @@ exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges w
               },
             },
             "name": "foo",
+            "optional": false,
             "range": [
               4,
               7,
@@ -4289,6 +4351,7 @@ exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges w
               },
             },
             "name": "bar",
+            "optional": false,
             "range": [
               10,
               13,
@@ -4312,6 +4375,7 @@ exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges w
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": {
         "end": {

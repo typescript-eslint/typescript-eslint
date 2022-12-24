@@ -66,6 +66,7 @@ Object {
                     },
                   },
                   "name": "fs",
+                  "optional": false,
                   "range": Array [
                     41,
                     43,
@@ -99,6 +100,7 @@ Object {
         "type": "TSModuleBlock",
       },
       "declare": true,
+      "global": false,
       "id": Object {
         "loc": Object {
           "end": Object {

@@ -25,6 +25,7 @@ Object {
       "init": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -37,6 +38,7 @@ Object {
                 },
               },
               "name": "i",
+              "optional": false,
               "range": Array [
                 9,
                 10,
@@ -79,6 +81,7 @@ Object {
             "type": "VariableDeclarator",
           },
           Object {
+            "definite": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -91,6 +94,7 @@ Object {
                 },
               },
               "name": "j",
+              "optional": false,
               "range": Array [
                 16,
                 17,
@@ -133,6 +137,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "var",
         "loc": Object {
           "end": Object {
@@ -177,6 +182,7 @@ Object {
             },
           },
           "name": "i",
+          "optional": false,
           "range": Array [
             24,
             25,
@@ -210,6 +216,7 @@ Object {
             },
           },
           "name": "j",
+          "optional": false,
           "range": Array [
             28,
             29,
@@ -234,6 +241,7 @@ Object {
                 },
               },
               "name": "i",
+              "optional": false,
               "range": Array [
                 31,
                 32,
@@ -271,6 +279,7 @@ Object {
                 },
               },
               "name": "j",
+              "optional": false,
               "range": Array [
                 36,
                 37,

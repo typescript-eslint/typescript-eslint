@@ -23,6 +23,7 @@ Object {
                   },
                 },
                 "name": "constructor",
+                "optional": false,
                 "range": Array [
                   57,
                   68,
@@ -100,6 +101,7 @@ Object {
             },
           },
           "name": "AbstractSocket",
+          "optional": false,
           "range": Array [
             22,
             36,

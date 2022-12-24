@@ -43,6 +43,7 @@ Object {
                     },
                   },
                   "name": "fn",
+                  "optional": false,
                   "range": Array [
                     16,
                     18,

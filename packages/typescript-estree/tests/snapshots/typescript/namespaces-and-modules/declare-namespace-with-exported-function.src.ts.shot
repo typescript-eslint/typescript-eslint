@@ -25,6 +25,7 @@ Object {
                   },
                 },
                 "name": "select",
+                "optional": false,
                 "range": Array [
                   41,
                   47,
@@ -54,6 +55,7 @@ Object {
                     },
                   },
                   "name": "selector",
+                  "optional": false,
                   "range": Array [
                     48,
                     64,
@@ -143,6 +145,7 @@ Object {
                       },
                     },
                     "name": "Selection",
+                    "optional": false,
                     "range": Array [
                       67,
                       76,
@@ -226,6 +229,7 @@ Object {
         "type": "TSModuleBlock",
       },
       "declare": true,
+      "global": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -238,6 +242,7 @@ Object {
           },
         },
         "name": "d3",
+        "optional": false,
         "range": Array [
           18,
           20,

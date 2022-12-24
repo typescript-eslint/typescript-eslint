@@ -4,6 +4,7 @@ exports[`typescript types index-signature-without-type.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           5,
           8,
@@ -50,6 +52,7 @@ Object {
         },
         "members": Array [
           Object {
+            "export": false,
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -73,6 +76,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   16,
                   25,
@@ -118,6 +122,8 @@ Object {
               15,
               27,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSIndexSignature",
           },
         ],

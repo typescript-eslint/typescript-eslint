@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "isBar",
+              "optional": false,
               "range": Array [
                 21,
                 26,
@@ -205,6 +206,7 @@ Object {
                 },
               },
               "name": "isBaz",
+              "optional": false,
               "range": Array [
                 73,
                 78,
@@ -404,6 +406,7 @@ Object {
           },
         },
         "name": "AssertsFoo",
+        "optional": false,
         "range": Array [
           6,
           16,

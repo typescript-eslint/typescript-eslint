@@ -22,6 +22,7 @@ Object {
                     },
                   },
                   "name": "x",
+                  "optional": false,
                   "range": Array [
                     59,
                     60,
@@ -129,6 +130,7 @@ Object {
           },
         },
         "name": "isString",
+        "optional": false,
         "range": Array [
           9,
           17,
@@ -158,6 +160,7 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             18,
             24,
@@ -243,6 +246,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               27,
               28,

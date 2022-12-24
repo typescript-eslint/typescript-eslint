@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 14,
                 17,
@@ -115,6 +116,7 @@ Object {
                             },
                           },
                           "name": "special",
+                          "optional": false,
                           "range": Array [
                             19,
                             26,
@@ -168,6 +170,7 @@ Object {
                         },
                       },
                       "name": "bar",
+                      "optional": false,
                       "range": Array [
                         35,
                         38,
@@ -185,6 +188,7 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     33,
                     45,
@@ -262,6 +266,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

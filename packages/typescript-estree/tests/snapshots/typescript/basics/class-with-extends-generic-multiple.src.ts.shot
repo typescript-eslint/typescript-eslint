@@ -34,6 +34,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
@@ -66,6 +67,7 @@ Object {
           },
         },
         "name": "Bar",
+        "optional": false,
         "range": Array [
           31,
           34,
@@ -112,6 +114,7 @@ Object {
                 },
               },
               "name": "C",
+              "optional": false,
               "range": Array [
                 35,
                 36,
@@ -148,6 +151,7 @@ Object {
                 },
               },
               "name": "D",
+              "optional": false,
               "range": Array [
                 38,
                 39,
@@ -205,6 +209,7 @@ Object {
                   },
                 },
                 "name": "B",
+                "optional": false,
                 "range": Array [
                   20,
                   21,
@@ -237,6 +242,7 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 10,
                 11,

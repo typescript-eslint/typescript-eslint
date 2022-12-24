@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "M",
+        "optional": false,
         "range": Array [
           9,
           10,
@@ -66,6 +67,7 @@ Object {
             },
           },
           "name": "Base",
+          "optional": false,
           "range": Array [
             37,
             44,
@@ -115,6 +117,7 @@ Object {
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": Array [
                   43,
                   44,
@@ -172,6 +175,7 @@ Object {
                   },
                 },
                 "name": "Constructor",
+                "optional": false,
                 "range": Array [
                   21,
                   32,
@@ -218,6 +222,7 @@ Object {
                         },
                       },
                       "name": "M",
+                      "optional": false,
                       "range": Array [
                         33,
                         34,
@@ -258,6 +263,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 11,
                 12,

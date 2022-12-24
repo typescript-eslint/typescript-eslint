@@ -37,6 +37,7 @@ Object {
                 },
               },
               "name": "sealed",
+              "optional": false,
               "range": Array [
                 1,
                 7,
@@ -72,6 +73,7 @@ Object {
             },
           },
           "name": "Qux",
+          "optional": false,
           "range": Array [
             29,
             32,

@@ -18,6 +18,7 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             26,
             27,
@@ -49,6 +50,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "properties": Array [
               Object {
                 "computed": false,
@@ -64,6 +66,7 @@ Object {
                     },
                   },
                   "name": "foo",
+                  "optional": false,
                   "range": Array [
                     2,
                     5,
@@ -82,6 +85,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   2,
                   8,
@@ -100,6 +104,7 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     7,
                     8,
@@ -121,6 +126,7 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     10,
                     11,
@@ -139,6 +145,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   10,
                   20,
@@ -156,6 +163,7 @@ Object {
                       "line": 1,
                     },
                   },
+                  "optional": false,
                   "properties": Array [
                     Object {
                       "computed": false,
@@ -171,6 +179,7 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           13,
                           16,
@@ -189,6 +198,7 @@ Object {
                         },
                       },
                       "method": false,
+                      "optional": false,
                       "range": Array [
                         13,
                         19,
@@ -207,6 +217,7 @@ Object {
                           },
                         },
                         "name": "x",
+                        "optional": false,
                         "range": Array [
                           18,
                           19,

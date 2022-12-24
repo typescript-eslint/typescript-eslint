@@ -8,6 +8,7 @@ Object {
         "body": Array [
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -20,6 +21,7 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 24,
                 28,
@@ -37,11 +39,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [],
             "range": Array [
               20,
               39,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -76,10 +80,12 @@ Object {
                 "type": "TSNumberKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -92,6 +98,7 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 46,
                 50,
@@ -109,6 +116,7 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -122,6 +130,7 @@ Object {
                   },
                 },
                 "name": "value",
+                "optional": false,
                 "range": Array [
                   51,
                   83,
@@ -220,6 +229,8 @@ Object {
               42,
               85,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSMethodSignature",
           },
         ],
@@ -239,6 +250,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -251,6 +263,7 @@ Object {
           },
         },
         "name": "Thing",
+        "optional": false,
         "range": Array [
           10,
           15,

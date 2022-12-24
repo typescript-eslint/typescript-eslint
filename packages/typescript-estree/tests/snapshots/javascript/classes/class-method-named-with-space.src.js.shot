@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "withSpace",
+              "optional": false,
               "range": Array [
                 9,
                 18,
@@ -114,6 +115,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

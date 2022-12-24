@@ -16,6 +16,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
@@ -31,6 +32,7 @@ Object {
                   },
                 },
                 "name": "Object",
+                "optional": false,
                 "range": Array [
                   3,
                   9,
@@ -49,6 +51,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 3,
                 11,
@@ -68,6 +71,7 @@ Object {
                     },
                   },
                   "name": "Object",
+                  "optional": false,
                   "range": Array [
                     3,
                     9,
@@ -84,6 +88,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   3,
                   11,
@@ -124,6 +129,7 @@ Object {
                   },
                 },
                 "name": "String",
+                "optional": false,
                 "range": Array [
                   13,
                   19,
@@ -142,6 +148,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 13,
                 21,
@@ -161,6 +168,7 @@ Object {
                     },
                   },
                   "name": "String",
+                  "optional": false,
                   "range": Array [
                     13,
                     19,
@@ -177,6 +185,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   13,
                   21,

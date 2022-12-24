@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 22,
                 33,
@@ -196,6 +197,7 @@ Object {
           },
         },
         "name": "C",
+        "optional": false,
         "range": Array [
           6,
           7,

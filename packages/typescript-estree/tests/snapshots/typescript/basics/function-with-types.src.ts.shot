@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "name",
+              "optional": false,
               "range": Array [
                 50,
                 54,
@@ -73,6 +74,7 @@ Object {
           },
         },
         "name": "message",
+        "optional": false,
         "range": Array [
           9,
           16,
@@ -102,6 +104,7 @@ Object {
             },
           },
           "name": "name",
+          "optional": false,
           "range": Array [
             17,
             28,

@@ -86,6 +86,7 @@ Object {
               },
             },
             "method": false,
+            "optional": false,
             "range": Array [
               2,
               17,

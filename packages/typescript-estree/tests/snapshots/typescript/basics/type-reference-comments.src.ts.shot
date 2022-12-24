@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "mBuffers",
+              "optional": false,
               "range": Array [
                 26,
                 34,
@@ -90,6 +91,7 @@ Object {
                       },
                     },
                     "name": "interop",
+                    "optional": false,
                     "range": Array [
                       36,
                       43,
@@ -122,6 +124,7 @@ Object {
                       },
                     },
                     "name": "Reference",
+                    "optional": false,
                     "range": Array [
                       44,
                       53,
@@ -199,6 +202,7 @@ Object {
           },
         },
         "name": "AudioBufferList",
+        "optional": false,
         "range": Array [
           6,
           21,

@@ -23,6 +23,7 @@ Object {
         "type": "TSModuleBlock",
       },
       "declare": true,
+      "global": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -35,6 +36,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           18,
           21,

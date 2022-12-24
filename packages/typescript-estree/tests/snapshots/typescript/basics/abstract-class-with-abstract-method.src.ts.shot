@@ -23,6 +23,7 @@ Object {
                   },
                 },
                 "name": "createSocket",
+                "optional": false,
                 "range": Array [
                   52,
                   64,
@@ -112,6 +113,7 @@ Object {
                         },
                       },
                       "name": "Promise",
+                      "optional": false,
                       "range": Array [
                         68,
                         75,
@@ -188,6 +190,7 @@ Object {
             },
           },
           "name": "AbstractSocket",
+          "optional": false,
           "range": Array [
             22,
             36,

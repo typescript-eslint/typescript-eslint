@@ -26,6 +26,7 @@ Object {
               "type": "TSModuleBlock",
             },
             "declare": true,
+            "global": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -38,6 +39,7 @@ Object {
                 },
               },
               "name": "global",
+              "optional": false,
               "range": Array [
                 36,
                 42,
@@ -80,6 +82,7 @@ Object {
               "type": "TSModuleBlock",
             },
             "declare": true,
+            "global": false,
             "id": Object {
               "loc": Object {
                 "end": Object {
@@ -92,6 +95,7 @@ Object {
                 },
               },
               "name": "global",
+              "optional": false,
               "range": Array [
                 74,
                 80,
@@ -145,6 +149,7 @@ Object {
           },
         },
         "name": "global",
+        "optional": false,
         "range": Array [
           8,
           14,

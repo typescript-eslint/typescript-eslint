@@ -8,7 +8,7 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -22,6 +22,7 @@ Object {
                 },
               },
               "name": "baa",
+              "optional": false,
               "range": Array [
                 20,
                 23,
@@ -38,13 +39,13 @@ Object {
                 "line": 2,
               },
             },
-            "optional": undefined,
+            "optional": false,
             "range": Array [
               20,
               32,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -83,7 +84,7 @@ Object {
           },
           Object {
             "computed": false,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -97,6 +98,7 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 37,
                 40,
@@ -118,8 +120,8 @@ Object {
               37,
               50,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -158,7 +160,7 @@ Object {
           },
           Object {
             "computed": true,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -172,6 +174,7 @@ Object {
                 },
               },
               "name": "bax",
+              "optional": false,
               "range": Array [
                 56,
                 59,
@@ -188,13 +191,13 @@ Object {
                 "line": 4,
               },
             },
-            "optional": undefined,
+            "optional": false,
             "range": Array [
               55,
               69,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -233,7 +236,7 @@ Object {
           },
           Object {
             "computed": true,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -247,6 +250,7 @@ Object {
                 },
               },
               "name": "baz",
+              "optional": false,
               "range": Array [
                 75,
                 78,
@@ -268,8 +272,8 @@ Object {
               74,
               89,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -307,6 +311,7 @@ Object {
             },
           },
           Object {
+            "export": false,
             "loc": Object {
               "end": Object {
                 "column": 26,
@@ -330,6 +335,7 @@ Object {
                   },
                 },
                 "name": "eee",
+                "optional": false,
                 "range": Array [
                   95,
                   106,
@@ -375,6 +381,8 @@ Object {
               94,
               116,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -413,6 +421,7 @@ Object {
           },
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -425,6 +434,7 @@ Object {
                 },
               },
               "name": "doo",
+              "optional": false,
               "range": Array [
                 121,
                 124,
@@ -442,11 +452,13 @@ Object {
                 "line": 7,
               },
             },
+            "optional": false,
             "params": Array [],
             "range": Array [
               121,
               133,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -481,10 +493,12 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -497,6 +511,7 @@ Object {
                 },
               },
               "name": "coo",
+              "optional": false,
               "range": Array [
                 138,
                 141,
@@ -528,6 +543,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   143,
                   144,
@@ -546,6 +562,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   146,
                   147,
@@ -564,6 +581,7 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   149,
                   150,
@@ -575,6 +593,7 @@ Object {
               138,
               158,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -609,10 +628,12 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
           Object {
             "computed": true,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -625,6 +646,7 @@ Object {
                 },
               },
               "name": "loo",
+              "optional": false,
               "range": Array [
                 164,
                 167,
@@ -656,6 +678,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   170,
                   171,
@@ -674,6 +697,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   173,
                   174,
@@ -692,6 +716,7 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   176,
                   177,
@@ -703,6 +728,7 @@ Object {
               163,
               185,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -737,10 +763,12 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -753,6 +781,7 @@ Object {
                 },
               },
               "name": "boo",
+              "optional": false,
               "range": Array [
                 190,
                 193,
@@ -770,6 +799,7 @@ Object {
                 "line": 10,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -783,6 +813,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   197,
                   198,
@@ -801,6 +832,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   200,
                   201,
@@ -819,6 +851,7 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   203,
                   204,
@@ -830,6 +863,7 @@ Object {
               190,
               212,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -864,6 +898,7 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
             "typeParameters": Object {
               "loc": Object {
@@ -903,6 +938,7 @@ Object {
                       },
                     },
                     "name": "J",
+                    "optional": false,
                     "range": Array [
                       194,
                       195,
@@ -948,6 +984,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   222,
                   223,
@@ -1038,6 +1075,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   250,
                   251,
@@ -1141,6 +1179,7 @@ Object {
                       },
                     },
                     "name": "F",
+                    "optional": false,
                     "range": Array [
                       247,
                       248,
@@ -1179,6 +1218,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -1191,6 +1231,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,

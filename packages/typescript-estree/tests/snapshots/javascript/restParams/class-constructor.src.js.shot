@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
@@ -91,6 +92,7 @@ Object {
                       },
                     },
                     "name": "foo",
+                    "optional": false,
                     "range": Array [
                       29,
                       32,
@@ -107,6 +109,7 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     26,
                     32,
@@ -150,6 +153,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

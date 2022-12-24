@@ -19,6 +19,7 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 8,
                 9,
@@ -53,6 +54,7 @@ Object {
               },
             },
             "name": "b",
+            "optional": false,
             "range": Array [
               11,
               12,
@@ -72,6 +74,7 @@ Object {
             },
           },
           "name": "func",
+          "optional": false,
           "range": Array [
             0,
             4,

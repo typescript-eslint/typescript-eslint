@@ -23,6 +23,7 @@ Object {
                     },
                   },
                   "name": "baz",
+                  "optional": false,
                   "range": Array [
                     15,
                     18,
@@ -58,6 +59,7 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 26,
                 27,
@@ -101,6 +103,7 @@ Object {
                     },
                   },
                   "name": "qux",
+                  "optional": false,
                   "range": Array [
                     34,
                     37,
@@ -136,6 +139,7 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 49,
                 50,
@@ -191,6 +195,7 @@ Object {
           },
         },
         "name": "C",
+        "optional": false,
         "range": Array [
           6,
           7,

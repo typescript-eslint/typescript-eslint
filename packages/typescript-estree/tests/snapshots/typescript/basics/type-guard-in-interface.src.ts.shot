@@ -8,6 +8,7 @@ Object {
         "body": Array [
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -20,6 +21,7 @@ Object {
                 },
               },
               "name": "isString",
+              "optional": false,
               "range": Array [
                 18,
                 26,
@@ -37,6 +39,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -50,6 +53,7 @@ Object {
                   },
                 },
                 "name": "node",
+                "optional": false,
                 "range": Array [
                   27,
                   36,
@@ -95,6 +99,7 @@ Object {
               18,
               54,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -135,6 +140,7 @@ Object {
                     },
                   },
                   "name": "node",
+                  "optional": false,
                   "range": Array [
                     39,
                     43,
@@ -182,6 +188,7 @@ Object {
                 },
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
         ],
@@ -201,6 +208,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -213,6 +221,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,

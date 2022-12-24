@@ -6,6 +6,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -18,6 +19,7 @@ Object {
               },
             },
             "name": "b",
+            "optional": false,
             "range": Array [
               6,
               7,
@@ -60,6 +62,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -80,6 +83,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -92,6 +96,7 @@ Object {
               },
             },
             "name": "c",
+            "optional": false,
             "range": Array [
               19,
               20,
@@ -134,6 +139,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -154,6 +160,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -166,6 +173,7 @@ Object {
               },
             },
             "name": "d",
+            "optional": false,
             "range": Array [
               32,
               33,
@@ -208,6 +216,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -228,6 +237,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -240,6 +250,7 @@ Object {
               },
             },
             "name": "e",
+            "optional": false,
             "range": Array [
               51,
               52,
@@ -272,6 +283,7 @@ Object {
                     },
                   },
                   "name": "f",
+                  "optional": false,
                   "range": Array [
                     59,
                     60,
@@ -290,6 +302,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   59,
                   76,
@@ -330,6 +343,7 @@ Object {
                     },
                   },
                   "name": "g",
+                  "optional": false,
                   "range": Array [
                     80,
                     81,
@@ -348,6 +362,7 @@ Object {
                   },
                 },
                 "method": true,
+                "optional": false,
                 "range": Array [
                   80,
                   103,
@@ -401,6 +416,7 @@ Object {
                           },
                         },
                         "name": "h",
+                        "optional": false,
                         "range": Array [
                           82,
                           83,
@@ -417,6 +433,7 @@ Object {
                           "line": 6,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         82,
                         99,
@@ -464,6 +481,7 @@ Object {
                     },
                   },
                   "name": "i",
+                  "optional": false,
                   "range": Array [
                     107,
                     108,
@@ -482,6 +500,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   107,
                   135,
@@ -535,6 +554,7 @@ Object {
                           },
                         },
                         "name": "j",
+                        "optional": false,
                         "range": Array [
                           111,
                           112,
@@ -551,6 +571,7 @@ Object {
                           "line": 7,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         111,
                         128,
@@ -608,6 +629,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -672,6 +694,7 @@ Object {
               },
             },
             "name": "e",
+            "optional": false,
             "range": Array [
               140,
               141,
@@ -691,6 +714,7 @@ Object {
               },
             },
             "name": "i",
+            "optional": false,
             "range": Array [
               142,
               143,

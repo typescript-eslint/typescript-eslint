@@ -46,6 +46,7 @@ Object {
           Object {
             "declarations": Array [
               Object {
+                "definite": false,
                 "id": Object {
                   "loc": Object {
                     "end": Object {
@@ -58,6 +59,7 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     38,
                     39,
@@ -100,6 +102,7 @@ Object {
                 "type": "VariableDeclarator",
               },
             ],
+            "declare": false,
             "kind": "var",
             "loc": Object {
               "end": Object {
@@ -170,6 +173,8 @@ Object {
         ],
         "type": "TSModuleBlock",
       },
+      "declare": false,
+      "global": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -182,6 +187,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           10,
           13,

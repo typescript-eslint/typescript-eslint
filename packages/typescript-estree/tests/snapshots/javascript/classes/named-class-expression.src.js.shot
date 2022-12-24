@@ -35,6 +35,7 @@ Object {
             },
           },
           "name": "A",
+          "optional": false,
           "range": Array [
             7,
             8,

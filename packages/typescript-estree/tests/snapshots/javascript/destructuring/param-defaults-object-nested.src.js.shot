@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "a",
+        "optional": false,
         "range": Array [
           9,
           10,
@@ -65,6 +66,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
@@ -80,6 +82,7 @@ Object {
                   },
                 },
                 "name": "x",
+                "optional": false,
                 "range": Array [
                   12,
                   13,
@@ -98,6 +101,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 12,
                 18,
@@ -117,6 +121,7 @@ Object {
                     },
                   },
                   "name": "x",
+                  "optional": false,
                   "range": Array [
                     12,
                     13,
@@ -133,6 +138,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   12,
                   18,
@@ -173,6 +179,7 @@ Object {
                   },
                 },
                 "name": "y",
+                "optional": false,
                 "range": Array [
                   20,
                   21,
@@ -191,6 +198,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 20,
                 33,
@@ -208,6 +216,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "properties": Array [
                   Object {
                     "computed": false,
@@ -223,6 +232,7 @@ Object {
                         },
                       },
                       "name": "z",
+                      "optional": false,
                       "range": Array [
                         25,
                         26,
@@ -241,6 +251,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       25,
                       31,
@@ -260,6 +271,7 @@ Object {
                           },
                         },
                         "name": "z",
+                        "optional": false,
                         "range": Array [
                           25,
                           26,
@@ -276,6 +288,7 @@ Object {
                           "line": 1,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         25,
                         31,

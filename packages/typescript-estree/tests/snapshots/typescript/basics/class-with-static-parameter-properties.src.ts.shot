@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 16,
                 27,
@@ -80,7 +81,7 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 32,
@@ -91,7 +92,7 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -104,6 +105,7 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       35,
                       44,
@@ -148,7 +150,7 @@ Object {
                     28,
                     44,
                   ],
-                  "readonly": undefined,
+                  "readonly": false,
                   "static": true,
                   "type": "TSParameterProperty",
                 },
@@ -189,6 +191,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

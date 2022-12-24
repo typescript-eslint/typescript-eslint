@@ -35,6 +35,7 @@ Object {
             },
           },
           "name": "Test",
+          "optional": false,
           "range": Array [
             21,
             25,

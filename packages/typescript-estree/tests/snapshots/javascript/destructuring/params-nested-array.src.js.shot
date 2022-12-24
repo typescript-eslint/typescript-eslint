@@ -37,6 +37,7 @@ Object {
           },
         },
         "name": "a",
+        "optional": false,
         "range": Array [
           9,
           10,
@@ -68,6 +69,7 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 12,
                 13,
@@ -90,6 +92,7 @@ Object {
                     },
                   },
                   "name": "z",
+                  "optional": false,
                   "range": Array [
                     20,
                     21,
@@ -107,6 +110,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 17,
                 22,
@@ -124,6 +128,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             11,
             23,

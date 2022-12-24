@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "consturctor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
@@ -89,6 +90,7 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "properties": Array [
                     Object {
                       "computed": false,
@@ -104,6 +106,7 @@ Object {
                           },
                         },
                         "name": "foo",
+                        "optional": false,
                         "range": Array [
                           27,
                           30,
@@ -122,6 +125,7 @@ Object {
                         },
                       },
                       "method": false,
+                      "optional": false,
                       "range": Array [
                         27,
                         30,
@@ -140,6 +144,7 @@ Object {
                           },
                         },
                         "name": "foo",
+                        "optional": false,
                         "range": Array [
                           27,
                           30,
@@ -161,6 +166,7 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           32,
                           35,
@@ -179,6 +185,7 @@ Object {
                         },
                       },
                       "method": false,
+                      "optional": false,
                       "range": Array [
                         32,
                         35,
@@ -197,6 +204,7 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           32,
                           35,
@@ -248,6 +256,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

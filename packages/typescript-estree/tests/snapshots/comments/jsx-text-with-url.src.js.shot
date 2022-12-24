@@ -6,6 +6,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -18,6 +19,7 @@ Object {
               },
             },
             "name": "first",
+            "optional": false,
             "range": Array [
               6,
               11,
@@ -152,6 +154,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -172,6 +175,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -184,6 +188,7 @@ Object {
               },
             },
             "name": "second",
+            "optional": false,
             "range": Array [
               52,
               58,
@@ -279,6 +284,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -299,6 +305,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -311,6 +318,7 @@ Object {
               },
             },
             "name": "third",
+            "optional": false,
             "range": Array [
               93,
               98,
@@ -502,6 +510,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -522,6 +531,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -534,6 +544,7 @@ Object {
               },
             },
             "name": "fourth",
+            "optional": false,
             "range": Array [
               145,
               151,
@@ -759,6 +770,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -779,6 +791,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -791,6 +804,7 @@ Object {
               },
             },
             "name": "fifth",
+            "optional": false,
             "range": Array [
               205,
               210,
@@ -959,6 +973,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {

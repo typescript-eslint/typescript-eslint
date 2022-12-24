@@ -56,6 +56,7 @@ Object {
           },
         },
         "name": "assertsStringGuard",
+        "optional": false,
         "range": Array [
           9,
           27,
@@ -85,6 +86,7 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             28,
             34,
@@ -170,6 +172,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               45,
               46,

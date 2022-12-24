@@ -63,6 +63,7 @@ Object {
                           },
                         },
                         "name": "doIt",
+                        "optional": false,
                         "range": Array [
                           126,
                           130,
@@ -151,6 +152,7 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 31,
                 34,
@@ -204,6 +206,7 @@ Object {
           },
         },
         "name": "bar",
+        "optional": false,
         "range": Array [
           9,
           12,
@@ -233,6 +236,7 @@ Object {
             },
           },
           "name": "foo",
+          "optional": false,
           "range": Array [
             13,
             16,

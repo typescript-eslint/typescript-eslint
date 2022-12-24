@@ -21,6 +21,7 @@ Object {
                 },
               },
               "name": "k",
+              "optional": false,
               "range": Array [
                 9,
                 10,

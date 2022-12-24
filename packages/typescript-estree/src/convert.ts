@@ -647,18 +647,14 @@ export class Converter {
             return 'method';
         }
       })(),
+      export: false,
+      optional: !!isOptional(node),
+      readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node),
+      static: false,
     });
-
-    if (isOptional(node)) {
-      result.optional = true;
-    }
 
     if (node.type) {
       result.returnType = this.convertTypeAnnotation(node.type, node);
-    }
-
-    if (hasModifier(SyntaxKind.ReadonlyKeyword, node)) {
-      result.readonly = true;
     }
 
     if (node.typeParameters) {
@@ -771,6 +767,7 @@ export class Converter {
         }
         return this.createNode<TSESTree.Identifier>(node, {
           type: AST_NODE_TYPES.Identifier,
+          optional: false,
           name: node.text,
         });
       }
@@ -967,6 +964,7 @@ export class Converter {
       case SyntaxKind.VariableDeclaration: {
         const result = this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
+          definite: false,
           id: this.convertBindingNameWithTypeAnnotation(
             node.name,
             node.type,
@@ -985,6 +983,7 @@ export class Converter {
       case SyntaxKind.VariableStatement: {
         const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
+          declare: false,
           declarations: node.declarationList.declarations.map(el =>
             this.convertChild(el),
           ),
@@ -1011,6 +1010,7 @@ export class Converter {
       case SyntaxKind.VariableDeclarationList:
         return this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
+          declare: false,
           declarations: node.declarations.map(el => this.convertChild(el)),
           kind: getDeclarationKind(node),
         });
@@ -1033,6 +1033,7 @@ export class Converter {
         if (this.allowPattern) {
           return this.createNode<TSESTree.ArrayPattern>(node, {
             type: AST_NODE_TYPES.ArrayPattern,
+            optional: false,
             elements: node.elements.map(el => this.convertPattern(el)),
           });
         } else {
@@ -1048,6 +1049,7 @@ export class Converter {
         if (this.allowPattern) {
           return this.createNode<TSESTree.ObjectPattern>(node, {
             type: AST_NODE_TYPES.ObjectPattern,
+            optional: false,
             properties: node.properties.map(el => this.convertPattern(el)),
           });
         } else {
@@ -1070,6 +1072,7 @@ export class Converter {
           ),
           computed: isComputedProperty(node.name),
           method: false,
+          optional: false,
           shorthand: false,
           kind: 'init',
         });
@@ -1082,9 +1085,11 @@ export class Converter {
             value: this.createNode<TSESTree.AssignmentPattern>(node, {
               type: AST_NODE_TYPES.AssignmentPattern,
               left: this.convertPattern(node.name),
+              optional: false,
               right: this.convertChild(node.objectAssignmentInitializer),
             }),
             computed: false,
+            optional: false,
             method: false,
             shorthand: true,
             kind: 'init',
@@ -1096,6 +1101,7 @@ export class Converter {
             value: this.convertChild(node.name),
             computed: false,
             method: false,
+            optional: false,
             shorthand: true,
             kind: 'init',
           });
@@ -1225,6 +1231,7 @@ export class Converter {
             key: this.convertChild(node.name),
             value: method,
             computed: isComputedProperty(node.name),
+            optional: false,
             method: node.kind === SyntaxKind.MethodDeclaration,
             shorthand: false,
             kind: 'init',
@@ -1328,6 +1335,7 @@ export class Converter {
         const constructorKey = this.createNode<TSESTree.Identifier>(node, {
           type: AST_NODE_TYPES.Identifier,
           name: 'constructor',
+          optional: false,
           range: [constructorToken.getStart(this.ast), constructorToken.end],
         });
 
@@ -1387,6 +1395,7 @@ export class Converter {
 
       case SyntaxKind.ArrayBindingPattern:
         return this.createNode<TSESTree.ArrayPattern>(node, {
+          optional: false,
           type: AST_NODE_TYPES.ArrayPattern,
           elements: node.elements.map(el => this.convertPattern(el)),
         });
@@ -1398,6 +1407,7 @@ export class Converter {
       case SyntaxKind.ObjectBindingPattern:
         return this.createNode<TSESTree.ObjectPattern>(node, {
           type: AST_NODE_TYPES.ObjectPattern,
+          optional: false,
           properties: node.elements.map(el => this.convertPattern(el)),
         });
 
@@ -1409,12 +1419,14 @@ export class Converter {
             return this.createNode<TSESTree.AssignmentPattern>(node, {
               type: AST_NODE_TYPES.AssignmentPattern,
               left: arrayItem,
+              optional: false,
               right: this.convertChild(node.initializer),
             });
           } else if (node.dotDotDotToken) {
             return this.createNode<TSESTree.RestElement>(node, {
               type: AST_NODE_TYPES.RestElement,
               argument: arrayItem,
+              optional: false,
             });
           } else {
             return arrayItem;
@@ -1425,6 +1437,7 @@ export class Converter {
             result = this.createNode<TSESTree.RestElement>(node, {
               type: AST_NODE_TYPES.RestElement,
               argument: this.convertChild(node.propertyName ?? node.name),
+              optional: false,
             });
           } else {
             result = this.createNode<TSESTree.Property>(node, {
@@ -1436,6 +1449,7 @@ export class Converter {
                   node.propertyName.kind === SyntaxKind.ComputedPropertyName,
               ),
               method: false,
+              optional: false,
               shorthand: !node.propertyName,
               kind: 'init',
             });
@@ -1445,6 +1459,7 @@ export class Converter {
             result.value = this.createNode<TSESTree.AssignmentPattern>(node, {
               type: AST_NODE_TYPES.AssignmentPattern,
               left: this.convertChild(node.name),
+              optional: false,
               right: this.convertChild(node.initializer),
               range: [node.name.getStart(this.ast), node.initializer.end],
             });
@@ -1569,6 +1584,7 @@ export class Converter {
           return this.createNode<TSESTree.RestElement>(node, {
             type: AST_NODE_TYPES.RestElement,
             argument: this.convertPattern(node.expression),
+            optional: false,
           });
         } else {
           return this.createNode<TSESTree.SpreadElement>(node, {
@@ -1586,12 +1602,14 @@ export class Converter {
           parameter = result = this.createNode<TSESTree.RestElement>(node, {
             type: AST_NODE_TYPES.RestElement,
             argument: this.convertChild(node.name),
+            optional: false,
           });
         } else if (node.initializer) {
           parameter = this.convertChild(node.name) as TSESTree.BindingName;
           result = this.createNode<TSESTree.AssignmentPattern>(node, {
             type: AST_NODE_TYPES.AssignmentPattern,
             left: parameter,
+            optional: false,
             right: this.convertChild(node.initializer),
           });
 
@@ -1629,12 +1647,10 @@ export class Converter {
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
             accessibility: getTSNodeAccessibility(node) ?? undefined,
-            readonly:
-              hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
-            static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-            export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
-            override:
-              hasModifier(SyntaxKind.OverrideKeyword, node) || undefined,
+            readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node),
+            static: hasModifier(SyntaxKind.StaticKeyword, node),
+            export: hasModifier(SyntaxKind.ExportKeyword, node),
+            override: hasModifier(SyntaxKind.OverrideKeyword, node),
             parameter: result,
           });
         }
@@ -1949,6 +1965,7 @@ export class Converter {
             return this.createNode<TSESTree.AssignmentPattern>(node, {
               type: AST_NODE_TYPES.AssignmentPattern,
               left: this.convertPattern(node.left, node),
+              optional: false,
               right: this.convertChild(node.right),
             });
           }
@@ -2075,6 +2092,7 @@ export class Converter {
             {
               type: AST_NODE_TYPES.Identifier,
               name: getTextForTokenKind(node.keywordToken),
+              optional: false,
             },
           ),
           property: this.convertChild(node.name),
@@ -2451,6 +2469,7 @@ export class Converter {
       case SyntaxKind.TypeAliasDeclaration: {
         const result = this.createNode<TSESTree.TSTypeAliasDeclaration>(node, {
           type: AST_NODE_TYPES.TSTypeAliasDeclaration,
+          declare: false,
           id: this.convertChild(node.name),
           typeAnnotation: this.convertType(node.type),
         });
@@ -2478,7 +2497,7 @@ export class Converter {
       case SyntaxKind.PropertySignature: {
         const result = this.createNode<TSESTree.TSPropertySignature>(node, {
           type: AST_NODE_TYPES.TSPropertySignature,
-          optional: isOptional(node) || undefined,
+          optional: isOptional(node),
           computed: isComputedProperty(node.name),
           key: this.convertChild(node.name),
           typeAnnotation: node.type
@@ -2489,9 +2508,9 @@ export class Converter {
               // eslint-disable-next-line deprecation/deprecation -- TODO breaking change remove this from the AST
               node.initializer,
             ) || undefined,
-          readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
-          static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-          export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
+          readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node),
+          static: hasModifier(SyntaxKind.StaticKeyword, node),
+          export: hasModifier(SyntaxKind.ExportKeyword, node),
         });
 
         const accessibility = getTSNodeAccessibility(node);
@@ -2505,7 +2524,10 @@ export class Converter {
       case SyntaxKind.IndexSignature: {
         const result = this.createNode<TSESTree.TSIndexSignature>(node, {
           type: AST_NODE_TYPES.TSIndexSignature,
+          export: false,
           parameters: node.parameters.map(el => this.convertChild(el)),
+          readonly: false,
+          static: false,
         });
 
         if (node.type) {
@@ -2613,6 +2635,7 @@ export class Converter {
             body: node.members.map(member => this.convertChild(member)),
             range: [node.members.pos - 1, node.end],
           }),
+          declare: false,
           id: this.convertChild(node.name),
         });
 
@@ -2697,6 +2720,8 @@ export class Converter {
       case SyntaxKind.EnumDeclaration: {
         const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
           type: AST_NODE_TYPES.TSEnumDeclaration,
+          const: false,
+          declare: false,
           id: this.convertChild(node.name),
           members: node.members.map(el => this.convertChild(el)),
         });
@@ -2716,6 +2741,7 @@ export class Converter {
       case SyntaxKind.EnumMember: {
         const result = this.createNode<TSESTree.TSEnumMember>(node, {
           type: AST_NODE_TYPES.TSEnumMember,
+          computed: false,
           id: this.convertChild(node.name),
         });
         if (node.initializer) {
@@ -2730,6 +2756,8 @@ export class Converter {
       case SyntaxKind.ModuleDeclaration: {
         const result = this.createNode<TSESTree.TSModuleDeclaration>(node, {
           type: AST_NODE_TYPES.TSModuleDeclaration,
+          declare: false,
+          global: false,
           id: this.convertChild(node.name),
         });
         if (node.body) {

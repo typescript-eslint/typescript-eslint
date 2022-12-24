@@ -21,6 +21,7 @@ Object {
                   },
                 },
                 "name": "future",
+                "optional": false,
                 "range": Array [
                   40,
                   46,
@@ -90,6 +91,7 @@ Object {
           },
         },
         "name": "hope",
+        "optional": false,
         "range": Array [
           15,
           19,
@@ -119,6 +121,7 @@ Object {
             },
           },
           "name": "future",
+          "optional": false,
           "range": Array [
             20,
             26,

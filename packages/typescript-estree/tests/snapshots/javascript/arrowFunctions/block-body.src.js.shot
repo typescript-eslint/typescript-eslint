@@ -87,6 +87,7 @@ Object {
               },
             },
             "name": "e",
+            "optional": false,
             "range": Array [
               0,
               1,

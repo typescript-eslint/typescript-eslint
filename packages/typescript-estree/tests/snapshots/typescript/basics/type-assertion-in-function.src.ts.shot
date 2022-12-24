@@ -56,6 +56,7 @@ Object {
           },
         },
         "name": "assertsString",
+        "optional": false,
         "range": Array [
           9,
           22,
@@ -85,6 +86,7 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             23,
             29,
@@ -170,6 +172,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               40,
               41,

@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "greet",
+              "optional": false,
               "range": Array [
                 20,
                 25,
@@ -97,6 +98,7 @@ Object {
                             },
                           },
                           "name": "name",
+                          "optional": false,
                           "range": Array [
                             78,
                             82,
@@ -203,6 +205,7 @@ Object {
                           },
                         },
                         "name": "required",
+                        "optional": false,
                         "range": Array [
                           27,
                           35,
@@ -237,6 +240,7 @@ Object {
                     },
                   },
                   "name": "name",
+                  "optional": false,
                   "range": Array [
                     36,
                     48,
@@ -314,6 +318,7 @@ Object {
           },
         },
         "name": "Greeter",
+        "optional": false,
         "range": Array [
           6,
           13,

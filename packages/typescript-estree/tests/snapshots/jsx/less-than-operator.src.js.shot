@@ -89,6 +89,7 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             12,
             13,

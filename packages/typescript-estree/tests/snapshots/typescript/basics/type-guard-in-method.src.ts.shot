@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "isBar",
+              "optional": false,
               "range": Array [
                 14,
                 19,
@@ -94,6 +95,7 @@ Object {
                           },
                         },
                         "name": "Foo",
+                        "optional": false,
                         "range": Array [
                           67,
                           70,
@@ -257,6 +259,7 @@ Object {
                 },
               },
               "name": "isBaz",
+              "optional": false,
               "range": Array [
                 78,
                 83,
@@ -331,6 +334,7 @@ Object {
                           },
                         },
                         "name": "Foo",
+                        "optional": false,
                         "range": Array [
                           137,
                           140,
@@ -508,6 +512,7 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,

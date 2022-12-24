@@ -19,6 +19,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               6,
               16,
@@ -77,6 +78,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -110,6 +112,7 @@ Object {
               },
             },
             "name": "y",
+            "optional": false,
             "range": Array [
               22,
               32,
@@ -168,6 +171,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -201,6 +205,7 @@ Object {
               },
             },
             "name": "z",
+            "optional": false,
             "range": Array [
               38,
               48,
@@ -259,6 +264,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

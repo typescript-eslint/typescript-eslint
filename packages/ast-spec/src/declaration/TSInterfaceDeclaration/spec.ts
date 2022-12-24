@@ -14,8 +14,7 @@ export interface TSInterfaceDeclaration extends BaseNode {
   /**
    * Whether the interface was `declare`d, `undefined` otherwise
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare: boolean;
   /**
    * The types this interface `extends`
    */

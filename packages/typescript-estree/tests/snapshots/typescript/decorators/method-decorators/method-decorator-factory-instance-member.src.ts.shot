@@ -44,6 +44,7 @@ Object {
                       },
                     },
                     "name": "onlyRead",
+                    "optional": false,
                     "range": Array [
                       15,
                       23,
@@ -96,6 +97,7 @@ Object {
                 },
               },
               "name": "instanceMethod",
+              "optional": false,
               "range": Array [
                 35,
                 49,
@@ -190,6 +192,7 @@ Object {
           },
         },
         "name": "B",
+        "optional": false,
         "range": Array [
           6,
           7,

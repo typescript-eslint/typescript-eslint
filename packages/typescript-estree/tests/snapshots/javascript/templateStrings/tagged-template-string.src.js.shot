@@ -22,6 +22,7 @@ Object {
                     },
                   },
                   "name": "arguments",
+                  "optional": false,
                   "range": Array [
                     30,
                     39,
@@ -53,6 +54,7 @@ Object {
                     },
                   },
                   "name": "console",
+                  "optional": false,
                   "range": Array [
                     18,
                     25,
@@ -72,6 +74,7 @@ Object {
                     },
                   },
                   "name": "log",
+                  "optional": false,
                   "range": Array [
                     26,
                     29,
@@ -148,6 +151,7 @@ Object {
           },
         },
         "name": "tag",
+        "optional": false,
         "range": Array [
           9,
           12,
@@ -197,6 +201,7 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 55,
                 56,
@@ -215,6 +220,7 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 71,
                 72,
@@ -322,6 +328,7 @@ Object {
             },
           },
           "name": "tag",
+          "optional": false,
           "range": Array [
             44,
             47,

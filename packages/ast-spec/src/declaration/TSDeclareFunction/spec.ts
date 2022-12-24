@@ -7,7 +7,6 @@ export interface TSDeclareFunction extends FunctionBase {
   type: AST_NODE_TYPES.TSDeclareFunction;
   // TODO(#1852) - breaking change enforce this is always `null` like `TSEmptyBodyFunctionExpression`
   body?: BlockStatement;
-  // TODO(#5020) - make this always `false` if it is not `declare`d instead of `undefined`
-  declare?: boolean;
+  declare: boolean;
   expression: false;
 }

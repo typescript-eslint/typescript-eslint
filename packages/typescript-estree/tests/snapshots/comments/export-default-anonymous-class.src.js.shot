@@ -21,6 +21,7 @@ Object {
                   },
                 },
                 "name": "method1",
+                "optional": false,
                 "range": Array [
                   103,
                   110,

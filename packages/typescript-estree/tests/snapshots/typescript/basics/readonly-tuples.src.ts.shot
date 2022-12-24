@@ -34,6 +34,7 @@ Object {
                       },
                     },
                     "name": "pair",
+                    "optional": false,
                     "range": Array [
                       62,
                       66,
@@ -91,6 +92,7 @@ Object {
                     },
                   },
                   "name": "console",
+                  "optional": false,
                   "range": Array [
                     50,
                     57,
@@ -110,6 +112,7 @@ Object {
                     },
                   },
                   "name": "log",
+                  "optional": false,
                   "range": Array [
                     58,
                     61,
@@ -181,6 +184,7 @@ Object {
                     },
                   },
                   "name": "pair",
+                  "optional": false,
                   "range": Array [
                     84,
                     88,
@@ -296,6 +300,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           9,
           12,
@@ -325,6 +330,7 @@ Object {
             },
           },
           "name": "pair",
+          "optional": false,
           "range": Array [
             13,
             44,

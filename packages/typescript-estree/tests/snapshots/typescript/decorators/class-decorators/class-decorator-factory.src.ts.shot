@@ -52,6 +52,7 @@ Object {
                         },
                       },
                       "name": "selector",
+                      "optional": false,
                       "range": Array [
                         17,
                         25,
@@ -70,6 +71,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       17,
                       32,
@@ -116,6 +118,7 @@ Object {
                 },
               },
               "name": "Component",
+              "optional": false,
               "range": Array [
                 1,
                 10,
@@ -168,6 +171,7 @@ Object {
           },
         },
         "name": "FooComponent",
+        "optional": false,
         "range": Array [
           43,
           55,

@@ -18,6 +18,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               0,
               1,
@@ -51,6 +52,7 @@ Object {
               },
             },
             "name": "y",
+            "optional": false,
             "range": Array [
               4,
               5,

@@ -8,6 +8,7 @@ Object {
         "body": Array [
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -20,6 +21,7 @@ Object {
                 },
               },
               "name": "h",
+              "optional": false,
               "range": Array [
                 19,
                 20,
@@ -37,6 +39,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -50,6 +53,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   21,
                   32,
@@ -95,6 +99,7 @@ Object {
               19,
               40,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -129,10 +134,12 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -145,6 +152,7 @@ Object {
                 },
               },
               "name": "g",
+              "optional": false,
               "range": Array [
                 43,
                 44,
@@ -162,6 +170,7 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -175,6 +184,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   48,
                   54,
@@ -224,6 +234,7 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         53,
                         54,
@@ -239,6 +250,7 @@ Object {
               43,
               59,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -283,6 +295,7 @@ Object {
                     },
                   },
                   "name": "T",
+                  "optional": false,
                   "range": Array [
                     57,
                     58,
@@ -292,6 +305,7 @@ Object {
                 "typeParameters": undefined,
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
             "typeParameters": Object {
               "loc": Object {
@@ -331,6 +345,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       45,
                       46,
@@ -369,6 +384,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -381,6 +397,7 @@ Object {
           },
         },
         "name": "test",
+        "optional": false,
         "range": Array [
           10,
           14,

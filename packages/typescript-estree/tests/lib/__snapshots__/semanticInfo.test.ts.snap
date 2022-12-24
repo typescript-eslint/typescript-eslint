@@ -363,6 +363,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
               },
             },
             "name": "arr",
+            "optional": false,
             "range": [
               7,
               10,
@@ -444,6 +445,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
               },
             },
             "name": "arr",
+            "optional": false,
             "range": [
               37,
               40,
@@ -463,6 +465,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
               },
             },
             "name": "push",
+            "optional": false,
             "range": [
               41,
               45,
@@ -789,6 +792,7 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
             "loc": {
               "end": {
@@ -801,6 +805,7 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
               },
             },
             "name": "x",
+            "optional": false,
             "range": [
               6,
               7,
@@ -900,6 +905,7 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": {
         "end": {
@@ -1144,6 +1150,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
             "loc": {
               "end": {
@@ -1156,6 +1163,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
               },
             },
             "name": "binExp",
+            "optional": false,
             "range": [
               6,
               12,
@@ -1235,6 +1243,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": {
         "end": {
@@ -1359,6 +1368,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
           },
         },
         "name": "Bar",
+        "optional": false,
         "range": [
           31,
           34,

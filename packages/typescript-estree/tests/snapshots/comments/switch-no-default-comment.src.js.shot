@@ -74,6 +74,7 @@ Object {
           },
         },
         "name": "a",
+        "optional": false,
         "range": Array [
           8,
           9,

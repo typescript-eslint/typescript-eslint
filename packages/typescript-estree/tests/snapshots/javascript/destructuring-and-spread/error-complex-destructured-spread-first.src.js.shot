@@ -20,6 +20,7 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   4,
                   5,
@@ -36,6 +37,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 1,
                 5,
@@ -53,6 +55,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "properties": Array [
                 Object {
                   "computed": false,
@@ -68,6 +71,7 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       9,
                       10,
@@ -86,6 +90,7 @@ Object {
                     },
                   },
                   "method": false,
+                  "optional": false,
                   "range": Array [
                     9,
                     10,
@@ -104,6 +109,7 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       9,
                       10,
@@ -125,6 +131,7 @@ Object {
                       },
                     },
                     "name": "b",
+                    "optional": false,
                     "range": Array [
                       12,
                       13,
@@ -143,6 +150,7 @@ Object {
                     },
                   },
                   "method": false,
+                  "optional": false,
                   "range": Array [
                     12,
                     13,
@@ -161,6 +169,7 @@ Object {
                       },
                     },
                     "name": "b",
+                    "optional": false,
                     "range": Array [
                       12,
                       13,
@@ -186,6 +195,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             16,
@@ -219,6 +229,7 @@ Object {
             },
           },
           "name": "d",
+          "optional": false,
           "range": Array [
             19,
             20,

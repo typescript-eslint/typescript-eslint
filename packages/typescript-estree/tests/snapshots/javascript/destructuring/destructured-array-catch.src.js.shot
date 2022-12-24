@@ -13,6 +13,7 @@ Object {
                 Object {
                   "declarations": Array [
                     Object {
+                      "definite": false,
                       "id": Object {
                         "loc": Object {
                           "end": Object {
@@ -24,6 +25,7 @@ Object {
                             "line": 3,
                           },
                         },
+                        "optional": false,
                         "properties": Array [
                           Object {
                             "computed": false,
@@ -39,6 +41,7 @@ Object {
                                 },
                               },
                               "name": "b",
+                              "optional": false,
                               "range": Array [
                                 35,
                                 36,
@@ -57,6 +60,7 @@ Object {
                               },
                             },
                             "method": false,
+                            "optional": false,
                             "range": Array [
                               35,
                               36,
@@ -75,6 +79,7 @@ Object {
                                 },
                               },
                               "name": "b",
+                              "optional": false,
                               "range": Array [
                                 35,
                                 36,
@@ -101,6 +106,7 @@ Object {
                           },
                         },
                         "name": "a",
+                        "optional": false,
                         "range": Array [
                           40,
                           41,
@@ -124,6 +130,7 @@ Object {
                       "type": "VariableDeclarator",
                     },
                   ],
+                  "declare": false,
                   "kind": "var",
                   "loc": Object {
                     "end": Object {
@@ -202,6 +209,7 @@ Object {
                       },
                     },
                     "name": "stack",
+                    "optional": false,
                     "range": Array [
                       56,
                       61,
@@ -219,6 +227,7 @@ Object {
                     "line": 5,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   55,
                   62,
@@ -278,6 +287,7 @@ Object {
           },
         },
         "name": "x",
+        "optional": false,
         "range": Array [
           9,
           10,
@@ -306,6 +316,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
@@ -321,6 +332,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   12,
                   13,
@@ -339,6 +351,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 12,
                 13,
@@ -357,6 +370,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   12,
                   13,

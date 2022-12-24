@@ -6,6 +6,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "elements": Array [
               Object {
@@ -19,6 +20,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "properties": Array [
                   Object {
                     "computed": false,
@@ -34,6 +36,7 @@ Object {
                         },
                       },
                       "name": "a",
+                      "optional": false,
                       "range": Array [
                         7,
                         8,
@@ -52,6 +55,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       7,
                       8,
@@ -70,6 +74,7 @@ Object {
                         },
                       },
                       "name": "a",
+                      "optional": false,
                       "range": Array [
                         7,
                         8,
@@ -91,6 +96,7 @@ Object {
                         },
                       },
                       "name": "b",
+                      "optional": false,
                       "range": Array [
                         10,
                         11,
@@ -109,6 +115,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       10,
                       11,
@@ -127,6 +134,7 @@ Object {
                         },
                       },
                       "name": "b",
+                      "optional": false,
                       "range": Array [
                         10,
                         11,
@@ -154,6 +162,7 @@ Object {
                     },
                   },
                   "name": "c",
+                  "optional": false,
                   "range": Array [
                     18,
                     19,
@@ -170,6 +179,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   15,
                   19,
@@ -187,6 +197,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               4,
               20,
@@ -205,6 +216,7 @@ Object {
               },
             },
             "name": "d",
+            "optional": false,
             "range": Array [
               23,
               24,
@@ -228,6 +240,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

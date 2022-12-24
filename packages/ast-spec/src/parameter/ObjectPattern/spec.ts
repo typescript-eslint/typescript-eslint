@@ -9,6 +9,6 @@ export interface ObjectPattern extends BaseNode {
   type: AST_NODE_TYPES.ObjectPattern;
   properties: (Property | RestElement)[];
   typeAnnotation?: TSTypeAnnotation;
-  optional?: boolean;
+  optional: boolean;
   decorators?: Decorator[];
 }

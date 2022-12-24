@@ -55,6 +55,7 @@ Object {
               },
             },
             "name": "C",
+            "optional": false,
             "range": Array [
               19,
               20,
@@ -83,6 +84,7 @@ Object {
               },
             },
             "name": "B",
+            "optional": false,
             "range": Array [
               14,
               15,

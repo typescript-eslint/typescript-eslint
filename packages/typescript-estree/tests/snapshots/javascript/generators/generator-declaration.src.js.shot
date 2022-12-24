@@ -21,6 +21,7 @@ Object {
                   },
                 },
                 "name": "v",
+                "optional": false,
                 "range": Array [
                   27,
                   28,
@@ -91,6 +92,7 @@ Object {
           },
         },
         "name": "test",
+        "optional": false,
         "range": Array [
           10,
           14,

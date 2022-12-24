@@ -20,6 +20,7 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 13,
                 14,
@@ -99,6 +100,7 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 23,
                 24,
@@ -169,6 +171,7 @@ Object {
                     },
                   },
                   "name": "c",
+                  "optional": false,
                   "range": Array [
                     25,
                     26,
@@ -212,6 +215,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

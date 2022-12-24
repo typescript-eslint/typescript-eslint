@@ -6,6 +6,7 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -18,6 +19,7 @@ Object {
               },
             },
             "name": "obj",
+            "optional": false,
             "range": Array [
               4,
               22,
@@ -53,7 +55,7 @@ Object {
                 "members": Array [
                   Object {
                     "computed": false,
-                    "export": undefined,
+                    "export": false,
                     "initializer": undefined,
                     "key": Object {
                       "loc": Object {
@@ -67,6 +69,7 @@ Object {
                         },
                       },
                       "name": "x",
+                      "optional": false,
                       "range": Array [
                         11,
                         12,
@@ -83,13 +86,13 @@ Object {
                         "line": 1,
                       },
                     },
-                    "optional": undefined,
+                    "optional": false,
                     "range": Array [
                       11,
                       20,
                     ],
-                    "readonly": undefined,
-                    "static": undefined,
+                    "readonly": false,
+                    "static": false,
                     "type": "TSPropertySignature",
                     "typeAnnotation": Object {
                       "loc": Object {
@@ -153,6 +156,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

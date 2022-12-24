@@ -40,6 +40,7 @@ Object {
               },
             },
             "name": "test",
+            "optional": false,
             "range": Array [
               16,
               20,

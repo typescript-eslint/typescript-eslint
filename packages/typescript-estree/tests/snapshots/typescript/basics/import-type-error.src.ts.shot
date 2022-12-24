@@ -63,6 +63,7 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               12,
               15,
@@ -89,6 +90,7 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               19,
               22,
@@ -117,6 +119,7 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               19,
               22,

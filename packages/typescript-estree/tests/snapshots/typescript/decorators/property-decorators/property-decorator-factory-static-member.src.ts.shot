@@ -45,6 +45,7 @@ Object {
                       },
                     },
                     "name": "configurable",
+                    "optional": false,
                     "range": Array [
                       15,
                       27,
@@ -97,6 +98,7 @@ Object {
                 },
               },
               "name": "prop1",
+              "optional": false,
               "range": Array [
                 41,
                 46,
@@ -162,6 +164,7 @@ Object {
                       },
                     },
                     "name": "configurable",
+                    "optional": false,
                     "range": Array [
                       54,
                       66,
@@ -214,6 +217,7 @@ Object {
                 },
               },
               "name": "prop2",
+              "optional": false,
               "range": Array [
                 85,
                 90,
@@ -269,6 +273,7 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,

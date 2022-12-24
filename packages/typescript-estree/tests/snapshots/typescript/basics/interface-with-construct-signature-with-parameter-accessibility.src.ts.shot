@@ -20,7 +20,7 @@ Object {
             "params": Array [
               Object {
                 "accessibility": "public",
-                "export": undefined,
+                "export": false,
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -31,7 +31,7 @@ Object {
                     "line": 2,
                   },
                 },
-                "override": undefined,
+                "override": false,
                 "parameter": Object {
                   "loc": Object {
                     "end": Object {
@@ -44,6 +44,7 @@ Object {
                     },
                   },
                   "name": "x",
+                  "optional": false,
                   "range": Array [
                     33,
                     34,
@@ -54,13 +55,13 @@ Object {
                   26,
                   34,
                 ],
-                "readonly": undefined,
-                "static": undefined,
+                "readonly": false,
+                "static": false,
                 "type": "TSParameterProperty",
               },
               Object {
                 "accessibility": "private",
-                "export": undefined,
+                "export": false,
                 "loc": Object {
                   "end": Object {
                     "column": 28,
@@ -71,7 +72,7 @@ Object {
                     "line": 2,
                   },
                 },
-                "override": undefined,
+                "override": false,
                 "parameter": Object {
                   "loc": Object {
                     "end": Object {
@@ -84,6 +85,7 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     44,
                     45,
@@ -94,8 +96,8 @@ Object {
                   36,
                   45,
                 ],
-                "readonly": undefined,
-                "static": undefined,
+                "readonly": false,
+                "static": false,
                 "type": "TSParameterProperty",
               },
             ],
@@ -122,6 +124,7 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -134,6 +137,7 @@ Object {
           },
         },
         "name": "Test",
+        "optional": false,
         "range": Array [
           10,
           14,

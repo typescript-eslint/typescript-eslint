@@ -4,6 +4,7 @@ exports[`typescript types object-literal-type-with-accessors.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "Thing",
+        "optional": false,
         "range": Array [
           5,
           10,
@@ -51,6 +53,7 @@ Object {
         "members": Array [
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -63,6 +66,7 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 21,
                 25,
@@ -80,11 +84,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [],
             "range": Array [
               17,
               36,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -119,10 +125,12 @@ Object {
                 "type": "TSNumberKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
           },
           Object {
             "computed": false,
+            "export": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -135,6 +143,7 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 43,
                 47,
@@ -152,6 +161,7 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
                 "loc": Object {
@@ -165,6 +175,7 @@ Object {
                   },
                 },
                 "name": "value",
+                "optional": false,
                 "range": Array [
                   48,
                   80,
@@ -263,6 +274,8 @@ Object {
               39,
               82,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSMethodSignature",
           },
         ],

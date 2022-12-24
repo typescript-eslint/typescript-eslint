@@ -24,6 +24,7 @@ Object {
                         },
                       },
                       "name": "method",
+                      "optional": false,
                       "range": Array [
                         52,
                         58,
@@ -130,6 +131,7 @@ Object {
                               },
                             },
                             "name": "C",
+                            "optional": false,
                             "range": Array [
                               62,
                               63,
@@ -171,6 +173,7 @@ Object {
                   },
                 },
                 "name": "C",
+                "optional": false,
                 "range": Array [
                   40,
                   41,
@@ -246,6 +249,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   102,
                   105,
@@ -303,6 +307,8 @@ Object {
         ],
         "type": "TSModuleBlock",
       },
+      "declare": false,
+      "global": false,
       "id": Object {
         "loc": Object {
           "end": Object {

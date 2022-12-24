@@ -59,6 +59,7 @@ Object {
                     },
                   },
                   "name": "doIt",
+                  "optional": false,
                   "range": Array [
                     82,
                     86,
@@ -147,6 +148,7 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           7,
           10,

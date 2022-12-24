@@ -16,6 +16,7 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
@@ -31,6 +32,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   2,
                   3,
@@ -49,6 +51,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 2,
                 4,
@@ -67,6 +70,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   2,
                   3,

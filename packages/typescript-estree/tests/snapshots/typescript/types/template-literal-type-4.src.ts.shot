@@ -4,6 +4,7 @@ exports[`typescript types template-literal-type-4.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -16,6 +17,7 @@ Object {
           },
         },
         "name": "EnthusiasticGreeting",
+        "optional": false,
         "range": Array [
           5,
           25,
@@ -194,6 +196,7 @@ Object {
                 },
               },
               "name": "Uppercase",
+              "optional": false,
               "range": Array [
                 49,
                 58,
@@ -240,6 +243,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       59,
                       60,
@@ -284,6 +288,7 @@ Object {
                 },
               },
               "name": "Lowercase",
+              "optional": false,
               "range": Array [
                 67,
                 76,
@@ -330,6 +335,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       77,
                       78,
@@ -374,6 +380,7 @@ Object {
                 },
               },
               "name": "Capitalize",
+              "optional": false,
               "range": Array [
                 85,
                 95,
@@ -420,6 +427,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       96,
                       97,
@@ -464,6 +472,7 @@ Object {
                 },
               },
               "name": "Uncapitalize",
+              "optional": false,
               "range": Array [
                 104,
                 116,
@@ -510,6 +519,7 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       117,
                       118,
@@ -582,6 +592,7 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 26,
                 27,
@@ -604,6 +615,7 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -616,6 +628,7 @@ Object {
           },
         },
         "name": "HELLO",
+        "optional": false,
         "range": Array [
           128,
           133,
@@ -665,6 +678,7 @@ Object {
             },
           },
           "name": "EnthusiasticGreeting",
+          "optional": false,
           "range": Array [
             136,
             156,
