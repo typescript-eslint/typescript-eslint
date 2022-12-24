@@ -251,7 +251,6 @@ Object {
               },
             },
             "operator": "++",
-            "prefix": false,
             "range": Array [
               31,
               34,
@@ -288,7 +287,6 @@ Object {
               },
             },
             "operator": "--",
-            "prefix": false,
             "range": Array [
               36,
               39,

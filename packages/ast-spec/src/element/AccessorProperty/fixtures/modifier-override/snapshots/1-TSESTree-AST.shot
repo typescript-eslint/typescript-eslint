@@ -12,7 +12,6 @@ Program {
           AccessorProperty {
             type: "AccessorProperty",
             computed: false,
-            declare: false,
             key: Identifier {
               type: "Identifier",
               name: "foo",
@@ -24,7 +23,6 @@ Program {
               },
             },
             override: true,
-            static: false,
             value: Literal {
               type: "Literal",
               raw: "2",

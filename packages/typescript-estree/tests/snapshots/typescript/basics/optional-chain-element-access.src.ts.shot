@@ -4,7 +4,6 @@ exports[`typescript basics optional-chain-element-access.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -167,7 +166,6 @@ Object {
                   ],
                   "type": "MemberExpression",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -269,7 +267,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -397,7 +394,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -537,7 +533,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "optional": false,
                     "property": Object {
                       "loc": Object {
                         "end": Object {
@@ -589,7 +584,6 @@ Object {
                   ],
                   "type": "MemberExpression",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -703,7 +697,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "optional": false,
                     "property": Object {
                       "loc": Object {
                         "end": Object {
@@ -830,8 +823,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

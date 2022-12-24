@@ -55,12 +55,10 @@ Object {
                               "line": 2,
                             },
                           },
-                          "method": false,
                           "range": Array [
                             25,
                             34,
                           ],
-                          "shorthand": false,
                           "type": "Property",
                           "value": Object {
                             "loc": Object {
@@ -118,7 +116,6 @@ Object {
                       "line": 2,
                     },
                   },
-                  "optional": false,
                   "range": Array [
                     19,
                     37,
@@ -171,7 +168,6 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               18,
               80,
@@ -179,7 +175,6 @@ Object {
             "static": true,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -212,7 +207,6 @@ Object {
                         ],
                         "type": "ThisExpression",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -270,8 +264,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

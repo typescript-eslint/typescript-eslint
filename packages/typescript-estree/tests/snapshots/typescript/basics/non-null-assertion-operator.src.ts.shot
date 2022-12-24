@@ -4,7 +4,6 @@ exports[`typescript basics non-null-assertion-operator.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -57,7 +56,6 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": false,
               "range": Array [
                 41,
                 58,
@@ -148,7 +146,6 @@ Object {
                     ],
                     "type": "TSNonNullExpression",
                   },
-                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -224,8 +221,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

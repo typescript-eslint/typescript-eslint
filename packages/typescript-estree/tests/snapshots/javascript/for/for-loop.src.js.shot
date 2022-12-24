@@ -196,7 +196,6 @@ Object {
           },
         },
         "operator": "++",
-        "prefix": false,
         "range": Array [
           23,
           26,

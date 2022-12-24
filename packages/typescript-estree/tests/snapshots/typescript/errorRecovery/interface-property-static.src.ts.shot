@@ -8,7 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -38,12 +37,10 @@ Object {
                 "line": 2,
               },
             },
-            "optional": undefined,
             "range": Array [
               18,
               35,
             ],
-            "readonly": undefined,
             "static": true,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {

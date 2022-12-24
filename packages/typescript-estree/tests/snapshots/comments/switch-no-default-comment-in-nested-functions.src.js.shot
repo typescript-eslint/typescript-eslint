@@ -35,7 +35,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -76,11 +75,9 @@ Object {
           286,
         ],
         "right": Object {
-          "async": false,
           "body": Object {
             "body": Array [
               Object {
-                "async": false,
                 "body": Object {
                   "body": Array [
                     Object {
@@ -132,7 +129,6 @@ Object {
                                         ],
                                         "type": "Identifier",
                                       },
-                                      "optional": false,
                                       "property": Object {
                                         "loc": Object {
                                           "end": Object {
@@ -157,7 +153,6 @@ Object {
                                       ],
                                       "type": "MemberExpression",
                                     },
-                                    "optional": false,
                                     "property": Object {
                                       "left": Object {
                                         "computed": false,
@@ -201,7 +196,6 @@ Object {
                                             ],
                                             "type": "Identifier",
                                           },
-                                          "optional": false,
                                           "property": Object {
                                             "loc": Object {
                                               "end": Object {
@@ -226,7 +220,6 @@ Object {
                                           ],
                                           "type": "MemberExpression",
                                         },
-                                        "optional": false,
                                         "property": Object {
                                           "loc": Object {
                                             "end": Object {
@@ -322,7 +315,6 @@ Object {
                                     "line": 6,
                                   },
                                 },
-                                "optional": false,
                                 "range": Array [
                                   161,
                                   218,
@@ -412,7 +404,6 @@ Object {
                           ],
                           "type": "Identifier",
                         },
-                        "optional": false,
                         "property": Object {
                           "loc": Object {
                             "end": Object {
@@ -506,8 +497,6 @@ Object {
                   ],
                   "type": "BlockStatement",
                 },
-                "expression": false,
-                "generator": false,
                 "id": Object {
                   "loc": Object {
                     "end": Object {
@@ -579,8 +568,6 @@ Object {
             ],
             "type": "BlockStatement",
           },
-          "expression": false,
-          "generator": false,
           "id": null,
           "loc": Object {
             "end": Object {

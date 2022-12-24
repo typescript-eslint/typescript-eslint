@@ -178,12 +178,10 @@ Object {
                     "line": 6,
                   },
                 },
-                "method": false,
                 "range": Array [
                   43,
                   61,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -236,12 +234,10 @@ Object {
                     "line": 7,
                   },
                 },
-                "method": false,
                 "range": Array [
                   64,
                   82,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {

@@ -47,12 +47,10 @@ Object {
                 "line": 1,
               },
             },
-            "method": false,
             "range": Array [
               17,
               23,
             ],
-            "shorthand": false,
             "type": "Property",
             "value": Object {
               "loc": Object {

@@ -74,15 +74,12 @@ Object {
                 "line": 4,
               },
             },
-            "override": false,
             "range": Array [
               31,
               75,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -139,8 +136,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -191,15 +186,12 @@ Object {
                 "line": 8,
               },
             },
-            "override": false,
             "range": Array [
               81,
               121,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -256,8 +248,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -308,15 +298,12 @@ Object {
                 "line": 12,
               },
             },
-            "override": false,
             "range": Array [
               127,
               172,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -373,8 +360,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -444,15 +429,12 @@ Object {
                 "line": 16,
               },
             },
-            "override": false,
             "range": Array [
               178,
               217,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -509,8 +491,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

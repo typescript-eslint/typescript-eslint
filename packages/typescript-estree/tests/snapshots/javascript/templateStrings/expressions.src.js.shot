@@ -254,7 +254,6 @@ Object {
               28,
               37,
             ],
-            "tail": false,
             "type": "TemplateElement",
             "value": Object {
               "cooked": "Hello ",
@@ -276,7 +275,6 @@ Object {
               38,
               51,
             ],
-            "tail": false,
             "type": "TemplateElement",
             "value": Object {
               "cooked": ". a + 5 = ",

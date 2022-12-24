@@ -15,7 +15,7 @@ export interface FunctionBase extends BaseNode {
    * const x = async (...) => {...}
    * ```
    */
-  async: boolean;
+  async?: true;
   /**
    * The body of the function.
    * - For an `ArrowFunctionExpression` this may be an `Expression` or `BlockStatement`.
@@ -30,8 +30,7 @@ export interface FunctionBase extends BaseNode {
    * declare function foo(...) {...}
    * ```
    */
-  // TODO(#5020) - make this always `false` if it is not `declare`d instead of `undefined`
-  declare?: boolean;
+  declare?: true;
   /**
    * This is only ever `true` if and only the node is an `ArrowFunctionExpression` and the body
    * is an expression:
@@ -39,7 +38,7 @@ export interface FunctionBase extends BaseNode {
    * (() => 1)
    * ```
    */
-  expression: boolean;
+  expression?: true;
   /**
    * Whether the function is a generator function:
    * ```
@@ -48,7 +47,7 @@ export interface FunctionBase extends BaseNode {
    * ```
    * This is always `false` for arrow functions as they cannot be generators.
    */
-  generator: boolean;
+  generator?: true;
   /**
    * The function's name.
    * - For an `ArrowFunctionExpression` this is always `null`.

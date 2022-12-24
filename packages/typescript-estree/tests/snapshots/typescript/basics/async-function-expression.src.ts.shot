@@ -26,8 +26,6 @@ Object {
             ],
             "type": "BlockStatement",
           },
-          "expression": false,
-          "generator": false,
           "id": Object {
             "loc": Object {
               "end": Object {
@@ -73,7 +71,6 @@ Object {
             "line": 1,
           },
         },
-        "optional": false,
         "range": Array [
           0,
           29,

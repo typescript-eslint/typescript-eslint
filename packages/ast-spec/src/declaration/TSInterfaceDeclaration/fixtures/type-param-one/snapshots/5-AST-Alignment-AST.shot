@@ -35,7 +35,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-one AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
@@ -46,7 +45,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-one AST Alig
 -                 end: { column: 13, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
 
               range: [12, 13],

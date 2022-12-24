@@ -9,7 +9,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": true,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -40,13 +39,10 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               14,
               43,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {

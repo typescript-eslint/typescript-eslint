@@ -78,7 +78,6 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -112,7 +111,6 @@ Object {
                 },
               },
               "operator": "++",
-              "prefix": false,
               "range": Array [
                 28,
                 31,
@@ -152,8 +150,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -220,7 +216,6 @@ Object {
             "line": 5,
           },
         },
-        "optional": false,
         "range": Array [
           35,
           38,

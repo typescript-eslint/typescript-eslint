@@ -48,12 +48,10 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 2,
                 22,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
                 "loc": Object {
@@ -98,7 +96,6 @@ Object {
                         "line": 1,
                       },
                     },
-                    "method": false,
                     "range": Array [
                       7,
                       9,
@@ -198,12 +195,10 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 24,
                 32,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
                 "loc": Object {
@@ -255,12 +250,10 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 34,
                 92,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
                 "loc": Object {
@@ -305,12 +298,10 @@ Object {
                         "line": 1,
                       },
                     },
-                    "method": false,
                     "range": Array [
                       39,
                       64,
                     ],
-                    "shorthand": false,
                     "type": "Property",
                     "value": Object {
                       "elements": Array [
@@ -452,12 +443,10 @@ Object {
                         "line": 1,
                       },
                     },
-                    "method": false,
                     "range": Array [
                       66,
                       80,
                     ],
-                    "shorthand": false,
                     "type": "Property",
                     "value": Object {
                       "loc": Object {
@@ -502,7 +491,6 @@ Object {
                               "line": 1,
                             },
                           },
-                          "method": false,
                           "range": Array [
                             71,
                             72,

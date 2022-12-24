@@ -1071,12 +1071,10 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
                   "line": 1,
                 },
               },
-              "method": false,
               "range": [
                 2,
                 8,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": {
                 "loc": {

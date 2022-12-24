@@ -4117,7 +4117,6 @@ Object {
                 "line": 71,
               },
             },
-            "override": false,
             "range": Array [
               987,
               1000,
@@ -4125,7 +4124,6 @@ Object {
             "static": true,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -4144,8 +4142,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -4197,15 +4193,12 @@ Object {
                 "line": 72,
               },
             },
-            "override": false,
             "range": Array [
               1003,
               1017,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -4224,8 +4217,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -4277,15 +4268,12 @@ Object {
                 "line": 73,
               },
             },
-            "override": false,
             "range": Array [
               1020,
               1033,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -4304,8 +4292,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -4357,15 +4343,12 @@ Object {
                 "line": 74,
               },
             },
-            "override": false,
             "range": Array [
               1036,
               1075,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -4391,7 +4374,6 @@ Object {
                         },
                         "init": Object {
                           "argument": null,
-                          "delegate": false,
                           "loc": Object {
                             "end": Object {
                               "column": 17,
@@ -4459,7 +4441,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
               "generator": true,
               "id": null,
               "loc": Object {

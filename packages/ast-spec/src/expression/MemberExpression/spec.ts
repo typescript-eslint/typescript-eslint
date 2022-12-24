@@ -9,7 +9,7 @@ interface MemberExpressionBase extends BaseNode {
   object: LeftHandSideExpression;
   property: Expression | Identifier | PrivateIdentifier;
   computed: boolean;
-  optional: boolean;
+  optional?: true;
 }
 
 export interface MemberExpressionComputedName extends MemberExpressionBase {

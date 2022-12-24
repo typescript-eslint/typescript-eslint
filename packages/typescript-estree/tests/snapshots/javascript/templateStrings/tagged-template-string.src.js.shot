@@ -4,7 +4,6 @@ exports[`javascript templateStrings tagged-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -59,7 +58,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -94,7 +92,6 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": false,
               "range": Array [
                 18,
                 40,
@@ -134,8 +131,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -248,7 +243,6 @@ Object {
                 47,
                 55,
               ],
-              "tail": false,
               "type": "TemplateElement",
               "value": Object {
                 "cooked": "a is ",
@@ -270,7 +264,6 @@ Object {
                 56,
                 71,
               ],
-              "tail": false,
               "type": "TemplateElement",
               "value": Object {
                 "cooked": " while b is ",

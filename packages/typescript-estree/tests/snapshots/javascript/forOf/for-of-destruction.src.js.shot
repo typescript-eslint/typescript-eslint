@@ -4,7 +4,6 @@ exports[`javascript forOf for-of-destruction.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "await": false,
       "body": Object {
         "body": Array [],
         "loc": Object {

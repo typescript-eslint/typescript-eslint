@@ -18,7 +18,6 @@ exports[`AST Fixtures element AccessorProperty no-annotation-with-value AST Alig
 +           ClassAccessorProperty {
 +             type: 'ClassAccessorProperty',
               computed: false,
--             declare: false,
               key: Identifier {
                 type: 'Identifier',
                 name: 'prop',
@@ -29,8 +28,7 @@ exports[`AST Fixtures element AccessorProperty no-annotation-with-value AST Alig
                   end: { column: 15, line: 2 },
                 },
               },
--             override: false,
-              static: false,
++             static: false,
               value: Literal {
                 type: 'Literal',
                 raw: '\\\\'str\\\\'',

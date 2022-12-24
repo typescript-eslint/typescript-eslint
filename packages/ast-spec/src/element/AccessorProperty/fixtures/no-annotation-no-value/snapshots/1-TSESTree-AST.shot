@@ -12,7 +12,6 @@ Program {
           AccessorProperty {
             type: "AccessorProperty",
             computed: false,
-            declare: false,
             key: Identifier {
               type: "Identifier",
               name: "prop",
@@ -23,8 +22,6 @@ Program {
                 end: { column: 15, line: 2 },
               },
             },
-            override: false,
-            static: false,
             value: null,
 
             range: [14, 28],

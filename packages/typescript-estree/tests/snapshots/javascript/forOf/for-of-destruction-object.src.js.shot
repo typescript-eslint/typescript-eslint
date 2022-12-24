@@ -4,7 +4,6 @@ exports[`javascript forOf for-of-destruction-object.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "await": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -69,7 +68,6 @@ Object {
                       "line": 1,
                     },
                   },
-                  "method": false,
                   "range": Array [
                     10,
                     14,
@@ -126,7 +124,6 @@ Object {
                       "line": 1,
                     },
                   },
-                  "method": false,
                   "range": Array [
                     16,
                     21,

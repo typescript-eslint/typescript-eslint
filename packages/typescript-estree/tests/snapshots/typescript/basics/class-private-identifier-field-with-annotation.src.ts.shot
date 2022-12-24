@@ -8,7 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -37,13 +36,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               29,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -83,7 +79,6 @@ Object {
           },
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -112,13 +107,10 @@ Object {
                 "line": 3,
               },
             },
-            "override": false,
             "range": Array [
               32,
               51,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -205,15 +197,12 @@ Object {
                 "line": 5,
               },
             },
-            "override": false,
             "range": Array [
               55,
               95,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -247,7 +236,6 @@ Object {
                           ],
                           "type": "ThisExpression",
                         },
-                        "optional": false,
                         "property": Object {
                           "loc": Object {
                             "end": Object {
@@ -341,8 +329,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

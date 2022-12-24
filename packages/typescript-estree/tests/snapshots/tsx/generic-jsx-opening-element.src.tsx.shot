@@ -157,7 +157,6 @@ Object {
             0,
             31,
           ],
-          "selfClosing": false,
           "type": "JSXOpeningElement",
           "typeParameters": Object {
             "loc": Object {

@@ -67,12 +67,10 @@ Object {
                     "line": 2,
                   },
                 },
-                "method": false,
                 "range": Array [
                   14,
                   24,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {

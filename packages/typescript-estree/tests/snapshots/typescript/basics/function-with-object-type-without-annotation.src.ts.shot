@@ -4,7 +4,6 @@ exports[`typescript basics function-with-object-type-without-annotation.src 1`] 
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -23,8 +22,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -97,7 +94,6 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 14,
                 17,
@@ -154,7 +150,6 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 19,
                 22,
@@ -216,7 +211,6 @@ Object {
               "members": Array [
                 Object {
                   "computed": false,
-                  "export": undefined,
                   "initializer": undefined,
                   "key": Object {
                     "loc": Object {
@@ -246,13 +240,10 @@ Object {
                       "line": 1,
                     },
                   },
-                  "optional": undefined,
                   "range": Array [
                     26,
                     38,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
                   "type": "TSPropertySignature",
                   "typeAnnotation": Object {
                     "loc": Object {
@@ -291,7 +282,6 @@ Object {
                 },
                 Object {
                   "computed": false,
-                  "export": undefined,
                   "initializer": undefined,
                   "key": Object {
                     "loc": Object {
@@ -321,13 +311,10 @@ Object {
                       "line": 1,
                     },
                   },
-                  "optional": undefined,
                   "range": Array [
                     39,
                     42,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
                   "type": "TSPropertySignature",
                   "typeAnnotation": undefined,
                 },

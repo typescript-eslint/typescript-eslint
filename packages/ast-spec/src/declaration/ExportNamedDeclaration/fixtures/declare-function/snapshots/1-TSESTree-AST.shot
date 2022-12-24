@@ -9,10 +9,7 @@ Program {
       assertions: Array [],
       declaration: TSDeclareFunction {
         type: "TSDeclareFunction",
-        async: false,
         declare: true,
-        expression: false,
-        generator: false,
         id: Identifier {
           type: "Identifier",
           name: "foo",

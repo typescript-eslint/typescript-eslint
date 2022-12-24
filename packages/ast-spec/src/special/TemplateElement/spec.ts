@@ -7,5 +7,5 @@ export interface TemplateElement extends BaseNode {
     raw: string;
     cooked: string;
   };
-  tail: boolean;
+  tail?: true;
 }

@@ -9,7 +9,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -38,13 +37,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               12,
               29,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -114,15 +110,12 @@ Object {
                 "line": 4,
               },
             },
-            "override": false,
             "range": Array [
               33,
               91,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -155,7 +148,6 @@ Object {
                         ],
                         "type": "ThisExpression",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -213,8 +205,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -353,15 +343,12 @@ Object {
                 "line": 8,
               },
             },
-            "override": false,
             "range": Array [
               95,
               149,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -394,7 +381,6 @@ Object {
                         ],
                         "type": "ThisExpression",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -452,8 +438,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -611,15 +595,12 @@ Object {
                 "line": 12,
               },
             },
-            "override": false,
             "range": Array [
               153,
               237,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -644,7 +625,6 @@ Object {
                           "type": "Identifier",
                         },
                         "init": Object {
-                          "async": false,
                           "body": Object {
                             "computed": false,
                             "loc": Object {
@@ -674,7 +654,6 @@ Object {
                               ],
                               "type": "ThisExpression",
                             },
-                            "optional": false,
                             "property": Object {
                               "loc": Object {
                                 "end": Object {
@@ -700,7 +679,6 @@ Object {
                             "type": "MemberExpression",
                           },
                           "expression": true,
-                          "generator": false,
                           "id": null,
                           "loc": Object {
                             "end": Object {
@@ -784,7 +762,6 @@ Object {
                           "line": 14,
                         },
                       },
-                      "optional": false,
                       "range": Array [
                         228,
                         232,
@@ -824,8 +801,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -964,15 +939,12 @@ Object {
                 "line": 17,
               },
             },
-            "override": false,
             "range": Array [
               241,
               322,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -997,7 +969,6 @@ Object {
                           "type": "Identifier",
                         },
                         "init": Object {
-                          "async": false,
                           "body": Object {
                             "computed": false,
                             "loc": Object {
@@ -1027,7 +998,6 @@ Object {
                               ],
                               "type": "ThisExpression",
                             },
-                            "optional": false,
                             "property": Object {
                               "loc": Object {
                                 "end": Object {
@@ -1053,7 +1023,6 @@ Object {
                             "type": "MemberExpression",
                           },
                           "expression": true,
-                          "generator": false,
                           "id": null,
                           "loc": Object {
                             "end": Object {
@@ -1137,7 +1106,6 @@ Object {
                           "line": 19,
                         },
                       },
-                      "optional": false,
                       "range": Array [
                         313,
                         317,
@@ -1177,8 +1145,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -1335,7 +1301,6 @@ Object {
                 "line": 22,
               },
             },
-            "override": false,
             "range": Array [
               326,
               387,
@@ -1343,7 +1308,6 @@ Object {
             "static": true,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -1376,7 +1340,6 @@ Object {
                         ],
                         "type": "ThisExpression",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -1434,8 +1397,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -1592,7 +1553,6 @@ Object {
                 "line": 26,
               },
             },
-            "override": false,
             "range": Array [
               391,
               449,
@@ -1600,7 +1560,6 @@ Object {
             "static": true,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -1673,8 +1632,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

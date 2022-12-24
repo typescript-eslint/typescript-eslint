@@ -45,7 +45,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-many AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'U',
@@ -56,7 +55,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-many AST Ali
 -                 end: { column: 8, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
 
               range: [7, 8],

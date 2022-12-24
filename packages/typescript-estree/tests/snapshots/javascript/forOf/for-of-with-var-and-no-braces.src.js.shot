@@ -4,7 +4,6 @@ exports[`javascript forOf for-of-with-var-and-no-braces.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "await": false,
       "body": Object {
         "expression": Object {
           "arguments": Array [],
@@ -36,7 +35,6 @@ Object {
               "line": 2,
             },
           },
-          "optional": false,
           "range": Array [
             23,
             36,

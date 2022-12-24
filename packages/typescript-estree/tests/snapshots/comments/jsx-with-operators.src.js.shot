@@ -95,7 +95,6 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": false,
               "range": Array [
                 24,
                 37,
@@ -240,7 +239,6 @@ Object {
                       53,
                       59,
                     ],
-                    "selfClosing": false,
                     "type": "JSXOpeningElement",
                     "typeParameters": undefined,
                   },

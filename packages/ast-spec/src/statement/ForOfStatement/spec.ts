@@ -9,5 +9,5 @@ export interface ForOfStatement extends BaseNode {
   left: ForInitialiser;
   right: Expression;
   body: Statement;
-  await: boolean;
+  await?: true;
 }

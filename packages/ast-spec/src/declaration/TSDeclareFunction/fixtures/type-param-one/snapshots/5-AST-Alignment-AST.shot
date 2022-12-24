@@ -10,10 +10,10 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
     body: Array [
       TSDeclareFunction {
         type: 'TSDeclareFunction',
-        async: false,
++       async: false,
         declare: true,
-        expression: false,
-        generator: false,
++       expression: false,
++       generator: false,
         id: Identifier {
           type: 'Identifier',
           name: 'foo',
@@ -30,7 +30,6 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
@@ -41,7 +40,6 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
 -                 end: { column: 22, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
 
               range: [21, 22],

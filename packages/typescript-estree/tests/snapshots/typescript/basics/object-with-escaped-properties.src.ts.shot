@@ -48,12 +48,10 @@ Object {
                 "line": 1,
               },
             },
-            "method": false,
             "range": Array [
               3,
               13,
             ],
-            "shorthand": false,
             "type": "Property",
             "value": Object {
               "loc": Object {
@@ -148,10 +146,8 @@ Object {
               22,
               31,
             ],
-            "shorthand": false,
             "type": "Property",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -170,8 +166,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -259,12 +253,10 @@ Object {
                 "line": 5,
               },
             },
-            "method": false,
             "range": Array [
               40,
               52,
             ],
-            "shorthand": false,
             "type": "Property",
             "value": Object {
               "loc": Object {
@@ -314,7 +306,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -344,13 +335,10 @@ Object {
                 "line": 7,
               },
             },
-            "override": false,
             "range": Array [
               68,
               79,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": Object {
               "loc": Object {

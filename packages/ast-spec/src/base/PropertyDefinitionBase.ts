@@ -14,15 +14,15 @@ interface PropertyDefinitionBase extends BaseNode {
   key: PropertyName;
   value: Expression | null;
   computed: boolean;
-  static: boolean;
-  declare: boolean;
-  readonly?: boolean;
+  static?: true;
+  declare?: true;
+  readonly?: true;
   decorators?: Decorator[];
   accessibility?: Accessibility;
-  optional?: boolean;
-  definite?: boolean;
+  optional?: true;
+  definite?: true;
   typeAnnotation?: TSTypeAnnotation;
-  override?: boolean;
+  override?: true;
 }
 
 export interface PropertyDefinitionComputedNameBase

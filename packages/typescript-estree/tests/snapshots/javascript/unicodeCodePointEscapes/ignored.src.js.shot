@@ -289,12 +289,10 @@ Object {
                     "line": 5,
                   },
                 },
-                "method": false,
                 "range": Array [
                   59,
                   76,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -352,10 +350,8 @@ Object {
                   80,
                   103,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
-                  "async": false,
                   "body": Object {
                     "body": Array [],
                     "loc": Object {
@@ -374,8 +370,6 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
-                  "expression": false,
-                  "generator": false,
                   "id": null,
                   "loc": Object {
                     "end": Object {
@@ -481,15 +475,12 @@ Object {
                     "line": 7,
                   },
                 },
-                "method": false,
                 "range": Array [
                   107,
                   135,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
-                  "async": false,
                   "body": Object {
                     "body": Array [],
                     "loc": Object {
@@ -508,8 +499,6 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
-                  "expression": false,
-                  "generator": false,
                   "id": null,
                   "loc": Object {
                     "end": Object {
@@ -678,7 +667,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -713,7 +701,6 @@ Object {
             "line": 9,
           },
         },
-        "optional": false,
         "range": Array [
           140,
           151,

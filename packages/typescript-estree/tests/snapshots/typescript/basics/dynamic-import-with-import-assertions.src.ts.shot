@@ -48,12 +48,10 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 16,
                 40,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
                 "loc": Object {
@@ -98,12 +96,10 @@ Object {
                         "line": 1,
                       },
                     },
-                    "method": false,
                     "range": Array [
                       26,
                       38,
                     ],
-                    "shorthand": false,
                     "type": "Property",
                     "value": Object {
                       "loc": Object {

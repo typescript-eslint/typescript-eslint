@@ -41,15 +41,12 @@ Object {
                         "line": 3,
                       },
                     },
-                    "override": false,
                     "range": Array [
                       52,
                       66,
                     ],
-                    "static": false,
                     "type": "MethodDefinition",
                     "value": Object {
-                      "async": false,
                       "body": Object {
                         "body": Array [],
                         "loc": Object {
@@ -68,8 +65,6 @@ Object {
                         ],
                         "type": "BlockStatement",
                       },
-                      "expression": false,
-                      "generator": false,
                       "id": null,
                       "loc": Object {
                         "end": Object {
@@ -213,7 +208,6 @@ Object {
           },
           Object {
             "declaration": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -232,8 +226,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": Object {
                 "loc": Object {
                   "end": Object {

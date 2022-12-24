@@ -13,7 +13,6 @@ Program {
             type: "AccessorProperty",
             accessibility: "protected",
             computed: false,
-            declare: false,
             key: Identifier {
               type: "Identifier",
               name: "foo",
@@ -24,8 +23,6 @@ Program {
                 end: { column: 24, line: 2 },
               },
             },
-            override: false,
-            static: false,
             value: Literal {
               type: "Literal",
               raw: "2",

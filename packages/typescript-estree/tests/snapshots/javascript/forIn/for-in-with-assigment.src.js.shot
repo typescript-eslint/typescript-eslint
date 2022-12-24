@@ -54,7 +54,6 @@ Object {
               "line": 1,
             },
           },
-          "optional": false,
           "range": Array [
             25,
             35,

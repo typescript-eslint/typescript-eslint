@@ -105,7 +105,6 @@ Object {
             0,
             5,
           ],
-          "selfClosing": false,
           "type": "JSXOpeningElement",
           "typeParameters": undefined,
         },

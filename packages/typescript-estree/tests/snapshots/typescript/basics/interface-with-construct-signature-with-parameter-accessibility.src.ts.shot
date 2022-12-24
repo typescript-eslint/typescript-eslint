@@ -20,7 +20,6 @@ Object {
             "params": Array [
               Object {
                 "accessibility": "public",
-                "export": undefined,
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -31,7 +30,6 @@ Object {
                     "line": 2,
                   },
                 },
-                "override": undefined,
                 "parameter": Object {
                   "loc": Object {
                     "end": Object {
@@ -54,13 +52,10 @@ Object {
                   26,
                   34,
                 ],
-                "readonly": undefined,
-                "static": undefined,
                 "type": "TSParameterProperty",
               },
               Object {
                 "accessibility": "private",
-                "export": undefined,
                 "loc": Object {
                   "end": Object {
                     "column": 28,
@@ -71,7 +66,6 @@ Object {
                     "line": 2,
                   },
                 },
-                "override": undefined,
                 "parameter": Object {
                   "loc": Object {
                     "end": Object {
@@ -94,8 +88,6 @@ Object {
                   36,
                   45,
                 ],
-                "readonly": undefined,
-                "static": undefined,
                 "type": "TSParameterProperty",
               },
             ],

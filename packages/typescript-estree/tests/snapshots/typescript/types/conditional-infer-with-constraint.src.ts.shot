@@ -111,7 +111,6 @@ Object {
                   "type": "TSNumberKeyword",
                 },
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 46,
@@ -140,7 +139,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   30,
                   46,
@@ -303,7 +301,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -332,7 +329,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               8,
               9,
@@ -455,7 +451,6 @@ Object {
                   "type": "TSNumberKeyword",
                 },
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 46,
@@ -484,7 +479,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   105,
                   121,
@@ -527,7 +521,6 @@ Object {
                   "type": "TSNumberKeyword",
                 },
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 70,
@@ -556,7 +549,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   129,
                   145,
@@ -719,7 +711,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -748,7 +739,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               83,
               84,
@@ -871,7 +861,6 @@ Object {
                   "type": "TSNumberKeyword",
                 },
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 46,
@@ -900,7 +889,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   204,
                   220,
@@ -927,7 +915,6 @@ Object {
               "typeParameter": Object {
                 "constraint": undefined,
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 55,
@@ -956,7 +943,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   228,
                   229,
@@ -1119,7 +1105,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -1148,7 +1133,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               182,
               183,
@@ -1255,7 +1239,6 @@ Object {
               "typeParameter": Object {
                 "constraint": undefined,
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 31,
@@ -1284,7 +1267,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   288,
                   289,
@@ -1327,7 +1309,6 @@ Object {
                   "type": "TSNumberKeyword",
                 },
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 55,
@@ -1356,7 +1337,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   297,
                   313,
@@ -1519,7 +1499,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -1548,7 +1527,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               266,
               267,
@@ -1671,7 +1649,6 @@ Object {
                   "type": "TSStringKeyword",
                 },
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 46,
@@ -1700,7 +1677,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   372,
                   388,
@@ -1743,7 +1719,6 @@ Object {
                   "type": "TSNumberKeyword",
                 },
                 "default": undefined,
-                "in": false,
                 "loc": Object {
                   "end": Object {
                     "column": 70,
@@ -1772,7 +1747,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "out": false,
                 "range": Array [
                   396,
                   412,
@@ -1881,7 +1855,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -1910,7 +1883,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               350,
               351,

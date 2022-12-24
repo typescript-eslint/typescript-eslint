@@ -8,7 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -37,13 +36,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               55,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -115,7 +111,6 @@ Object {
               },
             },
             "value": Object {
-              "async": false,
               "body": Object {
                 "loc": Object {
                   "end": Object {
@@ -136,7 +131,6 @@ Object {
                 "value": true,
               },
               "expression": true,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -192,7 +186,6 @@ Object {
           },
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -221,13 +214,10 @@ Object {
                 "line": 3,
               },
             },
-            "override": false,
             "range": Array [
               58,
               83,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -264,7 +254,6 @@ Object {
               },
             },
             "value": Object {
-              "async": false,
               "body": Object {
                 "loc": Object {
                   "end": Object {
@@ -284,7 +273,6 @@ Object {
                 "type": "Identifier",
               },
               "expression": true,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

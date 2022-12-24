@@ -43,13 +43,9 @@ Object {
               62,
               87,
             ],
-            "static": false,
             "type": "TSAbstractMethodDefinition",
             "value": Object {
-              "async": false,
               "body": null,
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

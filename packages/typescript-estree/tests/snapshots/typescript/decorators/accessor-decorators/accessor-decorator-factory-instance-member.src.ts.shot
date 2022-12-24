@@ -60,7 +60,6 @@ Object {
                       "line": 2,
                     },
                   },
-                  "optional": false,
                   "range": Array [
                     19,
                     38,
@@ -113,15 +112,12 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               18,
               70,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -154,7 +150,6 @@ Object {
                         ],
                         "type": "ThisExpression",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -212,8 +207,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

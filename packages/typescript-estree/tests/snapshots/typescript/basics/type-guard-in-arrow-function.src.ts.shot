@@ -25,7 +25,6 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
-            "async": false,
             "body": Object {
               "body": Array [
                 Object {
@@ -136,8 +135,6 @@ Object {
               ],
               "type": "BlockStatement",
             },
-            "expression": false,
-            "generator": false,
             "id": null,
             "loc": Object {
               "end": Object {
@@ -224,7 +221,6 @@ Object {
               ],
               "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
-                "asserts": false,
                 "loc": Object {
                   "end": Object {
                     "column": 38,

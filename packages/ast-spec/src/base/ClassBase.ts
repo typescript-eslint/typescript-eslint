@@ -15,8 +15,7 @@ export interface ClassBase extends BaseNode {
    * ```
    * This is always `undefined` for `ClassExpression`.
    */
-  // TODO(#5020) - make this `false` if it is not `abstract`
-  abstract?: boolean;
+  abstract?: true;
   /**
    * The class body.
    */
@@ -28,8 +27,7 @@ export interface ClassBase extends BaseNode {
    * ```
    * This is always `undefined` for `ClassExpression`.
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare?: true;
   /**
    * The decorators declared for the class.
    * This is `undefined` if there are no decorators.

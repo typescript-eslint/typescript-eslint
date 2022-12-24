@@ -5,7 +5,6 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
-        "async": false,
         "body": Object {
           "elements": Array [
             Object {
@@ -62,7 +61,6 @@ Object {
           "type": "ArrayExpression",
         },
         "expression": true,
-        "generator": false,
         "id": null,
         "loc": Object {
           "end": Object {
@@ -118,7 +116,6 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   2,
                   8,
@@ -211,12 +208,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   10,
                   23,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -261,7 +256,6 @@ Object {
                           "line": 1,
                         },
                       },
-                      "method": false,
                       "range": Array [
                         15,
                         21,

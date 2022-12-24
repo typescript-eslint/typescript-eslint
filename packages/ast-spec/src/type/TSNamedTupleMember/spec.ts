@@ -7,5 +7,5 @@ export interface TSNamedTupleMember extends BaseNode {
   type: AST_NODE_TYPES.TSNamedTupleMember;
   elementType: TypeNode;
   label: Identifier;
-  optional: boolean;
+  optional?: true;
 }

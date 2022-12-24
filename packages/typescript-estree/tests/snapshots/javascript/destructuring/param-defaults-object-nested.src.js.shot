@@ -4,7 +4,6 @@ exports[`javascript destructuring param-defaults-object-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -23,8 +22,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -97,7 +94,6 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 12,
                 18,
@@ -190,12 +186,10 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 20,
                 33,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
                 "loc": Object {
@@ -240,7 +234,6 @@ Object {
                         "line": 1,
                       },
                     },
-                    "method": false,
                     "range": Array [
                       25,
                       31,

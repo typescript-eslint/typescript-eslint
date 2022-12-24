@@ -180,7 +180,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {
@@ -215,7 +214,6 @@ Object {
             "line": 2,
           },
         },
-        "optional": false,
         "range": Array [
           17,
           42,

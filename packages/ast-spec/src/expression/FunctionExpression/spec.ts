@@ -5,5 +5,5 @@ import type { BlockStatement } from '../../statement/BlockStatement/spec';
 export interface FunctionExpression extends FunctionBase {
   type: AST_NODE_TYPES.FunctionExpression;
   body: BlockStatement;
-  expression: false;
+  expression?: never;
 }

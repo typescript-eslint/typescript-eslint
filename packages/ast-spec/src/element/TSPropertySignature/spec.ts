@@ -12,13 +12,13 @@ import type {
 interface TSPropertySignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSPropertySignature;
   key: PropertyName;
-  optional?: boolean;
+  optional?: true;
   computed: boolean;
   typeAnnotation?: TSTypeAnnotation;
   initializer?: Expression;
-  readonly?: boolean;
-  static?: boolean;
-  export?: boolean;
+  readonly?: true;
+  static?: true;
+  export?: true;
   accessibility?: Accessibility;
 }
 

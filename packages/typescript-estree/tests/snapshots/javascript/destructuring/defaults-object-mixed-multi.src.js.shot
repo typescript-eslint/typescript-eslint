@@ -49,7 +49,6 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   5,
                   6,
@@ -106,12 +105,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   8,
                   17,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "left": Object {
@@ -199,7 +196,6 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   19,
                   20,

@@ -49,7 +49,6 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   6,
                   7,
@@ -106,7 +105,6 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   9,
                   10,
@@ -217,12 +215,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   23,
                   27,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -275,12 +271,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   29,
                   33,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -333,12 +327,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   35,
                   39,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -391,12 +383,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   41,
                   45,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {

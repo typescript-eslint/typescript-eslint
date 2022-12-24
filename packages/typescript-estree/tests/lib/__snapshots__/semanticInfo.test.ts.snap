@@ -450,7 +450,6 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
             ],
             "type": "Identifier",
           },
-          "optional": false,
           "property": {
             "loc": {
               "end": {
@@ -485,7 +484,6 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
             "line": 2,
           },
         },
-        "optional": false,
         "range": [
           37,
           51,
@@ -1257,7 +1255,6 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         "body": [
           {
             "computed": true,
-            "declare": false,
             "key": {
               "loc": {
                 "end": {
@@ -1287,12 +1284,10 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
                 "line": 4,
               },
             },
-            "override": false,
             "range": [
               39,
               56,
             ],
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": {
               "loc": {

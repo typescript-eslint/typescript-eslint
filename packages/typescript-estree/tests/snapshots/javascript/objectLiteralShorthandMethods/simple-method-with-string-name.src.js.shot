@@ -87,10 +87,8 @@ Object {
                 10,
                 28,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
-                "async": false,
                 "body": Object {
                   "body": Array [],
                   "loc": Object {
@@ -109,8 +107,6 @@ Object {
                   ],
                   "type": "BlockStatement",
                 },
-                "expression": false,
-                "generator": false,
                 "id": null,
                 "loc": Object {
                   "end": Object {

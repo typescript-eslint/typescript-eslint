@@ -124,7 +124,6 @@ Object {
                     12,
                     22,
                   ],
-                  "tail": false,
                   "type": "TemplateElement",
                   "value": Object {
                     "cooked": "nested ",
@@ -187,7 +186,6 @@ Object {
                 3,
                 12,
               ],
-              "tail": false,
               "type": "TemplateElement",
               "value": Object {
                 "cooked": "hello ",

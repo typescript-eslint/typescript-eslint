@@ -71,7 +71,6 @@ Object {
                   12,
                   15,
                 ],
-                "tail": false,
                 "type": "TemplateElement",
                 "value": Object {
                   "cooked": "",

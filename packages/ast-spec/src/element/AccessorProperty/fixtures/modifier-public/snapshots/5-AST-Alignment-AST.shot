@@ -19,7 +19,6 @@ exports[`AST Fixtures element AccessorProperty modifier-public AST Alignment - A
 +             type: 'ClassAccessorProperty',
               accessibility: 'public',
               computed: false,
--             declare: false,
               key: Identifier {
                 type: 'Identifier',
                 name: 'foo',
@@ -30,8 +29,7 @@ exports[`AST Fixtures element AccessorProperty modifier-public AST Alignment - A
                   end: { column: 21, line: 2 },
                 },
               },
--             override: false,
-              static: false,
++             static: false,
               value: Literal {
                 type: 'Literal',
                 raw: '2',

@@ -41,7 +41,6 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
-            in: false,
             name: Identifier {
               type: "Identifier",
               name: "U",
@@ -52,7 +51,6 @@ Program {
                 end: { column: 8, line: 1 },
               },
             },
-            out: false,
 
             range: [7, 8],
             loc: {

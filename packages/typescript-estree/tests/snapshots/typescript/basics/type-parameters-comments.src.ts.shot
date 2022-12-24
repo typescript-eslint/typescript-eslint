@@ -34,7 +34,6 @@ Object {
             "line": 1,
           },
         },
-        "optional": false,
         "range": Array [
           0,
           42,
@@ -113,7 +112,6 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
-      "async": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -132,8 +130,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -183,7 +179,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -212,7 +207,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               68,
               69,
@@ -228,7 +222,6 @@ Object {
       },
     },
     Object {
-      "async": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -247,8 +240,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -333,7 +324,6 @@ Object {
               },
               "typeParameters": undefined,
             },
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 41,
@@ -362,7 +352,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               112,
               129,

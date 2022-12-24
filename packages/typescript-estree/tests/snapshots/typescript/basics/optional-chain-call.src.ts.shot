@@ -4,7 +4,6 @@ exports[`typescript basics optional-chain-call.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -76,7 +75,6 @@ Object {
                     "line": 2,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   44,
                   53,
@@ -186,7 +184,6 @@ Object {
                     ],
                     "type": "MemberExpression",
                   },
-                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -221,7 +218,6 @@ Object {
                     "line": 3,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   57,
                   70,
@@ -306,7 +302,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "optional": false,
                     "property": Object {
                       "loc": Object {
                         "end": Object {
@@ -366,7 +361,6 @@ Object {
                     "line": 4,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   74,
                   87,
@@ -463,7 +457,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -513,7 +506,6 @@ Object {
                     ],
                     "type": "MemberExpression",
                   },
-                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -548,7 +540,6 @@ Object {
                     "line": 5,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   91,
                   110,
@@ -645,7 +636,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -730,7 +720,6 @@ Object {
                     "line": 6,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   114,
                   134,
@@ -891,7 +880,6 @@ Object {
                     "line": 9,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   150,
                   159,
@@ -1071,7 +1059,6 @@ Object {
                   ],
                   "type": "CallExpression",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -1145,8 +1132,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

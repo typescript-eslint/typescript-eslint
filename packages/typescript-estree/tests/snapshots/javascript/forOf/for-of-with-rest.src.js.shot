@@ -4,7 +4,6 @@ exports[`javascript forOf for-of-with-rest.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "await": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -66,12 +65,10 @@ Object {
                 "line": 1,
               },
             },
-            "method": false,
             "range": Array [
               7,
               12,
             ],
-            "shorthand": false,
             "type": "Property",
             "value": Object {
               "loc": Object {

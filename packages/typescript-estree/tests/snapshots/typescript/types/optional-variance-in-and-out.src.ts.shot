@@ -224,7 +224,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               12,
               16,
@@ -234,7 +233,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 23,

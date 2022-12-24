@@ -4,7 +4,6 @@ exports[`typescript basics optional-chain-call-with-non-null-assertion.src 1`] =
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -93,7 +92,6 @@ Object {
                     "line": 2,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   40,
                   51,
@@ -220,7 +218,6 @@ Object {
                     ],
                     "type": "TSNonNullExpression",
                   },
-                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -255,7 +252,6 @@ Object {
                     "line": 3,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   55,
                   72,
@@ -396,7 +392,6 @@ Object {
                   "line": 4,
                 },
               },
-              "optional": false,
               "range": Array [
                 76,
                 89,
@@ -523,7 +518,6 @@ Object {
                   ],
                   "type": "TSNonNullExpression",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -558,7 +552,6 @@ Object {
                   "line": 5,
                 },
               },
-              "optional": false,
               "range": Array [
                 93,
                 112,
@@ -683,7 +676,6 @@ Object {
                   "line": 6,
                 },
               },
-              "optional": false,
               "range": Array [
                 116,
                 129,
@@ -810,7 +802,6 @@ Object {
                   ],
                   "type": "ChainExpression",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -845,7 +836,6 @@ Object {
                   "line": 7,
                 },
               },
-              "optional": false,
               "range": Array [
                 133,
                 152,
@@ -885,8 +875,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

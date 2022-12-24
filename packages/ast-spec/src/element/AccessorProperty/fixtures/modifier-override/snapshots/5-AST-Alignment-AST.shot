@@ -18,7 +18,6 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
 +           ClassAccessorProperty {
 +             type: 'ClassAccessorProperty',
               computed: false,
--             declare: false,
               key: Identifier {
                 type: 'Identifier',
                 name: 'foo',
@@ -30,7 +29,7 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
                 },
               },
               override: true,
-              static: false,
++             static: false,
               value: Literal {
                 type: 'Literal',
                 raw: '2',

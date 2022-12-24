@@ -64,7 +64,6 @@ Object {
               46,
               49,
             ],
-            "tail": false,
             "type": "TemplateElement",
             "value": Object {
               "cooked": "",
@@ -86,7 +85,6 @@ Object {
               61,
               67,
             ],
-            "tail": false,
             "type": "TemplateElement",
             "value": Object {
               "cooked": " - ",
@@ -108,7 +106,6 @@ Object {
               79,
               85,
             ],
-            "tail": false,
             "type": "TemplateElement",
             "value": Object {
               "cooked": " - ",
@@ -130,7 +127,6 @@ Object {
               98,
               104,
             ],
-            "tail": false,
             "type": "TemplateElement",
             "value": Object {
               "cooked": " - ",
@@ -559,7 +555,6 @@ Object {
               "type": "TSStringKeyword",
             },
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 42,
@@ -588,7 +583,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               26,
               42,

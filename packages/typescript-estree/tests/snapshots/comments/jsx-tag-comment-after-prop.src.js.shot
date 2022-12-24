@@ -25,7 +25,6 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
-            "async": false,
             "body": Object {
               "body": Array [
                 Object {
@@ -245,8 +244,6 @@ Object {
               ],
               "type": "BlockStatement",
             },
-            "expression": false,
-            "generator": false,
             "id": null,
             "loc": Object {
               "end": Object {

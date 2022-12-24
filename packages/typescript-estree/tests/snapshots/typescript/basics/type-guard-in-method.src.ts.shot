@@ -37,15 +37,12 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               75,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -135,8 +132,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -170,7 +165,6 @@ Object {
                 ],
                 "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
-                  "asserts": false,
                   "loc": Object {
                     "end": Object {
                       "column": 25,
@@ -244,7 +238,6 @@ Object {
           },
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -273,16 +266,12 @@ Object {
                 "line": 5,
               },
             },
-            "override": false,
             "range": Array [
               78,
               145,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -372,8 +361,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -407,7 +394,6 @@ Object {
                 ],
                 "type": "TSTypeAnnotation",
                 "typeAnnotation": Object {
-                  "asserts": false,
                   "loc": Object {
                     "end": Object {
                       "column": 28,

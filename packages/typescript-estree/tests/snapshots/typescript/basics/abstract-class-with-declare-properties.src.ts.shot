@@ -38,13 +38,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               37,
               59,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -113,13 +110,10 @@ Object {
                 "line": 3,
               },
             },
-            "override": false,
             "range": Array [
               62,
               93,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -189,13 +183,10 @@ Object {
                 "line": 4,
               },
             },
-            "override": false,
             "range": Array [
               96,
               134,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -264,13 +255,11 @@ Object {
                 "line": 5,
               },
             },
-            "override": false,
             "range": Array [
               137,
               177,
             ],
             "readonly": true,
-            "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -340,13 +329,11 @@ Object {
                 "line": 6,
               },
             },
-            "override": false,
             "range": Array [
               180,
               227,
             ],
             "readonly": true,
-            "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {

@@ -4,7 +4,6 @@ exports[`comments switch-fallthrough-comment-in-function.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -79,7 +78,6 @@ Object {
                           "line": 7,
                         },
                       },
-                      "optional": false,
                       "range": Array [
                         126,
                         132,
@@ -190,8 +188,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

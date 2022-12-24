@@ -4,7 +4,6 @@ exports[`typescript basics destructuring-assignment-property.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -23,8 +22,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -98,7 +95,6 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   15,
                   23,

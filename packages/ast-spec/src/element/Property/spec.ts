@@ -18,10 +18,9 @@ interface PropertyBase extends BaseNode {
     | BindingName
     | Expression
     | TSEmptyBodyFunctionExpression;
-  computed: boolean;
-  method: boolean;
-  shorthand: boolean;
-  optional?: boolean;
+  method?: true;
+  shorthand?: true;
+  optional?: true;
   kind: 'get' | 'init' | 'set';
 }
 

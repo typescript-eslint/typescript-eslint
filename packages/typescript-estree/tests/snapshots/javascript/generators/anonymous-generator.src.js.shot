@@ -5,7 +5,6 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
-        "async": false,
         "body": Object {
           "body": Array [
             Object {
@@ -28,7 +27,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "delegate": false,
                 "loc": Object {
                   "end": Object {
                     "column": 23,
@@ -78,7 +76,6 @@ Object {
           ],
           "type": "BlockStatement",
         },
-        "expression": false,
         "generator": true,
         "id": null,
         "loc": Object {

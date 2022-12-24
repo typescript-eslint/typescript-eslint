@@ -6,10 +6,7 @@ Program {
   body: Array [
     TSDeclareFunction {
       type: "TSDeclareFunction",
-      async: false,
       declare: true,
-      expression: false,
-      generator: false,
       id: Identifier {
         type: "Identifier",
         name: "foo",
@@ -26,7 +23,6 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
-            in: false,
             name: Identifier {
               type: "Identifier",
               name: "T",
@@ -37,7 +33,6 @@ Program {
                 end: { column: 22, line: 1 },
               },
             },
-            out: false,
 
             range: [21, 22],
             loc: {

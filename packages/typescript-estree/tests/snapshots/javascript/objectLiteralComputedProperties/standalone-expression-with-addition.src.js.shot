@@ -85,12 +85,10 @@ Object {
                 "line": 1,
               },
             },
-            "method": false,
             "range": Array [
               2,
               17,
             ],
-            "shorthand": false,
             "type": "Property",
             "value": Object {
               "loc": Object {

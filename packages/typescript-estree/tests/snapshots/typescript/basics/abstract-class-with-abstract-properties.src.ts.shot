@@ -9,7 +9,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -38,19 +37,15 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               25,
               38,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "TSAbstractPropertyDefinition",
             "value": null,
           },
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -79,13 +74,10 @@ Object {
                 "line": 3,
               },
             },
-            "override": false,
             "range": Array [
               43,
               64,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {

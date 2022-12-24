@@ -6,10 +6,7 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
-        "async": false,
         "body": undefined,
-        "expression": false,
-        "generator": false,
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -154,10 +151,7 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
-        "async": false,
         "body": undefined,
-        "expression": false,
-        "generator": false,
         "id": Object {
           "loc": Object {
             "end": Object {
@@ -302,7 +296,6 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
-        "async": false,
         "body": Object {
           "body": Array [
             Object {
@@ -357,8 +350,6 @@ Object {
           ],
           "type": "BlockStatement",
         },
-        "expression": false,
-        "generator": false,
         "id": Object {
           "loc": Object {
             "end": Object {

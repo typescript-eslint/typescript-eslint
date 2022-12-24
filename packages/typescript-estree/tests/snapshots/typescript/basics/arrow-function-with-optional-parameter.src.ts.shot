@@ -7,7 +7,6 @@ Object {
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
-          "async": false,
           "body": Object {
             "left": Object {
               "loc": Object {
@@ -64,7 +63,6 @@ Object {
             "type": "BinaryExpression",
           },
           "expression": true,
-          "generator": false,
           "id": null,
           "loc": Object {
             "end": Object {
@@ -113,7 +111,6 @@ Object {
             "line": 1,
           },
         },
-        "optional": false,
         "range": Array [
           0,
           17,

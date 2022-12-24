@@ -133,7 +133,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -168,7 +167,6 @@ Object {
                   "line": 4,
                 },
               },
-              "optional": false,
               "range": Array [
                 44,
                 61,

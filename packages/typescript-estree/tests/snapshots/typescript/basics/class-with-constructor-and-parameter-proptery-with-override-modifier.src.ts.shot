@@ -37,15 +37,12 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               53,
               109,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -78,7 +75,6 @@ Object {
                           "line": 3,
                         },
                       },
-                      "optional": false,
                       "range": Array [
                         97,
                         104,
@@ -118,8 +114,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -134,7 +128,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 36,
@@ -202,8 +195,6 @@ Object {
                     65,
                     87,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
                   "type": "TSParameterProperty",
                 },
               ],

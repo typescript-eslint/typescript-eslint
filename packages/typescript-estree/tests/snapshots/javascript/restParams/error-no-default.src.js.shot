@@ -4,10 +4,7 @@ exports[`javascript restParams error-no-default.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": undefined,
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

@@ -36,7 +36,6 @@ exports[`AST Fixtures declaration ClassDeclaration type-param AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
@@ -47,7 +46,6 @@ exports[`AST Fixtures declaration ClassDeclaration type-param AST Alignment - AS
 -                 end: { column: 11, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
 
               range: [10, 11],

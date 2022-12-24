@@ -51,7 +51,6 @@ Object {
         "members": Array [
           Object {
             "computed": false,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -81,13 +80,10 @@ Object {
                 "line": 1,
               },
             },
-            "optional": undefined,
             "range": Array [
               12,
               24,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -126,7 +122,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -156,13 +151,10 @@ Object {
                 "line": 1,
               },
             },
-            "optional": undefined,
             "range": Array [
               25,
               28,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": undefined,
           },

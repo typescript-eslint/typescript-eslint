@@ -37,12 +37,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               63,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
               "async": true,
@@ -100,7 +98,6 @@ Object {
                                 "line": 3,
                               },
                             },
-                            "optional": false,
                             "range": Array [
                               53,
                               56,
@@ -175,7 +172,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
               "generator": true,
               "id": null,
               "loc": Object {

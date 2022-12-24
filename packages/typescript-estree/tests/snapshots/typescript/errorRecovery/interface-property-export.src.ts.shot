@@ -38,13 +38,10 @@ Object {
                 "line": 2,
               },
             },
-            "optional": undefined,
             "range": Array [
               18,
               35,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {

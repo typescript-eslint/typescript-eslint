@@ -39,16 +39,14 @@ export interface TSModuleDeclaration extends BaseNode {
    * declare global {}
    * ```
    */
-  // TODO(#5020) - make this `false` if not `global`
-  global?: boolean;
+  global?: true;
   /**
    * Whether the module is `declare`d
    * ```
    * declare namespace F {}
    * ```
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare?: true;
   // TODO(#4759) - breaking change remove this
   modifiers?: Modifier[];
 }

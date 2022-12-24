@@ -84,7 +84,6 @@ Object {
           },
           "params": Array [
             Object {
-              "isTypeOf": false,
               "loc": Object {
                 "end": Object {
                   "column": 28,

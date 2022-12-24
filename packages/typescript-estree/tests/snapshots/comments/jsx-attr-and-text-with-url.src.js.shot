@@ -180,7 +180,6 @@ Object {
                 14,
                 43,
               ],
-              "selfClosing": false,
               "type": "JSXOpeningElement",
               "typeParameters": undefined,
             },

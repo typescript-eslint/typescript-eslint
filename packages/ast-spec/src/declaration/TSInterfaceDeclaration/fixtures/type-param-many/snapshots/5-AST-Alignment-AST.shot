@@ -35,7 +35,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
@@ -46,7 +45,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -                 end: { column: 13, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
 
               range: [12, 13],
@@ -57,7 +55,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'U',
@@ -68,7 +65,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -                 end: { column: 16, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
 
               range: [15, 16],
@@ -79,7 +75,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'V',
@@ -90,7 +85,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -                 end: { column: 19, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'V',
 
               range: [18, 19],

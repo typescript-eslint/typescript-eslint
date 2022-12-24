@@ -6,9 +6,7 @@ Program {
   body: Array [
     TSDeclareFunction {
       type: "TSDeclareFunction",
-      async: false,
       declare: true,
-      expression: false,
       generator: true,
       id: Identifier {
         type: "Identifier",

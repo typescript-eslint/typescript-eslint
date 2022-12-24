@@ -5,13 +5,11 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
-        "async": false,
         "body": Object {
           "body": Array [
             Object {
               "expression": Object {
                 "argument": null,
-                "delegate": false,
                 "loc": Object {
                   "end": Object {
                     "column": 21,
@@ -61,7 +59,6 @@ Object {
           ],
           "type": "BlockStatement",
         },
-        "expression": false,
         "generator": true,
         "id": null,
         "loc": Object {

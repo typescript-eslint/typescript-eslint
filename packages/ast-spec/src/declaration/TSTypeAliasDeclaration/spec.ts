@@ -12,8 +12,7 @@ export interface TSTypeAliasDeclaration extends BaseNode {
    * declare type T = 1;
    * ```
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare?: true;
   /**
    * The name of the type.
    */

@@ -8,7 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -37,12 +36,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               31,
             ],
-            "readonly": undefined,
             "static": true,
             "type": "PropertyDefinition",
             "value": Object {
@@ -102,7 +99,6 @@ Object {
                           },
                         },
                         "operator": "++",
-                        "prefix": false,
                         "range": Array [
                           76,
                           83,
@@ -186,7 +182,6 @@ Object {
                       "line": 4,
                     },
                   },
-                  "optional": false,
                   "range": Array [
                     51,
                     66,

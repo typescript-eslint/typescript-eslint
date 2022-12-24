@@ -37,7 +37,6 @@ Object {
                 "line": 1,
               },
             },
-            "override": false,
             "range": Array [
               9,
               21,
@@ -45,7 +44,6 @@ Object {
             "static": true,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -64,8 +62,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -116,7 +112,6 @@ Object {
                 "line": 1,
               },
             },
-            "override": false,
             "range": Array [
               22,
               38,
@@ -124,7 +119,6 @@ Object {
             "static": true,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -143,8 +137,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -195,7 +187,6 @@ Object {
                 "line": 1,
               },
             },
-            "override": false,
             "range": Array [
               39,
               56,
@@ -203,7 +194,6 @@ Object {
             "static": true,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -222,8 +212,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

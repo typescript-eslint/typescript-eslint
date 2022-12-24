@@ -40,7 +40,6 @@ Object {
               ],
               "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
-                "abstract": false,
                 "loc": Object {
                   "end": Object {
                     "column": 42,

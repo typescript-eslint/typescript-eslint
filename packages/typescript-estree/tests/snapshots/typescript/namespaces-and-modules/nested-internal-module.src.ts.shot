@@ -137,15 +137,12 @@ Object {
                         "line": 5,
                       },
                     },
-                    "override": false,
                     "range": Array [
                       78,
                       129,
                     ],
-                    "static": false,
                     "type": "MethodDefinition",
                     "value": Object {
-                      "async": false,
                       "body": Object {
                         "body": Array [],
                         "loc": Object {
@@ -164,8 +161,6 @@ Object {
                         ],
                         "type": "BlockStatement",
                       },
-                      "expression": false,
-                      "generator": false,
                       "id": null,
                       "loc": Object {
                         "end": Object {
@@ -180,7 +175,6 @@ Object {
                       "params": Array [
                         Object {
                           "accessibility": "public",
-                          "export": undefined,
                           "loc": Object {
                             "end": Object {
                               "column": 36,
@@ -191,7 +185,6 @@ Object {
                               "line": 5,
                             },
                           },
-                          "override": undefined,
                           "parameter": Object {
                             "loc": Object {
                               "end": Object {
@@ -248,13 +241,10 @@ Object {
                             90,
                             106,
                           ],
-                          "readonly": undefined,
-                          "static": undefined,
                           "type": "TSParameterProperty",
                         },
                         Object {
                           "accessibility": "public",
-                          "export": undefined,
                           "loc": Object {
                             "end": Object {
                               "column": 54,
@@ -265,7 +255,6 @@ Object {
                               "line": 5,
                             },
                           },
-                          "override": undefined,
                           "parameter": Object {
                             "loc": Object {
                               "end": Object {
@@ -322,8 +311,6 @@ Object {
                             108,
                             124,
                           ],
-                          "readonly": undefined,
-                          "static": undefined,
                           "type": "TSParameterProperty",
                         },
                       ],
@@ -417,7 +404,6 @@ Object {
                         "body": Array [
                           Object {
                             "computed": false,
-                            "export": undefined,
                             "initializer": undefined,
                             "key": Object {
                               "loc": Object {
@@ -447,13 +433,10 @@ Object {
                                 "line": 9,
                               },
                             },
-                            "optional": undefined,
                             "range": Array [
                               200,
                               213,
                             ],
-                            "readonly": undefined,
-                            "static": undefined,
                             "type": "TSPropertySignature",
                             "typeAnnotation": Object {
                               "loc": Object {

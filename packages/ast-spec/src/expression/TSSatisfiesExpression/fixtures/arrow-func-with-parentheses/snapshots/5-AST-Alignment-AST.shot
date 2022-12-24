@@ -14,7 +14,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-with-parenthes
           type: 'TSSatisfiesExpression',
           expression: ArrowFunctionExpression {
             type: 'ArrowFunctionExpression',
-            async: false,
++           async: false,
             body: Literal {
               type: 'Literal',
               raw: '1',
@@ -27,7 +27,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-with-parenthes
               },
             },
             expression: true,
-            generator: false,
++           generator: false,
             id: null,
             params: Array [],
 

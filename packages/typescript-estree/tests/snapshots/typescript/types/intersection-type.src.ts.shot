@@ -104,7 +104,6 @@ Object {
             "members": Array [
               Object {
                 "computed": false,
-                "export": undefined,
                 "initializer": undefined,
                 "key": Object {
                   "loc": Object {
@@ -134,13 +133,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "optional": undefined,
                 "range": Array [
                   27,
                   46,
                 ],
-                "readonly": undefined,
-                "static": undefined,
                 "type": "TSPropertySignature",
                 "typeAnnotation": Object {
                   "loc": Object {
@@ -274,7 +270,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 17,
@@ -303,7 +298,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               16,
               17,

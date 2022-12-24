@@ -265,7 +265,6 @@ Object {
             0,
             35,
           ],
-          "selfClosing": false,
           "type": "JSXOpeningElement",
           "typeParameters": undefined,
         },

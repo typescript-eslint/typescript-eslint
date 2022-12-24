@@ -8,7 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -38,13 +37,10 @@ Object {
                 "line": 2,
               },
             },
-            "optional": undefined,
             "range": Array [
               20,
               32,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -83,7 +79,6 @@ Object {
           },
           Object {
             "computed": false,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -118,8 +113,6 @@ Object {
               37,
               50,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -158,7 +151,6 @@ Object {
           },
           Object {
             "computed": true,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -188,13 +180,10 @@ Object {
                 "line": 4,
               },
             },
-            "optional": undefined,
             "range": Array [
               55,
               69,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -233,7 +222,6 @@ Object {
           },
           Object {
             "computed": true,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -268,8 +256,6 @@ Object {
               74,
               89,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -880,7 +866,6 @@ Object {
                 Object {
                   "constraint": undefined,
                   "default": undefined,
-                  "in": false,
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -909,7 +894,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "out": false,
                   "range": Array [
                     194,
                     195,
@@ -1118,7 +1102,6 @@ Object {
                 Object {
                   "constraint": undefined,
                   "default": undefined,
-                  "in": false,
                   "loc": Object {
                     "end": Object {
                       "column": 10,
@@ -1147,7 +1130,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "out": false,
                   "range": Array [
                     247,
                     248,

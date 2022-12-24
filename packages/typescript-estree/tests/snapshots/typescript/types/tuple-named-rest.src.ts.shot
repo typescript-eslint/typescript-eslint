@@ -87,7 +87,6 @@ Object {
                         "line": 1,
                       },
                     },
-                    "optional": false,
                     "range": Array [
                       8,
                       17,
@@ -173,7 +172,6 @@ Object {
                           "line": 1,
                         },
                       },
-                      "optional": false,
                       "range": Array [
                         22,
                         33,

@@ -48,12 +48,10 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 3,
                 79,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
                 "left": Object {
@@ -99,12 +97,10 @@ Object {
                           "line": 1,
                         },
                       },
-                      "method": false,
                       "range": Array [
                         10,
                         71,
                       ],
-                      "shorthand": false,
                       "type": "Property",
                       "value": Object {
                         "left": Object {
@@ -150,12 +146,10 @@ Object {
                                   "line": 1,
                                 },
                               },
-                              "method": false,
                               "range": Array [
                                 17,
                                 64,
                               ],
-                              "shorthand": false,
                               "type": "Property",
                               "value": Object {
                                 "left": Object {
@@ -222,12 +216,10 @@ Object {
                                                 "line": 1,
                                               },
                                             },
-                                            "method": false,
                                             "range": Array [
                                               28,
                                               42,
                                             ],
-                                            "shorthand": false,
                                             "type": "Property",
                                             "value": Object {
                                               "left": Object {
@@ -386,12 +378,10 @@ Object {
                                                 "line": 1,
                                               },
                                             },
-                                            "method": false,
                                             "range": Array [
                                               49,
                                               57,
                                             ],
-                                            "shorthand": false,
                                             "type": "Property",
                                             "value": Object {
                                               "elements": Array [
@@ -642,12 +632,10 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 86,
                 126,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
                 "loc": Object {
@@ -692,12 +680,10 @@ Object {
                         "line": 1,
                       },
                     },
-                    "method": false,
                     "range": Array [
                       93,
                       124,
                     ],
-                    "shorthand": false,
                     "type": "Property",
                     "value": Object {
                       "loc": Object {
@@ -742,12 +728,10 @@ Object {
                               "line": 1,
                             },
                           },
-                          "method": false,
                           "range": Array [
                             100,
                             122,
                           ],
-                          "shorthand": false,
                           "type": "Property",
                           "value": Object {
                             "elements": Array [
@@ -813,12 +797,10 @@ Object {
                                         "line": 1,
                                       },
                                     },
-                                    "method": false,
                                     "range": Array [
                                       111,
                                       119,
                                     ],
-                                    "shorthand": false,
                                     "type": "Property",
                                     "value": Object {
                                       "elements": Array [

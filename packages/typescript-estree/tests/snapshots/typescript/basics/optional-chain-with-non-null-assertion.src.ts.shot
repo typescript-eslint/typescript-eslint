@@ -4,7 +4,6 @@ exports[`typescript basics optional-chain-with-non-null-assertion.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -93,7 +92,6 @@ Object {
                   ],
                   "type": "TSNonNullExpression",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -252,7 +250,6 @@ Object {
                 ],
                 "type": "TSNonNullExpression",
               },
-              "optional": false,
               "property": Object {
                 "loc": Object {
                   "end": Object {
@@ -395,7 +392,6 @@ Object {
                 ],
                 "type": "ChainExpression",
               },
-              "optional": false,
               "property": Object {
                 "loc": Object {
                   "end": Object {
@@ -453,8 +449,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

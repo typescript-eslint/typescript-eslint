@@ -38,18 +38,13 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               24,
               36,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": null,
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

@@ -18,7 +18,6 @@ exports[`AST Fixtures element AccessorProperty key-computed-complex AST Alignmen
 +           ClassAccessorProperty {
 +             type: 'ClassAccessorProperty',
               computed: false,
--             declare: false,
               key: Literal {
                 type: 'Literal',
                 raw: '1',
@@ -30,8 +29,7 @@ exports[`AST Fixtures element AccessorProperty key-computed-complex AST Alignmen
                   end: { column: 12, line: 2 },
                 },
               },
--             override: false,
-              static: false,
++             static: false,
               value: Literal {
                 type: 'Literal',
                 raw: '2',

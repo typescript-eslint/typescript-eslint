@@ -16,7 +16,6 @@ exports[`AST Fixtures declaration ClassDeclaration with-member-one AST Alignment
             PropertyDefinition {
               type: 'PropertyDefinition',
               computed: false,
--             declare: false,
               key: Identifier {
                 type: 'Identifier',
                 name: 'prop',
@@ -27,8 +26,7 @@ exports[`AST Fixtures declaration ClassDeclaration with-member-one AST Alignment
                   end: { column: 6, line: 2 },
                 },
               },
--             override: false,
-              static: false,
++             static: false,
               value: null,
 
               range: [14, 19],

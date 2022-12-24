@@ -5,7 +5,6 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
-        "async": false,
         "body": Object {
           "loc": Object {
             "end": Object {
@@ -26,7 +25,6 @@ Object {
           "value": "test",
         },
         "expression": true,
-        "generator": false,
         "id": null,
         "loc": Object {
           "end": Object {

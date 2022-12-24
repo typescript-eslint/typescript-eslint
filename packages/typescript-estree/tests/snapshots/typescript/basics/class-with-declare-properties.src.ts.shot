@@ -37,13 +37,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               20,
               42,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -113,13 +110,10 @@ Object {
                 "line": 3,
               },
             },
-            "override": false,
             "range": Array [
               45,
               74,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -188,12 +182,10 @@ Object {
                 "line": 4,
               },
             },
-            "override": false,
             "range": Array [
               77,
               106,
             ],
-            "readonly": undefined,
             "static": true,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -263,13 +255,11 @@ Object {
                 "line": 5,
               },
             },
-            "override": false,
             "range": Array [
               109,
               140,
             ],
             "readonly": true,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -339,13 +329,11 @@ Object {
                 "line": 6,
               },
             },
-            "override": false,
             "range": Array [
               143,
               181,
             ],
             "readonly": true,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -415,12 +403,10 @@ Object {
                 "line": 7,
               },
             },
-            "override": false,
             "range": Array [
               184,
               220,
             ],
-            "readonly": undefined,
             "static": true,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -491,7 +477,6 @@ Object {
                 "line": 8,
               },
             },
-            "override": false,
             "range": Array [
               223,
               268,

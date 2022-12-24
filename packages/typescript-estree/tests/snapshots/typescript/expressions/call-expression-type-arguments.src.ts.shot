@@ -34,7 +34,6 @@ Object {
             "line": 1,
           },
         },
-        "optional": false,
         "range": Array [
           0,
           8,
@@ -143,7 +142,6 @@ Object {
             "line": 2,
           },
         },
-        "optional": false,
         "range": Array [
           10,
           23,

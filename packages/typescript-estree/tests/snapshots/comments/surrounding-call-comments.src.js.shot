@@ -4,7 +4,6 @@ exports[`comments surrounding-call-comments.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -38,7 +37,6 @@ Object {
                   "line": 3,
                 },
               },
-              "optional": false,
               "range": Array [
                 36,
                 41,
@@ -78,8 +76,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

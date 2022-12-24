@@ -51,7 +51,6 @@ Object {
               0,
               3,
             ],
-            "tail": false,
             "type": "TemplateElement",
             "value": Object {
               "cooked": "",

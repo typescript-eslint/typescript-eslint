@@ -9,5 +9,5 @@ export interface CallExpression extends BaseNode {
   callee: LeftHandSideExpression;
   arguments: CallExpressionArgument[];
   typeParameters?: TSTypeParameterInstantiation;
-  optional: boolean;
+  optional?: true;
 }

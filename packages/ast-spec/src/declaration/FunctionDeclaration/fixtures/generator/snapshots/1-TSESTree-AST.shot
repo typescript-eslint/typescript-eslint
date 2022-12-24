@@ -6,7 +6,6 @@ Program {
   body: Array [
     FunctionDeclaration {
       type: "FunctionDeclaration",
-      async: false,
       body: BlockStatement {
         type: "BlockStatement",
         body: Array [],
@@ -17,7 +16,6 @@ Program {
           end: { column: 18, line: 1 },
         },
       },
-      expression: false,
       generator: true,
       id: Identifier {
         type: "Identifier",

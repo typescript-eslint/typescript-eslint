@@ -6,7 +6,6 @@ Program {
   body: Array [
     FunctionDeclaration {
       type: "FunctionDeclaration",
-      async: false,
       body: BlockStatement {
         type: "BlockStatement",
         body: Array [],
@@ -17,8 +16,6 @@ Program {
           end: { column: 26, line: 1 },
         },
       },
-      expression: false,
-      generator: false,
       id: Identifier {
         type: "Identifier",
         name: "foo",
@@ -35,7 +32,6 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
-            in: false,
             name: Identifier {
               type: "Identifier",
               name: "T",
@@ -46,7 +42,6 @@ Program {
                 end: { column: 14, line: 1 },
               },
             },
-            out: false,
 
             range: [13, 14],
             loc: {
@@ -56,7 +51,6 @@ Program {
           },
           TSTypeParameter {
             type: "TSTypeParameter",
-            in: false,
             name: Identifier {
               type: "Identifier",
               name: "U",
@@ -67,7 +61,6 @@ Program {
                 end: { column: 17, line: 1 },
               },
             },
-            out: false,
 
             range: [16, 17],
             loc: {
@@ -77,7 +70,6 @@ Program {
           },
           TSTypeParameter {
             type: "TSTypeParameter",
-            in: false,
             name: Identifier {
               type: "Identifier",
               name: "V",
@@ -88,7 +80,6 @@ Program {
                 end: { column: 20, line: 1 },
               },
             },
-            out: false,
 
             range: [19, 20],
             loc: {

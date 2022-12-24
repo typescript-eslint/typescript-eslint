@@ -8,7 +8,6 @@ Program {
       type: "ExpressionStatement",
       expression: ArrowFunctionExpression {
         type: "ArrowFunctionExpression",
-        async: false,
         body: TSSatisfiesExpression {
           type: "TSSatisfiesExpression",
           expression: Literal {
@@ -39,7 +38,6 @@ Program {
           },
         },
         expression: true,
-        generator: false,
         id: null,
         params: Array [],
 

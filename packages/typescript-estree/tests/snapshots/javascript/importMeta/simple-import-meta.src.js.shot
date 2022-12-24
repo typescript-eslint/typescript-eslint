@@ -69,7 +69,6 @@ Object {
           ],
           "type": "MetaProperty",
         },
-        "optional": false,
         "property": Object {
           "loc": Object {
             "end": Object {

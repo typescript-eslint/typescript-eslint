@@ -9,10 +9,7 @@ Object {
           Object {
             "assertions": Array [],
             "declaration": Object {
-              "async": false,
               "body": undefined,
-              "expression": false,
-              "generator": false,
               "id": Object {
                 "loc": Object {
                   "end": Object {

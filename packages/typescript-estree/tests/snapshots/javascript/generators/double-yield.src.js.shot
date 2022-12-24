@@ -5,7 +5,6 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
-        "async": false,
         "body": Object {
           "body": Array [
             Object {
@@ -30,7 +29,6 @@ Object {
                     "type": "Literal",
                     "value": 10,
                   },
-                  "delegate": false,
                   "loc": Object {
                     "end": Object {
                       "column": 30,
@@ -47,7 +45,6 @@ Object {
                   ],
                   "type": "YieldExpression",
                 },
-                "delegate": false,
                 "loc": Object {
                   "end": Object {
                     "column": 30,
@@ -97,7 +94,6 @@ Object {
           ],
           "type": "BlockStatement",
         },
-        "expression": false,
         "generator": true,
         "id": null,
         "loc": Object {

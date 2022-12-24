@@ -37,15 +37,12 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               209,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -64,8 +61,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -80,7 +75,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 41,
@@ -91,7 +85,6 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -148,13 +141,10 @@ Object {
                     26,
                     53,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 49,
@@ -165,7 +155,6 @@ Object {
                       "line": 3,
                     },
                   },
-                  "override": undefined,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -223,12 +212,10 @@ Object {
                     104,
                   ],
                   "readonly": true,
-                  "static": undefined,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -239,7 +226,6 @@ Object {
                       "line": 4,
                     },
                   },
-                  "override": undefined,
                   "parameter": Object {
                     "left": Object {
                       "loc": Object {
@@ -332,13 +318,10 @@ Object {
                     120,
                     146,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "protected",
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 57,
@@ -349,7 +332,6 @@ Object {
                       "line": 5,
                     },
                   },
-                  "override": undefined,
                   "parameter": Object {
                     "left": Object {
                       "loc": Object {
@@ -443,7 +425,6 @@ Object {
                     205,
                   ],
                   "readonly": true,
-                  "static": undefined,
                   "type": "TSParameterProperty",
                 },
               ],

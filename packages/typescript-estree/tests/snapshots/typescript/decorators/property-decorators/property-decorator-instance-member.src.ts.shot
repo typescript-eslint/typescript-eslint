@@ -8,7 +8,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "declare": false,
             "decorators": Array [
               Object {
                 "expression": Object {
@@ -74,19 +73,15 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               21,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": null,
           },
           Object {
             "computed": false,
-            "declare": false,
             "decorators": Array [
               Object {
                 "expression": Object {
@@ -152,13 +147,10 @@ Object {
                 "line": 3,
               },
             },
-            "override": false,
             "range": Array [
               26,
               37,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": null,
           },

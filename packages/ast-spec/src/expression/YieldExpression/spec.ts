@@ -4,6 +4,6 @@ import type { Expression } from '../../unions/Expression';
 
 export interface YieldExpression extends BaseNode {
   type: AST_NODE_TYPES.YieldExpression;
-  delegate: boolean;
+  delegate?: true;
   argument?: Expression;
 }

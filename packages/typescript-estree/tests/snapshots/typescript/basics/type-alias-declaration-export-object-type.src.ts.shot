@@ -53,7 +53,6 @@ Object {
           "members": Array [
             Object {
               "computed": false,
-              "export": undefined,
               "initializer": undefined,
               "key": Object {
                 "loc": Object {
@@ -83,13 +82,10 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": undefined,
               "range": Array [
                 35,
                 48,
               ],
-              "readonly": undefined,
-              "static": undefined,
               "type": "TSPropertySignature",
               "typeAnnotation": Object {
                 "loc": Object {

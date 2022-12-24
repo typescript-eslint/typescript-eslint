@@ -85,7 +85,6 @@ Object {
               "type": "TSStringKeyword",
             },
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -114,7 +113,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               15,
               31,
@@ -211,7 +209,6 @@ Object {
               "type": "TSStringKeyword",
             },
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -240,7 +237,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               61,
               77,
@@ -337,7 +333,6 @@ Object {
               "type": "TSStringKeyword",
             },
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 32,
@@ -366,7 +361,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               108,
               124,
@@ -463,7 +457,6 @@ Object {
               "type": "TSStringKeyword",
             },
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 34,
@@ -492,7 +485,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               157,
               173,

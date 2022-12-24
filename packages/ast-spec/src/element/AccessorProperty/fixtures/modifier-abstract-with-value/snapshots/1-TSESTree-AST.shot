@@ -13,7 +13,6 @@ Program {
           TSAbstractAccessorProperty {
             type: "TSAbstractAccessorProperty",
             computed: false,
-            declare: false,
             key: Identifier {
               type: "Identifier",
               name: "foo",
@@ -24,8 +23,6 @@ Program {
                 end: { column: 23, line: 2 },
               },
             },
-            override: false,
-            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {

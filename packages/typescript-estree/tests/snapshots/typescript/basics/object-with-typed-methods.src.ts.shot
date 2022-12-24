@@ -73,10 +73,8 @@ Object {
                   16,
                   61,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
-                  "async": false,
                   "body": Object {
                     "body": Array [
                       Object {
@@ -132,8 +130,6 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
-                  "expression": false,
-                  "generator": false,
                   "id": null,
                   "loc": Object {
                     "end": Object {
@@ -200,7 +196,6 @@ Object {
                       Object {
                         "constraint": undefined,
                         "default": undefined,
-                        "in": false,
                         "loc": Object {
                           "end": Object {
                             "column": 17,
@@ -229,7 +224,6 @@ Object {
                           ],
                           "type": "Identifier",
                         },
-                        "out": false,
                         "range": Array [
                           30,
                           31,
@@ -281,10 +275,8 @@ Object {
                   65,
                   100,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
-                  "async": false,
                   "body": Object {
                     "body": Array [
                       Object {
@@ -340,8 +332,6 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
-                  "expression": false,
-                  "generator": false,
                   "id": null,
                   "loc": Object {
                     "end": Object {
@@ -408,7 +398,6 @@ Object {
                       Object {
                         "constraint": undefined,
                         "default": undefined,
-                        "in": false,
                         "loc": Object {
                           "end": Object {
                             "column": 7,
@@ -437,7 +426,6 @@ Object {
                           ],
                           "type": "Identifier",
                         },
-                        "out": false,
                         "range": Array [
                           69,
                           70,
@@ -484,15 +472,12 @@ Object {
                     "line": 8,
                   },
                 },
-                "method": false,
                 "range": Array [
                   104,
                   138,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
-                  "async": false,
                   "body": Object {
                     "body": Array [
                       Object {
@@ -548,8 +533,6 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
-                  "expression": false,
-                  "generator": false,
                   "id": null,
                   "loc": Object {
                     "end": Object {
@@ -634,15 +617,12 @@ Object {
                     "line": 11,
                   },
                 },
-                "method": false,
                 "range": Array [
                   142,
                   172,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
-                  "async": false,
                   "body": Object {
                     "body": Array [],
                     "loc": Object {
@@ -661,8 +641,6 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
-                  "expression": false,
-                  "generator": false,
                   "id": null,
                   "loc": Object {
                     "end": Object {

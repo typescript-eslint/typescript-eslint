@@ -10,6 +10,6 @@ export interface AssignmentPattern extends BaseNode {
   left: BindingName;
   right: Expression;
   typeAnnotation?: TSTypeAnnotation;
-  optional?: boolean;
+  optional?: true;
   decorators?: Decorator[];
 }

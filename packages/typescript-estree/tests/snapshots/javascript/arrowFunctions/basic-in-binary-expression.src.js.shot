@@ -6,7 +6,6 @@ Object {
     Object {
       "expression": Object {
         "left": Object {
-          "async": false,
           "body": Object {
             "loc": Object {
               "end": Object {
@@ -26,7 +25,6 @@ Object {
             "type": "ObjectExpression",
           },
           "expression": true,
-          "generator": false,
           "id": null,
           "loc": Object {
             "end": Object {
@@ -119,7 +117,6 @@ Object {
     Object {
       "expression": Object {
         "left": Object {
-          "async": false,
           "body": Object {
             "loc": Object {
               "end": Object {
@@ -139,7 +136,6 @@ Object {
             "type": "ObjectExpression",
           },
           "expression": true,
-          "generator": false,
           "id": null,
           "loc": Object {
             "end": Object {

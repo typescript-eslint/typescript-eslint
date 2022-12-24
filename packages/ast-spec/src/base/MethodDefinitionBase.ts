@@ -16,13 +16,13 @@ interface MethodDefinitionBase extends BaseNode {
   key: PropertyName;
   value: FunctionExpression | TSEmptyBodyFunctionExpression;
   computed: boolean;
-  static: boolean;
+  static?: true;
   kind: 'constructor' | 'get' | 'method' | 'set';
-  optional?: boolean;
+  optional?: true;
   decorators?: Decorator[];
   accessibility?: Accessibility;
   typeParameters?: TSTypeParameterDeclaration;
-  override?: boolean;
+  override?: true;
 }
 
 export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {

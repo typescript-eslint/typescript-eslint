@@ -23,7 +23,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
       "generator": true,
       "id": Object {
         "loc": Object {

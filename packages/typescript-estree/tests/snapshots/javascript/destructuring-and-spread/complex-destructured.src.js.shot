@@ -50,7 +50,6 @@ Object {
                       "line": 1,
                     },
                   },
-                  "method": false,
                   "range": Array [
                     3,
                     4,
@@ -107,7 +106,6 @@ Object {
                       "line": 1,
                     },
                   },
-                  "method": false,
                   "range": Array [
                     6,
                     7,

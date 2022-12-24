@@ -10,7 +10,6 @@ Program {
         type: "TSSatisfiesExpression",
         expression: ArrowFunctionExpression {
           type: "ArrowFunctionExpression",
-          async: false,
           body: Literal {
             type: "Literal",
             raw: "1",
@@ -23,7 +22,6 @@ Program {
             },
           },
           expression: true,
-          generator: false,
           id: null,
           params: Array [],
 

@@ -26,7 +26,6 @@ Object {
           },
         ],
         "callee": Object {
-          "async": false,
           "body": Object {
             "body": Array [
               Object {
@@ -52,7 +51,6 @@ Object {
                     },
                   ],
                   "callee": Object {
-                    "async": false,
                     "body": Object {
                       "body": Array [
                         Object {
@@ -124,7 +122,6 @@ Object {
                                 ],
                                 "type": "ThisExpression",
                               },
-                              "optional": false,
                               "property": Object {
                                 "loc": Object {
                                   "end": Object {
@@ -159,7 +156,6 @@ Object {
                                 "line": 3,
                               },
                             },
-                            "optional": false,
                             "range": Array [
                               36,
                               53,
@@ -199,8 +195,6 @@ Object {
                       ],
                       "type": "BlockStatement",
                     },
-                    "expression": false,
-                    "generator": false,
                     "id": null,
                     "loc": Object {
                       "end": Object {
@@ -229,7 +223,6 @@ Object {
                       "line": 2,
                     },
                   },
-                  "optional": false,
                   "range": Array [
                     17,
                     62,
@@ -269,8 +262,6 @@ Object {
             ],
             "type": "BlockStatement",
           },
-          "expression": false,
-          "generator": false,
           "id": null,
           "loc": Object {
             "end": Object {
@@ -299,7 +290,6 @@ Object {
             "line": 1,
           },
         },
-        "optional": false,
         "range": Array [
           0,
           70,

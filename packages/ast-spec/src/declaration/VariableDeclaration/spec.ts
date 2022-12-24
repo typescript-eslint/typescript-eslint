@@ -20,8 +20,7 @@ export interface VariableDeclaration extends BaseNode {
    * declare const x = 1;
    * ```
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare?: true;
   /**
    * The keyword used to declare the variable(s)
    * ```

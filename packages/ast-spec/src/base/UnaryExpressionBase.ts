@@ -5,6 +5,6 @@ import type { BaseNode } from './BaseNode';
 
 export interface UnaryExpressionBase extends BaseNode {
   operator: string;
-  prefix: boolean;
+  prefix?: true;
   argument: LeftHandSideExpression | Literal | UnaryExpression;
 }

@@ -8,7 +8,6 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: FunctionDeclaration {
         type: "FunctionDeclaration",
-        async: false,
         body: BlockStatement {
           type: "BlockStatement",
           body: Array [],
@@ -19,8 +18,6 @@ Program {
             end: { column: 29, line: 1 },
           },
         },
-        expression: false,
-        generator: false,
         id: null,
         params: Array [],
 

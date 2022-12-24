@@ -29,5 +29,5 @@ export interface TSImportEqualsDeclaration extends BaseNode {
    * ```
    */
   // TODO(#4130) - this should be represented in the AST
-  isExport: boolean;
+  isExport?: true;
 }

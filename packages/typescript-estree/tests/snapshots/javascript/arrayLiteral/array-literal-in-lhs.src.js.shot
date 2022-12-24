@@ -66,14 +66,12 @@ Object {
                 "line": 1,
               },
             },
-            "optional": false,
             "range": Array [
               0,
               6,
             ],
             "type": "CallExpression",
           },
-          "optional": false,
           "property": Object {
             "loc": Object {
               "end": Object {

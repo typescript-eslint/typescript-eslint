@@ -40,18 +40,13 @@ Object {
                   "line": 2,
                 },
               },
-              "override": false,
               "range": Array [
                 43,
                 66,
               ],
-              "static": false,
               "type": "TSAbstractMethodDefinition",
               "value": Object {
-                "async": false,
                 "body": null,
-                "expression": false,
-                "generator": false,
                 "id": null,
                 "loc": Object {
                   "end": Object {

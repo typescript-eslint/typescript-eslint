@@ -4,7 +4,6 @@ exports[`typescript basics readonly-tuples.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -40,7 +39,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "optional": false,
                   "property": Object {
                     "loc": Object {
                       "end": Object {
@@ -97,7 +95,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -132,7 +129,6 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": false,
               "range": Array [
                 50,
                 70,
@@ -187,7 +183,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -282,8 +277,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

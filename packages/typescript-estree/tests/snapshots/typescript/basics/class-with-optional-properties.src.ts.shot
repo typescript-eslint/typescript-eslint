@@ -156,7 +156,6 @@ Object {
         "body": Array [
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -186,19 +185,15 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               65,
               70,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": null,
           },
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -228,13 +223,10 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               73,
               87,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -275,7 +267,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -305,13 +296,10 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               90,
               112,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -351,7 +339,6 @@ Object {
           },
           Object {
             "computed": true,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -381,19 +368,15 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               115,
               127,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": null,
           },
           Object {
             "computed": true,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -424,19 +407,15 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               130,
               143,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": null,
           },
           Object {
             "computed": true,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -467,19 +446,15 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               146,
               151,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "value": null,
           },
           Object {
             "computed": true,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -509,13 +484,10 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               154,
               175,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -555,7 +527,6 @@ Object {
           },
           Object {
             "computed": true,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -586,13 +557,10 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               178,
               200,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -632,7 +600,6 @@ Object {
           },
           Object {
             "computed": true,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -663,13 +630,10 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               203,
               216,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {

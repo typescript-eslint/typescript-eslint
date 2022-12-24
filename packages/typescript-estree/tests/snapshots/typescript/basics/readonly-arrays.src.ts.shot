@@ -4,7 +4,6 @@ exports[`typescript basics readonly-arrays.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -40,7 +39,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -75,7 +73,6 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": false,
               "range": Array [
                 45,
                 56,
@@ -151,7 +148,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -186,7 +182,6 @@ Object {
                   "line": 3,
                 },
               },
-              "optional": false,
               "range": Array [
                 75,
                 93,
@@ -226,8 +221,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {
@@ -371,7 +364,6 @@ Object {
       "type": "FunctionDeclaration",
     },
     Object {
-      "async": false,
       "body": Object {
         "body": Array [
           Object {
@@ -407,7 +399,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -442,7 +433,6 @@ Object {
                   "line": 7,
                 },
               },
-              "optional": false,
               "range": Array [
                 149,
                 160,
@@ -518,7 +508,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "optional": false,
                 "property": Object {
                   "loc": Object {
                     "end": Object {
@@ -553,7 +542,6 @@ Object {
                   "line": 8,
                 },
               },
-              "optional": false,
               "range": Array [
                 179,
                 197,
@@ -593,8 +581,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

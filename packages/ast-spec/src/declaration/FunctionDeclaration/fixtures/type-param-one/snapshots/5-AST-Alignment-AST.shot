@@ -10,7 +10,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
     body: Array [
       FunctionDeclaration {
         type: 'FunctionDeclaration',
-        async: false,
++       async: false,
         body: BlockStatement {
           type: 'BlockStatement',
           body: Array [],
@@ -21,8 +21,8 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
             end: { column: 20, line: 1 },
           },
         },
-        expression: false,
-        generator: false,
++       expression: false,
++       generator: false,
         id: Identifier {
           type: 'Identifier',
           name: 'foo',
@@ -39,7 +39,6 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
@@ -50,7 +49,6 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
 -                 end: { column: 14, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
 
               range: [13, 14],

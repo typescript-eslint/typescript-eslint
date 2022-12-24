@@ -229,7 +229,6 @@ Object {
             0,
             47,
           ],
-          "selfClosing": false,
           "type": "JSXOpeningElement",
           "typeParameters": undefined,
         },

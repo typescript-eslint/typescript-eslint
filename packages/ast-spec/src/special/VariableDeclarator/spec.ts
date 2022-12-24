@@ -7,5 +7,5 @@ export interface VariableDeclarator extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclarator;
   id: BindingName;
   init: Expression | null;
-  definite?: boolean;
+  definite?: true;
 }

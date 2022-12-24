@@ -458,7 +458,6 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
       {
         "constraint": undefined,
         "default": undefined,
-        "in": false,
         "loc": {
           "end": {
             "column": 11,
@@ -487,7 +486,6 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
           ],
           "type": "Identifier",
         },
-        "out": false,
         "range": [
           10,
           11,

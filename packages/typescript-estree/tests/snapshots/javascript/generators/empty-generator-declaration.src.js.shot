@@ -4,7 +4,6 @@ exports[`javascript generators empty-generator-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -23,7 +22,6 @@ Object {
         ],
         "type": "BlockStatement",
       },
-      "expression": false,
       "generator": true,
       "id": Object {
         "loc": Object {

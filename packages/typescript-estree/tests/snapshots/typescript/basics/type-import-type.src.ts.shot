@@ -129,7 +129,6 @@ Object {
       ],
       "type": "TSTypeAliasDeclaration",
       "typeAnnotation": Object {
-        "isTypeOf": false,
         "loc": Object {
           "end": Object {
             "column": 25,

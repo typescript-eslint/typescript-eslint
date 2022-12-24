@@ -18,7 +18,6 @@ exports[`AST Fixtures element AccessorProperty no-annotation-no-value AST Alignm
 +           ClassAccessorProperty {
 +             type: 'ClassAccessorProperty',
               computed: false,
--             declare: false,
               key: Identifier {
                 type: 'Identifier',
                 name: 'prop',
@@ -29,8 +28,7 @@ exports[`AST Fixtures element AccessorProperty no-annotation-no-value AST Alignm
                   end: { column: 15, line: 2 },
                 },
               },
--             override: false,
-              static: false,
++             static: false,
               value: null,
 
               range: [14, 28],

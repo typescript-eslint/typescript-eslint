@@ -126,7 +126,6 @@ Object {
         "members": Array [
           Object {
             "computed": false,
-            "export": undefined,
             "initializer": undefined,
             "key": Object {
               "loc": Object {
@@ -156,13 +155,10 @@ Object {
                 "line": 3,
               },
             },
-            "optional": undefined,
             "range": Array [
               48,
               61,
             ],
-            "readonly": undefined,
-            "static": undefined,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -209,7 +205,6 @@ Object {
     },
     Object {
       "declaration": Object {
-        "async": false,
         "body": Object {
           "body": Array [
             Object {
@@ -267,7 +262,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "optional": false,
                       "property": Object {
                         "loc": Object {
                           "end": Object {
@@ -409,7 +403,6 @@ Object {
                     124,
                     128,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": undefined,
                 },
@@ -452,8 +445,6 @@ Object {
           ],
           "type": "BlockStatement",
         },
-        "expression": false,
-        "generator": false,
         "id": Object {
           "loc": Object {
             "end": Object {

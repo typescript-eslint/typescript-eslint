@@ -88,7 +88,6 @@ Object {
           "members": Array [
             Object {
               "computed": false,
-              "export": undefined,
               "initializer": undefined,
               "key": Object {
                 "loc": Object {
@@ -118,13 +117,10 @@ Object {
                   "line": 1,
                 },
               },
-              "optional": undefined,
               "range": Array [
                 26,
                 37,
               ],
-              "readonly": undefined,
-              "static": undefined,
               "type": "TSPropertySignature",
               "typeAnnotation": Object {
                 "loc": Object {
@@ -161,7 +157,6 @@ Object {
                   "typeParameter": Object {
                     "constraint": undefined,
                     "default": undefined,
-                    "in": false,
                     "loc": Object {
                       "end": Object {
                         "column": 36,
@@ -190,7 +185,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "out": false,
                     "range": Array [
                       35,
                       36,
@@ -202,7 +196,6 @@ Object {
             },
             Object {
               "computed": false,
-              "export": undefined,
               "initializer": undefined,
               "key": Object {
                 "loc": Object {
@@ -232,13 +225,10 @@ Object {
                   "line": 1,
                 },
               },
-              "optional": undefined,
               "range": Array [
                 38,
                 48,
               ],
-              "readonly": undefined,
-              "static": undefined,
               "type": "TSPropertySignature",
               "typeAnnotation": Object {
                 "loc": Object {
@@ -275,7 +265,6 @@ Object {
                   "typeParameter": Object {
                     "constraint": undefined,
                     "default": undefined,
-                    "in": false,
                     "loc": Object {
                       "end": Object {
                         "column": 48,
@@ -304,7 +293,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "out": false,
                     "range": Array [
                       47,
                       48,
@@ -405,7 +393,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -434,7 +421,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               9,
               10,

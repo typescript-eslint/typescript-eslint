@@ -37,15 +37,12 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               107,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -64,8 +61,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -80,7 +75,6 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -91,7 +85,6 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
                   "parameter": Object {
                     "loc": Object {
                       "end": Object {
@@ -149,12 +142,10 @@ Object {
                     52,
                   ],
                   "readonly": true,
-                  "static": undefined,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": undefined,
-                  "export": undefined,
                   "loc": Object {
                     "end": Object {
                       "column": 49,
@@ -165,7 +156,6 @@ Object {
                       "line": 3,
                     },
                   },
-                  "override": undefined,
                   "parameter": Object {
                     "left": Object {
                       "loc": Object {
@@ -259,7 +249,6 @@ Object {
                     103,
                   ],
                   "readonly": true,
-                  "static": undefined,
                   "type": "TSParameterProperty",
                 },
               ],

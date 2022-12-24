@@ -4,7 +4,6 @@ exports[`javascript forOf for-of-with-function-initializer.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "await": false,
       "body": Object {
         "expression": Object {
           "arguments": Array [
@@ -55,7 +54,6 @@ Object {
               "line": 1,
             },
           },
-          "optional": false,
           "range": Array [
             53,
             63,
@@ -100,7 +98,6 @@ Object {
               "type": "Identifier",
             },
             "init": Object {
-              "async": false,
               "body": Object {
                 "body": Array [
                   Object {
@@ -192,8 +189,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

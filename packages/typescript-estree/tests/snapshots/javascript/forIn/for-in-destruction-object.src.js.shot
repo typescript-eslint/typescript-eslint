@@ -68,7 +68,6 @@ Object {
                       "line": 1,
                     },
                   },
-                  "method": false,
                   "range": Array [
                     10,
                     14,
@@ -125,7 +124,6 @@ Object {
                       "line": 1,
                     },
                   },
-                  "method": false,
                   "range": Array [
                     16,
                     21,

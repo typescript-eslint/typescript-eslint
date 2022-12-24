@@ -8,7 +8,7 @@ import type { TSTypeParameterDeclaration } from '../../special/TSTypeParameterDe
 export interface TSInterfaceDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSInterfaceDeclaration;
   // TODO(#4759) - breaking change remove this
-  abstract?: boolean;
+  abstract?: true;
   /**
    * The body of the interface
    */
@@ -16,8 +16,7 @@ export interface TSInterfaceDeclaration extends BaseNode {
   /**
    * Whether the interface was `declare`d, `undefined` otherwise
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare?: true;
   /**
    * The types this interface `extends`
    */

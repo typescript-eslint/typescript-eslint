@@ -45,7 +45,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'U',
@@ -56,7 +55,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -                 end: { column: 8, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
 
               range: [7, 8],
@@ -67,7 +65,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'V',
@@ -78,7 +75,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -                 end: { column: 11, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'V',
 
               range: [10, 11],
@@ -89,7 +85,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'W',
@@ -100,7 +95,6 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -                 end: { column: 14, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'W',
 
               range: [13, 14],

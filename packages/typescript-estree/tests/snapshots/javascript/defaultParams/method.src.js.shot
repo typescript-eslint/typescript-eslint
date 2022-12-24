@@ -81,15 +81,12 @@ Object {
                   "line": 1,
                 },
               },
-              "method": false,
               "range": Array [
                 6,
                 25,
               ],
-              "shorthand": false,
               "type": "Property",
               "value": Object {
-                "async": false,
                 "body": Object {
                   "body": Array [],
                   "loc": Object {
@@ -108,8 +105,6 @@ Object {
                   ],
                   "type": "BlockStatement",
                 },
-                "expression": false,
-                "generator": false,
                 "id": null,
                 "loc": Object {
                   "end": Object {

@@ -10,7 +10,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -39,13 +38,11 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               23,
               60,
             ],
             "readonly": true,
-            "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {

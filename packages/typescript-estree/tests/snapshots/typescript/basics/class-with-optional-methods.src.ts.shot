@@ -38,18 +38,13 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               14,
               21,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": null,
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -101,18 +96,13 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               24,
               39,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": null,
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -199,18 +189,13 @@ Object {
               },
             },
             "optional": true,
-            "override": false,
             "range": Array [
               42,
               65,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": null,
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {

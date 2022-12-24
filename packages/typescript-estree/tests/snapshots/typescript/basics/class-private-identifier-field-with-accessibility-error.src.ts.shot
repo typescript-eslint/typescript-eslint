@@ -9,7 +9,6 @@ Object {
           Object {
             "accessibility": "private",
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -38,13 +37,10 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               36,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -85,7 +81,6 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -114,13 +109,10 @@ Object {
                 "line": 3,
               },
             },
-            "override": false,
             "range": Array [
               39,
               60,
             ],
-            "readonly": undefined,
-            "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
               "loc": Object {
@@ -160,7 +152,6 @@ Object {
           },
           Object {
             "computed": false,
-            "declare": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -189,12 +180,10 @@ Object {
                 "line": 4,
               },
             },
-            "override": false,
             "range": Array [
               63,
               84,
             ],
-            "readonly": undefined,
             "static": true,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {

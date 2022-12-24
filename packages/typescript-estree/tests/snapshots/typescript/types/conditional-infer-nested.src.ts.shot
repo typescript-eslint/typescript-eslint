@@ -94,7 +94,6 @@ Object {
             "typeParameter": Object {
               "constraint": undefined,
               "default": undefined,
-              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 20,
@@ -123,7 +122,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "out": false,
               "range": Array [
                 38,
                 39,
@@ -203,7 +201,6 @@ Object {
             "typeParameter": Object {
               "constraint": undefined,
               "default": undefined,
-              "in": false,
               "loc": Object {
                 "end": Object {
                   "column": 21,
@@ -232,7 +229,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "out": false,
               "range": Array [
                 69,
                 70,
@@ -342,7 +338,6 @@ Object {
                     "typeParameter": Object {
                       "constraint": undefined,
                       "default": undefined,
-                      "in": false,
                       "loc": Object {
                         "end": Object {
                           "column": 31,
@@ -371,7 +366,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "out": false,
                       "range": Array [
                         107,
                         108,
@@ -594,7 +588,6 @@ Object {
           Object {
             "constraint": undefined,
             "default": undefined,
-            "in": false,
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -623,7 +616,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "out": false,
             "range": Array [
               14,
               15,

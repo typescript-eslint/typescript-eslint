@@ -128,7 +128,6 @@ Object {
                     24,
                     58,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {
@@ -312,7 +311,6 @@ Object {
                     75,
                     113,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {
@@ -496,7 +494,6 @@ Object {
                     130,
                     168,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {
@@ -716,7 +713,6 @@ Object {
                     185,
                     227,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {
@@ -865,7 +861,6 @@ Object {
                     245,
                     287,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {
@@ -1049,7 +1044,6 @@ Object {
                     304,
                     356,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {
@@ -1233,7 +1227,6 @@ Object {
                     373,
                     425,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {
@@ -1453,7 +1446,6 @@ Object {
                     442,
                     504,
                   ],
-                  "selfClosing": false,
                   "type": "JSXOpeningElement",
                   "typeParameters": Object {
                     "loc": Object {

@@ -25,7 +25,6 @@ Object {
             "type": "Identifier",
           },
           "init": Object {
-            "async": false,
             "body": Object {
               "body": Array [
                 Object {
@@ -132,7 +131,6 @@ Object {
                         42,
                         103,
                       ],
-                      "selfClosing": false,
                       "type": "JSXOpeningElement",
                       "typeParameters": undefined,
                     },
@@ -175,8 +173,6 @@ Object {
               ],
               "type": "BlockStatement",
             },
-            "expression": false,
-            "generator": false,
             "id": null,
             "loc": Object {
               "end": Object {

@@ -195,12 +195,10 @@ Object {
                     "line": 6,
                   },
                 },
-                "method": false,
                 "range": Array [
                   42,
                   50,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {

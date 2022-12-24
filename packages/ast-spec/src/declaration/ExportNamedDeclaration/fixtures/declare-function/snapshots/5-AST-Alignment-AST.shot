@@ -13,10 +13,10 @@ exports[`AST Fixtures declaration ExportNamedDeclaration declare-function AST Al
         assertions: Array [],
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
-          async: false,
++         async: false,
           declare: true,
-          expression: false,
-          generator: false,
++         expression: false,
++         generator: false,
           id: Identifier {
             type: 'Identifier',
             name: 'foo',

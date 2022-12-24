@@ -112,7 +112,6 @@ Object {
               ],
               "type": "TSTypeAnnotation",
               "typeAnnotation": Object {
-                "asserts": false,
                 "loc": Object {
                   "end": Object {
                     "column": 37,

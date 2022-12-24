@@ -76,7 +76,6 @@ Object {
                     },
                   },
                   "operator": "++",
-                  "prefix": false,
                   "range": Array [
                     15,
                     18,

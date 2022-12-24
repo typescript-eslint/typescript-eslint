@@ -49,12 +49,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   5,
                   9,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -106,12 +104,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   11,
                   15,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -163,12 +159,10 @@ Object {
                     "line": 1,
                   },
                 },
-                "method": false,
                 "range": Array [
                   17,
                   32,
                 ],
-                "shorthand": false,
                 "type": "Property",
                 "value": Object {
                   "loc": Object {
@@ -213,12 +207,10 @@ Object {
                           "line": 1,
                         },
                       },
-                      "method": false,
                       "range": Array [
                         22,
                         31,
                       ],
-                      "shorthand": false,
                       "type": "Property",
                       "value": Object {
                         "left": Object {

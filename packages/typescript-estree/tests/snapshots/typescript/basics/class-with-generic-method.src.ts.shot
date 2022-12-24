@@ -37,15 +37,12 @@ Object {
                 "line": 2,
               },
             },
-            "override": false,
             "range": Array [
               14,
               28,
             ],
-            "static": false,
             "type": "MethodDefinition",
             "value": Object {
-              "async": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -64,8 +61,6 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
-              "expression": false,
-              "generator": false,
               "id": null,
               "loc": Object {
                 "end": Object {
@@ -98,7 +93,6 @@ Object {
                   Object {
                     "constraint": undefined,
                     "default": undefined,
-                    "in": false,
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -127,7 +121,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "out": false,
                     "range": Array [
                       21,
                       22,

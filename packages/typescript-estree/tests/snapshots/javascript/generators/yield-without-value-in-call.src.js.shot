@@ -5,7 +5,6 @@ Object {
   "body": Array [
     Object {
       "expression": Object {
-        "async": false,
         "body": Object {
           "body": Array [
             Object {
@@ -13,7 +12,6 @@ Object {
                 "arguments": Array [
                   Object {
                     "argument": null,
-                    "delegate": false,
                     "loc": Object {
                       "end": Object {
                         "column": 24,
@@ -59,7 +57,6 @@ Object {
                     "line": 1,
                   },
                 },
-                "optional": false,
                 "range": Array [
                   16,
                   25,
@@ -99,7 +96,6 @@ Object {
           ],
           "type": "BlockStatement",
         },
-        "expression": false,
         "generator": true,
         "id": null,
         "loc": Object {

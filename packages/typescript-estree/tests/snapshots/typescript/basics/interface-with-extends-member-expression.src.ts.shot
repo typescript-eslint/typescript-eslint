@@ -54,7 +54,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "optional": false,
             "property": Object {
               "loc": Object {
                 "end": Object {

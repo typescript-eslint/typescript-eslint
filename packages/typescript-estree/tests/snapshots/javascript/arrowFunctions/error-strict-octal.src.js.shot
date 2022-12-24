@@ -42,7 +42,6 @@ Object {
     },
     Object {
       "expression": Object {
-        "async": false,
         "body": Object {
           "loc": Object {
             "end": Object {
@@ -63,7 +62,6 @@ Object {
           "value": 0,
         },
         "expression": true,
-        "generator": false,
         "id": null,
         "loc": Object {
           "end": Object {

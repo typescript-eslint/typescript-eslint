@@ -69,12 +69,10 @@ Object {
                         "line": 2,
                       },
                     },
-                    "method": false,
                     "range": Array [
                       17,
                       32,
                     ],
-                    "shorthand": false,
                     "type": "Property",
                     "value": Object {
                       "loc": Object {
@@ -132,7 +130,6 @@ Object {
                 "line": 1,
               },
             },
-            "optional": false,
             "range": Array [
               1,
               36,

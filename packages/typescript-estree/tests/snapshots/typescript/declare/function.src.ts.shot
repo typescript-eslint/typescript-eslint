@@ -4,11 +4,8 @@ exports[`typescript declare function.src 1`] = `
 Object {
   "body": Array [
     Object {
-      "async": false,
       "body": undefined,
       "declare": true,
-      "expression": false,
-      "generator": false,
       "id": Object {
         "loc": Object {
           "end": Object {

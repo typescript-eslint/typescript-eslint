@@ -120,7 +120,6 @@ Object {
             0,
             3,
           ],
-          "selfClosing": false,
           "type": "JSXOpeningElement",
           "typeParameters": undefined,
         },

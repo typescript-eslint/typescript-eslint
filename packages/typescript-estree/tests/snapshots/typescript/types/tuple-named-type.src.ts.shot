@@ -85,7 +85,6 @@ Object {
                 "line": 1,
               },
             },
-            "optional": false,
             "range": Array [
               12,
               21,
