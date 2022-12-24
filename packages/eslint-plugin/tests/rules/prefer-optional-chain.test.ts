@@ -1426,20 +1426,5 @@ foo?.bar(/* comment */a,
         },
       ],
     },
-    {
-      code: 'a[a.#b] && a[a.#b].c;',
-      output: null,
-      errors: [
-        {
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: 'a[a.#b]?.c;',
-            },
-          ],
-        },
-      ],
-    },
   ],
 });
