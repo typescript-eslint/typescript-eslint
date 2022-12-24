@@ -165,7 +165,9 @@ export default util.createRule({
             break;
           }
 
+          let invalidOptionallyChainedPrivateProperty;
           ({
+            invalidOptionallyChainedPrivateProperty,
             expressionCount,
             previousLeftText,
             optionallyChainedCode,
@@ -179,6 +181,9 @@ export default util.createRule({
             previous,
             current,
           ));
+          if (invalidOptionallyChainedPrivateProperty) {
+            return;
+          }
         }
 
         reportIfMoreThanOne({
@@ -244,7 +249,9 @@ export default util.createRule({
             break;
           }
 
+          let invalidOptionallyChainedPrivateProperty;
           ({
+            invalidOptionallyChainedPrivateProperty,
             expressionCount,
             previousLeftText,
             optionallyChainedCode,
@@ -258,6 +265,9 @@ export default util.createRule({
             previous,
             current,
           ));
+          if (invalidOptionallyChainedPrivateProperty) {
+            return;
+          }
         }
 
         reportIfMoreThanOne({
@@ -448,14 +458,12 @@ export default util.createRule({
 const ALLOWED_MEMBER_OBJECT_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.CallExpression,
   AST_NODE_TYPES.Identifier,
-  AST_NODE_TYPES.PrivateIdentifier,
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.ThisExpression,
   AST_NODE_TYPES.MetaProperty,
 ]);
 const ALLOWED_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
-  AST_NODE_TYPES.PrivateIdentifier,
   AST_NODE_TYPES.Literal,
   AST_NODE_TYPES.MemberExpression,
   AST_NODE_TYPES.TemplateLiteral,
@@ -492,10 +500,9 @@ function reportIfMoreThanOne({
       shouldHandleChainedAnds &&
       previous.right.type === AST_NODE_TYPES.BinaryExpression
     ) {
+      const rightText = sourceCode.getText(previous.right.right);
       // case like foo && foo.bar !== someValue
-      optionallyChainedCode += ` ${
-        previous.right.operator
-      } ${sourceCode.getText(previous.right.right)}`;
+      optionallyChainedCode += ` ${previous.right.operator} ${rightText}`;
     }
 
     context.report({
@@ -517,6 +524,7 @@ function reportIfMoreThanOne({
 }
 
 interface NormalizedPattern {
+  invalidOptionallyChainedPrivateProperty: boolean;
   expressionCount: number;
   previousLeftText: string;
   optionallyChainedCode: string;
@@ -533,6 +541,7 @@ function normalizeRepeatingPatterns(
   current: TSESTree.Node,
 ): NormalizedPattern {
   const leftText = previousLeftText;
+  let invalidOptionallyChainedPrivateProperty = false;
   // omit weird doubled up expression that make no sense like foo.bar && foo.bar
   if (rightText !== previousLeftText) {
     expressionCount += 1;
@@ -568,6 +577,11 @@ function normalizeRepeatingPatterns(
     diff === '?.buzz'
     */
     const diff = rightText.replace(leftText, '');
+    if (diff.startsWith('.#')) {
+      // Do not handle direct optional chaining on private properties because of a typescript bug (https://github.com/microsoft/TypeScript/issues/42734)
+      // We still allow in computed properties
+      invalidOptionallyChainedPrivateProperty = true;
+    }
     if (diff.startsWith('?')) {
       // item was "pre optional chained"
       optionallyChainedCode += diff;
@@ -583,6 +597,7 @@ function normalizeRepeatingPatterns(
     util.NullThrowsReasons.MissingParent,
   );
   return {
+    invalidOptionallyChainedPrivateProperty,
     expressionCount,
     previousLeftText,
     optionallyChainedCode,
@@ -622,7 +637,6 @@ function isValidChainTarget(
   if (
     allowIdentifier &&
     (node.type === AST_NODE_TYPES.Identifier ||
-      node.type === AST_NODE_TYPES.PrivateIdentifier ||
       node.type === AST_NODE_TYPES.ThisExpression ||
       node.type === AST_NODE_TYPES.MetaProperty)
   ) {

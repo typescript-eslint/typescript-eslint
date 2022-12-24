@@ -139,10 +139,6 @@ const baseCases = [
     output: 'foo.#bar?.baz',
   },
   {
-    code: 'foo && foo.#bar',
-    output: 'foo?.#bar',
-  },
-  {
     code: 'foo && foo[bar.#baz]',
     output: 'foo?.[bar.#baz]',
   },
@@ -244,6 +240,9 @@ ruleTester.run('prefer-optional-chain', rule, {
     '!import.meta && !import.meta.foo;',
     'new.target || new.target.length;',
     '!new.target || true;',
+    // Do not handle direct optional chaining on private properties because of a typescript bug (https://github.com/microsoft/TypeScript/issues/42734)
+    // We still allow in computed properties
+    'foo && foo.#bar;',
   ],
   invalid: [
     ...baseCases,
