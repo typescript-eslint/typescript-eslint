@@ -435,7 +435,6 @@ export default util.createRule({
             propertyText = '#' + getText(node.property);
             break;
 
-          /* istanbul ignore next */
           default:
             propertyText = sourceCode.getText(node.property);
         }
