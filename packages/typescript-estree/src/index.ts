@@ -15,6 +15,7 @@ export { createProgramFromConfigFile as createProgram } from './create-program/u
 export * from './create-program/getScriptKind';
 export { typescriptVersionIsAtLeast } from './version-check';
 export * from './getModifiers';
+export { TypeScriptIssueDetection } from '@typescript-eslint/types';
 
 // re-export for backwards-compat
 export { visitorKeys } from '@typescript-eslint/visitor-keys';

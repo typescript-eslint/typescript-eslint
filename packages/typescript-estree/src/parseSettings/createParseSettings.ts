@@ -1,3 +1,4 @@
+import { TypeScriptIssueDetection } from '@typescript-eslint/types';
 import debug from 'debug';
 import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
@@ -41,7 +42,8 @@ export function createParseSettings(
         : Array.isArray(options.debugLevel)
         ? new Set(options.debugLevel)
         : new Set(),
-    errorOnTypeScriptSyntacticAndSemanticIssues: false,
+    errorOnTypeScriptIssues:
+      options.errorOnTypeScriptIssues ?? TypeScriptIssueDetection.None,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,

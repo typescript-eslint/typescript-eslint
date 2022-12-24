@@ -1,0 +1,2297 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/block-trailing-comment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/comment-within-condition.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/export-default-anonymous-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsdoc-comment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-attr-and-text-with-url.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-block-comment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-comment-after-jsx.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-comment-after-self-closing-jsx.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-generic-with-comment-in-tag.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-tag-comment-after-prop.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-tag-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-text-with-multiline-non-comment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-text-with-url.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-with-greather-than.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/jsx-with-operators.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/line-comment-with-block-syntax.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/mix-line-and-block-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/no-comment-regex.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/no-comment-template.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/surrounding-call-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/surrounding-debugger-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/surrounding-return-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/surrounding-throw-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/surrounding-while-loop-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/switch-fallthrough-comment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/switch-fallthrough-comment-in-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/switch-no-default-comment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/switch-no-default-comment-in-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/switch-no-default-comment-in-nested-functions.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/template-string-block.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/comments/type-assertion-regression-test.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrayLiteral/array-literal-in-lhs.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrayLiteral/array-literals-in-binary-expr.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/as-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/as-param-with-params.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/basic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/basic-in-binary-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/block-body.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/block-body-not-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-dup-params.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-missing-paren.src 1`] = `
+TSError {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-not-arrow.src 1`] = `
+TSError {
+  "column": 26,
+  "index": 26,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-numeric-param.src 1`] = `
+TSError {
+  "column": 5,
+  "index": 5,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-numeric-param-multi.src 1`] = `
+TSError {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-reverse-arrow.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 1,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-default-param-eval.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-dup-params.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-eval.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-eval-return.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-octal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-param-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-param-eval.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-param-names.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-param-no-paren-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-strict-param-no-paren-eval.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-two-lines.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/error-wrapped-param.src 1`] = `
+TSError {
+  "column": 6,
+  "index": 6,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/iife.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/multiple-params.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/no-auto-return.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/not-strict-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/not-strict-eval.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/not-strict-eval-params.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/not-strict-octal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/return-arrow-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/return-sequence.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/single-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/single-param-parens.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/arrowFunctions/single-param-return-identifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/and-operator-array-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/delete-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/do-while-statements.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/identifiers-double-underscore.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/instanceof.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/new-with-member-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/new-without-parens.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/or-operator-array-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/typeof-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/update-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/basics/void-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/bigIntLiterals/binary.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/bigIntLiterals/decimal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/bigIntLiterals/hex.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/bigIntLiterals/numeric-separator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/bigIntLiterals/octal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/binaryLiterals/invalid.src 1`] = `
+TSError {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/binaryLiterals/lowercase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/binaryLiterals/uppercase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/blockBindings/const.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/blockBindings/let.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/blockBindings/let-in-switchcase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/callExpression/call-expression-with-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/callExpression/call-expression-with-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/callExpression/mixed-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/callExpression/new-expression-with-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/callExpression/new-expression-with-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-accessor-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-computed-static-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-method-named-prototype.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-method-named-static.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-method-named-with-space.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-one-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-one-method-super.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-private-identifier-accessor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-private-identifier-field.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-private-identifier-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-static-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-static-method-named-prototype.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-static-method-named-static.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-static-methods-and-accessor-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-two-computed-static-methods.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-two-methods.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-two-methods-computed-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-two-methods-semi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-two-methods-three-semi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-two-methods-two-semi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-two-static-methods-named-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-with-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-with-constructor-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-with-constructor-with-space.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/class-with-no-body.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 10,
+  "lineNumber": 2,
+  "message": "'{' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/derived-class-assign-to-var.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/derived-class-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/empty-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/empty-class-double-semi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/empty-class-semi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/empty-literal-derived-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/invalid-class-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/invalid-class-setter-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/invalid-class-two-super-classes.src 1`] = `
+TSError {
+  "column": 18,
+  "index": 18,
+  "lineNumber": 1,
+  "message": "Classes can only extend a single class.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/named-class-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/classes/named-derived-class-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/commaOperator/comma-operator-conditional.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/commaOperator/comma-operator-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/commaOperator/comma-operator-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/commaOperator/comma-operator-return.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/commaOperator/comma-operator-simple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/commaOperator/comma-operator-simple-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/defaultParams/class-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/defaultParams/class-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/defaultParams/declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/defaultParams/expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/defaultParams/method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/defaultParams/not-all-params.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/array-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/array-to-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/array-var-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/call-expression-destruction-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/call-expression-destruction-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-constructor-params-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-constructor-params-defaults-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-constructor-params-defaults-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-constructor-params-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-method-params-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-method-params-defaults-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-method-params-defaults-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/class-method-params-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-array-all.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-array-longform-nested-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-array-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-array-nested-all.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-array-nested-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-all.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-assign.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-longform.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-longform-all.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-longform-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-mixed-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-nested-all.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/defaults-object-nested-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/destructured-array-catch.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/destructured-object-catch.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/invalid-defaults-object-assign.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/named-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/nested-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/nested-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/object-var-named.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/object-var-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/param-defaults-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/param-defaults-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/param-defaults-object-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/params-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/params-array-wrapped.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/params-multi-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/params-nested-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/params-nested-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/params-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/params-object-wrapped.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring/sparse-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-nested-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-nested-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-nested-object-named.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/arrow-param-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/param-defaults-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/param-defaults-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-arrowFunctions/param-defaults-object-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-blockBindings/array-const-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-blockBindings/array-let-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-blockBindings/object-const-named.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-blockBindings/object-const-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-blockBindings/object-let-named.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-blockBindings/object-let-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-defaultParams/param-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-defaultParams/param-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-defaultParams/param-object-short.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-defaultParams/param-object-wrapped.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-forOf/loop.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/complex-destructured.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/destructured-array-literal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/destructuring-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/error-complex-destructured-spread-first.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/invalid-not-final-array-empty.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/multi-destructured.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/not-final-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/single-destructured.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/var-complex-destructured.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/var-destructured-array-literal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/var-multi-destructured.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/destructuring-and-spread/var-single-destructured.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/block.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/directive-in-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/first-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/function-non-strict.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/non-directive-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/non-unique-directive.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/program.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/program-order.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/directives/raw.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalAsyncIteration/async-generators.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalAsyncIteration/async-iterator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalDynamicImport/dynamic-import.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalDynamicImport/error-dynamic-import-params.src 1`] = `
+TSError {
+  "column": 7,
+  "index": 7,
+  "lineNumber": 1,
+  "message": "Dynamic import requires exactly one or two arguments.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/arg-spread.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/destructuring-assign-mirror.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/function-parameter-object-spread.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/invalid-rest.src 1`] = `
+TSError {
+  "column": 18,
+  "index": 18,
+  "lineNumber": 1,
+  "message": "',' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/invalid-rest-trailing-comma.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/object-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/property-spread.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/shorthand-method-args.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/shorthand-methods.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/shorthand-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/single-spread.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/spread-trailing-comma.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalObjectRestSpread/two-spread.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalOptionalCatchBinding/optional-catch-binding.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/experimentalOptionalCatchBinding/optional-catch-binding-finally.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/exponentiationOperators/exponential-operators.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/for/for-empty.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/for/for-loop.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/for/for-with-coma.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/for/for-with-const.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/for/for-with-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/for/for-with-let.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-bare-nonstrict.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-destruction.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-destruction-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-object.src 1`] = `
+TSError {
+  "column": 14,
+  "index": 14,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-object-with-body.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-with-assigment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-with-bare-assigment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-with-const.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-with-milti-asigment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-with-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forIn/for-in-with-var.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-destruction.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-destruction-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-with-function-initializer.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-with-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-with-var-and-braces.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/for-of-with-var-and-no-braces.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/invalid-for-of-with-const-and-no-braces.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/forOf/invalid-for-of-with-let-and-no-braces.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/function/return-multiline-sequence.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/function/return-sequence.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/anonymous-generator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/async-generator-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/async-generator-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/double-yield.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/empty-generator-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/generator-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/yield-delegation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/yield-without-value.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/yield-without-value-in-call.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/generators/yield-without-value-no-semi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/globalReturn/return-identifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/globalReturn/return-no-arg.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/globalReturn/return-true.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/hexLiterals/invalid.src 1`] = `
+TSError {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/hexLiterals/lowercase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/hexLiterals/uppercase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/importMeta/simple-import-meta.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/labels/label-break.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/labels/label-continue.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/error-delete.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/error-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/error-strict.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-async-named-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-const.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-array.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-async-named-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-named-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-named-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-number.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-default-value.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-from-batch.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-from-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-from-named-as-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-from-named-as-specifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-from-named-as-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-from-specifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-from-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-let.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-as-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-as-specifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-as-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-empty.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-specifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-named-specifiers-comma.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-var.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-var-anonymous-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/export-var-number.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-default-and-named-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-default-and-namespace-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-default-as.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-jquery.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-module.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-named-as-specifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-named-as-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-named-empty.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-named-specifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-named-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-named-specifiers-comma.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-namespace-specifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/import-null-as-nil.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-await.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-batch-missing-from-clause.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 9,
+  "lineNumber": 2,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-batch-token.src 1`] = `
+TSError {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-default.src 1`] = `
+TSError {
+  "column": 20,
+  "index": 20,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-default-equal.src 1`] = `
+TSError {
+  "column": 15,
+  "index": 15,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-default-token.src 1`] = `
+TSError {
+  "column": 17,
+  "index": 17,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-module-specifier.src 1`] = `
+TSError {
+  "column": 19,
+  "index": 19,
+  "lineNumber": 1,
+  "message": "Module specifier must be a string literal.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-named-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-named-extra-comma.src 1`] = `
+TSError {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-export-named-middle-comma.src 1`] = `
+TSError {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-default.src 1`] = `
+TSError {
+  "column": 7,
+  "index": 7,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-default-after-named.src 1`] = `
+TSError {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-default-after-named-after-default.src 1`] = `
+TSError {
+  "column": 17,
+  "index": 17,
+  "lineNumber": 1,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-default-missing-module-specifier.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 11,
+  "lineNumber": 2,
+  "message": "'=' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-default-module-specifier.src 1`] = `
+TSError {
+  "column": 15,
+  "index": 15,
+  "lineNumber": 1,
+  "message": "Module specifier must be a string literal.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-missing-module-specifier.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 20,
+  "lineNumber": 2,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-module-specifier.src 1`] = `
+TSError {
+  "column": 17,
+  "index": 17,
+  "lineNumber": 1,
+  "message": "Module specifier must be a string literal.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-named-after-named.src 1`] = `
+TSError {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-named-after-namespace.src 1`] = `
+TSError {
+  "column": 15,
+  "index": 15,
+  "lineNumber": 1,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-named-as-missing-from.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 24,
+  "lineNumber": 2,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-named-extra-comma.src 1`] = `
+TSError {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-named-middle-comma.src 1`] = `
+TSError {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-namespace-after-named.src 1`] = `
+TSError {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "'from' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/modules/invalid-import-namespace-missing-as.src 1`] = `
+TSError {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "'as' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/newTarget/invalid-new-target.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/newTarget/invalid-unknown-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/newTarget/simple-new-target.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteral/object-literal-in-lhs.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/computed-addition-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/computed-and-identifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/computed-getter-and-setter.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/computed-string-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/computed-variable-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/invalid-computed-variable-property.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 20,
+  "lineNumber": 3,
+  "message": "':' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/invalid-standalone-computed-variable-property.src 1`] = `
+TSError {
+  "column": 5,
+  "index": 5,
+  "lineNumber": 1,
+  "message": "':' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/standalone-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/standalone-expression-with-addition.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralComputedProperties/standalone-expression-with-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralDuplicateProperties/error-proto-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralDuplicateProperties/error-proto-string-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralDuplicateProperties/strict-duplicate-string-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/invalid-method-no-braces.src 1`] = `
+TSError {
+  "column": 13,
+  "index": 19,
+  "lineNumber": 2,
+  "message": "'{' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/method-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/simple-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/simple-method-named-get.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/simple-method-named-set.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/simple-method-with-argument.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/simple-method-with-string-name.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandMethods/string-name-method-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/objectLiteralShorthandProperties/shorthand-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/octalLiterals/invalid.src 1`] = `
+TSError {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "';' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/octalLiterals/legacy.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/octalLiterals/lowercase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/octalLiterals/strict-uppercase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/octalLiterals/uppercase.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/regex/regexp-simple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/regexUFlag/regex-u-extended-escape.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/regexUFlag/regex-u-invalid-extended-escape.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/regexUFlag/regex-u-simple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/regexYFlag/regexp-y-simple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/basic-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/class-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/class-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/error-no-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/error-not-last.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/func-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/func-expression-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/invalid-rest-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/restParams/single-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/simple-literals/literal-float.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/simple-literals/literal-float-negative.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/simple-literals/literal-null.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/simple-literals/literal-number.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/simple-literals/literal-number-negative.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/simple-literals/literal-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/simple-literals/literal-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/spread/complex-spread.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/spread/error-invalid-if.src 1`] = `
+TSError {
+  "column": 6,
+  "index": 6,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/spread/error-invalid-sequence.src 1`] = `
+TSError {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/spread/multi-function-call.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/spread/not-final-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/spread/simple-function-call.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/deeply-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/error-octal-literal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/escape-characters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/expressions.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/multi-line-template-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/simple-template-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/single-dollar-sign.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/tagged-no-placeholders.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/templateStrings/tagged-template-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/unicodeCodePointEscapes/basic-string-literal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/unicodeCodePointEscapes/complex-string-literal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/unicodeCodePointEscapes/ignored.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/unicodeCodePointEscapes/invalid-empty-escape.src 1`] = `
+TSError {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "Hexadecimal digit expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/javascript/unicodeCodePointEscapes/invalid-too-large-escape.src 1`] = `
+TSError {
+  "column": 10,
+  "index": 10,
+  "lineNumber": 1,
+  "message": "An extended Unicode escape value must be between 0x0 and 0x10FFFF inclusive.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/attributes.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/element-keyword-name.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/embedded-comment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/embedded-conditional.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/embedded-invalid-js-identifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/embedded-tags.src 1`] = `
+TSError {
+  "column": 40,
+  "index": 40,
+  "lineNumber": 1,
+  "message": "Unexpected token. Did you mean \`{'>'}\` or \`&gt;\`?",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/empty-placeholder.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/escape-patterns-ignored.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/escape-patterns-unknown.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/escape-patterns-valid.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/escape-patters-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-attribute.src 1`] = `
+TSError {
+  "column": 5,
+  "index": 5,
+  "lineNumber": 1,
+  "message": "'{' or JSX element expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-attribute-missing-equals.src 1`] = `
+TSError {
+  "column": 14,
+  "index": 14,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-broken-tag.src 1`] = `
+TSError {
+  "column": 12,
+  "index": 12,
+  "lineNumber": 1,
+  "message": "Unterminated string literal.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-computed-end-tag-name.src 1`] = `
+TSError {
+  "column": 2,
+  "index": 2,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-computed-string-end-tag-name.src 1`] = `
+TSError {
+  "column": 2,
+  "index": 2,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-embedded-expression.src 1`] = `
+TSError {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "'}' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-leading-dot-tag-name.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-matching-placeholder-in-closing-tag.src 1`] = `
+TSError {
+  "column": 27,
+  "index": 27,
+  "lineNumber": 1,
+  "message": "'>' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-mismatched-closing-tag.src 1`] = `
+TSError {
+  "column": 5,
+  "index": 5,
+  "lineNumber": 1,
+  "message": "Expected corresponding JSX closing tag for 'a'.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-mismatched-closing-tags.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 1,
+  "lineNumber": 1,
+  "message": "JSX element 'a' has no corresponding closing tag.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-mismatched-dot-tag-name.src 1`] = `
+TSError {
+  "column": 9,
+  "index": 9,
+  "lineNumber": 1,
+  "message": "Expected corresponding JSX closing tag for 'a.b.c'.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-mismatched-namespace-tag.src 1`] = `
+TSError {
+  "column": 7,
+  "index": 7,
+  "lineNumber": 1,
+  "message": "Expected corresponding JSX closing tag for 'a:b'.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-missing-closing-tag.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 1,
+  "lineNumber": 1,
+  "message": "JSX element 'a' has no corresponding closing tag.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-missing-closing-tag-attribute-placeholder.src 1`] = `
+TSError {
+  "column": 1,
+  "index": 1,
+  "lineNumber": 1,
+  "message": "JSX element 'a' has no corresponding closing tag.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-missing-namespace-name.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Expression expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-missing-namespace-value.src 1`] = `
+TSError {
+  "column": 2,
+  "index": 2,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-missing-spread-operator.src 1`] = `
+TSError {
+  "column": 6,
+  "index": 6,
+  "lineNumber": 1,
+  "message": "'...' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-namespace-name-with-docts.src 1`] = `
+TSError {
+  "column": 4,
+  "index": 4,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-namespace-value-with-dots.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-no-common-parent.src 1`] = `
+TSError {
+  "column": 8,
+  "index": 8,
+  "lineNumber": 1,
+  "message": "JSX expressions must have one parent element.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-no-common-parent-with-comment.src 1`] = `
+TSError {
+  "column": 8,
+  "index": 8,
+  "lineNumber": 1,
+  "message": "JSX expressions must have one parent element.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-no-tag-name.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "Declaration or statement expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-placeholder-in-closing-tag.src 1`] = `
+TSError {
+  "column": 16,
+  "index": 16,
+  "lineNumber": 1,
+  "message": "'>' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-shorthand-fragment-no-closing.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 0,
+  "lineNumber": 1,
+  "message": "JSX fragment has no corresponding closing tag.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-trailing-dot-tag-name.src 1`] = `
+TSError {
+  "column": 3,
+  "index": 3,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/invalid-unexpected-comma.src 1`] = `
+TSError {
+  "column": 19,
+  "index": 19,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/japanese-characters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/less-than-operator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/member-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/member-expression-private.src 1`] = `
+TSError {
+  "column": 10,
+  "index": 10,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/member-expression-this.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/multiple-blank-spaces.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/namespace-this-name.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/namespaced-attribute-and-value-inserted.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/namespaced-name-and-attribute.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/newslines-and-entities.src 1`] = `
+TSError {
+  "column": 8,
+  "index": 8,
+  "lineNumber": 1,
+  "message": "Invalid character.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/self-closing-tag.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/self-closing-tag-inside-tag.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/self-closing-tag-with-newline.src 1`] = `
+TSError {
+  "column": 2,
+  "index": 2,
+  "lineNumber": 1,
+  "message": "Invalid character.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/shorthand-fragment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/shorthand-fragment-with-child.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/spread-child.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/spread-operator-attribute-and-regular-attribute.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/spread-operator-attributes.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/tag-names-with-dots.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/tag-names-with-multi-dots.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/tag-names-with-multi-dots-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/test-content.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx/trailing-spread-operator-attribute.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx-useJSXTextNode/self-closing-tag-inside-tag.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/jsx-useJSXTextNode/test-content.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/tsx/generic-jsx-element.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/tsx/generic-jsx-member-expression-private.src 1`] = `
+TSError {
+  "column": 22,
+  "index": 22,
+  "lineNumber": 1,
+  "message": "Identifier expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/tsx/generic-jsx-opening-element.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/tsx/react-typed-props.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/babylon-convergence/type-parameter-whitespace-loc.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/babylon-convergence/type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-abstract-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-abstract-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-abstract-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-abstract-readonly-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-abstract-static-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-declare-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-optional-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-override-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-class-with-override-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/abstract-interface.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/angle-bracket-type-assertion.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/angle-bracket-type-assertion-arrow-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/arrow-function-with-optional-parameter.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/arrow-function-with-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/async-function-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/async-function-with-var-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/await-without-async-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/call-signatures.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/call-signatures-with-generics.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/cast-as-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/cast-as-multi.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/cast-as-multi-assign.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/cast-as-operator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/cast-as-simple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/catch-clause-with-annotation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/catch-clause-with-invalid-annotation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-multi-line-keyword-abstract.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-multi-line-keyword-declare.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-private-identifier-field-with-accessibility-error.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-private-identifier-field-with-annotation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-private-identifier-readonly-field.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-static-blocks.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-accessibility-modifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-constructor-and-modifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-constructor-and-parameter-property-with-modifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-constructor-and-parameter-proptery-with-override-modifier.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-constructor-and-return-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-constructor-and-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-declare-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-definite-assignment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-export-parameter-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-extends-and-implements.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-extends-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-extends-generic-multiple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-generic-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-generic-method-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-implements.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-implements-and-extends.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-implements-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-implements-generic-multiple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-mixin.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-mixin-reference.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-optional-computed-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-optional-computed-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-optional-methods.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-optional-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-optional-property-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-override-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-override-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-private-optional-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-private-parameter-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-property-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-property-values.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-protected-parameter-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-public-parameter-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-readonly-parameter-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-readonly-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-static-parameter-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-two-methods-computed-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-type-parameter.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-type-parameter-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/class-with-type-parameter-underscore.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/const-assertions.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/const-enum.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/declare-class-with-optional-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/declare-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/destructuring-assignment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/destructuring-assignment-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/destructuring-assignment-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/destructuring-assignment-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/directive-in-module.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/directive-in-namespace.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/dynamic-import-with-import-assertions.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-all-with-import-assertions.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-as-namespace.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-assignment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-declare-const-named-enum.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-declare-named-enum.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-default-class-with-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-default-class-with-multiple-generics.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-default-interface.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-named-class-with-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-named-class-with-multiple-generics.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-named-enum.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-named-enum-computed-number.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-named-enum-computed-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-named-enum-computed-var-ref.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-star-as-ns-from.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-type-as.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-type-from.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-type-from-as.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-type-star-from.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/export-with-import-assertions.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-anonymus-with-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-anynomus-with-return-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-overloads.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-await.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-object-type-with-optional-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-object-type-without-annotation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-type-parameters-that-have-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-type-parameters-with-constraint.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-types.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/function-with-types-assignation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/global-this.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-equal-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-equal-type-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-export-equal-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-export-equal-type-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-type-default.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-type-empty.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-type-error.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-type-named.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-type-named-as.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-type-star-as-ns.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/import-with-import-assertions.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-extends.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-extends-multiple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-all-property-types.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-construct-signature-with-parameter-accessibility.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-extends-member-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-extends-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-jsdoc.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-with-optional-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/interface-without-type-annotation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/intrinsic-keyword.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/keyof-operator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/keyword-variables.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/nested-type-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/never-type-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/new-target-in-arrow-function-body.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/non-null-assertion-operator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/null-and-undefined-type-annotations.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/nullish-coalescing.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/object-with-escaped-properties.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/object-with-typed-methods.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-call.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-call-with-non-null-assertion.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-call-with-parens.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-element-access.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-element-access-with-non-null-assertion.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-element-access-with-parens.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-with-non-null-assertion.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/optional-chain-with-parens.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/parenthesized-use-strict.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/private-fields-in-in.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/readonly-arrays.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/readonly-tuples.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/short-circuiting-assignment-and-and.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/short-circuiting-assignment-or-or.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/short-circuiting-assignment-question-question.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/symbol-type-param.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-alias-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-alias-declaration-export.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-alias-declaration-export-function-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-alias-declaration-export-object-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-alias-declaration-with-constrained-type-parameter.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-alias-object-without-annotation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-in-arrow-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-in-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-in-interface.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-in-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-with-guard-in-arrow-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-with-guard-in-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-with-guard-in-interface.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-assertion-with-guard-in-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-guard-in-arrow-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-guard-in-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-guard-in-interface.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-guard-in-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-import-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-import-type-with-type-parameters-in-type-reference.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-only-export-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-only-import-specifiers.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-parameters-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-parameters-comments-heritage.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/type-reference-comments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-bigint.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-boolean.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-false.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-never.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-null.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-number.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-object.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-symbol.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-true.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-undefined.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-unknown.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-keyword-void.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-method-signature.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/typed-this.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/union-intersection.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/unique-symbol.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/unknown-type-annotation.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/var-with-definite-assignment.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/var-with-dotted-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/var-with-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/basics/variable-declaration-type-annotation-spacing.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/abstract-class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/class.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/enum.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/interface.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/module.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/namespace.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/type-alias.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/declare/variable.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/accessor-decorators/accessor-decorator-factory-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/accessor-decorators/accessor-decorator-factory-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/accessor-decorators/accessor-decorator-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/accessor-decorators/accessor-decorator-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/class-decorators/class-decorator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/class-decorators/class-decorator-factory.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/class-decorators/class-parameter-property.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/class-decorators/export-default-class-decorator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/class-decorators/export-named-class-decorator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/method-decorators/method-decorator-factory-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/method-decorators/method-decorator-factory-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/method-decorators/method-decorator-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/method-decorators/method-decorator-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-array-pattern-decorator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-decorator-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-decorator-decorator-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-decorator-decorator-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-decorator-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-decorator-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-object-pattern-decorator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/parameter-decorators/parameter-rest-element-decorator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/property-decorators/property-decorator-factory-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/property-decorators/property-decorator-factory-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/property-decorators/property-decorator-instance-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/decorators/property-decorators/property-decorator-static-member.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/class-empty-extends.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/class-empty-extends-implements.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/class-extends-empty-implements.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/class-multiple-implements.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/decorator-on-enum-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/decorator-on-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/decorator-on-interface-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/decorator-on-variable.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-arguments-in-call-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-arguments-in-new-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-parameters-in-arrow-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-parameters-in-constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-parameters-in-function-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-parameters-in-method.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/empty-type-parameters-in-method-signature.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/enum-with-keywords.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/index-signature-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-empty-extends.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-implements.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-index-signature-export.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-index-signature-private.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-index-signature-protected.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-index-signature-public.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-index-signature-static.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-method-export.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-method-private.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-method-protected.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-method-public.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-method-readonly.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-method-static.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-multiple-extends.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-property-export.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-property-private.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-property-protected.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-property-public.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-property-static.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-property-with-default-value.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-with-no-body.src 1`] = `
+TSError {
+  "column": 0,
+  "index": 14,
+  "lineNumber": 2,
+  "message": "'{' expected.",
+}
+`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/interface-with-optional-index-signature.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/object-assertion-not-allowed.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/object-optional-not-allowed.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/errorRecovery/solo-const.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/expressions/call-expression-type-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/expressions/instantiation-expression.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/expressions/new-expression-type-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/expressions/optional-call-expression-type-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/expressions/tagged-template-expression-type-arguments.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/namespaces-and-modules/ambient-module-declaration-with-import.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/namespaces-and-modules/declare-namespace-with-exported-function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/namespaces-and-modules/global-module-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/namespaces-and-modules/module-with-default-exports.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/namespaces-and-modules/nested-internal-module.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/namespaces-and-modules/shorthand-ambient-module-declaration.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/array-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/conditional.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/conditional-infer.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/conditional-infer-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/conditional-infer-simple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/conditional-infer-with-constraint.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/conditional-with-null.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/constructor.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/constructor-abstract.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/constructor-empty.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/constructor-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/constructor-in-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/constructor-with-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/function.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/function-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/function-in-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/function-with-array-destruction.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/function-with-object-destruction.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/function-with-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/function-with-this.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/index-signature.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/index-signature-readonly.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/index-signature-without-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/indexed.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/interface-with-accessors.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/intersection-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/literal-number.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/literal-number-negative.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/literal-string.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/mapped.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/mapped-named-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/mapped-readonly.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/mapped-readonly-minus.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/mapped-readonly-plus.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/mapped-untypped.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/nested-types.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/object-literal-type-with-accessors.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/optional-variance-in.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/optional-variance-in-and-out.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/optional-variance-in-out.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/optional-variance-out.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/parenthesized-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/reference.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/reference-generic.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/reference-generic-nested.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/template-literal-type-1.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/template-literal-type-2.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/template-literal-type-3.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/template-literal-type-4.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/this-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/this-type-expanded.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-empty.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-named.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-named-optional.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-named-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-named-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-optional.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-rest.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/tuple-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/type-literal.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/type-operator.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/typeof.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/typeof-this.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/typeof-with-type-parameters.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/union-intersection.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic fixtures/typescript/types/union-type.src 1`] = `"TEST OUTPUT: No syntactic issues found"`;

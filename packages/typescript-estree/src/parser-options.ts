@@ -1,4 +1,7 @@
-import type { DebugLevel } from '@typescript-eslint/types';
+import type {
+  DebugLevel,
+  TypeScriptIssueDetection,
+} from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
@@ -78,7 +81,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
    */
-  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+  errorOnTypeScriptIssues?: TypeScriptIssueDetection;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.

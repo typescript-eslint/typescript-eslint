@@ -26,6 +26,12 @@ type EcmaVersion =
 
 type SourceType = 'script' | 'module';
 
+enum TypeScriptIssueDetection {
+  None = 0,
+  Syntactic = 1,
+  SyntacticOrSemantic = 2,
+}
+
 interface ParserOptions {
   ecmaFeatures?: {
     globalReturn?: boolean;
@@ -44,7 +50,7 @@ interface ParserOptions {
   // typescript-estree specific
   comment?: boolean;
   debugLevel?: DebugLevel;
-  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+  errorOnTypeScriptIssues?: TypeScriptIssueDetection;
   errorOnUnknownASTType?: boolean;
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
@@ -62,4 +68,10 @@ interface ParserOptions {
   [additionalProperties: string]: unknown;
 }
 
-export { DebugLevel, EcmaVersion, ParserOptions, SourceType };
+export {
+  DebugLevel,
+  EcmaVersion,
+  ParserOptions,
+  SourceType,
+  TypeScriptIssueDetection,
+};

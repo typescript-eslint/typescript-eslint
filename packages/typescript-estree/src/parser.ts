@@ -89,9 +89,9 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Ensure users do not attempt to use parse() when they need parseAndGenerateServices()
    */
-  if (options?.errorOnTypeScriptSyntacticAndSemanticIssues) {
+  if (options?.errorOnTypeScriptIssues) {
     throw new Error(
-      `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
+      `"errorOnTypeScriptIssues" is only supported for parseAndGenerateServices()`,
     );
   }
 
@@ -137,16 +137,6 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * Reset the parse configuration
    */
   const parseSettings = createParseSettings(code, options);
-
-  if (typeof options !== 'undefined') {
-    if (
-      typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
-        'boolean' &&
-      options.errorOnTypeScriptSyntacticAndSemanticIssues
-    ) {
-      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
-    }
-  }
 
   /**
    * If this is a single run in which the user has not provided any existing programs but there
@@ -223,8 +213,12 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * Even if TypeScript parsed the source code ok, and we had no problems converting the AST,
    * there may be other syntactic or semantic issues in the code that we can optionally report on.
    */
-  if (program && parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues) {
-    const error = getFirstSemanticOrSyntacticError(program, ast);
+  if (parseSettings.errorOnTypeScriptIssues) {
+    const error = getFirstSemanticOrSyntacticError(
+      program,
+      ast,
+      parseSettings.errorOnTypeScriptIssues,
+    );
     if (error) {
       throw convertError(error);
     }

@@ -1,3 +1,4 @@
+import type { TypeScriptIssueDetection } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { CanonicalPath } from '../create-program/shared';
@@ -44,7 +45,7 @@ export interface MutableParseSettings {
   /**
    * Whether to error if TypeScript reports a semantic or syntactic error diagnostic.
    */
-  errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
+  errorOnTypeScriptIssues: TypeScriptIssueDetection;
 
   /**
    * Whether to error if an unknown AST node type is encountered.

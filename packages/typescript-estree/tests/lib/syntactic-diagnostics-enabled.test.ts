@@ -7,7 +7,7 @@ import { formatSnapshotName, isJSXFileType } from '../../tools/test-utils';
 import { serializer } from '../../tools/tserror-serializer';
 
 /**
- * Process all fixtures, we will only snapshot the ones that have semantic errors
+ * Process all fixtures, we will only snapshot the ones that have syntactic errors
  * which are ignored by default parsing logic.
  */
 const FIXTURES_DIR = path.join(__dirname, '../../../shared-fixtures/fixtures');
@@ -18,7 +18,7 @@ const testFiles = glob.sync('**/*.src.*', {
 
 expect.addSnapshotSerializer(serializer);
 
-describe('Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.SyntacticOrSemantic', () => {
+describe('Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIssueDetection.Syntactic', () => {
   testFiles.forEach(filename => {
     const code = readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const fileExtension = path.extname(filename);
@@ -27,17 +27,14 @@ describe('Parse all fixtures with "errorOnTypeScriptIssues" set to TypeScriptIss
       range: true,
       tokens: true,
       errorOnUnknownASTType: true,
-      errorOnTypeScriptIssues:
-        parser.TypeScriptIssueDetection.SyntacticOrSemantic,
+      errorOnTypeScriptIssues: parser.TypeScriptIssueDetection.Syntactic,
       jsx: isJSXFileType(fileExtension),
     };
     it(formatSnapshotName(filename, FIXTURES_DIR, fileExtension), () => {
       expect.assertions(1);
       try {
         parser.parseAndGenerateServices(code, config);
-        expect(
-          'TEST OUTPUT: No semantic or syntactic issues found',
-        ).toMatchSnapshot();
+        expect('TEST OUTPUT: No syntactic issues found').toMatchSnapshot();
       } catch (err) {
         expect(err).toMatchSnapshot();
       }

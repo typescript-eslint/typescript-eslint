@@ -4,6 +4,7 @@ import type babelParser from '@babel/parser';
 import type { ParserPlugin } from '@babel/parser';
 import type { File } from '@babel/types';
 import type { TSESTree } from '@typescript-eslint/types';
+import { TypeScriptIssueDetection } from '@typescript-eslint/types';
 
 import type { TSError } from '../../src/node-utils';
 import type { AST } from '../../src/parser';
@@ -64,7 +65,7 @@ function parseWithTypeScriptESTree(text: string, jsx = true): AST<any> {
        * two parsers. By default, the TypeScript compiler is much more
        * forgiving.
        */
-      errorOnTypeScriptSyntacticAndSemanticIssues: true,
+      errorOnTypeScriptIssues: TypeScriptIssueDetection.Syntactic,
       jsx,
     });
     return result.ast;

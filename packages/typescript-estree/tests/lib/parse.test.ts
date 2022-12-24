@@ -1,3 +1,4 @@
+import { TypeScriptIssueDetection } from '@typescript-eslint/types';
 import debug from 'debug';
 import { join, resolve } from 'path';
 
@@ -34,6 +35,8 @@ jest.mock('../../src/create-program/shared', () => {
     ),
   };
 });
+
+beforeEach(parser.clearProgramCache);
 
 // Tests in CI by default run with lowercase program file names,
 // resulting in path.relative results starting with many "../"s
@@ -196,36 +199,69 @@ describe('parseWithNodeMaps()', () => {
 });
 
 describe('parseAndGenerateServices', () => {
-  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
-    const code = '@test const foo = 2';
+  describe('errorOnTypeScriptIssues', () => {
+    const code = {
+      allowed: 'const foo = 2;',
+      semanticsInvalid: 'const foo: number = "";',
+      syntaxInvalid: 'throw;',
+    };
+
     const options: TSESTreeOptions = {
       comment: true,
       tokens: true,
       range: true,
       loc: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true,
+      errorOnTypeScriptIssues: TypeScriptIssueDetection.SyntacticOrSemantic,
     };
 
     it('should throw on invalid option when used in parseWithNodeMaps', () => {
       expect(() => {
-        parser.parseWithNodeMaps(code, options);
+        parser.parseWithNodeMaps(code.allowed, options);
       }).toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
+        `"errorOnTypeScriptIssues" is only supported for parseAndGenerateServices()`,
       );
     });
 
     it('should not throw when used in parseAndGenerateServices', () => {
       expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).not.toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
+        parser.parseAndGenerateServices(code.allowed, options);
+      }).not.toThrow();
     });
 
-    it('should error on invalid code', () => {
+    it('should not error on semantically invalid code with TypeScriptIssueDetection.Syntactic', () => {
       expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).toThrow('Decorators are not valid here.');
+        parser.parseAndGenerateServices(code.semanticsInvalid, {
+          ...options,
+          errorOnTypeScriptIssues: TypeScriptIssueDetection.Syntactic,
+        });
+      }).not.toThrow();
+    });
+
+    it('should error on syntactically invalid code with TypeScriptIssueDetection.Synactic', () => {
+      expect(() => {
+        parser.parseAndGenerateServices(code.syntaxInvalid, {
+          ...options,
+          errorOnTypeScriptIssues: TypeScriptIssueDetection.Syntactic,
+        });
+      }).toThrow('Expression expected.');
+    });
+
+    it('should error on semantically invalid code with TypeScriptIssueDetection.SyntacticOrSemantic', () => {
+      expect(() => {
+        parser.parseAndGenerateServices(code.semanticsInvalid, {
+          ...options,
+          errorOnTypeScriptIssues: TypeScriptIssueDetection.SyntacticOrSemantic,
+        });
+      }).toThrow("Type 'string' is not assignable to type 'number'.");
+    });
+
+    it('should error on syntactically invalid code with TypeScriptIssueDetection.SyntacticOrSemantic', () => {
+      expect(() => {
+        parser.parseAndGenerateServices(code.syntaxInvalid, {
+          ...options,
+          errorOnTypeScriptIssues: TypeScriptIssueDetection.SyntacticOrSemantic,
+        });
+      }).toThrow('Expression expected.');
     });
   });
 
