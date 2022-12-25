@@ -243,6 +243,7 @@ ruleTester.run('prefer-optional-chain', rule, {
     // Do not handle direct optional chaining on private properties because of a typescript bug (https://github.com/microsoft/TypeScript/issues/42734)
     // We still allow in computed properties
     'foo && foo.#bar;',
+    '!foo || !foo.#bar;',
   ],
   invalid: [
     ...baseCases,
