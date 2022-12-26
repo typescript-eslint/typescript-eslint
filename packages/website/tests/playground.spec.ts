@@ -54,7 +54,7 @@ test.describe('Playground', () => {
     await page
       .getByRole('combobox', { name: 'AST Viewer' })
       .selectOption({ label: 'ESTree' });
-    // 3. Validate variable declaration block exist in AST viewer
+    // 3. Validate variable declaration block exists in AST viewer
     await expect(
       page.getByRole('link', { name: 'VariableDeclaration' }),
     ).toBeVisible();
