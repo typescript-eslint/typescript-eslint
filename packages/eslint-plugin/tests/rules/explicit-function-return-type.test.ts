@@ -618,6 +618,47 @@ const foo = (() => (() => 'foo')())();
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+          allowHigherOrderFunctions: false,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+          allowHigherOrderFunctions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1542,6 +1583,26 @@ let foo = function () {
           endLine: 2,
           column: 11,
           endColumn: 22,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => () => {})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 18,
+          endColumn: 23,
         },
       ],
     },
