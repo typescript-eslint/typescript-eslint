@@ -590,5 +590,22 @@ class OtherClass extends BaseClass {
         },
       ],
     },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a, b } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
   ],
 });
