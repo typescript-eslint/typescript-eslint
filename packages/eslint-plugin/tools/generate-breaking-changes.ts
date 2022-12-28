@@ -32,7 +32,7 @@ async function main(): Promise<void> {
       <td>Being added, deprecated, or removed</td>
       <td>
         <ul>
-          <li>🆕 = newly added to TypeScript-ESLint</li>
+          <li>🆕 = newly added to typescript-eslint</li>
           <li>🙅 = deprecated in the next major</li>
           <li>➖️ = to be removed from the plugin in the next version</li>
         </ul>
