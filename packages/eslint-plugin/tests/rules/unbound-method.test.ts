@@ -603,6 +603,43 @@ const { a, b } = values;
         {
           line: 7,
           column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a: c } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { b, a } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 12,
+          endColumn: 13,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
