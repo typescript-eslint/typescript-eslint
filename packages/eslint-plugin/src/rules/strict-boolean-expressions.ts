@@ -740,7 +740,6 @@ export default util.createRule<Options, MessageId>({
               }),
             });
           } else {
-            // if (nullableEnum)
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
