@@ -126,7 +126,7 @@ Set this to `true` if you don't mind implicitly treating zero or NaN the same as
 
 ### `allowNullableEnum`
 
-Allows `number | null | undefined` in a boolean context.
+Allows `enum | null | undefined` in a boolean context.
 This is unsafe because nullable enums can be either a falsy number or nullish.
 Set this to `true` if you don't mind implicitly treating the enum, whose value is zero, the same as a nullish value.
 
