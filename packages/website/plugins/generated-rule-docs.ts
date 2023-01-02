@@ -313,7 +313,11 @@ export const generatedRuleDocs: Plugin = () => {
           {
             type: 'link',
             title: null,
-            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${meta.docs.extendsBaseRule}.md`,
+            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${
+              meta.docs.extendsBaseRule === true
+                ? file.stem
+                : meta.docs.extendsBaseRule
+            }.md`,
             children: [
               {
                 type: 'text',
