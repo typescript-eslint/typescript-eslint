@@ -1059,6 +1059,96 @@ if (y) {
         }
       `,
     },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This,
+          That,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This,
+          That,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum == null) {
+        }
+      `,
+    },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = "",
+          That = "a",
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = "",
+          That = "a",
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum == null) {
+        }
+      `,
+    },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum == null) {
+        }
+      `,
+    },
     // any in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       code: noFormat`
