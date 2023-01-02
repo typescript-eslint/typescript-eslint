@@ -128,7 +128,7 @@ Set this to `true` if you don't mind implicitly treating zero or NaN the same as
 
 Allows `enum | null | undefined` in a boolean context.
 This is unsafe because nullable enums can be either a falsy number or nullish.
-Set this to `true` if you don't mind implicitly treating the enum, whose value is zero, the same as a nullish value.
+Set this to `true` if you don't mind implicitly treating an enum whose value is zero the same as a nullish value.
 
 ### `allowAny`
 
