@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.48.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.1...v5.48.0) (2023-01-02)
+
+### Bug Fixes
+
+- **website:** fix typo ([#6285](https://github.com/typescript-eslint/typescript-eslint/issues/6285)) ([3f8d105](https://github.com/typescript-eslint/typescript-eslint/commit/3f8d105e9ee500428774b498083c4bc02bfd81b8))
+
+### Features
+
+- **eslint-plugin:** specify which method is unbound and added test case ([#6281](https://github.com/typescript-eslint/typescript-eslint/issues/6281)) ([cf3ffdd](https://github.com/typescript-eslint/typescript-eslint/commit/cf3ffdd49aceb734ce18dc44ed6a11f7701f178e))
+
 ## [5.47.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.0...v5.47.1) (2022-12-26)
 
 ### Bug Fixes
