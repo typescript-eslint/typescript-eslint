@@ -1,3 +1,4 @@
+import type { BlockStatement } from '@typescript-eslint/ast-spec';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -15,6 +16,7 @@ type Options = [
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+    allowFunctionContainingOnlyOtherFunctionCall?: boolean;
     allowedNames?: string[];
   },
 ];
@@ -61,9 +63,14 @@ export default util.createRule<Options, MessageIds>({
               'Whether to ignore arrow functions immediately returning a `as const` value.',
             type: 'boolean',
           },
+          allowFunctionContainingOnlyOtherFunctionCall: {
+            description:
+              'Whether to ignore functions immediately returning result of other function.',
+            type: 'boolean',
+          },
           allowedNames: {
             description:
-              'An array of function/method names that will not have their arguments or return values checked.',
+              'An array of function/method name regexes that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
@@ -81,11 +88,13 @@ export default util.createRule<Options, MessageIds>({
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+      allowFunctionContainingOnlyOtherFunctionCall: false,
       allowedNames: [],
     },
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
+
     function isAllowedName(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -101,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.FunctionExpression
       ) {
         const parent = node.parent;
-        let funcName;
+        let funcName: string | null = null;
         if (node.id?.name) {
           funcName = node.id.name;
         } else if (parent) {
@@ -125,7 +134,10 @@ export default util.createRule<Options, MessageIds>({
             }
           }
         }
-        if (!!funcName && !!options.allowedNames.includes(funcName)) {
+        if (
+          !!funcName &&
+          !!options.allowedNames.find(name => funcName!.match(name))
+        ) {
           return true;
         }
       }
@@ -139,6 +151,21 @@ export default util.createRule<Options, MessageIds>({
       }
       return false;
     }
+
+    function doesImmediatelyReturnFunctionCall(block: BlockStatement): boolean {
+      if (block.body.length !== 1) {
+        return false;
+      }
+      const innerNode = block.body[0];
+      if (
+        innerNode.type === AST_NODE_TYPES.ReturnStatement &&
+        innerNode.argument?.type === AST_NODE_TYPES.CallExpression
+      ) {
+        return true;
+      }
+      return false;
+    }
+
     return {
       'ArrowFunctionExpression, FunctionExpression'(
         node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
@@ -165,6 +192,18 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
+        if (options.allowFunctionContainingOnlyOtherFunctionCall) {
+          if (node.body.type === AST_NODE_TYPES.CallExpression) {
+            return;
+          }
+          if (
+            node.body.type === AST_NODE_TYPES.BlockStatement &&
+            doesImmediatelyReturnFunctionCall(node.body)
+          ) {
+            return;
+          }
+        }
+
         checkFunctionReturnType(node, options, sourceCode, loc =>
           context.report({
             node,
@@ -178,6 +217,12 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         if (options.allowTypedFunctionExpressions && node.returnType) {
+          return;
+        }
+        if (
+          options.allowFunctionContainingOnlyOtherFunctionCall &&
+          doesImmediatelyReturnFunctionCall(node.body)
+        ) {
           return;
         }
 

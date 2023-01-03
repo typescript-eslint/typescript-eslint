@@ -453,6 +453,24 @@ export const foo = {
     },
     {
       filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test.*'],
+        },
+      ],
+      code: `
+const test1 = () => {
+  return;
+};
+export const foo = {
+  test2() {
+    return 0;
+  },
+};
+      `,
+    },
+    {
+      filename: 'test.ts',
       code: `
 class Test {
   constructor() {}
@@ -552,6 +570,35 @@ const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
         {
           allowTypedFunctionExpressions: true,
           allowHigherOrderFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+function innerFunction1(a: number): number {
+  return 0;
+}
+function test1(a: number) {
+  return innerFunction1(a);
+}
+
+function innerFunction2(a: number): number {
+  return 0;
+}
+const test2 = (a: number) => innerFunction2(a);
+
+const innerFunction3 = (a: number): number => 0;
+const test3 = (a: number) => innerFunction3(a);
+
+const innerFunction4 = (a: number): number => 0;
+const test4 = (a: number) => {
+  return innerFunction4(a);
+};
+      `,
+      options: [
+        {
+          allowFunctionContainingOnlyOtherFunctionCall: true,
         },
       ],
     },
@@ -1411,6 +1458,80 @@ class Foo {
           endLine: 4,
           column: 3,
           endColumn: 18,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      options: [
+        {
+          allowedNames: ['test.*'],
+        },
+      ],
+      code: `
+const test1 = () => {
+  return;
+};
+export const foo = {
+  tes() {
+    return 0;
+  },
+};
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 6,
+          endLine: 6,
+          column: 3,
+          endColumn: 8,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const innerFunction = (a: number, b: number): number => 0;
+const test = (a: number, b: number) => {
+  const x = 10;
+  return innerFunction(a);
+};
+      `,
+      options: [
+        {
+          allowFunctionContainingOnlyOtherFunctionCall: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 39,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const innerFunction = (a: number, b: number): number => 0;
+const test = (a: number, b: number) => {
+  const x = 10;
+};
+      `,
+      options: [
+        {
+          allowFunctionContainingOnlyOtherFunctionCall: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 14,
+          endColumn: 39,
         },
       ],
     },
