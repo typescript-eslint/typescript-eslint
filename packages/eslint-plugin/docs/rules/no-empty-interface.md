@@ -68,3 +68,4 @@ This rule accepts a single object option with the following default configuratio
 ## When Not To Use It
 
 If you don't care about having empty/meaningless interfaces, then you will not need this rule.
+Or if you want to use declaration merging to merge new properties into an existing interface.
