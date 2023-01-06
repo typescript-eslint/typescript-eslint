@@ -187,5 +187,12 @@
     "name": "DeepSource",
     "totalDonations": 10000,
     "website": "https://deepsource.io/"
+  },
+  {
+    "id": "tRPC",
+    "image": "https://images.opencollective.com/trpc/82704a8/logo.png",
+    "name": "tRPC",
+    "totalDonations": 10000,
+    "website": "https://trpc.io"
   }
 ]
