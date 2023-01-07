@@ -3211,17 +3211,17 @@
     read-package-json-fast "^2.0.3"
     which "^2.0.2"
 
-"@nrwl/cli@15.2.4":
-  version "15.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-15.2.4.tgz#7cf18d474c428d6b4aaf7b511c298369c47de39a"
-  integrity sha512-Urhkzj/hzhTlJqOHFZyibYGjvzHvSQhkjN3keHiYCNEOaAGp9DPF+oC5cYrPcqWbu3ZkldDWTk7aVBbeqwDWZQ==
+"@nrwl/cli@15.3.2":
+  version "15.3.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-15.3.2.tgz#dd713e6d6a064587a0ededd75d301b72f820e222"
+  integrity sha512-3xlH5LlNDzQ1mvVk+8w2WPoDwaOuUKR+9+38nnxTW6jW8g8S+h259/2IGsXnJ+cD7oEv3TARTC6aCrwVNn7egA==
   dependencies:
-    nx "15.2.4"
+    nx "15.3.2"
 
-"@nrwl/devkit@15.2.4", "@nrwl/devkit@>=14.8.6 < 16":
-  version "15.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-15.2.4.tgz#ffcb69f462df19d3d282cf25bf346926ee23f141"
-  integrity sha512-5JZWB4ydnu+NKNIfj958nML8AWwhareQ+Q1hLXoOIS/7brqfALNP3y/Ef1ljrLIo1f3xc484TPclqwSH7aRdvQ==
+"@nrwl/devkit@15.3.2", "@nrwl/devkit@>=14.8.6 < 16":
+  version "15.3.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-15.3.2.tgz#44ea9bc038ce87d9ea24447f6b3f3e1351a58787"
+  integrity sha512-h0MmDOjvhBJCrpXaAEK6eojpO5juaV6OEX0XjadPAQs4McxTALJxNP7Te6wIfgsY8t9WecARPIt85zKsLJeCjg==
   dependencies:
     "@phenomnomnominal/tsquery" "4.1.1"
     ejs "^3.1.7"
@@ -3229,14 +3229,14 @@
     semver "7.3.4"
     tslib "^2.3.0"
 
-"@nrwl/jest@15.2.4":
-  version "15.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-15.2.4.tgz#c0be05b554f7078d900d829145ce40974a5387ab"
-  integrity sha512-b2GoUPPs4/EAGhJvUn41sphD0Ln9P3ybX2Cyb1U5upM9glOGU5qdGYO20ZMl7IJhEL17QRcojUudWTnk1RejHA==
+"@nrwl/jest@15.3.2":
+  version "15.3.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-15.3.2.tgz#5616af79444914e8a6c4b0dd7426eac8993accfb"
+  integrity sha512-3ksxm7gtJjXp/WeThxs2H5bAYI0zWQwquTjaNwaGKWvtwjtUbu+sM4zEF2HgOu4CKP6In3wFA4q0gZH7QlCEsw==
   dependencies:
     "@jest/reporters" "28.1.1"
     "@jest/test-result" "28.1.1"
-    "@nrwl/devkit" "15.2.4"
+    "@nrwl/devkit" "15.3.2"
     "@phenomnomnominal/tsquery" "4.1.1"
     chalk "4.1.0"
     dotenv "~10.0.0"
@@ -3247,15 +3247,13 @@
     resolve.exports "1.1.0"
     tslib "^2.3.0"
 
-"@nrwl/linter@15.2.4":
-  version "15.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-15.2.4.tgz#f61e25c905156c962a63df674340f8a66ac0cc5f"
-  integrity sha512-EINxMgb7uEYW2rhj8MomHLktUsVAVlGBSTEZSg7SC32vgzY+QJ144qubLNlCHzSV1O5J/LMugoAHt3E+0eNHyA==
+"@nrwl/linter@15.3.2":
+  version "15.3.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-15.3.2.tgz#7c947ece44d964d7331795e405966da71a02318b"
+  integrity sha512-sMOgmMufH5jhsseRLipKTk7GTfW3l0edjHFj9zVo49tQmGjMeurXdIw4MkJhX23JdSc1w1JGdrqeUi10iqtMyg==
   dependencies:
-    "@nrwl/devkit" "15.2.4"
-    "@nrwl/jest" "15.2.4"
+    "@nrwl/devkit" "15.3.2"
     "@phenomnomnominal/tsquery" "4.1.1"
-    nx "15.2.4"
     tmp "~0.2.1"
     tslib "^2.3.0"
 
@@ -3273,21 +3271,20 @@
     tar "6.1.11"
     yargs-parser ">=21.0.1"
 
-"@nrwl/tao@15.2.4":
-  version "15.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-15.2.4.tgz#c335e0774e5b7ee26bb3b257a436fe154693d619"
-  integrity sha512-ebGJCkg84yfptuNhGMnIrgHvnknJkeyxWLqRQ7AlMXTzxXOfMS+whjVImM9XjfVYVpBVFWc5QBU5gaKQtzLHmA==
+"@nrwl/tao@15.3.2":
+  version "15.3.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-15.3.2.tgz#3498bd6596e582cbc5b922a45e5d8db5bcb2ce47"
+  integrity sha512-iP7e7gxSLn7xahz13Mj0c6KMSd9S2sUmD1Z6+F/H/lThikkrgURckSyZFtAW6OQNYOkWWi9RwdzVsH5He0syhQ==
   dependencies:
-    nx "15.2.4"
+    nx "15.3.2"
 
-"@nrwl/workspace@15.2.4":
-  version "15.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-15.2.4.tgz#9160cf7ce9ffe0fe40437a6bf8b3a0caf1a7764c"
-  integrity sha512-h35+NwG2zCeJpQzLevw8q9frrKCwsQyOfUxzyP7nApoxQNO70iGdTwRli/dvB7jVIckp3x78yLuu32D9oqiKEA==
+"@nrwl/workspace@15.3.2":
+  version "15.3.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-15.3.2.tgz#143609997f1e391083a2934a7e5305f0ef385ea5"
+  integrity sha512-h5WtTpRTHBmcO/V7WPnkzGJADQtAubZAinTn5ptkvFOYr0jnidwiVOidm0AgNvYMJtHIUf8h3jbKUIBAsRFF0g==
   dependencies:
-    "@nrwl/devkit" "15.2.4"
-    "@nrwl/jest" "15.2.4"
-    "@nrwl/linter" "15.2.4"
+    "@nrwl/devkit" "15.3.2"
+    "@nrwl/linter" "15.3.2"
     "@parcel/watcher" "2.0.4"
     chalk "4.1.0"
     chokidar "^3.5.1"
@@ -3302,7 +3299,7 @@
     ignore "^5.0.4"
     minimatch "3.0.5"
     npm-run-path "^4.0.1"
-    nx "15.2.4"
+    nx "15.3.2"
     open "^8.4.0"
     rxjs "^6.5.4"
     semver "7.3.4"
@@ -6898,10 +6895,10 @@ eslint-plugin-import@^2.26.0:
     resolve "^1.22.0"
     tsconfig-paths "^3.14.1"
 
-eslint-plugin-jest@^26.1.5:
-  version "26.7.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.7.0.tgz#41d405ac9143e1284a3401282db47ed459436778"
-  integrity sha512-/YNitdfG3o3cC6juZziAdkk6nfJt01jXVfj4AgaYVLs7bupHzRDL5K+eipdzhDXtQsiqaX1TzfwSuRlEgeln1A==
+eslint-plugin-jest@^27.0.0:
+  version "27.1.7"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-27.1.7.tgz#0351e904afb8d66b7f70452929556dfdc8daba0d"
+  integrity sha512-0QVzf+og4YI1Qr3UoprkqqhezAZjFffdi62b0IurkCXMqPtRW84/UT4CKsYT80h/D82LA9avjO/80Ou1LdgbaQ==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
@@ -10593,13 +10590,13 @@ nth-check@^2.0.0, nth-check@^2.0.1:
   dependencies:
     boolbase "^1.0.0"
 
-nx@15.2.4, "nx@>=14.8.6 < 16":
-  version "15.2.4"
-  resolved "https://registry.yarnpkg.com/nx/-/nx-15.2.4.tgz#de55a1342deb3ff2f7b123fe2bbef46c8495f792"
-  integrity sha512-8rTLo5WGmM6hEo5R/u03Jllkyj4vIUbBk2MRAppCvVRXWLS4xJUEOityXJ5BAvaKoLYm6sWUP1gqU7xlldnT5A==
+nx@15.3.2, "nx@>=14.8.6 < 16":
+  version "15.3.2"
+  resolved "https://registry.yarnpkg.com/nx/-/nx-15.3.2.tgz#3269b7c1c0be4dc4c389a4c54f463eb43636d542"
+  integrity sha512-i/y9pkZj6OACnk/+VmJaqrRIhY9VZw0twyeUp9z3gy7KElFoQZ7EMm4LcacFpVYy/MTsHYi0c87CDzkSyPogOA==
   dependencies:
-    "@nrwl/cli" "15.2.4"
-    "@nrwl/tao" "15.2.4"
+    "@nrwl/cli" "15.3.2"
+    "@nrwl/tao" "15.3.2"
     "@parcel/watcher" "2.0.4"
     "@yarnpkg/lockfile" "^1.1.0"
     "@yarnpkg/parsers" "^3.0.0-rc.18"
@@ -11504,10 +11501,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier@*, prettier@2.8.0, prettier@^2.6.2:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.0.tgz#c7df58393c9ba77d6fba3921ae01faf994fb9dc9"
-  integrity sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==
+prettier@*, prettier@2.8.1, prettier@^2.6.2:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.1.tgz#4e1fd11c34e2421bc1da9aea9bd8127cd0a35efc"
+  integrity sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"

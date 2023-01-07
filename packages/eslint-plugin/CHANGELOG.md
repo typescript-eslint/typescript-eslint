@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.48.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.1...v5.48.0) (2023-01-02)
+
+### Features
+
+- **eslint-plugin:** specify which method is unbound and added test case ([#6281](https://github.com/typescript-eslint/typescript-eslint/issues/6281)) ([cf3ffdd](https://github.com/typescript-eslint/typescript-eslint/commit/cf3ffdd49aceb734ce18dc44ed6a11f7701f178e))
+
+## [5.47.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.0...v5.47.1) (2022-12-26)
+
+### Bug Fixes
+
+- **ast-spec:** correct some incorrect ast types ([#6257](https://github.com/typescript-eslint/typescript-eslint/issues/6257)) ([0f3f645](https://github.com/typescript-eslint/typescript-eslint/commit/0f3f64571ea5d938081b1a9f3fd1495765201700))
+- **eslint-plugin:** [member-ordering] correctly invert optionalityOrder ([#6256](https://github.com/typescript-eslint/typescript-eslint/issues/6256)) ([ccd45d4](https://github.com/typescript-eslint/typescript-eslint/commit/ccd45d4a998946b7be1161f8c8216bc458e50b4e))
+
+# [5.47.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.46.1...v5.47.0) (2022-12-19)
+
+### Features
+
+- **eslint-plugin:** [no-floating-promises] add suggestion fixer to add an 'await' ([#5943](https://github.com/typescript-eslint/typescript-eslint/issues/5943)) ([9e35ef9](https://github.com/typescript-eslint/typescript-eslint/commit/9e35ef9af3ec51ab2dd49336699f3a94528bb4b1))
+
+## [5.46.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.46.0...v5.46.1) (2022-12-12)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+# [5.46.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.1...v5.46.0) (2022-12-08)
+
+### Bug Fixes
+
+- **eslint-plugin:** [ban-types] update message to suggest `object` instead of `Record<string, unknown>` ([#6079](https://github.com/typescript-eslint/typescript-eslint/issues/6079)) ([d91a5fc](https://github.com/typescript-eslint/typescript-eslint/commit/d91a5fc41be5bc2a0625574e9c9496f61fb7471d))
+
+### Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] logic and test for strict null checks ([#6174](https://github.com/typescript-eslint/typescript-eslint/issues/6174)) ([8a91cbd](https://github.com/typescript-eslint/typescript-eslint/commit/8a91cbd9fbe5bc4cf750cd949d2b8d48ff4c311d))
+
+## [5.45.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.0...v5.45.1) (2022-12-05)
+
+### Bug Fixes
+
+- **eslint-plugin:** [keyword-spacing] unexpected space before/after in `import type` ([#6095](https://github.com/typescript-eslint/typescript-eslint/issues/6095)) ([98caa92](https://github.com/typescript-eslint/typescript-eslint/commit/98caa92ca89bdf0ca6ba6e4ff1f13c60221579e8))
+- **eslint-plugin:** [no-shadow] add call and method signatures to `ignoreFunctionTypeParameterNameValueShadow` ([#6129](https://github.com/typescript-eslint/typescript-eslint/issues/6129)) ([9d58b6b](https://github.com/typescript-eslint/typescript-eslint/commit/9d58b6be246507d20af67c84a5e9bb592d97cff5))
+- **eslint-plugin:** [prefer-optional-chain] collect MetaProperty type ([#6083](https://github.com/typescript-eslint/typescript-eslint/issues/6083)) ([d7114d3](https://github.com/typescript-eslint/typescript-eslint/commit/d7114d3ab09d1b93627d3b3dbb9862e37ee29c97))
+- **eslint-plugin:** [sort-type-constituents, sort-type-union-intersection-members] handle some required parentheses cases in the fixer ([#6118](https://github.com/typescript-eslint/typescript-eslint/issues/6118)) ([5d49d5d](https://github.com/typescript-eslint/typescript-eslint/commit/5d49d5dbee4425fc8bc01c5e748d161f3619477b))
+
 # [5.45.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.44.0...v5.45.0) (2022-11-28)
 
 ### Bug Fixes

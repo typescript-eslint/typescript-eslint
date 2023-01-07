@@ -1,6 +1,6 @@
-<h1 align="center">TypeScript ESLint</h1>
+<h1 align="center">typescript-eslint</h1>
 
-<p align="center">Monorepo for all the tooling which enables ESLint to support TypeScript</p>
+<p align="center">Monorepo for the tooling that enables ESLint and Prettier to support TypeScript</p>
 
 <p align="center">
     <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
@@ -9,16 +9,22 @@
     <a href="https://codecov.io/gh/typescript-eslint/typescript-eslint"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/typescript-eslint/typescript-eslint.svg?style=flat-square"></a>
 </p>
 
+<!-- markdownlint-disable MD033 -->
 <p align="center">
 👇
 </p>
 <p align="center">
-  <!-- markdownlint-disable MD033 -->
-  See <strong><a href="https://typescript-eslint.io">typescript-eslint.io</a></strong> for documentation.
+  See <strong><a href="https://typescript-eslint.io">typescript-eslint.io</a></strong> for documentation on the latest released version.
+</p>
+<p align="center">
+<small>
+  See <strong><a href="https://main--typescript-eslint.netlify.app">main--typescript-eslint.netlify.app</a></strong> for documentation on the latest <a href="https://main--typescript-eslint.netlify.app/maintenance/versioning">canary release</a>.
+</small>
 </p>
 <p align="center">
 👆
 </p>
+<!-- markdownlint-enable MD033 -->
 
 ## Code Contributors
 
@@ -38,4 +44,4 @@ In addition to submitting code and documentation updates, you can help us sustai
 
 ## License
 
-TypeScript ESLint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+typescript-eslint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.

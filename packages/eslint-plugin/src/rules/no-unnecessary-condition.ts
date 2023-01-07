@@ -568,9 +568,7 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
-    function isOptionableExpression(
-      node: TSESTree.LeftHandSideExpression,
-    ): boolean {
+    function isOptionableExpression(node: TSESTree.Expression): boolean {
       const type = getNodeType(node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
