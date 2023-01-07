@@ -726,7 +726,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       // nullable enum
-      if (is('nullish', 'number', 'enum')) {
+      if (is('nullish', 'number', 'enum') || is('nullish', 'string', 'enum')) {
         if (!options.allowNullableEnum) {
           if (isLogicalNegationExpression(node.parent!)) {
             context.report({
