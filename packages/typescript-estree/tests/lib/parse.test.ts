@@ -397,6 +397,7 @@ describe('parseAndGenerateServices', () => {
         let result:
           | parser.ParseAndGenerateServicesResult<typeof config>
           | undefined;
+        // eslint-disable-next-line jest/valid-expect
         const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
