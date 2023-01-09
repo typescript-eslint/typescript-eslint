@@ -554,7 +554,12 @@ export default createRule<Options, MessageId>({
             type,
             property.name,
           );
-          return propType && isNullableType(propType, { allowUndefined: true });
+
+          if (propType) {
+            return isNullableType(propType, { allowUndefined: true });
+          }
+
+          return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
         });
         return (
           !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
@@ -563,9 +568,7 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
-    function isOptionableExpression(
-      node: TSESTree.LeftHandSideExpression,
-    ): boolean {
+    function isOptionableExpression(node: TSESTree.Expression): boolean {
       const type = getNodeType(node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression

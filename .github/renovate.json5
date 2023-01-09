@@ -5,14 +5,14 @@
     'globby',
     // this dep now uses package.json exports - we will be removing it next major
     'eslint-scope',
+    // this dep is now ESM only
+    'execa',
     // the nx packages get updated using the nx migrate CLI
     '@nrwl/cli',
     '@nrwl/devkit',
     '@nrwl/jest',
     '@nrwl/nx-cloud',
     '@nrwl/tao',
-    '@nrwl/workspace',
-    'nx',
   ],
   ignorePaths: [
     // integration test package.json's should never be updated as they're purposely fixed tests
@@ -46,6 +46,10 @@
     {
       extends: ['monorepo:docusaurus'],
       groupName: 'docusaurus',
+    },
+    {
+      extends: ['monorepo:nrwl'],
+      groupName: 'nx',
     },
     {
       extends: ['monorepo:babel'],

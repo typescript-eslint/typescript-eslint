@@ -159,7 +159,7 @@ function isTypeReadonlyObject(
         return Readonlyness.Mutable;
       }
 
-      if (indexInfo.type === type) {
+      if (indexInfo.type === type || seenTypes.has(indexInfo.type)) {
         return Readonlyness.Readonly;
       }
 

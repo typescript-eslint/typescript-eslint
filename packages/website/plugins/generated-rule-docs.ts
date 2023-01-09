@@ -80,7 +80,7 @@ export const generatedRuleDocs: Plugin = () => {
 <admonition type="warning">
   We strongly recommend you do not use this rule or any other formatting linter rules.
   Use a separate dedicated formatter instead.
-  See <a href="/docs/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
+  See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
 </admonition>
 `,
         type: 'jsx',
@@ -298,39 +298,7 @@ export const generatedRuleDocs: Plugin = () => {
       }
     }
 
-    // 6. Add a notice about coming from ESLint core for extension rules
-    if (meta.docs.extendsBaseRule) {
-      root.children.push({
-        children: [
-          {
-            type: 'jsx',
-            value: '<sup>',
-          },
-          {
-            type: 'text',
-            value: 'Taken with ❤️ ',
-          },
-          {
-            type: 'link',
-            title: null,
-            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${meta.docs.extendsBaseRule}.md`,
-            children: [
-              {
-                type: 'text',
-                value: 'from ESLint core',
-              },
-            ],
-          },
-          {
-            type: 'jsx',
-            value: '</sup>',
-          },
-        ],
-        type: 'paragraph',
-      } as mdast.Paragraph);
-    }
-
-    // 7. Also add a link to view the rule's source and test code
+    // 6. Add a link to view the rule's source and test code
     root.children.push(
       {
         children: [
@@ -388,6 +356,42 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'list',
       } as mdast.List,
     );
+
+    // 7. Also add a notice about coming from ESLint core for extension rules
+    if (meta.docs.extendsBaseRule) {
+      root.children.push({
+        children: [
+          {
+            type: 'jsx',
+            value: '<sup>',
+          },
+          {
+            type: 'text',
+            value: 'Taken with ❤️ ',
+          },
+          {
+            type: 'link',
+            title: null,
+            url: `https://github.com/eslint/eslint/blob/main/docs/src/rules/${
+              meta.docs.extendsBaseRule === true
+                ? file.stem
+                : meta.docs.extendsBaseRule
+            }.md`,
+            children: [
+              {
+                type: 'text',
+                value: 'from ESLint core',
+              },
+            ],
+          },
+          {
+            type: 'jsx',
+            value: '</sup>',
+          },
+        ],
+        type: 'paragraph',
+      } as mdast.Paragraph);
+    }
   };
 };
 

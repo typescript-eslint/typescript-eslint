@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty no-annotation-no-value AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+-           AccessorProperty {
+-             type: 'AccessorProperty',
++           ClassAccessorProperty {
++             type: 'ClassAccessorProperty',
+              computed: false,
+-             declare: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'prop',
+
+                range: [23, 27],
+                loc: {
+                  start: { column: 11, line: 2 },
+                  end: { column: 15, line: 2 },
+                },
+              },
+-             override: false,
+              static: false,
+              value: null,
+
+              range: [14, 28],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 16, line: 2 },
+              },
+            },
+          ],
+
+          range: [10, 30],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 1, line: 3 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+        superClass: null,
+
+        range: [0, 30],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 31],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

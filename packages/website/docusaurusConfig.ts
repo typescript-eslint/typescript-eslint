@@ -8,6 +8,7 @@ import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-se
 import type { Config } from '@docusaurus/types';
 import tabsPlugin from 'remark-docusaurus-tabs';
 
+import { version } from './package.json';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
@@ -44,7 +45,7 @@ const presetClassicOptions: PresetClassicOptions = {
 const pluginContentDocsOptions: PluginContentDocsOptions = {
   id: 'base-docs',
   path: '../../docs',
-  routeBasePath: 'docs',
+  routeBasePath: '/',
   sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
   editUrl: `${githubUrl}/edit/main/packages/website/`,
   beforeDefaultRemarkPlugins,
@@ -65,7 +66,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   ],
   image: 'img/logo-twitter-card.png',
   navbar: {
-    title: 'TypeScript ESLint',
+    title: 'typescript-eslint',
     logo: {
       alt: '',
       height: '32px',
@@ -74,22 +75,24 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
     },
     items: [
       {
-        to: 'docs/',
-        activeBasePath: 'docs',
+        to: 'getting-started/',
         label: 'Getting started',
         position: 'left',
       },
       {
         to: 'rules/',
-        activeBasePath: 'rules',
         label: 'Rules',
         position: 'left',
       },
       {
         to: 'blog/',
-        activeBasePath: 'blog',
         label: 'Blog',
         position: 'left',
+      },
+      {
+        position: 'right',
+        value: `v${version}`,
+        type: 'html',
       },
       {
         to: 'play',
@@ -139,7 +142,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         ],
       },
     ],
-    copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
+    copyright: `Copyright © ${new Date().getFullYear()} typescript-eslint, Inc. Built with Docusaurus.`,
   },
   prism: {
     theme: {
@@ -229,8 +232,9 @@ const pluginPwaOptions: PluginPwaOptions = {
 };
 
 const config: Config = {
-  title: 'TypeScript ESLint',
-  tagline: 'Tooling which enables ESLint to support TypeScript',
+  title: 'typescript-eslint',
+  tagline:
+    'The tooling that enables ESLint and Prettier to support TypeScript.',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -271,6 +275,11 @@ const config: Config = {
     {
       rel: 'manifest',
       href: '/img/favicon/site.webmanifest',
+    },
+    {
+      color: '#2656c7',
+      href: '/img/favicon/safari-pinned-tab.svg',
+      rel: 'mask-icon',
     },
   ],
 };

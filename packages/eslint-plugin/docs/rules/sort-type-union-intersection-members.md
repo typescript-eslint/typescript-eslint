@@ -8,7 +8,7 @@ description: 'Enforce members of a type union/intersection to be sorted alphabet
 
 :::danger Deprecated
 
-This rule has been renamed to [`sort-type-union-intersection-members`](./sort-type-union-intersection-members.md).
+This rule has been renamed to [`sort-type-constituents`](./sort-type-constituents.md).
 :::
 
 Sorting union (`|`) and intersection (`&`) types can help:

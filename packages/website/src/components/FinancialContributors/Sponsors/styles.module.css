@@ -7,7 +7,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-end;
+  align-items: stretch;
   max-width: 800px;
   padding: 0;
 }
@@ -15,10 +15,11 @@
 .sponsorsTier li {
   list-style: none;
   margin: 5px;
-  max-width: 120px;
+  max-width: 130px;
 }
 
 .sponsorsTier img {
+  background: white;
   display: block;
   margin: auto;
 }
@@ -29,40 +30,42 @@
   border: none;
 }
 
-.tier-sponsor {
+.tier-platinum-sponsor {
   gap: 32px 16px;
 }
 
-.tier-sponsor img {
+.tier-platinum-sponsor img {
   display: inline-block;
-  max-height: 120px;
-  max-width: 120px;
-  width: 120px;
+  max-height: 130px;
+  max-width: 130px;
+  width: 130px;
 }
 
-.tier-supporter,
-.tier-contributor {
+.tier-gold-supporter,
+.tier-silver-supporter {
   align-items: center;
 }
 
-.tier-supporter {
+.tier-gold-supporter {
   font-size: 0.95rem;
   line-height: 1;
-  gap: 24px;
-  padding-top: 16px;
+  gap: 12px;
+  padding-top: 12px;
 }
 
-.tier-supporter img {
+.tier-gold-supporter img {
   max-height: 75px;
   max-width: 75px;
   width: 75px;
 }
 
-.tier-contributor {
-  gap: 4px 24px;
+.tier-silver-supporter {
+  gap: 4px 16px;
+  margin: auto;
+  max-width: 75%;
 }
 
-.tier-contributor img {
+.tier-silver-supporter img {
   max-height: 45px;
   max-width: 45px;
   width: 45px;
@@ -80,5 +83,9 @@
     margin: 16px 0;
     width: auto;
     padding: 0 60px;
+  }
+
+  .tier-gold-supporter {
+    margin-bottom: 0;
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/experimental-utils",
-  "version": "5.41.0",
+  "version": "5.48.0",
   "description": "(Experimental) Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -34,11 +34,11 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "eslint . --ignore-path='../../.eslintignore'",
+    "lint": "nx lint",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "5.41.0"
+    "@typescript-eslint/utils": "5.48.0"
   },
   "peerDependencies": {
     "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"

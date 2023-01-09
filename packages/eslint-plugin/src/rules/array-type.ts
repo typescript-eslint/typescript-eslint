@@ -252,8 +252,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const type = typeParams[0];
-        const typeParens =
-          !util.isParenthesized(type, sourceCode) && typeNeedsParentheses(type);
+        const typeParens = typeNeedsParentheses(type);
         const parentParens =
           readonlyPrefix &&
           node.parent?.type === AST_NODE_TYPES.TSArrayType &&

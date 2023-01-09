@@ -380,6 +380,27 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    {
+      name: 'circular readonly types (Bug: #5875)',
+      code: `
+        interface Obj1 {
+          readonly [K: string]: Obj2;
+        }
+        
+        interface Obj2 {
+          readonly [K: string]: Obj1;
+        }
+        
+        function foo(event: Obj1): void {}
+      `,
+      options: [
+        {
+          checkParameterProperties: true,
+          ignoreInferredTypes: false,
+          ...readonlynessOptionsDefaults,
+        },
+      ],
+    },
     // Allowlist
     {
       code: `
