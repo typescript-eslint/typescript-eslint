@@ -311,6 +311,69 @@ The following rules do not have equivalent checks in TypeScript, so we recommend
 - `import/no-unused-modules`
 - `import/no-deprecated`
 
+#### `import/extensions`
+
+There are two uses for this rule:
+
+1. to enforce file extensions are always used,
+2. to enforce file extensions are never used.
+
+##### Enforcing extensions are used
+
+If you want to enforce file extensions are always used and you're **NOT** using `moduleResolution` `node16` or `nodenext`, then there's not really a good alternative for you, and you should continue using the `import/extensions` lint rule.
+
+If you want to enforce file extensions are always used and you **ARE** using `moduleResolution` `node16` or `nodenext`, then you don't need to use the lint rule at all because TypeScript will automatically enforce that you include extensions (TS 2834 & 2835)!
+
+##### Enforcing extensions are not used
+
+On the surface `import/extensions` seems like it should be fast for this use case, however the rule isn't just a pure AST-check - it has to resolve modules on disk so that it doesn't false positive on cases where you are importing modules with an extension as part of their name (eg `foo.js` resolves to `node_modules/foo.js/index.js`, so the `.js` is required). This disk lookup is costly and thus makes the rule slow.
+
+If your project doesn't use any `npm` packages with a file extension in their name, nor do you name your files with two extensions (like `bar.js.ts`), then this extra cost probably isn't worth it, and you can use a much simpler check using the [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax) lint rule.
+
+The below config is several orders of magnitude faster than `import/extensions` as it does not do disk lookups, however it will false-positive on cases like the aforementioned `foo.js` module.
+
+```js
+function banImportExtension(extension) {
+  const message = `Unexpected use of file extension (.${extension}) in import`;
+  const literalAttributeMatcher = `Literal[value=/\\.${extension}$/]`;
+  return [
+    {
+      // import foo from 'bar.js';
+      selector: `ImportDeclaration > ${literalAttributeMatcher}.source`,
+      message,
+    },
+    {
+      // const foo = import('bar.js');
+      selector: `ImportExpression > ${literalAttributeMatcher}.source`,
+      message,
+    },
+    {
+      // type Foo = typeof import('bar.js');
+      selector: `TSImportType > TSLiteralType > ${literalAttributeMatcher}`,
+      message,
+    },
+    {
+      // const foo = require('foo.js');
+      selector: `CallExpression[callee.name = "require"] > ${literalAttributeMatcher}.arguments`,
+      message,
+    },
+  ];
+}
+
+module.exports = {
+  // ... other config ...
+  rules: {
+    'no-restricted-syntax': [
+      'error',
+      ...banImportExtension('js'),
+      ...banImportExtension('jsx'),
+      ...banImportExtension('ts'),
+      ...banImportExtension('tsx'),
+    ],
+  },
+};
+```
+
 ### The `indent` / `@typescript-eslint/indent` rules
 
 This rule helps ensure your codebase follows a consistent indentation pattern.
