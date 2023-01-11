@@ -133,9 +133,9 @@ interface Foo {
 
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
-Each item has to be either a local type (`{typeName: "Foo", source: "local"}`), a type from the default library (`{typeName: "Foo", source: "default-lib"}`), or a file from a specific package (`{typeName: "Foo", source: "package", package: "foo-lib"}`, this also works for types defined in a typings package).
+Each item has to be either a type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being optional), a type from the default library (`{from: "lib", name: "Foo"}`), or a file from a specific package (`{from: "package", name: "Foo", source: "foo-lib"}`, this also works for types defined in a typings package). Additionaly, multiple sources may be combined (`{from: ["file", "package"], name: "Foo"}`) or a type may be defined just as a simple string, which then matches the type independtly of its origin.
 
-Examples of code for this rule with `{allowlist: [{typeName: "Foo", source: "local"}, {typeName: "HTMLElement", source: "default-lib"}, {typeName: "Bar", source: "package", package: "bar-lib"}]}`:
+Examples of code for this rule with `{allowlist: [{source: "file", name: "Foo"}, {source: "lib", name: "HTMLElement"}, {from: "package", name: "Bar", source: "bar-lib"}]}`:
 
 <!--tabs-->
 
