@@ -2,7 +2,6 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import Ajv from 'ajv';
 import path from 'path';
-import type * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
 import {
@@ -181,6 +180,21 @@ describe('TypeOrValueSpecifier', () => {
     }
 
     it.each<[string, TypeOrValueSpecifier]>([
+      ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
+      ['type Test = RegExp;', 'RegExp'],
+    ])('correctly matches a universal string specifier', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['interface Foo {prop: string}; type Test = Foo;', 'Bar'],
+      ['interface Foo {prop: string}; type Test = Foo;', 'RegExp'],
+      ['type Test = RegExp;', 'Foo'],
+      ['type Test = RegExp;', 'BigInt'],
+    ])(
+      "correctly doesn't match a mismatched universal string specifier",
+      runTestNegative,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
       [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'file', name: 'Foo' },
@@ -201,7 +215,7 @@ describe('TypeOrValueSpecifier', () => {
           source: 'tests/fixtures/file.ts',
         },
       ],
-    ])('correctly matches a file type', runTestPositive);
+    ])('correctly matches a file specifier', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([
       [
@@ -224,16 +238,69 @@ describe('TypeOrValueSpecifier', () => {
           source: 'tests/fixtures/wrong-file.ts',
         },
       ],
-    ])("correctly doesn't match an incorrect file type", runTestNegative);
+    ])("correctly doesn't match a mismatched file specifier", runTestNegative);
 
     it.each<[string, TypeOrValueSpecifier]>([
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
       ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
-    ])('correctly matches a lib type', runTestPositive);
+    ])('correctly matches a lib specifier', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
-    ])("correctly doesn't match an incorrect lib type", runTestNegative);
+    ])("correctly doesn't match a mismatched lib specifier", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'lib', name: 'Foo' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'lib', name: ['Foo', 'Bar'] },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'package', name: 'Foo', source: 'foo-package' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'package', name: ['Foo', 'Bar'], source: 'foo-package' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'package', name: 'Foo', source: 'foo-package' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        {
+          from: 'package',
+          name: ['Foo', 'Bar'],
+          source: 'foo-package',
+        },
+      ],
+      ['type Test = RegExp;', { from: 'file', name: 'RegExp' }],
+      ['type Test = RegExp;', { from: 'file', name: ['RegExp', 'BigInt'] }],
+      [
+        'type Test = RegExp;',
+        { from: 'file', name: 'RegExp', source: 'tests/fixtures/file.ts' },
+      ],
+      [
+        'type Test = RegExp;',
+        {
+          from: 'file',
+          name: ['RegExp', 'BigInt'],
+          source: 'tests/fixtures/file.ts',
+        },
+      ],
+      [
+        'type Test = RegExp;',
+        { from: 'package', name: 'RegExp', source: 'foo-package' },
+      ],
+      [
+        'type Test = RegExp;',
+        { from: 'package', name: ['RegExp', 'BigInt'], source: 'foo-package' },
+      ],
+    ])("correctly doesn't match a mismatched specifier type", runTestNegative);
   });
 });
