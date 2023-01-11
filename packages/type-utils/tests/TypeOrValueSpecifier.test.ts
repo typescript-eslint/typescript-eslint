@@ -1,6 +1,14 @@
+import { parseForESLint } from '@typescript-eslint/parser';
+import type { TSESTree } from '@typescript-eslint/utils';
 import Ajv from 'ajv';
+import path from 'path';
+import type * as ts from 'typescript';
 
-import { typeOrValueSpecifierSchema } from '../src/TypeOrValueSpecifier';
+import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
+import {
+  typeMatchesSpecifier,
+  typeOrValueSpecifierSchema,
+} from '../src/TypeOrValueSpecifier';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
@@ -132,5 +140,100 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: ['file'] }],
       [{ from: ['file'], name: 'MyType', unrelatedProperty: '' }],
     ])("doesn't match a malformed multi-source specifier", runTestNegative);
+  });
+
+  describe('typeMatchesSpecifier', () => {
+    function runTests(
+      code: string,
+      specifier: TypeOrValueSpecifier,
+      expected: boolean,
+    ): void {
+      const rootDir = path.join(__dirname, 'fixtures');
+      const { ast, services } = parseForESLint(code, {
+        project: './tsconfig.json',
+        filePath: path.join(rootDir, 'file.ts'),
+        tsconfigRootDir: rootDir,
+      });
+      const type = services.program
+        .getTypeChecker()
+        .getTypeAtLocation(
+          services.esTreeNodeToTSNodeMap.get(
+            (ast.body[0] as TSESTree.TSTypeAliasDeclaration).id,
+          ),
+        );
+      expect(typeMatchesSpecifier(type, specifier, services.program)).toBe(
+        expected,
+      );
+    }
+
+    function runTestPositive(
+      code: string,
+      specifier: TypeOrValueSpecifier,
+    ): void {
+      runTests(code, specifier, true);
+    }
+
+    function runTestNegative(
+      code: string,
+      specifier: TypeOrValueSpecifier,
+    ): void {
+      runTests(code, specifier, false);
+    }
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: ['Foo', 'Bar'] },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', source: 'tests/fixtures/file.ts' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: ['Foo', 'Bar'],
+          source: 'tests/fixtures/file.ts',
+        },
+      ],
+    ])('correctly matches a file type', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Bar' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: ['Bar', 'Baz'] },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', source: 'tests/fixtures/wrong-file.ts' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: ['Foo', 'Bar'],
+          source: 'tests/fixtures/wrong-file.ts',
+        },
+      ],
+    ])("correctly doesn't match an incorrect file type", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
+      ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
+    ])('correctly matches a lib type', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
+      ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
+    ])("correctly doesn't match an incorrect lib type", runTestNegative);
   });
 });
