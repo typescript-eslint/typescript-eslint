@@ -54,18 +54,6 @@ function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
   return Object.prototype.hasOwnProperty.call(node, 'symbol');
 }
 
-function isTypeExcepted(
-  type: ts.Type,
-  program: ts.Program,
-  options: ReadonlynessOptions,
-): boolean {
-  return (
-    options.allowlist?.some(specifier =>
-      typeMatchesSpecifier(type, specifier, program),
-    ) ?? false
-  );
-}
-
 function isTypeReadonlyArrayOrTuple(
   program: ts.Program,
   type: ts.Type,
@@ -248,7 +236,11 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  if (isTypeExcepted(type, program, options)) {
+  if (
+    options.allowlist?.some(specifier =>
+      typeMatchesSpecifier(type, specifier, program),
+    )
+  ) {
     return Readonlyness.Readonly;
   }
 
