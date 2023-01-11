@@ -157,7 +157,6 @@ function specifierNameMatches(
 }
 
 function typeMatchesFileSpecifier(
-  type: ts.Type,
   specifier: FileSpecifier,
   declarationFiles: Array<ts.SourceFile>,
   program: ts.Program,
@@ -169,8 +168,14 @@ function typeMatchesFileSpecifier(
   ) {
     return false;
   }
-  // TODO: Check filename against source.
-  return true;
+  const source = specifier.source;
+  if (source === undefined) {
+    return true;
+  }
+  return declarationFiles.some(
+    declaration =>
+      declaration.fileName === program.getCurrentDirectory() + '/' + source,
+  );
 }
 
 function typeIsFromLib(
@@ -194,7 +199,6 @@ function typeMatchesPackageSpecifier(
 }
 
 function typeMatchesMultiSourceSpecifier(
-  type: ts.Type,
   specifier: MultiSourceSpecifier,
   declarationFiles: Array<ts.SourceFile>,
   program: ts.Program,
@@ -202,7 +206,6 @@ function typeMatchesMultiSourceSpecifier(
   if (
     specifier.from.includes('file') &&
     typeMatchesFileSpecifier(
-      type,
       { from: 'file', name: specifier.name },
       declarationFiles,
       program,
@@ -247,7 +250,6 @@ export function typeMatchesSpecifier(
       ?.map(declaration => declaration.getSourceFile()) ?? [];
   if (isMultiSourceSpecifier(specifier)) {
     return typeMatchesMultiSourceSpecifier(
-      type,
       specifier,
       declarationFiles,
       program,
@@ -255,12 +257,7 @@ export function typeMatchesSpecifier(
   }
   switch (specifier.from) {
     case 'file':
-      return typeMatchesFileSpecifier(
-        type,
-        specifier,
-        declarationFiles,
-        program,
-      );
+      return typeMatchesFileSpecifier(specifier, declarationFiles, program);
     case 'lib':
       return typeIsFromLib(declarationFiles, program);
     case 'package':
