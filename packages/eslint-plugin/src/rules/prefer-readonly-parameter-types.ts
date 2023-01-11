@@ -5,7 +5,7 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowlist?: Array<util.TypeAllowlistItem>;
+    allowlist?: Array<util.TypeOrValueSpecifier>;
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
     treatMethodsAsReadonly?: boolean;

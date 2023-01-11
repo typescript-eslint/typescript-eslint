@@ -313,12 +313,12 @@ describe('isTypeReadonly', () => {
       const options: ReadonlynessOptions = {
         allowlist: [
           {
-            typeName: 'RegExp',
-            source: 'default-lib',
+            from: 'lib',
+            name: 'RegExp',
           },
           {
-            typeName: 'Foo',
-            source: 'local',
+            from: 'file',
+            name: 'Foo',
           },
         ],
       };

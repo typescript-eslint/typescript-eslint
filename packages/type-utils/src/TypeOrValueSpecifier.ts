@@ -1,17 +1,19 @@
+import type * as ts from 'typescript';
+
 interface FileSpecifier {
   from: 'file';
-  name: string | string[];
+  name: string | Array<string>;
   source?: string;
 }
 
 interface LibSpecifier {
   from: 'lib';
-  name: string | string[];
+  name: string | Array<string>;
 }
 
 interface PackageSpecifier {
   from: 'package';
-  name: string | string[];
+  name: string | Array<string>;
   source: string;
 }
 
@@ -137,3 +139,131 @@ export const typeOrValueSpecifierSchema = {
     },
   ],
 };
+
+function isMultiSourceSpecifier(
+  specifier: TypeOrValueSpecifier,
+): specifier is MultiSourceSpecifier {
+  return typeof specifier === 'object' && Array.isArray(specifier.from);
+}
+
+function specifierNameMatches(
+  type: ts.Type,
+  name: string | Array<string>,
+): boolean {
+  if (typeof name === 'string') {
+    name = [name];
+  }
+  return name.some(item => item === type.getSymbol()?.escapedName);
+}
+
+function typeMatchesFileSpecifier(
+  type: ts.Type,
+  specifier: FileSpecifier,
+  declarationFiles: Array<ts.SourceFile>,
+  program: ts.Program,
+): boolean {
+  if (
+    !declarationFiles.some(declaration =>
+      declaration.fileName.startsWith(program.getCurrentDirectory()),
+    )
+  ) {
+    return false;
+  }
+  // TODO: Check filename against source.
+  return true;
+}
+
+function typeIsFromLib(
+  declarationFiles: Array<ts.SourceFile>,
+  program: ts.Program,
+): boolean {
+  return declarationFiles.some(declaration =>
+    program.isSourceFileDefaultLibrary(declaration),
+  );
+}
+
+function typeMatchesPackageSpecifier(
+  specifier: PackageSpecifier,
+  declarationFiles: Array<ts.SourceFile>,
+): boolean {
+  return declarationFiles.some(
+    declaration =>
+      declaration.fileName.includes(`node_modules/${specifier.source}/`) ||
+      declaration.fileName.includes(`node_modules/@types/${specifier.source}/`),
+  );
+}
+
+function typeMatchesMultiSourceSpecifier(
+  type: ts.Type,
+  specifier: MultiSourceSpecifier,
+  declarationFiles: Array<ts.SourceFile>,
+  program: ts.Program,
+): boolean {
+  if (
+    specifier.from.includes('file') &&
+    typeMatchesFileSpecifier(
+      type,
+      { from: 'file', name: specifier.name },
+      declarationFiles,
+      program,
+    )
+  ) {
+    return true;
+  }
+  if (
+    specifier.from.includes('lib') &&
+    typeIsFromLib(declarationFiles, program)
+  ) {
+    return true;
+  }
+  if (
+    specifier.from.includes('package') &&
+    typeMatchesPackageSpecifier(
+      // TODO: Solve what to do with the source.
+      { from: 'package', name: specifier.name, source: '' },
+      declarationFiles,
+    )
+  ) {
+    return true;
+  }
+  return false;
+}
+
+export function typeMatchesSpecifier(
+  type: ts.Type,
+  specifier: TypeOrValueSpecifier,
+  program: ts.Program,
+): boolean {
+  if (typeof specifier === 'string') {
+    return specifierNameMatches(type, specifier);
+  }
+  if (!specifierNameMatches(type, specifier.name)) {
+    return false;
+  }
+  const declarationFiles =
+    type
+      .getSymbol()
+      ?.getDeclarations()
+      ?.map(declaration => declaration.getSourceFile()) ?? [];
+  if (isMultiSourceSpecifier(specifier)) {
+    return typeMatchesMultiSourceSpecifier(
+      type,
+      specifier,
+      declarationFiles,
+      program,
+    );
+  }
+  switch (specifier.from) {
+    case 'file':
+      return typeMatchesFileSpecifier(
+        type,
+        specifier,
+        declarationFiles,
+        program,
+      );
+    case 'lib':
+      return typeIsFromLib(declarationFiles, program);
+    case 'package':
+      return typeMatchesPackageSpecifier(specifier, declarationFiles);
+  }
+}

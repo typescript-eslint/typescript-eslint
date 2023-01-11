@@ -11,8 +11,11 @@ import {
 import * as ts from 'typescript';
 
 import { getTypeOfPropertyOfType } from './propertyTypes';
-import type { TypeAllowlistItem } from './TypeAllowListItem';
-import { typeAllowListItemSchema } from './TypeAllowListItem';
+import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
+import {
+  typeMatchesSpecifier,
+  typeOrValueSpecifierSchema,
+} from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -25,7 +28,7 @@ const enum Readonlyness {
 
 export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
-  readonly allowlist?: Array<TypeAllowlistItem>;
+  readonly allowlist?: Array<TypeOrValueSpecifier>;
 }
 
 export const readonlynessOptionsSchema = {
@@ -37,7 +40,7 @@ export const readonlynessOptionsSchema = {
     },
     allowlist: {
       type: 'array',
-      items: typeAllowListItemSchema,
+      items: typeOrValueSpecifierSchema,
     },
   },
 };
@@ -56,35 +59,11 @@ function isTypeExcepted(
   program: ts.Program,
   options: ReadonlynessOptions,
 ): boolean {
-  const typeName = type.getSymbol()?.escapedName;
-  const matchingItems =
-    options.allowlist?.filter(item => item.typeName === typeName) ?? [];
-  for (const item of matchingItems) {
-    const declarationFiles =
-      type
-        .getSymbol()
-        ?.getDeclarations()
-        ?.map(declaration => declaration.getSourceFile()) ?? [];
-    for (const declaration of declarationFiles) {
-      if (
-        // A local type defined in the current package
-        (item.source === 'local' &&
-          declaration.fileName.startsWith(program.getCurrentDirectory())) ||
-        // A type from the default library
-        (item.source === 'default-lib' &&
-          program.isSourceFileDefaultLibrary(declaration)) ||
-        // A type from a specified third-party package
-        (item.source === 'package' &&
-          (declaration.fileName.includes(`node_modules/${item.package}/`) ||
-            declaration.fileName.includes(
-              `node_modules/@types/${item.package}/`,
-            )))
-      ) {
-        return true;
-      }
-    }
-  }
-  return false;
+  return (
+    options.allowlist?.some(specifier =>
+      typeMatchesSpecifier(type, specifier, program),
+    ) ?? false
+  );
 }
 
 function isTypeReadonlyArrayOrTuple(
