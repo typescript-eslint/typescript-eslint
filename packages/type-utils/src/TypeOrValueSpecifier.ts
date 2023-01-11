@@ -167,26 +167,6 @@ function typeMatchesFileSpecifier(
   );
 }
 
-function typeIsFromLib(
-  declarationFiles: Array<ts.SourceFile>,
-  program: ts.Program,
-): boolean {
-  return declarationFiles.some(declaration =>
-    program.isSourceFileDefaultLibrary(declaration),
-  );
-}
-
-function typeMatchesPackageSpecifier(
-  specifier: PackageSpecifier,
-  declarationFiles: Array<ts.SourceFile>,
-): boolean {
-  return declarationFiles.some(
-    declaration =>
-      declaration.fileName.includes(`node_modules/${specifier.source}/`) ||
-      declaration.fileName.includes(`node_modules/@types/${specifier.source}/`),
-  );
-}
-
 export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,
@@ -207,8 +187,16 @@ export function typeMatchesSpecifier(
     case 'file':
       return typeMatchesFileSpecifier(specifier, declarationFiles, program);
     case 'lib':
-      return typeIsFromLib(declarationFiles, program);
+      return declarationFiles.some(declaration =>
+        program.isSourceFileDefaultLibrary(declaration),
+      );
     case 'package':
-      return typeMatchesPackageSpecifier(specifier, declarationFiles);
+      return declarationFiles.some(
+        declaration =>
+          declaration.fileName.includes(`node_modules/${specifier.source}/`) ||
+          declaration.fileName.includes(
+            `node_modules/@types/${specifier.source}/`,
+          ),
+      );
   }
 }
