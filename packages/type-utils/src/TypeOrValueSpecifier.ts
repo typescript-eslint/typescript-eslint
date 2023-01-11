@@ -1,3 +1,4 @@
+import path from 'path';
 import type * as ts from 'typescript';
 
 interface FileSpecifier {
@@ -172,9 +173,9 @@ function typeMatchesFileSpecifier(
   if (source === undefined) {
     return true;
   }
+  const specifierPath = path.join(program.getCurrentDirectory(), source);
   return declarationFiles.some(
-    declaration =>
-      declaration.fileName === program.getCurrentDirectory() + '/' + source,
+    declaration => declaration.fileName === specifierPath,
   );
 }
 
