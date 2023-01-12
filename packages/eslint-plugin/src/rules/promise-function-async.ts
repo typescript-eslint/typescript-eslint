@@ -111,10 +111,12 @@ export default util.createRule<Options, MessageIds>({
       const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
       if (
-        !util.containsAllTypesByName(
+        !util.containsTypesByName(
           returnType,
           allowAny!,
           allAllowedPromiseNames,
+          // Only if a return type is explicitly declared must it match all
+          Boolean(node.returnType),
         )
       ) {
         // Return type is not a promise
