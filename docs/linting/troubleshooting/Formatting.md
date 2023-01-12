@@ -29,7 +29,7 @@ Linters often take seconds or more to run because they apply many logical rules 
 
 Linters are designed to run in a parse, check, report, fix cycle. This means that there is a lot of intermediate work that needs to be done before a linter can fix a formatting issue with your code.
 
-Additionally linters typically run each rule isolated from one another. This has several problems with it like:
+Additionally linters typically run each rule isolated from one another. This has several problems with it such as:
 
 - any two lint rules can't share config meaning one lint rule's fixer might introduce a violation of another lint rule's fixer (eg one lint rule might use the incorrect indentation character).
 - lint rule fixers can conflict (apply to the same code range), forcing the linter to perform an additional cycle to attempt to apply a fixer to a clean set of code.
