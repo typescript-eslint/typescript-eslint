@@ -17,6 +17,11 @@
   text-align: center;
 }
 
+.hero__logo {
+  height: 10rem;
+  width: 10rem;
+}
+
 .hero__subtitle {
   margin-bottom: 24px;
 }
@@ -33,6 +38,10 @@
   --ifm-font-color-base: var(--ifm-color-white);
   --ifm-button-color: var(--ifm-color-white);
   margin: 1rem 1rem;
+}
+
+.buttonCentered {
+  margin: auto;
 }
 
 .buttonPrimary {
