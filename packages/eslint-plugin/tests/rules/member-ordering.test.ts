@@ -1648,6 +1648,291 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  readonly B: string;
+  readonly A: string;
+  constructor() {}
+  D: string;
+  C: string;
+  E(): void;
+  F(): void;
+}
+      `,
+      options: [{ default: ['readonly-field', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  A: string;
+  B: string;
+  private readonly C: string;
+  private D: string;
+}
+      `,
+      options: [
+        {
+          default: ['public-field', 'private-readonly-field', 'private-field'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private readonly A: string;
+  constructor() {}
+  private B: string;
+}
+      `,
+      options: [
+        {
+          default: ['private-readonly-field', 'constructor', 'private-field'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  public A: string;
+  private readonly B: string;
+}
+      `,
+      options: [
+        {
+          default: ['private-readonly-field', 'public-instance-field'],
+          classes: ['public-instance-field', 'private-readonly-field'],
+        },
+      ],
+    },
+    // class + ignore readonly
+    {
+      code: `
+class Foo {
+  public A(): string;
+  public B(): string;
+  public C(): string;
+
+  d: string;
+  readonly e: string;
+  f: string;
+}
+      `,
+      options: [
+        {
+          default: ['public-method', 'field'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private readonly A: string;
+  readonly B: string;
+  C: string;
+  constructor() {}
+  @Dec() private D: string;
+  private E(): void;
+  set F() {}
+  G(): void;
+}
+      `,
+      options: [
+        {
+          default: [
+            'readonly-field',
+            'public-field',
+            'constructor',
+            ['private-decorated-field', 'public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  public static readonly SA: string;
+  protected static readonly SB: string;
+  private static readonly SC: string;
+  static readonly #SD: string;
+
+  public readonly IA: string;
+  protected readonly IB: string;
+  private readonly IC: string;
+  readonly #ID: string;
+
+  public abstract readonly AA: string;
+  protected abstract readonly AB: string;
+
+  @Dec public readonly DA: string;
+  @Dec protected readonly DB: string;
+  @Dec private readonly DC: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'public-static-readonly-field',
+            'protected-static-readonly-field',
+            'private-static-readonly-field',
+            '#private-static-readonly-field',
+
+            'static-readonly-field',
+
+            'public-instance-readonly-field',
+            'protected-instance-readonly-field',
+            'private-instance-readonly-field',
+            '#private-instance-readonly-field',
+
+            'instance-readonly-field',
+
+            'public-readonly-field',
+            'protected-readonly-field',
+            'private-readonly-field',
+            '#private-readonly-field',
+
+            'readonly-field',
+
+            'public-abstract-readonly-field',
+            'protected-abstract-readonly-field',
+
+            'abstract-readonly-field',
+
+            'public-decorated-readonly-field',
+            'protected-decorated-readonly-field',
+            'private-decorated-readonly-field',
+            'decorated-readonly-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly DA: string;
+  @Dec protected readonly DB: string;
+  @Dec private readonly DC: string;
+
+  public static readonly SA: string;
+  protected static readonly SB: string;
+  private static readonly SC: string;
+  static readonly #SD: string;
+
+  public readonly IA: string;
+  protected readonly IB: string;
+  private readonly IC: string;
+  readonly #ID: string;
+
+  public abstract readonly AA: string;
+  protected abstract readonly AB: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'decorated-readonly-field',
+            'static-readonly-field',
+            'instance-readonly-field',
+            'abstract-readonly-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly DA: string;
+  @Dec protected readonly DB: string;
+  @Dec private readonly DC: string;
+
+  public static readonly SA: string;
+  public readonly IA: string;
+  public abstract readonly AA: string;
+
+  protected static readonly SB: string;
+  protected readonly IB: string;
+  protected abstract readonly AB: string;
+
+  private static readonly SC: string;
+  private readonly IC: string;
+
+  static readonly #SD: string;
+  readonly #ID: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'decorated-readonly-field',
+            'public-readonly-field',
+            'protected-readonly-field',
+            'private-readonly-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly DA: string;
+  @Dec protected readonly DB: string;
+  @Dec private readonly DC: string;
+
+  public static readonly SA: string;
+  public readonly IA: string;
+  static readonly #SD: string;
+  readonly #ID: string;
+
+  protected static readonly SB: string;
+  protected readonly IB: string;
+
+  private static readonly SC: string;
+  private readonly IC: string;
+
+  public abstract readonly AA: string;
+  protected abstract readonly AB: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'decorated-readonly-field',
+            ['public-readonly-field', 'readonly-field'],
+            'protected-readonly-field',
+            'private-readonly-field',
+            'abstract-readonly-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly A: string;
+  @Dec public B: string;
+
+  public readonly C: string;
+  public static readonly D: string;
+  public E: string;
+  public static F: string;
+
+  static readonly #G: string;
+  readonly #H: string;
+  static #I: string;
+  #J: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            ['decorated-field', 'decorated-readonly-field'],
+            ['field', 'readonly-field'],
+            ['#private-field', '#private-readonly-field'],
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -4406,6 +4691,125 @@ class Foo {
             rank: 'private method',
           },
           line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  B: string;
+  readonly A: string = '';
+  C: string = '';
+  constructor() {}
+  D() {}
+  E() {}
+}
+      `,
+      options: [{ default: ['readonly-field', 'field'] }],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  A: string;
+  private C(): void;
+  constructor() {}
+  private readonly B: string;
+  set D() {}
+  E(): void;
+}
+      `,
+      options: [
+        {
+          default: [
+            'private-readonly-field',
+            'public-field',
+            'constructor',
+            ['public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'constructor',
+            rank: 'public set, private method',
+          },
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'B',
+            rank: 'public field',
+          },
+          line: 6,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly A: string;
+  public readonly B: string;
+  public static readonly C: string;
+  static readonly #D: string;
+  readonly #E: string;
+
+  @Dec public F: string;
+  public G: string;
+  public static H: string;
+  static readonly #I: string;
+  readonly #J: string;
+}
+      `,
+      options: [
+        {
+          default: ['decorated-field', 'readonly-field', 'field'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'F',
+            rank: 'readonly field',
+          },
+          line: 9,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 12,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 13,
           column: 3,
         },
       ],

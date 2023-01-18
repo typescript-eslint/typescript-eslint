@@ -9,9 +9,12 @@ export type MessageIds =
   | 'incorrectOrder'
   | 'incorrectRequiredMembersOrder';
 
+type ReadonlyType = 'readonly-field';
+
 type MemberKind =
   | 'call-signature'
   | 'constructor'
+  | ReadonlyType
   | 'field'
   | 'get'
   | 'method'
@@ -19,7 +22,7 @@ type MemberKind =
   | 'signature'
   | 'static-initialization';
 
-type DecoratedMemberKind = 'field' | 'method' | 'get' | 'set';
+type DecoratedMemberKind = ReadonlyType | 'field' | 'method' | 'get' | 'set';
 
 type NonCallableMemberKind = Exclude<MemberKind, 'constructor' | 'signature'>;
 
@@ -259,6 +262,7 @@ const allMemberTypes = Array.from(
   (
     [
       'signature',
+      'readonly-field',
       'field',
       'method',
       'call-signature',
@@ -284,7 +288,8 @@ const allMemberTypes = Array.from(
         // Only class instance fields, methods, get and set can have decorators attached to them
         if (
           accessibility !== '#private' &&
-          (type === 'field' ||
+          (type === 'readonly-field' ||
+            type === 'field' ||
             type === 'method' ||
             type === 'get' ||
             type === 'set')
@@ -329,6 +334,8 @@ const functionExpressions = [
  * @param node the node to be evaluated.
  */
 function getNodeType(node: Member): MemberKind | null {
+  const readonly = 'readonly' in node && node.readonly === true;
+
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
@@ -340,13 +347,15 @@ function getNodeType(node: Member): MemberKind | null {
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
-      return 'field';
+      return readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
+        : readonly
+        ? 'readonly-field'
         : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
-      return 'field';
+      return readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
       return 'signature';
     case AST_NODE_TYPES.StaticBlock:
@@ -514,13 +523,20 @@ function getRank(
     const decorated = 'decorators' in node && node.decorators!.length > 0;
     if (
       decorated &&
-      (type === 'field' ||
+      (type === 'readonly-field' ||
+        type === 'field' ||
         type === 'method' ||
         type === 'get' ||
         type === 'set')
     ) {
       memberGroups.push(`${accessibility}-decorated-${type}`);
       memberGroups.push(`decorated-${type}`);
+
+      if (type === 'readonly-field') {
+        // if its readonly-field, push also its superset type
+        memberGroups.push(`${accessibility}-decorated-field`);
+        memberGroups.push(`decorated-field`);
+      }
     }
 
     if (type !== 'signature' && type !== 'static-initialization') {
@@ -528,13 +544,27 @@ function getRank(
         // Constructors have no scope
         memberGroups.push(`${accessibility}-${scope}-${type}`);
         memberGroups.push(`${scope}-${type}`);
+
+        if (type === 'readonly-field') {
+          // if its readonly-field, push also its superset type
+          memberGroups.push(`${accessibility}-${scope}-field`);
+          memberGroups.push(`${scope}-field`);
+        }
       }
 
       memberGroups.push(`${accessibility}-${type}`);
+      if (type === 'readonly-field') {
+        // if its readonly-field, push also its superset type
+        memberGroups.push(`${accessibility}-field`);
+      }
     }
   }
 
   memberGroups.push(type);
+  if (type === 'readonly-field') {
+    // if its readonly-field, push also its superset type
+    memberGroups.push('field');
+  }
 
   // ...then get the rank order for those member groups based on the node
   return getRankOrder(memberGroups, orderConfig);
@@ -621,15 +651,39 @@ export default util.createRule<Options, MessageIds>({
           interfaces: {
             oneOf: [
               neverConfig,
-              arrayConfig(['signature', 'field', 'method', 'constructor']),
-              objectConfig(['signature', 'field', 'method', 'constructor']),
+              arrayConfig([
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
+              objectConfig([
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
             ],
           },
           typeLiterals: {
             oneOf: [
               neverConfig,
-              arrayConfig(['signature', 'field', 'method', 'constructor']),
-              objectConfig(['signature', 'field', 'method', 'constructor']),
+              arrayConfig([
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
+              objectConfig([
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
             ],
           },
         },

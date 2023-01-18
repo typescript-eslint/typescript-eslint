@@ -58,7 +58,7 @@ The supported member attributes are, in order:
 
 - **Accessibility** (`'public' | 'protected' | 'private' | '#private'`)
 - **Decoration** (`'decorated'`): Whether the member has an explicit accessibility decorator
-- **Kind** (`'call-signature' | 'constructor' | 'field' | 'get' | 'method' | 'set' | 'signature'`)
+- **Kind** (`'call-signature' | 'constructor' | 'field' | 'readonly-field' | 'get' | 'method' | 'set' | 'signature'`)
 
 Member attributes may be joined with a `'-'` to combine into more specific groups.
 For example, `'public-field'` would come before `'private-field'`.
@@ -1017,34 +1017,56 @@ The most explicit and granular form is the following:
 
   // Fields
   "public-static-field",
+  "public-static-readonly-field",
   "protected-static-field",
+  "protected-static-readonly-field",
   "private-static-field",
+  "private-static-readonly-field",
   "#private-static-field",
+  "#private-static-readonly-field",
 
   "public-decorated-field",
+  "public-decorated-readonly-field",
   "protected-decorated-field",
+  "protected-decorated-readonly-field",
   "private-decorated-field",
+  "private-decorated-readonly-field",
 
   "public-instance-field",
+  "public-instance-readonly-field",
   "protected-instance-field",
+  "protected-instance-readonly-field",
   "private-instance-field",
+  "private-instance-readonly-field",
   "#private-instance-field",
+  "#private-instance-readonly-field",
 
   "public-abstract-field",
+  "public-abstract-readonly-field",
   "protected-abstract-field",
+  "protected-abstract-readonly-field",
 
   "public-field",
+  "public-readonly-field",
   "protected-field",
+  "protected-readonly-field",
   "private-field",
+  "private-readonly-field"
   "#private-field",
+  "#private-readonly-field"
 
   "static-field",
+  "static-readonly-field",
   "instance-field",
+  "instance-readonly-field"
   "abstract-field",
+  "abstract-readonly-field",
 
   "decorated-field",
+  "decorated-readonly-field",
 
   "field",
+  "readonly-field",
 
   // Static initialization
   "static-initialization",
@@ -1287,6 +1309,21 @@ The third grouping option is to ignore both scope and accessibility.
   // Methods
   "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
   //                "public-abstract-method", "protected-abstract-method"]
+]
+```
+
+### Member Group Types (Readonly Fields)
+
+It is possible to group fields by their `readonly` modifiers.
+
+```jsonc
+[
+  // Index signature
+  // No grouping for index signature.
+
+  // Fields
+  "readonly-field", // = ["public-static-readonly-field", "protected-static-readonly-field", "private-static-readonly-field", "public-instance-readonly-field", "protected-instance-readonly-field", "private-instance-readonly-field", "public-abstract-readonly-field", "protected-abstract-readonly-field"]
+  "field" // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field", "public-abstract-field", "protected-abstract-field"]
 ]
 ```
 
