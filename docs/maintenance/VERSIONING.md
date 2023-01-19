@@ -58,9 +58,9 @@ See: [`@typescript-eslint/parser`](./packages/parser/ TODO JOSH) and [`@typescri
 
 ### ESLint
 
-We endeavour to support the latest stable ESLint versions as soon as possible after the release.
+> The version range of ESLint currently supported is `^6.0.0 || ^7.0.0 || ^8.0.0`.
 
-See the value of `eslint` declared in `@typescript-eslint/eslint-plugin`'s [package.json](./packages/eslint-plugin/package.json).
+These versions are what we test against.
 
 ### Node
 
