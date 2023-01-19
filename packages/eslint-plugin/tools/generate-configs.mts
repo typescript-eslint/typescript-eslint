@@ -13,6 +13,7 @@ interface RulesObject {
 }
 
 async function main(): Promise<void> {
+  // TODO: Standardize & simplify these tools/* scripts once v6 is more stable
   // @ts-expect-error -- ts-node allows us to use import.meta
   const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
