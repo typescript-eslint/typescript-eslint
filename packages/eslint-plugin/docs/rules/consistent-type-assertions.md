@@ -29,7 +29,7 @@ Examples of them include `let x = "hello" as const;` and `let x = <const>"hello"
 
 This option defines the expected assertion style. Valid values for `assertionStyle` are:
 
-- `as` will enforce that you always use `... as foo`.
+- `as` will enforce that you always use `... as foo`. (default)
 - `angle-bracket` will enforce that you always use `<foo>...`
 - `never` will enforce that you do not do any type assertions.
 
