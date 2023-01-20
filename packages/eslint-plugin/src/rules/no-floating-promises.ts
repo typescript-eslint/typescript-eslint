@@ -4,6 +4,7 @@ import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
+import { OperatorPrecedence } from '../util';
 
 type Options = [
   {
@@ -88,10 +89,21 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'floatingFixVoid',
-                  fix(fixer): TSESLint.RuleFix {
-                    let code = sourceCode.getText(node);
-                    code = `void ${code}`;
-                    return fixer.replaceText(node, code);
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                      return fixer.insertTextBefore(node, 'void ');
+                    } else {
+                      return [
+                        fixer.insertTextBefore(node, 'void ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    }
                   },
                 },
               ],
@@ -116,7 +128,7 @@ export default util.createRule<Options, MessageId>({
                     const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
                       node.expression,
                     );
-                    if (isHigherPrecedenceThanAwait(tsNode)) {
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
                       return fixer.insertTextBefore(node, 'await ');
                     } else {
                       return [
@@ -136,16 +148,13 @@ export default util.createRule<Options, MessageId>({
       },
     };
 
-    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
+    function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
       const operator = tsutils.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
       const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
-      const awaitPrecedence = util.getOperatorPrecedence(
-        ts.SyntaxKind.AwaitExpression,
-        ts.SyntaxKind.Unknown,
-      );
-      return nodePrecedence > awaitPrecedence;
+      const unaryPrecedence = OperatorPrecedence.Unary;
+      return nodePrecedence > unaryPrecedence;
     }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
@@ -214,6 +223,11 @@ export default util.createRule<Options, MessageId>({
         // `new Promise()`), the promise is not handled because it doesn't have the
         // necessary then/catch call at the end of the chain.
         return true;
+      } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
+        return (
+          isUnhandledPromise(checker, node.left) ||
+          isUnhandledPromise(checker, node.right)
+        );
       }
 
       // We conservatively return false for all other types of expressions because
