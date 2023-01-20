@@ -103,7 +103,7 @@
     "patch-package": "^6.4.7",
     "prettier": "2.8.1",
     "pretty-format": "^29.0.3",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.0.0",
     "tmp": "^0.2.1",
     "ts-node": "^10.7.0",
     "tslint": "^6.1.3",
