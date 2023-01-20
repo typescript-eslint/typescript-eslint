@@ -21,6 +21,13 @@
     "website": "https://eslint.org/"
   },
   {
+    "id": "Hugging Face",
+    "image": "https://images.opencollective.com/huggingface/5c934ee/logo.png",
+    "name": "Hugging Face",
+    "totalDonations": 180000,
+    "website": "https://huggingface.co"
+  },
+  {
     "id": "Airbnb",
     "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
     "name": "Airbnb",
@@ -194,12 +201,5 @@
     "name": "tRPC",
     "totalDonations": 10000,
     "website": "https://trpc.io"
-  },
-  {
-    "id": "Hugging Face",
-    "image": "https://images.opencollective.com/huggingface/5c934ee/logo.png",
-    "name": "Hugging Face",
-    "totalDonations": 10000,
-    "website": "https://huggingface.co"
   }
 ]
