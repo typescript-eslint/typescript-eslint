@@ -19,6 +19,7 @@ Program {
       id: Identifier {
         type: "Identifier",
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -29,6 +30,7 @@ Program {
       superClass: Identifier {
         type: "Identifier",
         name: "Set",
+        optional: false,
 
         range: [21, 24],
         loc: {
@@ -44,6 +46,7 @@ Program {
             typeName: Identifier {
               type: "Identifier",
               name: "T",
+              optional: false,
 
               range: [25, 26],
               loc: {
@@ -75,6 +78,7 @@ Program {
             name: Identifier {
               type: "Identifier",
               name: "T",
+              optional: false,
 
               range: [10, 11],
               loc: {

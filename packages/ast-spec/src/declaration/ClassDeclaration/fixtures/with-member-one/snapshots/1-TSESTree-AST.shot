@@ -16,6 +16,7 @@ Program {
             key: Identifier {
               type: "Identifier",
               name: "prop",
+              optional: false,
 
               range: [14, 18],
               loc: {
@@ -44,6 +45,7 @@ Program {
       id: Identifier {
         type: "Identifier",
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {

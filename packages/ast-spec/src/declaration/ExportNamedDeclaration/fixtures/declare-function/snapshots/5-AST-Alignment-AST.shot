@@ -20,6 +20,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration declare-function AST Al
           id: Identifier {
             type: 'Identifier',
             name: 'foo',
+-           optional: false,
 
             range: [24, 27],
             loc: {

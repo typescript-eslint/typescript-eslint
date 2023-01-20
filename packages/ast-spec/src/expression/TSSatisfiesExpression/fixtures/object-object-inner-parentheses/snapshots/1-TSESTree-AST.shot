@@ -17,6 +17,7 @@ Program {
               key: Identifier {
                 type: "Identifier",
                 name: "prop",
+                optional: false,
 
                 range: [3, 7],
                 loc: {
@@ -26,6 +27,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: Literal {
                 type: "Literal",
@@ -59,9 +61,11 @@ Program {
             TSPropertySignature {
               type: "TSPropertySignature",
               computed: false,
+              export: false,
               key: Identifier {
                 type: "Identifier",
                 name: "prop",
+                optional: false,
 
                 range: [32, 36],
                 loc: {
@@ -69,6 +73,9 @@ Program {
                   end: { column: 36, line: 1 },
                 },
               },
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSStringKeyword {

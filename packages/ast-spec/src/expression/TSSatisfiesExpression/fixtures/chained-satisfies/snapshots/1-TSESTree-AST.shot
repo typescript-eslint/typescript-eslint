@@ -13,6 +13,7 @@ Program {
           expression: Identifier {
             type: "Identifier",
             name: "foo",
+            optional: false,
 
             range: [0, 3],
             loc: {
@@ -25,6 +26,7 @@ Program {
             typeName: Identifier {
               type: "Identifier",
               name: "bar",
+              optional: false,
 
               range: [14, 17],
               loc: {
@@ -51,6 +53,7 @@ Program {
           typeName: Identifier {
             type: "Identifier",
             name: "baz",
+            optional: false,
 
             range: [28, 31],
             loc: {

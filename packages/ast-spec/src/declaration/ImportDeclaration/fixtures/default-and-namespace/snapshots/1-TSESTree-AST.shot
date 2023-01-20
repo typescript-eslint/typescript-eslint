@@ -25,6 +25,7 @@ Program {
           local: Identifier {
             type: "Identifier",
             name: "a",
+            optional: false,
 
             range: [7, 8],
             loc: {
@@ -44,6 +45,7 @@ Program {
           local: Identifier {
             type: "Identifier",
             name: "b",
+            optional: false,
 
             range: [15, 16],
             loc: {

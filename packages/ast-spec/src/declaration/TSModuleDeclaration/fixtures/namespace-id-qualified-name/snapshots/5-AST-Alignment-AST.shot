@@ -2,5 +2,95 @@
 
 exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-name AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSModuleDeclaration {
+        type: 'TSModuleDeclaration',
+        body: TSModuleDeclaration {
+          type: 'TSModuleDeclaration',
+          body: TSModuleDeclaration {
+            type: 'TSModuleDeclaration',
+            body: TSModuleBlock {
+              type: 'TSModuleBlock',
+              body: Array [],
+
+              range: [16, 18],
+              loc: {
+                start: { column: 16, line: 1 },
+                end: { column: 18, line: 1 },
+              },
+            },
+-           declare: false,
+-           global: false,
+            id: Identifier {
+              type: 'Identifier',
+              name: 'C',
+-             optional: false,
+
+              range: [14, 15],
+              loc: {
+                start: { column: 14, line: 1 },
+                end: { column: 15, line: 1 },
+              },
+            },
+
+            range: [14, 18],
+            loc: {
+              start: { column: 14, line: 1 },
+              end: { column: 18, line: 1 },
+            },
+          },
+-         declare: false,
+-         global: false,
+          id: Identifier {
+            type: 'Identifier',
+            name: 'B',
+-           optional: false,
+
+            range: [12, 13],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+
+          range: [12, 18],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 18, line: 1 },
+          },
+        },
+-       declare: false,
+-       global: false,
+        id: Identifier {
+          type: 'Identifier',
+          name: 'A',
+-         optional: false,
+
+          range: [10, 11],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 11, line: 1 },
+          },
+        },
+
+        range: [0, 18],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 19],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

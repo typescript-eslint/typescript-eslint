@@ -16,6 +16,7 @@ Program {
             key: Identifier {
               type: "Identifier",
               name: "foo",
+              optional: false,
 
               range: [44, 47],
               loc: {
@@ -54,6 +55,7 @@ Program {
       id: Identifier {
         type: "Identifier",
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -64,6 +66,7 @@ Program {
       superClass: Identifier {
         type: "Identifier",
         name: "Bar",
+        optional: false,
 
         range: [18, 21],
         loc: {

@@ -20,6 +20,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-braced AST A
             exported: Identifier {
               type: 'Identifier',
               name: 'a',
+-             optional: false,
 
               range: [9, 10],
               loc: {
@@ -31,6 +32,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-braced AST A
             local: Identifier {
               type: 'Identifier',
               name: 'a',
+-             optional: false,
 
               range: [9, 10],
               loc: {

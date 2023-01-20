@@ -23,6 +23,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-param AST Alignment - AS
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -40,6 +41,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-param AST Alignment - AS
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
+-               optional: false,
 -
 -               range: [10, 11],
 -               loc: {

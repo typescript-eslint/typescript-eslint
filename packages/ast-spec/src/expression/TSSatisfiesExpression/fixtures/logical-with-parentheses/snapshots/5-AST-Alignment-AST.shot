@@ -2,5 +2,78 @@
 
 exports[`AST Fixtures expression TSSatisfiesExpression logical-with-parentheses AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: TSSatisfiesExpression {
+          type: 'TSSatisfiesExpression',
+          expression: BinaryExpression {
+            type: 'BinaryExpression',
+            left: Identifier {
+              type: 'Identifier',
+              name: 'foo',
+-             optional: false,
+
+              range: [1, 4],
+              loc: {
+                start: { column: 1, line: 1 },
+                end: { column: 4, line: 1 },
+              },
+            },
+            operator: '===',
+            right: Literal {
+              type: 'Literal',
+              raw: '1',
+              value: 1,
+
+              range: [9, 10],
+              loc: {
+                start: { column: 9, line: 1 },
+                end: { column: 10, line: 1 },
+              },
+            },
+
+            range: [1, 10],
+            loc: {
+              start: { column: 1, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+          typeAnnotation: TSBooleanKeyword {
+            type: 'TSBooleanKeyword',
+
+            range: [22, 29],
+            loc: {
+              start: { column: 22, line: 1 },
+              end: { column: 29, line: 1 },
+            },
+          },
+
+          range: [0, 29],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 29, line: 1 },
+          },
+        },
+
+        range: [0, 30],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 30, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 31],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

@@ -9,6 +9,7 @@ Program {
       declaration: Identifier {
         type: "Identifier",
         name: "x",
+        optional: false,
 
         range: [15, 16],
         loc: {

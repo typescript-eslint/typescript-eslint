@@ -26,6 +26,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-many AST Alignm
         id: Identifier {
           type: 'Identifier',
           name: 'foo',
+-         optional: false,
 
           range: [9, 12],
           loc: {
@@ -43,6 +44,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-many AST Alignm
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
+-               optional: false,
 -
 -               range: [13, 14],
 -               loc: {
@@ -65,6 +67,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-many AST Alignm
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'U',
+-               optional: false,
 -
 -               range: [16, 17],
 -               loc: {
@@ -87,6 +90,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-many AST Alignm
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'V',
+-               optional: false,
 -
 -               range: [19, 20],
 -               loc: {

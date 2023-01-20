@@ -17,6 +17,7 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-many AST Alignmen
         id: Identifier {
           type: 'Identifier',
           name: 'foo',
+-         optional: false,
 
           range: [17, 20],
           loc: {
@@ -34,6 +35,7 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-many AST Alignmen
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
+-               optional: false,
 -
 -               range: [21, 22],
 -               loc: {
@@ -56,6 +58,7 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-many AST Alignmen
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'U',
+-               optional: false,
 -
 -               range: [24, 25],
 -               loc: {
@@ -78,6 +81,7 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-many AST Alignmen
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'V',
+-               optional: false,
 -
 -               range: [27, 28],
 -               loc: {

@@ -26,6 +26,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
         id: Identifier {
           type: 'Identifier',
           name: 'foo',
+-         optional: false,
 
           range: [9, 12],
           loc: {
@@ -43,6 +44,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
+-               optional: false,
 -
 -               range: [13, 14],
 -               loc: {

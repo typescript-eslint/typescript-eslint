@@ -61,6 +61,7 @@ exports[`AST Fixtures element AccessorProperty key-computed-string AST Alignment
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {

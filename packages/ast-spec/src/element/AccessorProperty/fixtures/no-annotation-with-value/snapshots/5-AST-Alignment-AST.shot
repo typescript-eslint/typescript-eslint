@@ -22,6 +22,7 @@ exports[`AST Fixtures element AccessorProperty no-annotation-with-value AST Alig
               key: Identifier {
                 type: 'Identifier',
                 name: 'prop',
+-               optional: false,
 
                 range: [23, 27],
                 loc: {
@@ -60,6 +61,7 @@ exports[`AST Fixtures element AccessorProperty no-annotation-with-value AST Alig
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {

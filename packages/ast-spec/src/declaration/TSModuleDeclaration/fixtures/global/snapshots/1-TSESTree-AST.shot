@@ -21,6 +21,7 @@ Program {
       id: Identifier {
         type: "Identifier",
         name: "global",
+        optional: false,
 
         range: [8, 14],
         loc: {

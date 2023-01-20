@@ -23,6 +23,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -38,6 +39,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
             expression: Identifier {
               type: 'Identifier',
               name: 'Object',
+-             optional: false,
 
               range: [21, 27],
               loc: {
@@ -59,6 +61,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
             expression: Identifier {
               type: 'Identifier',
               name: 'Function',
+-             optional: false,
 
               range: [29, 37],
               loc: {
@@ -80,6 +83,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
             expression: Identifier {
               type: 'Identifier',
               name: 'RegExp',
+-             optional: false,
 
               range: [39, 45],
               loc: {

@@ -2,5 +2,42 @@
 
 exports[`AST Fixtures declaration TSEnumDeclaration empty AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSEnumDeclaration {
+        type: 'TSEnumDeclaration',
+-       const: false,
+-       declare: false,
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+-         optional: false,
+
+          range: [5, 8],
+          loc: {
+            start: { column: 5, line: 1 },
+            end: { column: 8, line: 1 },
+          },
+        },
+        members: Array [],
+
+        range: [0, 11],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 11, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 12],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

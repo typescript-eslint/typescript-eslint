@@ -16,12 +16,14 @@ Program {
           end: { column: 24, line: 1 },
         },
       },
+      declare: false,
       extends: Array [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
             name: "A",
+            optional: false,
 
             range: [20, 21],
             loc: {
@@ -40,6 +42,7 @@ Program {
       id: Identifier {
         type: "Identifier",
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {

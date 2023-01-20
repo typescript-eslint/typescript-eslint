@@ -16,6 +16,7 @@ Program {
         id: Identifier {
           type: "Identifier",
           name: "foo",
+          optional: false,
 
           range: [24, 27],
           loc: {

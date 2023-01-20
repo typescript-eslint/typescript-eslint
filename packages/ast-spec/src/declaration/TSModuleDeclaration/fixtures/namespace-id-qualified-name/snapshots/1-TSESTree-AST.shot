@@ -20,9 +20,12 @@ Program {
               end: { column: 18, line: 1 },
             },
           },
+          declare: false,
+          global: false,
           id: Identifier {
             type: "Identifier",
             name: "C",
+            optional: false,
 
             range: [14, 15],
             loc: {
@@ -37,9 +40,12 @@ Program {
             end: { column: 18, line: 1 },
           },
         },
+        declare: false,
+        global: false,
         id: Identifier {
           type: "Identifier",
           name: "B",
+          optional: false,
 
           range: [12, 13],
           loc: {
@@ -54,9 +60,12 @@ Program {
           end: { column: 18, line: 1 },
         },
       },
+      declare: false,
+      global: false,
       id: Identifier {
         type: "Identifier",
         name: "A",
+        optional: false,
 
         range: [10, 11],
         loc: {

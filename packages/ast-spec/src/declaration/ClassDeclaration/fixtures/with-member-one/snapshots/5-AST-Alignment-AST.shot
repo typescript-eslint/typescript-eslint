@@ -20,6 +20,7 @@ exports[`AST Fixtures declaration ClassDeclaration with-member-one AST Alignment
               key: Identifier {
                 type: 'Identifier',
                 name: 'prop',
+-               optional: false,
 
                 range: [14, 18],
                 loc: {
@@ -48,6 +49,7 @@ exports[`AST Fixtures declaration ClassDeclaration with-member-one AST Alignment
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {

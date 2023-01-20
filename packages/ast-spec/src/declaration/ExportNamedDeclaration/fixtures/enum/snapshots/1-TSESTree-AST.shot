@@ -9,9 +9,12 @@ Program {
       assertions: Array [],
       declaration: TSEnumDeclaration {
         type: "TSEnumDeclaration",
+        const: false,
+        declare: false,
         id: Identifier {
           type: "Identifier",
           name: "Foo",
+          optional: false,
 
           range: [12, 15],
           loc: {

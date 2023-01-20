@@ -22,6 +22,7 @@ Program {
           expression: Identifier {
             type: "Identifier",
             name: "decoratorOne",
+            optional: false,
 
             range: [1, 13],
             loc: {
@@ -41,6 +42,7 @@ Program {
           expression: Identifier {
             type: "Identifier",
             name: "decoratorTwo",
+            optional: false,
 
             range: [15, 27],
             loc: {
@@ -59,6 +61,7 @@ Program {
       id: Identifier {
         type: "Identifier",
         name: "Foo",
+        optional: false,
 
         range: [34, 37],
         loc: {

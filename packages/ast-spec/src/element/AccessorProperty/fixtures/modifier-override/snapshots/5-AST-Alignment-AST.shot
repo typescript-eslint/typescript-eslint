@@ -22,6 +22,7 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
               key: Identifier {
                 type: 'Identifier',
                 name: 'foo',
+-               optional: false,
 
                 range: [44, 47],
                 loc: {
@@ -60,6 +61,7 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -70,6 +72,7 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
         superClass: Identifier {
           type: 'Identifier',
           name: 'Bar',
+-         optional: false,
 
           range: [18, 21],
           loc: {

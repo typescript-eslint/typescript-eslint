@@ -22,6 +22,7 @@ exports[`AST Fixtures element AccessorProperty no-annotation-no-value AST Alignm
               key: Identifier {
                 type: 'Identifier',
                 name: 'prop',
+-               optional: false,
 
                 range: [23, 27],
                 loc: {
@@ -50,6 +51,7 @@ exports[`AST Fixtures element AccessorProperty no-annotation-no-value AST Alignm
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {

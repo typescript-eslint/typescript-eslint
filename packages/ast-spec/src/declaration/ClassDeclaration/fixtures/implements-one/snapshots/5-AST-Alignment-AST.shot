@@ -23,6 +23,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-one AST Alignment 
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -38,6 +39,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-one AST Alignment 
             expression: Identifier {
               type: 'Identifier',
               name: 'Object',
+-             optional: false,
 
               range: [21, 27],
               loc: {

@@ -22,6 +22,7 @@ exports[`AST Fixtures element AccessorProperty modifier-static AST Alignment - A
               key: Identifier {
                 type: 'Identifier',
                 name: 'foo',
+-               optional: false,
 
                 range: [30, 33],
                 loc: {
@@ -60,6 +61,7 @@ exports[`AST Fixtures element AccessorProperty modifier-static AST Alignment - A
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {

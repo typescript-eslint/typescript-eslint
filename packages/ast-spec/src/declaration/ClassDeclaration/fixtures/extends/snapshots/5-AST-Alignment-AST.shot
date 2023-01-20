@@ -2,5 +2,60 @@
 
 exports[`AST Fixtures declaration ClassDeclaration extends AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [25, 27],
+          loc: {
+            start: { column: 25, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+-         optional: false,
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+        superClass: Identifier {
+          type: 'Identifier',
+          name: 'Object',
+-         optional: false,
+
+          range: [18, 24],
+          loc: {
+            start: { column: 18, line: 1 },
+            end: { column: 24, line: 1 },
+          },
+        },
+
+        range: [0, 27],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 27, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 28],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

@@ -22,6 +22,7 @@ Program {
       id: Identifier {
         type: "Identifier",
         name: "foo",
+        optional: false,
 
         range: [9, 12],
         loc: {
@@ -39,6 +40,7 @@ Program {
             name: Identifier {
               type: "Identifier",
               name: "T",
+              optional: false,
 
               range: [13, 14],
               loc: {
@@ -60,6 +62,7 @@ Program {
             name: Identifier {
               type: "Identifier",
               name: "U",
+              optional: false,
 
               range: [16, 17],
               loc: {
@@ -81,6 +84,7 @@ Program {
             name: Identifier {
               type: "Identifier",
               name: "V",
+              optional: false,
 
               range: [19, 20],
               loc: {

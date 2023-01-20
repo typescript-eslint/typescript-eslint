@@ -2,5 +2,80 @@
 
 exports[`AST Fixtures declaration ClassDeclaration extends-type-param AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [30, 32],
+          loc: {
+            start: { column: 30, line: 1 },
+            end: { column: 32, line: 1 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+-         optional: false,
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+        superClass: Identifier {
+          type: 'Identifier',
+          name: 'Set',
+-         optional: false,
+
+          range: [18, 21],
+          loc: {
+            start: { column: 18, line: 1 },
+            end: { column: 21, line: 1 },
+          },
+        },
+        superTypeParameters: TSTypeParameterInstantiation {
+          type: 'TSTypeParameterInstantiation',
+          params: Array [
+            TSStringKeyword {
+              type: 'TSStringKeyword',
+
+              range: [22, 28],
+              loc: {
+                start: { column: 22, line: 1 },
+                end: { column: 28, line: 1 },
+              },
+            },
+          ],
+
+          range: [21, 29],
+          loc: {
+            start: { column: 21, line: 1 },
+            end: { column: 29, line: 1 },
+          },
+        },
+
+        range: [0, 32],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 32, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 33],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

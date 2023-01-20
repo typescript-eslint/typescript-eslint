@@ -13,9 +13,11 @@ exports[`AST Fixtures declaration ExportNamedDeclaration type-alias AST Alignmen
         assertions: Array [],
         declaration: TSTypeAliasDeclaration {
           type: 'TSTypeAliasDeclaration',
+-         declare: false,
           id: Identifier {
             type: 'Identifier',
             name: 'A',
+-           optional: false,
 
             range: [12, 13],
             loc: {

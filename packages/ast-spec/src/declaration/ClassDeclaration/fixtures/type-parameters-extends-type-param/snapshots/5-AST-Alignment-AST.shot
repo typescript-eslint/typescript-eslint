@@ -23,6 +23,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -33,6 +34,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
         superClass: Identifier {
           type: 'Identifier',
           name: 'Set',
+-         optional: false,
 
           range: [21, 24],
           loc: {
@@ -48,6 +50,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
               typeName: Identifier {
                 type: 'Identifier',
                 name: 'T',
+-               optional: false,
 
                 range: [25, 26],
                 loc: {
@@ -79,6 +82,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'T',
+-               optional: false,
 -
 -               range: [10, 11],
 -               loc: {

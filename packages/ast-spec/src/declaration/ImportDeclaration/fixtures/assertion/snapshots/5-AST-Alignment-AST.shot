@@ -2,5 +2,95 @@
 
 exports[`AST Fixtures declaration ImportDeclaration assertion AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ImportDeclaration {
+        type: 'ImportDeclaration',
+        assertions: Array [
+          ImportAttribute {
+            type: 'ImportAttribute',
+            key: Identifier {
+              type: 'Identifier',
+              name: 'type',
+-             optional: false,
+
+              range: [34, 38],
+              loc: {
+                start: { column: 34, line: 1 },
+                end: { column: 38, line: 1 },
+              },
+            },
+            value: Literal {
+              type: 'Literal',
+              raw: '\\\\'json\\\\'',
+              value: 'json',
+
+              range: [40, 46],
+              loc: {
+                start: { column: 40, line: 1 },
+                end: { column: 46, line: 1 },
+              },
+            },
+
+            range: [34, 46],
+            loc: {
+              start: { column: 34, line: 1 },
+              end: { column: 46, line: 1 },
+            },
+          },
+        ],
+        importKind: 'value',
+        source: Literal {
+          type: 'Literal',
+          raw: '\\\\'mod\\\\'',
+          value: 'mod',
+
+          range: [19, 24],
+          loc: {
+            start: { column: 19, line: 1 },
+            end: { column: 24, line: 1 },
+          },
+        },
+        specifiers: Array [
+          ImportNamespaceSpecifier {
+            type: 'ImportNamespaceSpecifier',
+            local: Identifier {
+              type: 'Identifier',
+              name: 'a',
+-             optional: false,
+
+              range: [12, 13],
+              loc: {
+                start: { column: 12, line: 1 },
+                end: { column: 13, line: 1 },
+              },
+            },
+
+            range: [7, 13],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+        ],
+
+        range: [0, 49],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 49, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 50],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

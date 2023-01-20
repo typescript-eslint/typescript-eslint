@@ -60,6 +60,7 @@ exports[`AST Fixtures element AccessorProperty key-private AST Alignment - AST 1
         id: Identifier {
           type: 'Identifier',
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {

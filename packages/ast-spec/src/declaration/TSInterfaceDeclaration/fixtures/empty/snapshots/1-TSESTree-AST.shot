@@ -16,9 +16,11 @@ Program {
           end: { column: 14, line: 1 },
         },
       },
+      declare: false,
       id: Identifier {
         type: "Identifier",
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {

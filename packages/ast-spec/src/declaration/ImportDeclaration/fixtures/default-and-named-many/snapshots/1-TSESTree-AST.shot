@@ -25,6 +25,7 @@ Program {
           local: Identifier {
             type: "Identifier",
             name: "a",
+            optional: false,
 
             range: [7, 8],
             loc: {
@@ -44,6 +45,7 @@ Program {
           imported: Identifier {
             type: "Identifier",
             name: "b",
+            optional: false,
 
             range: [12, 13],
             loc: {
@@ -55,6 +57,7 @@ Program {
           local: Identifier {
             type: "Identifier",
             name: "b",
+            optional: false,
 
             range: [12, 13],
             loc: {
@@ -74,6 +77,7 @@ Program {
           imported: Identifier {
             type: "Identifier",
             name: "c",
+            optional: false,
 
             range: [15, 16],
             loc: {
@@ -85,6 +89,7 @@ Program {
           local: Identifier {
             type: "Identifier",
             name: "c",
+            optional: false,
 
             range: [15, 16],
             loc: {
@@ -104,6 +109,7 @@ Program {
           imported: Identifier {
             type: "Identifier",
             name: "d",
+            optional: false,
 
             range: [18, 19],
             loc: {
@@ -115,6 +121,7 @@ Program {
           local: Identifier {
             type: "Identifier",
             name: "d",
+            optional: false,
 
             range: [18, 19],
             loc: {

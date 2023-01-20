@@ -35,6 +35,7 @@ Program {
           test: Identifier {
             type: "Identifier",
             name: "foo",
+            optional: false,
 
             range: [1, 4],
             loc: {
