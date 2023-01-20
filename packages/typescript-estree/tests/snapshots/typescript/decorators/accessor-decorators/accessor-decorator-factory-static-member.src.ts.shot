@@ -4,9 +4,11 @@ exports[`typescript decorators accessor-decorators accessor-decorator-factory-st
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "decorators": Array [
               Object {
@@ -27,6 +29,7 @@ Object {
                         Object {
                           "computed": false,
                           "key": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 14,
@@ -44,6 +47,7 @@ Object {
                               28,
                             ],
                             "type": "Identifier",
+                            "typeAnnotation": undefined,
                           },
                           "kind": "init",
                           "loc": Object {
@@ -93,6 +97,7 @@ Object {
                     },
                   ],
                   "callee": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 8,
@@ -110,6 +115,7 @@ Object {
                       22,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -127,6 +133,7 @@ Object {
                     37,
                   ],
                   "type": "CallExpression",
+                  "typeParameters": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -146,6 +153,7 @@ Object {
               },
             ],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -163,6 +171,7 @@ Object {
                 56,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "get",
             "loc": Object {
@@ -175,6 +184,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               18,
@@ -182,6 +192,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -218,6 +229,7 @@ Object {
                       },
                       "optional": false,
                       "property": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 39,
@@ -235,6 +247,7 @@ Object {
                           77,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "range": Array [
                         68,
@@ -275,6 +288,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -293,7 +307,9 @@ Object {
                 56,
                 80,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -313,7 +329,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -331,7 +350,9 @@ Object {
           11,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -347,7 +368,9 @@ Object {
         82,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

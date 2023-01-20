@@ -42,9 +42,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 27,
@@ -62,6 +64,7 @@ Object {
           27,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -75,6 +78,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 34,
@@ -161,6 +165,7 @@ Object {
             },
           },
           "parameterName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 46,
@@ -178,6 +183,7 @@ Object {
               46,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             37,
@@ -221,6 +227,7 @@ Object {
         },
       },
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

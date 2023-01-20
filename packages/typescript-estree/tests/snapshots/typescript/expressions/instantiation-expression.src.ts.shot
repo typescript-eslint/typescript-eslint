@@ -4,8 +4,10 @@ exports[`typescript expressions instantiation-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "expression": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -23,6 +25,7 @@ Object {
             1,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -68,6 +71,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 3,
@@ -85,6 +89,7 @@ Object {
                   3,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -113,9 +118,11 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "expression": Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 2,
@@ -133,6 +140,7 @@ Object {
               9,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -178,6 +186,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 4,
@@ -195,6 +204,7 @@ Object {
                     11,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -250,6 +260,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 8,
@@ -267,6 +278,7 @@ Object {
                   15,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -295,10 +307,12 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 2,
@@ -316,6 +330,7 @@ Object {
               20,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -361,6 +376,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 4,
@@ -378,6 +394,7 @@ Object {
                     22,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -434,6 +451,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 8,
@@ -451,6 +469,7 @@ Object {
                   26,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -479,12 +498,14 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "expression": Object {
           "arguments": Array [],
           "callee": Object {
             "expression": Object {
               "expression": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 2,
@@ -502,6 +523,7 @@ Object {
                   33,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -547,6 +569,7 @@ Object {
                     ],
                     "type": "TSTypeReference",
                     "typeName": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 4,
@@ -564,6 +587,7 @@ Object {
                         35,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "typeParameters": undefined,
                   },
@@ -619,6 +643,7 @@ Object {
                   ],
                   "type": "TSTypeReference",
                   "typeName": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 8,
@@ -636,6 +661,7 @@ Object {
                       39,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "typeParameters": undefined,
                 },
@@ -663,6 +689,7 @@ Object {
             44,
           ],
           "type": "CallExpression",
+          "typeParameters": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -697,6 +724,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
@@ -714,6 +742,7 @@ Object {
                 },
               },
               "object": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 2,
@@ -731,9 +760,11 @@ Object {
                   48,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "optional": true,
               "property": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -751,6 +782,7 @@ Object {
                   51,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 47,
@@ -818,6 +850,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 7,
@@ -835,6 +868,7 @@ Object {
                     53,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -891,6 +925,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 11,
@@ -908,6 +943,7 @@ Object {
                   57,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -936,10 +972,12 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 6,
@@ -957,6 +995,7 @@ Object {
               68,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -1002,6 +1041,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -1019,6 +1059,7 @@ Object {
                     70,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -1074,6 +1115,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -1091,6 +1133,7 @@ Object {
                   74,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },

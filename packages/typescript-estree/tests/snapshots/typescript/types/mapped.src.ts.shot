@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 35,
@@ -53,10 +54,12 @@ Object {
                   },
                 },
                 "nameType": null,
+                "optional": undefined,
                 "range": Array [
                   9,
                   35,
                 ],
+                "readonly": undefined,
                 "type": "TSMappedType",
                 "typeAnnotation": Object {
                   "loc": Object {
@@ -106,6 +109,7 @@ Object {
                     },
                   },
                   "name": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 13,
@@ -123,6 +127,7 @@ Object {
                       13,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "out": false,
                   "range": Array [

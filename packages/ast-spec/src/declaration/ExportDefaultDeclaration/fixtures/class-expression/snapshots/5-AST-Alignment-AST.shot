@@ -12,6 +12,7 @@ exports[`AST Fixtures declaration ExportDefaultDeclaration class-expression AST 
         type: 'ExportDefaultDeclaration',
         declaration: ClassExpression {
           type: 'ClassExpression',
+-         abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -22,8 +23,11 @@ exports[`AST Fixtures declaration ExportDefaultDeclaration class-expression AST 
               end: { column: 28, line: 1 },
             },
           },
+-         declare: false,
+-         decorators: Array [],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Foo',
 -           optional: false,
 
@@ -33,6 +37,7 @@ exports[`AST Fixtures declaration ExportDefaultDeclaration class-expression AST 
               end: { column: 25, line: 1 },
             },
           },
+-         implements: Array [],
           superClass: null,
 
           range: [16, 28],

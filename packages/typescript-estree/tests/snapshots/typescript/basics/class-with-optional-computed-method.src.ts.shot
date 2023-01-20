@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -25,6 +26,7 @@ Object {
               15,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -85,6 +87,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -102,6 +105,7 @@ Object {
               41,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -162,6 +166,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -179,6 +184,7 @@ Object {
               61,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -195,6 +201,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -212,6 +219,7 @@ Object {
                     74,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -255,6 +263,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -272,6 +281,7 @@ Object {
                     95,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -355,11 +365,15 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -377,6 +391,7 @@ Object {
                 133,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -397,9 +412,11 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": null,
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -418,12 +435,17 @@ Object {
                 135,
                 138,
               ],
+              "returnType": undefined,
               "type": "TSEmptyBodyFunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -441,6 +463,7 @@ Object {
                 151,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -461,6 +484,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -481,6 +505,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -499,11 +524,15 @@ Object {
                 153,
                 158,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -542,9 +571,11 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": null,
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -563,11 +594,15 @@ Object {
                 166,
                 169,
               ],
+              "returnType": undefined,
               "type": "TSEmptyBodyFunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -606,6 +641,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -626,6 +662,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -644,11 +681,15 @@ Object {
                 176,
                 181,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -687,9 +728,11 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": null,
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -708,11 +751,15 @@ Object {
                 198,
                 201,
               ],
+              "returnType": undefined,
               "type": "TSEmptyBodyFunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -751,6 +798,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -771,6 +819,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -789,11 +838,15 @@ Object {
                 217,
                 222,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "computed": false,
               "loc": Object {
@@ -807,6 +860,7 @@ Object {
                 },
               },
               "object": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -824,9 +878,11 @@ Object {
                   230,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "optional": false,
               "property": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -844,6 +900,7 @@ Object {
                   237,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 227,
@@ -870,6 +927,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -890,6 +948,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -908,11 +967,15 @@ Object {
                 239,
                 244,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "computed": false,
               "loc": Object {
@@ -926,6 +989,7 @@ Object {
                 },
               },
               "object": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -943,9 +1007,11 @@ Object {
                   252,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "optional": false,
               "property": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -963,6 +1029,7 @@ Object {
                   260,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 249,
@@ -989,9 +1056,11 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": null,
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -1010,14 +1079,19 @@ Object {
                 262,
                 265,
               ],
+              "returnType": undefined,
               "type": "TSEmptyBodyFunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "arguments": Array [],
               "callee": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 4,
@@ -1035,6 +1109,7 @@ Object {
                   270,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -1052,6 +1127,7 @@ Object {
                 272,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -1072,6 +1148,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -1092,6 +1169,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -1110,7 +1188,9 @@ Object {
                 274,
                 279,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -1130,7 +1210,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -1148,7 +1231,9 @@ Object {
           118,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -1164,7 +1249,9 @@ Object {
         281,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

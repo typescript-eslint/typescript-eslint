@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,11 +17,13 @@ Program {
           end: { column: 12, line: 2 },
         },
       },
+      declare: false,
       decorators: Array [
         Decorator {
           type: "Decorator",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "decorator",
             optional: false,
 
@@ -40,6 +43,7 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
         optional: false,
 
@@ -49,6 +53,7 @@ Program {
           end: { column: 9, line: 2 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [0, 23],

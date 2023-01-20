@@ -24,9 +24,11 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 27,
@@ -44,6 +46,7 @@ Object {
             27,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -60,7 +63,9 @@ Object {
           15,
           32,
         ],
+        "returnType": undefined,
         "type": "FunctionDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

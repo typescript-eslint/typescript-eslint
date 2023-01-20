@@ -4,13 +4,16 @@ exports[`typescript decorators method-decorators method-decorator-static-member.
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "decorators": Array [
               Object {
                 "expression": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -28,6 +31,7 @@ Object {
                     18,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -47,6 +51,7 @@ Object {
               },
             ],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 23,
@@ -64,6 +69,7 @@ Object {
                 42,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -76,6 +82,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
@@ -83,6 +90,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -103,6 +111,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -121,7 +130,9 @@ Object {
                 42,
                 47,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -141,7 +152,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -159,7 +173,9 @@ Object {
           7,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -175,7 +191,9 @@ Object {
         49,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

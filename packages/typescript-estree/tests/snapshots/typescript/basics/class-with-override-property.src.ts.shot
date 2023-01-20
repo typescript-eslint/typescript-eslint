@@ -4,12 +4,17 @@ exports[`typescript basics class-with-override-property.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -27,6 +32,7 @@ Object {
                 65,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -38,14 +44,16 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": true,
             "range": Array [
               53,
               70,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -83,7 +91,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 26,
@@ -101,7 +112,9 @@ Object {
           26,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -117,6 +130,7 @@ Object {
         72,
       ],
       "superClass": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 48,
@@ -134,8 +148,11 @@ Object {
           48,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

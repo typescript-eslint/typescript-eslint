@@ -12,6 +12,7 @@ exports[`AST Fixtures declaration ExportDefaultDeclaration identifier AST Alignm
         type: 'ExportDefaultDeclaration',
         declaration: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'x',
 -         optional: false,
 

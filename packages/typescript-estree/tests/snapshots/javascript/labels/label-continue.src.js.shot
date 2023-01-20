@@ -9,6 +9,7 @@ Object {
           "body": Array [
             Object {
               "label": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -26,6 +27,7 @@ Object {
                   41,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -114,6 +116,7 @@ Object {
         "type": "WhileStatement",
       },
       "label": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 5,
@@ -131,6 +134,7 @@ Object {
           5,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

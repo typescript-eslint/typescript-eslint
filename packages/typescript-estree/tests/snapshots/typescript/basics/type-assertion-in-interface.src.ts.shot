@@ -7,9 +7,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -27,6 +29,7 @@ Object {
                 32,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -42,6 +45,7 @@ Object {
             "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 20,
@@ -129,6 +133,7 @@ Object {
                   },
                 },
                 "parameterName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 35,
@@ -146,6 +151,7 @@ Object {
                     57,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   45,
@@ -157,6 +163,7 @@ Object {
             },
             "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
         ],
         "loc": Object {
@@ -176,7 +183,9 @@ Object {
         "type": "TSInterfaceBody",
       },
       "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 19,
@@ -194,6 +203,7 @@ Object {
           19,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -210,6 +220,7 @@ Object {
         60,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

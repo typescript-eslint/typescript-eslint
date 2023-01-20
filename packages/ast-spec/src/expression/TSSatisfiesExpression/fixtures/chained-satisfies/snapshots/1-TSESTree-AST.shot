@@ -12,6 +12,7 @@ Program {
           type: "TSSatisfiesExpression",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
             optional: false,
 
@@ -25,6 +26,7 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
               optional: false,
 
@@ -52,6 +54,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "baz",
             optional: false,
 

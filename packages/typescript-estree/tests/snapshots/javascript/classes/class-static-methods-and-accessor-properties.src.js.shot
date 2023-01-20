@@ -4,11 +4,15 @@ exports[`javascript classes class-static-methods-and-accessor-properties.src 1`]
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 17,
@@ -26,6 +30,7 @@ Object {
                 17,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -38,6 +43,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               9,
@@ -45,6 +51,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -65,6 +72,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -83,12 +91,17 @@ Object {
                 17,
                 21,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 34,
@@ -106,6 +119,7 @@ Object {
                 34,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "get",
             "loc": Object {
@@ -118,6 +132,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               22,
@@ -125,6 +140,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -145,6 +161,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -163,12 +180,17 @@ Object {
                 34,
                 38,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 51,
@@ -186,6 +208,7 @@ Object {
                 51,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "set",
             "loc": Object {
@@ -198,6 +221,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               39,
@@ -205,6 +229,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -225,6 +250,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -240,6 +266,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 53,
@@ -257,13 +284,16 @@ Object {
                     53,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "range": Array [
                 51,
                 56,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -283,7 +313,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -301,7 +334,9 @@ Object {
           7,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 58,
@@ -317,7 +352,9 @@ Object {
         58,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "loc": Object {

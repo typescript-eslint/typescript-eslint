@@ -12,6 +12,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 

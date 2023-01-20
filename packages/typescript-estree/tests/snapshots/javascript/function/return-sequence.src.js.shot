@@ -11,6 +11,7 @@ Object {
             "argument": Object {
               "expressions": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 11,
@@ -28,8 +29,10 @@ Object {
                     36,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 14,
@@ -47,8 +50,10 @@ Object {
                     39,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 17,
@@ -66,6 +71,7 @@ Object {
                     42,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "loc": Object {
@@ -117,9 +123,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -137,6 +145,7 @@ Object {
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -150,6 +159,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -167,8 +177,10 @@ Object {
             15,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 18,
@@ -186,8 +198,10 @@ Object {
             18,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 21,
@@ -205,13 +219,16 @@ Object {
             21,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
       ],
       "range": Array [
         0,
         46,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -58,6 +59,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -75,6 +77,7 @@ Object {
                     8,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": Object {
                   "loc": Object {
@@ -152,6 +155,7 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
@@ -167,6 +171,7 @@ Object {
             },
           },
           "object": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -184,9 +189,11 @@ Object {
               27,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 16,
@@ -204,6 +211,7 @@ Object {
               33,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             17,

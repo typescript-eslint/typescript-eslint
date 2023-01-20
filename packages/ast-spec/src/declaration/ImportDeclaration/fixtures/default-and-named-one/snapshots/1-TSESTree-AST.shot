@@ -24,6 +24,7 @@ Program {
           type: "ImportDefaultSpecifier",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "a",
             optional: false,
 
@@ -44,6 +45,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "b",
             optional: false,
 
@@ -56,6 +58,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "b",
             optional: false,
 

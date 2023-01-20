@@ -17,8 +17,10 @@ Program {
         },
       },
       declare: true,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
         optional: false,
 

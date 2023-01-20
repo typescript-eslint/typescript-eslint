@@ -12,6 +12,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
         optional: false,
 
@@ -30,6 +31,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
               optional: false,
 
@@ -52,6 +54,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "U",
               optional: false,
 
@@ -74,6 +77,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "V",
               optional: false,
 

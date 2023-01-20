@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 30,
@@ -93,6 +94,7 @@ Object {
                   },
                 },
                 "type": "TSConstructorType",
+                "typeParameters": undefined,
               },
             },
           },

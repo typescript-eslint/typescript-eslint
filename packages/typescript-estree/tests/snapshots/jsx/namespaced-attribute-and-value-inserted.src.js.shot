@@ -4,6 +4,7 @@ exports[`jsx namespaced-attribute-and-value-inserted.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {
@@ -27,6 +28,7 @@ Object {
           },
           Object {
             "expression": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -44,6 +46,7 @@ Object {
                 22,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {

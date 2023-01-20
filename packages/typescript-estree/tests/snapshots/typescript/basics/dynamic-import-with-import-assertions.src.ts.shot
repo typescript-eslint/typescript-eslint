@@ -4,6 +4,7 @@ exports[`typescript basics dynamic-import-with-import-assertions.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "attributes": Object {
           "loc": Object {
@@ -20,6 +21,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 22,
@@ -37,6 +39,7 @@ Object {
                   22,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -72,6 +75,7 @@ Object {
                   Object {
                     "computed": false,
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 30,
@@ -89,6 +93,7 @@ Object {
                         30,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "init",
                     "loc": Object {

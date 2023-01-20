@@ -4,6 +4,7 @@ exports[`jsx attributes.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {
@@ -163,6 +164,7 @@ Object {
               "type": "JSXAttribute",
               "value": Object {
                 "expression": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 23,
@@ -180,6 +182,7 @@ Object {
                     23,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -200,6 +203,7 @@ Object {
             },
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 33,
@@ -217,6 +221,7 @@ Object {
                   33,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {

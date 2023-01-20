@@ -4,6 +4,7 @@ exports[`javascript arrowFunctions as-param-with-params.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [
           Object {
@@ -41,6 +42,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -58,8 +60,10 @@ Object {
                   6,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 9,
@@ -77,16 +81,20 @@ Object {
                   9,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "range": Array [
               4,
               16,
             ],
+            "returnType": undefined,
             "type": "ArrowFunctionExpression",
+            "typeParameters": undefined,
           },
         ],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -104,6 +112,7 @@ Object {
             3,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -121,6 +130,7 @@ Object {
           17,
         ],
         "type": "CallExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

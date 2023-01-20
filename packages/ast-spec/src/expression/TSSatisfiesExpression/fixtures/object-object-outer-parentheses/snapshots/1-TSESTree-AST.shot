@@ -16,6 +16,7 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "prop",
                 optional: false,
 
@@ -64,6 +65,7 @@ Program {
               export: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "prop",
                 optional: false,
 

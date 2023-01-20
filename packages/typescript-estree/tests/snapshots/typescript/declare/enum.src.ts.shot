@@ -7,6 +7,7 @@ Object {
       "const": false,
       "declare": true,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 16,
@@ -24,6 +25,7 @@ Object {
           16,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -39,6 +41,7 @@ Object {
         Object {
           "computed": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -56,7 +59,9 @@ Object {
               26,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
+          "initializer": undefined,
           "loc": Object {
             "end": Object {
               "column": 7,
@@ -76,6 +81,7 @@ Object {
         Object {
           "computed": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -93,7 +99,9 @@ Object {
               35,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
+          "initializer": undefined,
           "loc": Object {
             "end": Object {
               "column": 7,

@@ -6,6 +6,7 @@ Object {
     Object {
       "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -23,6 +24,7 @@ Object {
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -88,6 +90,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 30,
@@ -105,11 +108,13 @@ Object {
                 30,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
         },
         "type": "TSFunctionType",
+        "typeParameters": undefined,
       },
       "typeParameters": Object {
         "loc": Object {
@@ -138,6 +143,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 19,
@@ -155,6 +161,7 @@ Object {
                 19,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": true,
             "range": Array [

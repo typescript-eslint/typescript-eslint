@@ -14,6 +14,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression identifier-tuple-type AST
           type: 'TSSatisfiesExpression',
           expression: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'foo',
 -           optional: false,
 

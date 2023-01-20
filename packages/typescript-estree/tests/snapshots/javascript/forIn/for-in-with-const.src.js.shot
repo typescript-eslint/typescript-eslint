@@ -5,9 +5,11 @@ Object {
   "body": Array [
     Object {
       "body": Object {
+        "directive": undefined,
         "expression": Object {
           "arguments": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 31,
@@ -25,9 +27,11 @@ Object {
                 31,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "callee": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 29,
@@ -45,6 +49,7 @@ Object {
               29,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -62,6 +67,7 @@ Object {
             32,
           ],
           "type": "CallExpression",
+          "typeParameters": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -84,6 +90,7 @@ Object {
           Object {
             "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -101,6 +108,7 @@ Object {
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": null,
             "loc": Object {
@@ -153,6 +161,7 @@ Object {
         33,
       ],
       "right": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 20,
@@ -170,6 +179,7 @@ Object {
           20,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "type": "ForInStatement",
     },

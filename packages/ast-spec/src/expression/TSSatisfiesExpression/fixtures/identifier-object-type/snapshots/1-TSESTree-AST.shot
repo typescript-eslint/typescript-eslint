@@ -10,6 +10,7 @@ Program {
         type: "TSSatisfiesExpression",
         expression: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
           optional: false,
 
@@ -28,6 +29,7 @@ Program {
               export: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "prop",
                 optional: false,
 

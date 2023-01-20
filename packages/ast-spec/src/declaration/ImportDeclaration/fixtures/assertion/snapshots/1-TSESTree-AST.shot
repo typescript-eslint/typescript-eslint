@@ -11,6 +11,7 @@ Program {
           type: "ImportAttribute",
           key: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "type",
             optional: false,
 
@@ -56,6 +57,7 @@ Program {
           type: "ImportNamespaceSpecifier",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "a",
             optional: false,
 

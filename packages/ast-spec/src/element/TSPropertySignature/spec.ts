@@ -14,12 +14,12 @@ interface TSPropertySignatureBase extends BaseNode {
   key: PropertyName;
   optional: boolean;
   computed: boolean;
-  typeAnnotation?: TSTypeAnnotation;
-  initializer?: Expression;
+  typeAnnotation: TSTypeAnnotation | undefined;
+  initializer: Expression | undefined;
   readonly: boolean;
   static: boolean;
   export: boolean;
-  accessibility?: Accessibility;
+  accessibility: Accessibility | undefined;
 }
 
 export interface TSPropertySignatureComputedName

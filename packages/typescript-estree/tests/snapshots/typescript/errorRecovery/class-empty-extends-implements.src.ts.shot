@@ -4,6 +4,7 @@ exports[`typescript errorRecovery class-empty-extends-implements.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -22,7 +23,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -40,10 +44,12 @@ Object {
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "implements": Array [
         Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 32,
@@ -61,6 +67,7 @@ Object {
               32,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -77,6 +84,7 @@ Object {
             32,
           ],
           "type": "TSClassImplements",
+          "typeParameters": undefined,
         },
       ],
       "loc": Object {
@@ -94,7 +102,9 @@ Object {
         37,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

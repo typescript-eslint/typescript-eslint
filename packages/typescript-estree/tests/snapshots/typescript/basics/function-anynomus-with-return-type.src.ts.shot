@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -25,6 +26,7 @@ Object {
               7,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -46,6 +48,7 @@ Object {
               ],
               "type": "BlockStatement",
             },
+            "declare": false,
             "expression": false,
             "generator": false,
             "id": null,
@@ -99,6 +102,7 @@ Object {
               },
             },
             "type": "FunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {

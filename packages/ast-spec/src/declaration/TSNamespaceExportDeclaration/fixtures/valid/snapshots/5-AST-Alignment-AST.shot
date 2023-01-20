@@ -12,6 +12,7 @@ exports[`AST Fixtures declaration TSNamespaceExportDeclaration valid AST Alignme
         type: 'TSNamespaceExportDeclaration',
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'a',
 -         optional: false,
 

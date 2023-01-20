@@ -38,6 +38,7 @@ Object {
         30,
       ],
       "test": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 16,
@@ -55,6 +56,7 @@ Object {
           26,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "type": "IfStatement",
     },

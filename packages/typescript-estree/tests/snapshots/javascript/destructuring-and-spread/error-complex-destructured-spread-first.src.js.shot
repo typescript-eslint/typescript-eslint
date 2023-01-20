@@ -4,11 +4,14 @@ exports[`javascript destructuring-and-spread error-complex-destructured-spread-f
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -26,7 +29,9 @@ Object {
                   5,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -43,8 +48,11 @@ Object {
                 5,
               ],
               "type": "RestElement",
+              "typeAnnotation": undefined,
+              "value": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -60,6 +68,7 @@ Object {
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -77,6 +86,7 @@ Object {
                       10,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -98,6 +108,7 @@ Object {
                   "shorthand": true,
                   "type": "Property",
                   "value": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -115,11 +126,13 @@ Object {
                       10,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 },
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 13,
@@ -137,6 +150,7 @@ Object {
                       13,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -158,6 +172,7 @@ Object {
                   "shorthand": true,
                   "type": "Property",
                   "value": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 13,
@@ -175,6 +190,7 @@ Object {
                       13,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 },
               ],
@@ -183,6 +199,7 @@ Object {
                 15,
               ],
               "type": "ObjectPattern",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -201,6 +218,7 @@ Object {
             16,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -218,6 +236,7 @@ Object {
           20,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 20,
@@ -235,6 +254,7 @@ Object {
             20,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

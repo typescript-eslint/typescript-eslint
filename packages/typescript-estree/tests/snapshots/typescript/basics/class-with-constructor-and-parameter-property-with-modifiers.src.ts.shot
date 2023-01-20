@@ -4,11 +4,15 @@ exports[`typescript basics class-with-constructor-and-parameter-property-with-mo
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -26,6 +30,7 @@ Object {
                 64,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "constructor",
             "loc": Object {
@@ -38,6 +43,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               53,
@@ -45,6 +51,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -65,6 +72,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -81,6 +89,7 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "protected",
+                  "decorators": Array [],
                   "export": false,
                   "loc": Object {
                     "end": Object {
@@ -94,6 +103,7 @@ Object {
                   },
                   "override": true,
                   "parameter": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 55,
@@ -159,7 +169,9 @@ Object {
                 64,
                 110,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -179,7 +191,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 26,
@@ -197,7 +212,9 @@ Object {
           26,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -213,6 +230,7 @@ Object {
         112,
       ],
       "superClass": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 48,
@@ -230,8 +248,11 @@ Object {
           48,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

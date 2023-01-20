@@ -275,10 +275,10 @@ export function getDeclarationKind(
  */
 export function getTSNodeAccessibility(
   node: ts.Node,
-): 'public' | 'protected' | 'private' | null {
+): 'public' | 'protected' | 'private' | undefined {
   const modifiers = getModifiers(node);
   if (modifiers == null) {
-    return null;
+    return undefined;
   }
   for (const modifier of modifiers) {
     switch (modifier.kind) {
@@ -292,7 +292,7 @@ export function getTSNodeAccessibility(
         break;
     }
   }
-  return null;
+  return undefined;
 }
 
 /**

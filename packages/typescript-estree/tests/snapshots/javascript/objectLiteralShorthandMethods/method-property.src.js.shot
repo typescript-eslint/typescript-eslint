@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -25,6 +26,7 @@ Object {
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -41,6 +43,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 7,
@@ -58,6 +61,7 @@ Object {
                     17,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -84,6 +88,7 @@ Object {
                     "body": Array [
                       Object {
                         "argument": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 18,
@@ -101,6 +106,7 @@ Object {
                             40,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "loc": Object {
                           "end": Object {
@@ -135,6 +141,7 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
+                  "declare": false,
                   "expression": false,
                   "generator": false,
                   "id": null,
@@ -153,7 +160,9 @@ Object {
                     17,
                     47,
                   ],
+                  "returnType": undefined,
                   "type": "FunctionExpression",
+                  "typeParameters": undefined,
                 },
               },
             ],

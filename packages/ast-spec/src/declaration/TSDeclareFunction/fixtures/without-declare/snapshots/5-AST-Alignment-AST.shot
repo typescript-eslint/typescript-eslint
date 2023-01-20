@@ -11,10 +11,12 @@ exports[`AST Fixtures declaration TSDeclareFunction without-declare AST Alignmen
       TSDeclareFunction {
         type: 'TSDeclareFunction',
         async: false,
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
 -         optional: false,
 

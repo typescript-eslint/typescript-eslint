@@ -7,9 +7,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -27,6 +29,7 @@ Object {
                 28,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -42,6 +45,7 @@ Object {
             "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 24,
@@ -136,6 +140,7 @@ Object {
             },
             "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
         ],
         "loc": Object {
@@ -155,7 +160,9 @@ Object {
         "type": "TSInterfaceBody",
       },
       "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -173,6 +180,7 @@ Object {
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -189,6 +197,7 @@ Object {
         50,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

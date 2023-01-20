@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": true,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 16,
@@ -101,6 +102,7 @@ Object {
         Object {
           "definite": true,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -194,6 +196,7 @@ Object {
         Object {
           "definite": true,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,

@@ -44,6 +44,7 @@ Object {
         Object {
           "exportKind": "value",
           "exported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -61,6 +62,7 @@ Object {
               22,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -73,6 +75,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -90,6 +93,7 @@ Object {
               11,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             8,
@@ -100,6 +104,7 @@ Object {
         Object {
           "exportKind": "value",
           "exported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -117,6 +122,7 @@ Object {
               27,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -129,6 +135,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -146,6 +153,7 @@ Object {
               27,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             24,

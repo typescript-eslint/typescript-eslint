@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -23,6 +24,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -40,6 +42,7 @@ Object {
                     6,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -61,6 +64,7 @@ Object {
                 "shorthand": true,
                 "type": "Property",
                 "value": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -78,6 +82,7 @@ Object {
                     6,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               },
             ],
@@ -86,6 +91,7 @@ Object {
               7,
             ],
             "type": "ObjectPattern",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {

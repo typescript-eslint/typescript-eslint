@@ -15,6 +15,7 @@ exports[`AST Fixtures declaration ImportDeclaration assertion AST Alignment - AS
             type: 'ImportAttribute',
             key: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'type',
 -             optional: false,
 
@@ -60,6 +61,7 @@ exports[`AST Fixtures declaration ImportDeclaration assertion AST Alignment - AS
             type: 'ImportNamespaceSpecifier',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 

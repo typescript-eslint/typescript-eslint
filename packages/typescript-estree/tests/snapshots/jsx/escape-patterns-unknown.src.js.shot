@@ -4,6 +4,7 @@ exports[`jsx escape-patterns-unknown.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,
@@ -133,6 +134,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,
@@ -262,6 +264,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,
@@ -391,6 +394,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {
@@ -519,6 +523,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {
@@ -647,6 +652,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {

@@ -6,6 +6,7 @@ Object {
     Object {
       "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -23,6 +24,7 @@ Object {
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -52,6 +54,7 @@ Object {
         },
         "members": Array [
           Object {
+            "accessibility": undefined,
             "export": false,
             "loc": Object {
               "end": Object {
@@ -65,6 +68,7 @@ Object {
             },
             "parameters": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -125,6 +129,7 @@ Object {
             "readonly": false,
             "static": false,
             "type": "TSIndexSignature",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
@@ -133,6 +138,7 @@ Object {
         ],
         "type": "TSTypeLiteral",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

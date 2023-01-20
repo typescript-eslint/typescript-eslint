@@ -21,8 +21,10 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
           },
         },
 -       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 
@@ -40,6 +42,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
 -               optional: false,
 -
@@ -63,6 +66,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'U',
 -               optional: false,
 -
@@ -86,6 +90,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'V',
 -               optional: false,
 -

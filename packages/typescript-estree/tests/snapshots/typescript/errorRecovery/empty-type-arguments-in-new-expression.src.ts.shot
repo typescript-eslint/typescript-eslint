@@ -4,9 +4,11 @@ exports[`typescript errorRecovery empty-type-arguments-in-new-expression.src 1`]
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 7,
@@ -24,6 +26,7 @@ Object {
             7,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

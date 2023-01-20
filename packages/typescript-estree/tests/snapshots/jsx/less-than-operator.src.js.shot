@@ -4,6 +4,7 @@ exports[`jsx less-than-operator.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "children": Array [],
@@ -78,6 +79,7 @@ Object {
           13,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 13,
@@ -95,6 +97,7 @@ Object {
             13,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "BinaryExpression",
       },

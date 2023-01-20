@@ -4,6 +4,7 @@ exports[`typescript expressions tagged-template-expression-type-arguments.src 1`
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -62,6 +63,7 @@ Object {
           13,
         ],
         "tag": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -79,6 +81,7 @@ Object {
             3,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "TaggedTemplateExpression",
         "typeParameters": Object {
@@ -110,6 +113,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 7,
@@ -127,6 +131,7 @@ Object {
                   7,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },

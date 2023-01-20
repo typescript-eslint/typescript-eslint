@@ -8,9 +8,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [],
               "callee": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 7,
@@ -28,6 +30,7 @@ Object {
                   39,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -45,6 +48,7 @@ Object {
                 41,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -79,9 +83,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -99,6 +105,7 @@ Object {
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -115,7 +122,9 @@ Object {
         0,
         60,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [

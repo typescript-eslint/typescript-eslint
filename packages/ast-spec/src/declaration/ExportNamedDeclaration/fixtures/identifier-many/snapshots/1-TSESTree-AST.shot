@@ -15,6 +15,7 @@ Program {
           type: "ExportSpecifier",
           exported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "a",
             optional: false,
 
@@ -27,6 +28,7 @@ Program {
           exportKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "a",
             optional: false,
 
@@ -47,6 +49,7 @@ Program {
           type: "ExportSpecifier",
           exported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "b",
             optional: false,
 
@@ -59,6 +62,7 @@ Program {
           exportKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "b",
             optional: false,
 

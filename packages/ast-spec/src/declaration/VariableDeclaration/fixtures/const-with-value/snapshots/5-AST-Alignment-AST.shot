@@ -16,6 +16,7 @@ exports[`AST Fixtures declaration VariableDeclaration const-with-value AST Align
 -           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
 -             optional: false,
 

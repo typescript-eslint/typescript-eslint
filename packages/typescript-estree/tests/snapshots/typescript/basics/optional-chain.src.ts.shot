@@ -8,6 +8,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "expression": Object {
                 "computed": false,
@@ -22,6 +23,7 @@ Object {
                   },
                 },
                 "object": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 5,
@@ -39,9 +41,11 @@ Object {
                     43,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "optional": true,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 10,
@@ -59,6 +63,7 @@ Object {
                     48,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   40,
@@ -99,6 +104,7 @@ Object {
             "type": "ExpressionStatement",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "expression": Object {
                 "computed": false,
@@ -125,6 +131,7 @@ Object {
                     },
                   },
                   "object": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 5,
@@ -142,9 +149,11 @@ Object {
                       55,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "optional": true,
                   "property": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -162,6 +171,7 @@ Object {
                       60,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     52,
@@ -171,6 +181,7 @@ Object {
                 },
                 "optional": false,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 16,
@@ -188,6 +199,7 @@ Object {
                     66,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   52,
@@ -228,6 +240,7 @@ Object {
             "type": "ExpressionStatement",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "expression": Object {
                 "computed": false,
@@ -254,6 +267,7 @@ Object {
                     },
                   },
                   "object": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 5,
@@ -271,9 +285,11 @@ Object {
                       73,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "optional": false,
                   "property": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 9,
@@ -291,6 +307,7 @@ Object {
                       77,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     70,
@@ -300,6 +317,7 @@ Object {
                 },
                 "optional": true,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 16,
@@ -317,6 +335,7 @@ Object {
                     84,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   70,
@@ -357,6 +376,7 @@ Object {
             "type": "ExpressionStatement",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "expression": Object {
                 "computed": false,
@@ -395,6 +415,7 @@ Object {
                       },
                     },
                     "object": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 5,
@@ -412,9 +433,11 @@ Object {
                         91,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "optional": false,
                     "property": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 9,
@@ -432,6 +455,7 @@ Object {
                         95,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "range": Array [
                       88,
@@ -441,6 +465,7 @@ Object {
                   },
                   "optional": true,
                   "property": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 16,
@@ -458,6 +483,7 @@ Object {
                       102,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     88,
@@ -467,6 +493,7 @@ Object {
                 },
                 "optional": false,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 21,
@@ -484,6 +511,7 @@ Object {
                     107,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   88,
@@ -524,6 +552,7 @@ Object {
             "type": "ExpressionStatement",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "expression": Object {
                 "computed": false,
@@ -562,6 +591,7 @@ Object {
                       },
                     },
                     "object": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 5,
@@ -579,9 +609,11 @@ Object {
                         114,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "optional": false,
                     "property": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 9,
@@ -599,6 +631,7 @@ Object {
                         118,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "range": Array [
                       111,
@@ -608,6 +641,7 @@ Object {
                   },
                   "optional": true,
                   "property": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 16,
@@ -625,6 +659,7 @@ Object {
                       125,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     111,
@@ -634,6 +669,7 @@ Object {
                 },
                 "optional": true,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 22,
@@ -651,6 +687,7 @@ Object {
                     131,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   111,
@@ -707,9 +744,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 24,
@@ -727,6 +766,7 @@ Object {
           24,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -740,6 +780,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 34,
@@ -797,7 +838,9 @@ Object {
         0,
         134,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

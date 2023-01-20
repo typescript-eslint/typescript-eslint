@@ -17,8 +17,10 @@ Program {
         },
       },
       declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
         optional: false,
 
@@ -36,6 +38,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
               optional: false,
 
@@ -58,6 +61,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "U",
               optional: false,
 
@@ -80,6 +84,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "V",
               optional: false,
 

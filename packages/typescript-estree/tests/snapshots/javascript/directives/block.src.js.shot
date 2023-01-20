@@ -49,6 +49,7 @@ Object {
               Object {
                 "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 7,
@@ -66,6 +67,7 @@ Object {
                     40,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "loc": Object {
@@ -122,6 +124,7 @@ Object {
             "type": "VariableDeclaration",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "loc": Object {
                 "end": Object {
@@ -174,9 +177,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -194,6 +199,7 @@ Object {
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -210,7 +216,9 @@ Object {
         0,
         63,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

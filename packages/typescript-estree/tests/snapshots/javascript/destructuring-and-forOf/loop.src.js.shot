@@ -23,8 +23,10 @@ Object {
         "type": "EmptyStatement",
       },
       "left": Object {
+        "decorators": Array [],
         "elements": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -42,6 +44,7 @@ Object {
               7,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "loc": Object {
@@ -60,6 +63,7 @@ Object {
           8,
         ],
         "type": "ArrayPattern",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -76,6 +80,7 @@ Object {
         17,
       ],
       "right": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 15,
@@ -93,6 +98,7 @@ Object {
           15,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "type": "ForOfStatement",
     },

@@ -24,6 +24,7 @@ Program {
           global: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "C",
             optional: false,
 
@@ -44,6 +45,7 @@ Program {
         global: false,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "B",
           optional: false,
 
@@ -64,6 +66,7 @@ Program {
       global: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "A",
         optional: false,
 

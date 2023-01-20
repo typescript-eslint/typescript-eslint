@@ -12,6 +12,7 @@ Object {
               Object {
                 "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 11,
@@ -29,6 +30,7 @@ Object {
                     35,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "loc": Object {
@@ -89,6 +91,7 @@ Object {
               Object {
                 "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 11,
@@ -106,6 +109,7 @@ Object {
                     56,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "loc": Object {
@@ -166,6 +170,7 @@ Object {
               Object {
                 "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 16,
@@ -183,6 +188,7 @@ Object {
                     82,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "loc": Object {
@@ -255,9 +261,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 19,
@@ -275,6 +283,7 @@ Object {
           19,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -291,7 +300,9 @@ Object {
         0,
         96,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

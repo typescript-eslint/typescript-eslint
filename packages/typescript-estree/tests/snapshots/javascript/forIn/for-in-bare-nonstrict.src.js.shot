@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -25,6 +26,7 @@ Object {
               11,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -85,6 +87,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -102,6 +105,7 @@ Object {
               31,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -162,6 +166,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -179,6 +184,7 @@ Object {
               47,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": null,
           "loc": Object {
@@ -220,8 +226,10 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -239,6 +247,7 @@ Object {
                   129,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -296,6 +305,7 @@ Object {
           Object {
             "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -313,11 +323,13 @@ Object {
                 59,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "expressions": Array [
                 Object {
                   "argument": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 23,
@@ -335,6 +347,7 @@ Object {
                       72,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -462,6 +475,7 @@ Object {
         "expressions": Array [
           Object {
             "left": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 38,
@@ -479,6 +493,7 @@ Object {
                 87,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -496,6 +511,7 @@ Object {
               91,
             ],
             "right": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 42,
@@ -513,6 +529,7 @@ Object {
                 91,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "type": "AssignmentExpression",
           },
@@ -531,6 +548,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 46,
@@ -548,6 +566,7 @@ Object {
                     95,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -591,6 +610,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 52,
@@ -608,6 +628,7 @@ Object {
                     101,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -651,6 +672,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 58,
@@ -668,6 +690,7 @@ Object {
                     107,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {

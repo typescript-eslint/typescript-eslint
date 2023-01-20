@@ -8,6 +8,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "expression": Object {
                 "computed": false,
@@ -35,6 +36,7 @@ Object {
                       },
                     },
                     "object": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 5,
@@ -52,9 +54,11 @@ Object {
                         43,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "optional": true,
                     "property": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 10,
@@ -72,6 +76,7 @@ Object {
                         48,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "range": Array [
                       40,
@@ -97,6 +102,7 @@ Object {
                 },
                 "optional": false,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 17,
@@ -114,6 +120,7 @@ Object {
                     55,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   40,
@@ -154,6 +161,7 @@ Object {
             "type": "ExpressionStatement",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "computed": false,
               "loc": Object {
@@ -181,6 +189,7 @@ Object {
                       },
                     },
                     "object": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 6,
@@ -198,9 +207,11 @@ Object {
                         63,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "optional": true,
                     "property": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 11,
@@ -218,6 +229,7 @@ Object {
                         68,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "range": Array [
                       60,
@@ -259,6 +271,7 @@ Object {
               },
               "optional": false,
               "property": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 19,
@@ -276,6 +289,7 @@ Object {
                   76,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 59,
@@ -300,6 +314,7 @@ Object {
             "type": "ExpressionStatement",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "computed": false,
               "loc": Object {
@@ -327,6 +342,7 @@ Object {
                       },
                     },
                     "object": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 6,
@@ -344,9 +360,11 @@ Object {
                         84,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "optional": true,
                     "property": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 11,
@@ -364,6 +382,7 @@ Object {
                         89,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "range": Array [
                       81,
@@ -405,6 +424,7 @@ Object {
               },
               "optional": false,
               "property": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 19,
@@ -422,6 +442,7 @@ Object {
                   97,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 80,
@@ -462,9 +483,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 24,
@@ -482,6 +505,7 @@ Object {
           24,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -495,6 +519,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 34,
@@ -552,7 +577,9 @@ Object {
         0,
         100,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

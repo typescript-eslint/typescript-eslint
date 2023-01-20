@@ -8,9 +8,12 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "elements": Array [
               Object {
+                "decorators": Array [],
                 "left": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -28,6 +31,7 @@ Object {
                     6,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -64,9 +68,12 @@ Object {
                   "value": 10,
                 },
                 "type": "AssignmentPattern",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "left": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 14,
@@ -84,6 +91,7 @@ Object {
                     14,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -120,9 +128,12 @@ Object {
                   "value": 5,
                 },
                 "type": "AssignmentPattern",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "left": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 21,
@@ -140,6 +151,7 @@ Object {
                     21,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -176,6 +188,7 @@ Object {
                   "value": 1,
                 },
                 "type": "AssignmentPattern",
+                "typeAnnotation": undefined,
               },
             ],
             "loc": Object {
@@ -194,8 +207,10 @@ Object {
               26,
             ],
             "type": "ArrayPattern",
+            "typeAnnotation": undefined,
           },
           "init": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 30,
@@ -213,6 +228,7 @@ Object {
               30,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {

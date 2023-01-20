@@ -11,7 +11,7 @@ interface TSEnumMemberBase extends BaseNode {
   id:
     | PropertyNameComputed // this should only happen in semantically invalid code (ts error 1164)
     | PropertyNameNonComputed;
-  initializer?: Expression;
+  initializer: Expression | undefined;
   computed: boolean;
 }
 

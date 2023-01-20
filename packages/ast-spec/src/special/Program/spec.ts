@@ -8,6 +8,6 @@ export interface Program extends NodeOrTokenData {
   type: AST_NODE_TYPES.Program;
   body: ProgramStatement[];
   sourceType: 'module' | 'script';
-  comments?: Comment[];
-  tokens?: Token[];
+  comments: Comment[] | undefined;
+  tokens: Token[] | undefined;
 }

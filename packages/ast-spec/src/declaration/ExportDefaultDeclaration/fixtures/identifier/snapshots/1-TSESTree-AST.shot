@@ -8,6 +8,7 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "x",
         optional: false,
 

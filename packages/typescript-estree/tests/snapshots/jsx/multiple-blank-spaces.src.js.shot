@@ -4,6 +4,7 @@ exports[`jsx multiple-blank-spaces.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {

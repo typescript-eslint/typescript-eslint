@@ -4,6 +4,7 @@ exports[`javascript objectLiteral object-literal-in-lhs.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "computed": false,
@@ -39,6 +40,7 @@ Object {
               },
             ],
             "callee": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 2,
@@ -56,6 +58,7 @@ Object {
                 2,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -73,9 +76,11 @@ Object {
               6,
             ],
             "type": "CallExpression",
+            "typeParameters": undefined,
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -93,6 +98,7 @@ Object {
               8,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             0,
@@ -116,6 +122,7 @@ Object {
           14,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 14,
@@ -133,6 +140,7 @@ Object {
             14,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

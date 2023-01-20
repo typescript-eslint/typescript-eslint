@@ -15,6 +15,7 @@ Program {
             definite: false,
             id: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "x",
               optional: false,
 

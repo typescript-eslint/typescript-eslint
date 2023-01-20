@@ -38,6 +38,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression conditional-with-parenthe
             },
             test: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'foo',
 -             optional: false,
 

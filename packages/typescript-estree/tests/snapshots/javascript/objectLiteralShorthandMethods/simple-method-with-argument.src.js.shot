@@ -4,8 +4,10 @@ exports[`javascript objectLiteralShorthandMethods simple-method-with-argument.sr
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -23,6 +25,7 @@ Object {
             1,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -54,6 +57,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -71,6 +75,7 @@ Object {
                   16,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -111,6 +116,7 @@ Object {
                   ],
                   "type": "BlockStatement",
                 },
+                "declare": false,
                 "expression": false,
                 "generator": false,
                 "id": null,
@@ -126,6 +132,7 @@ Object {
                 },
                 "params": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 15,
@@ -143,13 +150,16 @@ Object {
                       21,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 ],
                 "range": Array [
                   16,
                   31,
                 ],
+                "returnType": undefined,
                 "type": "FunctionExpression",
+                "typeParameters": undefined,
               },
             },
           ],

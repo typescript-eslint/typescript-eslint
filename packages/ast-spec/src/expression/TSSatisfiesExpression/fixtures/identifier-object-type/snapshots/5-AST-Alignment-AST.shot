@@ -14,6 +14,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression identifier-object-type AS
           type: 'TSSatisfiesExpression',
           expression: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'foo',
 -           optional: false,
 
@@ -32,6 +33,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression identifier-object-type AS
 -               export: false,
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'prop',
 -                 optional: false,
 

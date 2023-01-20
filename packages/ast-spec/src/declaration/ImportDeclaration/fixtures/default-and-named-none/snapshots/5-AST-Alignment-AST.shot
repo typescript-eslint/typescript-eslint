@@ -28,6 +28,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-none AST A
             type: 'ImportDefaultSpecifier',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 

@@ -8,6 +8,7 @@ Object {
       "consequent": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [
                 Object {
@@ -68,6 +69,7 @@ Object {
                 },
               ],
               "callee": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -85,6 +87,7 @@ Object {
                   28,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -102,6 +105,7 @@ Object {
                 37,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -124,6 +128,7 @@ Object {
               Object {
                 "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 11,
@@ -141,6 +146,7 @@ Object {
                     50,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "children": Array [

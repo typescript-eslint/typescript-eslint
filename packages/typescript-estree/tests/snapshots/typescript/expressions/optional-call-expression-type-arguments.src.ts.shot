@@ -4,6 +4,7 @@ exports[`typescript expressions optional-call-expression-type-arguments.src 1`] 
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "expression": Object {
           "arguments": Array [],
@@ -20,6 +21,7 @@ Object {
               },
             },
             "object": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -37,9 +39,11 @@ Object {
                 3,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "optional": true,
             "property": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -57,6 +61,7 @@ Object {
                 8,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "range": Array [
               0,
@@ -109,6 +114,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 10,
@@ -126,6 +132,7 @@ Object {
                     10,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -170,6 +177,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "expression": Object {
           "arguments": Array [],
@@ -186,6 +194,7 @@ Object {
               },
             },
             "object": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -203,9 +212,11 @@ Object {
                 18,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "optional": true,
             "property": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -223,6 +234,7 @@ Object {
                 23,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "range": Array [
               15,

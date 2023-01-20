@@ -14,6 +14,7 @@ exports[`AST Fixtures declaration TSEnumDeclaration declare AST Alignment - AST 
         declare: true,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
 -         optional: false,
 

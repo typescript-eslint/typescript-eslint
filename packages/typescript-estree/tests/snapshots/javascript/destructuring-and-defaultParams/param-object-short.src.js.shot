@@ -4,6 +4,7 @@ exports[`javascript destructuring-and-defaultParams param-object-short.src 1`] =
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -19,6 +20,7 @@ Object {
           Object {
             "computed": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -36,6 +38,7 @@ Object {
                 3,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "init",
             "loc": Object {
@@ -76,6 +79,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -91,7 +95,9 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "left": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 7,
@@ -107,6 +113,7 @@ Object {
                       Object {
                         "computed": false,
                         "key": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 6,
@@ -124,6 +131,7 @@ Object {
                             6,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "kind": "init",
                         "loc": Object {
@@ -145,6 +153,7 @@ Object {
                         "shorthand": true,
                         "type": "Property",
                         "value": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 6,
@@ -162,6 +171,7 @@ Object {
                             6,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                       },
                     ],
@@ -170,6 +180,7 @@ Object {
                       7,
                     ],
                     "type": "ObjectPattern",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -201,6 +212,7 @@ Object {
                       Object {
                         "computed": false,
                         "key": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 12,
@@ -218,6 +230,7 @@ Object {
                             12,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "kind": "init",
                         "loc": Object {
@@ -266,13 +279,16 @@ Object {
                     "type": "ObjectExpression",
                   },
                   "type": "AssignmentPattern",
+                  "typeAnnotation": undefined,
                 },
               ],
               "range": Array [
                 3,
                 21,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],

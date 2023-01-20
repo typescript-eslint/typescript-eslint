@@ -163,9 +163,15 @@ export default util.createRule<Options, MessageIds>({
       } else {
         return {
           type,
-          static: false,
-          readonly: false,
+          accessibility: undefined,
           declare: false,
+          decorators: [],
+          definite: false,
+          optional: false,
+          override: false,
+          readonly: false,
+          static: false,
+          typeAnnotation: undefined,
           ...base,
         } as TSESTree.PropertyDefinition;
       }
@@ -354,6 +360,12 @@ export default util.createRule<Options, MessageIds>({
           id: null,
           // TODO: This is invalid, there can be more than one extends in interface
           superClass: node.extends![0].expression as any,
+          abstract: false,
+          declare: false,
+          decorators: [],
+          implements: [],
+          superTypeParameters: undefined,
+          typeParameters: undefined,
 
           // location data
           parent: node.parent,
@@ -461,6 +473,7 @@ export default util.createRule<Options, MessageIds>({
           selfClosing: false,
           name: name as any,
           attributes: attributes as any,
+          typeParameters: undefined,
 
           // location data
           parent: node.parent,

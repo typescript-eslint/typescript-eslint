@@ -15,6 +15,7 @@ Object {
                     Object {
                       "definite": false,
                       "id": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 11,
@@ -30,6 +31,7 @@ Object {
                           Object {
                             "computed": false,
                             "key": Object {
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 10,
@@ -47,6 +49,7 @@ Object {
                                 36,
                               ],
                               "type": "Identifier",
+                              "typeAnnotation": undefined,
                             },
                             "kind": "init",
                             "loc": Object {
@@ -68,6 +71,7 @@ Object {
                             "shorthand": true,
                             "type": "Property",
                             "value": Object {
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 10,
@@ -85,6 +89,7 @@ Object {
                                 36,
                               ],
                               "type": "Identifier",
+                              "typeAnnotation": undefined,
                             },
                           },
                         ],
@@ -93,8 +98,10 @@ Object {
                           37,
                         ],
                         "type": "ObjectPattern",
+                        "typeAnnotation": undefined,
                       },
                       "init": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 15,
@@ -112,6 +119,7 @@ Object {
                           41,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -196,8 +204,10 @@ Object {
                 },
               },
               "param": Object {
+                "decorators": Array [],
                 "elements": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 14,
@@ -215,6 +225,7 @@ Object {
                       61,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 ],
                 "loc": Object {
@@ -233,6 +244,7 @@ Object {
                   62,
                 ],
                 "type": "ArrayPattern",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 49,
@@ -273,9 +285,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -293,6 +307,7 @@ Object {
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -306,6 +321,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 14,
@@ -321,6 +337,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -338,6 +355,7 @@ Object {
                   13,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -359,6 +377,7 @@ Object {
               "shorthand": true,
               "type": "Property",
               "value": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -376,6 +395,7 @@ Object {
                   13,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             },
           ],
@@ -384,13 +404,16 @@ Object {
             14,
           ],
           "type": "ObjectPattern",
+          "typeAnnotation": undefined,
         },
       ],
       "range": Array [
         0,
         71,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "loc": Object {

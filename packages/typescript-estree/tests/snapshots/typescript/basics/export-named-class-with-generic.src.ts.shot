@@ -6,6 +6,7 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
+        "abstract": false,
         "body": Object {
           "body": Array [],
           "loc": Object {
@@ -24,7 +25,10 @@ Object {
           ],
           "type": "ClassBody",
         },
+        "declare": false,
+        "decorators": Array [],
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 16,
@@ -42,7 +46,9 @@ Object {
             16,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
+        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -58,6 +64,7 @@ Object {
           24,
         ],
         "superClass": null,
+        "superTypeParameters": undefined,
         "type": "ClassDeclaration",
         "typeParameters": Object {
           "loc": Object {
@@ -86,6 +93,7 @@ Object {
                 },
               },
               "name": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -103,6 +111,7 @@ Object {
                   18,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "out": false,
               "range": Array [

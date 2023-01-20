@@ -10,8 +10,11 @@ Object {
         "body": Object {
           "body": Array [
             Object {
+              "accessibility": undefined,
               "computed": false,
+              "decorators": Array [],
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 29,
@@ -29,6 +32,7 @@ Object {
                   68,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "method",
               "loc": Object {
@@ -41,6 +45,7 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": false,
               "override": false,
               "range": Array [
                 41,
@@ -48,9 +53,11 @@ Object {
               ],
               "static": true,
               "type": "TSAbstractMethodDefinition",
+              "typeParameters": undefined,
               "value": Object {
                 "async": false,
                 "body": null,
+                "declare": false,
                 "expression": false,
                 "generator": false,
                 "id": null,
@@ -69,7 +76,9 @@ Object {
                   68,
                   71,
                 ],
+                "returnType": undefined,
                 "type": "TSEmptyBodyFunctionExpression",
+                "typeParameters": undefined,
               },
             },
           ],
@@ -89,7 +98,10 @@ Object {
           ],
           "type": "ClassBody",
         },
+        "declare": false,
+        "decorators": Array [],
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 36,
@@ -107,7 +119,9 @@ Object {
             36,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
+        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -123,7 +137,9 @@ Object {
           73,
         ],
         "superClass": null,
+        "superTypeParameters": undefined,
         "type": "ClassDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

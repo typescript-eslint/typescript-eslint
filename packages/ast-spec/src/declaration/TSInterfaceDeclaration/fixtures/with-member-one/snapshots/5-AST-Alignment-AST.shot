@@ -19,6 +19,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one AST Ali
 -             export: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop',
 -               optional: false,
 
@@ -47,8 +48,10 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one AST Ali
           },
         },
 -       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 

@@ -4,9 +4,11 @@ exports[`typescript decorators property-decorators property-decorator-factory-in
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
             "decorators": Array [
@@ -14,6 +16,7 @@ Object {
                 "expression": Object {
                   "arguments": Array [],
                   "callee": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -31,6 +34,7 @@ Object {
                       32,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -48,6 +52,7 @@ Object {
                     34,
                   ],
                   "type": "CallExpression",
+                  "typeParameters": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -66,7 +71,9 @@ Object {
                 "type": "Decorator",
               },
             ],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 17,
@@ -84,6 +91,7 @@ Object {
                 39,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -95,17 +103,20 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               26,
               40,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
             "decorators": Array [
@@ -113,6 +124,7 @@ Object {
                 "expression": Object {
                   "arguments": Array [],
                   "callee": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 11,
@@ -130,6 +142,7 @@ Object {
                       52,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -147,6 +160,7 @@ Object {
                     54,
                   ],
                   "type": "CallExpression",
+                  "typeParameters": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -165,7 +179,9 @@ Object {
                 "type": "Decorator",
               },
             ],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -183,6 +199,7 @@ Object {
                 64,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -194,17 +211,20 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               45,
               86,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "arguments": Array [],
               "callee": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 28,
@@ -222,6 +242,7 @@ Object {
                   83,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -238,6 +259,7 @@ Object {
                 85,
               ],
               "type": "NewExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -257,7 +279,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 19,
@@ -275,7 +300,9 @@ Object {
           19,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -291,7 +318,9 @@ Object {
         88,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

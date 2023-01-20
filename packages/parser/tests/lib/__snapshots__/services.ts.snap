@@ -8,6 +8,7 @@ exports[`services fixtures/isolated-file.src 1`] = `
         {
           "definite": false,
           "id": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 7,

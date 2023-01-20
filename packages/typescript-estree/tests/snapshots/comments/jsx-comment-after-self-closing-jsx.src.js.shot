@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -25,6 +26,7 @@ Object {
               10,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -139,7 +141,9 @@ Object {
               13,
               65,
             ],
+            "returnType": undefined,
             "type": "ArrowFunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {

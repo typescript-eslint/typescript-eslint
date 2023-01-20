@@ -25,6 +25,7 @@ Object {
       "declare": true,
       "global": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 18,
@@ -42,6 +43,7 @@ Object {
           18,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

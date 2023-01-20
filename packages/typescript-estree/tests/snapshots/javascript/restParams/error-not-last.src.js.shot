@@ -6,9 +6,11 @@ Object {
     Object {
       "async": false,
       "body": undefined,
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -26,6 +28,7 @@ Object {
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -39,6 +42,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 12,
@@ -56,9 +60,11 @@ Object {
             12,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         Object {
           "argument": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 18,
@@ -76,7 +82,9 @@ Object {
               18,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 18,
@@ -93,8 +101,11 @@ Object {
             18,
           ],
           "type": "RestElement",
+          "typeAnnotation": undefined,
+          "value": undefined,
         },
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 21,
@@ -112,13 +123,16 @@ Object {
             21,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
       ],
       "range": Array [
         0,
         23,
       ],
+      "returnType": undefined,
       "type": "TSDeclareFunction",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

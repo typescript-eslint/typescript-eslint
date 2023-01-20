@@ -4,11 +4,14 @@ exports[`javascript destructuring-and-spread single-destructured.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -26,7 +29,9 @@ Object {
                   5,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -43,6 +48,8 @@ Object {
                 5,
               ],
               "type": "RestElement",
+              "typeAnnotation": undefined,
+              "value": undefined,
             },
           ],
           "loc": Object {
@@ -61,6 +68,7 @@ Object {
             6,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -78,6 +86,7 @@ Object {
           10,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -95,6 +104,7 @@ Object {
             10,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

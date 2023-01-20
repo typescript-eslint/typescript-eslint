@@ -6,7 +6,7 @@ import type { BlockStatement } from '../../statement/BlockStatement/spec';
 interface FunctionDeclarationBase extends FunctionBase {
   type: AST_NODE_TYPES.FunctionDeclaration;
   body: BlockStatement;
-  declare?: false;
+  declare: false;
   expression: false;
 }
 

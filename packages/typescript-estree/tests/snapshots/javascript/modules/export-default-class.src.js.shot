@@ -5,6 +5,7 @@ Object {
   "body": Array [
     Object {
       "declaration": Object {
+        "abstract": false,
         "body": Object {
           "body": Array [],
           "loc": Object {
@@ -23,7 +24,10 @@ Object {
           ],
           "type": "ClassBody",
         },
+        "declare": false,
+        "decorators": Array [],
         "id": null,
+        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -39,7 +43,9 @@ Object {
           25,
         ],
         "superClass": null,
+        "superTypeParameters": undefined,
         "type": "ClassDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

@@ -4,6 +4,7 @@ exports[`javascript arrowFunctions return-sequence.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -11,6 +12,7 @@ Object {
           "body": Object {
             "expressions": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 20,
@@ -28,8 +30,10 @@ Object {
                   20,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 23,
@@ -47,8 +51,10 @@ Object {
                   23,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 26,
@@ -66,6 +72,7 @@ Object {
                   26,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "loc": Object {
@@ -99,6 +106,7 @@ Object {
           },
           "params": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -116,8 +124,10 @@ Object {
                 10,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -135,13 +145,16 @@ Object {
                 13,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "range": Array [
             8,
             27,
           ],
+          "returnType": undefined,
           "type": "ArrowFunctionExpression",
+          "typeParameters": undefined,
         },
         "expression": true,
         "generator": false,
@@ -158,6 +171,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 2,
@@ -175,13 +189,16 @@ Object {
               2,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           28,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

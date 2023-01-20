@@ -4,11 +4,13 @@ exports[`javascript generators yield-without-value-in-call.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
           "body": Array [
             Object {
+              "directive": undefined,
               "expression": Object {
                 "arguments": Array [
                   Object {
@@ -32,6 +34,7 @@ Object {
                   },
                 ],
                 "callee": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 18,
@@ -49,6 +52,7 @@ Object {
                     18,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -66,6 +70,7 @@ Object {
                   25,
                 ],
                 "type": "CallExpression",
+                "typeParameters": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -100,6 +105,7 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": true,
         "id": null,
@@ -118,7 +124,9 @@ Object {
           1,
           28,
         ],
+        "returnType": undefined,
         "type": "FunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

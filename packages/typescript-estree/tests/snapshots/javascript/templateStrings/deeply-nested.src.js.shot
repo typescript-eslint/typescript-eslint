@@ -4,6 +4,7 @@ exports[`javascript templateStrings deeply-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -228,6 +229,7 @@ Object {
           44,
         ],
         "tag": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -245,6 +247,7 @@ Object {
             3,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "TaggedTemplateExpression",
         "typeParameters": undefined,

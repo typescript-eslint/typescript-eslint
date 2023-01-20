@@ -21,8 +21,10 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration empty AST Alignment - A
           },
         },
 -       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 

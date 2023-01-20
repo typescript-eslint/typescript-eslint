@@ -18,11 +18,11 @@ interface MethodDefinitionBase extends BaseNode {
   computed: boolean;
   static: boolean;
   kind: 'constructor' | 'get' | 'method' | 'set';
-  optional?: boolean;
-  decorators?: Decorator[];
-  accessibility?: Accessibility;
-  typeParameters?: TSTypeParameterDeclaration;
-  override?: boolean;
+  optional: boolean;
+  decorators: Decorator[];
+  accessibility: Accessibility | undefined;
+  typeParameters: TSTypeParameterDeclaration | undefined;
+  override: boolean;
 }
 
 export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {

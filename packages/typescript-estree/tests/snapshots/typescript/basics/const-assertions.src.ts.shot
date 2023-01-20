@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -25,6 +26,7 @@ Object {
               18,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -78,6 +80,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 19,
@@ -95,6 +98,7 @@ Object {
                   32,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -139,6 +143,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -156,6 +161,7 @@ Object {
               68,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -247,6 +253,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 25,
@@ -264,6 +271,7 @@ Object {
                   88,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -308,6 +316,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -325,6 +334,7 @@ Object {
               133,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -342,6 +352,7 @@ Object {
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 14,
@@ -359,6 +370,7 @@ Object {
                       142,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -438,6 +450,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 34,
@@ -455,6 +468,7 @@ Object {
                   162,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -499,6 +513,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -516,6 +531,7 @@ Object {
               183,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -569,6 +585,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -586,6 +603,7 @@ Object {
                   192,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -630,6 +648,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -647,6 +666,7 @@ Object {
               231,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -738,6 +758,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -755,6 +776,7 @@ Object {
                   240,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -799,6 +821,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -816,6 +839,7 @@ Object {
               294,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -833,6 +857,7 @@ Object {
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 21,
@@ -850,6 +875,7 @@ Object {
                       310,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -929,6 +955,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -946,6 +973,7 @@ Object {
                   303,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },

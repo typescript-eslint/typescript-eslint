@@ -28,6 +28,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-namespace AST Al
             type: 'ImportDefaultSpecifier',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 
@@ -48,6 +49,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-namespace AST Al
             type: 'ImportNamespaceSpecifier',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 

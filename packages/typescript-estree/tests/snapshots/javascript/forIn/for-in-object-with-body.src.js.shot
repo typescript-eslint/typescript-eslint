@@ -23,6 +23,7 @@ Object {
         "type": "BlockStatement",
       },
       "left": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 6,
@@ -40,6 +41,7 @@ Object {
           6,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

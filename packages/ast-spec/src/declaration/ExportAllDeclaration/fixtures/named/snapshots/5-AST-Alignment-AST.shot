@@ -13,6 +13,7 @@ exports[`AST Fixtures declaration ExportAllDeclaration named AST Alignment - AST
         assertions: Array [],
         exported: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'mod',
 -         optional: false,
 

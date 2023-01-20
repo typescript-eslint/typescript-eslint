@@ -16,10 +16,10 @@ interface TSMethodSignatureBase extends BaseNode {
   computed: boolean;
   params: Parameter[];
   optional: boolean;
-  returnType?: TSTypeAnnotation;
+  returnType: TSTypeAnnotation | undefined;
   readonly: boolean;
-  typeParameters?: TSTypeParameterDeclaration;
-  accessibility?: Accessibility;
+  typeParameters: TSTypeParameterDeclaration | undefined;
+  accessibility: Accessibility | undefined;
   export: boolean;
   static: boolean;
   kind: 'get' | 'method' | 'set';

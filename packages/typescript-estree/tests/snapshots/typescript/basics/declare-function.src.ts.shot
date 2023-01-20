@@ -10,6 +10,7 @@ Object {
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 20,
@@ -27,6 +28,7 @@ Object {
           20,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -40,6 +42,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 32,
@@ -132,6 +135,7 @@ Object {
         },
       },
       "type": "TSDeclareFunction",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

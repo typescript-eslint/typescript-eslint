@@ -4,7 +4,9 @@ exports[`typescript basics class-multi-line-keyword-abstract.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -22,6 +24,7 @@ Object {
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -40,6 +43,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -58,7 +62,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -76,7 +83,9 @@ Object {
           16,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 10,
@@ -92,7 +101,9 @@ Object {
         19,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

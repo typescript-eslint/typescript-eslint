@@ -13,6 +13,7 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration valid AST Alignment - A
 -       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'T',
 -         optional: false,
 

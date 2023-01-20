@@ -8,6 +8,7 @@ Program {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
         optional: false,
 
@@ -25,6 +26,7 @@ Program {
           type: "TSQualifiedName",
           left: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "A",
             optional: false,
 
@@ -36,6 +38,7 @@ Program {
           },
           right: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "B",
             optional: false,
 
@@ -54,6 +57,7 @@ Program {
         },
         right: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "C",
           optional: false,
 

@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -55,6 +56,7 @@ Object {
                 "params": Array [
                   Object {
                     "argument": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 12,
@@ -72,7 +74,9 @@ Object {
                         12,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -140,6 +144,7 @@ Object {
                         "type": "TSArrayType",
                       },
                     },
+                    "value": undefined,
                   },
                 ],
                 "range": Array [
@@ -181,6 +186,7 @@ Object {
                   },
                 },
                 "type": "TSFunctionType",
+                "typeParameters": undefined,
               },
             },
           },

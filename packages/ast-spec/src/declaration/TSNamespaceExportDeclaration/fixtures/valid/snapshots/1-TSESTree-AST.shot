@@ -8,6 +8,7 @@ Program {
       type: "TSNamespaceExportDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "a",
         optional: false,
 

@@ -4,12 +4,17 @@ exports[`typescript basics class-with-property-function.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -27,6 +32,7 @@ Object {
                 17,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -38,12 +44,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
               55,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -113,6 +120,7 @@ Object {
                   },
                 },
                 "type": "TSFunctionType",
+                "typeParameters": undefined,
               },
             },
             "value": Object {
@@ -189,12 +197,17 @@ Object {
                 },
               },
               "type": "ArrowFunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -212,6 +225,7 @@ Object {
                 61,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -223,12 +237,13 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               58,
               83,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -268,6 +283,7 @@ Object {
             "value": Object {
               "async": false,
               "body": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 26,
@@ -285,6 +301,7 @@ Object {
                   82,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "expression": true,
               "generator": false,
@@ -304,7 +321,9 @@ Object {
                 72,
                 82,
               ],
+              "returnType": undefined,
               "type": "ArrowFunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -324,7 +343,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -342,7 +364,9 @@ Object {
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -358,7 +382,9 @@ Object {
         85,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

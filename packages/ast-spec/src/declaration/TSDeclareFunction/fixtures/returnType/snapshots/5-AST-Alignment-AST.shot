@@ -16,6 +16,7 @@ exports[`AST Fixtures declaration TSDeclareFunction returnType AST Alignment - A
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
 -         optional: false,
 

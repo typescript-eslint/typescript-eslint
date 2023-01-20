@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -25,6 +26,7 @@ Object {
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -46,6 +48,7 @@ Object {
               ],
               "type": "BlockStatement",
             },
+            "declare": false,
             "expression": false,
             "generator": false,
             "id": null,
@@ -61,6 +64,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -78,9 +82,11 @@ Object {
                   18,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
                 "argument": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 24,
@@ -98,7 +104,9 @@ Object {
                     24,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 24,
@@ -115,13 +123,17 @@ Object {
                   24,
                 ],
                 "type": "RestElement",
+                "typeAnnotation": undefined,
+                "value": undefined,
               },
             ],
             "range": Array [
               8,
               28,
             ],
+            "returnType": undefined,
             "type": "FunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {

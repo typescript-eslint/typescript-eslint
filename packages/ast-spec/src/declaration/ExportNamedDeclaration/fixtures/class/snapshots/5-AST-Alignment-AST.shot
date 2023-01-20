@@ -13,6 +13,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration class AST Alignment - A
         assertions: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
+-         abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -23,8 +24,11 @@ exports[`AST Fixtures declaration ExportNamedDeclaration class AST Alignment - A
               end: { column: 19, line: 1 },
             },
           },
+-         declare: false,
+-         decorators: Array [],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Foo',
 -           optional: false,
 
@@ -34,6 +38,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration class AST Alignment - A
               end: { column: 16, line: 1 },
             },
           },
+-         implements: Array [],
           superClass: null,
 
           range: [7, 19],

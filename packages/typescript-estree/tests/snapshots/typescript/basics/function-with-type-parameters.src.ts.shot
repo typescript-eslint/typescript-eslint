@@ -9,6 +9,7 @@ Object {
         "body": Array [
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -26,6 +27,7 @@ Object {
                 37,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -60,9 +62,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -80,6 +84,7 @@ Object {
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -93,6 +98,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 18,
@@ -143,6 +149,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -160,6 +167,7 @@ Object {
                   18,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -203,6 +211,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -220,6 +229,7 @@ Object {
               22,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -252,6 +262,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -269,6 +280,7 @@ Object {
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

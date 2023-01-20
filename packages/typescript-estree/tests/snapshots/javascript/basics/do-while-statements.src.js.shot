@@ -61,6 +61,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -78,6 +79,7 @@ Object {
               20,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -137,8 +139,10 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "left": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 4,
@@ -156,6 +160,7 @@ Object {
                   35,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -242,6 +247,7 @@ Object {
       ],
       "test": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -259,6 +265,7 @@ Object {
             52,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

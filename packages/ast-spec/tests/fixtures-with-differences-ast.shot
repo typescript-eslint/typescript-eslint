@@ -17,6 +17,8 @@ Set {
   "declaration/ClassDeclaration/fixtures/with-member-one/fixture.ts",
   "declaration/ExportAllDeclaration/fixtures/assertion/fixture.ts",
   "declaration/ExportAllDeclaration/fixtures/named/fixture.ts",
+  "declaration/ExportDefaultDeclaration/fixtures/anonymous-class/fixture.ts",
+  "declaration/ExportDefaultDeclaration/fixtures/anonymous-function/fixture.ts",
   "declaration/ExportDefaultDeclaration/fixtures/class-expression/fixture.ts",
   "declaration/ExportDefaultDeclaration/fixtures/class/fixture.ts",
   "declaration/ExportDefaultDeclaration/fixtures/function/fixture.ts",

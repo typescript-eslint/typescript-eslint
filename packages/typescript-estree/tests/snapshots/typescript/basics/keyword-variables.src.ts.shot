@@ -10,6 +10,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -27,6 +28,7 @@ Object {
                   18,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -87,6 +89,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -104,6 +107,7 @@ Object {
                   34,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -164,6 +168,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -181,6 +186,7 @@ Object {
                   55,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -241,6 +247,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 11,
@@ -258,6 +265,7 @@ Object {
                   72,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -318,6 +326,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -335,6 +344,7 @@ Object {
                   91,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -395,6 +405,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -412,6 +423,7 @@ Object {
                   110,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -472,6 +484,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -489,6 +502,7 @@ Object {
                   131,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -549,6 +563,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 19,
@@ -566,6 +581,7 @@ Object {
                   156,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -626,6 +642,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -643,6 +660,7 @@ Object {
                   177,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -703,6 +721,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 11,
@@ -720,6 +739,7 @@ Object {
                   194,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -780,6 +800,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -797,6 +818,7 @@ Object {
                   213,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -857,6 +879,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -874,6 +897,7 @@ Object {
                   229,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -934,6 +958,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -951,6 +976,7 @@ Object {
                   248,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1011,6 +1037,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -1028,6 +1055,7 @@ Object {
                   268,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1088,6 +1116,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -1105,6 +1134,7 @@ Object {
                   291,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1165,6 +1195,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -1182,6 +1213,7 @@ Object {
                   310,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1242,6 +1274,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -1259,6 +1292,7 @@ Object {
                   332,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1319,6 +1353,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -1336,6 +1371,7 @@ Object {
                   353,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1396,6 +1432,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -1413,6 +1450,7 @@ Object {
                   373,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1473,6 +1511,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -1490,6 +1529,7 @@ Object {
                   393,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1550,6 +1590,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 11,
@@ -1567,6 +1608,7 @@ Object {
                   410,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1627,6 +1669,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -1644,6 +1687,7 @@ Object {
                   430,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1704,6 +1748,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -1721,6 +1766,7 @@ Object {
                   450,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1781,6 +1827,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -1798,6 +1845,7 @@ Object {
                   468,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1858,6 +1906,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -1875,6 +1924,7 @@ Object {
                   491,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -1935,6 +1985,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -1952,6 +2003,7 @@ Object {
                   511,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -2012,6 +2064,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -2029,6 +2082,7 @@ Object {
                   532,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -2089,6 +2143,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -2106,6 +2161,7 @@ Object {
                   550,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -2166,6 +2222,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -2183,6 +2240,7 @@ Object {
                   570,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -2243,6 +2301,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -2260,6 +2319,7 @@ Object {
                   590,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -2320,6 +2380,7 @@ Object {
             Object {
               "definite": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -2337,6 +2398,7 @@ Object {
                   606,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "init": Object {
                 "loc": Object {
@@ -2449,6 +2511,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -2466,6 +2529,7 @@ Object {
               634,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2478,6 +2542,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -2495,6 +2560,7 @@ Object {
               634,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             626,
@@ -2505,6 +2571,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -2522,6 +2589,7 @@ Object {
               640,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2534,6 +2602,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -2551,6 +2620,7 @@ Object {
               640,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             638,
@@ -2561,6 +2631,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -2578,6 +2649,7 @@ Object {
               651,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2590,6 +2662,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -2607,6 +2680,7 @@ Object {
               651,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             644,
@@ -2617,6 +2691,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -2634,6 +2709,7 @@ Object {
               658,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2646,6 +2722,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -2663,6 +2740,7 @@ Object {
               658,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             655,
@@ -2673,6 +2751,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -2690,6 +2769,7 @@ Object {
               667,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2702,6 +2782,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -2719,6 +2800,7 @@ Object {
               667,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             662,
@@ -2729,6 +2811,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -2746,6 +2829,7 @@ Object {
               676,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2758,6 +2842,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -2775,6 +2860,7 @@ Object {
               676,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             671,
@@ -2785,6 +2871,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -2802,6 +2889,7 @@ Object {
               687,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2814,6 +2902,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -2831,6 +2920,7 @@ Object {
               687,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             680,
@@ -2841,6 +2931,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 13,
@@ -2858,6 +2949,7 @@ Object {
               702,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2870,6 +2962,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 13,
@@ -2887,6 +2980,7 @@ Object {
               702,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             691,
@@ -2897,6 +2991,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -2914,6 +3009,7 @@ Object {
               713,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2926,6 +3022,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -2943,6 +3040,7 @@ Object {
               713,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             706,
@@ -2953,6 +3051,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -2970,6 +3069,7 @@ Object {
               720,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -2982,6 +3082,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -2999,6 +3100,7 @@ Object {
               720,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             717,
@@ -3009,6 +3111,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -3026,6 +3129,7 @@ Object {
               729,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3038,6 +3142,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -3055,6 +3160,7 @@ Object {
               729,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             724,
@@ -3065,6 +3171,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -3082,6 +3189,7 @@ Object {
               735,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3094,6 +3202,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -3111,6 +3220,7 @@ Object {
               735,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             733,
@@ -3121,6 +3231,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -3138,6 +3249,7 @@ Object {
               744,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3150,6 +3262,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -3167,6 +3280,7 @@ Object {
               744,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             739,
@@ -3177,6 +3291,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3194,6 +3309,7 @@ Object {
               754,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3206,6 +3322,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3223,6 +3340,7 @@ Object {
               754,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             748,
@@ -3233,6 +3351,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -3250,6 +3369,7 @@ Object {
               767,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3262,6 +3382,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -3279,6 +3400,7 @@ Object {
               767,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             758,
@@ -3289,6 +3411,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -3306,6 +3429,7 @@ Object {
               776,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3318,6 +3442,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -3335,6 +3460,7 @@ Object {
               776,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             771,
@@ -3345,6 +3471,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -3362,6 +3489,7 @@ Object {
               788,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3374,6 +3502,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -3391,6 +3520,7 @@ Object {
               788,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             780,
@@ -3401,6 +3531,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -3418,6 +3549,7 @@ Object {
               799,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3430,6 +3562,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -3447,6 +3580,7 @@ Object {
               799,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             792,
@@ -3457,6 +3591,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3474,6 +3609,7 @@ Object {
               809,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3486,6 +3622,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3503,6 +3640,7 @@ Object {
               809,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             803,
@@ -3513,6 +3651,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3530,6 +3669,7 @@ Object {
               819,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3542,6 +3682,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3559,6 +3700,7 @@ Object {
               819,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             813,
@@ -3569,6 +3711,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -3586,6 +3729,7 @@ Object {
               826,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3598,6 +3742,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -3615,6 +3760,7 @@ Object {
               826,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             823,
@@ -3625,6 +3771,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3642,6 +3789,7 @@ Object {
               836,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3654,6 +3802,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3671,6 +3820,7 @@ Object {
               836,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             830,
@@ -3681,6 +3831,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3698,6 +3849,7 @@ Object {
               846,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3710,6 +3862,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3727,6 +3880,7 @@ Object {
               846,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             840,
@@ -3737,6 +3891,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 6,
@@ -3754,6 +3909,7 @@ Object {
               854,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3766,6 +3922,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 6,
@@ -3783,6 +3940,7 @@ Object {
               854,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             850,
@@ -3793,6 +3951,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -3810,6 +3969,7 @@ Object {
               867,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3822,6 +3982,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -3839,6 +4000,7 @@ Object {
               867,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             858,
@@ -3849,6 +4011,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3866,6 +4029,7 @@ Object {
               877,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3878,6 +4042,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -3895,6 +4060,7 @@ Object {
               877,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             871,
@@ -3905,6 +4071,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -3922,6 +4089,7 @@ Object {
               888,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3934,6 +4102,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -3951,6 +4120,7 @@ Object {
               888,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             881,
@@ -3961,6 +4131,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 6,
@@ -3978,6 +4149,7 @@ Object {
               896,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -3990,6 +4162,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 6,
@@ -4007,6 +4180,7 @@ Object {
               896,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             892,
@@ -4017,6 +4191,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -4034,6 +4209,7 @@ Object {
               906,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -4046,6 +4222,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -4063,6 +4240,7 @@ Object {
               906,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             900,
@@ -4073,6 +4251,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -4090,6 +4269,7 @@ Object {
               916,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -4102,6 +4282,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -4119,6 +4300,7 @@ Object {
               916,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             910,
@@ -4129,6 +4311,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -4146,6 +4329,7 @@ Object {
               922,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -4158,6 +4342,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -4175,6 +4360,7 @@ Object {
               922,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             920,
@@ -4205,7 +4391,9 @@ Object {
         "type": "TSInterfaceBody",
       },
       "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -4223,6 +4411,7 @@ Object {
           958,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -4239,13 +4428,18 @@ Object {
         961,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -4263,6 +4457,7 @@ Object {
                 995,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -4275,6 +4470,7 @@ Object {
                 "line": 71,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               987,
@@ -4282,6 +4478,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -4302,6 +4499,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -4320,13 +4518,17 @@ Object {
                 995,
                 1000,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "accessibility": "private",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 11,
@@ -4344,6 +4546,7 @@ Object {
                 1012,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -4356,6 +4559,7 @@ Object {
                 "line": 72,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               1003,
@@ -4363,6 +4567,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -4383,6 +4588,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -4401,13 +4607,17 @@ Object {
                 1012,
                 1017,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "accessibility": "public",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -4425,6 +4635,7 @@ Object {
                 1028,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -4437,6 +4648,7 @@ Object {
                 "line": 73,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               1020,
@@ -4444,6 +4656,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -4464,6 +4677,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -4482,13 +4696,17 @@ Object {
                 1028,
                 1033,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "accessibility": "protected",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -4506,6 +4724,7 @@ Object {
                 1048,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -4518,6 +4737,7 @@ Object {
                 "line": 74,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               1036,
@@ -4525,6 +4745,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -4534,6 +4755,7 @@ Object {
                       Object {
                         "definite": false,
                         "id": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 9,
@@ -4551,6 +4773,7 @@ Object {
                             1062,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "init": Object {
                           "argument": null,
@@ -4623,6 +4846,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": true,
               "id": null,
@@ -4641,7 +4865,9 @@ Object {
                 1048,
                 1075,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -4661,7 +4887,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -4679,10 +4908,12 @@ Object {
           969,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "implements": Array [
         Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 20,
@@ -4700,6 +4931,7 @@ Object {
               982,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -4716,6 +4948,7 @@ Object {
             982,
           ],
           "type": "TSClassImplements",
+          "typeParameters": undefined,
         },
       ],
       "loc": Object {
@@ -4733,7 +4966,9 @@ Object {
         1077,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

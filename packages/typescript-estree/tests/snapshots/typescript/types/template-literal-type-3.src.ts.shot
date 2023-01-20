@@ -6,6 +6,7 @@ Object {
     Object {
       "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -23,6 +24,7 @@ Object {
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -130,10 +132,12 @@ Object {
           },
         ],
       },
+      "typeParameters": undefined,
     },
     Object {
       "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -151,6 +155,7 @@ Object {
           42,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -258,10 +263,12 @@ Object {
           },
         ],
       },
+      "typeParameters": undefined,
     },
     Object {
       "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 14,
@@ -279,6 +286,7 @@ Object {
           74,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -392,6 +400,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 28,
@@ -409,6 +418,7 @@ Object {
                     88,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -429,6 +439,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 36,
@@ -446,6 +457,7 @@ Object {
                     96,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -453,6 +465,7 @@ Object {
           },
         ],
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

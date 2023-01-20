@@ -4,6 +4,7 @@ exports[`javascript objectLiteralComputedProperties standalone-expression-with-a
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {

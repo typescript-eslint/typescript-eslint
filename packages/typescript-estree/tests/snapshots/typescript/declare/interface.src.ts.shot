@@ -23,7 +23,9 @@ Object {
         "type": "TSInterfaceBody",
       },
       "declare": true,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 21,
@@ -41,6 +43,7 @@ Object {
           21,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -57,6 +60,7 @@ Object {
         26,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

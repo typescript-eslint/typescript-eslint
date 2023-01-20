@@ -9,7 +9,7 @@ export interface AssignmentPattern extends BaseNode {
   type: AST_NODE_TYPES.AssignmentPattern;
   left: BindingName;
   right: Expression;
-  typeAnnotation?: TSTypeAnnotation;
+  typeAnnotation: TSTypeAnnotation | undefined;
   optional: boolean;
-  decorators?: Decorator[];
+  decorators: Decorator[];
 }

@@ -16,6 +16,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression chained-satisfies AST Ali
             type: 'TSSatisfiesExpression',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'foo',
 -             optional: false,
 
@@ -29,6 +30,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression chained-satisfies AST Ali
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
 -               optional: false,
 
@@ -56,6 +58,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression chained-satisfies AST Ali
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'baz',
 -             optional: false,
 

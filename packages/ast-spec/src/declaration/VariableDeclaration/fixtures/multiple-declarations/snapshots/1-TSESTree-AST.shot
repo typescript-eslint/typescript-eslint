@@ -12,6 +12,7 @@ Program {
           definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
             optional: false,
 
@@ -34,6 +35,7 @@ Program {
           definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "y",
             optional: false,
 
@@ -56,6 +58,7 @@ Program {
           definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "z",
             optional: false,
 

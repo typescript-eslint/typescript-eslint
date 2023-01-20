@@ -16,6 +16,7 @@ exports[`AST Fixtures declaration VariableDeclaration multiple-declarations AST 
 -           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
 -             optional: false,
 
@@ -38,6 +39,7 @@ exports[`AST Fixtures declaration VariableDeclaration multiple-declarations AST 
 -           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'y',
 -             optional: false,
 
@@ -60,6 +62,7 @@ exports[`AST Fixtures declaration VariableDeclaration multiple-declarations AST 
 -           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'z',
 -             optional: false,
 

@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -25,6 +26,7 @@ Object {
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -85,6 +87,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -102,6 +105,7 @@ Object {
               16,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -158,9 +162,11 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "expressions": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -178,9 +184,11 @@ Object {
               38,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           Object {
             "left": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 24,
@@ -198,6 +206,7 @@ Object {
                 52,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {

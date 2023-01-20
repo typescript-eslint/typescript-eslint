@@ -13,6 +13,7 @@ Object {
                 Object {
                   "definite": false,
                   "id": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 16,
@@ -30,6 +31,7 @@ Object {
                       28,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "init": Object {
                     "loc": Object {
@@ -107,11 +109,15 @@ Object {
           Object {
             "assertions": Array [],
             "declaration": Object {
+              "abstract": false,
               "body": Object {
                 "body": Array [
                   Object {
+                    "accessibility": undefined,
                     "computed": false,
+                    "decorators": Array [],
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 19,
@@ -129,6 +135,7 @@ Object {
                         89,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "constructor",
                     "loc": Object {
@@ -141,6 +148,7 @@ Object {
                         "line": 5,
                       },
                     },
+                    "optional": false,
                     "override": false,
                     "range": Array [
                       78,
@@ -148,6 +156,7 @@ Object {
                     ],
                     "static": false,
                     "type": "MethodDefinition",
+                    "typeParameters": undefined,
                     "value": Object {
                       "async": false,
                       "body": Object {
@@ -168,6 +177,7 @@ Object {
                         ],
                         "type": "BlockStatement",
                       },
+                      "declare": false,
                       "expression": false,
                       "generator": false,
                       "id": null,
@@ -184,6 +194,7 @@ Object {
                       "params": Array [
                         Object {
                           "accessibility": "public",
+                          "decorators": Array [],
                           "export": false,
                           "loc": Object {
                             "end": Object {
@@ -197,6 +208,7 @@ Object {
                           },
                           "override": false,
                           "parameter": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 36,
@@ -259,6 +271,7 @@ Object {
                         },
                         Object {
                           "accessibility": "public",
+                          "decorators": Array [],
                           "export": false,
                           "loc": Object {
                             "end": Object {
@@ -272,6 +285,7 @@ Object {
                           },
                           "override": false,
                           "parameter": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 54,
@@ -337,7 +351,9 @@ Object {
                         89,
                         129,
                       ],
+                      "returnType": undefined,
                       "type": "FunctionExpression",
+                      "typeParameters": undefined,
                     },
                   },
                 ],
@@ -357,7 +373,10 @@ Object {
                 ],
                 "type": "ClassBody",
               },
+              "declare": false,
+              "decorators": Array [],
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 22,
@@ -375,7 +394,9 @@ Object {
                   67,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "implements": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -391,7 +412,9 @@ Object {
                 135,
               ],
               "superClass": null,
+              "superTypeParameters": undefined,
               "type": "ClassDeclaration",
+              "typeParameters": undefined,
             },
             "exportKind": "value",
             "loc": Object {
@@ -423,10 +446,12 @@ Object {
                       "body": Object {
                         "body": Array [
                           Object {
+                            "accessibility": undefined,
                             "computed": false,
                             "export": false,
                             "initializer": undefined,
                             "key": Object {
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 16,
@@ -444,6 +469,7 @@ Object {
                                 204,
                               ],
                               "type": "Identifier",
+                              "typeAnnotation": undefined,
                             },
                             "loc": Object {
                               "end": Object {
@@ -516,7 +542,9 @@ Object {
                         "type": "TSInterfaceBody",
                       },
                       "declare": false,
+                      "extends": Array [],
                       "id": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 27,
@@ -534,6 +562,7 @@ Object {
                           185,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -550,6 +579,7 @@ Object {
                         223,
                       ],
                       "type": "TSInterfaceDeclaration",
+                      "typeParameters": undefined,
                     },
                     "exportKind": "type",
                     "loc": Object {
@@ -590,6 +620,7 @@ Object {
               "declare": false,
               "global": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 19,
@@ -607,6 +638,7 @@ Object {
                   155,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -663,6 +695,7 @@ Object {
       "declare": false,
       "global": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -680,6 +713,7 @@ Object {
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

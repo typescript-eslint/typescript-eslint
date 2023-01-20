@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 40,
@@ -62,6 +63,7 @@ Object {
                       "type": "TSNumberKeyword",
                     },
                     "label": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 9,
@@ -79,6 +81,7 @@ Object {
                         9,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -116,6 +119,7 @@ Object {
                       "type": "TSNumberKeyword",
                     },
                     "label": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 20,
@@ -133,6 +137,7 @@ Object {
                         20,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -170,6 +175,7 @@ Object {
                       "type": "TSNumberKeyword",
                     },
                     "label": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 31,
@@ -187,6 +193,7 @@ Object {
                         31,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {

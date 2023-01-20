@@ -10,6 +10,7 @@ exports[`AST Fixtures declaration ClassDeclaration empty AST Alignment - AST 1`]
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,8 +21,11 @@ exports[`AST Fixtures declaration ClassDeclaration empty AST Alignment - AST 1`]
             end: { column: 12, line: 1 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
 -         optional: false,
 
@@ -31,6 +35,7 @@ exports[`AST Fixtures declaration ClassDeclaration empty AST Alignment - AST 1`]
             end: { column: 9, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [0, 12],

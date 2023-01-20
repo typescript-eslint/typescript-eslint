@@ -23,9 +23,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -43,6 +45,7 @@ Object {
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -56,8 +59,10 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -75,12 +80,15 @@ Object {
                 13,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             null,
             Object {
+              "decorators": Array [],
               "elements": Array [
                 null,
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 21,
@@ -98,6 +106,7 @@ Object {
                     21,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "loc": Object {
@@ -116,6 +125,7 @@ Object {
                 22,
               ],
               "type": "ArrayPattern",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -134,13 +144,16 @@ Object {
             23,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
       ],
       "range": Array [
         0,
         27,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "loc": Object {

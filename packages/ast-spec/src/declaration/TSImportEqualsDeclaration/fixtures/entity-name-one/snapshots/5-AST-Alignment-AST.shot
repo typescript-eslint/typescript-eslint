@@ -12,6 +12,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-one AST 
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 
@@ -25,6 +26,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-one AST 
         isExport: false,
         moduleReference: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'A',
 -         optional: false,
 

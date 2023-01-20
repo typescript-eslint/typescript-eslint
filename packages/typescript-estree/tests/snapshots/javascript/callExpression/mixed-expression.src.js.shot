@@ -4,6 +4,7 @@ exports[`javascript callExpression mixed-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [
           Object {
@@ -30,6 +31,7 @@ Object {
           "body": Object {
             "body": Array [
               Object {
+                "directive": undefined,
                 "expression": Object {
                   "arguments": Array [
                     Object {
@@ -56,6 +58,7 @@ Object {
                     "body": Object {
                       "body": Array [
                         Object {
+                          "directive": undefined,
                           "expression": Object {
                             "arguments": Array [
                               Object {
@@ -126,6 +129,7 @@ Object {
                               },
                               "optional": false,
                               "property": Object {
+                                "decorators": Array [],
                                 "loc": Object {
                                   "end": Object {
                                     "column": 13,
@@ -143,6 +147,7 @@ Object {
                                   45,
                                 ],
                                 "type": "Identifier",
+                                "typeAnnotation": undefined,
                               },
                               "range": Array [
                                 36,
@@ -166,6 +171,7 @@ Object {
                               53,
                             ],
                             "type": "CallExpression",
+                            "typeParameters": undefined,
                           },
                           "loc": Object {
                             "end": Object {
@@ -200,6 +206,7 @@ Object {
                       ],
                       "type": "BlockStatement",
                     },
+                    "declare": false,
                     "expression": false,
                     "generator": false,
                     "id": null,
@@ -218,7 +225,9 @@ Object {
                       18,
                       57,
                     ],
+                    "returnType": undefined,
                     "type": "FunctionExpression",
+                    "typeParameters": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -236,6 +245,7 @@ Object {
                     62,
                   ],
                   "type": "CallExpression",
+                  "typeParameters": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -270,6 +280,7 @@ Object {
             ],
             "type": "BlockStatement",
           },
+          "declare": false,
           "expression": false,
           "generator": false,
           "id": null,
@@ -288,7 +299,9 @@ Object {
             1,
             65,
           ],
+          "returnType": undefined,
           "type": "FunctionExpression",
+          "typeParameters": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -306,6 +319,7 @@ Object {
           70,
         ],
         "type": "CallExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

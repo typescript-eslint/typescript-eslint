@@ -24,8 +24,10 @@ exports[`AST Fixtures declaration ExportNamedDeclaration interface AST Alignment
             },
           },
 -         declare: false,
+-         extends: Array [],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Foo',
 -           optional: false,
 

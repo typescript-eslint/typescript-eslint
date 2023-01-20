@@ -4,6 +4,7 @@ exports[`jsx spread-operator-attributes.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,
@@ -21,6 +22,7 @@ Object {
           "attributes": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -38,6 +40,7 @@ Object {
                   14,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {

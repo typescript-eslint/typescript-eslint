@@ -8,6 +8,7 @@ Object {
       "declaration": Object {
         "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 21,
@@ -25,6 +26,7 @@ Object {
             21,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -94,6 +96,7 @@ Object {
             },
           ],
         },
+        "typeParameters": undefined,
       },
       "exportKind": "type",
       "loc": Object {

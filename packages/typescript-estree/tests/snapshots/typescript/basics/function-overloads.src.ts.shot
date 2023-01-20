@@ -8,9 +8,11 @@ Object {
       "declaration": Object {
         "async": false,
         "body": undefined,
+        "declare": false,
         "expression": false,
         "generator": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 17,
@@ -28,6 +30,7 @@ Object {
             17,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -41,6 +44,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -133,6 +137,7 @@ Object {
           },
         },
         "type": "TSDeclareFunction",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {
@@ -158,9 +163,11 @@ Object {
       "declaration": Object {
         "async": false,
         "body": undefined,
+        "declare": false,
         "expression": false,
         "generator": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 17,
@@ -178,6 +185,7 @@ Object {
             55,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -191,6 +199,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -283,6 +292,7 @@ Object {
           },
         },
         "type": "TSDeclareFunction",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {
@@ -311,6 +321,7 @@ Object {
           "body": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -328,6 +339,7 @@ Object {
                   143,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -362,9 +374,11 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 17,
@@ -382,6 +396,7 @@ Object {
             93,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -395,6 +410,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 36,
@@ -559,6 +575,7 @@ Object {
           },
         },
         "type": "FunctionDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

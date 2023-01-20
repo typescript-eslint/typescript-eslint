@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 21,
@@ -54,6 +55,7 @@ Object {
                 },
                 "params": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 15,
@@ -104,6 +106,7 @@ Object {
                         ],
                         "type": "TSTypeReference",
                         "typeName": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 15,
@@ -121,6 +124,7 @@ Object {
                             15,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "typeParameters": undefined,
                       },
@@ -164,6 +168,7 @@ Object {
                     ],
                     "type": "TSTypeReference",
                     "typeName": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 21,
@@ -181,6 +186,7 @@ Object {
                         21,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "typeParameters": undefined,
                   },
@@ -213,6 +219,7 @@ Object {
                         },
                       },
                       "name": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 9,
@@ -230,6 +237,7 @@ Object {
                           9,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "out": false,
                       "range": Array [

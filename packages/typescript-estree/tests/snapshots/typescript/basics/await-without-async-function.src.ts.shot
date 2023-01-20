@@ -12,6 +12,7 @@ Object {
               Object {
                 "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 11,
@@ -29,11 +30,13 @@ Object {
                     28,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "argument": Object {
                     "arguments": Array [],
                     "callee": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 23,
@@ -51,6 +54,7 @@ Object {
                         40,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -68,6 +72,7 @@ Object {
                       42,
                     ],
                     "type": "CallExpression",
+                    "typeParameters": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -134,6 +139,7 @@ Object {
                 },
               },
               "object": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -151,9 +157,11 @@ Object {
                   56,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "optional": false,
               "property": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -171,6 +179,7 @@ Object {
                   60,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 53,
@@ -211,9 +220,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -231,6 +242,7 @@ Object {
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -247,7 +259,9 @@ Object {
         0,
         63,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

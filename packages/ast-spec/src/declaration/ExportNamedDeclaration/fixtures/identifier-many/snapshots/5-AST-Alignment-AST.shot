@@ -19,6 +19,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-many AST Ali
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 
@@ -31,6 +32,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-many AST Ali
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 
@@ -51,6 +53,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-many AST Ali
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 
@@ -63,6 +66,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-many AST Ali
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 

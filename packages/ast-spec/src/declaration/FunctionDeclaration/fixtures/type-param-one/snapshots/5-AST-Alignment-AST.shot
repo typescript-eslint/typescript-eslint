@@ -21,10 +21,12 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
             end: { column: 20, line: 1 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
 -         optional: false,
 
@@ -43,6 +45,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-one AST Alignme
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
 -               optional: false,
 -

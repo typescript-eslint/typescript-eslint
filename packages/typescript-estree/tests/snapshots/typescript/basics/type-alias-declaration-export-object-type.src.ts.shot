@@ -8,6 +8,7 @@ Object {
       "declaration": Object {
         "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 26,
@@ -25,6 +26,7 @@ Object {
             26,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -54,10 +56,12 @@ Object {
           },
           "members": Array [
             Object {
+              "accessibility": undefined,
               "computed": false,
               "export": false,
               "initializer": undefined,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 9,
@@ -75,6 +79,7 @@ Object {
                   40,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -136,6 +141,7 @@ Object {
           ],
           "type": "TSTypeLiteral",
         },
+        "typeParameters": undefined,
       },
       "exportKind": "type",
       "loc": Object {

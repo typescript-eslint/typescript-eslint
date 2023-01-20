@@ -12,6 +12,7 @@ Object {
             "export": false,
             "initializer": undefined,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -29,6 +30,7 @@ Object {
                 28,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -101,7 +103,9 @@ Object {
         "type": "TSInterfaceBody",
       },
       "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -119,6 +123,7 @@ Object {
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -135,6 +140,7 @@ Object {
         39,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

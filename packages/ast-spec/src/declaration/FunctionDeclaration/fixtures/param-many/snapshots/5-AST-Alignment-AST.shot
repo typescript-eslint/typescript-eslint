@@ -21,10 +21,12 @@ exports[`AST Fixtures declaration FunctionDeclaration param-many AST Alignment -
             end: { column: 24, line: 1 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
 -         optional: false,
 
@@ -37,6 +39,7 @@ exports[`AST Fixtures declaration FunctionDeclaration param-many AST Alignment -
         params: Array [
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'a',
 -           optional: false,
 
@@ -48,6 +51,7 @@ exports[`AST Fixtures declaration FunctionDeclaration param-many AST Alignment -
           },
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'b',
 -           optional: false,
 
@@ -59,6 +63,7 @@ exports[`AST Fixtures declaration FunctionDeclaration param-many AST Alignment -
           },
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'c',
 -           optional: false,
 

@@ -4,6 +4,7 @@ exports[`javascript objectLiteralComputedProperties standalone-expression-with-m
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -19,6 +20,7 @@ Object {
           Object {
             "computed": true,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 4,
@@ -36,6 +38,7 @@ Object {
                 4,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "init",
             "loc": Object {
@@ -76,6 +79,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -94,7 +98,9 @@ Object {
                 7,
                 20,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],

@@ -8,6 +8,7 @@ Program {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
         optional: false,
 
@@ -21,6 +22,7 @@ Program {
       isExport: false,
       moduleReference: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "A",
         optional: false,
 

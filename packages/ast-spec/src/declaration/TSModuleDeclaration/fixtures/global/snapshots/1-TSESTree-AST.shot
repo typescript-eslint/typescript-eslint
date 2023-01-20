@@ -20,6 +20,7 @@ Program {
       global: true,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "global",
         optional: false,
 

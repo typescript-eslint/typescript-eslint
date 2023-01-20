@@ -91,6 +91,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -108,6 +109,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -384,6 +386,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -401,6 +404,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -677,6 +681,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -694,6 +699,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -860,6 +866,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -877,6 +884,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -1039,6 +1047,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
   "ast": {
     "body": [
       {
+        "directive": undefined,
         "expression": {
           "loc": {
             "end": {
@@ -1263,6 +1272,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -1280,6 +1290,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -1556,6 +1567,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -1573,6 +1585,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -1849,6 +1862,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -1866,6 +1880,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -2032,6 +2047,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2049,6 +2065,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -2215,6 +2232,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2232,6 +2250,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -2398,6 +2417,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2415,6 +2435,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -2581,6 +2602,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2598,6 +2620,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -2874,6 +2897,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2891,6 +2915,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -3167,6 +3192,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3184,6 +3210,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -3350,6 +3377,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3367,6 +3395,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -3533,6 +3562,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3550,6 +3580,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -3826,6 +3857,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3843,6 +3875,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -4009,6 +4042,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
           {
             "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -4026,6 +4060,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -4191,6 +4226,7 @@ exports[`parseWithNodeMaps() general output should not contain loc 1`] = `
         {
           "definite": false,
           "id": {
+            "decorators": [],
             "name": "foo",
             "optional": false,
             "range": [
@@ -4200,6 +4236,7 @@ exports[`parseWithNodeMaps() general output should not contain loc 1`] = `
             "type": "Identifier",
           },
           "init": {
+            "decorators": [],
             "name": "bar",
             "optional": false,
             "range": [
@@ -4241,6 +4278,7 @@ exports[`parseWithNodeMaps() general output should not contain range 1`] = `
         {
           "definite": false,
           "id": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 7,
@@ -4256,6 +4294,7 @@ exports[`parseWithNodeMaps() general output should not contain range 1`] = `
             "type": "Identifier",
           },
           "init": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 13,
@@ -4321,6 +4360,7 @@ exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges w
         {
           "definite": false,
           "id": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 7,
@@ -4340,6 +4380,7 @@ exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges w
             "type": "Identifier",
           },
           "init": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 13,

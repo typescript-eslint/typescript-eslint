@@ -16,6 +16,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression logical-with-parentheses 
             type: 'BinaryExpression',
             left: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'foo',
 -             optional: false,
 

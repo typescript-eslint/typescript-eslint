@@ -19,6 +19,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration aliased AST Alignment -
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 
@@ -31,6 +32,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration aliased AST Alignment -
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 

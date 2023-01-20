@@ -9,6 +9,7 @@ Object {
         "const": true,
         "declare": true,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 29,
@@ -26,6 +27,7 @@ Object {
             29,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -41,6 +43,7 @@ Object {
           Object {
             "computed": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -58,6 +61,7 @@ Object {
                 39,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "initializer": Object {
               "loc": Object {
@@ -97,6 +101,7 @@ Object {
           Object {
             "computed": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -114,7 +119,9 @@ Object {
                 52,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
+            "initializer": undefined,
             "loc": Object {
               "end": Object {
                 "column": 7,

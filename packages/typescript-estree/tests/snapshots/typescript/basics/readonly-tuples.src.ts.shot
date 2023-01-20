@@ -8,6 +8,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [
                 Object {
@@ -23,6 +24,7 @@ Object {
                     },
                   },
                   "object": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 18,
@@ -40,6 +42,7 @@ Object {
                       66,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "optional": false,
                   "property": Object {
@@ -81,6 +84,7 @@ Object {
                   },
                 },
                 "object": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -98,9 +102,11 @@ Object {
                     57,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "optional": false,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 13,
@@ -118,6 +124,7 @@ Object {
                     61,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   50,
@@ -141,6 +148,7 @@ Object {
                 70,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -159,6 +167,7 @@ Object {
             "type": "ExpressionStatement",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "left": Object {
                 "computed": true,
@@ -173,6 +182,7 @@ Object {
                   },
                 },
                 "object": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -190,6 +200,7 @@ Object {
                     88,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "optional": false,
                 "property": Object {
@@ -286,9 +297,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -306,6 +319,7 @@ Object {
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -319,6 +333,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 44,
@@ -430,7 +445,9 @@ Object {
         0,
         118,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [

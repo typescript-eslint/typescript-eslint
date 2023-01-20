@@ -4,8 +4,10 @@ exports[`javascript destructuring array-member.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
               "computed": false,
@@ -20,6 +22,7 @@ Object {
                 },
               },
               "object": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 3,
@@ -37,9 +40,11 @@ Object {
                   3,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "optional": false,
               "property": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -57,6 +62,7 @@ Object {
                   5,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 1,
@@ -81,6 +87,7 @@ Object {
             6,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

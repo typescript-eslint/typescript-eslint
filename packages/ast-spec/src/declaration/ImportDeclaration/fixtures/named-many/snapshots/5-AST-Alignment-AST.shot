@@ -28,6 +28,7 @@ exports[`AST Fixtures declaration ImportDeclaration named-many AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 
@@ -40,6 +41,7 @@ exports[`AST Fixtures declaration ImportDeclaration named-many AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 
@@ -60,6 +62,7 @@ exports[`AST Fixtures declaration ImportDeclaration named-many AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 
@@ -72,6 +75,7 @@ exports[`AST Fixtures declaration ImportDeclaration named-many AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 
@@ -92,6 +96,7 @@ exports[`AST Fixtures declaration ImportDeclaration named-many AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'c',
 -             optional: false,
 
@@ -104,6 +109,7 @@ exports[`AST Fixtures declaration ImportDeclaration named-many AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'c',
 -             optional: false,
 

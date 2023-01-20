@@ -4,6 +4,7 @@ exports[`javascript importMeta simple-import-meta.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "computed": false,
         "loc": Object {
@@ -28,6 +29,7 @@ Object {
             },
           },
           "meta": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 6,
@@ -45,8 +47,10 @@ Object {
               6,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -64,6 +68,7 @@ Object {
               11,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             0,
@@ -73,6 +78,7 @@ Object {
         },
         "optional": false,
         "property": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -90,6 +96,7 @@ Object {
             15,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "range": Array [
           0,

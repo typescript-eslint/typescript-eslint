@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -25,6 +26,7 @@ Object {
               7,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -46,6 +48,7 @@ Object {
               ],
               "type": "BlockStatement",
             },
+            "declare": false,
             "expression": false,
             "generator": false,
             "id": null,
@@ -61,6 +64,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 20,
@@ -78,9 +82,12 @@ Object {
                   20,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "left": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 23,
@@ -98,6 +105,7 @@ Object {
                     23,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -134,8 +142,10 @@ Object {
                   "value": 42,
                 },
                 "type": "AssignmentPattern",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 31,
@@ -153,13 +163,16 @@ Object {
                   31,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "range": Array [
               10,
               35,
             ],
+            "returnType": undefined,
             "type": "FunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {

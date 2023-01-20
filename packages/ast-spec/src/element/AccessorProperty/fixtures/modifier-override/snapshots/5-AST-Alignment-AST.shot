@@ -10,6 +10,7 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -19,8 +20,11 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
 +             type: 'ClassAccessorProperty',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
 -               optional: false,
 
@@ -30,7 +34,9 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
                   end: { column: 23, line: 2 },
                 },
               },
+-             optional: false,
               override: true,
+-             readonly: false,
               static: false,
               value: Literal {
                 type: 'Literal',
@@ -58,8 +64,11 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
             end: { column: 1, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
 -         optional: false,
 
@@ -69,8 +78,10 @@ exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment -
             end: { column: 9, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Bar',
 -         optional: false,
 

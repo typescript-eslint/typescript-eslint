@@ -38,6 +38,7 @@ Object {
               },
             },
             "object": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 25,
@@ -55,9 +56,11 @@ Object {
                 25,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "optional": false,
             "property": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 29,
@@ -75,6 +78,7 @@ Object {
                 29,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "range": Array [
               22,
@@ -97,9 +101,11 @@ Object {
             29,
           ],
           "type": "TSInterfaceHeritage",
+          "typeParameters": undefined,
         },
       ],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -117,6 +123,7 @@ Object {
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -133,6 +140,7 @@ Object {
         33,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

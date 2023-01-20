@@ -15,6 +15,7 @@ exports[`AST Fixtures declaration ExportAllDeclaration assertion AST Alignment -
             type: 'ImportAttribute',
             key: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'type',
 -             optional: false,
 

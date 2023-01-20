@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -25,6 +26,7 @@ Object {
               14,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -85,6 +87,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -102,6 +105,7 @@ Object {
               40,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -158,12 +162,17 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -181,6 +190,7 @@ Object {
                 68,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -198,15 +208,20 @@ Object {
               65,
               70,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -224,6 +239,7 @@ Object {
                 76,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -241,7 +257,7 @@ Object {
               73,
               87,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -284,7 +300,10 @@ Object {
             "accessibility": "private",
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -302,6 +321,7 @@ Object {
                 101,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -319,7 +339,7 @@ Object {
               90,
               112,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -359,9 +379,13 @@ Object {
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 11,
@@ -379,6 +403,7 @@ Object {
                 124,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -396,14 +421,18 @@ Object {
               115,
               127,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -439,14 +468,18 @@ Object {
               130,
               143,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -482,15 +515,20 @@ Object {
               146,
               151,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -508,6 +546,7 @@ Object {
                 164,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -525,7 +564,7 @@ Object {
               154,
               175,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -565,8 +604,11 @@ Object {
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -602,7 +644,7 @@ Object {
               178,
               200,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -642,8 +684,11 @@ Object {
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -679,7 +724,7 @@ Object {
               203,
               216,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -735,7 +780,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -753,7 +801,9 @@ Object {
           60,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -769,7 +819,9 @@ Object {
         218,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

@@ -13,6 +13,7 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-many AST Ali
 -       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'T',
 -         optional: false,
 
@@ -50,6 +51,7 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-many AST Ali
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'U',
 -               optional: false,
 -

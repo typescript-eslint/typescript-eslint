@@ -4,7 +4,9 @@ exports[`javascript classes named-derived-class-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
+        "abstract": false,
         "body": Object {
           "body": Array [],
           "loc": Object {
@@ -23,7 +25,10 @@ Object {
           ],
           "type": "ClassBody",
         },
+        "declare": false,
+        "decorators": Array [],
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 8,
@@ -41,7 +46,9 @@ Object {
             8,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
+        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 20,
@@ -75,7 +82,9 @@ Object {
           "type": "Literal",
           "value": 0,
         },
+        "superTypeParameters": undefined,
         "type": "ClassExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

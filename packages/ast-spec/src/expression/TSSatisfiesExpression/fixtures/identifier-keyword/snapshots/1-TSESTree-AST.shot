@@ -10,6 +10,7 @@ Program {
         type: "TSSatisfiesExpression",
         expression: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
           optional: false,
 

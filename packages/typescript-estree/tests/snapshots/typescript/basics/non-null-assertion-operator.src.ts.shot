@@ -8,9 +8,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 20,
@@ -28,9 +30,11 @@ Object {
                     57,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "callee": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -48,6 +52,7 @@ Object {
                   55,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -65,6 +70,7 @@ Object {
                 58,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -87,6 +93,7 @@ Object {
               Object {
                 "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -104,6 +111,7 @@ Object {
                     69,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "computed": false,
@@ -119,6 +127,7 @@ Object {
                   },
                   "object": Object {
                     "expression": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 13,
@@ -136,6 +145,7 @@ Object {
                         73,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -155,6 +165,7 @@ Object {
                   },
                   "optional": false,
                   "property": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 19,
@@ -172,6 +183,7 @@ Object {
                       79,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     72,
@@ -231,9 +243,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 22,
@@ -251,6 +265,7 @@ Object {
           22,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -264,6 +279,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 33,
@@ -314,6 +330,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 33,
@@ -331,6 +348,7 @@ Object {
                   33,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -341,7 +359,9 @@ Object {
         0,
         82,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

@@ -52,6 +52,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 12,
@@ -69,6 +70,7 @@ Object {
               12,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             7,
@@ -83,9 +85,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 17,
@@ -103,6 +107,7 @@ Object {
                     60,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "callee": Object {
@@ -118,6 +123,7 @@ Object {
                   },
                 },
                 "object": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -135,9 +141,11 @@ Object {
                     51,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "optional": false,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 12,
@@ -155,6 +163,7 @@ Object {
                     55,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   44,
@@ -178,6 +187,7 @@ Object {
                 61,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -223,6 +233,7 @@ Object {
         },
       },
       "object": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -240,6 +251,7 @@ Object {
           39,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "range": Array [
         28,

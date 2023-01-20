@@ -53,6 +53,7 @@ Object {
           },
         },
         "param": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 18,

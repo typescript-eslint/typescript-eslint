@@ -28,6 +28,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -           global: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'C',
 -             optional: false,
 
@@ -48,6 +49,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -         global: false,
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'B',
 -           optional: false,
 
@@ -68,6 +70,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -       global: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'A',
 -         optional: false,
 

@@ -34,6 +34,7 @@ Program {
           },
           test: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
             optional: false,
 

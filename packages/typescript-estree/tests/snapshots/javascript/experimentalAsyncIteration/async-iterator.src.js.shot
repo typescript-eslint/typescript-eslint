@@ -32,6 +32,7 @@ Object {
                 Object {
                   "definite": false,
                   "id": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 25,
@@ -49,6 +50,7 @@ Object {
                       48,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "init": null,
                   "loc": Object {
@@ -101,6 +103,7 @@ Object {
               67,
             ],
             "right": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 34,
@@ -118,6 +121,7 @@ Object {
                 57,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "type": "ForOfStatement",
           },
@@ -138,9 +142,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 18,
@@ -158,6 +164,7 @@ Object {
           18,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -174,7 +181,9 @@ Object {
         0,
         69,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

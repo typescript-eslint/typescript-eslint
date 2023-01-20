@@ -19,6 +19,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration variable-declaration AS
 -             definite: false,
               id: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'x',
 -               optional: false,
 

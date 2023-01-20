@@ -57,7 +57,7 @@ ScopeManager {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
-          isValueReference: false,
+          isValueReference: true,
           isWrite: false,
           resolved: Variable$5,
         },

@@ -211,12 +211,16 @@ class Referencer extends Visitor {
   protected visitFunctionParameterTypeAnnotation(
     node: TSESTree.Parameter,
   ): void {
-    if ('typeAnnotation' in node) {
-      this.visitType(node.typeAnnotation);
-    } else if (node.type === AST_NODE_TYPES.AssignmentPattern) {
-      this.visitType(node.left.typeAnnotation);
-    } else if (node.type === AST_NODE_TYPES.TSParameterProperty) {
-      this.visitFunctionParameterTypeAnnotation(node.parameter);
+    switch (node.type) {
+      case AST_NODE_TYPES.AssignmentPattern:
+        this.visitType(node.left.typeAnnotation);
+        break;
+      case AST_NODE_TYPES.TSParameterProperty:
+        this.visitFunctionParameterTypeAnnotation(node.parameter);
+        break;
+      default:
+        this.visitType(node.typeAnnotation);
+        break;
     }
   }
   protected visitFunction(

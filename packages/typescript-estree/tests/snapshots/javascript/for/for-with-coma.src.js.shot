@@ -27,6 +27,7 @@ Object {
           Object {
             "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -44,6 +45,7 @@ Object {
                 10,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "loc": Object {
@@ -83,6 +85,7 @@ Object {
           Object {
             "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 17,
@@ -100,6 +103,7 @@ Object {
                 17,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "loc": Object {
@@ -171,6 +175,7 @@ Object {
       ],
       "test": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 25,
@@ -188,6 +193,7 @@ Object {
             25,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -205,6 +211,7 @@ Object {
           29,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 29,
@@ -222,6 +229,7 @@ Object {
             29,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "BinaryExpression",
       },
@@ -230,6 +238,7 @@ Object {
         "expressions": Array [
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 32,
@@ -247,6 +256,7 @@ Object {
                 32,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -268,6 +278,7 @@ Object {
           },
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 37,
@@ -285,6 +296,7 @@ Object {
                 37,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {

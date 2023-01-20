@@ -4,8 +4,10 @@ exports[`typescript basics destructuring-assignment-object.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 13,
@@ -21,6 +23,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -38,6 +41,7 @@ Object {
                   6,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -59,7 +63,9 @@ Object {
               "shorthand": true,
               "type": "Property",
               "value": Object {
+                "decorators": Array [],
                 "left": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -77,6 +83,7 @@ Object {
                     6,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -112,6 +119,7 @@ Object {
                   "type": "ObjectExpression",
                 },
                 "type": "AssignmentPattern",
+                "typeAnnotation": undefined,
               },
             },
           ],
@@ -120,6 +128,7 @@ Object {
             13,
           ],
           "type": "ObjectPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -137,6 +146,7 @@ Object {
           19,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 19,
@@ -154,6 +164,7 @@ Object {
             19,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

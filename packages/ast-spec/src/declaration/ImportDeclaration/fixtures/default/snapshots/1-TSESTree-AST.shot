@@ -24,6 +24,7 @@ Program {
           type: "ImportDefaultSpecifier",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "a",
             optional: false,
 

@@ -4,6 +4,7 @@ exports[`javascript callExpression new-expression-with-object.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [
           Object {
@@ -26,6 +27,7 @@ Object {
           },
         ],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 7,
@@ -43,6 +45,7 @@ Object {
             7,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -59,6 +62,7 @@ Object {
           11,
         ],
         "type": "NewExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

@@ -4,8 +4,10 @@ exports[`typescript basics destructuring-assignment-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 81,
@@ -21,6 +23,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -38,6 +41,7 @@ Object {
                   6,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -59,7 +63,9 @@ Object {
               "shorthand": false,
               "type": "Property",
               "value": Object {
+                "decorators": Array [],
                 "left": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 73,
@@ -75,6 +81,7 @@ Object {
                     Object {
                       "computed": false,
                       "key": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 13,
@@ -92,6 +99,7 @@ Object {
                           13,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "kind": "init",
                       "loc": Object {
@@ -113,7 +121,9 @@ Object {
                       "shorthand": false,
                       "type": "Property",
                       "value": Object {
+                        "decorators": Array [],
                         "left": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 66,
@@ -129,6 +139,7 @@ Object {
                             Object {
                               "computed": false,
                               "key": Object {
+                                "decorators": Array [],
                                 "loc": Object {
                                   "end": Object {
                                     "column": 20,
@@ -146,6 +157,7 @@ Object {
                                   20,
                                 ],
                                 "type": "Identifier",
+                                "typeAnnotation": undefined,
                               },
                               "kind": "init",
                               "loc": Object {
@@ -167,9 +179,12 @@ Object {
                               "shorthand": false,
                               "type": "Property",
                               "value": Object {
+                                "decorators": Array [],
                                 "left": Object {
+                                  "decorators": Array [],
                                   "elements": Array [
                                     Object {
+                                      "decorators": Array [],
                                       "loc": Object {
                                         "end": Object {
                                           "column": 24,
@@ -187,9 +202,12 @@ Object {
                                         24,
                                       ],
                                       "type": "Identifier",
+                                      "typeAnnotation": undefined,
                                     },
                                     Object {
+                                      "decorators": Array [],
                                       "left": Object {
+                                        "decorators": Array [],
                                         "loc": Object {
                                           "end": Object {
                                             "column": 44,
@@ -205,6 +223,7 @@ Object {
                                           Object {
                                             "computed": false,
                                             "key": Object {
+                                              "decorators": Array [],
                                               "loc": Object {
                                                 "end": Object {
                                                   "column": 31,
@@ -222,6 +241,7 @@ Object {
                                                 31,
                                               ],
                                               "type": "Identifier",
+                                              "typeAnnotation": undefined,
                                             },
                                             "kind": "init",
                                             "loc": Object {
@@ -243,9 +263,12 @@ Object {
                                             "shorthand": false,
                                             "type": "Property",
                                             "value": Object {
+                                              "decorators": Array [],
                                               "left": Object {
+                                                "decorators": Array [],
                                                 "elements": Array [
                                                   Object {
+                                                    "decorators": Array [],
                                                     "loc": Object {
                                                       "end": Object {
                                                         "column": 35,
@@ -263,6 +286,7 @@ Object {
                                                       35,
                                                     ],
                                                     "type": "Identifier",
+                                                    "typeAnnotation": undefined,
                                                   },
                                                 ],
                                                 "loc": Object {
@@ -281,6 +305,7 @@ Object {
                                                   36,
                                                 ],
                                                 "type": "ArrayPattern",
+                                                "typeAnnotation": undefined,
                                               },
                                               "loc": Object {
                                                 "end": Object {
@@ -336,6 +361,7 @@ Object {
                                                 "type": "ArrayExpression",
                                               },
                                               "type": "AssignmentPattern",
+                                              "typeAnnotation": undefined,
                                             },
                                           },
                                         ],
@@ -344,6 +370,7 @@ Object {
                                           44,
                                         ],
                                         "type": "ObjectPattern",
+                                        "typeAnnotation": undefined,
                                       },
                                       "loc": Object {
                                         "end": Object {
@@ -375,6 +402,7 @@ Object {
                                           Object {
                                             "computed": false,
                                             "key": Object {
+                                              "decorators": Array [],
                                               "loc": Object {
                                                 "end": Object {
                                                   "column": 52,
@@ -392,6 +420,7 @@ Object {
                                                 52,
                                               ],
                                               "type": "Identifier",
+                                              "typeAnnotation": undefined,
                                             },
                                             "kind": "init",
                                             "loc": Object {
@@ -459,6 +488,7 @@ Object {
                                         "type": "ObjectExpression",
                                       },
                                       "type": "AssignmentPattern",
+                                      "typeAnnotation": undefined,
                                     },
                                   ],
                                   "loc": Object {
@@ -477,6 +507,7 @@ Object {
                                     59,
                                   ],
                                   "type": "ArrayPattern",
+                                  "typeAnnotation": undefined,
                                 },
                                 "loc": Object {
                                   "end": Object {
@@ -512,6 +543,7 @@ Object {
                                   "type": "ArrayExpression",
                                 },
                                 "type": "AssignmentPattern",
+                                "typeAnnotation": undefined,
                               },
                             },
                           ],
@@ -520,6 +552,7 @@ Object {
                             66,
                           ],
                           "type": "ObjectPattern",
+                          "typeAnnotation": undefined,
                         },
                         "loc": Object {
                           "end": Object {
@@ -555,6 +588,7 @@ Object {
                           "type": "ObjectExpression",
                         },
                         "type": "AssignmentPattern",
+                        "typeAnnotation": undefined,
                       },
                     },
                   ],
@@ -563,6 +597,7 @@ Object {
                     73,
                   ],
                   "type": "ObjectPattern",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -598,6 +633,7 @@ Object {
                   "type": "ObjectExpression",
                 },
                 "type": "AssignmentPattern",
+                "typeAnnotation": undefined,
               },
             },
           ],
@@ -606,6 +642,7 @@ Object {
             81,
           ],
           "type": "ObjectPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -637,6 +674,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 89,
@@ -654,6 +692,7 @@ Object {
                   89,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -689,6 +728,7 @@ Object {
                   Object {
                     "computed": false,
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 96,
@@ -706,6 +746,7 @@ Object {
                         96,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "init",
                     "loc": Object {
@@ -741,6 +782,7 @@ Object {
                         Object {
                           "computed": false,
                           "key": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 103,
@@ -758,6 +800,7 @@ Object {
                               103,
                             ],
                             "type": "Identifier",
+                            "typeAnnotation": undefined,
                           },
                           "kind": "init",
                           "loc": Object {
@@ -814,6 +857,7 @@ Object {
                                   Object {
                                     "computed": false,
                                     "key": Object {
+                                      "decorators": Array [],
                                       "loc": Object {
                                         "end": Object {
                                           "column": 114,
@@ -831,6 +875,7 @@ Object {
                                         114,
                                       ],
                                       "type": "Identifier",
+                                      "typeAnnotation": undefined,
                                     },
                                     "kind": "init",
                                     "loc": Object {

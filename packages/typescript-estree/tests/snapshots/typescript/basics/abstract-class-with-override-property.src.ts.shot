@@ -8,9 +8,13 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 23,
@@ -28,6 +32,7 @@ Object {
                 83,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -39,14 +44,16 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": true,
             "range": Array [
               62,
               88,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "TSAbstractPropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
         ],
@@ -66,7 +73,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 35,
@@ -84,7 +94,9 @@ Object {
           35,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -100,6 +112,7 @@ Object {
         90,
       ],
       "superClass": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 57,
@@ -117,8 +130,11 @@ Object {
           57,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

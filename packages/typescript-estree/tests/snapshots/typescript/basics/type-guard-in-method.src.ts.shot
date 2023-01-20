@@ -4,11 +4,15 @@ exports[`typescript basics type-guard-in-method.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -26,6 +30,7 @@ Object {
                 19,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -38,6 +43,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
@@ -45,6 +51,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -84,6 +91,7 @@ Object {
                         70,
                       ],
                       "right": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 30,
@@ -101,6 +109,7 @@ Object {
                           70,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "type": "BinaryExpression",
                     },
@@ -137,6 +146,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -242,12 +252,17 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -265,6 +280,7 @@ Object {
                 83,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -276,14 +292,16 @@ Object {
                 "line": 5,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               78,
               145,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -323,6 +341,7 @@ Object {
                         140,
                       ],
                       "right": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 30,
@@ -340,6 +359,7 @@ Object {
                           140,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "type": "BinaryExpression",
                     },
@@ -481,6 +501,7 @@ Object {
                 },
               },
               "type": "ArrowFunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -500,7 +521,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -518,7 +542,9 @@ Object {
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -534,7 +560,9 @@ Object {
         147,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

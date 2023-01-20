@@ -26,6 +26,7 @@ Object {
         Object {
           "exportKind": "value",
           "exported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 18,
@@ -43,6 +44,7 @@ Object {
               18,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -55,6 +57,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -72,6 +75,7 @@ Object {
               11,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             8,

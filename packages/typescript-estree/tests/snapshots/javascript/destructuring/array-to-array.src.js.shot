@@ -4,10 +4,13 @@ exports[`javascript destructuring array-to-array.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 2,
@@ -25,8 +28,10 @@ Object {
                 2,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -44,6 +49,7 @@ Object {
                 5,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -62,6 +68,7 @@ Object {
             6,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -81,6 +88,7 @@ Object {
         "right": Object {
           "elements": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 11,
@@ -98,8 +106,10 @@ Object {
                 11,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -117,6 +127,7 @@ Object {
                 14,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {

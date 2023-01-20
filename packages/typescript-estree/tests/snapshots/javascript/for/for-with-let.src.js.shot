@@ -27,6 +27,7 @@ Object {
           Object {
             "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -44,6 +45,7 @@ Object {
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "loc": Object {
@@ -115,6 +117,7 @@ Object {
       ],
       "test": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 19,
@@ -132,6 +135,7 @@ Object {
             19,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -149,6 +153,7 @@ Object {
           23,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 23,
@@ -166,6 +171,7 @@ Object {
             23,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "BinaryExpression",
       },

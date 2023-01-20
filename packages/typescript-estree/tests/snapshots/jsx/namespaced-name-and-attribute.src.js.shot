@@ -4,6 +4,7 @@ exports[`jsx namespaced-name-and-attribute.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,

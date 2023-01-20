@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -25,10 +26,12 @@ Object {
               9,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expressions": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 24,
@@ -46,6 +49,7 @@ Object {
                   24,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "loc": Object {

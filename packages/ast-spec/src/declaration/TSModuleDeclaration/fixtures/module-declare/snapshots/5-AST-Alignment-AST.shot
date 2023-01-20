@@ -24,6 +24,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-declare AST Alignme
 -       global: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 

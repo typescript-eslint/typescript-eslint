@@ -28,6 +28,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-one AST Alignme
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'A',
 -             optional: false,
 
@@ -47,6 +48,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-one AST Alignme
         ],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 

@@ -9,6 +9,7 @@ Program {
       declare: true,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "T",
         optional: false,
 

@@ -8,8 +8,10 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 28,
@@ -27,6 +29,7 @@ Object {
                   28,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "delegate": true,
               "loc": Object {
@@ -78,9 +81,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": true,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 14,
@@ -98,6 +103,7 @@ Object {
           14,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -114,7 +120,9 @@ Object {
         0,
         30,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "loc": Object {

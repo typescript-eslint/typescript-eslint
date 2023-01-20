@@ -4,6 +4,7 @@ exports[`javascript objectLiteralComputedProperties computed-getter-and-setter.s
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -19,6 +20,7 @@ Object {
           Object {
             "computed": true,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -36,6 +38,7 @@ Object {
                 8,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "get",
             "loc": Object {
@@ -76,6 +79,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -94,12 +98,15 @@ Object {
                 9,
                 14,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "computed": true,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -117,6 +124,7 @@ Object {
                 22,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "set",
             "loc": Object {
@@ -157,6 +165,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -172,6 +181,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 25,
@@ -189,13 +199,16 @@ Object {
                     25,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "range": Array [
                 23,
                 29,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],

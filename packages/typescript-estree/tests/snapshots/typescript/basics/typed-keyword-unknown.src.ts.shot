@@ -6,6 +6,7 @@ Object {
     Object {
       "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -23,6 +24,7 @@ Object {
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -56,6 +58,7 @@ Object {
         ],
         "type": "TSUnknownKeyword",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

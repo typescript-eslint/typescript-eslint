@@ -27,6 +27,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration namespace AST Alignment
 -         global: false,
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Foo',
 -           optional: false,
 

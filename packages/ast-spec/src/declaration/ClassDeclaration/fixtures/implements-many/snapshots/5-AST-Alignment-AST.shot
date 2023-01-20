@@ -10,6 +10,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,8 +21,11 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
             end: { column: 48, line: 1 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
 -         optional: false,
 
@@ -38,6 +42,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'Object',
 -             optional: false,
 
@@ -60,6 +65,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'Function',
 -             optional: false,
 
@@ -82,6 +88,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-many AST Alignment
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'RegExp',
 -             optional: false,
 

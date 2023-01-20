@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -60,6 +61,7 @@ Object {
                 "typeName": Object {
                   "left": Object {
                     "left": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 10,
@@ -77,6 +79,7 @@ Object {
                         10,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -93,6 +96,7 @@ Object {
                       12,
                     ],
                     "right": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 12,
@@ -110,6 +114,7 @@ Object {
                         12,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "type": "TSQualifiedName",
                   },
@@ -128,6 +133,7 @@ Object {
                     14,
                   ],
                   "right": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 14,
@@ -145,6 +151,7 @@ Object {
                       14,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "type": "TSQualifiedName",
                 },

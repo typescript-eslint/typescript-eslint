@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 18,
@@ -25,6 +26,7 @@ Object {
               18,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -80,6 +82,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 28,
@@ -166,6 +169,7 @@ Object {
                   },
                 },
                 "parameterName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -183,6 +187,7 @@ Object {
                     40,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   31,
@@ -226,6 +231,7 @@ Object {
               },
             },
             "type": "ArrowFunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {

@@ -5,6 +5,7 @@ Object {
   "body": Array [
     Object {
       "declaration": Object {
+        "abstract": false,
         "body": Object {
           "body": Array [],
           "loc": Object {
@@ -23,9 +24,11 @@ Object {
           ],
           "type": "ClassBody",
         },
+        "declare": false,
         "decorators": Array [
           Object {
             "expression": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -43,6 +46,7 @@ Object {
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -62,6 +66,7 @@ Object {
           },
         ],
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 24,
@@ -79,7 +84,9 @@ Object {
             32,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
+        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 27,
@@ -95,7 +102,9 @@ Object {
           35,
         ],
         "superClass": null,
+        "superTypeParameters": undefined,
         "type": "ClassDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

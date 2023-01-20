@@ -12,6 +12,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many AST
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
 -         optional: false,
 
@@ -29,6 +30,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many AST
             type: 'TSQualifiedName',
             left: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'A',
 -             optional: false,
 
@@ -40,6 +42,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many AST
             },
             right: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'B',
 -             optional: false,
 
@@ -58,6 +61,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many AST
           },
           right: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'C',
 -           optional: false,
 

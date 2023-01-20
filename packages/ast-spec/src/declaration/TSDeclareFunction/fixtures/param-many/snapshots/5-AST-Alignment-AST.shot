@@ -16,6 +16,7 @@ exports[`AST Fixtures declaration TSDeclareFunction param-many AST Alignment - A
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
 -         optional: false,
 
@@ -28,6 +29,7 @@ exports[`AST Fixtures declaration TSDeclareFunction param-many AST Alignment - A
         params: Array [
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'a',
 -           optional: false,
 
@@ -39,6 +41,7 @@ exports[`AST Fixtures declaration TSDeclareFunction param-many AST Alignment - A
           },
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'b',
 -           optional: false,
 
@@ -50,6 +53,7 @@ exports[`AST Fixtures declaration TSDeclareFunction param-many AST Alignment - A
           },
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'c',
 -           optional: false,
 

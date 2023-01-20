@@ -8,9 +8,13 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -28,6 +32,7 @@ Object {
                 37,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -39,20 +44,26 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               25,
               38,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "TSAbstractPropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -70,6 +81,7 @@ Object {
                 55,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -81,12 +93,13 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               43,
               64,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
@@ -142,7 +155,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 18,
@@ -160,7 +176,9 @@ Object {
           18,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -176,7 +194,9 @@ Object {
         66,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

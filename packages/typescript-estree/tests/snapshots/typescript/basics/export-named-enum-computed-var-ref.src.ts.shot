@@ -9,6 +9,7 @@ Object {
         "const": false,
         "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -26,6 +27,7 @@ Object {
             15,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -41,6 +43,7 @@ Object {
           Object {
             "computed": true,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 6,
@@ -58,7 +61,9 @@ Object {
                 24,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
+            "initializer": undefined,
             "loc": Object {
               "end": Object {
                 "column": 7,

@@ -4,12 +4,14 @@ exports[`javascript arrowFunctions block-body-not-object.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
           "body": Array [
             Object {
               "body": Object {
+                "directive": undefined,
                 "expression": Object {
                   "loc": Object {
                     "end": Object {
@@ -46,6 +48,7 @@ Object {
                 "type": "ExpressionStatement",
               },
               "label": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -63,6 +66,7 @@ Object {
                   12,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -112,6 +116,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 1,
@@ -129,13 +134,16 @@ Object {
               1,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           18,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

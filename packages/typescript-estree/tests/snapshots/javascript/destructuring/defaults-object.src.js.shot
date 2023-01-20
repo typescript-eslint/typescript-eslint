@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 12,
@@ -23,6 +24,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -40,6 +42,7 @@ Object {
                     6,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -61,7 +64,9 @@ Object {
                 "shorthand": true,
                 "type": "Property",
                 "value": Object {
+                  "decorators": Array [],
                   "left": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 6,
@@ -79,6 +84,7 @@ Object {
                       6,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -115,6 +121,7 @@ Object {
                     "value": 10,
                   },
                   "type": "AssignmentPattern",
+                  "typeAnnotation": undefined,
                 },
               },
             ],
@@ -123,8 +130,10 @@ Object {
               12,
             ],
             "type": "ObjectPattern",
+            "typeAnnotation": undefined,
           },
           "init": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 16,
@@ -142,6 +151,7 @@ Object {
               16,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {

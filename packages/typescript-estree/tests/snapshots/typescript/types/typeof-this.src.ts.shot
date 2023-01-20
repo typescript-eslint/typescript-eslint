@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 21,
@@ -119,6 +120,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 24,
@@ -186,6 +188,7 @@ Object {
                     47,
                   ],
                   "right": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 24,
@@ -203,6 +206,7 @@ Object {
                       47,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "type": "TSQualifiedName",
                 },

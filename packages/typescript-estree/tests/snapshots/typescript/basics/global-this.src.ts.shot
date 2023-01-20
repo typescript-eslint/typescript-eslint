@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -25,6 +26,7 @@ Object {
               29,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -81,6 +83,7 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "computed": false,
@@ -95,6 +98,7 @@ Object {
             },
           },
           "object": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -112,9 +116,11 @@ Object {
               79,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -132,6 +138,7 @@ Object {
               83,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             69,
@@ -196,6 +203,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -213,6 +221,7 @@ Object {
               103,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -269,6 +278,7 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "computed": false,
@@ -283,6 +293,7 @@ Object {
             },
           },
           "object": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -300,9 +311,11 @@ Object {
               188,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 17,
@@ -320,6 +333,7 @@ Object {
               195,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             178,

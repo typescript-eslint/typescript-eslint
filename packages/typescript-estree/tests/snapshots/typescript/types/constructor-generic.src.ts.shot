@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -55,6 +56,7 @@ Object {
                 },
                 "params": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 19,
@@ -105,6 +107,7 @@ Object {
                         ],
                         "type": "TSTypeReference",
                         "typeName": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 19,
@@ -122,6 +125,7 @@ Object {
                             19,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "typeParameters": undefined,
                       },
@@ -165,6 +169,7 @@ Object {
                     ],
                     "type": "TSTypeReference",
                     "typeName": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 25,
@@ -182,6 +187,7 @@ Object {
                         25,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "typeParameters": undefined,
                   },
@@ -214,6 +220,7 @@ Object {
                         },
                       },
                       "name": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 13,
@@ -231,6 +238,7 @@ Object {
                           13,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "out": false,
                       "range": Array [

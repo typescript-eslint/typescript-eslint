@@ -8,6 +8,7 @@ Object {
         Object {
           "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -25,8 +26,10 @@ Object {
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
+            "abstract": false,
             "body": Object {
               "body": Array [],
               "loc": Object {
@@ -45,7 +48,10 @@ Object {
               ],
               "type": "ClassBody",
             },
+            "declare": false,
+            "decorators": Array [],
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -63,7 +69,9 @@ Object {
                 15,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
+            "implements": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -97,7 +105,9 @@ Object {
               "type": "Literal",
               "value": 0,
             },
+            "superTypeParameters": undefined,
             "type": "ClassExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {

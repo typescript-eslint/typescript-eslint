@@ -28,6 +28,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportDefaultSpecifier',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
 -             optional: false,
 
@@ -48,6 +49,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 
@@ -60,6 +62,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'b',
 -             optional: false,
 
@@ -80,6 +83,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'c',
 -             optional: false,
 
@@ -92,6 +96,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'c',
 -             optional: false,
 
@@ -112,6 +117,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'd',
 -             optional: false,
 
@@ -124,6 +130,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'd',
 -             optional: false,
 

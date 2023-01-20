@@ -103,12 +103,18 @@ class ClassVisitor extends Visitor {
     node: TSESTree.Parameter,
     withDecorators: boolean,
   ): void {
-    if ('typeAnnotation' in node) {
-      this.visitMetadataType(node.typeAnnotation, withDecorators);
-    } else if (node.type === AST_NODE_TYPES.AssignmentPattern) {
-      this.visitMetadataType(node.left.typeAnnotation, withDecorators);
-    } else if (node.type === AST_NODE_TYPES.TSParameterProperty) {
-      this.visitFunctionParameterTypeAnnotation(node.parameter, withDecorators);
+    switch (node.type) {
+      case AST_NODE_TYPES.AssignmentPattern:
+        this.visitMetadataType(node.left.typeAnnotation, withDecorators);
+        break;
+      case AST_NODE_TYPES.TSParameterProperty:
+        this.visitFunctionParameterTypeAnnotation(
+          node.parameter,
+          withDecorators,
+        );
+        break;
+      default:
+        this.visitMetadataType(node.typeAnnotation, withDecorators);
     }
   }
 

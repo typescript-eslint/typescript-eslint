@@ -26,6 +26,7 @@ Object {
       "extends": Array [
         Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -43,6 +44,7 @@ Object {
               25,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -59,9 +61,11 @@ Object {
             25,
           ],
           "type": "TSInterfaceHeritage",
+          "typeParameters": undefined,
         },
       ],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -79,6 +83,7 @@ Object {
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -95,6 +100,7 @@ Object {
         30,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

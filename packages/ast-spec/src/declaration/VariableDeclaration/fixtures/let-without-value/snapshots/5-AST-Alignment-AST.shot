@@ -16,6 +16,7 @@ exports[`AST Fixtures declaration VariableDeclaration let-without-value AST Alig
 -           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
 -             optional: false,
 

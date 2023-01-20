@@ -10,6 +10,7 @@ Object {
           Object {
             "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -27,6 +28,7 @@ Object {
                 16,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": null,
             "loc": Object {

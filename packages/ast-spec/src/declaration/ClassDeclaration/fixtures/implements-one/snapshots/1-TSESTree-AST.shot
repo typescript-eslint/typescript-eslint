@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,8 +17,11 @@ Program {
           end: { column: 30, line: 1 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
         optional: false,
 
@@ -32,6 +36,7 @@ Program {
           type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "Object",
             optional: false,
 

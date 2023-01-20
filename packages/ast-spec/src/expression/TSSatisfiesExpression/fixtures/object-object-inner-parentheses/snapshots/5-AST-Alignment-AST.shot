@@ -20,6 +20,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression object-object-inner-paren
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'prop',
 -                 optional: false,
 
@@ -68,6 +69,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression object-object-inner-paren
 -               export: false,
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'prop',
 -                 optional: false,
 

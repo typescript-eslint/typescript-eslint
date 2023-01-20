@@ -4,11 +4,15 @@ exports[`typescript basics declare-class-with-optional-method.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -26,6 +30,7 @@ Object {
                 27,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -46,9 +51,11 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": null,
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -102,6 +109,7 @@ Object {
                 },
               },
               "type": "TSEmptyBodyFunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -122,7 +130,9 @@ Object {
         "type": "ClassBody",
       },
       "declare": true,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 17,
@@ -140,7 +150,9 @@ Object {
           17,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -156,7 +168,9 @@ Object {
         38,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

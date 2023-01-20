@@ -5,6 +5,7 @@ Object {
   "body": Array [
     Object {
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 21,
@@ -22,6 +23,7 @@ Object {
           21,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
