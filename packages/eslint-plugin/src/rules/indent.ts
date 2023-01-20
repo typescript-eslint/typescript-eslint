@@ -298,6 +298,7 @@ export default util.createRule<Options, MessageIds>({
               },
             } as TSESTree.VariableDeclarator,
           ],
+          declare: false,
 
           // location data
           parent: node.parent,
@@ -393,6 +394,7 @@ export default util.createRule<Options, MessageIds>({
               kind: 'init' as const,
               computed: false,
               method: false,
+              optional: false,
               shorthand: false,
             },
           ],
