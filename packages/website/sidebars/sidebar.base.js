@@ -23,6 +23,7 @@ module.exports = {
           collapsible: false,
           type: 'category',
           items: [
+            'linting/troubleshooting/performance-troubleshooting',
             'linting/troubleshooting/formatting',
             'linting/troubleshooting/tslint',
           ],
