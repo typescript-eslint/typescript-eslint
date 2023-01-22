@@ -103,6 +103,10 @@ html[data-theme='dark'] .header-github-link:before {
   font-size: 0.8em;
 }
 
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary-light);
+}
+
 h1,
 h2,
 h3,
