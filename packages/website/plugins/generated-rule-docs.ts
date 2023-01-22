@@ -194,8 +194,11 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'paragraph',
       } as mdast.Paragraph);
 
-      // need this, so we don't have comments inside the JSON objects
-      const getEslintrcStr = (withComment: boolean): string => {
+      /**
+       * @param withComment Whether to include a full comment note.
+       * @remarks `withComment` can't be used inside a JSON object which is needed for eslintrc in the playground
+       */
+      const getEslintrcString = (withComment: boolean): string => {
         return `{
   "rules": {${
     withComment
@@ -212,26 +215,15 @@ export const generatedRuleDocs: Plugin = () => {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
-        value: `module.exports = ${getEslintrcStr(true)};`,
+        value: `module.exports = ${getEslintrcString(true)};`,
       } as mdast.Code);
 
       root.children.splice(howToUseH2Index + 2, 0, {
-        children: [
-          {
-            type: 'link',
-            url: `/play#eslintrc=${convertToPlaygroundHash(
-              getEslintrcStr(false),
-            )}`,
-            children: [
-              {
-                type: 'text',
-                value: 'Click here to try this rule in the playground',
-              },
-            ],
-          },
-        ],
-        type: 'paragraph',
-      } as mdast.Paragraph);
+        value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
+          getEslintrcString(false),
+        )}" />`,
+        type: 'jsx',
+      } as unist.Node);
     } else {
       // For non-extended rules, the code snippet is placed before the first h2
       // (i.e. at the end of the initial explanation)
@@ -239,7 +231,7 @@ export const generatedRuleDocs: Plugin = () => {
         child => nodeIsHeading(child) && child.depth === 2,
       );
 
-      const eslintrcStr = `{
+      const getEslintrcString = `{
   "rules": {
     "@typescript-eslint/${file.stem}": "${optionLevel}"
   }
@@ -248,24 +240,15 @@ export const generatedRuleDocs: Plugin = () => {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
-        value: `module.exports = ${eslintrcStr};`,
+        value: `module.exports = ${getEslintrcString};`,
       } as mdast.Code);
 
       root.children.splice(firstH2Index + 1, 0, {
-        children: [
-          {
-            type: 'link',
-            url: `/play#eslintrc=${convertToPlaygroundHash(eslintrcStr)}`,
-            children: [
-              {
-                type: 'text',
-                value: 'Click here to try this rule in the playground',
-              },
-            ],
-          },
-        ],
-        type: 'paragraph',
-      } as mdast.Paragraph);
+        value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
+          getEslintrcString,
+        )}" />`,
+        type: 'jsx',
+      } as unist.Node);
 
       if (meta.schema.length === 0) {
         root.children.splice(optionsH2Index + 1, 0, {
