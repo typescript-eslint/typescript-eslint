@@ -3246,6 +3246,13 @@
     read-package-json-fast "^2.0.3"
     which "^2.0.2"
 
+"@nrwl/cli@15.4.5":
+  version "15.4.5"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-15.4.5.tgz#2a8f663e5265379812ba83c0577abdc94dcdba8f"
+  integrity sha512-f13s0/hzS9jsV1+QPr1Lp3Um+3dOHD8gEP2h7uw17rEPrtJ5ggRKMj/HcZ9dkT9zDM9EmPtVTb6k38ON+NWcUw==
+  dependencies:
+    nx "15.4.5"
+
 "@nrwl/cli@15.5.2":
   version "15.5.2"
   resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-15.5.2.tgz#57bfec1d1dd9235754c38fedfdbdb39ca9b1088c"
@@ -3253,18 +3260,7 @@
   dependencies:
     nx "15.5.2"
 
-"@nrwl/devkit@15.3.2":
-  version "15.3.2"
-  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-15.3.2.tgz#44ea9bc038ce87d9ea24447f6b3f3e1351a58787"
-  integrity sha512-h0MmDOjvhBJCrpXaAEK6eojpO5juaV6OEX0XjadPAQs4McxTALJxNP7Te6wIfgsY8t9WecARPIt85zKsLJeCjg==
-  dependencies:
-    "@phenomnomnominal/tsquery" "4.1.1"
-    ejs "^3.1.7"
-    ignore "^5.0.4"
-    semver "7.3.4"
-    tslib "^2.3.0"
-
-"@nrwl/devkit@15.5.2", "@nrwl/devkit@>=15.4.2 < 16":
+"@nrwl/devkit@15.5.2":
   version "15.5.2"
   resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-15.5.2.tgz#bb7268d6b49450befdc0a7988c897900e3aa7f44"
   integrity sha512-rvxuiYVpGDB9RzjOAWTNm7IBPwuYG6kL24LkJMUS8gCNqLBNNlYUsdkpa0PLRt5eNeGLKqpSDB8BpA+e1ty/zA==
@@ -3275,16 +3271,27 @@
     semver "7.3.4"
     tslib "^2.3.0"
 
-"@nrwl/jest@15.3.2":
-  version "15.3.2"
-  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-15.3.2.tgz#5616af79444914e8a6c4b0dd7426eac8993accfb"
-  integrity sha512-3ksxm7gtJjXp/WeThxs2H5bAYI0zWQwquTjaNwaGKWvtwjtUbu+sM4zEF2HgOu4CKP6In3wFA4q0gZH7QlCEsw==
+"@nrwl/devkit@>=15.4.2 < 16":
+  version "15.4.5"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-15.4.5.tgz#22b7aa16bc14c171f061f770060d9af480d5f1cb"
+  integrity sha512-oag+wJgusKz+rwvgcVy9i8bNtTo7ikbjVVtSOmyVBE0ZrgN1CMFjugBj4FEjKGtd73djjpvW9Mm36uJRujrc2w==
+  dependencies:
+    "@phenomnomnominal/tsquery" "4.1.1"
+    ejs "^3.1.7"
+    ignore "^5.0.4"
+    semver "7.3.4"
+    tslib "^2.3.0"
+
+"@nrwl/jest@15.5.2":
+  version "15.5.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-15.5.2.tgz#afef6f061fcc457d798cdfa9856051d512185c0d"
+  integrity sha512-2pKkAIepGvYa3l+2FO3UaFifutitK9HOF5NbZ4m9nDcUFStBAsyb+LpF3Mxcn/8XPiFflsM8bmRF7BrU79UQRA==
   dependencies:
     "@jest/reporters" "28.1.1"
     "@jest/test-result" "28.1.1"
-    "@nrwl/devkit" "15.3.2"
+    "@nrwl/devkit" "15.5.2"
     "@phenomnomnominal/tsquery" "4.1.1"
-    chalk "4.1.0"
+    chalk "^4.1.0"
     dotenv "~10.0.0"
     identity-obj-proxy "3.0.0"
     jest-config "28.1.1"
@@ -3316,6 +3323,13 @@
     strip-json-comments "^3.1.1"
     tar "6.1.11"
     yargs-parser ">=21.0.1"
+
+"@nrwl/tao@15.4.5":
+  version "15.4.5"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-15.4.5.tgz#d07f6d06cecb6acb84259e0654cfc59fcc5edd53"
+  integrity sha512-UMtxXxTWqbyZOdyD9Zt2IsDY/JVXIFZtY6pO4jPha7+UIHWf2Zi8Dszs6UoUTS4mqpNMIkKymwpZGtkDTfiAJA==
+  dependencies:
+    nx "15.4.5"
 
 "@nrwl/tao@15.5.2":
   version "15.5.2"
@@ -10775,7 +10789,48 @@ nth-check@^2.0.0, nth-check@^2.0.1:
   dependencies:
     boolbase "^1.0.0"
 
-nx@15.5.2, "nx@>=15.4.2 < 16":
+nx@15.4.5, "nx@>=15.4.2 < 16":
+  version "15.4.5"
+  resolved "https://registry.yarnpkg.com/nx/-/nx-15.4.5.tgz#12daa740256fa29ba634fbc4f3f87b6d078c2990"
+  integrity sha512-1spZL6sgOV8JJJuN8W5CLtJYwTOnlyaV32jPXfidavU0QMS8MP+rW3+NUQ9Uzc1UYhOu8llZWtnen93neVGQRw==
+  dependencies:
+    "@nrwl/cli" "15.4.5"
+    "@nrwl/tao" "15.4.5"
+    "@parcel/watcher" "2.0.4"
+    "@yarnpkg/lockfile" "^1.1.0"
+    "@yarnpkg/parsers" "^3.0.0-rc.18"
+    "@zkochan/js-yaml" "0.0.6"
+    axios "^1.0.0"
+    chalk "4.1.0"
+    chokidar "^3.5.1"
+    cli-cursor "3.1.0"
+    cli-spinners "2.6.1"
+    cliui "^7.0.2"
+    dotenv "~10.0.0"
+    enquirer "~2.3.6"
+    fast-glob "3.2.7"
+    figures "3.2.0"
+    flat "^5.0.2"
+    fs-extra "^10.1.0"
+    glob "7.1.4"
+    ignore "^5.0.4"
+    js-yaml "4.1.0"
+    jsonc-parser "3.2.0"
+    minimatch "3.0.5"
+    npm-run-path "^4.0.1"
+    open "^8.4.0"
+    semver "7.3.4"
+    string-width "^4.2.3"
+    strong-log-transformer "^2.1.0"
+    tar-stream "~2.2.0"
+    tmp "~0.2.1"
+    tsconfig-paths "^4.1.2"
+    tslib "^2.3.0"
+    v8-compile-cache "2.3.0"
+    yargs "^17.6.2"
+    yargs-parser "21.1.1"
+
+nx@15.5.2:
   version "15.5.2"
   resolved "https://registry.yarnpkg.com/nx/-/nx-15.5.2.tgz#c7e45a8d2067c49e69b526770f4c1a0f605f8239"
   integrity sha512-jo8DG7zt0EorKL6AihkoshaeiFkK25NOeGUEnF05BFCaqsIoS9s3uctrOumh2G9DhaGMEWzakc3kF4/LeLB9pg==
