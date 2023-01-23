@@ -1,0 +1,46 @@
+# This workflow is used to augment the capabilities of the renovate GitHub app by running a full
+# `prettier --write` when renovate opens a PR to change the version of prettier.
+
+name: Prettier Update
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  maybe_prettier_update:
+    # Only run if it was the renovate bot that triggered the workflow (otherwise we'll create a loop)
+    if: contains('["renovate[bot]"]', github.actor) == true
+    name: Run prettier formatting if required
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check if prettier was changed as part of the latest commit on the PR
+        id: prettier-package-check
+        run: |
+          git diff HEAD~1 -G"prettier" --exit-code package.json && echo "prettier unchanged" || echo "::set-output name=was-changed::true"
+
+      - name: Run prettier formatting if prettier was changed and commit the results
+        if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
+        env:
+          # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
+          GITHUB_TOKEN: ${{ secrets.JAMES_HENRY_GITHUB_TOKEN }}
+        run: |
+          yarn --ignore-scripts
+          yarn format
+
+          # Commit all the changes to the PR (see note on not being able to use secrets.GITHUB_TOKEN for this)
+          git config --global user.email "james@henry.sc"
+          git config --global user.name "JamesHenry"
+          git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
+
+          git add --all
+          git commit -m "chore: update formatting after prettier upgrade"
+          git push
