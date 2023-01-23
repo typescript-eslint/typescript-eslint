@@ -19,7 +19,7 @@ describe('parseAndGenerateServices', () => {
               ...config,
               moduleResolver: resolve(projectDirectory, './moduleResolver.js'),
             })
-            .services.program.getSemanticDiagnostics(),
+            .services.program!.getSemanticDiagnostics(),
         ).toHaveLength(0);
       });
     });

@@ -16,7 +16,7 @@ describe('parseAndGenerateServices', () => {
         expect(
           parser
             .parseAndGenerateServices(code, config)
-            .services.program.getSemanticDiagnostics(),
+            .services.program!.getSemanticDiagnostics(),
         ).toHaveProperty(
           [0, 'messageText'],
           "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
