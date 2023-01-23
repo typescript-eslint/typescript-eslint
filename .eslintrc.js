@@ -40,6 +40,11 @@ module.exports = {
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
+    cacheLifetime: {
+      // we pretty well never create/change tsconfig structure - so need to ever evict the cache
+      // in the rare case that we do - just need to manually restart their IDE.
+      glob: 'Infinity',
+    },
   },
   rules: {
     // make sure we're not leveraging any deprecated APIs

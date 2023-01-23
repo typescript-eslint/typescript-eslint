@@ -46,6 +46,9 @@ interface ParserOptions {
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
+  cacheLifetime?: {
+    glob?: number | 'Infinity';
+  };
 }
 ```
 
@@ -233,6 +236,14 @@ This option allows you to provide the root directory for relative tsconfig paths
 > Default `true`.
 
 This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
+
+### `cacheLifetime`
+
+This option allows you to granularly control our internal cache expiry lengths.
+
+You can specify the number of seconds as an integer number, or the string 'Infinity' if you never want the cache to expire.
+
+By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run.
 
 ## Utilities
 

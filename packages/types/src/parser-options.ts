@@ -59,6 +59,10 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
   moduleResolver?: string;
+  cacheLifetime?: {
+    glob?: number | 'Infinity';
+  };
+
   [additionalProperties: string]: unknown;
 }
 
