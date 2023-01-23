@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] add support for `#private` modifier on class members ([#6259](https://github.com/typescript-eslint/typescript-eslint/issues/6259)) ([c8a6d80](https://github.com/typescript-eslint/typescript-eslint/commit/c8a6d8096080228b6d122c861fe140ac97f17cbe))
+
+
+
+
+
 ## [5.48.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.1...v5.48.2) (2023-01-16)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin
