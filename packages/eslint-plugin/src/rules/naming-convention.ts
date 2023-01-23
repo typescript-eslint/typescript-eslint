@@ -125,7 +125,9 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.TSParameterProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
-      if (node.accessibility) {
+      if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        modifiers.add(Modifiers['#private']);
+      } else if (node.accessibility) {
         modifiers.add(Modifiers[node.accessibility]);
       } else {
         modifiers.add(Modifiers.public);
