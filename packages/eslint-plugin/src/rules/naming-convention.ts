@@ -90,10 +90,8 @@ export default util.createRule<Options, MessageIds>({
 
     const validators = parseOptions(context);
 
-    // getParserServices(context, false) -- dirty hack to work around the docs checker test...
-    const compilerOptions = util
-      .getParserServices(context, true)
-      .program.getCompilerOptions();
+    const compilerOptions =
+      util.getParserServices(context, true).program?.getCompilerOptions() ?? {};
     function handleMember(
       validator: ValidatorFunction | null,
       node:

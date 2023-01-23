@@ -122,7 +122,6 @@ export class WebLinter {
     return {
       ast,
       services: {
-        hasFullTypeInformation: true,
         program,
         esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
         tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,

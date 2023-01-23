@@ -5,7 +5,7 @@
 module.exports = {
   ...require('../../jest.config.base.js'),
   testRegex: [
-    './tests/lib/.*\\.ts$',
+    './tests/lib/.*\\.test\\.ts$',
     './tests/ast-alignment/spec\\.ts$',
     './tests/[^/]+\\.test\\.ts$',
   ],

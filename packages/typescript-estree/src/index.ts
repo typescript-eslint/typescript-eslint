@@ -7,7 +7,12 @@ export {
   ParseWithNodeMapsResult,
   clearProgramCache,
 } from './parser';
-export { ParserServices, TSESTreeOptions } from './parser-options';
+export {
+  ParserServices,
+  ParserServicesWithTypeInformation,
+  ParserServicesWithoutTypeInformation,
+  TSESTreeOptions,
+} from './parser-options';
 export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
 export { clearWatchCaches as clearCaches } from './create-program/getWatchProgramsForProjects';
