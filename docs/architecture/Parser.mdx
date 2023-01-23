@@ -42,7 +42,7 @@ interface ParserOptions {
   lib?: string[];
   moduleResolver?: string;
   program?: import('typescript').Program;
-  project?: string | string[] | true;
+  project?: string[] | true;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -192,7 +192,7 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
 - If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
 
-  - This is done by checking that source file's directory for a `tsconfig.json`, then the parent's directory for a `tsconfig.json`, and so on - until one is found or the current working directory is passed.
+  - This is done by checking that source file's directory tree for the nearest `tsconfig.json`.
 
 - If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 

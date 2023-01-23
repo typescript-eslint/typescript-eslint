@@ -42,7 +42,7 @@ You may see new rules reporting errors based on type information!
 The `parserOptions.project` option can be turned on with either:
 
 - `true`: to always use `tsconfig.json`s nearest to source files
-- `string | string[]`: any number of glob paths to match TSConfig files relative to the
+- `string[]`: any number of glob paths to match TSConfig files relative to the
 
 For example, if you use a specific `tsconfig.eslint.json` for linting, you'd specify:
 
@@ -50,7 +50,7 @@ For example, if you use a specific `tsconfig.eslint.json` for linting, you'd spe
 module.exports = {
   // ...
   parserOptions: {
-    project: './tsconfig.eslint.json',
+    project: ['./tsconfig.eslint.json'],
   },
   // ...
 };

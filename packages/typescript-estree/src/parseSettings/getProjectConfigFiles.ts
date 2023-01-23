@@ -6,7 +6,7 @@ import type { ParseSettings } from '.';
 
 const log = debug('typescript-eslint:typescript-estree:getProjectConfigFiles');
 
-const tsconfigMatchCache = new Map<string, string | undefined>();
+const TSCONFIG_MATCH_CACHE = new Map<string, string | undefined>();
 
 /**
  * @remarks Only use this for tests!
@@ -29,7 +29,7 @@ export function getProjectConfigFiles(
   project: string | string[] | true | undefined,
 ): string | string[] | undefined {
   if (project !== true) {
-    return project;
+    return Array.isArray(project) ? project : [project];
   }
 
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
