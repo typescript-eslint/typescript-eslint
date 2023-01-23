@@ -98,13 +98,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       tabs.code.dispose();
       tabs.code = newModel;
     }
-  }, [
-    jsx,
-    sandboxInstance.editor,
-    sandboxInstance.monaco.Uri,
-    sandboxInstance.monaco.editor,
-    tabs,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const config = createCompilerOptions(
