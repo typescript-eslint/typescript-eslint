@@ -332,6 +332,21 @@ interface X {
       `,
       options: [
         {
+          align: { on: 'value', beforeColon: true, afterColon: true },
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: { beforeColon: false, afterColon: false },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a :   number;
+  abc : string
+};
+      `,
+      options: [
+        {
           singleLine: { beforeColon: false, afterColon: false },
           multiLine: { beforeColon: true, afterColon: true, align: 'value' },
         },
@@ -515,6 +530,22 @@ let x: {
 };
       `,
       options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code: `
+let x: {
+  a: number;
+  abc: string
+};
+      `,
+      output: `
+let x: {
+  a:   number;
+  abc: string
+};
+      `,
+      options: [{ align: { on: 'value' } }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
@@ -868,6 +899,22 @@ interface X {
 };
       `,
       options: [{ align: 'colon' }],
+      errors: [{ messageId: 'extraKey' }],
+    },
+    {
+      code: `
+interface X {
+  a   : number;
+  abc: string
+};
+      `,
+      output: `
+interface X {
+  a  : number;
+  abc: string
+};
+      `,
+      options: [{ align: { on: 'colon' } }],
       errors: [{ messageId: 'extraKey' }],
     },
     {
