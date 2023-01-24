@@ -13,63 +13,149 @@ ruleTester.run('key-spacing', rule, {
   valid: [
     // align: value
     {
-      code: 'interface X {\n  a:   number;\n  abc: string\n};',
+      code: `
+interface X {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'interface X {\n  a: number;\n  abc: string; c: number;\n};',
+      code: `
+interface X {
+  a: number;
+  abc: string; c: number;
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'interface X {\n  a: number;\n  abc: string; c: number; de: boolean;\n  abcef: number;\n};',
+      code: `
+interface X {
+  a: number;
+  abc: string; c: number; de: boolean;
+  abcef: number;
+};
+      `,
       options: [{ align: 'colon' }],
     },
     {
-      code: 'interface X {\n  a?:  number;\n  abc: string\n};',
+      code: `
+interface X {
+  a?:  number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'interface X {\n  a:   number;\n  // Some comment\n  abc: string\n};',
+      code: `
+interface X {
+  a:   number;
+  // Some comment
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'interface X {\n  a:   number;\n  // Some comment\n  // on multiple lines\n  abc: string\n};',
+      code: `
+interface X {
+  a:   number;
+  // Some comment
+  // on multiple lines
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'interface X {\n  a:   number;\n  /**\n   * Doc comment\n  */\n  abc: string\n};',
+      code: `
+interface X {
+  a:   number;
+  /**
+   * Doc comment
+  */
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'interface X {\n  a: number;\n\n  abc: string\n};',
+      code: `
+interface X {
+  a: number;
+
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'class X {\n  a:   number;\n  abc: string\n};',
+      code: `
+class X {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'class X {\n  a?:  number;\n  abc: string\n};',
+      code: `
+class X {
+  a?:  number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'class X {\n  x:     number;\n  z = 1;\n  xbcef: number;\n  }',
+      code: `
+class X {
+  x:     number;
+  z = 1;
+  xbcef: number;
+  }
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'class X {\n  a: number;\n\n  abc: string\n};',
+      code: `
+class X {
+  a: number;
+
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'type X = {\n  a:   number;\n  abc: string\n};',
+      code: `
+type X = {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'type X = {\n  a: number;\n\n  abc: string\n};',
+      code: `
+type X = {
+  a: number;
+
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
     },
     {
-      code: 'type X = {\n  a :  number;\n  abc: string\n};',
+      code: `
+type X = {
+  a :  number;
+  abc: string
+};
+      `,
       options: [{ align: 'value', mode: 'minimum' }],
     },
     {
@@ -104,29 +190,59 @@ class X {
     },
     // align: colon
     {
-      code: 'interface X {\n  a  : number;\n  abc: string\n};',
+      code: `
+interface X {
+  a  : number;
+  abc: string
+};
+      `,
       options: [{ align: 'colon' }],
     },
     {
-      code: 'interface X {\n  a  :number;\n  abc:string\n};',
+      code: `
+interface X {
+  a  :number;
+  abc:string
+};
+      `,
       options: [{ align: 'colon', afterColon: false }],
     },
     {
-      code: 'interface X {\n  a  :   number;\n  abc: string\n};',
+      code: `
+interface X {
+  a  :   number;
+  abc: string
+};
+      `,
       options: [{ align: 'colon', mode: 'minimum' }],
     },
     // no align
     {
-      code: 'interface X {\n  a: number;\n  abc: string\n};',
+      code: `
+interface X {
+  a: number;
+  abc: string
+};
+      `,
       options: [{}],
     },
     {
-      code: 'interface X {\n  a : number;\n  abc : string\n};',
+      code: `
+interface X {
+  a : number;
+  abc : string
+};
+      `,
       options: [{ beforeColon: true }],
     },
     // singleLine / multiLine
     {
-      code: 'interface X {\n  a : number;\n  abc : string\n};',
+      code: `
+interface X {
+  a : number;
+  abc : string
+};
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -135,7 +251,12 @@ class X {
       ],
     },
     {
-      code: 'interface X {\n  a :   number;\n  abc : string\n};',
+      code: `
+interface X {
+  a :   number;
+  abc : string
+};
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -144,7 +265,12 @@ class X {
       ],
     },
     {
-      code: 'interface X {\n  a   : number;\n  abc : string\n};',
+      code: `
+interface X {
+  a   : number;
+  abc : string
+};
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -162,7 +288,14 @@ class X {
       ],
     },
     {
-      code: 'interface X {\n  a  : number;\n  abc: string\n\n  xadzd : number;\n};',
+      code: `
+interface X {
+  a  : number;
+  abc: string
+
+  xadzd : number;
+};
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -180,7 +313,9 @@ class X {
       ],
     },
     {
-      code: 'interface X { a:number; abc:string; };',
+      code: `
+interface X { a:number; abc:string; };
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -192,63 +327,174 @@ class X {
   invalid: [
     // align: value
     {
-      code: 'interface X {\n  a: number;\n  abc: string\n};',
-      output: 'interface X {\n  a:   number;\n  abc: string\n};',
+      code: `
+interface X {
+  a: number;
+  abc: string
+};
+      `,
+      output: `
+interface X {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
-      code: 'class X {\n  a: number;\n  abc: string\n};',
-      output: 'class X {\n  a:   number;\n  abc: string\n};',
+      code: `
+class X {
+  a: number;
+  abc: string
+};
+      `,
+      output: `
+class X {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
-      code: 'class X {\n  a: number;\n  abc: string\n};',
-      output: 'class X {\n  a:   number;\n  abc: string\n};',
+      code: `
+class X {
+  a: number;
+  abc: string
+};
+      `,
+      output: `
+class X {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value', mode: 'minimum' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
-      code: 'type X = {\n  a: number;\n  abc: string\n};',
-      output: 'type X = {\n  a:   number;\n  abc: string\n};',
+      code: `
+type X = {
+  a: number;
+  abc: string
+};
+      `,
+      output: `
+type X = {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
-      code: 'interface X {\n  a:   number;\n  abc:  string\n};',
-      output: 'interface X {\n  a:   number;\n  abc: string\n};',
+      code: `
+interface X {
+  a:   number;
+  abc:  string
+};
+      `,
+      output: `
+interface X {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
     {
-      code: 'class X {\n  a:   number;\n  abc:  string\n};',
-      output: 'class X {\n  a:   number;\n  abc: string\n};',
+      code: `
+class X {
+  a:   number;
+  abc:  string
+};
+      `,
+      output: `
+class X {
+  a:   number;
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
     {
-      code: 'class X {\n  x:   number;\n  z = 1;\n  xbcef: number;\n  }',
-      output: 'class X {\n  x:     number;\n  z = 1;\n  xbcef: number;\n  }',
+      code: `
+class X {
+  x:   number;
+  z = 1;
+  xbcef: number;
+  }
+      `,
+      output: `
+class X {
+  x:     number;
+  z = 1;
+  xbcef: number;
+  }
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'missingValue' }],
     },
     {
-      code: 'interface X {\n  a:   number;\n\n  abc     : string\n};',
-      output: 'interface X {\n  a: number;\n\n  abc: string\n};',
+      code: `
+interface X {
+  a:   number;
+
+  abc     : string
+};
+      `,
+      output: `
+interface X {
+  a: number;
+
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
     },
     {
-      code: 'class X {\n  a:   number;\n\n  abc     : string\n};',
-      output: 'class X {\n  a: number;\n\n  abc: string\n};',
+      code: `
+class X {
+  a:   number;
+
+  abc     : string
+};
+      `,
+      output: `
+class X {
+  a: number;
+
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }, { messageId: 'extraKey' }],
     },
     {
-      code: 'interface X {\n  a:   number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
-      output:
-        'interface X {\n  a: number;\n  // Some comment\n\n  // interrupted in the middle\n  abc: string\n};',
+      code: `
+interface X {
+  a:   number;
+  // Some comment
+
+  // interrupted in the middle
+  abc: string
+};
+      `,
+      output: `
+interface X {
+  a: number;
+  // Some comment
+
+  // interrupted in the middle
+  abc: string
+};
+      `,
       options: [{ align: 'value' }],
       errors: [{ messageId: 'extraValue' }],
     },
@@ -364,26 +610,62 @@ class X {
     },
     // align: colon
     {
-      code: 'interface X {\n  a   : number;\n  abc: string\n};',
-      output: 'interface X {\n  a  : number;\n  abc: string\n};',
+      code: `
+interface X {
+  a   : number;
+  abc: string
+};
+      `,
+      output: `
+interface X {
+  a  : number;
+  abc: string
+};
+      `,
       options: [{ align: 'colon' }],
       errors: [{ messageId: 'extraKey' }],
     },
     // no align
     {
-      code: 'interface X {\n  [x: number]:  string;\n}',
-      output: 'interface X {\n  [x: number]: string;\n}',
+      code: `
+interface X {
+  [x: number]:  string;
+}
+      `,
+      output: `
+interface X {
+  [x: number]: string;
+}
+      `,
       errors: [{ messageId: 'extraValue' }],
     },
     {
-      code: 'interface X {\n  [x: number]:string;\n}',
-      output: 'interface X {\n  [x: number]: string;\n}',
+      code: `
+interface X {
+  [x: number]:string;
+}
+      `,
+      output: `
+interface X {
+  [x: number]: string;
+}
+      `,
       errors: [{ messageId: 'missingValue' }],
     },
     // singleLine / multiLine
     {
-      code: 'interface X {\n  a:number;\n  abc:string\n};',
-      output: 'interface X {\n  a : number;\n  abc : string\n};',
+      code: `
+interface X {
+  a:number;
+  abc:string
+};
+      `,
+      output: `
+interface X {
+  a : number;
+  abc : string
+};
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -398,8 +680,12 @@ class X {
       ],
     },
     {
-      code: 'interface X { a : number; abc : string; };',
-      output: 'interface X { a:number; abc:string; };',
+      code: `
+interface X { a : number; abc : string; };
+      `,
+      output: `
+interface X { a:number; abc:string; };
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: false },
@@ -414,8 +700,12 @@ class X {
       ],
     },
     {
-      code: 'interface X { a : number; abc : string; };',
-      output: 'interface X { a: number; abc: string; };',
+      code: `
+interface X { a : number; abc : string; };
+      `,
+      output: `
+interface X { a: number; abc: string; };
+      `,
       options: [
         {
           singleLine: { beforeColon: false, afterColon: true },
