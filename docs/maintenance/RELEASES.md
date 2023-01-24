@@ -10,6 +10,27 @@ We release a canary version for each commit to `main` that passes all required c
 
 This release is goes to the `canary` tag on npm and it is versioned as an incremental canary patch release on top of the current `latest` version. I.e. if the current version is `5.6.1`, then the first canary version will be `5.6.2-alpha.0`, the second `5.6.2-alpha.1`, and so on.
 
+### Installing Canary Versions
+
+To try out the latest canary versions of typescript-eslint, install `@typescript-eslint/eslint-plugin@canary` and `@typescript-eslint/parser@canary`.
+Note that npm may need a `--force` to override version requirements.
+
+<!--tabs-->
+
+### npm
+
+```bash
+npm i @typescript-eslint/eslint-plugin@canary @typescript-eslint/parser@canary --save-dev --force
+```
+
+### Yarn
+
+```bash
+yarn add @typescript-eslint/eslint-plugin@canary @typescript-eslint/parser@canary --save-dev
+```
+
+<!--/tabs-->
+
 ## Latest
 
 We release a latest version every Monday at 1pm US Eastern time using the latest commit to `main` at that time. This release is performed automatically by a Github action located in a private repository. This release goes to the standard `latest` tag on npm.
