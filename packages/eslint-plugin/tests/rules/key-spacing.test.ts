@@ -345,6 +345,26 @@ interface X {
     {
       code: `
 interface X {
+  a   : number;
+  abc : string
+};
+      `,
+      options: [
+        {
+          beforeColon: true,
+          afterColon: true,
+          align: {
+            on: 'colon',
+            mode: 'strict',
+            afterColon: true,
+            beforeColon: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
   a  : number;
   abc: string
 
@@ -782,6 +802,22 @@ interface X {
       options: [{ align: 'colon' }],
       errors: [{ messageId: 'extraKey' }],
     },
+    {
+      code: `
+interface X {
+  a   : number;
+  abc: string
+};
+      `,
+      output: `
+interface X {
+  a   : number;
+  abc : string
+};
+      `,
+      options: [{ align: 'colon', beforeColon: true, afterColon: true }],
+      errors: [{ messageId: 'missingKey' }],
+    },
     // no align
     {
       code: `
@@ -870,6 +906,86 @@ interface X { a: number; abc: string; };
         },
       ],
       errors: [{ messageId: 'extraKey' }, { messageId: 'extraKey' }],
+    },
+    {
+      code: `
+interface X { a:number; abc:string; };
+      `,
+      output: `
+interface X { a : number; abc : string; };
+      `,
+      options: [
+        {
+          singleLine: { beforeColon: true, afterColon: true, mode: 'strict' },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+      errors: [
+        { messageId: 'missingKey' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingKey' },
+        { messageId: 'missingValue' },
+      ],
+    },
+    {
+      code: `
+interface X { a:number; abc:   string; };
+      `,
+      output: `
+interface X { a : number; abc :   string; };
+      `,
+      options: [
+        {
+          singleLine: { beforeColon: true, afterColon: true, mode: 'minimum' },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+      errors: [
+        { messageId: 'missingKey' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingKey' },
+      ],
+    },
+    {
+      code: `
+interface X { a : number; abc : string; };
+      `,
+      output: `
+interface X { a:number; abc:string; };
+      `,
+      options: [
+        {
+          beforeColon: false,
+          afterColon: false,
+        },
+      ],
+      errors: [
+        { messageId: 'extraKey' },
+        { messageId: 'extraValue' },
+        { messageId: 'extraKey' },
+        { messageId: 'extraValue' },
+      ],
+    },
+    {
+      code: `
+interface X { a:number; abc:string; };
+      `,
+      output: `
+interface X { a : number; abc : string; };
+      `,
+      options: [
+        {
+          beforeColon: true,
+          afterColon: true,
+          mode: 'strict',
+        },
+      ],
+      errors: [
+        { messageId: 'missingKey' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingKey' },
+        { messageId: 'missingValue' },
+      ],
     },
     {
       code: `
