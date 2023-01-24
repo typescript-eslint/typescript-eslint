@@ -68,18 +68,18 @@ export default util.createRule<Options, MessageIds>({
       return sourceCode.getTokenBefore(colonToken)!;
     }
 
-    /**
-     * Relevant nodes to our rule
-     *
-     * node.typeAnnotation will always be defined, but no way to enforce that and keep
-     * the type compatible with TSEstree.Node (except maybe TS 4.9' "satisfies" keyword)
-     */
     type KeyTypeNode =
       | TSESTree.TSIndexSignature
       | TSESTree.TSPropertySignature
       | TSESTree.PropertyDefinition;
 
-    function isKeyTypeNode(node: TSESTree.Node): node is KeyTypeNode {
+    type KeyTypeNodeWithTypeAnnotation = KeyTypeNode & {
+      typeAnnotation: TSESTree.TSTypeAnnotation;
+    };
+
+    function isKeyTypeNode(
+      node: TSESTree.Node,
+    ): node is KeyTypeNodeWithTypeAnnotation {
       return (
         (node.type === AST_NODE_TYPES.TSPropertySignature ||
           node.type === AST_NODE_TYPES.TSIndexSignature ||
@@ -91,7 +91,7 @@ export default util.createRule<Options, MessageIds>({
     /**
      * To handle index signatures, to get the whole text for the parameters
      */
-    function getKeyText(node: KeyTypeNode): string {
+    function getKeyText(node: KeyTypeNodeWithTypeAnnotation): string {
       if (node.type !== AST_NODE_TYPES.TSIndexSignature) {
         return sourceCode.getText(node.key);
       }
@@ -109,7 +109,9 @@ export default util.createRule<Options, MessageIds>({
     /**
      * To handle index signatures, be able to get the end position of the parameters
      */
-    function getKeyLocEnd(node: KeyTypeNode): TSESTree.Position {
+    function getKeyLocEnd(
+      node: KeyTypeNodeWithTypeAnnotation,
+    ): TSESTree.Position {
       return getLastTokenBeforeColon(
         node.type !== AST_NODE_TYPES.TSIndexSignature
           ? node.key
@@ -118,12 +120,11 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkBeforeColon(
-      node: KeyTypeNode,
+      node: KeyTypeNodeWithTypeAnnotation,
       expectedWhitespaceBeforeColon: number,
       mode: 'strict' | 'minimum',
     ): void {
-      // KeyTypeNode always has type annotation
-      const typeAnnotation = node.typeAnnotation!;
+      const { typeAnnotation } = node;
       const colon = typeAnnotation.loc.start.column;
       const keyEnd = getKeyLocEnd(node);
       const difference = colon - keyEnd.column - expectedWhitespaceBeforeColon;
@@ -153,12 +154,11 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkAfterColon(
-      node: KeyTypeNode,
+      node: KeyTypeNodeWithTypeAnnotation,
       expectedWhitespaceAfterColon: number,
       mode: 'strict' | 'minimum',
     ): void {
-      // KeyTypeNode always has type annotation
-      const typeAnnotation = node.typeAnnotation!;
+      const { typeAnnotation } = node;
       const colon = typeAnnotation.loc.start.column;
       const typeStart = typeAnnotation.typeAnnotation.loc.start.column;
       const difference = typeStart - colon - 1 - expectedWhitespaceAfterColon;
@@ -194,7 +194,7 @@ export default util.createRule<Options, MessageIds>({
     ): boolean {
       const groupEndLine = lastMember.loc.start.line;
       const candidateValueStartLine = (
-        isKeyTypeNode(candidate) ? candidate.typeAnnotation! : candidate
+        isKeyTypeNode(candidate) ? candidate.typeAnnotation : candidate
       ).loc.start.line;
 
       if (candidateValueStartLine === groupEndLine) {
@@ -287,8 +287,7 @@ export default util.createRule<Options, MessageIds>({
         if (!isKeyTypeNode(node)) {
           continue;
         }
-        // KeyTypeNode always has type annotation
-        const typeAnnotation = node.typeAnnotation!;
+        const { typeAnnotation } = node;
         const toCheck =
           align === 'colon' ? typeAnnotation : typeAnnotation.typeAnnotation;
         const difference = adjustedColumn(toCheck.loc.start) - alignColumn;
