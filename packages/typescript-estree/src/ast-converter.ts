@@ -1,7 +1,7 @@
 import type { SourceFile } from 'typescript';
 
 import type { ASTMaps } from './convert';
-import { Converter, convertError } from './convert';
+import { converter, convertError } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import type { ParseSettings } from './parseSettings';
@@ -25,12 +25,10 @@ export function astConverter(
   /**
    * Recursively convert the TypeScript AST into an ESTree-compatible AST
    */
-  const instance = new Converter(ast, {
+  const { program: estree, ...astMaps } = converter(ast, {
     errorOnUnknownASTType: parseSettings.errorOnUnknownASTType || false,
     shouldPreserveNodeMaps,
   });
-
-  const estree = instance.convertProgram();
 
   /**
    * Optionally remove range and loc if specified
@@ -65,8 +63,6 @@ export function astConverter(
   if (parseSettings.comment) {
     estree.comments = convertComments(ast, parseSettings.code);
   }
-
-  const astMaps = instance.getASTMaps();
 
   return { estree, astMaps };
 }
