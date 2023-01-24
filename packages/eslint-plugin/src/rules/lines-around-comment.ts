@@ -202,31 +202,6 @@ export default util.createRule<Options, MessageIds>({
     function getParentNodeOfToken(token: TSESTree.Token): TSESTree.Node | null {
       const node = sourceCode.getNodeByRangeIndex(token.range[0]);
 
-      /*
-       * For the purpose of this rule, the comment token is in a `StaticBlock` node only
-       * if it's inside the braces of that `StaticBlock` node.
-       *
-       * Example where this function returns `null`:
-       *
-       *   static
-       *   // comment
-       *   {
-       *   }
-       *
-       * Example where this function returns `StaticBlock` node:
-       *
-       *   static
-       *   {
-       *   // comment
-       *   }
-       *
-       */
-      if (node && node.type === AST_NODE_TYPES.StaticBlock) {
-        const openingBrace = sourceCode.getFirstToken(node, { skip: 1 })!; // skip the `static` token
-
-        return token.range[0] >= openingBrace.range[0] ? node : null;
-      }
-
       return node;
     }
 
@@ -424,16 +399,12 @@ export default util.createRule<Options, MessageIds>({
     const customReport: typeof context.report = descriptor => {
       if ('node' in descriptor) {
         if (
-          descriptor.node.type !== AST_TOKEN_TYPES.Line &&
-          descriptor.node.type !== AST_TOKEN_TYPES.Block
+          descriptor.node.type === AST_TOKEN_TYPES.Line ||
+          descriptor.node.type === AST_TOKEN_TYPES.Block
         ) {
-          throw new TypeError(
-            'The node reported by the base rule must always be a Comment token',
-          );
-        }
-
-        if (isCommentNearTSConstruct(descriptor.node)) {
-          return;
+          if (isCommentNearTSConstruct(descriptor.node)) {
+            return;
+          }
         }
       }
       return context.report(descriptor);

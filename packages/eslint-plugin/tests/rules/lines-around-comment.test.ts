@@ -1,7 +1,7 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/lines-around-comment';
-import { noFormat, RuleTester } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 import { unIndent } from './indent/utils';
 
 const ruleTester = new RuleTester({
@@ -374,6 +374,26 @@ interface A {
     },
   ],
   invalid: [
+    // ESLint base rule test to cover the usage of the original reporter
+    {
+      code: `
+bar();
+/** block block block
+ * block
+ */
+var a = 1;
+      `,
+      output: `
+bar();
+
+/** block block block
+ * block
+ */
+var a = 1;
+      `,
+      errors: [{ messageId: 'before', type: AST_TOKEN_TYPES.Block }],
+    },
+
     // interface
     {
       code: unIndent`
