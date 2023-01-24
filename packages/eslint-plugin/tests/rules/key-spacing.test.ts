@@ -107,6 +107,19 @@ interface X {
 interface X {
   a:   number;
   /**
+   * Some comment
+   * on multiple lines
+   */
+  abc: string
+};
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
+interface X {
+  a:   number;
+  /**
    * Doc comment
   */
   abc: string
@@ -582,6 +595,32 @@ interface X {
   // Some comment
 
   // interrupted in the middle
+  abc: string
+};
+      `,
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: `
+interface X {
+  a:   number;
+  /**
+   * Multiline comment
+   */
+
+  /** interrupted in the middle */
+  abc: string
+};
+      `,
+      output: `
+interface X {
+  a: number;
+  /**
+   * Multiline comment
+   */
+
+  /** interrupted in the middle */
   abc: string
 };
       `,
