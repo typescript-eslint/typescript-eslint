@@ -75,6 +75,16 @@ interface X {
     {
       code: `
 interface X {
+  a    : number;
+  abc;
+  abcef: number;
+};
+      `,
+      options: [{ align: 'colon' }],
+    },
+    {
+      code: `
+interface X {
   a?:  number;
   abc: string
 };
@@ -471,6 +481,24 @@ class X {
       output: `
 class X {
   a:   number;
+  abc: string
+};
+      `,
+      options: [{ align: 'value', mode: 'minimum' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code: `
+class X {
+  a: number;
+  b;
+  abc: string
+};
+      `,
+      output: `
+class X {
+  a:   number;
+  b;
   abc: string
 };
       `,
