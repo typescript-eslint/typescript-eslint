@@ -94,12 +94,12 @@ export default util.createRule<Options, MessageIds>({
 
     function checkBeforeColon(
       node: KeyTypeNode,
-      nBeforeColon: number,
+      expectedWhitespaceBeforeColon: number,
       mode: 'strict' | 'minimum',
     ): void {
       const colon = node.typeAnnotation!.loc.start.column;
       const keyEnd = getKeyLocEnd(node);
-      const difference = colon - keyEnd.column - nBeforeColon;
+      const difference = colon - keyEnd.column - expectedWhitespaceBeforeColon;
       if (mode === 'strict' ? difference : difference < 0) {
         context.report({
           node,
@@ -127,12 +127,12 @@ export default util.createRule<Options, MessageIds>({
 
     function checkAfterColon(
       node: KeyTypeNode,
-      nAfterColon: number,
+      expectedWhitespaceAfterColon: number,
       mode: 'strict' | 'minimum',
     ): void {
       const colon = node.typeAnnotation!.loc.start.column;
       const typeStart = node.typeAnnotation!.typeAnnotation.loc.start.column;
-      const difference = typeStart - colon - 1 - nAfterColon;
+      const difference = typeStart - colon - 1 - expectedWhitespaceAfterColon;
       if (mode === 'strict' ? difference : difference < 0) {
         context.report({
           node,
@@ -219,7 +219,7 @@ export default util.createRule<Options, MessageIds>({
             ? options.multiLine.align.beforeColon
             : options.multiLine.beforeColon
           : options.beforeColon) ?? false;
-      const nBeforeColon = beforeColon ? 1 : 0;
+      const expectedWhitespaceBeforeColon = beforeColon ? 1 : 0;
       const afterColon =
         (typeof options.align === 'object'
           ? options.align.afterColon
@@ -228,7 +228,7 @@ export default util.createRule<Options, MessageIds>({
             ? options.multiLine.align.afterColon
             : options.multiLine.afterColon
           : options.afterColon) ?? true;
-      const nAfterColon = afterColon ? 1 : 0;
+      const expectedWhitespaceAfterColon = afterColon ? 1 : 0;
       const mode =
         (typeof options.align === 'object'
           ? options.align.mode
@@ -244,11 +244,11 @@ export default util.createRule<Options, MessageIds>({
           alignColumn = Math.max(
             alignColumn,
             align === 'colon'
-              ? getKeyLocEnd(node).column + nBeforeColon
+              ? getKeyLocEnd(node).column + expectedWhitespaceBeforeColon
               : getKeyLocEnd(node).column +
                   ':'.length +
-                  nAfterColon +
-                  nBeforeColon,
+                  expectedWhitespaceAfterColon +
+                  expectedWhitespaceBeforeColon,
           );
         }
       }
@@ -292,9 +292,9 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (align === 'colon') {
-          checkAfterColon(node, nAfterColon, mode);
+          checkAfterColon(node, expectedWhitespaceAfterColon, mode);
         } else {
-          checkBeforeColon(node, nBeforeColon, mode);
+          checkBeforeColon(node, expectedWhitespaceBeforeColon, mode);
         }
       }
     }
@@ -311,7 +311,7 @@ export default util.createRule<Options, MessageIds>({
           : options.multiLine
           ? options.multiLine.beforeColon
           : options.beforeColon) ?? false;
-      const nBeforeColon = beforeColon ? 1 : 0;
+      const expectedWhitespaceBeforeColon = beforeColon ? 1 : 0;
       const afterColon =
         (singleLine
           ? options.singleLine
@@ -320,7 +320,7 @@ export default util.createRule<Options, MessageIds>({
           : options.multiLine
           ? options.multiLine.afterColon
           : options.afterColon) ?? true;
-      const nAfterColon = afterColon ? 1 : 0;
+      const expectedWhitespaceAfterColon = afterColon ? 1 : 0;
       const mode =
         (singleLine
           ? options.singleLine
@@ -331,8 +331,8 @@ export default util.createRule<Options, MessageIds>({
           : options.mode) ?? 'strict';
 
       if (isKeyTypeNode(node)) {
-        checkBeforeColon(node, nBeforeColon, mode);
-        checkAfterColon(node, nAfterColon, mode);
+        checkBeforeColon(node, expectedWhitespaceBeforeColon, mode);
+        checkAfterColon(node, expectedWhitespaceAfterColon, mode);
       }
     }
 
@@ -364,8 +364,10 @@ export default util.createRule<Options, MessageIds>({
           if (prevAlignedNode && continuesAlignGroup(prevAlignedNode, node)) {
             currentAlignGroup.push(node);
           } else if (prevNode?.loc.start.line === node.loc.start.line) {
-            if (prevAlignedNode /* prevNode === prevAlignedNode */) {
-              unalignedElements.push(currentAlignGroup.pop()!);
+            if (prevAlignedNode) {
+              // Here, prevNode === prevAlignedNode === currentAlignGroup.at(-1)
+              unalignedElements.push(prevAlignedNode);
+              currentAlignGroup.pop();
             }
             unalignedElements.push(node);
           } else {
@@ -377,9 +379,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         unalignedElements = unalignedElements.concat(
-          alignGroups
-            .filter(group => group.length === 1)
-            .flatMap(group => group),
+          ...alignGroups.filter(group => group.length === 1),
         );
         alignGroups = alignGroups.filter(group => group.length >= 2);
       } else {
