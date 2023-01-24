@@ -23,6 +23,15 @@ interface X {
     },
     {
       code: `
+interface X {
+  "a:b": number;
+  abcde: string
+};
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
 let x: {
   a:   number;
   abc: string
@@ -346,6 +355,22 @@ interface X {
 interface X {
   a:   number;
   abc: string
+};
+      `,
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code: `
+interface X {
+  a: number;
+  "a:c": string
+};
+      `,
+      output: `
+interface X {
+  a:     number;
+  "a:c": string
 };
       `,
       options: [{ align: 'value' }],
