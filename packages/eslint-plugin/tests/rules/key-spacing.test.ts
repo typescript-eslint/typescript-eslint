@@ -215,6 +215,24 @@ type X = {
     },
     {
       code: `
+type X = {
+  a :  number;
+  abc: string
+};
+      `,
+      options: [
+        {
+          align: {
+            on: 'value',
+            mode: 'minimum',
+            beforeColon: false,
+            afterColon: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
 interface X {
   a:    number;
   prop: {
@@ -380,6 +398,56 @@ interface X {
             align: {
               on: 'colon',
               mode: 'strict',
+              afterColon: true,
+              beforeColon: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a  : number;
+  abc: string
+
+  xadzd : number;
+};
+      `,
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: {
+            beforeColon: true,
+            afterColon: true,
+            mode: 'strict',
+            align: {
+              on: 'colon',
+              afterColon: true,
+              beforeColon: false,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a  :    number;
+  abc: string
+
+  xadzd :    number;
+};
+      `,
+      options: [
+        {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: {
+            beforeColon: true,
+            afterColon: true,
+            mode: 'minimum',
+            align: {
+              on: 'colon',
               afterColon: true,
               beforeColon: false,
             },
