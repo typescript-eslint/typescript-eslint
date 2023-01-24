@@ -41,6 +41,20 @@ let x: {
     },
     {
       code: `
+let x: {
+  a:   number;
+  "𐌘": string;
+  [𐌘]: Date;
+  "🌷": "bar", // 2 code points
+  "🎁": "baz", // 2 code points
+  "🇮🇳": "qux", // 4 code points
+  "🏳️‍🌈": "xyz", // 6 code points
+};
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
 interface X {
   a: number;
   abc: string; c: number;
@@ -387,6 +401,32 @@ let x: {
 let x: {
   a:   number;
   abc: string
+};
+      `,
+      options: [{ align: 'value' }],
+      errors: [{ messageId: 'missingValue' }],
+    },
+    {
+      code: `
+let x: {
+  a: number;
+  "🌷": "bar", // 2 code points
+  "🎁": "baz", // 2 code points
+  "🇮🇳": "qux", // 4 code points
+  "🏳️‍🌈": "xyz", // 6 code points
+  [𐌘]: string
+  "𐌘": string
+};
+      `,
+      output: `
+let x: {
+  a:   number;
+  "🌷": "bar", // 2 code points
+  "🎁": "baz", // 2 code points
+  "🇮🇳": "qux", // 4 code points
+  "🏳️‍🌈": "xyz", // 6 code points
+  [𐌘]: string
+  "𐌘": string
 };
       `,
       options: [{ align: 'value' }],

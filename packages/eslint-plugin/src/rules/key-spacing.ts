@@ -1,8 +1,23 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import GraphemeSplitter from 'grapheme-splitter';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
+
+let splitter: GraphemeSplitter;
+function isASCII(value: string): boolean {
+  return /^[\u0020-\u007f]*$/u.test(value);
+}
+function getStringLength(value: string): number {
+  if (isASCII(value)) {
+    return value.length;
+  }
+
+  splitter ??= new GraphemeSplitter();
+
+  return splitter.countGraphemes(value);
+}
 
 const baseRule = getESLintCoreRule('key-spacing');
 
@@ -34,6 +49,14 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
     const baseRules = baseRule.create(context);
+
+    /**
+     * @returns the column of the position after converting all unicode characters in the line to 1 char length
+     */
+    function adjustedColumn(position: TSESTree.Position): number {
+      const line = position.line - 1; // position.line is 1-indexed
+      return getStringLength(sourceCode.lines[line].slice(0, position.column));
+    }
 
     /**
      * Starting from the given a node (a property.key node here) looks forward
@@ -241,11 +264,12 @@ export default util.createRule<Options, MessageIds>({
 
       for (const node of group) {
         if (isKeyTypeNode(node)) {
+          const keyEnd = adjustedColumn(getKeyLocEnd(node));
           alignColumn = Math.max(
             alignColumn,
             align === 'colon'
-              ? getKeyLocEnd(node).column + expectedWhitespaceBeforeColon
-              : getKeyLocEnd(node).column +
+              ? keyEnd + expectedWhitespaceBeforeColon
+              : keyEnd +
                   ':'.length +
                   expectedWhitespaceAfterColon +
                   expectedWhitespaceBeforeColon,
@@ -261,7 +285,7 @@ export default util.createRule<Options, MessageIds>({
           align === 'colon'
             ? node.typeAnnotation!
             : node.typeAnnotation!.typeAnnotation;
-        const difference = toCheck.loc.start.column - alignColumn;
+        const difference = adjustedColumn(toCheck.loc.start) - alignColumn;
 
         if (difference) {
           context.report({
