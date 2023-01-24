@@ -1933,6 +1933,22 @@ abstract class Foo {
         },
       ],
     },
+    {
+      code: `
+interface Foo {
+  readonly A: string;
+  readonly B: string;
+
+  C: string;
+  D: string;
+}
+      `,
+      options: [
+        {
+          default: ['readonly-field', 'field'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -4810,6 +4826,94 @@ abstract class Foo {
             rank: 'field',
           },
           line: 13,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly DA: string;
+  @Dec protected readonly DB: string;
+  @Dec private readonly DC: string;
+
+  public static readonly SA: string;
+  protected static readonly SB: string;
+  private static readonly SC: string;
+  static readonly #SD: string;
+
+  public readonly IA: string;
+  protected readonly IB: string;
+  private readonly IC: string;
+  readonly #ID: string;
+
+  public abstract readonly AA: string;
+  protected abstract readonly AB: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'decorated-readonly-field',
+            'abstract-readonly-field',
+            'static-readonly-field',
+            'instance-readonly-field',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'AA',
+            rank: 'static readonly field',
+          },
+          line: 17,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'AB',
+            rank: 'static readonly field',
+          },
+          line: 18,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  readonly A: string;
+  readonly B: string;
+
+  C: string;
+  D: string;
+}
+      `,
+      options: [
+        {
+          default: ['field', 'readonly-field'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'C',
+            rank: 'readonly field',
+          },
+          line: 6,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'D',
+            rank: 'readonly field',
+          },
+          line: 7,
           column: 3,
         },
       ],
