@@ -1,23 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import GraphemeSplitter from 'grapheme-splitter';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
-
-let splitter: GraphemeSplitter;
-function isASCII(value: string): boolean {
-  return /^[\u0020-\u007f]*$/u.test(value);
-}
-function getStringLength(value: string): number {
-  if (isASCII(value)) {
-    return value.length;
-  }
-
-  splitter ??= new GraphemeSplitter();
-
-  return splitter.countGraphemes(value);
-}
 
 const baseRule = getESLintCoreRule('key-spacing');
 
@@ -55,7 +40,9 @@ export default util.createRule<Options, MessageIds>({
      */
     function adjustedColumn(position: TSESTree.Position): number {
       const line = position.line - 1; // position.line is 1-indexed
-      return getStringLength(sourceCode.lines[line].slice(0, position.column));
+      return util.getStringLength(
+        sourceCode.lines[line].slice(0, position.column),
+      );
     }
 
     /**
