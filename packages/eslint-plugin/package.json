@@ -50,6 +50,7 @@
     "debug": "^4.3.4",
     "grapheme-splitter": "^1.0.4",
     "ignore": "^5.2.0",
+    "grapheme-splitter": "^1.0.4",
     "natural-compare-lite": "^1.4.0",
     "regexpp": "^3.2.0",
     "semver": "^7.3.7",

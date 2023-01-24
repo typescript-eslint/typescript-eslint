@@ -1,21 +1,6 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import GraphemeSplitter from 'grapheme-splitter';
 
 import * as util from '../util';
-
-let splitter: GraphemeSplitter;
-function isASCII(value: string): boolean {
-  return /^[\u0020-\u007f]*$/u.test(value);
-}
-function getStringLength(value: string): number {
-  if (isASCII(value)) {
-    return value.length;
-  }
-
-  splitter ??= new GraphemeSplitter();
-
-  return splitter.countGraphemes(value);
-}
 
 type DirectiveConfig =
   | boolean
@@ -163,7 +148,8 @@ export default util.createRule<[Options], MessageIds>({
             } = options;
             const format = descriptionFormats.get(fullDirective);
             if (
-              getStringLength(description.trim()) < minimumDescriptionLength
+              util.getStringLength(description.trim()) <
+              minimumDescriptionLength
             ) {
               context.report({
                 data: { directive, minimumDescriptionLength },
