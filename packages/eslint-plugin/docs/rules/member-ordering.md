@@ -58,7 +58,7 @@ The supported member attributes are, in order:
 
 - **Accessibility** (`'public' | 'protected' | 'private' | '#private'`)
 - **Decoration** (`'decorated'`): Whether the member has an explicit accessibility decorator
-- **Kind** (`'call-signature' | 'constructor' | 'field' | 'readonly-field' | 'get' | 'method' | 'set' | 'signature'`)
+- **Kind** (`'call-signature' | 'constructor' | 'field' | 'readonly-field' | 'get' | 'method' | 'set' | 'signature' | 'readonly-signature'`)
 
 Member attributes may be joined with a `'-'` to combine into more specific groups.
 For example, `'public-field'` would come before `'private-field'`.
@@ -1014,6 +1014,7 @@ The most explicit and granular form is the following:
 [
   // Index signature
   "signature",
+  "readonly-signature",
 
   // Fields
   "public-static-field",
@@ -1319,7 +1320,8 @@ It is possible to group fields by their `readonly` modifiers.
 ```jsonc
 [
   // Index signature
-  // No grouping for index signature.
+  "readonly-signature",
+  "signature",
 
   // Fields
   "readonly-field", // = ["public-static-readonly-field", "protected-static-readonly-field", "private-static-readonly-field", "public-instance-readonly-field", "protected-instance-readonly-field", "private-instance-readonly-field", "public-abstract-readonly-field", "protected-abstract-readonly-field"]

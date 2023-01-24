@@ -1949,6 +1949,64 @@ interface Foo {
         },
       ],
     },
+    {
+      code: `
+interface Foo {
+  readonly [i: string]: string;
+  readonly A: string;
+
+  [i: number]: string;
+  B: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'readonly-signature',
+            'readonly-field',
+            'signature',
+            'field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  readonly [i: string]: string;
+  [i: number]: string;
+
+  readonly A: string;
+  B: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'readonly-signature',
+            'signature',
+            'readonly-field',
+            'field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  readonly A: string;
+  B: string;
+
+  [i: number]: string;
+  readonly [i: string]: string;
+}
+      `,
+      options: [
+        {
+          default: ['readonly-field', 'field', 'signature'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -4912,6 +4970,47 @@ interface Foo {
           data: {
             name: 'D',
             rank: 'readonly field',
+          },
+          line: 7,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  [i: number]: string;
+  readonly [i: string]: string;
+
+  A: string;
+  readonly B: string;
+}
+      `,
+      options: [
+        {
+          default: [
+            'readonly-signature',
+            'signature',
+            'readonly-field',
+            'field',
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'i',
+            rank: 'signature',
+          },
+          line: 4,
+          column: 3,
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'B',
+            rank: 'field',
           },
           line: 7,
           column: 3,

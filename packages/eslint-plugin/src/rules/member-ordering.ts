@@ -9,7 +9,7 @@ export type MessageIds =
   | 'incorrectOrder'
   | 'incorrectRequiredMembersOrder';
 
-type ReadonlyType = 'readonly-field';
+type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
   | 'call-signature'
@@ -22,9 +22,17 @@ type MemberKind =
   | 'signature'
   | 'static-initialization';
 
-type DecoratedMemberKind = ReadonlyType | 'field' | 'method' | 'get' | 'set';
+type DecoratedMemberKind =
+  | Exclude<ReadonlyType, 'readonly-signature'>
+  | 'field'
+  | 'method'
+  | 'get'
+  | 'set';
 
-type NonCallableMemberKind = Exclude<MemberKind, 'constructor' | 'signature'>;
+type NonCallableMemberKind = Exclude<
+  MemberKind,
+  'constructor' | 'signature' | 'readonly-signature'
+>;
 
 type MemberScope = 'static' | 'instance' | 'abstract';
 
@@ -34,7 +42,7 @@ type BaseMemberType =
   | MemberKind
   | `${Accessibility}-${Exclude<
       MemberKind,
-      'signature' | 'static-initialization'
+      'signature' | 'readonly-signature' | 'static-initialization'
     >}`
   | `${Accessibility}-decorated-${DecoratedMemberKind}`
   | `decorated-${DecoratedMemberKind}`
@@ -261,6 +269,7 @@ export const defaultOrder: MemberType[] = [
 const allMemberTypes = Array.from(
   (
     [
+      'readonly-signature',
       'signature',
       'readonly-field',
       'field',
@@ -277,6 +286,7 @@ const allMemberTypes = Array.from(
     (['public', 'protected', 'private', '#private'] as const).forEach(
       accessibility => {
         if (
+          type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'static-initialization' &&
           type !== 'call-signature' &&
@@ -300,6 +310,7 @@ const allMemberTypes = Array.from(
 
         if (
           type !== 'constructor' &&
+          type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'call-signature'
         ) {
@@ -355,7 +366,7 @@ function getNodeType(node: Member): MemberKind | null {
     case AST_NODE_TYPES.TSPropertySignature:
       return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
-      return 'signature';
+      return node.readonly ? 'readonly-signature' : 'signature';
     case AST_NODE_TYPES.StaticBlock:
       return 'static-initialization';
     default:
@@ -536,7 +547,11 @@ function getRank(
       }
     }
 
-    if (type !== 'signature' && type !== 'static-initialization') {
+    if (
+      type !== 'readonly-signature' &&
+      type !== 'signature' &&
+      type !== 'static-initialization'
+    ) {
       if (type !== 'constructor') {
         // Constructors have no scope
         memberGroups.push(`${accessibility}-${scope}-${type}`);
@@ -556,7 +571,9 @@ function getRank(
   }
 
   memberGroups.push(type);
-  if (type === 'readonly-field') {
+  if (type === 'readonly-signature') {
+    memberGroups.push('signature');
+  } else if (type === 'readonly-field') {
     memberGroups.push('field');
   }
 
@@ -646,6 +663,7 @@ export default util.createRule<Options, MessageIds>({
             oneOf: [
               neverConfig,
               arrayConfig([
+                'readonly-signature',
                 'signature',
                 'readonly-field',
                 'field',
@@ -653,6 +671,7 @@ export default util.createRule<Options, MessageIds>({
                 'constructor',
               ]),
               objectConfig([
+                'readonly-signature',
                 'signature',
                 'readonly-field',
                 'field',
@@ -665,6 +684,7 @@ export default util.createRule<Options, MessageIds>({
             oneOf: [
               neverConfig,
               arrayConfig([
+                'readonly-signature',
                 'signature',
                 'readonly-field',
                 'field',
@@ -672,6 +692,7 @@ export default util.createRule<Options, MessageIds>({
                 'constructor',
               ]),
               objectConfig([
+                'readonly-signature',
                 'signature',
                 'readonly-field',
                 'field',
