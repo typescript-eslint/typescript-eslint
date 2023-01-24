@@ -871,5 +871,121 @@ interface X { a: number; abc: string; };
       ],
       errors: [{ messageId: 'extraKey' }, { messageId: 'extraKey' }],
     },
+    {
+      code: `
+type Wacky = {
+    a: number;
+    b: string;
+    agc: number;
+    middle: Date | {
+        inner: {
+            a: boolean;
+            bc: boolean;
+            "🌷": "rose";
+        }
+        [x: number]: string;
+        abc: boolean;
+    }
+} & {
+    a: "string";
+    abc: number;
+}
+      `,
+      output: `
+type Wacky = {
+    a:      number;
+    b:      string;
+    agc:    number;
+    middle: Date | {
+        inner: {
+            a:   boolean;
+            bc:  boolean;
+            "🌷": "rose";
+        }
+        [x: number]: string;
+        abc:         boolean;
+    }
+} & {
+    a:   "string";
+    abc: number;
+}
+      `,
+      options: [{ align: 'value' }],
+      errors: [
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+      ],
+    },
+    {
+      code: `
+class Wacky {
+    a: number;
+    b?: string;
+    public z: number;
+    abc = 10;
+    private override xy: number;
+    static x = "test";
+    static abcdef: number = 1;
+    get fn(): number { return 0; };
+    inter: number;
+    get fn2(): number {
+      return 1;
+    };
+    agc: number;
+    middle: Date | {
+        inner: {
+            a: boolean;
+            bc: boolean;
+            "🌷": "rose";
+        }
+        [x: number]: string;
+        abc: boolean;
+    }
+}
+      `,
+      output: `
+class Wacky {
+    a:                   number;
+    b?:                  string;
+    public z:            number;
+    abc = 10;
+    private override xy: number;
+    static x = "test";
+    static abcdef:       number = 1;
+    get fn(): number { return 0; };
+    inter:               number;
+    get fn2(): number {
+      return 1;
+    };
+    agc:    number;
+    middle: Date | {
+        inner: {
+            a:   boolean;
+            bc:  boolean;
+            "🌷": "rose";
+        }
+        [x: number]: string;
+        abc:         boolean;
+    }
+}
+      `,
+      options: [{ align: 'value' }],
+      errors: [
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+        { messageId: 'missingValue' },
+      ],
+    },
   ],
 });
