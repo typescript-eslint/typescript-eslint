@@ -334,8 +334,6 @@ const functionExpressions = [
  * @param node the node to be evaluated.
  */
 function getNodeType(node: Member): MemberKind | null {
-  const readonly = 'readonly' in node && node.readonly === true;
-
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
@@ -347,15 +345,15 @@ function getNodeType(node: Member): MemberKind | null {
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
-      return readonly ? 'readonly-field' : 'field';
+      return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
-        : readonly
+        : node.readonly
         ? 'readonly-field'
         : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
-      return readonly ? 'readonly-field' : 'field';
+      return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
       return 'signature';
     case AST_NODE_TYPES.StaticBlock:
