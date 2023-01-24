@@ -92,7 +92,7 @@ export default util.createRule<Options, MessageIds>({
      * To handle index signatures, to get the whole text for the parameters
      */
     function getKeyText(node: KeyTypeNode): string {
-      if ('key' in node) {
+      if (node.type !== AST_NODE_TYPES.TSIndexSignature) {
         return sourceCode.getText(node.key);
       }
 
@@ -111,7 +111,9 @@ export default util.createRule<Options, MessageIds>({
      */
     function getKeyLocEnd(node: KeyTypeNode): TSESTree.Position {
       return getLastTokenBeforeColon(
-        'key' in node ? node.key : node.parameters.at(-1)!,
+        node.type !== AST_NODE_TYPES.TSIndexSignature
+          ? node.key
+          : node.parameters.at(-1)!,
       ).loc.end;
     }
 
@@ -120,7 +122,9 @@ export default util.createRule<Options, MessageIds>({
       expectedWhitespaceBeforeColon: number,
       mode: 'strict' | 'minimum',
     ): void {
-      const colon = node.typeAnnotation!.loc.start.column;
+      // KeyTypeNode always has type annotation
+      const typeAnnotation = node.typeAnnotation!;
+      const colon = typeAnnotation.loc.start.column;
       const keyEnd = getKeyLocEnd(node);
       const difference = colon - keyEnd.column - expectedWhitespaceBeforeColon;
       if (mode === 'strict' ? difference : difference < 0) {
@@ -130,12 +134,12 @@ export default util.createRule<Options, MessageIds>({
           fix: fixer => {
             if (difference > 0) {
               return fixer.removeRange([
-                node.typeAnnotation!.range[0] - difference,
-                node.typeAnnotation!.range[0],
+                typeAnnotation.range[0] - difference,
+                typeAnnotation.range[0],
               ]);
             } else {
               return fixer.insertTextBefore(
-                node.typeAnnotation!,
+                typeAnnotation,
                 ' '.repeat(-difference),
               );
             }
@@ -153,8 +157,10 @@ export default util.createRule<Options, MessageIds>({
       expectedWhitespaceAfterColon: number,
       mode: 'strict' | 'minimum',
     ): void {
-      const colon = node.typeAnnotation!.loc.start.column;
-      const typeStart = node.typeAnnotation!.typeAnnotation.loc.start.column;
+      // KeyTypeNode always has type annotation
+      const typeAnnotation = node.typeAnnotation!;
+      const colon = typeAnnotation.loc.start.column;
+      const typeStart = typeAnnotation.typeAnnotation.loc.start.column;
       const difference = typeStart - colon - 1 - expectedWhitespaceAfterColon;
       if (mode === 'strict' ? difference : difference < 0) {
         context.report({
@@ -163,12 +169,12 @@ export default util.createRule<Options, MessageIds>({
           fix: fixer => {
             if (difference > 0) {
               return fixer.removeRange([
-                node.typeAnnotation!.typeAnnotation.range[0] - difference,
-                node.typeAnnotation!.typeAnnotation.range[0],
+                typeAnnotation.typeAnnotation.range[0] - difference,
+                typeAnnotation.typeAnnotation.range[0],
               ]);
             } else {
               return fixer.insertTextBefore(
-                node.typeAnnotation!.typeAnnotation,
+                typeAnnotation.typeAnnotation,
                 ' '.repeat(-difference),
               );
             }
@@ -281,10 +287,10 @@ export default util.createRule<Options, MessageIds>({
         if (!isKeyTypeNode(node)) {
           continue;
         }
+        // KeyTypeNode always has type annotation
+        const typeAnnotation = node.typeAnnotation!;
         const toCheck =
-          align === 'colon'
-            ? node.typeAnnotation!
-            : node.typeAnnotation!.typeAnnotation;
+          align === 'colon' ? typeAnnotation : typeAnnotation.typeAnnotation;
         const difference = adjustedColumn(toCheck.loc.start) - alignColumn;
 
         if (difference) {
@@ -368,7 +374,8 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const isSingleLine = body.loc.start.line === body.loc.end.line;
 
-      const members = 'members' in body ? body.members : body.body;
+      const members =
+        body.type === AST_NODE_TYPES.TSTypeLiteral ? body.members : body.body;
 
       let alignGroups: TSESTree.Node[][] = [];
       let unalignedElements: TSESTree.Node[] = [];
