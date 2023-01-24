@@ -341,6 +341,21 @@ interface X {
     {
       code: `
 interface X {
+  a   : number;
+  abc : string
+};
+      `,
+      options: [
+        {
+          align: { beforeColon: true, afterColon: true }, // defaults to 'colon'
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: { beforeColon: false, afterColon: false },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
   a :   number;
   abc : string
 };
@@ -384,10 +399,51 @@ interface X {
       `,
       options: [
         {
+          singleLine: { beforeColon: false, afterColon: false },
+          multiLine: {
+            beforeColon: true,
+            afterColon: true,
+            align: {
+              mode: 'strict',
+              afterColon: true,
+              beforeColon: true,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a   : number;
+  abc : string
+};
+      `,
+      options: [
+        {
           beforeColon: true,
           afterColon: true,
           align: {
             on: 'colon',
+            mode: 'strict',
+            afterColon: true,
+            beforeColon: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a   : number;
+  abc : string
+};
+      `,
+      options: [
+        {
+          beforeColon: true,
+          afterColon: true,
+          align: {
             mode: 'strict',
             afterColon: true,
             beforeColon: true,

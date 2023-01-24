@@ -154,7 +154,7 @@ declare module 'eslint/lib/rules/key-spacing' {
         | 'value'
         | 'colon'
         | {
-            on: 'value' | 'colon';
+            on?: 'value' | 'colon';
             beforeColon?: boolean;
             afterColon?: boolean;
             mode?: 'strict' | 'minimum';
@@ -172,7 +172,7 @@ declare module 'eslint/lib/rules/key-spacing' {
           | 'value'
           | 'colon'
           | {
-              on: 'value' | 'colon';
+              on?: 'value' | 'colon';
               beforeColon?: boolean;
               afterColon?: boolean;
               mode?: 'strict' | 'minimum';
