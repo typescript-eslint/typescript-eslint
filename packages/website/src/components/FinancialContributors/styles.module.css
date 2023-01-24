@@ -2,6 +2,7 @@
   display: inline-flex;
   flex-direction: column;
   gap: 8px;
+  height: 100%;
 }
 
 .linksArea {
@@ -14,6 +15,17 @@
 
 .become {
   font-size: 1.25rem;
+  padding: 0.75rem 1.75rem;
+}
+
+.linksMore {
+  display: flex;
+  gap: 0.5rem;
+}
+
+[data-theme='dark'] .linksArea a {
+  --ifm-font-color-base: var(--ifm-color-white);
+  --ifm-button-color: var(--ifm-color-white);
 }
 
 @media screen and (min-width: 1150px) {

@@ -4,16 +4,22 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+permissions: {}
+
 jobs:
   lock:
+    permissions:
+      issues: write # to lock issues (dessant/lock-threads)
+      pull-requests: write # to lock PRs (dessant/lock-threads)
+
     runs-on: ubuntu-latest
     steps:
-      - uses: dessant/lock-threads@v3
+      - uses: dessant/lock-threads@v4
         with:
           github-token: ${{ github.token }}
-          issue-inactive-days: '30'
+          issue-inactive-days: '7'
           issue-lock-reason: 'resolved'
           issue-comment: ''
-          pr-inactive-days: '30'
+          pr-inactive-days: '7'
           pr-lock-reason: 'resolved'
           pr-comment: ''

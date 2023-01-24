@@ -1,0 +1,52 @@
+name: Semantic PR Titles
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # keep this synchronized with /docs/contributing/Pull_Requests.mdx
+          types: |
+            docs
+            feat
+            fix
+            test
+            chore
+          # deps is used by renovate for its PRs
+          scopes: |
+            deps
+            ast-spec
+            eslint-plugin
+            eslint-plugin-internal
+            eslint-plugin-tslint
+            experimental-utils
+            parser
+            scope-manager
+            type-utils
+            types
+            typescript-estree
+            utils
+            visitor-keys
+            website
+          # we allow "cross package" PRs with no scope
+          requireScope: false
+          # ensure that the subject is lower-case first
+          # also allows "[rule-name] " / "[rule-name, rule-name] " prefix for eslint-plugin rule PRs
+          # https://regexr.com/73m7b
+          subjectPattern: ^(\[[a-z\-]+(, [a-z\-]+)*\] )?[a-z].+[^\.]$
+          subjectPatternError: |
+            The "subject" must start with a lower-case letter and must not
+            end with a full-stop.
+            For PRs that add or change ESLint-plugin rules, you should begin
+            the title with "[rule-name] "

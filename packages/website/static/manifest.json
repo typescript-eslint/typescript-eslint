@@ -1,0 +1,24 @@
+{
+  "background_color": "#443FD4",
+  "description": "Documentation for typescript-eslint: the tooling that enables ESLint to support TypeScript.",
+  "display": "standalone",
+  "icons": [
+    {
+      "sizes": "300x300",
+      "src": "/img/logo_maskable.png",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "sizes": "any",
+      "src": "/img/logo.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "id": "/?source=pwa",
+  "name": "typescript-eslint",
+  "scope": "/",
+  "short_name": "typescript-eslint",
+  "start_url": "/?source=pwa",
+  "theme_color": "#443FD4"
+}

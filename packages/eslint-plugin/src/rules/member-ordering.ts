@@ -1,9 +1,13 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import naturalCompare from 'natural-compare-lite';
 
 import * as util from '../util';
 
-export type MessageIds = 'incorrectGroupOrder' | 'incorrectOrder';
+export type MessageIds =
+  | 'incorrectGroupOrder'
+  | 'incorrectOrder'
+  | 'incorrectRequiredMembersOrder';
 
 type MemberKind =
   | 'call-signature'
@@ -21,31 +25,39 @@ type NonCallableMemberKind = Exclude<MemberKind, 'constructor' | 'signature'>;
 
 type MemberScope = 'static' | 'instance' | 'abstract';
 
+type Accessibility = TSESTree.Accessibility | '#private';
+
 type BaseMemberType =
   | MemberKind
-  | `${TSESTree.Accessibility}-${Exclude<
+  | `${Accessibility}-${Exclude<
       MemberKind,
       'signature' | 'static-initialization'
     >}`
-  | `${TSESTree.Accessibility}-decorated-${DecoratedMemberKind}`
+  | `${Accessibility}-decorated-${DecoratedMemberKind}`
   | `decorated-${DecoratedMemberKind}`
-  | `${TSESTree.Accessibility}-${MemberScope}-${NonCallableMemberKind}`
+  | `${Accessibility}-${MemberScope}-${NonCallableMemberKind}`
   | `${MemberScope}-${NonCallableMemberKind}`;
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
-type Order =
+type AlphabeticalOrder =
   | 'alphabetically'
   | 'alphabetically-case-insensitive'
-  | 'as-written';
+  | 'natural'
+  | 'natural-case-insensitive';
+
+type Order = AlphabeticalOrder | 'as-written';
 
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
+  optionalityOrder?: OptionalityOrder;
   order: Order;
 }
 
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 type Member = TSESTree.ClassElement | TSESTree.TypeElement;
+
+type OptionalityOrder = 'optional-first' | 'required-first';
 
 export type Options = [
   {
@@ -87,7 +99,17 @@ const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
     },
     order: {
       type: 'string',
-      enum: ['alphabetically', 'alphabetically-case-insensitive', 'as-written'],
+      enum: [
+        'alphabetically',
+        'alphabetically-case-insensitive',
+        'as-written',
+        'natural',
+        'natural-case-insensitive',
+      ],
+    },
+    optionalityOrder: {
+      type: 'string',
+      enum: ['optional-first', 'required-first'],
     },
   },
   additionalProperties: false,
@@ -102,6 +124,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-field',
   'protected-static-field',
   'private-static-field',
+  '#private-static-field',
 
   'public-decorated-field',
   'protected-decorated-field',
@@ -110,14 +133,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-field',
   'protected-instance-field',
   'private-instance-field',
+  '#private-instance-field',
 
   'public-abstract-field',
   'protected-abstract-field',
-  'private-abstract-field',
 
   'public-field',
   'protected-field',
   'private-field',
+  '#private-field',
 
   'static-field',
   'instance-field',
@@ -141,6 +165,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-get',
   'protected-static-get',
   'private-static-get',
+  '#private-static-get',
 
   'public-decorated-get',
   'protected-decorated-get',
@@ -149,14 +174,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-get',
   'protected-instance-get',
   'private-instance-get',
+  '#private-instance-get',
 
   'public-abstract-get',
   'protected-abstract-get',
-  'private-abstract-get',
 
   'public-get',
   'protected-get',
   'private-get',
+  '#private-get',
 
   'static-get',
   'instance-get',
@@ -170,6 +196,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-set',
   'protected-static-set',
   'private-static-set',
+  '#private-static-set',
 
   'public-decorated-set',
   'protected-decorated-set',
@@ -178,14 +205,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-set',
   'protected-instance-set',
   'private-instance-set',
+  '#private-instance-set',
 
   'public-abstract-set',
   'protected-abstract-set',
-  'private-abstract-set',
 
   'public-set',
   'protected-set',
   'private-set',
+  '#private-set',
 
   'static-set',
   'instance-set',
@@ -199,6 +227,7 @@ export const defaultOrder: MemberType[] = [
   'public-static-method',
   'protected-static-method',
   'private-static-method',
+  '#private-static-method',
 
   'public-decorated-method',
   'protected-decorated-method',
@@ -207,14 +236,15 @@ export const defaultOrder: MemberType[] = [
   'public-instance-method',
   'protected-instance-method',
   'private-instance-method',
+  '#private-instance-method',
 
   'public-abstract-method',
   'protected-abstract-method',
-  'private-abstract-method',
 
   'public-method',
   'protected-method',
   'private-method',
+  '#private-method',
 
   'static-method',
   'instance-method',
@@ -240,30 +270,49 @@ const allMemberTypes = Array.from(
   ).reduce<Set<MemberType>>((all, type) => {
     all.add(type);
 
-    (['public', 'protected', 'private'] as const).forEach(accessibility => {
-      if (type !== 'signature' && type !== 'static-initialization') {
-        all.add(`${accessibility}-${type}`); // e.g. `public-field`
-      }
+    (['public', 'protected', 'private', '#private'] as const).forEach(
+      accessibility => {
+        if (
+          type !== 'signature' &&
+          type !== 'static-initialization' &&
+          type !== 'call-signature' &&
+          !(type === 'constructor' && accessibility === '#private')
+        ) {
+          all.add(`${accessibility}-${type}`); // e.g. `public-field`
+        }
 
-      // Only class instance fields, methods, get and set can have decorators attached to them
-      if (
-        type === 'field' ||
-        type === 'method' ||
-        type === 'get' ||
-        type === 'set'
-      ) {
-        all.add(`${accessibility}-decorated-${type}`);
-        all.add(`decorated-${type}`);
-      }
+        // Only class instance fields, methods, get and set can have decorators attached to them
+        if (
+          accessibility !== '#private' &&
+          (type === 'field' ||
+            type === 'method' ||
+            type === 'get' ||
+            type === 'set')
+        ) {
+          all.add(`${accessibility}-decorated-${type}`);
+          all.add(`decorated-${type}`);
+        }
 
-      if (type !== 'constructor' && type !== 'signature') {
-        // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-        (['static', 'instance', 'abstract'] as const).forEach(scope => {
-          all.add(`${scope}-${type}`);
-          all.add(`${accessibility}-${scope}-${type}`);
-        });
-      }
-    });
+        if (
+          type !== 'constructor' &&
+          type !== 'signature' &&
+          type !== 'call-signature'
+        ) {
+          // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+          if (accessibility === '#private' || accessibility === 'private') {
+            (['static', 'instance'] as const).forEach(scope => {
+              all.add(`${scope}-${type}`);
+              all.add(`${accessibility}-${scope}-${type}`);
+            });
+          } else {
+            (['static', 'instance', 'abstract'] as const).forEach(scope => {
+              all.add(`${scope}-${type}`);
+              all.add(`${accessibility}-${scope}-${type}`);
+            });
+          }
+        }
+      },
+    );
 
     return all;
   }, new Set<MemberType>()),
@@ -367,6 +416,26 @@ function getMemberName(
 }
 
 /**
+ * Returns true if the member is optional based on the member type.
+ *
+ * @param node the node to be evaluated.
+ *
+ * @returns Whether the member is optional, or false if it cannot be optional at all.
+ */
+function isMemberOptional(node: Member): boolean {
+  switch (node.type) {
+    case AST_NODE_TYPES.TSPropertySignature:
+    case AST_NODE_TYPES.TSMethodSignature:
+    case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.PropertyDefinition:
+    case AST_NODE_TYPES.TSAbstractMethodDefinition:
+    case AST_NODE_TYPES.MethodDefinition:
+      return !!node.optional;
+  }
+  return false;
+}
+
+/**
  * Gets the calculated rank using the provided method definition.
  * The algorithm is as follows:
  * - Get the rank based on the accessibility-scope-type name, e.g. public-instance-field
@@ -397,6 +466,16 @@ function getRankOrder(
   return rank;
 }
 
+function getAccessibility(node: Member): Accessibility {
+  if ('accessibility' in node && node.accessibility) {
+    return node.accessibility;
+  }
+  if ('key' in node && node.key?.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return '#private';
+  }
+  return 'public';
+}
+
 /**
  * Gets the rank of the node given the order.
  * @param node the node to be evaluated.
@@ -425,10 +504,7 @@ function getRank(
       : abstract
       ? 'abstract'
       : 'instance';
-  const accessibility =
-    'accessibility' in node && node.accessibility
-      ? node.accessibility
-      : 'public';
+  const accessibility = getAccessibility(node);
 
   // Collect all existing member groups that apply to this node...
   // (e.g. 'public-instance-field', 'instance-field', 'public-field', 'constructor' etc.)
@@ -515,6 +591,7 @@ export default util.createRule<Options, MessageIds>({
         'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectGroupOrder:
         'Member {{name}} should be declared before all {{rank}} definitions.',
+      incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
     },
     schema: [
       {
@@ -629,7 +706,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function checkAlphaSort(
       members: Member[],
-      caseSensitive: boolean,
+      order: AlphabeticalOrder,
     ): boolean {
       let previousName = '';
       let isCorrectlySorted = true;
@@ -640,11 +717,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Note: Not all members have names
         if (name) {
-          if (
-            caseSensitive
-              ? name < previousName
-              : name.toLowerCase() < previousName.toLowerCase()
-          ) {
+          if (naturalOutOfOrder(name, previousName, order)) {
             context.report({
               node: member,
               messageId: 'incorrectOrder',
@@ -664,6 +737,78 @@ export default util.createRule<Options, MessageIds>({
       return isCorrectlySorted;
     }
 
+    function naturalOutOfOrder(
+      name: string,
+      previousName: string,
+      order: AlphabeticalOrder,
+    ): boolean {
+      switch (order) {
+        case 'alphabetically':
+          return name < previousName;
+        case 'alphabetically-case-insensitive':
+          return name.toLowerCase() < previousName.toLowerCase();
+        case 'natural':
+          return naturalCompare(name, previousName) !== 1;
+        case 'natural-case-insensitive':
+          return (
+            naturalCompare(name.toLowerCase(), previousName.toLowerCase()) !== 1
+          );
+      }
+    }
+
+    /**
+     * Checks if the order of optional and required members is correct based
+     * on the given 'required' parameter.
+     *
+     * @param members Members to be validated.
+     * @param optionalityOrder Where to place optional members, if not intermixed.
+     *
+     * @return True if all required and optional members are correctly sorted.
+     */
+    function checkRequiredOrder(
+      members: Member[],
+      optionalityOrder: OptionalityOrder | undefined,
+    ): boolean {
+      const switchIndex = members.findIndex(
+        (member, i) =>
+          i && isMemberOptional(member) !== isMemberOptional(members[i - 1]),
+      );
+
+      const report = (member: Member): void =>
+        context.report({
+          messageId: 'incorrectRequiredMembersOrder',
+          loc: member.loc,
+          data: {
+            member: getMemberName(member, context.getSourceCode()),
+            optionalOrRequired:
+              optionalityOrder === 'required-first' ? 'required' : 'optional',
+          },
+        });
+
+      // if the optionality of the first item is correct (based on optionalityOrder)
+      // then the first 0 inclusive to switchIndex exclusive members all
+      // have the correct optionality
+      if (
+        isMemberOptional(members[0]) !==
+        (optionalityOrder === 'optional-first')
+      ) {
+        report(members[0]);
+        return false;
+      }
+
+      for (let i = switchIndex + 1; i < members.length; i++) {
+        if (
+          isMemberOptional(members[i]) !==
+          isMemberOptional(members[switchIndex])
+        ) {
+          report(members[switchIndex]);
+          return false;
+        }
+      }
+
+      return true;
+    }
+
     /**
      * Validates if all members are correctly sorted.
      *
@@ -681,36 +826,63 @@ export default util.createRule<Options, MessageIds>({
       }
 
       // Standardize config
-      let order: Order | null = null;
-      let memberTypes;
+      let order: Order | undefined;
+      let memberTypes: string | MemberType[] | undefined;
+      let optionalityOrder: OptionalityOrder | undefined;
+
+      // returns true if everything is good and false if an error was reported
+      const checkOrder = (memberSet: Member[]): boolean => {
+        const hasAlphaSort = !!(order && order !== 'as-written');
+
+        // Check order
+        if (Array.isArray(memberTypes)) {
+          const grouped = checkGroupSort(
+            memberSet,
+            memberTypes,
+            supportsModifiers,
+          );
+
+          if (grouped === null) {
+            return false;
+          }
+
+          if (hasAlphaSort) {
+            return !grouped.some(
+              groupMember =>
+                !checkAlphaSort(groupMember, order as AlphabeticalOrder),
+            );
+          }
+        } else if (hasAlphaSort) {
+          return checkAlphaSort(memberSet, order as AlphabeticalOrder);
+        }
+
+        return true;
+      };
 
       if (Array.isArray(orderConfig)) {
         memberTypes = orderConfig;
       } else {
         order = orderConfig.order;
         memberTypes = orderConfig.memberTypes;
+        optionalityOrder = orderConfig.optionalityOrder;
       }
 
-      const hasAlphaSort = order?.startsWith('alphabetically');
-      const alphaSortIsCaseSensitive =
-        order !== 'alphabetically-case-insensitive';
+      if (!optionalityOrder) {
+        checkOrder(members);
+        return;
+      }
 
-      // Check order
-      if (Array.isArray(memberTypes)) {
-        const grouped = checkGroupSort(members, memberTypes, supportsModifiers);
+      const switchIndex = members.findIndex(
+        (member, i) =>
+          i && isMemberOptional(member) !== isMemberOptional(members[i - 1]),
+      );
 
-        if (grouped === null) {
+      if (switchIndex !== -1) {
+        if (!checkRequiredOrder(members, optionalityOrder)) {
           return;
         }
-
-        if (hasAlphaSort) {
-          grouped.some(
-            groupMember =>
-              !checkAlphaSort(groupMember, alphaSortIsCaseSensitive),
-          );
-        }
-      } else if (hasAlphaSort) {
-        checkAlphaSort(members, alphaSortIsCaseSensitive);
+        checkOrder(members.slice(0, switchIndex));
+        checkOrder(members.slice(switchIndex));
       }
     }
 

@@ -6,8 +6,6 @@ description: 'Disallow non-null assertion in locations that may be confusing.'
 >
 > See **https://typescript-eslint.io/rules/no-confusing-non-null-assertion** for documentation.
 
-## Rule Details
-
 Using a non-null assertion (`!`) next to an assign or equals check (`=` or `==` or `===`) creates code that is confusing as it looks similar to a not equals check (`!=` `!==`).
 
 ```typescript
@@ -15,6 +13,10 @@ a! == b; // a non-null assertions(`!`) and an equals test(`==`)
 a !== b; // not equals test(`!==`)
 a! === b; // a non-null assertions(`!`) and an triple equals test(`===`)
 ```
+
+This rule flags confusing `!` assertions and suggests either removing them or wrapping the asserted expression in `()` parenthesis.
+
+## Examples
 
 <!--tabs-->
 

@@ -52,20 +52,26 @@ export const generatedRuleDocs: Plugin = () => {
     );
 
     // 2. Add a description of the rule at the top of the file
-    root.children.unshift({
-      children: [
-        {
-          children: meta.docs.description
-            .split(/`(.+?)`/)
-            .map((value, index, array) => ({
-              type: index % 2 === 0 ? 'text' : 'inlineCode',
-              value: index === array.length - 1 ? `${value}.` : value,
-            })),
-          type: 'paragraph',
-        },
-      ],
-      type: 'blockquote',
-    } as mdast.Blockquote);
+    root.children.unshift(
+      {
+        children: [
+          {
+            children: meta.docs.description
+              .split(/`(.+?)`/)
+              .map((value, index, array) => ({
+                type: index % 2 === 0 ? 'text' : 'inlineCode',
+                value: index === array.length - 1 ? `${value}.` : value,
+              })),
+            type: 'paragraph',
+          },
+        ],
+        type: 'blockquote',
+      } as mdast.Blockquote,
+      {
+        type: 'jsx',
+        value: `<rule-attributes name="${file.stem}" />`,
+      } as unist.Node,
+    );
 
     // 3. Add a notice about formatting rules being 🤢
     if (meta.type === 'layout') {
@@ -74,7 +80,7 @@ export const generatedRuleDocs: Plugin = () => {
 <admonition type="warning">
   We strongly recommend you do not use this rule or any other formatting linter rules.
   Use a separate dedicated formatter instead.
-  See <a href="/docs/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
+  See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
 </admonition>
 `,
         type: 'jsx',
@@ -82,19 +88,7 @@ export const generatedRuleDocs: Plugin = () => {
       root.children.unshift(warningNode);
     }
 
-    // 4. Add a rule attributes list before the first h2.
-    const attributesH2Index = root.children.findIndex(
-      child => nodeIsHeading(child) && child.depth === 2,
-    );
-
-    // The actual content will be injected on client side.
-    const attributesNode = {
-      type: 'jsx',
-      value: `<rule-attributes name="${file.stem}" />`,
-    };
-    root.children.splice(attributesH2Index, 0, attributesNode);
-
-    // 5. Make sure the appropriate headers exist to place content under
+    // 4. Make sure the appropriate headers exist to place content under
     const [howToUseH2Index, optionsH2Index] = ((): [number, number] => {
       let howToUseH2Index = root.children.findIndex(
         createH2TextFilter('How to Use'),
@@ -162,7 +156,7 @@ export const generatedRuleDocs: Plugin = () => {
       return [howToUseH2Index, optionsH2Index];
     })();
 
-    // 6. Add a description of how to use / options for the rule
+    // 5. Add a description of how to use / options for the rule
     const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
 
     if (meta.docs.extendsBaseRule) {
@@ -204,13 +198,20 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
         value: `module.exports = {
-  // Note: you must disable the base rule as it can report incorrect errors
-  "${extendsBaseRuleName}": "off",
-  "@typescript-eslint/${file.stem}": "${optionLevel}"
+  "rules": {
+    // Note: you must disable the base rule as it can report incorrect errors
+    "${extendsBaseRuleName}": "off",
+    "@typescript-eslint/${file.stem}": "${optionLevel}"
+  }
 };`,
       } as mdast.Code);
     } else {
-      root.children.splice(optionsH2Index, 0, {
+      // For non-extended rules, the code snippet is placed before the first h2
+      // (i.e. at the end of the initial explanation)
+      const firstH2Index = root.children.findIndex(
+        child => nodeIsHeading(child) && child.depth === 2,
+      );
+      root.children.splice(firstH2Index, 0, {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
@@ -297,39 +298,7 @@ export const generatedRuleDocs: Plugin = () => {
       }
     }
 
-    // 7. Add a notice about coming from ESLint core for extension rules
-    if (meta.docs.extendsBaseRule) {
-      root.children.push({
-        children: [
-          {
-            type: 'jsx',
-            value: '<sup>',
-          },
-          {
-            type: 'text',
-            value: 'Taken with ❤️ ',
-          },
-          {
-            type: 'link',
-            title: null,
-            url: `https://github.com/eslint/eslint/blob/main/docs/rules/${meta.docs.extendsBaseRule}.md`,
-            children: [
-              {
-                type: 'text',
-                value: 'from ESLint core',
-              },
-            ],
-          },
-          {
-            type: 'jsx',
-            value: '</sup>',
-          },
-        ],
-        type: 'paragraph',
-      } as mdast.Paragraph);
-    }
-
-    // 8. Also add a link to view the rule's source and test code
+    // 6. Add a link to view the rule's source and test code
     root.children.push(
       {
         children: [
@@ -387,6 +356,42 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'list',
       } as mdast.List,
     );
+
+    // 7. Also add a notice about coming from ESLint core for extension rules
+    if (meta.docs.extendsBaseRule) {
+      root.children.push({
+        children: [
+          {
+            type: 'jsx',
+            value: '<sup>',
+          },
+          {
+            type: 'text',
+            value: 'Taken with ❤️ ',
+          },
+          {
+            type: 'link',
+            title: null,
+            url: `https://github.com/eslint/eslint/blob/main/docs/src/rules/${
+              meta.docs.extendsBaseRule === true
+                ? file.stem
+                : meta.docs.extendsBaseRule
+            }.md`,
+            children: [
+              {
+                type: 'text',
+                value: 'from ESLint core',
+              },
+            ],
+          },
+          {
+            type: 'jsx',
+            value: '</sup>',
+          },
+        ],
+        type: 'paragraph',
+      } as mdast.Paragraph);
+    }
   };
 };
 

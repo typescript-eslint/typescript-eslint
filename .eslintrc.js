@@ -214,7 +214,6 @@ module.exports = {
         'jest/no-alias-methods': 'error',
         'jest/no-identical-title': 'error',
         'jest/no-jasmine-globals': 'error',
-        'jest/no-jest-import': 'error',
         'jest/no-test-prefixes': 'error',
         'jest/no-done-callback': 'error',
         'jest/no-test-return-statement': 'error',
@@ -257,8 +256,23 @@ module.exports = {
         './packages/eslint-plugin/src/rules/**/*.ts',
       ],
       rules: {
+        'eslint-plugin/require-meta-docs-description': [
+          'error',
+          { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },
+        ],
+
         // specifically for rules - default exports makes the tooling easier
         'import/no-default-export': 'off',
+
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector:
+              'ExportDefaultDeclaration Property[key.name="create"] MemberExpression[object.name="context"][property.name="options"]',
+            message:
+              "Retrieve options from create's second parameter so that defaultOptions are applied.",
+          },
+        ],
       },
     },
     // plugin rule tests
@@ -308,7 +322,7 @@ module.exports = {
       rules: {
         // disallow ALL unused vars
         '@typescript-eslint/no-unused-vars': 'error',
-        '@typescript-eslint/sort-type-union-intersection-members': 'error',
+        '@typescript-eslint/sort-type-constituents': 'error',
       },
     },
     {

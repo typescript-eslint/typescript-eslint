@@ -6,81 +6,28 @@ description: 'Require a specific member delimiter style for interfaces and type 
 >
 > See **https://typescript-eslint.io/rules/member-delimiter-style** for documentation.
 
-Enforces a consistent member delimiter style in interfaces and type literals. There are three member delimiter styles primarily used in TypeScript:
-
-- Semicolon style (default, preferred in TypeScript).
+TypeScript allows three delimiters between members in interfaces and type aliases:
 
 <!-- prettier-ignore -->
 ```ts
 interface Foo {
+    // Semicolons (default, preferred in TypeScript):
     name: string;
-    greet(): void;
-}
 
-type Bar = {
-    name: string;
-    greet(): void;
-}
-```
-
-- Comma style (JSON style).
-
-<!-- prettier-ignore -->
-```ts
-interface Foo {
+    // Commas (JSON-like):
     name: string,
-    greet(): void,
-}
 
-type Bar = {
-    name: string,
-    greet(): void,
+    // Line breaks (none):
+    name: string
 }
 ```
 
-- Line break (none) style.
+For code readability, it's generally best to use the same style consistently in your codebase.
 
-<!-- prettier-ignore -->
-```ts
-interface Foo {
-    name: string
-    greet(): void
-}
-
-type Bar = {
-    name: string
-    greet(): void
-}
-```
-
-The rule also enforces the presence (or absence) of the delimiter in the last member of the interface and/or type literal.
-Finally, this rule can enforce separate delimiter syntax for single line declarations.
-
-## Rule Details
-
-This rule aims to standardize the way interface and type literal members are delimited.
+This rule enforces keeping to one configurable code style.
+It can also standardize the presence (or absence) of a delimiter in the last member of a construct, as well as a separate delimiter syntax for single line declarations.
 
 ## Options
-
-```ts
-interface BaseConfig {
-  multiline?: {
-    delimiter?: 'none' | 'semi' | 'comma';
-    requireLast?: boolean;
-  };
-  singleline?: {
-    delimiter?: 'semi' | 'comma';
-    requireLast?: boolean;
-  };
-}
-type Config = BaseConfig & {
-  overrides?: {
-    interface?: BaseConfig;
-    typeLiteral?: BaseConfig;
-  };
-  multilineDetection?: 'brackets' | 'last-member';
-};
-```
 
 Default config:
 

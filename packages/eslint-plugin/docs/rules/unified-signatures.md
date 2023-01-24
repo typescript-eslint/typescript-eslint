@@ -6,11 +6,13 @@ description: 'Disallow two overloads that could be unified into one with a union
 >
 > See **https://typescript-eslint.io/rules/unified-signatures** for documentation.
 
-## Rule Details
+Function overload signatures are a TypeScript way to define a function that can be called in multiple very different ways.
+Overload signatures add syntax and theoretical bloat, so it's generally best to avoid using them when possible.
+Switching to union types and/or optional or rest parameters can often avoid the need for overload signatures.
 
-This rule aims to keep the source code as maintainable as possible by reducing the amount of overloads.
+This rule reports when function overload signatures can be replaced by a single function signature.
 
-Examples of code for this rule with the default options:
+## Examples
 
 <!--tabs-->
 
@@ -36,6 +38,13 @@ function x(x: number | string): void;
 function y(...x: number[]): void;
 ```
 
+```ts
+// This rule won't check overload signatures with different rest parameter types.
+// See https://github.com/microsoft/TypeScript/issues/5077
+function f(...a: number[]): void;
+function f(...a: string[]): void;
+```
+
 ## Options
 
 ### `ignoreDifferentlyNamedParameters`
@@ -51,21 +60,11 @@ function f(a: number): void;
 function f(a: string): void;
 ```
 
-```ts
-function f(...a: number[]): void;
-function f(...b: string[]): void;
-```
-
 ### ✅ Correct
 
 ```ts
 function f(a: number): void;
 function f(b: string): void;
-```
-
-```ts
-function f(...a: number[]): void;
-function f(...a: string[]): void;
 ```
 
 ## Options

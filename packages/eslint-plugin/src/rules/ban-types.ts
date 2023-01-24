@@ -86,14 +86,14 @@ const defaultTypes: Types = {
   Object: {
     message: [
       'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
     ].join('\n'),
   },
   '{}': {
     message: [
       '`{}` actually means "any non-nullish value".',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
     ].join('\n'),

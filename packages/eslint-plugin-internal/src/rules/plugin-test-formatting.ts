@@ -1,5 +1,6 @@
+import { getContextualType } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import { format, resolveConfig } from 'prettier';
 
 import { createRule } from '../util';
@@ -106,8 +107,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: `Enforces that eslint-plugin test snippets are correctly formatted`,
+      description: `Enforce that eslint-plugin test snippets are correctly formatted`,
       recommended: 'error',
+      requiresTypeChecking: true,
     },
     fixable: 'code',
     schema: [
@@ -146,6 +148,11 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ formatWithPrettier }]) {
     const sourceCode = context.getSourceCode();
+    const { program, esTreeNodeToTSNodeMap } =
+      ESLintUtils.getParserServices(context);
+    const checker = program.getTypeChecker();
+
+    const checkedObjects = new Set<TSESTree.ObjectExpression>();
 
     function prettierFormat(
       code: string,
@@ -190,8 +197,11 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function checkExpression(node: TSESTree.Node, isErrorTest: boolean): void {
-      switch (node.type) {
+    function checkExpression(
+      node: TSESTree.Node | null,
+      isErrorTest: boolean,
+    ): void {
+      switch (node?.type) {
         case AST_NODE_TYPES.Literal:
           checkLiteral(node, isErrorTest);
           break;
@@ -448,6 +458,12 @@ export default createRule<Options, MessageIds>({
       test: TSESTree.ObjectExpression,
       isErrorTest = true,
     ): void {
+      if (checkedObjects.has(test)) {
+        return;
+      }
+
+      checkedObjects.add(test);
+
       for (const prop of test.properties) {
         if (
           prop.type !== AST_NODE_TYPES.Property ||
@@ -465,7 +481,7 @@ export default createRule<Options, MessageIds>({
 
     function checkValidTest(tests: TSESTree.ArrayExpression): void {
       for (const test of tests.elements) {
-        switch (test.type) {
+        switch (test?.type) {
           case AST_NODE_TYPES.ObjectExpression:
             // delegate object-style tests to the invalid checker
             checkInvalidTest(test, false);
@@ -478,33 +494,99 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    const invalidTestsSelectorPath = [
-      AST_NODE_TYPES.CallExpression,
-      AST_NODE_TYPES.ObjectExpression,
-      'Property[key.name = "invalid"]',
-      AST_NODE_TYPES.ArrayExpression,
-      AST_NODE_TYPES.ObjectExpression,
-    ];
-
     return {
       // valid
       'CallExpression > ObjectExpression > Property[key.name = "valid"] > ArrayExpression':
         checkValidTest,
       // invalid - errors
-      [invalidTestsSelectorPath.join(' > ')]: checkInvalidTest,
-      // invalid - suggestions
       [[
-        ...invalidTestsSelectorPath,
-        'Property[key.name = "errors"]',
-        AST_NODE_TYPES.ArrayExpression,
+        AST_NODE_TYPES.CallExpression,
         AST_NODE_TYPES.ObjectExpression,
-        'Property[key.name = "suggestions"]',
+        'Property[key.name = "invalid"]',
         AST_NODE_TYPES.ArrayExpression,
         AST_NODE_TYPES.ObjectExpression,
       ].join(' > ')]: checkInvalidTest,
       // special case for our batchedSingleLineTests utility
       'CallExpression[callee.name = "batchedSingleLineTests"] > ObjectExpression':
         checkInvalidTest,
+
+      /**
+       * generic, type-aware handling for any old object
+       * this is a fallback to handle random variables people declare or object
+       * literals that are passed via array maps, etc
+       */
+      ObjectExpression(node): void {
+        if (checkedObjects.has(node)) {
+          return;
+        }
+
+        const type = getContextualType(
+          checker,
+          esTreeNodeToTSNodeMap.get(node),
+        );
+        if (!type) {
+          return;
+        }
+
+        const typeString = checker.typeToString(type);
+        if (/^RunTests\b/.test(typeString)) {
+          checkedObjects.add(node);
+
+          for (const prop of node.properties) {
+            if (
+              prop.type === AST_NODE_TYPES.SpreadElement ||
+              prop.computed ||
+              prop.key.type !== AST_NODE_TYPES.Identifier ||
+              prop.value.type !== AST_NODE_TYPES.ArrayExpression
+            ) {
+              continue;
+            }
+
+            switch (prop.key.name) {
+              case 'valid':
+                checkValidTest(prop.value);
+                break;
+
+              case 'invalid':
+                for (const element of prop.value.elements) {
+                  if (element?.type === AST_NODE_TYPES.ObjectExpression) {
+                    checkInvalidTest(element);
+                  }
+                }
+                break;
+            }
+          }
+          return;
+        }
+
+        if (/^ValidTestCase\b/.test(typeString)) {
+          checkInvalidTest(node);
+          return;
+        }
+
+        if (/^InvalidTestCase\b/.test(typeString)) {
+          checkInvalidTest(node);
+          for (const testProp of node.properties) {
+            if (
+              testProp.type === AST_NODE_TYPES.SpreadElement ||
+              testProp.computed ||
+              testProp.key.type !== AST_NODE_TYPES.Identifier ||
+              testProp.key.name !== 'errors' ||
+              testProp.value.type !== AST_NODE_TYPES.ArrayExpression
+            ) {
+              continue;
+            }
+
+            for (const errorElement of testProp.value.elements) {
+              if (errorElement?.type !== AST_NODE_TYPES.ObjectExpression) {
+                continue;
+              }
+
+              checkInvalidTest(errorElement);
+            }
+          }
+        }
+      },
     };
   },
 });

@@ -13,7 +13,8 @@ type MessageIds =
   | 'invalidVoidNotReturnOrGeneric'
   | 'invalidVoidNotReturn'
   | 'invalidVoidNotReturnOrThisParam'
-  | 'invalidVoidNotReturnOrThisParamOrGeneric';
+  | 'invalidVoidNotReturnOrThisParamOrGeneric'
+  | 'invalidVoidUnionConstituent';
 
 export default util.createRule<[Options], MessageIds>({
   name: 'no-invalid-void-type',
@@ -25,14 +26,16 @@ export default util.createRule<[Options], MessageIds>({
     },
     messages: {
       invalidVoidForGeneric:
-        '{{ generic }} may not have void as a type variable.',
+        '{{ generic }} may not have void as a type argument.',
       invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type variable.',
+        'void is only valid as a return type or generic type argument.',
       invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
         'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
-        'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
+        'void is only valid as a return type or generic type argument or the type of a `this` parameter.',
+      invalidVoidUnionConstituent:
+        'void is not valid as a constituent in a union type',
     },
     schema: [
       {
@@ -128,6 +131,21 @@ export default util.createRule<[Options], MessageIds>({
     }
 
     /**
+     * @brief checks if the generic type parameter defaults to void
+     */
+    function checkDefaultVoid(
+      node: TSESTree.TSVoidKeyword,
+      parentNode: TSESTree.TSTypeParameter,
+    ): void {
+      if (parentNode.default !== node) {
+        context.report({
+          messageId: getNotReturnOrGenericMessageId(node),
+          node,
+        });
+      }
+    }
+
+    /**
      * @brief checks that a union containing void is valid
      * @return true if every member of the union is specified as a valid type in
      * validUnionMembers, or is a valid generic type parametrized by void
@@ -162,6 +180,16 @@ export default util.createRule<[Options], MessageIds>({
           return;
         }
 
+        // allow <T = void> if allowInGenericTypeArguments is specified, and report if the generic type parameter extends void
+        if (
+          allowInGenericTypeArguments &&
+          node.parent.type === AST_NODE_TYPES.TSTypeParameter &&
+          node.parent.default?.type === AST_NODE_TYPES.TSVoidKeyword
+        ) {
+          checkDefaultVoid(node, node.parent);
+          return;
+        }
+
         // union w/ void must contain types from validUnionMembers, or a valid generic void type
         if (
           node.parent.type === AST_NODE_TYPES.TSUnionType &&
@@ -193,7 +221,7 @@ export default util.createRule<[Options], MessageIds>({
             allowInGenericTypeArguments && allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
               : allowInGenericTypeArguments
-              ? 'invalidVoidNotReturnOrGeneric'
+              ? getNotReturnOrGenericMessageId(node)
               : allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParam'
               : 'invalidVoidNotReturn',
@@ -203,3 +231,11 @@ export default util.createRule<[Options], MessageIds>({
     };
   },
 });
+
+function getNotReturnOrGenericMessageId(
+  node: TSESTree.TSVoidKeyword,
+): MessageIds {
+  return node.parent!.type === AST_NODE_TYPES.TSUnionType
+    ? 'invalidVoidUnionConstituent'
+    : 'invalidVoidNotReturnOrGeneric';
+}

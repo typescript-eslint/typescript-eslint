@@ -51,7 +51,7 @@ function OptionsSelectorContent({
       .then(() => {
         setCopyLink(true);
       });
-  }, []);
+  }, [setCopyLink]);
 
   const copyMarkdownToClipboard = useCallback(() => {
     if (isLoading) {
@@ -60,7 +60,7 @@ function OptionsSelectorContent({
     void navigator.clipboard.writeText(createMarkdown(state)).then(() => {
       setCopyMarkdown(true);
     });
-  }, [state, isLoading]);
+  }, [isLoading, state, setCopyMarkdown]);
 
   const openIssue = useCallback(() => {
     if (isLoading) {

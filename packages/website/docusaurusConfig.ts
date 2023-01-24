@@ -1,5 +1,6 @@
 import type { MDXPlugin } from '@docusaurus/mdx-loader';
 import type { Options as PluginContentDocsOptions } from '@docusaurus/plugin-content-docs';
+import type { Options as PluginPwaOptions } from '@docusaurus/plugin-pwa';
 import type { Options as PresetClassicOptions } from '@docusaurus/preset-classic';
 import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-common';
@@ -7,6 +8,7 @@ import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-se
 import type { Config } from '@docusaurus/types';
 import tabsPlugin from 'remark-docusaurus-tabs';
 
+import { version } from './package.json';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
@@ -43,7 +45,7 @@ const presetClassicOptions: PresetClassicOptions = {
 const pluginContentDocsOptions: PluginContentDocsOptions = {
   id: 'base-docs',
   path: '../../docs',
-  routeBasePath: 'docs',
+  routeBasePath: '/',
   sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
   editUrl: `${githubUrl}/edit/main/packages/website/`,
   beforeDefaultRemarkPlugins,
@@ -64,33 +66,33 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   ],
   image: 'img/logo-twitter-card.png',
   navbar: {
-    title: 'TypeScript ESLint',
-    // hideOnScroll: true,
+    title: 'typescript-eslint',
     logo: {
       alt: '',
       height: '32px',
       src: 'img/logo.svg',
       width: '32px',
     },
-    // style: 'primary',
     items: [
       {
-        to: 'docs/',
-        activeBasePath: 'docs',
+        to: 'getting-started/',
         label: 'Getting started',
         position: 'left',
       },
       {
         to: 'rules/',
-        activeBasePath: 'rules',
         label: 'Rules',
         position: 'left',
       },
       {
         to: 'blog/',
-        activeBasePath: 'blog',
         label: 'Blog',
         position: 'left',
+      },
+      {
+        position: 'right',
+        value: `v${version}`,
+        type: 'html',
       },
       {
         to: 'play',
@@ -140,8 +142,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         ],
       },
     ],
-    // style: 'primary',
-    copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
+    copyright: `Copyright © ${new Date().getFullYear()} typescript-eslint, Inc. Built with Docusaurus.`,
   },
   prism: {
     theme: {
@@ -173,9 +174,67 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   },
 };
 
+const pluginPwaOptions: PluginPwaOptions = {
+  debug: true,
+  offlineModeActivationStrategies: [
+    'appInstalled',
+    'queryString',
+    'standalone',
+  ],
+  pwaHead: [
+    {
+      href: '/img/logo.svg',
+      rel: 'icon',
+      tagName: 'link',
+    },
+    {
+      href: '/manifest.json',
+      rel: 'manifest',
+      tagName: 'link',
+    },
+    {
+      content: '#443FD4',
+      name: 'theme-color',
+      tagName: 'meta',
+    },
+    {
+      content: 'yes',
+      name: 'apple-mobile-web-app-capable',
+      tagName: 'meta',
+    },
+    {
+      content: '#443FD4',
+      name: 'apple-mobile-web-app-status-bar-style',
+      tagName: 'meta',
+    },
+    {
+      href: '/img/logo.png',
+      rel: 'apple-touch-icon',
+      tagName: 'link',
+    },
+    {
+      color: '#443FD4',
+      href: '/img/logo.png',
+      rel: 'mask-icon',
+      tagName: 'link',
+    },
+    {
+      content: '/img/logo.png',
+      name: 'msapplication-TileImage',
+      tagName: 'meta',
+    },
+    {
+      content: '#443FD4',
+      name: 'msapplication-TileColor',
+      tagName: 'meta',
+    },
+  ],
+};
+
 const config: Config = {
-  title: 'TypeScript ESLint',
-  tagline: 'Tooling which enables ESLint to support TypeScript',
+  title: 'typescript-eslint',
+  tagline:
+    'The tooling that enables ESLint and Prettier to support TypeScript.',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -191,6 +250,7 @@ const config: Config = {
   plugins: [
     require.resolve('./webpack.plugin'),
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
+    ['@docusaurus/plugin-pwa', pluginPwaOptions],
   ],
   themeConfig,
   // Misleading API name, but these are just <link> tags
@@ -215,6 +275,11 @@ const config: Config = {
     {
       rel: 'manifest',
       href: '/img/favicon/site.webmanifest',
+    },
+    {
+      color: '#2656c7',
+      href: '/img/favicon/safari-pinned-tab.svg',
+      rel: 'mask-icon',
     },
   ],
 };

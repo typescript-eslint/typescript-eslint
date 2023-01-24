@@ -2,7 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
-import { getEnumNames } from '../util';
+import { getEnumNames, typeNodeRequiresParentheses } from '../util';
 
 enum Group {
   conditional = 'conditional',
@@ -60,6 +60,7 @@ function getGroup(node: TSESTree.TypeNode): Group {
     case AST_NODE_TYPES.TSIndexedAccessType:
     case AST_NODE_TYPES.TSInferType:
     case AST_NODE_TYPES.TSTypeReference:
+    case AST_NODE_TYPES.TSQualifiedName:
       return Group.named;
 
     case AST_NODE_TYPES.TSMappedType:
@@ -95,13 +96,6 @@ function getGroup(node: TSESTree.TypeNode): Group {
   }
 }
 
-function requiresParentheses(node: TSESTree.TypeNode): boolean {
-  return (
-    node.type === AST_NODE_TYPES.TSFunctionType ||
-    node.type === AST_NODE_TYPES.TSConstructorType
-  );
-}
-
 export type Options = [
   {
     checkIntersections?: boolean;
@@ -114,6 +108,7 @@ export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 export default util.createRule<Options, MessageIds>({
   name: 'sort-type-union-intersection-members',
   meta: {
+    deprecated: true,
     type: 'suggestion',
     docs: {
       description:
@@ -127,6 +122,7 @@ export default util.createRule<Options, MessageIds>({
       notSortedNamed: '{{type}} type {{name}} members must be sorted.',
       suggestFix: 'Sort members of type (removes all comments).',
     },
+    replacedBy: ['@typescript-eslint/sort-type-constituents'],
     schema: [
       {
         type: 'object',
@@ -225,7 +221,13 @@ export default util.createRule<Options, MessageIds>({
 
           const fix: TSESLint.ReportFixFunction = fixer => {
             const sorted = expectedOrder
-              .map(t => (requiresParentheses(t.node) ? `(${t.text})` : t.text))
+              .map(t =>
+                typeNodeRequiresParentheses(t.node, t.text) ||
+                (node.type === AST_NODE_TYPES.TSIntersectionType &&
+                  t.node.type === AST_NODE_TYPES.TSUnionType)
+                  ? `(${t.text})`
+                  : t.text,
+              )
               .join(
                 node.type === AST_NODE_TYPES.TSIntersectionType ? ' & ' : ' | ',
               );

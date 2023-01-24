@@ -1,39 +1,11 @@
 import type { DebugLevel } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
-import type { CanonicalPath } from './create-program/shared';
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
-type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
-
-export interface Extra {
-  code: string;
-  comment: boolean;
-  comments: TSESTree.Comment[];
-  createDefaultProgram: boolean;
-  debugLevel: Set<DebugModule>;
-  errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
-  errorOnUnknownASTType: boolean;
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
-  extraFileExtensions: string[];
-  filePath: string;
-  jsx: boolean;
-  loc: boolean;
-  singleRun: boolean;
-  log: (message: string) => void;
-  preserveNodeMaps?: boolean;
-  programs: null | Iterable<ts.Program>;
-  projects: CanonicalPath[];
-  range: boolean;
-  strict: boolean;
-  tokens: null | TSESTree.Token[];
-  tsconfigRootDir: string;
-  moduleResolver: string;
-}
-
-////////////////////////////////////////////////////
-// MAKE SURE THIS IS KEPT IN SYNC WITH THE README //
-////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+// MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
+//////////////////////////////////////////////////////////
 
 interface ParseOptions {
   /**
