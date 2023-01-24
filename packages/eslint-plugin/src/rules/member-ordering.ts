@@ -531,7 +531,6 @@ function getRank(
       memberGroups.push(`decorated-${type}`);
 
       if (type === 'readonly-field') {
-        // if its readonly-field, push also its superset type
         memberGroups.push(`${accessibility}-decorated-field`);
         memberGroups.push(`decorated-field`);
       }
@@ -544,7 +543,6 @@ function getRank(
         memberGroups.push(`${scope}-${type}`);
 
         if (type === 'readonly-field') {
-          // if its readonly-field, push also its superset type
           memberGroups.push(`${accessibility}-${scope}-field`);
           memberGroups.push(`${scope}-field`);
         }
@@ -552,7 +550,6 @@ function getRank(
 
       memberGroups.push(`${accessibility}-${type}`);
       if (type === 'readonly-field') {
-        // if its readonly-field, push also its superset type
         memberGroups.push(`${accessibility}-field`);
       }
     }
@@ -560,7 +557,6 @@ function getRank(
 
   memberGroups.push(type);
   if (type === 'readonly-field') {
-    // if its readonly-field, push also its superset type
     memberGroups.push('field');
   }
 
