@@ -12,6 +12,7 @@ interface RuleMap {
   'dot-notation': typeof import('eslint/lib/rules/dot-notation');
   indent: typeof import('eslint/lib/rules/indent');
   'init-declarations': typeof import('eslint/lib/rules/init-declarations');
+  'key-spacing': typeof import('eslint/lib/rules/key-spacing');
   'keyword-spacing': typeof import('eslint/lib/rules/keyword-spacing');
   'lines-between-class-members': typeof import('eslint/lib/rules/lines-between-class-members');
   'no-dupe-args': typeof import('eslint/lib/rules/no-dupe-args');
