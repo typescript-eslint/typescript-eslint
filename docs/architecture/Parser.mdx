@@ -42,7 +42,7 @@ interface ParserOptions {
   lib?: string[];
   moduleResolver?: string;
   program?: import('typescript').Program;
-  project?: string[] | true;
+  project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;

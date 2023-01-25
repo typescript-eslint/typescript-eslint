@@ -12,7 +12,7 @@ const TSCONFIG_MATCH_CACHE = new Map<string, string | undefined>();
  * @remarks Only use this for tests!
  */
 export function clearMatchCacheForTests(): void {
-  tsconfigMatchCache.clear();
+  TSCONFIG_MATCH_CACHE.clear();
 }
 
 /**
@@ -27,9 +27,11 @@ export function clearMatchCacheForTests(): void {
 export function getProjectConfigFiles(
   parseSettings: Pick<ParseSettings, 'filePath' | 'tsconfigRootDir'>,
   project: string | string[] | true | undefined,
-): string | string[] | undefined {
+): string[] | undefined {
   if (project !== true) {
-    return Array.isArray(project) ? project : [project];
+    return project === undefined || Array.isArray(project)
+      ? project
+      : [project];
   }
 
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
@@ -40,12 +42,12 @@ export function getProjectConfigFiles(
     log('Checking tsconfig.json path: %s', directory);
     const tsconfigPath = path.join(directory, 'tsconfig.json');
     const cached =
-      tsconfigMatchCache.get(directory) ??
+      TSCONFIG_MATCH_CACHE.get(directory) ??
       (fs.existsSync(tsconfigPath) && tsconfigPath);
 
     if (cached) {
       for (const directory of checkedDirectories) {
-        tsconfigMatchCache.set(directory, cached);
+        TSCONFIG_MATCH_CACHE.set(directory, cached);
       }
       return [cached];
     }
