@@ -5,7 +5,6 @@ import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
 import braceStyle from './brace-style';
-import callSuperOnOverride from './call-super-on-override';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
@@ -139,7 +138,6 @@ export default {
   'ban-tslint-comment': banTslintComment,
   'ban-types': banTypes,
   'brace-style': braceStyle,
-  'call-super-on-override': callSuperOnOverride,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,
   'comma-spacing': commaSpacing,

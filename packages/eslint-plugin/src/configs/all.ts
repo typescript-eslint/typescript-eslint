@@ -13,7 +13,6 @@ export = {
     '@typescript-eslint/ban-types': 'error',
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
-    '@typescript-eslint/call-super-on-override': 'error',
     '@typescript-eslint/class-literal-property-style': 'error',
     'comma-dangle': 'off',
     '@typescript-eslint/comma-dangle': 'error',
