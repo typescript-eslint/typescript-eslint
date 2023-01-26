@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import * as util from '../util';
 
@@ -12,7 +12,11 @@ type Options = [
   },
 ];
 
-type MessageId = 'floating' | 'floatingVoid' | 'floatingFixVoid';
+type MessageId =
+  | 'floating'
+  | 'floatingVoid'
+  | 'floatingFixVoid'
+  | 'floatingFixAwait';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
@@ -27,6 +31,7 @@ export default util.createRule<Options, MessageId>({
     messages: {
       floating:
         'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.',
+      floatingFixAwait: 'Add await operator.',
       floatingVoid:
         'Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler' +
         ' or be explicitly marked as ignored with the `void` operator.',
@@ -95,11 +100,53 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'floating',
+              suggest: [
+                {
+                  messageId: 'floatingFixAwait',
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                    if (
+                      expression.type === AST_NODE_TYPES.UnaryExpression &&
+                      expression.operator === 'void'
+                    ) {
+                      return fixer.replaceTextRange(
+                        [expression.range[0], expression.range[0] + 4],
+                        'await',
+                      );
+                    }
+                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanAwait(tsNode)) {
+                      return fixer.insertTextBefore(node, 'await ');
+                    } else {
+                      return [
+                        fixer.insertTextBefore(node, 'await ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    }
+                  },
+                },
+              ],
             });
           }
         }
       },
     };
+
+    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
+      const operator = tsutils.isBinaryExpression(node)
+        ? node.operatorToken.kind
+        : ts.SyntaxKind.Unknown;
+      const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
+      const awaitPrecedence = util.getOperatorPrecedence(
+        ts.SyntaxKind.AwaitExpression,
+        ts.SyntaxKind.Unknown,
+      );
+      return nodePrecedence > awaitPrecedence;
+    }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
       if (node.expression.type !== AST_NODE_TYPES.CallExpression) {

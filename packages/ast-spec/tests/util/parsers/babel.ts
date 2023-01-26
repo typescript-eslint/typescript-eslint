@@ -5,6 +5,7 @@ import type { Fixture, ParserResponse } from './parser-types';
 import { ParserResponseType } from './parser-types';
 
 const PLUGINS: ParserPlugin[] = [
+  'decoratorAutoAccessors',
   // TODO - enable classFeatures instead of classProperties when we support it
   // 'classFeatures',
   'classProperties',

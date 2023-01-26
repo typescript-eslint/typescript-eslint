@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty key-computed-complex TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          AccessorProperty {
+            type: "AccessorProperty",
+            computed: false,
+            declare: false,
+            key: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [23, 24],
+              loc: {
+                start: { column: 11, line: 2 },
+                end: { column: 12, line: 2 },
+              },
+            },
+            override: false,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "2",
+              value: 2,
+
+              range: [27, 28],
+              loc: {
+                start: { column: 15, line: 2 },
+                end: { column: 16, line: 2 },
+              },
+            },
+
+            range: [14, 29],
+            loc: {
+              start: { column: 2, line: 2 },
+              end: { column: 17, line: 2 },
+            },
+          },
+        ],
+
+        range: [10, 31],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      superClass: null,
+
+      range: [0, 31],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 32],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

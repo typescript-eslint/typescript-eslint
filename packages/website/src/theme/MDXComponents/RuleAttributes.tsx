@@ -89,7 +89,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           This rule requires{' '}
-          <a href="/docs/linting/typed-linting" target="_blank">
+          <a href="/linting/typed-linting" target="_blank">
             type information
           </a>{' '}
           to run.

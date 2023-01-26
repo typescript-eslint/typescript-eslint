@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty modifier-override AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+-           AccessorProperty {
+-             type: 'AccessorProperty',
++           ClassAccessorProperty {
++             type: 'ClassAccessorProperty',
+              computed: false,
+-             declare: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'foo',
+
+                range: [44, 47],
+                loc: {
+                  start: { column: 20, line: 2 },
+                  end: { column: 23, line: 2 },
+                },
+              },
+              override: true,
+              static: false,
+              value: Literal {
+                type: 'Literal',
+                raw: '2',
+                value: 2,
+
+                range: [50, 51],
+                loc: {
+                  start: { column: 26, line: 2 },
+                  end: { column: 27, line: 2 },
+                },
+              },
+
+              range: [26, 52],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 28, line: 2 },
+              },
+            },
+          ],
+
+          range: [22, 54],
+          loc: {
+            start: { column: 22, line: 1 },
+            end: { column: 1, line: 3 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+        superClass: Identifier {
+          type: 'Identifier',
+          name: 'Bar',
+
+          range: [18, 21],
+          loc: {
+            start: { column: 18, line: 1 },
+            end: { column: 21, line: 1 },
+          },
+        },
+
+        range: [0, 54],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 55],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

@@ -117,9 +117,12 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
           {title}
         </Heading>
       </div>
-      <p>{description}</p>
+      {description}
       <div className={styles.buttons}>
-        <Link className="button button--primary" to={useBaseUrl('docs/')}>
+        <Link
+          className={clsx('button button--primary', styles.buttonCentered)}
+          to={useBaseUrl('getting-started')}
+        >
           Get Started
         </Link>
       </div>
@@ -133,12 +136,13 @@ function Home(): JSX.Element {
     <Layout description={`${siteConfig.tagline}`}>
       <header className={clsx('hero hero--dark', styles.hero)}>
         <div className="container">
+          <img alt="" className={styles.hero__logo} src="/img/logo.svg" />
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
-              className={clsx('button button--primary', styles.buttonPrimary)}
-              to={useBaseUrl('docs/')}
+              className="button button--primary"
+              to={useBaseUrl('getting-started')}
             >
               Get Started
             </Link>
