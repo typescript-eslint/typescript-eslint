@@ -48,7 +48,6 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImplicitAnyCatch from './no-implicit-any-catch';
 import noImpliedEval from './no-implied-eval';
-import noInArray from './no-in-array';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
@@ -181,7 +180,6 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implicit-any-catch': noImplicitAnyCatch,
   'no-implied-eval': noImpliedEval,
-  'no-in-array': noInArray,
   'no-inferrable-types': noInferrableTypes,
   'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,
