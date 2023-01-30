@@ -10,7 +10,7 @@ const ruleTester = new RuleTester({
 
 const grouped: TSESLint.RunTests<MessageIds, Options> = {
   valid: [
-    // optionalityOrder - optional-first
+    // optionalityOrder - required-first
     {
       code: `
 interface X {
@@ -24,7 +24,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -42,7 +42,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'as-written',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -60,7 +60,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'as-written',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -78,7 +78,7 @@ class X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -96,7 +96,7 @@ class X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -114,7 +114,7 @@ class X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -132,7 +132,7 @@ class X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -150,7 +150,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -169,12 +169,12 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
     },
-    // optionalityOrder - required-first
+    // optionalityOrder - optional-first
     {
       code: `
 interface X {
@@ -188,7 +188,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],
@@ -206,7 +206,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'as-written',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],
@@ -224,7 +224,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'as-written',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],
@@ -242,13 +242,13 @@ class X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],
     },
   ],
-  // optionalityOrder - optional-first
+  // optionalityOrder - required-first
   invalid: [
     {
       code: `
@@ -263,12 +263,16 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
       errors: [
         {
+          data: {
+            member: 'b',
+            beforeMember: 'd',
+          },
           messageId: 'incorrectOrder',
           line: 5,
           column: 3,
@@ -288,7 +292,7 @@ interface X {
           default: {
             memberTypes: ['call-signature', 'field', 'method'],
             order: 'as-written',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -317,7 +321,7 @@ class X {
           default: {
             memberTypes: 'never',
             order: 'as-written',
-            optionalityOrder: 'optional-first',
+            optionalityOrder: 'required-first',
           },
         },
       ],
@@ -333,7 +337,7 @@ class X {
         },
       ],
     },
-    // optionalityOrder - required-first
+    // optionalityOrder - optional-first
     {
       code: `
 interface X {
@@ -347,7 +351,7 @@ interface X {
           default: {
             memberTypes: 'never',
             order: 'alphabetically',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],
@@ -372,7 +376,7 @@ interface X {
           default: {
             memberTypes: ['call-signature', 'field', 'method'],
             order: 'as-written',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],
@@ -405,7 +409,7 @@ class Test {
           default: {
             memberTypes: 'never',
             order: 'as-written',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],
@@ -436,7 +440,7 @@ class Test {
           default: {
             memberTypes: 'never',
             order: 'as-written',
-            optionalityOrder: 'required-first',
+            optionalityOrder: 'optional-first',
           },
         },
       ],

@@ -22,18 +22,18 @@ export function getFirstSemanticOrSyntacticError(
   ast: SourceFile,
 ): SemanticOrSyntacticError | undefined {
   try {
-    const supportedSyntacticDiagnostics = whitelistSupportedDiagnostics(
+    const supportedSyntacticDiagnostics = allowlistSupportedDiagnostics(
       program.getSyntacticDiagnostics(ast),
     );
-    if (supportedSyntacticDiagnostics.length) {
+    if (supportedSyntacticDiagnostics.length > 0) {
       return convertDiagnosticToSemanticOrSyntacticError(
         supportedSyntacticDiagnostics[0],
       );
     }
-    const supportedSemanticDiagnostics = whitelistSupportedDiagnostics(
+    const supportedSemanticDiagnostics = allowlistSupportedDiagnostics(
       program.getSemanticDiagnostics(ast),
     );
-    if (supportedSemanticDiagnostics.length) {
+    if (supportedSemanticDiagnostics.length > 0) {
       return convertDiagnosticToSemanticOrSyntacticError(
         supportedSemanticDiagnostics[0],
       );
@@ -57,7 +57,7 @@ export function getFirstSemanticOrSyntacticError(
   }
 }
 
-function whitelistSupportedDiagnostics(
+function allowlistSupportedDiagnostics(
   diagnostics: readonly (DiagnosticWithLocation | Diagnostic)[],
 ): readonly (DiagnosticWithLocation | Diagnostic)[] {
   return diagnostics.filter(diagnostic => {
