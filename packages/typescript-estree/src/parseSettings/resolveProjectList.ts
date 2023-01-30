@@ -15,7 +15,7 @@ import {
 } from './ExpiringCache';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings:resovleProjectGlobs',
+  'typescript-eslint:typescript-estree:parser:parseSettings:resolveProjectList',
 );
 
 let RESOLUTION_CACHE: ExpiringCache<string, readonly CanonicalPath[]> | null =
@@ -68,6 +68,10 @@ export function resolveProjectList(
     tsconfigRootDir: options.tsconfigRootDir,
   });
   if (RESOLUTION_CACHE == null) {
+    // note - we initialize the global cache based on the first config we encounter.
+    //        this does mean that you can't have multiple lifetimes set per folder
+    //        I doubt that anyone will really bother reconfiguring this, let alone
+    //        try to do complicated setups, so we'll deal with this later if ever.
     RESOLUTION_CACHE = new ExpiringCache(
       options.singleRun
         ? 'Infinity'

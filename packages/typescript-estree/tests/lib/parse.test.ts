@@ -1,3 +1,4 @@
+import { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
 import * as globbyModule from 'globby';
 import { join, resolve } from 'path';
@@ -773,7 +774,7 @@ describe('parseAndGenerateServices', () => {
 
   describe('cacheLifetime', () => {
     describe('glob', () => {
-      function doParse(lifetime: number | 'Infinity'): void {
+      function doParse(lifetime: CacheDurationSeconds): void {
         parser.parseAndGenerateServices('const x = 1', {
           cacheLifetime: {
             glob: lifetime,

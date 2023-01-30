@@ -1,14 +1,17 @@
+import type { CacheDurationSeconds } from '@typescript-eslint/types';
+
 export const DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS = 30;
+const ZERO_HR_TIME: [number, number] = [0, 0];
 
 /**
  * A map with key-level expiration.
  */
 export class ExpiringCache<TKey, TValue> {
-  readonly #cacheDurationSeconds: number | 'Infinity';
+  readonly #cacheDurationSeconds: CacheDurationSeconds;
   /**
    * The mapping of path-like string to the resolved TSConfig(s)
    */
-  protected map = new Map<
+  protected readonly map = new Map<
     TKey,
     Readonly<{
       value: TValue;
@@ -16,29 +19,31 @@ export class ExpiringCache<TKey, TValue> {
     }>
   >();
 
-  constructor(cacheDurationSeconds: number | 'Infinity') {
+  constructor(cacheDurationSeconds: CacheDurationSeconds) {
     this.#cacheDurationSeconds = cacheDurationSeconds;
   }
 
-  set(key: TKey, value: TValue): void {
+  set(key: TKey, value: TValue): this {
     this.map.set(key, {
       value,
       lastSeen:
         this.#cacheDurationSeconds === 'Infinity'
           ? // no need to waste time calculating the hrtime in infinity mode as there's no expiry
-            [0, 0]
+            ZERO_HR_TIME
           : process.hrtime(),
     });
+    return this;
   }
 
   get(key: TKey): TValue | undefined {
     const entry = this.map.get(key);
     if (entry?.value != null) {
+      if (this.#cacheDurationSeconds === 'Infinity') {
+        return entry.value;
+      }
+
       const ageSeconds = process.hrtime(entry.lastSeen)[0];
-      if (
-        this.#cacheDurationSeconds === 'Infinity' ||
-        ageSeconds < this.#cacheDurationSeconds
-      ) {
+      if (ageSeconds < this.#cacheDurationSeconds) {
         // cache hit woo!
         return entry.value;
       } else {
@@ -60,52 +65,5 @@ export class ExpiringCache<TKey, TValue> {
 
   clear(): void {
     this.map.clear();
-  }
-}
-
-/**
- * A map with key-level expiration where it is known that there will be multiple
- * keys with the same value.
- */
-export class ExpiringCacheWithReverseMap<TKey, TValue> extends ExpiringCache<
-  TKey,
-  TValue
-> {
-  readonly #reverseMap = new Map<TValue, Set<TKey>>();
-
-  override set(key: TKey, value: TValue): void {
-    super.set(key, value);
-    const reverseEntry = this.#reverseMap.get(value) ?? new Set();
-    reverseEntry.add(key);
-    this.#reverseMap.set(value, reverseEntry);
-  }
-
-  setAll(keys: readonly TKey[], value: TValue): void {
-    for (const key of keys) {
-      this.set(key, value);
-    }
-  }
-
-  override cleanupKey(key: TKey): void {
-    super.cleanupKey(key);
-
-    // we know there are other keys in the cache that can also be cleaned up
-    // so lookup the reverse map to find them all and delete them too
-    const entry = this.map.get(key);
-    const reverseMapKey = entry?.value;
-    if (reverseMapKey != null) {
-      const reverseEntry = this.#reverseMap.get(reverseMapKey);
-      if (reverseEntry) {
-        for (const expiredKey of reverseEntry) {
-          this.map.delete(expiredKey);
-        }
-        this.#reverseMap.delete(reverseMapKey);
-      }
-    }
-  }
-
-  override clear(): void {
-    super.clear();
-    this.#reverseMap.clear();
   }
 }

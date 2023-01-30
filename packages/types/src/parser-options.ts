@@ -3,6 +3,7 @@ import type { Program } from 'typescript';
 import type { Lib } from './lib';
 
 type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
+type CacheDurationSeconds = number | 'Infinity';
 
 type EcmaVersion =
   | 3
@@ -60,10 +61,16 @@ interface ParserOptions {
   warnOnUnsupportedTypeScriptVersion?: boolean;
   moduleResolver?: string;
   cacheLifetime?: {
-    glob?: number | 'Infinity';
+    glob?: CacheDurationSeconds;
   };
 
   [additionalProperties: string]: unknown;
 }
 
-export { DebugLevel, EcmaVersion, ParserOptions, SourceType };
+export {
+  CacheDurationSeconds,
+  DebugLevel,
+  EcmaVersion,
+  ParserOptions,
+  SourceType,
+};

@@ -1,6 +1,7 @@
 import type { DebugLevel } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
+import type { CacheDurationSeconds } from './parseSettings/ExpiringCache';
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 //////////////////////////////////////////////////////////
@@ -181,7 +182,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
     /**
      * Glob resolution for `parserOptions.project` values.
      */
-    glob?: number | 'Infinity';
+    glob?: CacheDurationSeconds;
   };
 
   /**
