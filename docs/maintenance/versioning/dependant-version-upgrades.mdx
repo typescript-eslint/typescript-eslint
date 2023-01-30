@@ -21,7 +21,7 @@ Whenever you discover any new areas of work that are blocked by dropping an old 
 1. Upgrade the root `package.json` `devDependency` to the latest ESLint
 1. Add the new major version to the explicit `peerDependency` versions
 1. Check [`eslint-visitor-keys`](https://www.npmjs.com/package/eslint-visitor-keys) for a new version to be upgraded to as well.
-1. Update [Versioning > ESLint](../Versioning.md#eslint)
+1. Update [Versioning > ESLint](../Versioning.mdx#eslint)
 
 ### Removing Support for an Old ESLint Version
 
@@ -32,7 +32,7 @@ Whenever you discover any new areas of work that are blocked by dropping an old 
      - `/eslint.*5/i`
      - `/todo.*eslint.*5/i`
      - `/todo.*eslint/i`
-1. Update [Versioning > ESLint](../Versioning.md#eslint)
+1. Update [Versioning > ESLint](../Versioning.mdx#eslint)
 
 See [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972) for reference.
 
@@ -88,8 +88,8 @@ We generally start the process of supporting a new TypeScript version just after
    - In the root `package.json`, change the `devDependency` on `typescript` to `~X.Y.3`
    - Rename and update `patches/typescript*` to the new TypeScript version
    - Any other changes made necessary due to changes in TypeScript between the RC version and stable version
-   - Update the supported version range in [Versioning](../Versioning.md)
-1. Update [Versioning > TypeScript](../Versioning.md#typescript)
+   - Update the supported version range in [Versioning](../Versioning.mdx)
+1. Update [Versioning > TypeScript](../Versioning.mdx#typescript)
 1. Send a PR that updates this documentation page to point to your newer issues and PRs
    - Also update any of these steps if you go with a different process
 
@@ -108,7 +108,7 @@ A single PR can remove support for old TypeScript versions as a breaking change:
 1. Update the root `package.json` `devDependency`
 1. Update the `SUPPORTED_TYPESCRIPT_VERSIONS` constant in `warnAboutTSVersion.ts`
 1. Update the `versions` constant in `version-check.ts`
-1. Update [Versioning > TypeScript](../Versioning.md#typescript)
+1. Update [Versioning > TypeScript](../Versioning.mdx#typescript)
 1. Search for source code comments (excluding `CHANGELOG.md` files) that mention a now-unsupported version of TypeScript.
    - For example, to remove support for v4.3, searches might include:
      - `4.3`
