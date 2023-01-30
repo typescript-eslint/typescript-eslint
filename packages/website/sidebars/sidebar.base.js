@@ -39,6 +39,7 @@ module.exports = {
     'custom-rules',
     {
       items: [
+        'contributing/discussions',
         'contributing/issues',
         'contributing/local-development',
         'contributing/pull-requests',
