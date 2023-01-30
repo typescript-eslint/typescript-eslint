@@ -490,10 +490,20 @@ function reportIfMoreThanOne({
       shouldHandleChainedAnds &&
       previous.right.type === AST_NODE_TYPES.BinaryExpression
     ) {
+      let operator = previous.right.operator;
+      if (
+        previous.right.operator === '!==' &&
+        // TODO(#4820): Use the type checker to know whether this is `null`
+        previous.right.right.type === AST_NODE_TYPES.Literal &&
+        previous.right.right.raw === 'null'
+      ) {
+        // case like foo !== null && foo.bar !== null
+        operator = '!=';
+      }
       // case like foo && foo.bar !== someValue
-      optionallyChainedCode += ` ${
-        previous.right.operator
-      } ${sourceCode.getText(previous.right.right)}`;
+      optionallyChainedCode += ` ${operator} ${sourceCode.getText(
+        previous.right.right,
+      )}`;
     }
 
     context.report({
