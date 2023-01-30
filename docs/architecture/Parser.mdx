@@ -237,7 +237,8 @@ For example, by default it will ensure that a glob like `./**/tsconfig.json` wil
 
 > Default `undefined`.
 
-This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
+This option allows you to provide the root directory for relative TSConfig paths specified in the `project` option above.
+Doing so ensures running ESLint from a directory other than the root will still be able to find your TSConfig.
 
 ### `warnOnUnsupportedTypeScriptVersion`
 

@@ -22,6 +22,7 @@ import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
 import indent from './indent';
 import initDeclarations from './init-declarations';
+import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
 import linesBetweenClassMembers from './lines-between-class-members';
 import memberDelimiterStyle from './member-delimiter-style';
@@ -153,6 +154,7 @@ export default {
   'func-call-spacing': funcCallSpacing,
   indent: indent,
   'init-declarations': initDeclarations,
+  'key-spacing': keySpacing,
   'keyword-spacing': keywordSpacing,
   'lines-between-class-members': linesBetweenClassMembers,
   'member-delimiter-style': memberDelimiterStyle,
