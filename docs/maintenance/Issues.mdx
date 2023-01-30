@@ -3,7 +3,7 @@ id: issues
 title: Issues
 ---
 
-This document serves as a guide for how you might manage issues, also known as issue triaging.
+This document serves as a guide for how you might manage our [GitHub Issues](https://docs.github.com/issues), also known as issue triaging.
 
 Use your best judgement when triaging issues, and most of all remember to be **kind, friendly, and encouraging** when responding to users.
 Many users are new to open source and/or typed linting.
@@ -93,13 +93,41 @@ These bugs should be reported with a link to a GitHub repository that can be che
 If you cannot reproduce the issue as described using repository's README.md and issue description, it has not provided enough information.
 Consider using a specific response like the _Needs Full Reproduction_ response.
 
-### ✨ Rule Enhancements
+### 🏗 Feature Requests
 
-TODO: This will be filled out... soon!
+For any feature request, make sure the requested support is either:
 
-### 🚀 New Rules
+- Very useful for at least one commonly used way to run TypeScript (e.g. tsc-built CLI package; bundler-managed web app)
+- Relevant for _most_ projects that would be using typescript-eslint
 
-TODO: This will be filled out... soon!
+We avoid features that:
+
+- Are only relevant for a minority of users, as they aren't likely worth the maintenance burden
+- Aren't TypeScript-specific (e.g. should be in ESLint core instead)
+- Are only relevant with specific userland frameworks or libraries, such as Jest or React
+- Are for "formatting" functionality (we [strongly recommend users use a separate dedicated formatter](../linting/troubleshooting/Formatting.md))
+
+#### ✨ Rule Enhancements
+
+We're generally accepting of rule enhancements that meet the above feature request criteria.
+If a rule enhancement would substantially change the target area of the rule, consider whether it should instead be a new rule.
+Common signs of this are the rule's original name now being inaccurate, or some options being relevant just for the old functionality.
+
+Enhancements that can cause new reports to be reported are considered breaking changes.
+We have two common strategies for them:
+
+- Treat the enhancement as a breaking change, and block merging it until the next major version
+- Add an option to disable the new logic: which is a breaking change if opt-in, and a non-breaking change if opt-out
+- Add an option to enable the new logic: which is a breaking change if opt-out, and a non-breaking change if opt-in
+
+See [Can we standardize logical direction of rule options?](https://github.com/typescript-eslint/typescript-eslint/discussions/6101) for context on naming options.
+
+For enhancements meant to limit which kinds of nodes the rule targets, mark the issue as blocked on [RFC: Common format to specify a type or value as a rule option](https://github.com/typescript-eslint/typescript-eslint/discussions/6017).
+
+#### 🚀 New Rules
+
+We're generally accepting of new rules that meet the above feature request criteria.
+The biggest exception is rules that can roughly be implemented with [`@typescript-eslint/ban-types`](https://typescript-eslint.io/rules/ban-types) and/or [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
 
 ## Pruning Old Issues
 

@@ -8,30 +8,30 @@ To tap into TypeScript's additional powers, there are two small changes you need
 
 ```js title=".eslintrc.js"
 module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
-  // Added lines start
-  parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
-  },
-  // Added lines end
-  plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     // Add this line
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
+  plugins: ['@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
+  // Added lines start
+  parserOptions: {
+    project: ['./tsconfig.json'],
+    tsconfigRootDir: __dirname,
+  },
+  // Added lines end
+  root: true,
 };
 ```
 
 In more detail:
 
-- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory.
+- `plugin:@typescript-eslint/recommended-requiring-type-checking` is another [recommended configuration](./CONFIGURATIONS.mdx) we provide. This one contains recommended rules that additionally require type information.
 - `parserOptions.project` tells our parser the relative path where your project's `tsconfig.json` is.
-  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
-- `plugin:@typescript-eslint/recommended-requiring-type-checking` is another recommended configuration we provide. This one contains rules that specifically require type information.
+  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mds).
+- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../architecture/Parser.mdx#tsconfigRootDir)).
 
 With that done, run the same lint command you ran before.
 You may see new rules reporting errors based on type information!

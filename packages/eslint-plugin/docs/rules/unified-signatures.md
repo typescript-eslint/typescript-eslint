@@ -38,6 +38,13 @@ function x(x: number | string): void;
 function y(...x: number[]): void;
 ```
 
+```ts
+// This rule won't check overload signatures with different rest parameter types.
+// See https://github.com/microsoft/TypeScript/issues/5077
+function f(...a: number[]): void;
+function f(...a: string[]): void;
+```
+
 ## Options
 
 ### `ignoreDifferentlyNamedParameters`
@@ -53,21 +60,11 @@ function f(a: number): void;
 function f(a: string): void;
 ```
 
-```ts
-function f(...a: number[]): void;
-function f(...b: string[]): void;
-```
-
 ### ✅ Correct
 
 ```ts
 function f(a: number): void;
 function f(b: string): void;
-```
-
-```ts
-function f(...a: number[]): void;
-function f(...a: string[]): void;
 ```
 
 ## Options
