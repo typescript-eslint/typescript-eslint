@@ -82,7 +82,16 @@ module.exports = {
         },
         'maintenance/pull-requests',
         'maintenance/releases',
-        'maintenance/versioning',
+        {
+          collapsible: false,
+          items: ['maintenance/versioning/dependant-version-upgrades'],
+          label: 'Versioning',
+          link: {
+            id: 'maintenance/versioning',
+            type: 'doc',
+          },
+          type: 'category',
+        },
       ],
       label: 'Maintenance',
       link: {
