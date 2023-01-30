@@ -48,6 +48,7 @@
     "@typescript-eslint/scope-manager": "5.48.2",
     "@typescript-eslint/types": "5.48.2",
     "@typescript-eslint/typescript-estree": "5.48.2",
+    "@typescript-eslint/visitor-keys": "5.48.2",
     "debug": "^4.3.4"
   },
   "devDependencies": {
