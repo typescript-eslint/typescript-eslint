@@ -1,0 +1,18 @@
+diff --git a/node_modules/json5/dist/index.mjs b/node_modules/json5/dist/index.mjs
+index b92b533..8c9b548 100644
+--- a/node_modules/json5/dist/index.mjs
++++ b/node_modules/json5/dist/index.mjs
+@@ -1416,11 +1416,8 @@ var stringify = function stringify (value, replacer, space) {
+     }
+ };
+ 
+-const JSON5 = {
++// https://github.com/json5/json5/issues/240
++export {
+     parse,
+     stringify,
+ };
+-
+-var lib = JSON5;
+-
+-export default lib;
