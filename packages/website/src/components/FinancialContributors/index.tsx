@@ -16,14 +16,13 @@ export function FinancialContributors(): JSX.Element {
       <div className={styles.sponsorsContainer}>
         <Sponsors
           className={styles.tierSponsorArea}
-          include={{ link: true, name: true }}
+          includeName
           tier="platinum-sponsor"
           title="Platinum Sponsors"
           sponsors={sponsors.slice(0, 6)}
         />
         <Sponsors
           className={styles.tierSupporterArea}
-          include={{ link: true }}
           tier="gold-supporter"
           title="Gold Supporters"
           sponsors={sponsors.slice(6, 16)}
