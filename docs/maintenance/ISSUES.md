@@ -3,7 +3,7 @@ id: issues
 title: Issues
 ---
 
-This document serves as a guide for how you might manage issues, also known as issue triaging.
+This document serves as a guide for how you might manage our [GitHub Issues](https://docs.github.com/issues), also known as issue triaging.
 
 Use your best judgement when triaging issues, and most of all remember to be **kind, friendly, and encouraging** when responding to users.
 Many users are new to open source and/or typed linting.
