@@ -14,6 +14,16 @@ const baseSchema = Array.isArray(baseRule.meta.schema)
   ? baseRule.meta.schema[0]
   : baseRule.meta.schema;
 
+/**
+ * To replace with native .at() once Node 14 stops being supported
+ */
+function at<T>(arr: T[], position: number): T | undefined {
+  if (position < 0) {
+    return arr[arr.length + position];
+  }
+  return arr[position];
+}
+
 export default util.createRule<Options, MessageIds>({
   name: 'key-spacing',
   meta: {
@@ -87,7 +97,7 @@ export default util.createRule<Options, MessageIds>({
       return code.slice(
         0,
         sourceCode.getTokenAfter(
-          node.parameters.at(-1)!,
+          at(node.parameters, -1)!,
           util.isClosingBracketToken,
         )!.range[1] - node.range[0],
       );
@@ -102,7 +112,7 @@ export default util.createRule<Options, MessageIds>({
       return getLastTokenBeforeColon(
         node.type !== AST_NODE_TYPES.TSIndexSignature
           ? node.key
-          : node.parameters.at(-1)!,
+          : at(node.parameters, -1)!,
       ).loc.end;
     }
 
@@ -202,7 +212,7 @@ export default util.createRule<Options, MessageIds>({
       if (
         leadingComments.length &&
         leadingComments[0].loc.start.line - groupEndLine <= 1 &&
-        candidateValueStartLine - leadingComments.at(-1)!.loc.end.line <= 1
+        candidateValueStartLine - at(leadingComments, -1)!.loc.end.line <= 1
       ) {
         for (let i = 1; i < leadingComments.length; i++) {
           if (
@@ -373,7 +383,7 @@ export default util.createRule<Options, MessageIds>({
         let prevNode: TSESTree.Node | undefined = undefined;
 
         for (const node of members) {
-          let prevAlignedNode = currentAlignGroup.at(-1);
+          let prevAlignedNode = at(currentAlignGroup, -1);
           if (prevAlignedNode !== prevNode) {
             prevAlignedNode = undefined;
           }
