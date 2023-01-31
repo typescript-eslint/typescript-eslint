@@ -30,6 +30,9 @@ The following additional configuration options are available by specifying them 
 
 ```ts
 interface ParserOptions {
+  cacheLifetime?: {
+    glob?: number | 'Infinity';
+  };
   ecmaFeatures?: {
     jsx?: boolean;
     globalReturn?: boolean;
@@ -48,6 +51,14 @@ interface ParserOptions {
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
 ```
+
+### `cacheLifetime`
+
+This option allows you to granularly control our internal cache expiry lengths.
+
+You can specify the number of seconds as an integer number, or the string 'Infinity' if you never want the cache to expire.
+
+By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run.
 
 ### `ecmaFeatures`
 
