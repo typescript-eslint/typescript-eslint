@@ -26,19 +26,16 @@ export default util.createRule<Options, MessageIds>({
   create(context) {
     const sourceCode = context.getSourceCode();
     return {
-      ImportDeclaration(node): void {
-        if (node.importKind === 'type') {
-          return;
-        }
+      'ImportDeclaration[importKind!="type"]'(
+        node: TSESTree.ImportDeclaration,
+      ): void {
 
         const specifiers: TSESTree.ImportSpecifier[] = [];
         for (const specifier of node.specifiers) {
-          if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) {
-            return;
-          }
-          if (specifier.importKind !== 'type') {
-            return;
-          }
+          if (
+            specifier.type !== AST_NODE_TYPES.ImportSpecifier ||
+            specifier.importKind !== 'type'
+          ) {
           specifiers.push(specifier);
         }
 

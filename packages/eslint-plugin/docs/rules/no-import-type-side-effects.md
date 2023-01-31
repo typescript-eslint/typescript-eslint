@@ -6,7 +6,8 @@ description: 'Enforce the use of top-level import type qualifier when an import 
 >
 > See **https://typescript-eslint.io/rules/no-import-type-side-effects** for documentation.
 
-The [`--verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax) compiler option causes TypeScript to do simple and predictable transpilation on import declarations, namely it completely removes import declarations with a top-level `type` qualifier, and it removes any import specifiers with an inline `type` qualifier.
+The [`--verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax) compiler option causes TypeScript to do simple and predictable transpilation on import declarations.
+Namely, it completely removes import declarations with a top-level `type` qualifier, and it removes any import specifiers with an inline `type` qualifier.
 
 The latter behavior does have one potentially surprising effect in that in certain cases TS can leave behind a "side effect" import at runtime:
 
@@ -20,7 +21,7 @@ import {} from 'mod';
 import 'mod';
 ```
 
-For some rare cases, this may be desirable - but for many cases you will not want to leave behind an unnecessary side effect import.
+For the rare case of needing to import for side effects, this may be desirable - but for most cases you will not want to leave behind an unnecessary side effect import.
 
 ## Examples
 
