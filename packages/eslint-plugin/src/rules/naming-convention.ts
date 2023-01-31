@@ -280,7 +280,7 @@ export default util.createRule<Options, MessageIds>({
             | TSESTree.FunctionExpression,
           validator,
         ): void => {
-          if (node.id === null) {
+          if (node.id == null) {
             return;
           }
 
@@ -528,7 +528,7 @@ export default util.createRule<Options, MessageIds>({
           validator,
         ): void => {
           const id = node.id;
-          if (id === null) {
+          if (id == null) {
             return;
           }
 

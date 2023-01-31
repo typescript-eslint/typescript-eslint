@@ -8,5 +8,5 @@ description: 'Enforce consistent spacing between property names and type annotat
 
 ## Examples
 
-This rule extends the base [`eslint/keyword-spacing`](https://eslint.org/docs/rules/key-spacing) rule.
+This rule extends the base [`eslint/key-spacing`](https://eslint.org/docs/rules/key-spacing) rule.
 This version adds support for type annotations on interfaces, classes and type literals properties.

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
+
+
+### Bug Fixes
+
+* **ast-spec:** a JSXEmptyExpression is not a possible JSXExpression ([#6321](https://github.com/typescript-eslint/typescript-eslint/issues/6321)) ([4b27777](https://github.com/typescript-eslint/typescript-eslint/commit/4b27777ed26cc83d6efc52a89b2d3fc6c01bc0d7))
+* **eslint-plugin:** [ban-ts-comment] counts graphemes instead of `String.prototype.length` ([#5704](https://github.com/typescript-eslint/typescript-eslint/issues/5704)) ([09d57ce](https://github.com/typescript-eslint/typescript-eslint/commit/09d57cec8901880c6b24ea80dfa7d9fcdc463930))
+* **eslint-plugin:** [prefer-optional-chain] fix `ThisExpression` and `PrivateIdentifier` errors ([#6028](https://github.com/typescript-eslint/typescript-eslint/issues/6028)) ([85e783c](https://github.com/typescript-eslint/typescript-eslint/commit/85e783c1fabe96d390729a5796d6d346e401692b))
+* **eslint-plugin:** [prefer-optional-chain] fixer produces wrong logic ([#5919](https://github.com/typescript-eslint/typescript-eslint/issues/5919)) ([b0f6c8e](https://github.com/typescript-eslint/typescript-eslint/commit/b0f6c8ec0b372696ef26ca3a2b4f82dafd9dc417)), closes [#1438](https://github.com/typescript-eslint/typescript-eslint/issues/1438)
+
+
+### Features
+
+* **eslint-plugin:** add `key-spacing` rule extension for interface & type declarations ([#6211](https://github.com/typescript-eslint/typescript-eslint/issues/6211)) ([67706e7](https://github.com/typescript-eslint/typescript-eslint/commit/67706e72e332bf11c82fdf51f3d417d3c93a86cf))
+
+
+
+
+
 # [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
 
 
