@@ -48,6 +48,10 @@
       groupName: 'docusaurus',
     },
     {
+      extends: ['monorepo:nrwl'],
+      groupName: 'nx',
+    },
+    {
       extends: ['monorepo:babel'],
       matchPackagePrefixes: ['@types/babel'],
       groupName: 'babel',
