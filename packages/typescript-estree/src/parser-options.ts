@@ -1,7 +1,9 @@
-import type { DebugLevel } from '@typescript-eslint/types';
+import type {
+  CacheDurationSeconds,
+  DebugLevel,
+} from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
-import type { CacheDurationSeconds } from './parseSettings/ExpiringCache';
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 //////////////////////////////////////////////////////////
