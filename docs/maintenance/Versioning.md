@@ -1,6 +1,5 @@
 ---
 id: versioning
-sidebar_label: Versioning
 title: Versioning
 ---
 
@@ -28,21 +27,7 @@ During these periods, we manually publish `canary` releases until we are happy w
 
 ## Dependant Versions
 
-### TypeScript
-
-> The version range of TypeScript currently supported is `>=3.3.1 <4.9.0`.
-
-These versions are what we test against.
-
-We will always endeavor to support the latest stable version of TypeScript.
-Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
-In some cases, we may even be able to support additional pre-releases (i.e. betas and release candidates) of TypeScript, but only if doing so does not require us to compromise on support for the latest stable version.
-
-Note that our packages have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
-
-If you use a non-supported version of TypeScript, the parser will log a warning to the console.
-If you want to disable this warning, you can configure this in your `parserOptions`.
-See: [`@typescript-eslint/parser`](./packages/parser/ TODO JOSH) and [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/ TODO JOSH).
+> See [Versioning > Dependant Version Upgrades](./versioning/dependant-version-upgrades.mdx) for maintenance steps to update these versions.
 
 ### ESLint
 
@@ -54,6 +39,22 @@ We generally support at least the latest two major versions of ESLint.
 
 This project makes an effort to support Active LTS and Maintenance LTS release statuses of Node according to [Node's release document](https://nodejs.org/en/about/releases).
 Support for specific Current status releases are considered periodically.
+
+### TypeScript
+
+> The version range of TypeScript currently supported is `>=3.3.1 <5.0.0`.
+
+These versions are what we test against.
+
+We will always endeavor to support the latest stable version of TypeScript.
+Sometimes, but not always, changes in TypeScript will not require breaking changes in this project, and so we are able to support more than one version of TypeScript.
+In some cases, we may even be able to support additional pre-releases (i.e. betas and release candidates) of TypeScript, but only if doing so does not require us to compromise on support for the latest stable version.
+
+Note that our packages have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+
+If you use a non-supported version of TypeScript, the parser will log a warning to the console.
+If you want to disable this warning, you can configure this in your `parserOptions`.
+See: [Parser > `warnOnUnsupportedTypeScriptVersion`](../architecture/Parser.mdx#warnonunsupportedtypescriptversion).
 
 ## Breaking Changes
 

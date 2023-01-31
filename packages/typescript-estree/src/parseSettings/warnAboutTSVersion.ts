@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 
 import type { ParseSettings } from './index';
 /**
- * This needs to be kept in sync with /docs/maintenance/VERSIONING.md
+ * This needs to be kept in sync with /docs/maintenance/Versioning.md
  * in the typescript-eslint monorepo
  */
 const SUPPORTED_TYPESCRIPT_VERSIONS = '>=3.3.1 <5.0.0';
