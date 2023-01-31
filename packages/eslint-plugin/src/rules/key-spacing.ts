@@ -51,7 +51,8 @@ export default util.createRule<Options, MessageIds>({
     function adjustedColumn(position: TSESTree.Position): number {
       const line = position.line - 1; // position.line is 1-indexed
       return util.getStringLength(
-        sourceCode.lines[line].slice(0, position.column),
+        // use at() just for codecov, so it has a positive position case
+        at(sourceCode.lines, line)!.slice(0, position.column),
       );
     }
 
