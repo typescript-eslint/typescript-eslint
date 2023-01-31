@@ -217,7 +217,7 @@ export default util.createRule<Options, MessageIds>({
 
     const selectors: {
       readonly [k in keyof TSESLint.RuleListener]: Readonly<{
-        validator: ValidatorFunction | null;
+        validator: ValidatorFunction;
         handler: (
           node: Parameters<NonNullable<TSESLint.RuleListener[k]>>[0],
           validator: ValidatorFunction,
@@ -643,9 +643,6 @@ export default util.createRule<Options, MessageIds>({
     return Object.fromEntries(
       Object.entries(selectors)
         .map(([selector, { validator, handler }]) => {
-          if (validator == null) {
-            return null;
-          }
           return [
             selector,
             (node: Parameters<typeof handler>[0]): void => {
