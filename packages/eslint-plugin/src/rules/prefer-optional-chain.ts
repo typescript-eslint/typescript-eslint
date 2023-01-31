@@ -122,7 +122,7 @@ function getComparisonValueType(
 function getComparedName(
   node: TSESTree.Expression | TSESTree.PrivateIdentifier,
 ): string[] {
-  // TODO
+  // TODO - add generic logic for getting the "compared name" text in a standardized format
 }
 
 function analyseLogicalOperands(node: TSESTree.LogicalExpression): {
@@ -266,10 +266,12 @@ function analyseLogicalOperands(node: TSESTree.LogicalExpression): {
 }
 
 function analyzeAndChain(chain: AnalysedOperand[]): void {
-  // TODO - expect "!= null"-like chain
+  // TODO - "!= null"-like chains
+  // TODO - "x && x.y" chains
 }
 function analyzeOrChain(chain: AnalysedOperand[]): void {
-  // TODO - expect "== null"-like chain
+  // TODO - "== null"-like chains
+  // TODO - "!x || !x.y" chains
 }
 function analyzeChain(
   operator: TSESTree.LogicalExpression['operator'],
