@@ -45,6 +45,16 @@ ruleTester.run('prefer-optional-chain', rule, {
     'match && match$1 !== undefined;',
     'foo !== null && foo !== undefined;',
     "x['y'] !== undefined && x['y'] !== null;",
+    // private properties
+    'this.#a && this.#b;',
+    '!this.#a || !this.#b;',
+    'a.#foo?.bar;',
+    '!a.#foo?.bar;',
+    '!foo().#a || a;',
+    '!a.b.#a || a;',
+    '!new A().#b || a;',
+    '!(await a).#b || a;',
+    "!(foo as any).bar || 'anything';",
     // currently do not handle complex computed properties
     'foo && foo[bar as string] && foo[bar as string].baz;',
     'foo && foo[1 + 2] && foo[1 + 2].baz;',
@@ -68,6 +78,10 @@ ruleTester.run('prefer-optional-chain', rule, {
     '!import.meta && !import.meta.foo;',
     'new.target || new.target.length;',
     '!new.target || true;',
+    // Do not handle direct optional chaining on private properties because of a typescript bug (https://github.com/microsoft/TypeScript/issues/42734)
+    // We still allow in computed properties
+    'foo && foo.#bar;',
+    '!foo || !foo.#bar;',
   ],
   invalid: [
     ...BaseCases.all(),
@@ -1240,7 +1254,6 @@ foo?.bar(/* comment */a,
         },
       ],
     },
-
     {
       code: noFormat`import.meta && import.meta?.() && import.meta?.().baz;`,
       output: null,
