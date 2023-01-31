@@ -7,10 +7,7 @@ import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForPr
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
 import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
-import type {
-  ParserServicesWithTypeInformation,
-  TSESTreeOptions,
-} from '../../src/parser-options';
+import type { TSESTreeOptions } from '../../src/parser-options';
 import type { TSESTree } from '../../src/ts-estree';
 import {
   createSnapshotTestBlock,
@@ -381,7 +378,7 @@ function testIsolatedFile(
   const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
     .declarations[0];
   const arrayMember = (declaration.init! as TSESTree.ArrayExpression)
-    .elements[0];
+    .elements[0]!;
 
   // get corresponding TS node
   const tsArrayMember =

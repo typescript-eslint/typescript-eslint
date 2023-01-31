@@ -50,8 +50,9 @@ export default util.createRule<Options, MessageIds>({
      * Check if a given node is an array which all elements are string.
      * @param node
      */
-    function isStringArrayNode(node: TSESTree.LeftHandSideExpression): boolean {
+    function isStringArrayNode(node: TSESTree.Expression): boolean {
       const type = services.getTypeAtLocation(node);
+
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
         const typeArgs = checker.getTypeArguments(type);
         return typeArgs.every(

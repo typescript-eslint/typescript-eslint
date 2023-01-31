@@ -781,7 +781,7 @@ export default util.createRule<Options, MessageIds>({
           data: {
             member: getMemberName(member, context.getSourceCode()),
             optionalOrRequired:
-              optionalityOrder === 'optional-first' ? 'required' : 'optional',
+              optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
         });
 
@@ -790,7 +790,7 @@ export default util.createRule<Options, MessageIds>({
       // have the correct optionality
       if (
         isMemberOptional(members[0]) !==
-        (optionalityOrder === 'required-first')
+        (optionalityOrder === 'optional-first')
       ) {
         report(members[0]);
         return false;

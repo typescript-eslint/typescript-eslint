@@ -113,7 +113,7 @@ export default util.createRule<Options, MessageId>({
                         'await',
                       );
                     }
-                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                    const tsNode = services.esTreeNodeToTSNodeMap.get(
                       node.expression,
                     );
                     if (isHigherPrecedenceThanAwait(tsNode)) {

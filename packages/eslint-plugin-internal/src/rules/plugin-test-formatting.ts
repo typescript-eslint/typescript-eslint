@@ -196,8 +196,11 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function checkExpression(node: TSESTree.Node, isErrorTest: boolean): void {
-      switch (node.type) {
+    function checkExpression(
+      node: TSESTree.Node | null,
+      isErrorTest: boolean,
+    ): void {
+      switch (node?.type) {
         case AST_NODE_TYPES.Literal:
           checkLiteral(node, isErrorTest);
           break;
@@ -477,7 +480,7 @@ export default createRule<Options, MessageIds>({
 
     function checkValidTest(tests: TSESTree.ArrayExpression): void {
       for (const test of tests.elements) {
-        switch (test.type) {
+        switch (test?.type) {
           case AST_NODE_TYPES.ObjectExpression:
             // delegate object-style tests to the invalid checker
             checkInvalidTest(test, false);
@@ -545,7 +548,7 @@ export default createRule<Options, MessageIds>({
 
               case 'invalid':
                 for (const element of prop.value.elements) {
-                  if (element.type === AST_NODE_TYPES.ObjectExpression) {
+                  if (element?.type === AST_NODE_TYPES.ObjectExpression) {
                     checkInvalidTest(element);
                   }
                 }
@@ -574,7 +577,7 @@ export default createRule<Options, MessageIds>({
             }
 
             for (const errorElement of testProp.value.elements) {
-              if (errorElement.type !== AST_NODE_TYPES.ObjectExpression) {
+              if (errorElement?.type !== AST_NODE_TYPES.ObjectExpression) {
                 continue;
               }
 

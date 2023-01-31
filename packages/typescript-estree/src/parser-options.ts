@@ -189,8 +189,8 @@ export interface ParserServicesNodeMaps {
 export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps {
   program: ts.Program;
-  getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
+  getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
 }
 export interface ParserServicesWithoutTypeInformation
   extends ParserServicesNodeMaps {
