@@ -1,4 +1,4 @@
-import { CacheDurationSeconds } from '@typescript-eslint/types';
+import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
 import * as globbyModule from 'globby';
 import { join, resolve } from 'path';
