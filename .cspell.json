@@ -121,6 +121,7 @@
     "unoptimized",
     "unprefixed",
     "upsert",
+    "warnonunsupportedtypescriptversion",
     "Zacher"
   ],
   "overrides": [
