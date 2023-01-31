@@ -15,7 +15,7 @@ const baseSchema = Array.isArray(baseRule.meta.schema)
   : baseRule.meta.schema;
 
 /**
- * To replace with native .at() once Node 14 stops being supported
+ * TODO: replace with native .at() once Node 14 stops being supported
  */
 function at<T>(arr: T[], position: number): T | undefined {
   if (position < 0) {
@@ -51,7 +51,6 @@ export default util.createRule<Options, MessageIds>({
     function adjustedColumn(position: TSESTree.Position): number {
       const line = position.line - 1; // position.line is 1-indexed
       return util.getStringLength(
-        // use at() just for codecov, so it has a positive position case
         at(sourceCode.lines, line)!.slice(0, position.column),
       );
     }
