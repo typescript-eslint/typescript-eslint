@@ -48,6 +48,7 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImplicitAnyCatch from './no-implicit-any-catch';
 import noImpliedEval from './no-implied-eval';
+import noImportTypeSideEffects from './no-import-type-side-effects';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
@@ -70,7 +71,6 @@ import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
-import noTypeImportsWithVerbatimSideEffects from './no-type-imports-with-verbatim-side-effects';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
@@ -181,6 +181,7 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implicit-any-catch': noImplicitAnyCatch,
   'no-implied-eval': noImpliedEval,
+  'no-import-type-side-effects': noImportTypeSideEffects,
   'no-inferrable-types': noInferrableTypes,
   'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,
@@ -203,8 +204,6 @@ export default {
   'no-this-alias': noThisAlias,
   'no-throw-literal': noThrowLiteral,
   'no-type-alias': noTypeAlias,
-  'no-type-imports-with-verbatim-side-effects':
-    noTypeImportsWithVerbatimSideEffects,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,

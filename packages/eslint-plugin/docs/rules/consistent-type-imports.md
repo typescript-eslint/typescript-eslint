@@ -98,6 +98,6 @@ If you are using [type-aware linting](https://typescript-eslint.io/linting/typed
 
 ## Related To
 
-- [`no-type-imports-with-verbatim-side-effects`](./no-type-imports-with-verbatim-side-effects.md)
+- [`no-import-type-side-effects`](./no-import-type-side-effects.md)
 - [`import/consistent-type-specifier-style`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/consistent-type-specifier-style.md)
 - [`import/no-duplicates` with `{"prefer-inline": true}`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-duplicates.md#inline-type-imports)
