@@ -29,14 +29,14 @@ export default util.createRule<Options, MessageIds>({
       'ImportDeclaration[importKind!="type"]'(
         node: TSESTree.ImportDeclaration,
       ): void {
-
         const specifiers: TSESTree.ImportSpecifier[] = [];
         for (const specifier of node.specifiers) {
           if (
-            specifier.type !== AST_NODE_TYPES.ImportSpecifier ||
-            specifier.importKind !== 'type'
+            specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+            specifier.importKind === 'type'
           ) {
-          specifiers.push(specifier);
+            specifiers.push(specifier);
+          }
         }
 
         context.report({
