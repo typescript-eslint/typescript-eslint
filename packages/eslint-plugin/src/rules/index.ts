@@ -94,6 +94,7 @@ import objectCurlySpacing from './object-curly-spacing';
 import paddingLineBetweenStatements from './padding-line-between-statements';
 import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
+import preferAt from './prefer-at';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
@@ -227,6 +228,7 @@ export default {
   'padding-line-between-statements': paddingLineBetweenStatements,
   'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,
+  'prefer-at': preferAt,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
