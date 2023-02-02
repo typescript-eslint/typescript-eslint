@@ -15,6 +15,37 @@ ruleTester.run('key-spacing', rule, {
     {
       code: `
 interface X {
+  x:
+    | number
+    | string;
+}
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
+interface X {
+  abcdef: string;
+  x:
+    | number
+    | string;
+  defgh: string;
+}
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
+interface X {
+  x:
+    | number; abcd: string;
+}
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
+interface X {
   a:   number;
   abc: string
 };
