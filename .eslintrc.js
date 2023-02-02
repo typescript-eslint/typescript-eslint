@@ -198,6 +198,8 @@ module.exports = {
 
     // enforce a sort order across the codebase
     'simple-import-sort/imports': 'error',
+
+    'one-var': ['error', 'never'],
   },
   overrides: [
     // all test files
