@@ -85,7 +85,7 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
-    function canBeAligned(
+    function isApplicable(
       node: TSESTree.Node,
     ): node is KeyTypeNodeWithTypeAnnotation {
       return (
@@ -290,7 +290,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       for (const node of group) {
-        if (!canBeAligned(node)) {
+        if (!isApplicable(node)) {
           continue;
         }
         const { typeAnnotation } = node;
@@ -365,7 +365,7 @@ export default util.createRule<Options, MessageIds>({
           ? options.multiLine.mode
           : options.mode) ?? 'strict';
 
-      if (canBeAligned(node)) {
+      if (isApplicable(node)) {
         checkBeforeColon(node, expectedWhitespaceBeforeColon, mode);
         checkAfterColon(node, expectedWhitespaceAfterColon, mode);
       }

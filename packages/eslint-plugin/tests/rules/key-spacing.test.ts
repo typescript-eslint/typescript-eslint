@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('key-spacing', rule, {
   valid: [
-    // align: value
+    // non-applicable
     {
       code: `
 interface X {
@@ -21,6 +21,16 @@ interface X {
 }
       `,
       options: [{ align: 'value' }],
+    },
+    {
+      code: `
+interface X {
+  x:
+    | number
+    | string;
+}
+      `,
+      options: [{}],
     },
     {
       code: `
@@ -43,6 +53,7 @@ interface X {
       `,
       options: [{ align: 'value' }],
     },
+    // align: value
     {
       code: `
 interface X {
