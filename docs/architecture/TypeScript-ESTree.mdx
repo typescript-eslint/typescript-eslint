@@ -226,7 +226,23 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   allowAutomaticSingleRunInference?: boolean;
 
   /**
-   * Path to a file exporting a custom ModuleResolver.
+   * Granular control of the expiry lifetime of our internal caches.
+   * You can specify the number of seconds as an integer number, or the string
+   * 'Infinity' if you never want the cache to expire.
+   *
+   * By default cache entries will be evicted after 30 seconds, or will persist
+   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
+   * infers that it is a single run.
+   */
+  cacheLifetime?: {
+    /**
+     * Glob resolution for `parserOptions.project` values.
+     */
+    glob?: number | 'Infinity';
+  };
+
+  /**
+   * Path to a file exporting a custom `ModuleResolver`.
    */
   moduleResolver?: string;
 }
@@ -271,6 +287,23 @@ const { ast, services } = parseAndGenerateServices(code, {
   project: './tsconfig.json',
   range: true,
 });
+```
+
+##### `ModuleResolver`
+
+The `moduleResolver` option allows you to specify the path to a module with a custom module resolver implementation. The module is expected to adhere to the following interface:
+
+```ts
+interface ModuleResolver {
+  version: 1;
+  resolveModuleNames(
+    moduleNames: string[],
+    containingFile: string,
+    reusedNames: string[] | undefined,
+    redirectedReference: ts.ResolvedProjectReference | undefined,
+    options: ts.CompilerOptions,
+  ): (ts.ResolvedModule | undefined)[];
+}
 ```
 
 #### `parseWithNodeMaps(code, options)`
