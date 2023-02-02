@@ -137,6 +137,18 @@ abstract class Mx {
         }
       }
     `,
+    `
+      const key = Symbol();
+      class Test {
+        set [key ? '2' : '1'](val: string) {
+          // ...
+        }
+
+        get [key ? '1' : '0'](): string {
+          return 'test';
+        }
+      }
+    `,
     // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
       class Test {
