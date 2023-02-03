@@ -10,7 +10,7 @@
         "cwd": "packages/ast-spec",
         "commands": ["yarn build"]
       },
-      "outputs": ["packages/ast-spec/dist/**/*.ts"]
+      "outputs": ["{projectRoot}/dist/**/*.ts"]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
