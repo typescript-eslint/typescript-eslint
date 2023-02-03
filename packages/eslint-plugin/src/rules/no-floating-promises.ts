@@ -67,7 +67,6 @@ export default util.createRule<Options, MessageId>({
   create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
 
     return {
       ExpressionStatement(node): void {
