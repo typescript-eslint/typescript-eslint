@@ -153,8 +153,7 @@ export default util.createRule<Options, MessageId>({
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
       const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
-      const unaryPrecedence = OperatorPrecedence.Unary;
-      return nodePrecedence > unaryPrecedence;
+      return nodePrecedence > OperatorPrecedence.Unary;
     }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
