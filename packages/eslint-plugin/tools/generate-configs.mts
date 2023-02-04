@@ -6,10 +6,10 @@ import prettier from 'prettier';
 import * as url from 'url';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-type RulesFile = typeof import('../src/rules');
+import type RulesFile from '../src/rules';
 
 interface RulesObject {
-  default: RulesFile;
+  default: typeof RulesFile;
 }
 
 async function main(): Promise<void> {
