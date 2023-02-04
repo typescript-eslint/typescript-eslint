@@ -6,7 +6,6 @@ import * as astConverterModule from '../../src/ast-converter';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
