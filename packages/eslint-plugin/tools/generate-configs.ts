@@ -5,11 +5,12 @@ import * as path from 'path';
 import prettier from 'prettier';
 import * as url from 'url';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type RulesFile from '../src/rules';
 
 interface RulesObject {
-  default: typeof RulesFile;
+  default: {
+    default: typeof RulesFile;
+  };
 }
 
 async function main(): Promise<void> {

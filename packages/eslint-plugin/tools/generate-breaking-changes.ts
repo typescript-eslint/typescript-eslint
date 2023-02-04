@@ -1,11 +1,12 @@
 import { fetch } from 'cross-fetch';
 import { markdownTable } from 'markdown-table';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-type RulesFile = typeof import('../src/rules');
+import type RulesFile from '../src/rules';
 
 interface RulesObject {
-  default: RulesFile;
+  default: {
+    default: typeof RulesFile;
+  };
 }
 
 async function main(): Promise<void> {
@@ -32,7 +33,7 @@ async function main(): Promise<void> {
     // Normally we wouldn't condone using the 'eval' API...
     // But this is an internal-only script and it's the easiest way to convert
     // the JS raw text into a runtime object. 🤷
-    let oldRulesObject!: { rules: RulesFile };
+    let oldRulesObject!: { rules: typeof RulesFile };
     eval('oldRulesObject = ' + oldObjectText);
     const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
 
