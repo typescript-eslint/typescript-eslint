@@ -6,15 +6,6 @@ import type { ParseSettings } from '.';
 
 const log = debug('typescript-eslint:typescript-estree:getProjectConfigFiles');
 
-const TSCONFIG_MATCH_CACHE = new Map<string, string | undefined>();
-
-/**
- * @remarks Only use this for tests!
- */
-export function clearMatchCacheForTests(): void {
-  TSCONFIG_MATCH_CACHE.clear();
-}
-
 /**
  * Checks for a matching TSConfig to a file including its parent directories,
  * permanently caching results under each directory it checks.
@@ -25,7 +16,10 @@ export function clearMatchCacheForTests(): void {
  * in https://github.com/typescript-eslint/typescript-eslint/issues/101.
  */
 export function getProjectConfigFiles(
-  parseSettings: Pick<ParseSettings, 'filePath' | 'tsconfigRootDir'>,
+  parseSettings: Pick<
+    ParseSettings,
+    'filePath' | 'tsconfigMatchCache' | 'tsconfigRootDir'
+  >,
   project: string | string[] | true | undefined,
 ): string[] | undefined {
   if (project !== true) {
@@ -42,12 +36,12 @@ export function getProjectConfigFiles(
     log('Checking tsconfig.json path: %s', directory);
     const tsconfigPath = path.join(directory, 'tsconfig.json');
     const cached =
-      TSCONFIG_MATCH_CACHE.get(directory) ??
+      parseSettings.tsconfigMatchCache.get(directory) ??
       (fs.existsSync(tsconfigPath) && tsconfigPath);
 
     if (cached) {
       for (const directory of checkedDirectories) {
-        TSCONFIG_MATCH_CACHE.set(directory, cached);
+        parseSettings.tsconfigMatchCache.set(directory, cached);
       }
       return [cached];
     }

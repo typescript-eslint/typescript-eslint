@@ -23,6 +23,7 @@ module.exports = {
           collapsible: false,
           type: 'category',
           items: [
+            'linting/troubleshooting/performance-troubleshooting',
             'linting/troubleshooting/formatting',
             'linting/troubleshooting/tslint',
           ],
@@ -36,19 +37,6 @@ module.exports = {
       type: 'category',
     },
     'custom-rules',
-    {
-      items: [
-        'contributing/issues',
-        'contributing/local-development',
-        'contributing/pull-requests',
-      ],
-      label: 'Contributing',
-      link: {
-        id: 'contributing',
-        type: 'doc',
-      },
-      type: 'category',
-    },
     {
       items: [
         'architecture/eslint-plugin',
@@ -67,6 +55,21 @@ module.exports = {
     },
     {
       items: [
+        'contributing/discussions',
+        'contributing/issues',
+        'contributing/local-development',
+        'contributing/pull-requests',
+      ],
+      label: 'Contributing',
+      link: {
+        id: 'contributing',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      items: [
+        'maintenance/branding',
         {
           collapsible: false,
           items: ['maintenance/issues/rule-deprecations'],
@@ -79,7 +82,16 @@ module.exports = {
         },
         'maintenance/pull-requests',
         'maintenance/releases',
-        'maintenance/versioning',
+        {
+          collapsible: false,
+          items: ['maintenance/versioning/dependant-version-upgrades'],
+          label: 'Versioning',
+          link: {
+            id: 'maintenance/versioning',
+            type: 'doc',
+          },
+          type: 'category',
+        },
       ],
       label: 'Maintenance',
       link: {

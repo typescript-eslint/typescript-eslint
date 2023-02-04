@@ -2,6 +2,7 @@ import type * as ts from 'typescript';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
+import type { ExpiringCache } from './ExpiringCache';
 
 type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
 
@@ -98,7 +99,7 @@ export interface MutableParseSettings {
   /**
    * Normalized paths to provided project paths.
    */
-  projects: CanonicalPath[];
+  projects: readonly CanonicalPath[];
 
   /**
    * Whether to add the `range` property to AST nodes.
@@ -114,6 +115,11 @@ export interface MutableParseSettings {
    * If the `tokens` parse option is enabled, retrieved tokens.
    */
   tokens: null | TSESTree.Token[];
+
+  /**
+   * Caches searches for TSConfigs from project directories.
+   */
+  tsconfigMatchCache: ExpiringCache<string, string>;
 
   /**
    * The absolute path to the root directory for all provided `project`s.

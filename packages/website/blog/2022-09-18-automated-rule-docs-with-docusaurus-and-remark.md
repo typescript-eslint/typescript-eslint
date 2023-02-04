@@ -2,15 +2,15 @@
 authors:
   - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
     name: Josh Goldberg
-    title: TypeScript ESLint Maintainer
+    title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
-description: How TypeScript ESLint generates much of the docs pages for each of its lint rules.
+description: How typescript-eslint generates much of the docs pages for each of its lint rules.
 slug: automated-rule-docs-with-docusaurus-and-remark
 tags: [documentation, docusaurus, remark]
 title: Automated Rule Docs With Docusaurus and Remark
 ---
 
-The TypeScript ESLint website at https://typescript-eslint.io is the canonical location for documentation on how to use ESLint on TypeScript code.
+The typescript-eslint website at https://typescript-eslint.io is the canonical location for documentation on how to use ESLint on TypeScript code.
 The site includes a documentation page for each of the over 100 ESLint rules exposed by its ESLint plugin.
 Each of those rule docs pages includes a description of the rule, any options it allows, links to its source code, and other important information about its usage.
 
@@ -87,7 +87,7 @@ The [`@typescript-eslint/no-for-in-array` rule](https://typescript-eslint.io/rul
 Our Remark plugin:
 
 1. Takes in the AST and metadata of a documentation file
-2. Tries to find the corresponding TypeScript ESLint rule for the file's name
+2. Tries to find the corresponding typescript-eslint rule for the file's name
 3. If one was found, applies a set of modifications to the AST
 
 The rest of this section of the blog post will give a high-level overview of what kinds of AST modifications take place.
@@ -95,7 +95,7 @@ You can dive into [the source code of our plugin](https://github.com/typescript-
 
 ### Matching Docs to Rules
 
-The [`@typescript-eslint/eslint-plugin` package](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) exports an object with a `rules` property containing all the TypeScript ESLint lint rules.
+The [`@typescript-eslint/eslint-plugin` package](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) exports an object with a `rules` property containing all the typescript-eslint lint rules.
 Properties have names like `"array-type"` that map to the rule object exported by files like [`array-type.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/39829c01906f326fec94e9b3a5fdb1730eb02002/packages/eslint-plugin/src/rules/array-type.ts#L86).
 
 Remark plugins are able to access the name of the file they're modifying by accessing `file.stem`, as in the following code snippet.
@@ -144,7 +144,7 @@ root.children.splice(
 ```
 
 :::info Historical context
-Before typescript-eslint.io existed, the canonical documentation URL for TypeScript ESLint's lint rules was the GitHub link to their corresponding `.md` file.
+Before typescript-eslint.io existed, the canonical documentation URL for typescript-eslint's lint rules was the GitHub link to their corresponding `.md` file.
 Now that we have a rich documentation site and have automated much of what used to be in those `.md` files, they're no longer a good place to look for documentation.
 :::
 
@@ -221,8 +221,8 @@ We'd like to extend thanks to [Joshua Chen](https://github.com/Josh-Cena), one o
 Without Joshua, this change would have taken us a great deal longer (if we'd have been able to tackle it at all).
 Thanks Joshua! 🤗
 
-## Supporting TypeScript ESLint
+## Supporting typescript-eslint
 
-If you enjoyed this blog post and/or or use TypeScript ESLint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
+If you enjoyed this blog post and/or or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
 We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
 Thanks! 💖

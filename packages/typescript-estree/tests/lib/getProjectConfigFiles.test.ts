@@ -1,7 +1,5 @@
-import {
-  clearMatchCacheForTests,
-  getProjectConfigFiles,
-} from '../../src/parseSettings/getProjectConfigFiles';
+import { ExpiringCache } from '../../src/parseSettings/ExpiringCache';
+import { getProjectConfigFiles } from '../../src/parseSettings/getProjectConfigFiles';
 
 const mockExistsSync = jest.fn<boolean, [string]>();
 
@@ -12,21 +10,22 @@ jest.mock('fs', () => ({
 
 const parseSettings = {
   filePath: './repos/repo/packages/package/file.ts',
+  tsconfigMatchCache: new ExpiringCache<string, string>(1),
   tsconfigRootDir: './repos/repo',
 };
 
 beforeEach(() => {
-  clearMatchCacheForTests();
+  parseSettings.tsconfigMatchCache.clear();
   jest.clearAllMocks();
 });
 
 describe('getProjectConfigFiles', () => {
-  it('returns the project when given as a string', () => {
+  it('returns an array with just the project when given as a string', () => {
     const project = './tsconfig.eslint.json';
 
     const actual = getProjectConfigFiles(parseSettings, project);
 
-    expect(actual).toBe(project);
+    expect(actual).toEqual([project]);
   });
 
   it('returns the project when given as a string array', () => {
@@ -34,7 +33,7 @@ describe('getProjectConfigFiles', () => {
 
     const actual = getProjectConfigFiles(parseSettings, project);
 
-    expect(actual).toBe(project);
+    expect(actual).toEqual(project);
   });
 
   it('returns the project when given as undefined', () => {
@@ -42,7 +41,7 @@ describe('getProjectConfigFiles', () => {
 
     const actual = getProjectConfigFiles(parseSettings, project);
 
-    expect(actual).toBe(project);
+    expect(actual).toEqual(project);
   });
 
   describe('when caching hits', () => {
@@ -59,11 +58,14 @@ describe('getProjectConfigFiles', () => {
     it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
       mockExistsSync.mockImplementation(input => input === 'a/tsconfig.json');
 
+      const tsconfigMatchCache = new ExpiringCache<string, string>(1);
+
       // This should call to fs.existsSync three times: c, b, a
       getProjectConfigFiles(
         {
           filePath: './a/b/c/d.ts',
           tsconfigRootDir: './a',
+          tsconfigMatchCache,
         },
         true,
       );
@@ -74,6 +76,7 @@ describe('getProjectConfigFiles', () => {
         {
           filePath: './a/b/c/e/f.ts',
           tsconfigRootDir: './a',
+          tsconfigMatchCache,
         },
         true,
       );
@@ -85,11 +88,14 @@ describe('getProjectConfigFiles', () => {
     it('returns a distant parent tsconfig.json when it was previously cached by a different directory search', () => {
       mockExistsSync.mockImplementation(input => input === 'a/tsconfig.json');
 
+      const tsconfigMatchCache = new ExpiringCache<string, string>(1);
+
       // This should call to fs.existsSync 4 times: d, c, b, a
       getProjectConfigFiles(
         {
           filePath: './a/b/c/d/e.ts',
           tsconfigRootDir: './a',
+          tsconfigMatchCache,
         },
         true,
       );
@@ -100,6 +106,7 @@ describe('getProjectConfigFiles', () => {
         {
           filePath: './a/b/f/g/h.ts',
           tsconfigRootDir: './a',
+          tsconfigMatchCache,
         },
         true,
       );

@@ -1,6 +1,6 @@
-# Security Policiy
+# Security Policy
 
-The TypeScript ESLint team and community take all security vulnerabilities seriously.
+The typescript-eslint team and community take all security vulnerabilities seriously.
 If you have a vulnerability or other security issues to disclose:
 
 - Thank you very much, please do!

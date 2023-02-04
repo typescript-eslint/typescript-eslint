@@ -144,7 +144,7 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          node-version: ${{ matrix.node-version }}
       - name: Build
         uses: ./.github/actions/prepare-build
 
