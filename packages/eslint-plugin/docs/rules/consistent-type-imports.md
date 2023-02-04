@@ -90,8 +90,14 @@ const x: import('Bar') = 1;
 
 The `emitDecoratorMetadata` compiler option changes the code the TypeScript emits. In short - it causes TypeScript to create references to value imports when they are used in a type-only location. If you are using `emitDecoratorMetadata` then our tooling will require additional information in order for the rule to work correctly.
 
-If you are using [type-aware linting](https://typescript-eslint.io/docs/linting/typed-linting), then you just need to ensure that the `tsconfig.json` you've configured for `parserOptions.project` has `emitDecoratorMetadata` turned on. Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on [by setting `parserOptions.emitDecoratorMetadata` to `true`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/README.md#parseroptionsemitdecoratormetadata).
+If you are using [type-aware linting](https://typescript-eslint.io/linting/typed-linting), then you just need to ensure that the `tsconfig.json` you've configured for `parserOptions.project` has `emitDecoratorMetadata` turned on. Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on [by setting `parserOptions.emitDecoratorMetadata` to `true`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/README.md#parseroptionsemitdecoratormetadata).
 
 ## When Not To Use It
 
 - If you specifically want to use both import kinds for stylistic reasons, you can disable this rule.
+
+## Related To
+
+- [`no-import-type-side-effects`](./no-import-type-side-effects.md)
+- [`import/consistent-type-specifier-style`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/consistent-type-specifier-style.md)
+- [`import/no-duplicates` with `{"prefer-inline": true}`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-duplicates.md#inline-type-imports)

@@ -287,6 +287,32 @@ type T =
         },
       ],
     },
+    {
+      code: `type T = (| A) ${operator} B;`,
+      output: `type T = B ${operator} (| A);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
+    {
+      code: `type T = (& A) ${operator} B;`,
+      output: `type T = B ${operator} (& A);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
   ];
 };
 
@@ -333,6 +359,36 @@ type T = 1 | string | {} | A;
         },
       ],
     },
+    "type A<T> = string | (T extends number ? 'hi' : 'there');",
   ],
-  invalid: [...invalid('|'), ...invalid('&')],
+  invalid: [
+    ...invalid('|'),
+    ...invalid('&'),
+    {
+      code: 'type T = (B | C) & A;',
+      output: `type T = A & (B | C);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Intersection',
+            name: 'T',
+          },
+        },
+      ],
+    },
+    {
+      output: "type A<T> = string | (T extends number ? 'hi' : 'there');",
+      code: "type A<T> = (T extends number ? 'hi' : 'there') | string;",
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Union',
+            name: 'A',
+          },
+        },
+      ],
+    },
+  ],
 });

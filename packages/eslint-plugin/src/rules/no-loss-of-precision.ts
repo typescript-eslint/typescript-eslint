@@ -25,7 +25,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    /* istanbul ignore if */ if (baseRule === null) {
+    /* istanbul ignore if */ if (baseRule == null) {
       throw new Error(
         '@typescript-eslint/no-loss-of-precision requires at least ESLint v7.1.0',
       );

@@ -21,7 +21,10 @@ void (async function (): Promise<void> {
   // Install git hooks
   await $`yarn husky install`;
 
-  // // Build all the packages ready for use
+  // Clean any caches that may be invalid now
+  await $`yarn clean`;
+
+  // Build all the packages ready for use
   await $`yarn build`;
 })();
 

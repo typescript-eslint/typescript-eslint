@@ -16,7 +16,7 @@ function applyDefault<TUser extends readonly unknown[], TDefault extends TUser>(
     JSON.stringify(defaultOptions),
   ) as AsMutable<TDefault>;
 
-  if (userOptions === null || userOptions === undefined) {
+  if (userOptions == null) {
     return options;
   }
 

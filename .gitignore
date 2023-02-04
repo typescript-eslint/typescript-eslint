@@ -69,6 +69,9 @@ jspm_packages/
 # Editor-specific metadata folders
 .vs
 
+# nodejs cpu profiles
+*.cpuprofile
+
 .DS_Store
 .idea
 dist
@@ -79,3 +82,12 @@ _ts3.4
 
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
+
+# Yarn 3
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

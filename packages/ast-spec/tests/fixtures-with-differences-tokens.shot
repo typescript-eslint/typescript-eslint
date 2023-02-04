@@ -22,5 +22,9 @@ Set {
   "declaration/VariableDeclaration/fixtures/let-with-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/let-without-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/multiple-declarations/fixture.ts",
+  "element/AccessorProperty/fixtures/key-private/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-private/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-protected/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-public/fixture.ts",
 }
 `;

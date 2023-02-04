@@ -1,6 +1,6 @@
 {
   "background_color": "#443FD4",
-  "description": "Documentation for TypeScript ESLint: the tooling that enables ESLint to support TypeScript.",
+  "description": "Documentation for typescript-eslint: the tooling that enables ESLint to support TypeScript.",
   "display": "standalone",
   "icons": [
     {
@@ -16,9 +16,9 @@
     }
   ],
   "id": "/?source=pwa",
-  "name": "TypeScript ESLint",
+  "name": "typescript-eslint",
   "scope": "/",
-  "short_name": "TypeScript ESLint",
+  "short_name": "typescript-eslint",
   "start_url": "/?source=pwa",
   "theme_color": "#443FD4"
 }

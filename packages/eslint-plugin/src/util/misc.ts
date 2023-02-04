@@ -180,6 +180,42 @@ function formatWordList(words: string[]): string {
   return [words.slice(0, -1).join(', '), words.slice(-1)[0]].join(' and ');
 }
 
+/**
+ * Iterates the array in reverse and returns the index of the first element it
+ * finds which passes the predicate function.
+ *
+ * @returns Returns the index of the element if it finds it or -1 otherwise.
+ */
+function findLastIndex<T>(
+  members: T[],
+  predicate: (member: T) => boolean | undefined | null,
+): number {
+  let idx = members.length - 1;
+
+  while (idx >= 0) {
+    const valid = predicate(members[idx]);
+    if (valid) {
+      return idx;
+    }
+    idx--;
+  }
+
+  return -1;
+}
+
+function typeNodeRequiresParentheses(
+  node: TSESTree.TypeNode,
+  text: string,
+): boolean {
+  return (
+    node.type === AST_NODE_TYPES.TSFunctionType ||
+    node.type === AST_NODE_TYPES.TSConstructorType ||
+    node.type === AST_NODE_TYPES.TSConditionalType ||
+    (node.type === AST_NODE_TYPES.TSUnionType && text.startsWith('|')) ||
+    (node.type === AST_NODE_TYPES.TSIntersectionType && text.startsWith('&'))
+  );
+}
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -193,5 +229,7 @@ export {
   isDefinitionFile,
   MemberNameType,
   RequireKeys,
+  typeNodeRequiresParentheses,
   upperCaseFirst,
+  findLastIndex,
 };

@@ -1,12 +1,9 @@
-<h1 align="center">Utils for ESLint Plugins</h1>
+# `@typescript-eslint/experimental-utils`
 
-<p align="center">Utilities for working with TypeScript + ESLint together.</p>
+Utilities for working with TypeScript + ESLint together.
 
-<p align="center">
-    <img src="https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg" alt="CI" />
-    <a href="https://www.npmjs.com/package/@typescript-eslint/experimental-utils"><img src="https://img.shields.io/npm/v/@typescript-eslint/experimental-utils.svg?style=flat-square" alt="NPM Version" /></a>
-    <a href="https://www.npmjs.com/package/@typescript-eslint/experimental-utils"><img src="https://img.shields.io/npm/dm/@typescript-eslint/experimental-utils.svg?style=flat-square" alt="NPM Downloads" /></a>
-</p>
+[![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/experimental-utils.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/experimental-utils)
+[![NPM Downloads](https://img.shields.io/npm/dm/@typescript-eslint/experimental-utils.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/experimental-utils)
 
 ## Note
 
@@ -22,4 +19,4 @@ You should switch to importing from that non-experimental package instead.
 
 ## Contributing
 
-[See the contributing guide here](../../CONTRIBUTING.md)
+[See the contributing guide here](https://typescript-eslint.io).
