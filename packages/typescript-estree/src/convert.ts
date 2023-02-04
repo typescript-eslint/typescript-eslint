@@ -2101,7 +2101,7 @@ export class Converter {
           type: AST_NODE_TYPES.Literal,
           raw: rawValue,
           value: value,
-          bigint: value === null ? bigint : String(value),
+          bigint: value == null ? bigint : String(value),
           range,
         });
       }

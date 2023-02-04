@@ -1,10 +1,14 @@
+import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
+import * as globbyModule from 'globby';
 import { join, resolve } from 'path';
+import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
 import * as astConverterModule from '../../src/ast-converter';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import type { TSESTreeOptions } from '../../src/parser-options';
+import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
@@ -39,7 +43,7 @@ jest.mock('../../src/create-program/shared', () => {
 // Tests in CI by default run with lowercase program file names,
 // resulting in path.relative results starting with many "../"s
 jest.mock('typescript', () => {
-  const ts = jest.requireActual('typescript');
+  const ts = jest.requireActual<typeof typescriptModule>('typescript');
   return {
     ...ts,
     sys: {
@@ -49,10 +53,21 @@ jest.mock('typescript', () => {
   };
 });
 
+jest.mock('globby', () => {
+  const globby = jest.requireActual<typeof globbyModule>('globby');
+  return {
+    ...globby,
+    sync: jest.fn(globby.sync),
+  };
+});
+
+const hrtimeSpy = jest.spyOn(process, 'hrtime');
+
 const astConverterMock = jest.mocked(astConverterModule.astConverter);
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
+const globbySyncMock = jest.mocked(globbyModule.sync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
@@ -64,6 +79,7 @@ function alignErrorPath(error: Error): never {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  clearGlobResolutionCache();
 });
 
 describe('parseWithNodeMaps()', () => {
@@ -708,8 +724,69 @@ describe('parseAndGenerateServices', () => {
 
     it('ignores a folder when given a string glob', () => {
       const ignore = ['**/ignoreme/**'];
+      // cspell:disable-next-line
       expect(testParse('ignoreme', ignore)).toThrow();
+      // cspell:disable-next-line
       expect(testParse('includeme', ignore)).not.toThrow();
+    });
+  });
+
+  describe('cacheLifetime', () => {
+    describe('glob', () => {
+      function doParse(lifetime: CacheDurationSeconds): void {
+        parser.parseAndGenerateServices('const x = 1', {
+          cacheLifetime: {
+            glob: lifetime,
+          },
+          filePath: join(FIXTURES_DIR, 'file.ts'),
+          tsconfigRootDir: FIXTURES_DIR,
+          project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+        });
+      }
+
+      it('should cache globs if the lifetime is non-zero', () => {
+        doParse(30);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+        doParse(30);
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not cache globs if the lifetime is zero', () => {
+        doParse(0);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+        doParse(0);
+        // should call globby again because we specified immediate cache expiry
+        expect(globbySyncMock).toHaveBeenCalledTimes(2);
+      });
+
+      it('should evict the cache if the entry expires', () => {
+        hrtimeSpy.mockReturnValueOnce([1, 0]);
+
+        doParse(30);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+
+        // wow so much time has passed
+        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
+
+        doParse(30);
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(2);
+      });
+
+      it('should infinitely cache if passed Infinity', () => {
+        hrtimeSpy.mockReturnValueOnce([1, 0]);
+
+        doParse('Infinity');
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+
+        // wow so much time has passed
+        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
+
+        doParse('Infinity');
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });
