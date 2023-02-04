@@ -39,19 +39,6 @@ module.exports = {
     'custom-rules',
     {
       items: [
-        'contributing/issues',
-        'contributing/local-development',
-        'contributing/pull-requests',
-      ],
-      label: 'Contributing',
-      link: {
-        id: 'contributing',
-        type: 'doc',
-      },
-      type: 'category',
-    },
-    {
-      items: [
         'architecture/eslint-plugin',
         'architecture/eslint-plugin-tslint',
         'architecture/parser',
@@ -62,6 +49,20 @@ module.exports = {
       label: 'Architecture',
       link: {
         id: 'architecture',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      items: [
+        'contributing/discussions',
+        'contributing/issues',
+        'contributing/local-development',
+        'contributing/pull-requests',
+      ],
+      label: 'Contributing',
+      link: {
+        id: 'contributing',
         type: 'doc',
       },
       type: 'category',
@@ -81,7 +82,16 @@ module.exports = {
         },
         'maintenance/pull-requests',
         'maintenance/releases',
-        'maintenance/versioning',
+        {
+          collapsible: false,
+          items: ['maintenance/versioning/dependant-version-upgrades'],
+          label: 'Versioning',
+          link: {
+            id: 'maintenance/versioning',
+            type: 'doc',
+          },
+          type: 'category',
+        },
       ],
       label: 'Maintenance',
       link: {

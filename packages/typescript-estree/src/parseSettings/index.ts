@@ -98,7 +98,7 @@ export interface MutableParseSettings {
   /**
    * Normalized paths to provided project paths.
    */
-  projects: CanonicalPath[];
+  projects: readonly CanonicalPath[];
 
   /**
    * Whether to add the `range` property to AST nodes.
