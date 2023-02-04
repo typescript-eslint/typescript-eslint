@@ -6,18 +6,14 @@ description: 'Disallow duplicate constituents of union or intersection types.'
 >
 > See **https://typescript-eslint.io/rules/no-duplicate-type-constituents** for documentation.
 
-Although TypeScript supports duplicate union and intersection constituents, people usually expect members to have unique values within the same intersection and union. Duplicate values make the code redundant and generally reduce readability.
+Although TypeScript supports types ("constituents") in union and intersection types being duplicates of each other, developers typically expect each constituent to be unique within the same intersection and union.
+Duplicate values make the code overly verbose and generally reduce readability.
 
 ## Rule Details
 
 This rule disallows duplicate union or intersection constituents.
-
-It determines whether two types are equivalent in the following way.
-
-1. whether the syntax is exactly the same.
-2. whether TypeScript treats them as the same type.
-
-If either of the two conditions is satisfied, It treats the two types as duplicates.
+We consider types to be duplicate if they evaluate to the same result in the type system.
+For example, given `type A = string` and `type T = string | A`, this rule would flag `string | A`.
 
 <!--tabs-->
 
@@ -30,7 +26,7 @@ type T2 = A | A | B;
 
 type T3 = { a: string } & { a: string };
 
-type T4 = [1, 2, 3] & [1, 2, 3];
+type T4 = [1, 2, 3] | [1, 2, 3];
 
 type StringA = string;
 type StringB = string;
@@ -57,8 +53,8 @@ type T5 = StringA | NumberB;
 
 ### `ignoreIntersections`
 
-When set to true, duplicate checks on intersection type members are ignored.
+When set to true, duplicate checks on intersection type constituents are ignored.
 
 ### `ignoreUnions`
 
-When set to true, duplicate checks on union type members are ignored.
+When set to true, duplicate checks on union type constituents are ignored.
