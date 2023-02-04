@@ -1093,8 +1093,8 @@ if (y) {
       options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
-          This = "",
-          That = "a",
+          This = '',
+          That = 'a',
         }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (!theEnum) {
