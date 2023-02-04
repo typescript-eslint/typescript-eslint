@@ -147,7 +147,10 @@ export default util.createRule<[Options], MessageIds>({
               minimumDescriptionLength = defaultMinimumDescriptionLength,
             } = options;
             const format = descriptionFormats.get(fullDirective);
-            if (description.trim().length < minimumDescriptionLength) {
+            if (
+              util.getStringLength(description.trim()) <
+              minimumDescriptionLength
+            ) {
               context.report({
                 data: { directive, minimumDescriptionLength },
                 node: comment,

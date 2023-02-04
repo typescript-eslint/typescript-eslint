@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
+
+
+### Bug Fixes
+
+* **ast-spec:** a JSXEmptyExpression is not a possible JSXExpression ([#6321](https://github.com/typescript-eslint/typescript-eslint/issues/6321)) ([4b27777](https://github.com/typescript-eslint/typescript-eslint/commit/4b27777ed26cc83d6efc52a89b2d3fc6c01bc0d7))
+
+
+
+
+
+# [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
 ## [5.48.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.1...v5.48.2) (2023-01-16)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec

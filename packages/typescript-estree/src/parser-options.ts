@@ -1,4 +1,7 @@
-import type { DebugLevel } from '@typescript-eslint/types';
+import type {
+  CacheDurationSeconds,
+  DebugLevel,
+} from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
@@ -163,6 +166,25 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    */
   allowAutomaticSingleRunInference?: boolean;
 
+  /**
+   * Granular control of the expiry lifetime of our internal caches.
+   * You can specify the number of seconds as an integer number, or the string
+   * 'Infinity' if you never want the cache to expire.
+   *
+   * By default cache entries will be evicted after 30 seconds, or will persist
+   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
+   * infers that it is a single run.
+   */
+  cacheLifetime?: {
+    /**
+     * Glob resolution for `parserOptions.project` values.
+     */
+    glob?: CacheDurationSeconds;
+  };
+
+  /**
+   * Path to a file exporting a custom `ModuleResolver`.
+   */
   moduleResolver?: string;
 }
 

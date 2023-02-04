@@ -26,7 +26,7 @@ function getSimpleModel(data: unknown): ASTViewerModelSimple {
       value: String(data),
       type: 'regexp',
     };
-  } else if (typeof data === 'undefined' || data === null) {
+  } else if (data == null) {
     return {
       value: String(data),
       type: 'undefined',

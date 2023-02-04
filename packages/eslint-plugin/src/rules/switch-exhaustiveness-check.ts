@@ -120,7 +120,7 @@ export default createRule({
         const unionTypes = unionTypeParts(discriminantType);
         const caseTypes: Set<ts.Type> = new Set();
         for (const switchCase of node.cases) {
-          if (switchCase.test === null) {
+          if (switchCase.test == null) {
             // Switch has 'default' branch - do nothing.
             return;
           }

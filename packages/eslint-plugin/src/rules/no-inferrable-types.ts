@@ -147,7 +147,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         case AST_NODE_TYPES.TSNullKeyword:
-          return init.type === AST_NODE_TYPES.Literal && init.value === null;
+          return init.type === AST_NODE_TYPES.Literal && init.value == null;
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (

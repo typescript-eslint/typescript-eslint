@@ -1,5 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
@@ -30,18 +30,6 @@ interface ReportValueImport {
   valueSpecifiers: TSESTree.ImportClause[];
   unusedSpecifiers: TSESTree.ImportClause[];
   inlineTypeSpecifiers: TSESTree.ImportSpecifier[];
-}
-
-function isImportToken(
-  token: TSESTree.Token,
-): token is TSESTree.KeywordToken & { value: 'import' } {
-  return token.type === AST_TOKEN_TYPES.Keyword && token.value === 'import';
-}
-
-function isTypeToken(
-  token: TSESTree.Token,
-): token is TSESTree.IdentifierToken & { value: 'type' } {
-  return token.type === AST_TOKEN_TYPES.Identifier && token.value === 'type';
 }
 
 type MessageIds =
@@ -750,7 +738,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         if (report.typeSpecifiers.length === node.specifiers.length) {
           const importToken = util.nullThrows(
-            sourceCode.getFirstToken(node, isImportToken),
+            sourceCode.getFirstToken(node, util.isImportKeyword),
             util.NullThrowsReasons.MissingToken('import', node.type),
           );
           // import type Type from 'foo'
@@ -799,7 +787,7 @@ export default util.createRule<Options, MessageIds>({
       // import type Foo from 'foo'
       //       ^^^^^ insert
       const importToken = util.nullThrows(
-        sourceCode.getFirstToken(node, isImportToken),
+        sourceCode.getFirstToken(node, util.isImportKeyword),
         util.NullThrowsReasons.MissingToken('import', node.type),
       );
       yield fixer.insertTextAfter(importToken, ' type');
@@ -944,14 +932,14 @@ export default util.createRule<Options, MessageIds>({
       // import type Foo from 'foo'
       //        ^^^^ remove
       const importToken = util.nullThrows(
-        sourceCode.getFirstToken(node, isImportToken),
+        sourceCode.getFirstToken(node, util.isImportKeyword),
         util.NullThrowsReasons.MissingToken('import', node.type),
       );
       const typeToken = util.nullThrows(
         sourceCode.getFirstTokenBetween(
           importToken,
           node.specifiers[0]?.local ?? node.source,
-          isTypeToken,
+          util.isTypeKeyword,
         ),
         util.NullThrowsReasons.MissingToken('type', node.type),
       );
@@ -969,7 +957,7 @@ export default util.createRule<Options, MessageIds>({
       // import { type Foo } from 'foo'
       //          ^^^^ remove
       const typeToken = util.nullThrows(
-        sourceCode.getFirstToken(node, isTypeToken),
+        sourceCode.getFirstToken(node, util.isTypeKeyword),
         util.NullThrowsReasons.MissingToken('type', node.type),
       );
       const afterToken = util.nullThrows(

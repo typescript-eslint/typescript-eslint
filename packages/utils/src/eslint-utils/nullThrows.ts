@@ -18,7 +18,7 @@ function nullThrows<T>(value: T | null | undefined, message: string): T {
 
   // so ignore it in coverage metrics.
   /* istanbul ignore if */
-  if (value === null || value === undefined) {
+  if (value == null) {
     throw new Error(`Non-null Assertion Failed: ${message}`);
   }
 

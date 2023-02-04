@@ -1,6 +1,5 @@
 ---
 id: versioning
-sidebar_label: Versioning
 title: Versioning
 ---
 
@@ -15,11 +14,21 @@ Additionally, we promote to the `latest` tag on NPM once per week, **on Mondays 
 
 The latest version under the `latest` tag is:
 
-<a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser">
+  <img
+    src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square"
+    alt="NPM Version"
+  />
+</a>
 
 The latest version under the `canary` tag **(latest commit to `main`)** is:
 
-<a href="https://www.npmjs.com/package/@typescript-eslint/parser"><img src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser">
+  <img
+    src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square"
+    alt="NPM Version"
+  />
+</a>
 
 :::note
 The only exception to the automated publishes described above is when we are in the final phases of creating the next major version of the libraries - e.g. going from `1.x.x` to `2.x.x`.
@@ -27,6 +36,19 @@ During these periods, we manually publish `canary` releases until we are happy w
 :::
 
 ## Dependant Versions
+
+> See [Versioning > Dependant Version Upgrades](./versioning/dependant-version-upgrades.mdx) for maintenance steps to update these versions.
+
+### ESLint
+
+> The version range of ESLint currently supported is `^6.0.0 || ^7.0.0 || ^8.0.0`.
+
+We generally support at least the latest two major versions of ESLint.
+
+### Node
+
+This project makes an effort to support Active LTS and Maintenance LTS release statuses of Node according to [Node's release document](https://nodejs.org/en/about/releases).
+Support for specific Current status releases are considered periodically.
 
 ### TypeScript
 
@@ -54,18 +76,7 @@ Note that our packages have an open `peerDependency` requirement in order to all
 
 However if you use a non-supported version of TypeScript, the parser will log a warning to the console.
 If you want to disable this warning, you can configure this in your `parserOptions`.
-See: [`@typescript-eslint/parser`](./packages/parser/ TODO JOSH) and [`@typescript-eslint/typescript-estree`](./packages/typescript-estree/ TODO JOSH).
-
-### ESLint
-
-> The version range of ESLint currently supported is `^6.0.0 || ^7.0.0 || ^8.0.0`.
-
-These versions are what we test against.
-
-### Node
-
-This project makes an effort to support Active LTS and Maintenance LTS release statuses of Node according to [Node's release document](https://nodejs.org/en/about/releases).
-Support for specific Current status releases are considered periodically.
+See: [Parser > `warnOnUnsupportedTypeScriptVersion`](../architecture/Parser.mdx#warnonunsupportedtypescriptversion).
 
 ## Breaking Changes
 

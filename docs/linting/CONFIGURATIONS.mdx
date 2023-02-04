@@ -29,7 +29,7 @@ If your project does not enable [typed linting](./Typed_Linting.md), we suggest 
 
 ### Projects With Type Checking
 
-If your project enables [typed linting](./Typed_Linting.md), we suggest:
+If your project enables [typed linting](./Typed_Linting.md), we suggest enabling the [`recommended-type-checked`](#recommended-type-checked) and [`stylistic-type-checked`](#stylistic-type-checked) configurations to start:
 
 ```json
 {
@@ -104,6 +104,10 @@ Rules added in `strict` are more opinionated than recommended rules and might no
 
 See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts) for the exact contents of this config.
 
+:::caution
+We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
+
 ### `strict-type-checked`
 
 Contains all of `recommended`, `recommended-type-checked`, and `strict`, along with additional strict rules that require type information.
@@ -116,6 +120,10 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 ```
 
 See [`configs/strict-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked.ts) for the exact contents of this config.
+
+:::caution
+We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict-type-checked` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
 
 ### `stylistic`
 

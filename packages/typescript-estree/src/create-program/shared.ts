@@ -129,6 +129,19 @@ function getModuleResolver(moduleResolverPath: string): ModuleResolver {
   return moduleResolver;
 }
 
+/**
+ * Hash content for compare content.
+ * @param content hashed contend
+ * @returns hashed result
+ */
+function createHash(content: string): string {
+  // No ts.sys in browser environments.
+  if (ts.sys?.createHash) {
+    return ts.sys.createHash(content);
+  }
+  return content;
+}
+
 export {
   ASTAndDefiniteProgram,
   ASTAndNoProgram,
@@ -137,6 +150,7 @@ export {
   canonicalDirname,
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
+  createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
   getAstFromProgram,
