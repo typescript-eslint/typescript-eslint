@@ -71,23 +71,16 @@ Thanks goes to these wonderful people:
   <tr>
     <td align="center"><a href="https://github.com/Validark"><img src="https://avatars.githubusercontent.com/u/15217173?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Niles Salter</b></sub></a></td>
     <td align="center"><a href="https://github.com/pablobirukov"><img src="https://avatars.githubusercontent.com/u/1861546?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Pavel Birukov </b></sub></a></td>
-    <td align="center"><a href="https://github.com/mightyiam"><img src="https://avatars.githubusercontent.com/u/635591?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Shahar Dawn Or</b></sub></a></td>
+    <td align="center"><a href="https://github.com/mightyiam"><img src="https://avatars.githubusercontent.com/u/635591?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Shahar "Dawn" Or</b></sub></a></td>
     <td align="center"><a href="https://github.com/kmin-jeong"><img src="https://avatars.githubusercontent.com/u/53456037?v=4&size=100" width="100px;" alt=""/><br /><sub><b>kmin-jeong</b></sub></a></td>
-    <td align="center"><a href="https://github.com/43081j"><img src="https://avatars.githubusercontent.com/u/5677153?v=4&size=100" width="100px;" alt=""/><br /><sub><b>James Garbutt</b></sub></a></td>
+    <td align="center"><a href="https://github.com/koooge"><img src="https://avatars.githubusercontent.com/u/7419215?v=4&size=100" width="100px;" alt=""/><br /><sub><b>koooge</b></sub></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/jonathanrdelgado"><img src="https://avatars.githubusercontent.com/u/1841149?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Jonathan Delgado</b></sub></a></td>
-    <td align="center"><a href="https://github.com/flying-sheep"><img src="https://avatars.githubusercontent.com/u/291575?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Philipp A.</b></sub></a></td>
-    <td align="center"><a href="https://github.com/g-plane"><img src="https://avatars.githubusercontent.com/u/17216317?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Pig Fang</b></sub></a></td>
-    <td align="center"><a href="https://github.com/tadhgmister"><img src="https://avatars.githubusercontent.com/u/18615763?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Tadhg McDonald-Jensen</b></sub></a></td>
-    <td align="center"><a href="https://github.com/ThomasdenH"><img src="https://avatars.githubusercontent.com/u/3889750?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Thomas den Hollander</b></sub></a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/timkraut"><img src="https://avatars.githubusercontent.com/u/509669?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Tim Kraut</b></sub></a></td>
+    <td align="center"><a href="https://github.com/thomasmichaelwallace"><img src="https://avatars.githubusercontent.com/u/1954845?v=4&size=100" width="100px;" alt=""/><br /><sub><b>thomas michael wallace</b></sub></a></td>
+    <td align="center"><a href="https://github.com/juank1809"><img src="https://avatars.githubusercontent.com/u/82288753?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Juan García</b></sub></a></td>
+    <td align="center"><a href="https://github.com/danielnixon"><img src="https://avatars.githubusercontent.com/u/6418489?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Daniel Nixon</b></sub></a></td>
     <td align="center"><a href="https://github.com/yasarsid"><img src="https://avatars.githubusercontent.com/u/16225376?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Yasar Siddiqui</b></sub></a></td>
     <td align="center"><a href="https://github.com/magurotuna"><img src="https://avatars.githubusercontent.com/u/23649474?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Yusuke Tanaka</b></sub></a></td>
-    <td align="center"><a href="https://github.com/holazz"><img src="https://avatars.githubusercontent.com/u/23100055?v=4&size=100" width="100px;" alt=""/><br /><sub><b>zz</b></sub></a></td>
-  </tr>
 </table>
 
 <!-- markdownlint-restore -->

@@ -1,8 +1,4 @@
-import type {
-  ParserServices,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SymbolFlags } from 'typescript';
 
@@ -74,6 +70,28 @@ export default util.createRule<Options, MessageIds>({
     const sourceExportsMap: { [key: string]: SourceExports } = {};
     const parserServices = util.getParserServices(context);
 
+    /**
+     * Helper for identifying if an export specifier resolves to a
+     * JavaScript value or a TypeScript type.
+     *
+     * @returns True/false if is a type or not, or undefined if the specifier
+     * can't be resolved.
+     */
+    function isSpecifierTypeBased(
+      specifier: TSESTree.ExportSpecifier,
+    ): boolean | undefined {
+      const checker = parserServices.program.getTypeChecker();
+      const node = parserServices.esTreeNodeToTSNodeMap.get(specifier.exported);
+      const symbol = checker.getSymbolAtLocation(node);
+      const aliasedSymbol = checker.getAliasedSymbol(symbol!);
+
+      if (!aliasedSymbol || aliasedSymbol.escapedName === 'unknown') {
+        return undefined;
+      }
+
+      return !(aliasedSymbol.flags & SymbolFlags.Value);
+    }
+
     return {
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
         // Coerce the source into a string for use as a lookup entry.
@@ -111,7 +129,7 @@ export default util.createRule<Options, MessageIds>({
               continue;
             }
 
-            const isTypeBased = isSpecifierTypeBased(parserServices, specifier);
+            const isTypeBased = isSpecifierTypeBased(specifier);
 
             if (isTypeBased === true) {
               typeBasedSpecifiers.push(specifier);
@@ -197,29 +215,6 @@ export default util.createRule<Options, MessageIds>({
     };
   },
 });
-
-/**
- * Helper for identifying if an export specifier resolves to a
- * JavaScript value or a TypeScript type.
- *
- * @returns True/false if is a type or not, or undefined if the specifier
- * can't be resolved.
- */
-function isSpecifierTypeBased(
-  parserServices: ParserServices,
-  specifier: TSESTree.ExportSpecifier,
-): boolean | undefined {
-  const checker = parserServices.program.getTypeChecker();
-  const node = parserServices.esTreeNodeToTSNodeMap.get(specifier.exported);
-  const symbol = checker.getSymbolAtLocation(node);
-  const aliasedSymbol = checker.getAliasedSymbol(symbol!);
-
-  if (!aliasedSymbol || aliasedSymbol.escapedName === 'unknown') {
-    return undefined;
-  }
-
-  return !(aliasedSymbol.flags & SymbolFlags.Value);
-}
 
 /**
  * Inserts "type" into an export.

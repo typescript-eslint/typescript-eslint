@@ -89,10 +89,8 @@ export default util.createRule<Options, MessageIds>({
 
     const validators = parseOptions(context);
 
-    // getParserServices(context, false) -- dirty hack to work around the docs checker test...
-    const compilerOptions = util
-      .getParserServices(context, true)
-      .program.getCompilerOptions();
+    const compilerOptions =
+      util.getParserServices(context, true).program?.getCompilerOptions() ?? {};
     function handleMember(
       validator: ValidatorFunction | null,
       node:
@@ -126,7 +124,9 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.TSParameterProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
-      if (node.accessibility) {
+      if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
+        modifiers.add(Modifiers['#private']);
+      } else if (node.accessibility) {
         modifiers.add(Modifiers[node.accessibility]);
       } else {
         modifiers.add(Modifiers.public);

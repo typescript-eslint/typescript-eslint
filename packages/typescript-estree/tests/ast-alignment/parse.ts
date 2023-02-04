@@ -4,6 +4,7 @@ import type babelParser from '@babel/parser';
 import type { ParserPlugin } from '@babel/parser';
 import type { File } from '@babel/types';
 import type { TSESTree } from '@typescript-eslint/types';
+import * as path from 'path';
 
 import type { TSError } from '../../src/node-utils';
 import type { AST } from '../../src/parser';
@@ -50,6 +51,12 @@ function parseWithBabelParser(text: string, jsx = true): File {
   });
 }
 
+const emptyProjectPath = path.resolve(
+  __dirname,
+  '..',
+  'fixtures',
+  'simpleProject',
+);
 function parseWithTypeScriptESTree(text: string, jsx = true): AST<any> {
   try {
     const result = parseAndGenerateServices(text, {
@@ -65,6 +72,9 @@ function parseWithTypeScriptESTree(text: string, jsx = true): AST<any> {
        * forgiving.
        */
       errorOnTypeScriptSyntacticAndSemanticIssues: true,
+      project: [path.join(emptyProjectPath, 'tsconfig.json')],
+      tsconfigRootDir: emptyProjectPath,
+      filePath: path.join(emptyProjectPath, jsx ? 'file-jsx.tsx' : 'file.ts'),
       jsx,
     });
     return result.ast;
