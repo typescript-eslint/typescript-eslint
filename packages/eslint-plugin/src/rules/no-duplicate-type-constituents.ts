@@ -22,11 +22,11 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
   if (
     actualNode &&
     expectedNode &&
-    typeof actualNode == 'object' &&
-    typeof expectedNode == 'object'
+    typeof actualNode === 'object' &&
+    typeof expectedNode === 'object'
   ) {
     if (Array.isArray(actualNode) && Array.isArray(expectedNode)) {
-      if (actualNode.length != expectedNode.length) {
+      if (actualNode.length !== expectedNode.length) {
         return false;
       }
       return !actualNode.some(
