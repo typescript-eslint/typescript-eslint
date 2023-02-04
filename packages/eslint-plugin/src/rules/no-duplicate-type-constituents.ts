@@ -79,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       duplicate:
-        '{{type}} type member {{duplicated}} is duplicated with {{previous}}.',
+        '{{type}} type constituents {{duplicated}} is duplicated with {{previous}}.',
     },
     schema: [
       {
