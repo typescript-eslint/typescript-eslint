@@ -41,6 +41,6 @@ export function getEnumTypes(
 ): ts.Type[] {
   return tsutils
     .unionTypeParts(type)
-    .filter(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral))
+    .filter(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLike))
     .map(type => getBaseEnumType(typeChecker, type));
 }

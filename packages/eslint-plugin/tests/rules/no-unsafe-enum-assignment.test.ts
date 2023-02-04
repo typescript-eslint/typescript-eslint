@@ -112,6 +112,27 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
       enum Fruit {
         Apple,
       }
+      const x: { prop: Fruit } = { prop: Fruit.Apple };
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      const values = { prop: Fruit.Apple };
+      const x: { prop: Fruit } = { ...values };
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      const values = { unrelated: 0, prop: 1 };
+      const overrides = { prop: Fruit.Apple };
+      const x: { prop: Fruit } = { ...values, ...overrides };
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
       declare function useFruit(fruit: Fruit): void;
       useFruit(Fruit.Apple);
     `,
@@ -240,6 +261,48 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
       }
       declare function useFruits(a: number, ...fruits: Fruit[]): void;
       useFruit(1, Fruit.Apple, Fruit.Banana);
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      class F {
+        prop: Fruit = Fruit.Apple;
+      }
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      interface F {
+        prop: Fruit;
+      }
+      class Foo implements F {
+        prop = Fruit.Apple;
+      }
+    `,
+    `
+      declare enum Fruit {
+        Apple,
+      }
+      interface F {
+        prop: Fruit;
+      }
+      class Foo implements F {
+        prop = Fruit.Apple;
+      }
+    `,
+    `
+      declare enum Fruit {
+        Apple,
+      }
+      interface Unrelated {
+        other: Fruit;
+      }
+      class Foo implements Unrelated {
+        other = Fruit.Apple;
+        prop = 1;
+      }
     `,
   ],
   invalid: [
@@ -408,6 +471,154 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
         enum Fruit {
           Apple,
         }
+        const x: { prop: Fruit } = { prop: 1 };
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 38,
+          endColumn: 42,
+          line: 5,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const values = { prop: 1 };
+        const x: { prop: Fruit } = { ...values };
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 49,
+          line: 6,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare const values: { prop: 1 };
+        const x: { prop: Fruit } = { ...values };
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 49,
+          line: 6,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare const values: { prop: number };
+        const x: { prop: Fruit } = { ...values };
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 49,
+          line: 6,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const values = { prop: 1 };
+        const unrelated = { other: 2 };
+        const x: { prop: Fruit } = { ...unrelated, ...values };
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 63,
+          line: 7,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const values = { prop: 1 };
+        const unrelated = { other: 2 };
+        const x: { prop: Fruit } = { ...values, ...unrelated };
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 63,
+          line: 7,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const values = { prop: 1 };
+        const overridden = { prop: Fruit.Apple };
+        const x: { prop: Fruit } = { ...overridden, ...values };
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 64,
+          line: 7,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const values = { prop: 1 };
+        const x: { prop: Fruit } = values;
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 42,
+          line: 6,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    // array of objects
+    // object nesting
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
         declare function useFruit(fruit: Fruit): void;
         useFruit(0);
       `,
@@ -518,6 +729,114 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
           column: 20,
           endColumn: 21,
           line: 6,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        class F {
+          prop: Fruit = 1;
+        }
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 26,
+          line: 6,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        interface F {
+          prop: Fruit;
+        }
+        class Foo implements F {
+          prop = 1;
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 19,
+          line: 9,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        declare enum Fruit {
+          Apple,
+        }
+        interface F {
+          prop: Fruit;
+        }
+        class Foo implements F {
+          prop = 1;
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 19,
+          line: 9,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        declare enum Fruit {
+          Apple,
+        }
+        interface F {
+          prop: Fruit;
+        }
+        interface Unrelated {
+          other: Fruit;
+        }
+        class Foo implements F, Unrelated {
+          prop = 1;
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 19,
+          line: 12,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        declare enum Fruit {
+          Apple,
+        }
+        interface F {
+          prop: Fruit;
+        }
+        interface Unrelated {
+          other: Fruit;
+        }
+        class Foo implements Unrelated, F {
+          prop = 1;
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 19,
+          line: 12,
           messageId: 'provided',
         },
       ],

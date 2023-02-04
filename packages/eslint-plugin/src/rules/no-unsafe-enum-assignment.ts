@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -12,7 +12,9 @@ type MakeRequiredNonNullable<Base, Key extends keyof Base> = Omit<Base, Key> & {
 const ALLOWED_TYPES_FOR_ANY_ENUM_ARGUMENT =
   ts.TypeFlags.Unknown | ts.TypeFlags.Number | ts.TypeFlags.String;
 
-export default util.createRule({
+type MessageIds = 'operation' | 'provided' | 'providedProperty';
+
+export default util.createRule<[], MessageIds>({
   name: 'no-unsafe-enum-assignment',
   meta: {
     type: 'suggestion',
@@ -25,11 +27,14 @@ export default util.createRule({
       operation:
         'This {{ operator }} may change the enum value to one not present in its enum type.',
       provided: 'Unsafe non enum type provided to an enum value.',
+      providedProperty:
+        'Unsafe non enum type provided to an enum value for property {{ property }}.',
     },
     schema: [],
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.getSourceCode();
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
@@ -258,22 +263,100 @@ export default util.createRule({
 
     /**
      * Checks whether a provided node mismatches
-     *
-     * @param provided
-     * @param recipient
      */
     function compareProvidedNode(
       provided: TSESTree.Node,
       recipient: TSESTree.Node,
     ): void {
-      const providedType = getTypeFromNode(provided);
-      const recipientType = getTypeFromNode(recipient);
+      compareProvidedType(
+        provided,
+        getTypeFromNode(provided),
+        getTypeFromNode(recipient),
+      );
+    }
 
+    /**
+     * Checks whether a provided type mismatches
+     */
+    function compareProvidedType(
+      provided: TSESTree.Node,
+      providedType: ts.Type,
+      recipientType: ts.Type,
+      data: Omit<TSESLint.ReportDescriptor<MessageIds>, 'node'> = {
+        messageId: 'provided',
+      },
+    ): void {
       if (isProvidedTypeUnsafe(providedType, recipientType)) {
         context.report({
-          messageId: 'provided',
           node: provided,
+          ...data,
         });
+      }
+    }
+
+    const alreadyCheckedObjects = new Set<TSESTree.Node>();
+
+    function deduplicateObjectsCheck(node: TSESTree.Node): boolean {
+      if (alreadyCheckedObjects.has(node)) {
+        return false;
+      }
+
+      alreadyCheckedObjects.add(node);
+      return true;
+    }
+
+    function compareObjectType(node: TSESTree.Expression): void {
+      if (!deduplicateObjectsCheck(node)) {
+        return;
+      }
+
+      const type = getTypeFromNode(node);
+      const contextualType =
+        typeChecker.getContextualType(
+          parserServices.esTreeNodeToTSNodeMap.get(node) as ts.Expression,
+        ) ?? type;
+
+      for (const property of type.getProperties()) {
+        if (!property.valueDeclaration) {
+          continue;
+        }
+
+        const contextualProperty = contextualType.getProperty(property.name);
+        if (!contextualProperty?.valueDeclaration) {
+          continue;
+        }
+
+        const propertyValueDeclaration =
+          parserServices.tsNodeToESTreeNodeMap.get(
+            property.valueDeclaration,
+          ) as TSESTree.PropertyDefinition | undefined;
+
+        const propertyValueType = typeChecker.getTypeOfSymbolAtLocation(
+          property,
+          property.valueDeclaration,
+        );
+        const contextualValueType = typeChecker.getTypeOfSymbolAtLocation(
+          contextualProperty,
+          contextualProperty.valueDeclaration,
+        );
+
+        // If this is an inline object literal, we're able to complain on the specific property key
+        if (propertyValueDeclaration?.parent === node) {
+          compareProvidedType(
+            propertyValueDeclaration.key,
+            propertyValueType,
+            contextualValueType,
+          );
+        }
+        // Otherwise, complain on the whole node and name the property
+        else {
+          {
+            compareProvidedType(node, propertyValueType, contextualValueType, {
+              data: { name: property.name },
+              messageId: 'providedProperty',
+            });
+          }
+        }
       }
     }
 
@@ -320,6 +403,54 @@ export default util.createRule({
         }
       },
 
+      'PropertyDefinition[typeAnnotation][value]'(
+        node: MakeRequiredNonNullable<
+          TSESTree.PropertyDefinition,
+          'typeAnnotation' | 'value'
+        >,
+      ): void {
+        compareProvidedNode(node.value, node.key);
+      },
+
+      'ClassBody > PropertyDefinition[value]:not([typeAnnotation])'(
+        node: TSESTree.PropertyDefinition & {
+          parent: TSESTree.ClassBody;
+        },
+      ): void {
+        const parentClass = node.parent.parent as
+          | TSESTree.ClassDeclaration
+          | TSESTree.ClassExpression;
+        if (!parentClass.implements) {
+          return;
+        }
+
+        const { name } = util.getNameFromMember(node, sourceCode);
+
+        for (const baseName of parentClass.implements) {
+          const baseType = getTypeFromNode(baseName);
+          const basePropertySymbol = typeChecker.getPropertyOfType(
+            baseType,
+            name,
+          );
+          if (!basePropertySymbol) {
+            continue;
+          }
+
+          compareProvidedType(
+            node.value!,
+            getTypeFromNode(node.value!),
+            typeChecker.getTypeOfSymbolAtLocation(
+              basePropertySymbol,
+              basePropertySymbol.valueDeclaration as ts.Declaration,
+            ),
+          );
+        }
+      },
+
+      ObjectExpression(node): void {
+        compareObjectType(node);
+      },
+
       UpdateExpression(node): void {
         const argumentType = getTypeFromNode(node.argument);
         if (argumentType && hasEnumType(argumentType)) {
@@ -333,10 +464,19 @@ export default util.createRule({
         }
       },
 
-      'VariableDeclarator[id.annotation][init]'(
-        node: MakeRequiredNonNullable<TSESTree.VariableDeclarator, 'init'>,
+      'VariableDeclarator[id.typeAnnotation][init]'(
+        node: TSESTree.VariableDeclarator & {
+          id: {
+            typeAnnotation: object;
+          };
+          init: object;
+        },
       ): void {
-        compareProvidedNode(node.init, node.id);
+        if (hasEnumType(getTypeFromNode(node.id.typeAnnotation))) {
+          compareProvidedNode(node.init, node.id);
+        } else {
+          compareObjectType(node.init);
+        }
       },
     };
   },
