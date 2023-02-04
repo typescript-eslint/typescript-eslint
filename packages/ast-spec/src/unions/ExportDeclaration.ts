@@ -8,6 +8,7 @@ import type {
 } from '../declaration/FunctionDeclaration/spec';
 import type { TSDeclareFunction } from '../declaration/TSDeclareFunction/spec';
 import type { TSEnumDeclaration } from '../declaration/TSEnumDeclaration/spec';
+import type { TSImportEqualsDeclaration } from '../declaration/TSImportEqualsDeclaration/spec';
 import type { TSInterfaceDeclaration } from '../declaration/TSInterfaceDeclaration/spec';
 import type { TSModuleDeclaration } from '../declaration/TSModuleDeclaration/spec';
 import type { TSTypeAliasDeclaration } from '../declaration/TSTypeAliasDeclaration/spec';
@@ -37,6 +38,7 @@ export type NamedExportDeclarations =
   | FunctionDeclarationWithOptionalName
   | TSDeclareFunction
   | TSEnumDeclaration
+  | TSImportEqualsDeclaration
   | TSInterfaceDeclaration
   | TSModuleDeclaration
   | TSTypeAliasDeclaration
