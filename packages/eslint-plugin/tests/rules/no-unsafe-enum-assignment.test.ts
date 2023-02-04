@@ -133,6 +133,13 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
       enum Fruit {
         Apple,
       }
+      const values = { prop: Fruit.Apple };
+      const x: { prop: Fruit }[] = [{ ...values }];
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
       declare function useFruit(fruit: Fruit): void;
       useFruit(Fruit.Apple);
     `,
@@ -266,6 +273,22 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
       enum Fruit {
         Apple,
       }
+      declare function giveFruit(): Fruit {
+        return Fruit.Apple;
+      };
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare function giveFruit(): Fruit[] {
+        return [Fruit.Apple];
+      };
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
       class F {
         prop: Fruit = Fruit.Apple;
       }
@@ -304,6 +327,16 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
         prop = 1;
       }
     `,
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const Component = (props: { fruit: Fruit }) => null;
+        <Component fruit={Fruit.Apple} />;
+      `,
+      filename: 'react.tsx',
+    },
   ],
   invalid: [
     {
@@ -612,8 +645,25 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
         },
       ],
     },
-    // array of objects
-    // object nesting
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const values = { prop: 1 };
+        const x: { prop: Fruit }[] = [values];
+      `,
+      errors: [
+        {
+          data: { name: 'prop' },
+          column: 36,
+          endColumn: 42,
+          line: 6,
+          messageId: 'providedProperty',
+        },
+      ],
+    },
+    // todo: handle object nesting, and nested arrays of objects...
     {
       code: `
         enum Fruit {
@@ -712,6 +762,44 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
           column: 35,
           endColumn: 36,
           line: 6,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare function giveFruit(): Fruit {
+          return 1;
+        };
+      `,
+      errors: [
+        {
+          // (todo: correct numbers)
+          column: -1,
+          endColumn: -1,
+          line: -1,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare function giveFruit(): Fruit[] {
+          return [1];
+        };
+      `,
+      errors: [
+        {
+          // (todo: correct numbers)
+          column: -1,
+          endColumn: -1,
+          line: -1,
           messageId: 'provided',
         },
       ],
@@ -841,5 +929,43 @@ ruleTester.run('no-unsafe-enum-assignment', rule, {
         },
       ],
     },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const Component = (props: { fruit: Fruit }) => null;
+        <Component fruit={1} />;
+      `,
+      errors: [
+        {
+          // (todo: correct numbers)
+          column: -1,
+          endColumn: -1,
+          line: -1,
+          messageId: 'provided',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        const Component = (props: { fruit: Fruit[] }) => null;
+        <Component fruit={[1]} />;
+      `,
+      errors: [
+        {
+          // (todo: correct numbers)
+          column: -1,
+          endColumn: -1,
+          line: -1,
+          messageId: 'provided',
+        },
+      ],
+    },
   ],
 });
+
+// For more todos: https://github.com/typescript-eslint/typescript-eslint/pull/6091#issuecomment-1407857817

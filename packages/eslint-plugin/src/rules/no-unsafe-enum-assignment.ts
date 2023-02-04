@@ -1,4 +1,4 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -41,9 +41,9 @@ export default util.createRule<[], MessageIds>({
     /**
      * Similar to `getEnumTypes`, but returns early as soon as it finds one.
      */
-    function hasEnumType(type: ts.Type): boolean {
+    function hasEnumType(node: TSESTree.Node): boolean {
       return tsutils
-        .unionTypeParts(type)
+        .unionTypeParts(getTypeFromNode(node))
         .some(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral));
     }
 
@@ -361,8 +361,12 @@ export default util.createRule<[], MessageIds>({
     }
 
     return {
-      AssignmentExpression(node): void {
-        compareProvidedNode(node.right, node.left);
+      AssignmentPattern(node): void {
+        if (hasEnumType(node.left)) {
+          compareProvidedNode(node.left, node.right);
+        } else {
+          compareObjectType(node.right);
+        }
       },
 
       'CallExpression, NewExpression'(
@@ -401,15 +405,6 @@ export default util.createRule<[], MessageIds>({
             });
           }
         }
-      },
-
-      'PropertyDefinition[typeAnnotation][value]'(
-        node: MakeRequiredNonNullable<
-          TSESTree.PropertyDefinition,
-          'typeAnnotation' | 'value'
-        >,
-      ): void {
-        compareProvidedNode(node.value, node.key);
       },
 
       'ClassBody > PropertyDefinition[value]:not([typeAnnotation])'(
@@ -451,9 +446,17 @@ export default util.createRule<[], MessageIds>({
         compareObjectType(node);
       },
 
+      'PropertyDefinition[typeAnnotation][value]'(
+        node: MakeRequiredNonNullable<
+          TSESTree.PropertyDefinition,
+          'typeAnnotation' | 'value'
+        >,
+      ): void {
+        compareProvidedNode(node.value, node.key);
+      },
+
       UpdateExpression(node): void {
-        const argumentType = getTypeFromNode(node.argument);
-        if (argumentType && hasEnumType(argumentType)) {
+        if (hasEnumType(node.argument)) {
           context.report({
             data: {
               operator: node.operator,
@@ -472,7 +475,7 @@ export default util.createRule<[], MessageIds>({
           init: object;
         },
       ): void {
-        if (hasEnumType(getTypeFromNode(node.id.typeAnnotation))) {
+        if (hasEnumType(node.id.typeAnnotation)) {
           compareProvidedNode(node.init, node.id);
         } else {
           compareObjectType(node.init);
