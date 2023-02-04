@@ -21,7 +21,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
 
   if (typeof options === 'string') {
     functions = options !== 'nofunc';
-  } else if (typeof options === 'object' && options !== null) {
+  } else if (typeof options === 'object' && options != null) {
     functions = options.functions !== false;
     classes = options.classes !== false;
     enums = options.enums !== false;

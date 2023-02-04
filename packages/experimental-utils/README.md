@@ -19,4 +19,4 @@ You should switch to importing from that non-experimental package instead.
 
 ## Contributing
 
-[See the contributing guide here](../../CONTRIBUTING.md)
+[See the contributing guide here](https://typescript-eslint.io).

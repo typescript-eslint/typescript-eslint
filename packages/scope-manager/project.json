@@ -69,7 +69,7 @@
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
-        "commands": ["yatn tsx tools/generate-lib.ts"]
+        "commands": ["yarn tsx tools/generate-lib.ts"]
       }
     }
   },

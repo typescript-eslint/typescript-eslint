@@ -241,7 +241,7 @@ export default util.createRule<Options, MessageIds>({
               }
 
               checkMethodAndReport(
-                node,
+                property.key,
                 initTypes.getProperty(property.key.name),
               );
             }
