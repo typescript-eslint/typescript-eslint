@@ -87,7 +87,7 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       Program(node): void {
-        if (lib === 'always' && path === 'always' && types == 'always') {
+        if (lib === 'always' && path === 'always' && types === 'always') {
           return;
         }
         programNode = node;
