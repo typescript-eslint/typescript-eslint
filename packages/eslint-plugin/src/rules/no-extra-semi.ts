@@ -9,7 +9,7 @@ type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 export default util.createRule<Options, MessageIds>({
   name: 'no-extra-semi',
   meta: {
-    type: 'layout',
+    type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary semicolons',
       extendsBaseRule: true,
