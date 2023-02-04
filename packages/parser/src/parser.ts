@@ -9,10 +9,8 @@ import type {
   ParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
-import {
-  parseAndGenerateServices,
-  visitorKeys,
-} from '@typescript-eslint/typescript-estree';
+import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import debug from 'debug';
 import type * as ts from 'typescript';
 import { ScriptTarget } from 'typescript';
@@ -43,14 +41,14 @@ function validateBoolean(
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
-    return compilerOptions.lib.reduce((acc, lib) => {
+    return compilerOptions.lib.reduce<Lib[]>((acc, lib) => {
       const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
       if (match) {
         acc.push(match[1] as Lib);
       }
 
       return acc;
-    }, [] as Lib[]);
+    }, []);
   }
 
   const target = compilerOptions.target ?? ScriptTarget.ES5;
@@ -128,7 +126,7 @@ function parseForESLint(
   ast.sourceType = options.sourceType;
 
   let emitDecoratorMetadata = options.emitDecoratorMetadata === true;
-  if (services.hasFullTypeInformation) {
+  if (services.program) {
     // automatically apply the options configured for the program
     const compilerOptions = services.program.getCompilerOptions();
     if (analyzeOptions.lib == null) {

@@ -47,7 +47,7 @@ export default createRule({
      * Check if a given node is a string.
      * @param node The node to check.
      */
-    function isStringType(node: TSESTree.LeftHandSideExpression): boolean {
+    function isStringType(node: TSESTree.Expression): boolean {
       const objectType = typeChecker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );
@@ -60,7 +60,7 @@ export default createRule({
      */
     function isNull(node: TSESTree.Node): node is TSESTree.Literal {
       const evaluated = getStaticValue(node, globalScope);
-      return evaluated != null && evaluated.value === null;
+      return evaluated != null && evaluated.value == null;
     }
 
     /**

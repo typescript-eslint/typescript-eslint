@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures element AccessorProperty with-annotation-no-value Babel - Error 1`] = `[SyntaxError: Missing semicolon. (2:15)]`;

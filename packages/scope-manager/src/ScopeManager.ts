@@ -143,7 +143,7 @@ class ScopeManager {
   protected nestScope<T extends Scope>(scope: T): T;
   protected nestScope(scope: Scope): Scope {
     if (scope instanceof GlobalScope) {
-      assert(this.currentScope === null);
+      assert(this.currentScope == null);
       this.globalScope = scope;
     }
     this.currentScope = scope;

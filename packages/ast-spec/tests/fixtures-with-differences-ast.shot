@@ -31,6 +31,9 @@ Set {
   "element/AccessorProperty/fixtures/key-computed-string/fixture.ts",
   "element/AccessorProperty/fixtures/key-private/fixture.ts",
   "element/AccessorProperty/fixtures/key-string/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-abstract/fixture.ts",
+  "element/AccessorProperty/fixtures/modifier-declare/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-override/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-private/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-protected/fixture.ts",
@@ -39,6 +42,8 @@ Set {
   "element/AccessorProperty/fixtures/modifier-static/fixture.ts",
   "element/AccessorProperty/fixtures/no-annotation-no-value/fixture.ts",
   "element/AccessorProperty/fixtures/no-annotation-with-value/fixture.ts",
+  "element/AccessorProperty/fixtures/with-annotation-no-value/fixture.ts",
+  "element/AccessorProperty/fixtures/with-annotation-with-value/fixture.ts",
   "expression/TSSatisfiesExpression/fixtures/arrow-func-with-parentheses/fixture.ts",
 }
 `;

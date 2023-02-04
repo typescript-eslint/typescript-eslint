@@ -638,7 +638,7 @@ type Foo = string | {
           })
           .filter(
             (error): error is TSESLint.TestCaseError<MessageIds> =>
-              error !== null,
+              error != null,
           ),
       };
       if (invalid.errors.length > 0) {
