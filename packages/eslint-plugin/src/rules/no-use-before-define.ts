@@ -21,7 +21,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
 
   if (typeof options === 'string') {
     functions = options !== 'nofunc';
-  } else if (typeof options === 'object' && options !== null) {
+  } else if (typeof options === 'object' && options != null) {
     functions = options.functions !== false;
     classes = options.classes !== false;
     enums = options.enums !== false;
@@ -64,7 +64,7 @@ function isOuterEnum(
   reference: TSESLint.Scope.Reference,
 ): boolean {
   return (
-    variable.defs[0].type == DefinitionType.TSEnumName &&
+    variable.defs[0].type === DefinitionType.TSEnumName &&
     variable.scope.variableScope !== reference.from.variableScope
   );
 }
@@ -116,9 +116,6 @@ function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
 
     case AST_NODE_TYPES.TSQualifiedName:
     case AST_NODE_TYPES.Identifier:
-      if (!node.parent) {
-        return false;
-      }
       return referenceContainsTypeQuery(node.parent);
 
     default:
@@ -196,7 +193,7 @@ function isInInitializer(
     return false;
   }
 
-  let node = variable.identifiers[0].parent;
+  let node: TSESTree.Node | undefined = variable.identifiers[0].parent;
   const location = reference.identifier.range[1];
 
   while (node) {

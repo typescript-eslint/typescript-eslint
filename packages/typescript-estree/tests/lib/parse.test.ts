@@ -1,10 +1,14 @@
+import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
+import * as globbyModule from 'globby';
 import { join, resolve } from 'path';
+import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
 import * as astConverterModule from '../../src/ast-converter';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import type { TSESTreeOptions } from '../../src/parser-options';
+import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
@@ -38,7 +42,7 @@ jest.mock('../../src/create-program/shared', () => {
 // Tests in CI by default run with lowercase program file names,
 // resulting in path.relative results starting with many "../"s
 jest.mock('typescript', () => {
-  const ts = jest.requireActual('typescript');
+  const ts = jest.requireActual<typeof typescriptModule>('typescript');
   return {
     ...ts,
     sys: {
@@ -48,10 +52,21 @@ jest.mock('typescript', () => {
   };
 });
 
+jest.mock('globby', () => {
+  const globby = jest.requireActual<typeof globbyModule>('globby');
+  return {
+    ...globby,
+    sync: jest.fn(globby.sync),
+  };
+});
+
+const hrtimeSpy = jest.spyOn(process, 'hrtime');
+
 const astConverterMock = jest.mocked(astConverterModule.astConverter);
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
+const globbySyncMock = jest.mocked(globbyModule.sync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
@@ -63,6 +78,7 @@ function alignErrorPath(error: Error): never {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  clearGlobResolutionCache();
 });
 
 describe('parseWithNodeMaps()', () => {
@@ -196,39 +212,6 @@ describe('parseWithNodeMaps()', () => {
 });
 
 describe('parseAndGenerateServices', () => {
-  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
-    const code = '@test const foo = 2';
-    const options: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true,
-    };
-
-    it('should throw on invalid option when used in parseWithNodeMaps', () => {
-      expect(() => {
-        parser.parseWithNodeMaps(code, options);
-      }).toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should not throw when used in parseAndGenerateServices', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).not.toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should error on invalid code', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).toThrow('Decorators are not valid here.');
-    });
-  });
-
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
@@ -321,16 +304,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
-          parseResult.services.esTreeNodeToTSNodeMap.has(
+          parseResult.services.esTreeNodeToTSNodeMap?.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile('estree.ts'),
           ),
         ).toBe(setting);
       });
@@ -341,18 +317,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
           parseResult.services.esTreeNodeToTSNodeMap.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile(
-              join(FIXTURES_DIR, 'file.ts'),
-            ),
           ),
         ).toBe(setting);
       });
@@ -412,14 +379,16 @@ describe('parseAndGenerateServices', () => {
         }
 
         if (!shouldThrow) {
-          expect(result?.services.program).toBeDefined();
           expect(result?.ast).toBeDefined();
           expect({
             ...result,
             services: {
               ...result?.services,
-              // Reduce noise in snapshot
-              program: {},
+              // Reduce noise in snapshot by not printing the TS program
+              program:
+                result?.services.program == null
+                  ? 'No Program'
+                  : 'With Program',
             },
           }).toMatchSnapshot();
         }
@@ -701,9 +670,14 @@ describe('parseAndGenerateServices', () => {
     });
 
     it('should turn on typescript debugger', () => {
-      parser.parseAndGenerateServices('const x = 1;', {
-        debugLevel: ['typescript'],
-      });
+      expect(() =>
+        parser.parseAndGenerateServices('const x = 1;', {
+          debugLevel: ['typescript'],
+          filePath: './path-that-doesnt-exist.ts',
+          project: ['./tsconfig-that-doesnt-exist.json'],
+        }),
+      ) // should throw because the file and tsconfig don't exist
+        .toThrow();
       expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
       expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
         expect.objectContaining({
@@ -749,97 +723,68 @@ describe('parseAndGenerateServices', () => {
 
     it('ignores a folder when given a string glob', () => {
       const ignore = ['**/ignoreme/**'];
+      // cspell:disable-next-line
       expect(testParse('ignoreme', ignore)).toThrow();
+      // cspell:disable-next-line
       expect(testParse('includeme', ignore)).not.toThrow();
     });
   });
 
-  describe('moduleResolver', () => {
-    beforeEach(() => {
-      parser.clearCaches();
-    });
+  describe('cacheLifetime', () => {
+    describe('glob', () => {
+      function doParse(lifetime: CacheDurationSeconds): void {
+        parser.parseAndGenerateServices('const x = 1', {
+          cacheLifetime: {
+            glob: lifetime,
+          },
+          filePath: join(FIXTURES_DIR, 'file.ts'),
+          tsconfigRootDir: FIXTURES_DIR,
+          project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+        });
+      }
 
-    const PROJECT_DIR = resolve(FIXTURES_DIR, '../moduleResolver');
-    const code = `
-      import { something } from '__PLACEHOLDER__';
-
-      something();
-    `;
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      project: './tsconfig.json',
-      tsconfigRootDir: PROJECT_DIR,
-      filePath: resolve(PROJECT_DIR, 'file.ts'),
-    };
-    const withDefaultProgramConfig: TSESTreeOptions = {
-      ...config,
-      project: './tsconfig.defaultProgram.json',
-      createDefaultProgram: true,
-    };
-
-    describe('when file is in the project', () => {
-      it('returns error if __PLACEHOLDER__ can not be resolved', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, config)
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveProperty(
-          [0, 'messageText'],
-          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
-        );
+      it('should cache globs if the lifetime is non-zero', () => {
+        doParse(30);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+        doParse(30);
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
       });
 
-      it('throws error if moduleResolver can not be found', () => {
-        expect(() =>
-          parser.parseAndGenerateServices(code, {
-            ...config,
-            moduleResolver: resolve(
-              PROJECT_DIR,
-              './this_moduleResolver_does_not_exist.js',
-            ),
-          }),
-        ).toThrowErrorMatchingInlineSnapshot(`
-        "Could not find the provided parserOptions.moduleResolver.
-        Hint: use an absolute path if you are not in control over where the ESLint instance runs."
-      `);
+      it('should not cache globs if the lifetime is zero', () => {
+        doParse(0);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+        doParse(0);
+        // should call globby again because we specified immediate cache expiry
+        expect(globbySyncMock).toHaveBeenCalledTimes(2);
       });
 
-      it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...config,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
-      });
-    });
+      it('should evict the cache if the entry expires', () => {
+        hrtimeSpy.mockReturnValueOnce([1, 0]);
 
-    describe('when file is not in the project and createDefaultProgram=true', () => {
-      it('returns error because __PLACEHOLDER__ can not be resolved', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, withDefaultProgramConfig)
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveProperty(
-          [0, 'messageText'],
-          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
-        );
+        doParse(30);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+
+        // wow so much time has passed
+        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
+
+        doParse(30);
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(2);
       });
 
-      it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...withDefaultProgramConfig,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
+      it('should infinitely cache if passed Infinity', () => {
+        hrtimeSpy.mockReturnValueOnce([1, 0]);
+
+        doParse('Infinity');
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+
+        // wow so much time has passed
+        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
+
+        doParse('Infinity');
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
       });
     });
   });

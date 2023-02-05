@@ -141,6 +141,58 @@ declare module 'eslint/lib/rules/indent' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/key-spacing' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+
+  type Options = [
+    {
+      beforeColon?: boolean;
+      afterColon?: boolean;
+      mode?: 'strict' | 'minimum';
+      align?:
+        | 'value'
+        | 'colon'
+        | {
+            on?: 'value' | 'colon';
+            beforeColon?: boolean;
+            afterColon?: boolean;
+            mode?: 'strict' | 'minimum';
+          };
+      singleLine?: {
+        beforeColon?: boolean;
+        afterColon?: boolean;
+        mode?: 'strict' | 'minimum';
+      };
+      multiLine?: {
+        beforeColon?: boolean;
+        afterColon?: boolean;
+        mode?: 'strict' | 'minimum';
+        align?:
+          | 'value'
+          | 'colon'
+          | {
+              on?: 'value' | 'colon';
+              beforeColon?: boolean;
+              afterColon?: boolean;
+              mode?: 'strict' | 'minimum';
+            };
+      };
+    },
+  ];
+  type MessageIds = 'extraKey' | 'extraValue' | 'missingKey' | 'missingValue';
+
+  const rule: TSESLint.RuleModule<
+    MessageIds,
+    Options,
+    {
+      ObjectExpression: RuleFunction<TSESTree.ObjectExpression>;
+      Property: RuleFunction<TSESTree.Property>;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/keyword-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
   import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
@@ -792,32 +844,6 @@ declare module 'eslint/lib/rules/comma-dangle' {
         node: TSESTree.TSTypeParameterDeclaration,
       ): void;
       TSTupleType(node: TSESTree.TSTupleType): void;
-    }
-  >;
-  export = rule;
-}
-
-declare module 'eslint/lib/rules/no-duplicate-imports' {
-  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-
-  const rule: TSESLint.RuleModule<
-    | 'import'
-    | 'importAs'
-    | 'export'
-    | 'exportAs'
-    | 'importType'
-    | 'importTypeAs'
-    | 'exportType'
-    | 'exportTypeAs',
-    [
-      {
-        includeExports?: boolean;
-      },
-    ],
-    {
-      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-      ExportNamedDeclaration?(node: TSESTree.ExportNamedDeclaration): void;
-      ExportAllDeclaration?(node: TSESTree.ExportAllDeclaration): void;
     }
   >;
   export = rule;

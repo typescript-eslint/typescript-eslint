@@ -82,8 +82,7 @@ export default util.createRule({
         typeof member.returnType !== 'undefined'
       ) {
         if (
-          tsThisTypes !== null &&
-          tsThisTypes.length > 0 &&
+          tsThisTypes?.length &&
           node.type === AST_NODE_TYPES.TSInterfaceDeclaration
         ) {
           // the message can be confusing if we don't point directly to the `this` node instead of the whole member
@@ -99,7 +98,6 @@ export default util.createRule({
         }
 
         const fixable =
-          node.parent &&
           node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
 
         const fix = fixable
@@ -137,7 +135,6 @@ export default util.createRule({
               }
 
               const isParentExported =
-                node.parent &&
                 node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration;
 
               if (
@@ -154,12 +151,7 @@ export default util.createRule({
                   );
                 }, '');
                 // comments should move before export and not between export and interface declaration
-                fixes.push(
-                  fixer.insertTextBefore(
-                    node.parent as TSESTree.Node | TSESTree.Token,
-                    commentsText,
-                  ),
-                );
+                fixes.push(fixer.insertTextBefore(node.parent, commentsText));
               } else {
                 comments.forEach(comment => {
                   let commentText =
@@ -205,7 +197,7 @@ export default util.createRule({
         // inside an interface keep track of all ThisType references.
         // unless it's inside a nested type literal in which case it's invalid code anyway
         // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
-        if (literalNesting === 0 && tsThisTypes !== null) {
+        if (literalNesting === 0 && tsThisTypes != null) {
           tsThisTypes.push(node);
         }
       },

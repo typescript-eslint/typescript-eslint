@@ -1,15 +1,12 @@
 import debug from 'debug';
-import { sync as globSync } from 'globby';
-import isGlob from 'is-glob';
+import type * as ts from 'typescript';
 
-import type { CanonicalPath } from '../create-program/shared';
-import {
-  ensureAbsolutePath,
-  getCanonicalFileName,
-} from '../create-program/shared';
+import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
+import { isSourceFile } from '../source-files';
 import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
+import { resolveProjectList } from './resolveProjectList';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
 
 const log = debug(
@@ -17,18 +14,22 @@ const log = debug(
 );
 
 export function createParseSettings(
-  code: string,
+  code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
+  const codeFullText = enforceCodeString(code);
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
-    code: enforceString(code),
+    code,
+    codeFullText,
     comment: options.comment === true,
     comments: [],
-    createDefaultProgram: options.createDefaultProgram === true,
+    DEPRECATED__createDefaultProgram:
+      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+      options.DEPRECATED__createDefaultProgram === true,
     debugLevel:
       options.debugLevel === true
         ? new Set(['typescript-eslint'])
@@ -98,23 +99,13 @@ export function createParseSettings(
 
   // Providing a program overrides project resolution
   if (!parseSettings.programs) {
-    const projectFolderIgnoreList = (
-      options.projectFolderIgnoreList ?? ['**/node_modules/**']
-    )
-      .reduce<string[]>((acc, folder) => {
-        if (typeof folder === 'string') {
-          acc.push(folder);
-        }
-        return acc;
-      }, [])
-      // prefix with a ! for not match glob
-      .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
-
-    parseSettings.projects = prepareAndTransformProjects(
-      tsconfigRootDir,
-      options.project,
-      projectFolderIgnoreList,
-    );
+    parseSettings.projects = resolveProjectList({
+      cacheLifetime: options.cacheLifetime,
+      project: options.project,
+      projectFolderIgnoreList: options.projectFolderIgnoreList,
+      singleRun: parseSettings.singleRun,
+      tsconfigRootDir: tsconfigRootDir,
+    });
   }
 
   warnAboutTSVersion(parseSettings);
@@ -125,12 +116,12 @@ export function createParseSettings(
 /**
  * Ensures source code is a string.
  */
-function enforceString(code: unknown): string {
-  if (typeof code !== 'string') {
-    return String(code);
-  }
-
-  return code;
+function enforceCodeString(code: unknown): string {
+  return isSourceFile(code)
+    ? code.getFullText(code)
+    : typeof code === 'string'
+    ? code
+    : String(code);
 }
 
 /**
@@ -143,59 +134,4 @@ function enforceString(code: unknown): string {
  */
 function getFileName(jsx?: boolean): string {
   return jsx ? 'estree.tsx' : 'estree.ts';
-}
-
-function getTsconfigPath(
-  tsconfigPath: string,
-  tsconfigRootDir: string,
-): CanonicalPath {
-  return getCanonicalFileName(
-    ensureAbsolutePath(tsconfigPath, tsconfigRootDir),
-  );
-}
-
-/**
- * Normalizes, sanitizes, resolves and filters the provided project paths
- */
-function prepareAndTransformProjects(
-  tsconfigRootDir: string,
-  projectsInput: string | string[] | undefined,
-  ignoreListInput: string[],
-): CanonicalPath[] {
-  const sanitizedProjects: string[] = [];
-
-  // Normalize and sanitize the project paths
-  if (typeof projectsInput === 'string') {
-    sanitizedProjects.push(projectsInput);
-  } else if (Array.isArray(projectsInput)) {
-    for (const project of projectsInput) {
-      if (typeof project === 'string') {
-        sanitizedProjects.push(project);
-      }
-    }
-  }
-
-  if (sanitizedProjects.length === 0) {
-    return [];
-  }
-
-  // Transform glob patterns into paths
-  const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
-  const globProjects = sanitizedProjects.filter(project => isGlob(project));
-  const uniqueCanonicalProjectPaths = new Set(
-    nonGlobProjects
-      .concat(
-        globSync([...globProjects, ...ignoreListInput], {
-          cwd: tsconfigRootDir,
-        }),
-      )
-      .map(project => getTsconfigPath(project, tsconfigRootDir)),
-  );
-
-  log(
-    'parserOptions.project (excluding ignored) matched projects: %s',
-    uniqueCanonicalProjectPaths,
-  );
-
-  return Array.from(uniqueCanonicalProjectPaths);
 }

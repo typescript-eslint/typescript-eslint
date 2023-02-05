@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "5.48.1",
+  "version": "5.50.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -8,7 +8,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
   "files": [
     "dist",
@@ -39,18 +39,18 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "5.48.1",
-    "@typescript-eslint/utils": "5.48.1",
+    "@typescript-eslint/typescript-estree": "5.50.0",
+    "@typescript-eslint/utils": "5.50.0",
     "debug": "^4.3.4",
     "tsutils": "^3.21.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "5.48.1",
+    "@typescript-eslint/parser": "5.50.0",
     "ajv": "^8.12.0",
     "typescript": "*"
   },
   "peerDependencies": {
-    "eslint": "*"
+    "eslint": "^7.0.0 || ^8.0.0"
   },
   "peerDependenciesMeta": {
     "typescript": {

@@ -134,7 +134,6 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         options.objectLiteralTypeAssertions === 'allow-as-parameter' &&
-        node.parent &&
         (node.parent.type === AST_NODE_TYPES.NewExpression ||
           node.parent.type === AST_NODE_TYPES.CallExpression ||
           node.parent.type === AST_NODE_TYPES.ThrowStatement ||

@@ -23,7 +23,6 @@ Object {
         "type": "Identifier",
       },
       "importKind": "value",
-      "isExport": false,
       "loc": Object {
         "end": Object {
           "column": 28,

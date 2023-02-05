@@ -10,9 +10,14 @@ type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
  */
 export interface MutableParseSettings {
   /**
-   * Code of the file being parsed.
+   * Code of the file being parsed, or raw source file containing it.
    */
-  code: string;
+  code: string | ts.SourceFile;
+
+  /**
+   * Full text of the file being parsed.
+   */
+  codeFullText: string;
 
   /**
    * Whether the `comment` parse option is enabled.
@@ -25,9 +30,11 @@ export interface MutableParseSettings {
   comments: TSESTree.Comment[];
 
   /**
-   * Whether to create a TypeScript program if one is not provided.
+   * @deprecated
+   * This is a legacy option that comes with severe performance penalties.
+   * Please do not use it.
    */
-  createDefaultProgram: boolean;
+  DEPRECATED__createDefaultProgram: boolean;
 
   /**
    * Which debug areas should be logged.
@@ -98,7 +105,7 @@ export interface MutableParseSettings {
   /**
    * Normalized paths to provided project paths.
    */
-  projects: CanonicalPath[];
+  projects: readonly CanonicalPath[];
 
   /**
    * Whether to add the `range` property to AST nodes.

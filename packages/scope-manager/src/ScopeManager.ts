@@ -28,9 +28,11 @@ interface ScopeManagerOptions {
   globalReturn?: boolean;
   sourceType?: 'module' | 'script';
   impliedStrict?: boolean;
-  ecmaVersion?: number;
 }
 
+/**
+ * @see https://eslint.org/docs/latest/developer-guide/scope-manager-interface#scopemanager-interface
+ */
 class ScopeManager {
   public currentScope: Scope | null;
   public readonly declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
@@ -77,12 +79,13 @@ class ScopeManager {
   public isImpliedStrict(): boolean {
     return this.#options.impliedStrict === true;
   }
+
   public isStrictModeSupported(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 5;
+    return true;
   }
 
   public isES6(): boolean {
-    return this.#options.ecmaVersion != null && this.#options.ecmaVersion >= 6;
+    return true;
   }
 
   /**
@@ -140,7 +143,7 @@ class ScopeManager {
   protected nestScope<T extends Scope>(scope: T): T;
   protected nestScope(scope: Scope): Scope {
     if (scope instanceof GlobalScope) {
-      assert(this.currentScope === null);
+      assert(this.currentScope == null);
       this.globalScope = scope;
     }
     this.currentScope = scope;

@@ -25,10 +25,9 @@ export default util.createRule({
   create(context) {
     const namespacesInScope: ts.Node[] = [];
     let currentFailedNamespaceExpression: TSESTree.Node | null = null;
-    const parserServices = util.getParserServices(context);
-    const esTreeNodeToTSNodeMap = parserServices.esTreeNodeToTSNodeMap;
-    const program = parserServices.program;
-    const checker = program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     function tryGetAliasedSymbol(
@@ -53,7 +52,7 @@ export default util.createRule({
 
       const alias = tryGetAliasedSymbol(symbol, checker);
 
-      return alias !== null && symbolIsNamespaceInScope(alias);
+      return alias != null && symbolIsNamespaceInScope(alias);
     }
 
     function getSymbolInScope(
@@ -61,7 +60,6 @@ export default util.createRule({
       flags: ts.SymbolFlags,
       name: string,
     ): ts.Symbol | undefined {
-      // TODO:PERF `getSymbolsInScope` gets a long list. Is there a better way?
       const scope = checker.getSymbolsInScope(node, flags);
 
       return scope.find(scopeSymbol => scopeSymbol.name === name);
@@ -75,10 +73,7 @@ export default util.createRule({
       qualifier: TSESTree.EntityName | TSESTree.MemberExpression,
       name: TSESTree.Identifier,
     ): boolean {
-      const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
-      const tsName = esTreeNodeToTSNodeMap.get(name);
-
-      const namespaceSymbol = checker.getSymbolAtLocation(tsQualifier);
+      const namespaceSymbol = services.getSymbolAtLocation(qualifier);
 
       if (
         typeof namespaceSymbol === 'undefined' ||
@@ -87,13 +82,14 @@ export default util.createRule({
         return false;
       }
 
-      const accessedSymbol = checker.getSymbolAtLocation(tsName);
+      const accessedSymbol = services.getSymbolAtLocation(name);
 
       if (typeof accessedSymbol === 'undefined') {
         return false;
       }
 
       // If the symbol in scope is different, the qualifier is necessary.
+      const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
       const fromScope = getSymbolInScope(
         tsQualifier,
         accessedSymbol.flags,

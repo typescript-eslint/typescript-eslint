@@ -30,6 +30,9 @@ The following additional configuration options are available by specifying them 
 
 ```ts
 interface ParserOptions {
+  cacheLifetime?: {
+    glob?: number | 'Infinity';
+  };
   ecmaFeatures?: {
     jsx?: boolean;
     globalReturn?: boolean;
@@ -48,6 +51,14 @@ interface ParserOptions {
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
 ```
+
+### `cacheLifetime`
+
+This option allows you to granularly control our internal cache expiry lengths.
+
+You can specify the number of seconds as an integer number, or the string 'Infinity' if you never want the cache to expire.
+
+By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run.
 
 ### `ecmaFeatures`
 
@@ -163,7 +174,7 @@ interface ModuleResolver {
 > Default `undefined`.
 
 This option allows you to programmatically provide an instance of a TypeScript Program object that will provide type information to rules.
-This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
+This will override any programs that would have been computed from `parserOptions.project`.
 All linted files must be part of the provided program(s).
 
 [Refer to the TypeScript Wiki for an example on how to write the `resolveModuleNames` function](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#customizing-module-resolution).
@@ -193,7 +204,7 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
 - TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
 
-- Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
+- Note that if this setting is specified, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
   ```jsonc
   {
@@ -226,7 +237,8 @@ For example, by default it will ensure that a glob like `./**/tsconfig.json` wil
 
 > Default `undefined`.
 
-This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
+This option allows you to provide the root directory for relative TSConfig paths specified in the `project` option above.
+Doing so ensures running ESLint from a directory other than the root will still be able to find your TSConfig.
 
 ### `warnOnUnsupportedTypeScriptVersion`
 

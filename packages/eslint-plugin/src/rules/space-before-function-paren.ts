@@ -79,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
         return true;
       }
 
-      const parent = node.parent!;
+      const parent = node.parent;
 
       return (
         parent.type === AST_NODE_TYPES.MethodDefinition ||
@@ -140,7 +140,8 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      let leftToken: TSESTree.Token, rightToken: TSESTree.Token;
+      let leftToken: TSESTree.Token;
+      let rightToken: TSESTree.Token;
       if (node.typeParameters) {
         leftToken = sourceCode.getLastToken(node.typeParameters)!;
         rightToken = sourceCode.getTokenAfter(leftToken)!;

@@ -342,11 +342,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      */
     'interface-with-extends-member-expression',
     /**
-     * @see https://github.com/typescript-eslint/typescript-eslint/issues/2998
-     */
-    'type-import-type',
-    'type-import-type-with-type-parameters-in-type-reference',
-    /**
      * Not yet supported in Babel
      * Directive field is not added to module and namespace
      */
@@ -376,6 +371,16 @@ tester.addFixturePatternConfig('typescript/basics', {
     'class-with-two-methods-computed-constructor',
     'export-type-star-from',
     'import-type-error',
+
+    /**
+     * Babel's 'typescript' transform gives these TypeScript-like properties
+     * such as `isExport: false`, but we don't include those in our AST.
+     */
+    'import-equal-declaration',
+    'import-export-equal-declaration',
+    'import-equal-type-declaration',
+    'import-export-equal-type-declaration',
+
     /**
      * [TS-ESTREE ERRORED, BUT BABEL DID NOT]
      * This is intentional; babel is not checking types
@@ -409,10 +414,6 @@ tester.addFixturePatternConfig('typescript/basics', {
      * @see https://github.com/babel/babel/issues/9213
      */
     'export-assignment',
-    'import-equal-declaration',
-    'import-export-equal-declaration',
-    'import-equal-type-declaration',
-    'import-export-equal-type-declaration',
     // babel treats declare and types as not a module
     'export-declare-const-named-enum',
     'export-declare-named-enum',

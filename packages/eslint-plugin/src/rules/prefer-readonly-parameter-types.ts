@@ -64,8 +64,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   ) {
-    const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
+    const services = util.getParserServices(context);
 
     return {
       [[
@@ -107,9 +106,8 @@ export default util.createRule<Options, MessageIds>({
             continue;
           }
 
-          const tsNode = esTreeNodeToTSNodeMap.get(actualParam);
-          const type = checker.getTypeAtLocation(tsNode);
-          const isReadOnly = util.isTypeReadonly(program, type, {
+          const type = services.getTypeAtLocation(actualParam);
+          const isReadOnly = util.isTypeReadonly(services.program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
             allowlist,
           });
