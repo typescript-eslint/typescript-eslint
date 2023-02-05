@@ -2,7 +2,6 @@ import type { SyntaxKind } from 'typescript';
 
 // the members of ts.BinaryOperator
 export interface BinaryOperatorToText {
-  [SyntaxKind.QuestionQuestionToken]: '??';
   [SyntaxKind.InstanceOfKeyword]: 'instanceof';
   [SyntaxKind.InKeyword]: 'in';
 
