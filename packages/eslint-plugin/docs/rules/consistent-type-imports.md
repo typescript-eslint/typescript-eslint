@@ -9,7 +9,7 @@ description: 'Enforce consistent usage of type imports.'
 TypeScript allows specifying a `type` keyword on imports to indicate that the export exists only in the type system, not at runtime.
 This allows transpilers to drop imports without knowing the types of the dependencies.
 
-> See [Blog > Consistent Type Exports and Imports: Why and How](/blog/consistent-type-exports-and-imports-why-and-how) for more details.
+> See [Blog > Consistent Type Exports and Imports: Why and How](/blog/consistent-type-imports-and-exports-why-and-how) for more details.
 
 ## Options
 
