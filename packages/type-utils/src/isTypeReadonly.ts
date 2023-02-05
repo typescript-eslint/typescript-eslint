@@ -28,7 +28,7 @@ const enum Readonlyness {
 
 export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
-  readonly allowlist?: Array<TypeOrValueSpecifier>;
+  readonly allow?: Array<TypeOrValueSpecifier>;
 }
 
 export const readonlynessOptionsSchema = {
@@ -38,7 +38,7 @@ export const readonlynessOptionsSchema = {
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allowlist: {
+    allow: {
       type: 'array',
       items: typeOrValueSpecifierSchema,
     },
@@ -47,7 +47,7 @@ export const readonlynessOptionsSchema = {
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
-  allowlist: [],
+  allow: [],
 };
 
 function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
@@ -237,7 +237,7 @@ function isTypeReadonlyRecurser(
   seenTypes.add(type);
 
   if (
-    options.allowlist?.some(specifier =>
+    options.allow?.some(specifier =>
       typeMatchesSpecifier(type, specifier, program),
     )
   ) {

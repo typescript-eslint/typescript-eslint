@@ -313,7 +313,7 @@ describe('isTypeReadonly', () => {
 
     describe('allowlist', () => {
       const options: ReadonlynessOptions = {
-        allowlist: [
+        allow: [
           {
             from: 'lib',
             name: 'RegExp',

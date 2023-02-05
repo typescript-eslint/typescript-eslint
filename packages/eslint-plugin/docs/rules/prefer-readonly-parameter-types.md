@@ -129,7 +129,7 @@ interface Foo {
 
 ## Options
 
-### `allowlist`
+### `allow`
 
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
@@ -148,7 +148,7 @@ Examples of code for this rule with:
 
 ```json
 {
-  "allowlist": [
+  "allow": [
     { "source": "file", "name": "Foo" },
     { "source": "lib", "name": "HTMLElement" },
     { "from": "package", "name": "Bar", "source": "bar-lib" }
@@ -204,7 +204,7 @@ interface Wrapper {
   readonly otherProp: string;
 }
 
-function fn1(arg: Foo) {} // Works because Foo is allowlisted
+function fn1(arg: Foo) {} // Works because Foo is allowed
 function fn2(arg: Wrapper) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
 ```
 

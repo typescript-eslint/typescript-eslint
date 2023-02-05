@@ -5,7 +5,7 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowlist?: Array<util.TypeOrValueSpecifier>;
+    allow?: Array<util.TypeOrValueSpecifier>;
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
     treatMethodsAsReadonly?: boolean;
@@ -28,7 +28,7 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          allowlist: util.readonlynessOptionsSchema.properties.allowlist,
+          allow: util.readonlynessOptionsSchema.properties.allow,
           checkParameterProperties: {
             type: 'boolean',
           },
@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowlist: util.readonlynessOptionsDefaults.allowlist,
+      allow: util.readonlynessOptionsDefaults.allow,
       checkParameterProperties: true,
       ignoreInferredTypes: false,
       treatMethodsAsReadonly:
@@ -57,7 +57,7 @@ export default util.createRule<Options, MessageIds>({
     context,
     [
       {
-        allowlist,
+        allow,
         checkParameterProperties,
         ignoreInferredTypes,
         treatMethodsAsReadonly,
@@ -109,7 +109,7 @@ export default util.createRule<Options, MessageIds>({
           const type = services.getTypeAtLocation(actualParam);
           const isReadOnly = util.isTypeReadonly(services.program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
-            allowlist,
+            allow,
           });
 
           if (!isReadOnly) {

@@ -412,7 +412,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'lib', name: 'RegExp' }],
+          allow: [{ from: 'lib', name: 'RegExp' }],
         },
       ],
     },
@@ -426,7 +426,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'lib', name: 'RegExp' }],
+          allow: [{ from: 'lib', name: 'RegExp' }],
         },
       ],
     },
@@ -440,24 +440,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'file', name: 'Foo' }],
-        },
-      ],
-    },
-    {
-      code: `
-        interface Bar {
-          prop: string;
-        }
-        interface Foo {
-          readonly prop: Bar;
-        }
-
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          allowlist: [{ from: 'file', name: 'Foo' }],
+          allow: [{ from: 'file', name: 'Foo' }],
         },
       ],
     },
@@ -474,7 +457,24 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'file', name: 'Bar' }],
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Bar' }],
         },
       ],
     },
@@ -953,7 +953,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'file', name: 'Foo' }],
+          allow: [{ from: 'file', name: 'Foo' }],
         },
       ],
       errors: [
@@ -975,7 +975,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'file', name: 'Bar' }],
+          allow: [{ from: 'file', name: 'Bar' }],
         },
       ],
       errors: [
@@ -997,7 +997,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'lib', name: 'Foo' }],
+          allow: [{ from: 'lib', name: 'Foo' }],
         },
       ],
       errors: [
@@ -1019,7 +1019,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'package', name: 'Foo', source: 'foo-lib' }],
+          allow: [{ from: 'package', name: 'Foo', source: 'foo-lib' }],
         },
       ],
       errors: [
@@ -1037,7 +1037,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [{ from: 'file', name: 'RegExp' }],
+          allow: [{ from: 'file', name: 'RegExp' }],
         },
       ],
       errors: [
@@ -1055,9 +1055,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allowlist: [
-            { from: 'package', name: 'RegExp', source: 'regexp-lib' },
-          ],
+          allow: [{ from: 'package', name: 'RegExp', source: 'regexp-lib' }],
         },
       ],
       errors: [
