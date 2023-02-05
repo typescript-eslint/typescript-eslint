@@ -134,13 +134,15 @@ interface Foo {
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
 Each item must be one of:
-* A type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being optional)
-* A type from the default library (`{from: "lib", name: "Foo"}`)
-* A type from a package (`{from: "package", name: "Foo", source: "foo-lib"}`, this also works for types defined in a typings package).
+
+- A type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being optional)
+- A type from the default library (`{from: "lib", name: "Foo"}`)
+- A type from a package (`{from: "package", name: "Foo", source: "foo-lib"}`, this also works for types defined in a typings package).
 
 Two additional formats are supported:
-* Multiple sources, as an array for `from` (`{from: ["file", "package"], name: "Foo"}`)
-* A type may be defined just as a simple string, which then matches the type independently of its origin.
+
+- Multiple sources, as an array for `from` (`{from: ["file", "package"], name: "Foo"}`)
+- A type may be defined just as a simple string, which then matches the type independently of its origin.
 
 Examples of code for this rule with:
 
@@ -152,6 +154,7 @@ Examples of code for this rule with:
     { "from": "package", "name": "Bar", "source": "bar-lib" }
   ]
 }
+```
 
 <!--tabs-->
 
