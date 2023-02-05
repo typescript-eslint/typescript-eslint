@@ -39,19 +39,19 @@ Let's Dig In!
 
 <!--truncate-->
 
-## Functional Benefits
+## Benefits of Enforcing Type-only Imports/Exports
 
-### Module Side Effects
+### Avoiding Unintentional Side Effects
 
 Some modules in code may cause _side effects_: code that is run when the module is imported and causes changes outside the module.
-Common examples of side effects include calling to global APIs like `fetch` or creating DOM stylesheets.
+Common examples of side effects include sending network requests via `fetch` or creating DOM stylesheets.
 
 When projects include modules that cause side effects, the order of module imports matters.
 For example, some projects import the types of side-effect-causing modules in code that needs to run before those side effects.
 
 ### Isolated Module Transpilation
 
-Import statements that only import types are generally removed when the built-in TypeScript compiler transpiles TypeScript syntax to JavaScript syntax.
+Import statements that only import types are generally removed when the TypeScript compiler transpiles TypeScript syntax to JavaScript syntax.
 The built-in TypeScript compiler is able to do so because it includes a type checker that knows which imports are of types and/or values.
 
 But, some projects use transpilers such as Babel, SWC, or Vite that don't have access to type information.
