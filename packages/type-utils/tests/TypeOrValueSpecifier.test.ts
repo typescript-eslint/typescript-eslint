@@ -151,14 +151,14 @@ describe('TypeOrValueSpecifier', () => {
         filePath: path.join(rootDir, 'file.ts'),
         tsconfigRootDir: rootDir,
       });
-      const type = services.program
-        .getTypeChecker()
+      const type = services
+        .program!.getTypeChecker()
         .getTypeAtLocation(
           services.esTreeNodeToTSNodeMap.get(
             (ast.body[0] as TSESTree.TSTypeAliasDeclaration).id,
           ),
         );
-      expect(typeMatchesSpecifier(type, specifier, services.program)).toBe(
+      expect(typeMatchesSpecifier(type, specifier, services.program!)).toBe(
         expected,
       );
     }
