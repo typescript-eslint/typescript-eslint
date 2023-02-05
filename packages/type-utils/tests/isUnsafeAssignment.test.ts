@@ -4,6 +4,7 @@ import path from 'path';
 import type * as ts from 'typescript';
 
 import { isUnsafeAssignment } from '../src/isUnsafeAssignment';
+import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe('isUnsafeAssignment', () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -19,6 +20,7 @@ describe('isUnsafeAssignment', () => {
       filePath: path.join(rootDir, 'file.ts'),
       tsconfigRootDir: rootDir,
     });
+    expectToHaveParserServices(services);
     const checker = services.program.getTypeChecker();
     const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
 
