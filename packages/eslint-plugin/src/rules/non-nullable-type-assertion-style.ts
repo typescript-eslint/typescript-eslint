@@ -24,14 +24,11 @@ export default util.createRule({
   defaultOptions: [],
 
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
     const sourceCode = context.getSourceCode();
 
     const getTypesIfNotLoose = (node: TSESTree.Node): ts.Type[] | undefined => {
-      const type = checker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(node),
-      );
+      const type = services.getTypeAtLocation(node);
 
       if (
         tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)

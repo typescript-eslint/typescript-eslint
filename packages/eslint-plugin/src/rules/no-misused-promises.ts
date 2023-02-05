@@ -120,8 +120,8 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [{ checksConditionals, checksVoidReturn, checksSpreads }]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     const checkedNodes = new Set<TSESTree.Node>();
 
@@ -200,7 +200,7 @@ export default util.createRule<Options, MessageId>({
         }
         return;
       }
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
         context.report({
           messageId: 'conditional',
@@ -212,7 +212,7 @@ export default util.createRule<Options, MessageId>({
     function checkArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const voidArgs = voidFunctionArguments(checker, tsNode);
       if (voidArgs.size === 0) {
         return;
@@ -223,7 +223,7 @@ export default util.createRule<Options, MessageId>({
           continue;
         }
 
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(argument);
+        const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
         if (returnsThenable(checker, tsNode as ts.Expression)) {
           context.report({
             messageId: 'voidReturnArgument',
@@ -234,8 +234,8 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkAssignment(node: TSESTree.AssignmentExpression): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const varType = checker.getTypeAtLocation(tsNode.left);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      const varType = services.getTypeAtLocation(node.left);
       if (!isVoidReturningFunctionType(checker, tsNode.left, varType)) {
         return;
       }
@@ -249,11 +249,11 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (tsNode.initializer === undefined || node.init == null) {
         return;
       }
-      const varType = checker.getTypeAtLocation(tsNode.name);
+      const varType = services.getTypeAtLocation(node.id);
       if (!isVoidReturningFunctionType(checker, tsNode.initializer, varType)) {
         return;
       }
@@ -267,7 +267,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkProperty(node: TSESTree.Property): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (ts.isPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.initializer);
         if (
@@ -343,7 +343,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (tsNode.expression === undefined || node.argument == null) {
         return;
       }
@@ -365,7 +365,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const value = tsNode.initializer;
       if (
         node.value == null ||
@@ -389,7 +389,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkSpread(node: TSESTree.SpreadElement): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
 
       if (isSometimesThenable(checker, tsNode.expression)) {
         context.report({

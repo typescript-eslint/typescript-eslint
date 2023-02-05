@@ -32,14 +32,9 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
-    const service = getParserServices(context);
-    const checker = service.program.getTypeChecker();
-    const compilerOptions = service.program.getCompilerOptions();
-
-    function getNodeType(node: TSESTree.Node): ts.Type {
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      return getConstrainedTypeAtLocation(checker, tsNode);
-    }
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
 
     function fixSwitch(
       fixer: TSESLint.RuleFixer,
@@ -114,7 +109,10 @@ export default createRule({
     }
 
     function checkSwitchExhaustive(node: TSESTree.SwitchStatement): void {
-      const discriminantType = getNodeType(node.discriminant);
+      const discriminantType = getConstrainedTypeAtLocation(
+        services,
+        node.discriminant,
+      );
       const symbolName = discriminantType.getSymbol()?.escapedName;
 
       if (discriminantType.isUnion()) {
@@ -126,7 +124,9 @@ export default createRule({
             return;
           }
 
-          caseTypes.add(getNodeType(switchCase.test));
+          caseTypes.add(
+            getConstrainedTypeAtLocation(services, switchCase.test),
+          );
         }
 
         const missingBranchTypes = unionTypes.filter(

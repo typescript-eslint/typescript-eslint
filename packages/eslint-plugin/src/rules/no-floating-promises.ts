@@ -65,8 +65,8 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       ExpressionStatement(node): void {
@@ -89,7 +89,7 @@ export default util.createRule<Options, MessageId>({
                 {
                   messageId: 'floatingFixVoid',
                   fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                    const tsNode = services.esTreeNodeToTSNodeMap.get(
                       node.expression,
                     );
                     if (isHigherPrecedenceThanUnary(tsNode)) {
@@ -124,7 +124,7 @@ export default util.createRule<Options, MessageId>({
                         'await',
                       );
                     }
-                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                    const tsNode = services.esTreeNodeToTSNodeMap.get(
                       node.expression,
                     );
                     if (isHigherPrecedenceThanUnary(tsNode)) {
@@ -191,9 +191,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       // Check the type. At this point it can't be unhandled if it isn't a promise
-      if (
-        !isPromiseLike(checker, parserServices.esTreeNodeToTSNodeMap.get(node))
-      ) {
+      if (!isPromiseLike(checker, services.esTreeNodeToTSNodeMap.get(node))) {
         return false;
       }
 

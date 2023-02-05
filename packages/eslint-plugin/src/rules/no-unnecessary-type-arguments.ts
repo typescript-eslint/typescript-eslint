@@ -36,8 +36,8 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function getTypeForComparison(type: ts.Type): {
       type: ts.Type;
@@ -69,8 +69,7 @@ export default util.createRule<[], MessageIds>({
 
       // TODO: would like checker.areTypesEquivalent. https://github.com/Microsoft/TypeScript/issues/13502
       const defaultType = checker.getTypeAtLocation(param.default);
-      const argTsNode = parserServices.esTreeNodeToTSNodeMap.get(arg);
-      const argType = checker.getTypeAtLocation(argTsNode);
+      const argType = services.getTypeAtLocation(arg);
       // this check should handle some of the most simple cases of like strings, numbers, etc
       if (defaultType !== argType) {
         // For more complex types (like aliases to generic object types) - TS won't always create a
@@ -106,7 +105,7 @@ export default util.createRule<[], MessageIds>({
 
     return {
       TSTypeParameterInstantiation(node): void {
-        const expression = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const expression = services.esTreeNodeToTSNodeMap.get(node);
 
         const typeParameters = getTypeParametersFromNode(expression, checker);
         if (typeParameters) {

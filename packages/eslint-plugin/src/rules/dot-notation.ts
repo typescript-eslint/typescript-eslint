@@ -67,9 +67,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const rules = baseRule.create(context);
-
-    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
-    const typeChecker = program.getTypeChecker();
+    const services = getParserServices(context);
 
     const allowPrivateClassPropertyAccess =
       options.allowPrivateClassPropertyAccess;
@@ -78,7 +76,7 @@ export default createRule<Options, MessageIds>({
     const allowIndexSignaturePropertyAccess =
       (options.allowIndexSignaturePropertyAccess ?? false) ||
       tsutils.isCompilerOptionEnabled(
-        program.getCompilerOptions(),
+        services.program.getCompilerOptions(),
         // @ts-expect-error - TS is refining the type to never for some reason
         'noPropertyAccessFromIndexSignature',
       );
@@ -92,9 +90,7 @@ export default createRule<Options, MessageIds>({
           node.computed
         ) {
           // for perf reasons - only fetch symbols if we have to
-          const propertySymbol = typeChecker.getSymbolAtLocation(
-            esTreeNodeToTSNodeMap.get(node.property),
-          );
+          const propertySymbol = services.getSymbolAtLocation(node.property);
           const modifierKind = getModifiers(
             propertySymbol?.getDeclarations()?.[0],
           )?.[0].kind;
@@ -110,9 +106,7 @@ export default createRule<Options, MessageIds>({
             propertySymbol === undefined &&
             allowIndexSignaturePropertyAccess
           ) {
-            const objectType = typeChecker.getTypeAtLocation(
-              esTreeNodeToTSNodeMap.get(node.object),
-            );
+            const objectType = services.getTypeAtLocation(node.object);
             const indexType = objectType
               .getNonNullableType()
               .getStringIndexType();

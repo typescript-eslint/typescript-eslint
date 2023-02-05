@@ -33,9 +33,8 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const program = parserServices.program;
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function getCalleeName(
       node: TSESTree.LeftHandSideExpression,
@@ -65,8 +64,7 @@ export default util.createRule({
     }
 
     function isFunctionType(node: TSESTree.Node): boolean {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode);
+      const type = services.getTypeAtLocation(node);
       const symbol = type.getSymbol();
 
       if (
@@ -83,7 +81,7 @@ export default util.createRule({
         const declarations = symbol.getDeclarations() ?? [];
         for (const declaration of declarations) {
           const sourceFile = declaration.getSourceFile();
-          if (program.isSourceFileDefaultLibrary(sourceFile)) {
+          if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
             return true;
           }
         }
@@ -140,14 +138,13 @@ export default util.createRule({
       }
 
       if (calleeName === FUNCTION_CONSTRUCTOR) {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.callee);
-        const type = checker.getTypeAtLocation(tsNode);
+        const type = services.getTypeAtLocation(node.callee);
         const symbol = type.getSymbol();
         if (symbol) {
           const declarations = symbol.getDeclarations() ?? [];
           for (const declaration of declarations) {
             const sourceFile = declaration.getSourceFile();
-            if (program.isSourceFileDefaultLibrary(sourceFile)) {
+            if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
               context.report({ node, messageId: 'noFunctionConstructor' });
               return;
             }

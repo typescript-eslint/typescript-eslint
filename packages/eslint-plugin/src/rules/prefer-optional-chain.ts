@@ -51,7 +51,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
-    const parserServices = util.getParserServices(context, true);
+    const services = util.getParserServices(context, true);
 
     return {
       'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
@@ -73,9 +73,9 @@ export default util.createRule({
         }
 
         function isLeftSideLowerPrecedence(): boolean {
-          const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+          const logicalTsNode = services.esTreeNodeToTSNodeMap.get(node);
 
-          const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
+          const leftTsNode = services.esTreeNodeToTSNodeMap.get(leftNode);
           const operator = isBinaryExpression(logicalTsNode)
             ? logicalTsNode.operatorToken.kind
             : ts.SyntaxKind.Unknown;

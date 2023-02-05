@@ -146,10 +146,10 @@ export default createRule<Options, MessageId>({
       },
     ],
   ) {
-    const service = getParserServices(context);
-    const checker = service.program.getTypeChecker();
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
-    const compilerOptions = service.program.getCompilerOptions();
+    const compilerOptions = services.program.getCompilerOptions();
     const isStrictNullChecks = isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
@@ -168,17 +168,12 @@ export default createRule<Options, MessageId>({
       });
     }
 
-    function getNodeType(node: TSESTree.Node): ts.Type {
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      return getConstrainedTypeAtLocation(checker, tsNode);
-    }
-
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
-      const nodeType = getNodeType(node);
+      const nodeType = getConstrainedTypeAtLocation(services, node);
       return checker.isArrayType(nodeType);
     }
     function nodeIsTupleType(node: TSESTree.Expression): boolean {
-      const nodeType = getNodeType(node);
+      const nodeType = getConstrainedTypeAtLocation(services, node);
       return checker.isTupleType(nodeType);
     }
 
@@ -232,7 +227,7 @@ export default createRule<Options, MessageId>({
         return checkNode(node.right);
       }
 
-      const type = getNodeType(node);
+      const type = getConstrainedTypeAtLocation(services, node);
 
       // Conditional is always necessary if it involves:
       //    `any` or `unknown` or a naked type parameter
@@ -262,7 +257,7 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
-      const type = getNodeType(node);
+      const type = getConstrainedTypeAtLocation(services, node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return;
@@ -320,8 +315,8 @@ export default createRule<Options, MessageId>({
       if (!BOOL_OPERATORS.has(node.operator)) {
         return;
       }
-      const leftType = getNodeType(node.left);
-      const rightType = getNodeType(node.right);
+      const leftType = getConstrainedTypeAtLocation(services, node.left);
+      const rightType = getConstrainedTypeAtLocation(services, node.right);
       if (isLiteral(leftType) && isLiteral(rightType)) {
         context.report({ node, messageId: 'literalBooleanExpression' });
         return;
@@ -397,7 +392,10 @@ export default createRule<Options, MessageId>({
        */
       if (
         allowConstantLoopConditions &&
-        isBooleanLiteralType(getNodeType(node.test), true)
+        isBooleanLiteralType(
+          getConstrainedTypeAtLocation(services, node.test),
+          true,
+        )
       ) {
         return;
       }
@@ -451,9 +449,9 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
         // Otherwise just do type analysis on the function as a whole.
-        const returnTypes = getCallSignaturesOfType(getNodeType(callback)).map(
-          sig => sig.getReturnType(),
-        );
+        const returnTypes = getCallSignaturesOfType(
+          getConstrainedTypeAtLocation(services, callback),
+        ).map(sig => sig.getReturnType());
         /* istanbul ignore if */ if (returnTypes.length === 0) {
           // Not a callable function
           return;
@@ -541,12 +539,15 @@ export default createRule<Options, MessageId>({
     function isNullableOriginFromPrev(
       node: TSESTree.MemberExpression,
     ): boolean {
-      const prevType = getNodeType(node.object);
+      const prevType = getConstrainedTypeAtLocation(services, node.object);
       const property = node.property;
       if (prevType.isUnion() && isIdentifier(property)) {
         const isOwnNullable = prevType.types.some(type => {
           if (node.computed) {
-            const propertyType = getNodeType(node.property);
+            const propertyType = getConstrainedTypeAtLocation(
+              services,
+              node.property,
+            );
             return isNullablePropertyType(type, propertyType);
           }
           const propType = getTypeOfPropertyOfName(
@@ -569,7 +570,7 @@ export default createRule<Options, MessageId>({
     }
 
     function isOptionableExpression(node: TSESTree.Expression): boolean {
-      const type = getNodeType(node);
+      const type = getConstrainedTypeAtLocation(services, node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
           ? !isNullableOriginFromPrev(node)

@@ -1,4 +1,7 @@
-import type { ParserServices, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESTree,
+} from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
@@ -142,9 +145,9 @@ export default util.createRule<Options, MessageId>({
     },
   ],
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const typeChecker = parserServices.program.getTypeChecker();
-    const compilerOptions = parserServices.program.getCompilerOptions();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
     const sourceCode = context.getSourceCode();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -258,8 +261,7 @@ export default util.createRule<Options, MessageId>({
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
      */
     function checkNode(node: TSESTree.Node): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
+      const type = util.getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -507,7 +509,7 @@ export default util.createRule<Options, MessageId>({
       // number
       if (is('number') || is('truthy number')) {
         if (!options.allowNumber) {
-          if (isArrayLengthExpression(node, typeChecker, parserServices)) {
+          if (isArrayLengthExpression(node, checker, services)) {
             if (isLogicalNegationExpression(node.parent)) {
               // if (!array.length)
               context.report({
@@ -867,7 +869,7 @@ function isLogicalNegationExpression(
 function isArrayLengthExpression(
   node: TSESTree.Node,
   typeChecker: ts.TypeChecker,
-  parserServices: ParserServices,
+  services: ParserServicesWithTypeInformation,
 ): node is TSESTree.MemberExpressionNonComputedName {
   if (node.type !== AST_NODE_TYPES.MemberExpression) {
     return false;
@@ -878,10 +880,6 @@ function isArrayLengthExpression(
   if (node.property.name !== 'length') {
     return false;
   }
-  const objectTsNode = parserServices.esTreeNodeToTSNodeMap.get(node.object);
-  const objectType = util.getConstrainedTypeAtLocation(
-    typeChecker,
-    objectTsNode,
-  );
+  const objectType = util.getConstrainedTypeAtLocation(services, node.object);
   return util.isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
 }
