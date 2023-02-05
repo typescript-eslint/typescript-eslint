@@ -133,9 +133,25 @@ interface Foo {
 
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
-Each item has to be either a type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being optional), a type from the default library (`{from: "lib", name: "Foo"}`), or a file from a specific package (`{from: "package", name: "Foo", source: "foo-lib"}`, this also works for types defined in a typings package). Additionally, multiple sources may be combined (`{from: ["file", "package"], name: "Foo"}`) or a type may be defined just as a simple string, which then matches the type independently of its origin.
+Each item must be one of:
+* A type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being optional)
+* A type from the default library (`{from: "lib", name: "Foo"}`)
+* A type from a package (`{from: "package", name: "Foo", source: "foo-lib"}`, this also works for types defined in a typings package).
 
-Examples of code for this rule with `{allowlist: [{source: "file", name: "Foo"}, {source: "lib", name: "HTMLElement"}, {from: "package", name: "Bar", source: "bar-lib"}]}`:
+Two additional formats are supported:
+* Multiple sources, as an array for `from` (`{from: ["file", "package"], name: "Foo"}`)
+* A type may be defined just as a simple string, which then matches the type independently of its origin.
+
+Examples of code for this rule with:
+
+```json
+{
+  "allowlist": [
+    { "source": "file", "name": "Foo" },
+    { "source": "lib", "name": "HTMLElement" },
+    { "from": "package", "name": "Bar", "source": "bar-lib" }
+  ]
+}
 
 <!--tabs-->
 
