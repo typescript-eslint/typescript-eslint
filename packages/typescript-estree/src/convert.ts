@@ -1043,6 +1043,20 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAssignment:
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.questionToken,
+          'A property assignment cannot have a question token.',
+        );
+
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.exclamationToken,
+          'A property assignment cannot have an exclamation token.',
+        );
+
         return this.createNode<TSESTree.Property>(node, {
           type: AST_NODE_TYPES.Property,
           key: this.convertChild(node.name),
@@ -1054,6 +1068,27 @@ export class Converter {
         });
 
       case SyntaxKind.ShorthandPropertyAssignment: {
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.modifiers,
+          'A shorthand property assignment cannot have modifiers.',
+        );
+
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.questionToken,
+          'A shorthand property assignment cannot have a question token.',
+        );
+
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.exclamationToken,
+          'A shorthand property assignment cannot have an exclamation token.',
+        );
+
         if (node.objectAssignmentInitializer) {
           return this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
@@ -2453,6 +2488,13 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.initializer,
+          'A property signature cannot have an initializer.',
+        );
+
         const result = this.createNode<TSESTree.TSPropertySignature>(node, {
           type: AST_NODE_TYPES.TSPropertySignature,
           optional: isOptional(node) || undefined,
@@ -2516,6 +2558,13 @@ export class Converter {
       }
 
       case SyntaxKind.FunctionType:
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.modifiers,
+          'A function type cannot have modifiers.',
+        );
+      // intentional fallthrough
       case SyntaxKind.ConstructSignature:
       case SyntaxKind.CallSignature: {
         const type =
@@ -2889,6 +2938,16 @@ export class Converter {
 
       default:
         return this.deeplyCopy(node);
+    }
+  }
+
+  #throwErrorIfDeprecatedPropertyExists<Node extends ts.Node>(
+    node: Node,
+    property: unknown,
+    message: string,
+  ): void {
+    if (property) {
+      throw createError(this.ast, node.pos, message);
     }
   }
 }
