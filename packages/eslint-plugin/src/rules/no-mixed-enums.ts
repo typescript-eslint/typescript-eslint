@@ -4,6 +4,8 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
+type AllowedType = ts.TypeFlags.Number | ts.TypeFlags.String;
+
 export default util.createRule({
   name: 'no-mixed-enums',
   meta: {
@@ -23,33 +25,54 @@ export default util.createRule({
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
-    function getMemberType(
-      initializer: TSESTree.Expression | undefined,
-    ): ts.TypeFlags.Number | ts.TypeFlags.String {
-      if (!initializer) {
-        return ts.TypeFlags.Number;
-      }
-
+    function getAllowedType(node: ts.Node): AllowedType {
       return tsutils.isTypeFlagSet(
-        typeChecker.getTypeAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(initializer),
-        ),
+        typeChecker.getTypeAtLocation(node),
         ts.TypeFlags.StringLike,
       )
         ? ts.TypeFlags.String
         : ts.TypeFlags.Number;
     }
 
-    return {
-      'TSEnumDeclaration[members.1]'(node: TSESTree.TSEnumDeclaration): void {
-        const [firstMember, ...remainingMembers] = node.members;
-        const allowedMemberType = getMemberType(firstMember.initializer);
+    function getAllowedTypeOfEnum(
+      node: TSESTree.TSEnumDeclaration,
+    ): AllowedType | undefined {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.id);
+      const declarations = typeChecker
+        .getSymbolAtLocation(tsNode)!
+        .getDeclarations()!;
 
-        for (const member of remainingMembers) {
-          if (getMemberType(member.initializer) !== allowedMemberType) {
+      for (const declaration of declarations) {
+        for (const member of (declaration as ts.EnumDeclaration).members) {
+          return member.initializer
+            ? getAllowedType(member.initializer)
+            : ts.TypeFlags.Number;
+        }
+      }
+
+      return undefined;
+    }
+
+    function getAllowedTypeOfInitializer(
+      initializer: TSESTree.Expression | undefined,
+    ): ts.TypeFlags.Number | ts.TypeFlags.String {
+      return initializer
+        ? getAllowedType(parserServices.esTreeNodeToTSNodeMap.get(initializer))
+        : ts.TypeFlags.Number;
+    }
+
+    return {
+      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
+        const allowedType = getAllowedTypeOfEnum(node);
+        if (allowedType === undefined) {
+          return;
+        }
+
+        for (const member of node.members) {
+          if (getAllowedTypeOfInitializer(member.initializer) !== allowedType) {
             context.report({
               messageId: 'mixed',
-              node: member.initializer!,
+              node: member.initializer ?? member,
             });
             return;
           }
