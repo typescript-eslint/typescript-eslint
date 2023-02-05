@@ -402,6 +402,20 @@ tester.addFixturePatternConfig('typescript/basics', {
      * SyntaxError: A JSON module can only be imported with `default`.
      */
     'export-with-import-assertions',
+    // https://github.com/typescript-eslint/typescript-eslint/pull/5384
+    'abstract-class-with-abstract-method',
+    'abstract-class-with-optional-method',
+    'class-with-mixin-reference',
+    'class-with-mixin',
+    'function-with-types-assignation',
+    'nested-type-arguments',
+    'never-type-param',
+    'readonly-arrays',
+    'symbol-type-param',
+    'type-alias-declaration-with-constrained-type-parameter',
+    'type-alias-declaration',
+    'type-parameters-comments',
+    'type-reference-comments',
   ],
   ignoreSourceType: [
     /**
@@ -482,6 +496,10 @@ tester.addFixturePatternConfig('typescript/expressions', {
      * @see https://github.com/babel/babel/pull/14211
      */
     'satisfies-expression',
+    // https://github.com/typescript-eslint/typescript-eslint/pull/5384
+    'call-expression-type-arguments',
+    'new-expression-type-arguments',
+    'optional-call-expression-type-arguments',
   ],
 });
 
@@ -522,6 +540,15 @@ tester.addFixturePatternConfig('typescript/types', {
     'optional-variance-out',
     'optional-variance-in-out',
     'optional-variance-in-and-out',
+    // https://github.com/typescript-eslint/typescript-eslint/pull/5384
+    'constructor-in-generic',
+    'conditional-infer-nested',
+    'conditional-infer-with-constraint',
+    'function-in-generic',
+    'intersection-type',
+    'reference-generic',
+    'reference-generic-nested',
+    'typeof-with-type-parameters',
   ],
 });
 
@@ -531,11 +558,12 @@ tester.addFixturePatternConfig('typescript/declare', {
 
 tester.addFixturePatternConfig('typescript/namespaces-and-modules', {
   fileType: 'ts',
+  // https://github.com/typescript-eslint/typescript-eslint/pull/5384
+  ignore: ['declare-namespace-with-exported-function'],
   ignoreSourceType: [
     'nested-internal-module',
     'module-with-default-exports',
     'ambient-module-declaration-with-import',
-    'declare-namespace-with-exported-function',
   ],
 });
 
