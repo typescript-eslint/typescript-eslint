@@ -63,7 +63,7 @@ Take this file with exactly three lines of code:
 ```ts
 // Is SomeThing a class? A type? A variable?
 // Just from this file, we don't know! 😫
-export { SomeThing } from './may-include-side-effects.js';
+import { SomeThing } from './may-include-side-effects.js';
 ```
 
 If that `./may-include-side-effects.js` module includes side effects, keeping or removing the import can have very different runtime behaviors in the project.
@@ -71,8 +71,8 @@ Indicating in code which values are type-only can be necessary for transpilers t
 
 ```ts
 // Now we know this file's SomeThing is only used as a type.
-// We can remove this export in transpiled JavaScript syntax.
-export type { SomeThing } from './may-include-side-effects.js';
+// We can remove this import in transpiled JavaScript syntax.
+import type { SomeThing } from './may-include-side-effects.js';
 ```
 
 ## Enforcing With typescript-eslint
