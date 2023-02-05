@@ -54,8 +54,11 @@ For example, some projects import the types of side-effect-causing modules in co
 Import statements that only import types are generally removed when the built-in TypeScript compiler transpiles TypeScript syntax to JavaScript syntax.
 The built-in TypeScript compiler is able to do so because it includes a type checker that knows which imports are of types and/or values.
 
-But, some projects use transpilers such as Babel, SWC or Vite that don't have access to type information.
-Those untyped transpilers can't know whether an import is of a type, a value, or both:
+But, some projects use transpilers such as Babel, SWC, or Vite that don't have access to type information.
+These transpilers are sometimes referred to as _isolated module transpilers_ because they effectively transpile each module in isolation from other modules.
+Isolated module transpilers can't know whether an import is of a type, a value, or both.
+
+Take this file with exactly three lines of code:
 
 ```ts
 // Is SomeThing a class? A type? A variable?
@@ -83,6 +86,7 @@ You can enable them in your [ESLint configuration](https://eslint.org/docs/lates
 
 ```json
 {
+  "plugins": ["@typescript-eslint"],
   "rules": {
     "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/consistent-type-imports": "error"
@@ -90,7 +94,28 @@ You can enable them in your [ESLint configuration](https://eslint.org/docs/lates
 }
 ```
 
+With those rules enabled, running ESLint on the following code would produce a lint complaint:
+
+```ts
+import { GetString } from './types.js';
+// All imports in the declaration are only used as types. Use `import type`.
+
+export function getAndLogValue(getter: GetString) {
+  console.log('Value:', getter());
+}
+```
+
 The two rules can auto-fix code to use `type`s as necessary when ESLint is run on the command-line with `--fix` or configured in an editor extension such as the [VSCode ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
+
+For example, the `import` statement from earlier would be autofixed to:
+
+```ts
+import type { GetString } from './types.js';
+
+export function getAndLogValue(getter: GetString) {
+  console.log('Value:', getter());
+}
+```
 
 ## Further Reading
 
