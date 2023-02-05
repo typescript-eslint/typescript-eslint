@@ -107,7 +107,7 @@ export function getAndLogValue(getter: GetString) {
 
 The two rules can auto-fix code to use `type`s as necessary when ESLint is run on the command-line with `--fix` or configured in an editor extension such as the [VSCode ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
 
-For example, the `import` statement from earlier would be autofixed to:
+For example, the `import` statement from earlier would be auto-fixed to:
 
 ```ts
 import type { GetString } from './types.js';
