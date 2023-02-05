@@ -145,25 +145,19 @@ function specifierNameMatches(
   return name.some(item => item === type.getSymbol()?.escapedName);
 }
 
-function typeMatchesFileSpecifier(
-  specifier: FileSpecifier,
+function typeDeclaredInFile(
+  relativePath: string | undefined,
   declarationFiles: Array<ts.SourceFile>,
   program: ts.Program,
 ): boolean {
-  if (
-    !declarationFiles.some(declaration =>
+  if (relativePath === undefined) {
+    return declarationFiles.some(declaration =>
       declaration.fileName.startsWith(program.getCurrentDirectory()),
-    )
-  ) {
-    return false;
+    );
   }
-  const source = specifier.source;
-  if (source === undefined) {
-    return true;
-  }
-  const specifierPath = path.join(program.getCurrentDirectory(), source);
+  const absolutePath = path.join(program.getCurrentDirectory(), relativePath);
   return declarationFiles.some(
-    declaration => declaration.fileName === specifierPath,
+    declaration => declaration.fileName === absolutePath,
   );
 }
 
@@ -185,7 +179,7 @@ export function typeMatchesSpecifier(
       ?.map(declaration => declaration.getSourceFile()) ?? [];
   switch (specifier.from) {
     case 'file':
-      return typeMatchesFileSpecifier(specifier, declarationFiles, program);
+      return typeDeclaredInFile(specifier.source, declarationFiles, program);
     case 'lib':
       return declarationFiles.some(declaration =>
         program.isSourceFileDefaultLibrary(declaration),
