@@ -1,9 +1,12 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, {
+import type { TSESLint } from '@typescript-eslint/utils';
+import * as path from 'path';
+
+import type {
   MessageIds,
   Options,
 } from '../../src/rules/prefer-nullish-coalescing';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import rule from '../../src/rules/prefer-nullish-coalescing';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -209,7 +212,7 @@ a && b || c || d;
       code: `
 declare const x: ${type} | ${nullish};
 x || 'foo';
-      `.trimRight(),
+      `,
       output: null,
       errors: [
         {
@@ -224,7 +227,7 @@ x || 'foo';
               output: `
 declare const x: ${type} | ${nullish};
 x ?? 'foo';
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -330,35 +333,35 @@ x ?? 'foo';
       `
 declare const x: string | undefined;
 x !== undefined ? x : y;
-      `.trim(),
+      `,
       `
 declare const x: string | undefined;
 undefined !== x ? x : y;
-      `.trim(),
+      `,
       `
 declare const x: string | undefined;
 undefined === x ? y : x;
-      `.trim(),
+      `,
       `
 declare const x: string | undefined;
 undefined === x ? y : x;
-      `.trim(),
+      `,
       `
 declare const x: string | null;
 x !== null ? x : y;
-      `.trim(),
+      `,
       `
 declare const x: string | null;
 null !== x ? x : y;
-      `.trim(),
+      `,
       `
 declare const x: string | null;
 null === x ? y : x;
-      `.trim(),
+      `,
       `
 declare const x: string | null;
 null === x ? y : x;
-      `.trim(),
+      `,
     ].map(code => ({
       code,
       output: null,
@@ -366,29 +369,48 @@ null === x ? y : x;
       errors: [
         {
           messageId: 'preferNullishOverTernary' as const,
-          line: 2,
+          line: 3,
           column: 1,
-          endLine: 2,
-          endColumn: code.split('\n')[1].length,
+          endLine: 3,
+          endColumn: code.split('\n')[2].length,
           suggestions: [
             {
               messageId: 'suggestNullish' as const,
               output: `
-${code.split('\n')[0]}
+${code.split('\n')[1]}
 x ?? y;
-              `.trim(),
+      `,
             },
           ],
         },
       ],
     })),
 
+    // noStrictNullCheck
+    {
+      code: `
+declare const x: string[] | null;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'noStrictNullCheck',
+          line: 0,
+          column: 1,
+        },
+      ],
+      parserOptions: {
+        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
+    },
+
     // ignoreConditionalTests
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 x || 'foo' ? null : null;
-      `.trimRight(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
@@ -404,7 +426,7 @@ x || 'foo' ? null : null;
               output: `
 declare const x: ${type} | ${nullish};
 x ?? 'foo' ? null : null;
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -414,7 +436,7 @@ x ?? 'foo' ? null : null;
       code: `
 declare const x: ${type} | ${nullish};
 if (x || 'foo') {}
-      `.trimRight(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
@@ -430,7 +452,7 @@ if (x || 'foo') {}
               output: `
 declare const x: ${type} | ${nullish};
 if (x ?? 'foo') {}
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -440,7 +462,7 @@ if (x ?? 'foo') {}
       code: `
 declare const x: ${type} | ${nullish};
 do {} while (x || 'foo')
-      `.trimRight(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
@@ -456,7 +478,7 @@ do {} while (x || 'foo')
               output: `
 declare const x: ${type} | ${nullish};
 do {} while (x ?? 'foo')
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -466,7 +488,7 @@ do {} while (x ?? 'foo')
       code: `
 declare const x: ${type} | ${nullish};
 for (;x || 'foo';) {}
-      `.trimRight(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
@@ -482,7 +504,7 @@ for (;x || 'foo';) {}
               output: `
 declare const x: ${type} | ${nullish};
 for (;x ?? 'foo';) {}
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -492,7 +514,7 @@ for (;x ?? 'foo';) {}
       code: `
 declare const x: ${type} | ${nullish};
 while (x || 'foo') {}
-      `.trimRight(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
       errors: [
@@ -508,7 +530,7 @@ while (x || 'foo') {}
               output: `
 declare const x: ${type} | ${nullish};
 while (x ?? 'foo') {}
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -522,7 +544,7 @@ declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 a || b && c;
-      `.trimRight(),
+      `,
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
@@ -539,7 +561,7 @@ declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 a ?? b && c;
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -552,7 +574,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 a || b || c && d;
-      `.trimRight(),
+      `,
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
@@ -570,7 +592,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 (a ?? b) || c && d;
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -589,7 +611,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 a || b ?? c && d;
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -602,7 +624,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 a && b || c || d;
-      `.trimRight(),
+      `,
       options: [{ ignoreMixedLogicalExpressions: false }],
       errors: [
         {
@@ -620,7 +642,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 a && (b ?? c) || d;
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -639,7 +661,7 @@ declare const b: ${type} | ${nullish};
 declare const c: ${type} | ${nullish};
 declare const d: ${type} | ${nullish};
 a && b || c ?? d;
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -651,7 +673,7 @@ a && b || c ?? d;
       code: `
 declare const x: ${type} | ${nullish};
 if (() => x || 'foo') {}
-      `.trimRight(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
       errors: [
@@ -667,7 +689,7 @@ if (() => x || 'foo') {}
               output: `
 declare const x: ${type} | ${nullish};
 if (() => x ?? 'foo') {}
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -677,7 +699,7 @@ if (() => x ?? 'foo') {}
       code: `
 declare const x: ${type} | ${nullish};
 if (function werid() { return x || 'foo' }) {}
-      `.trimRight(),
+      `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
       errors: [
@@ -693,7 +715,7 @@ if (function werid() { return x || 'foo' }) {}
               output: `
 declare const x: ${type} | ${nullish};
 if (function werid() { return x ?? 'foo' }) {}
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -706,7 +728,7 @@ declare const a: ${type} | ${nullish};
 declare const b: ${type};
 declare const c: ${type};
 a || b || c;
-      `.trimRight(),
+      `,
       output: null,
       errors: [
         {
@@ -723,7 +745,7 @@ declare const a: ${type} | ${nullish};
 declare const b: ${type};
 declare const c: ${type};
 (a ?? b) || c;
-              `.trimRight(),
+      `,
             },
           ],
         },

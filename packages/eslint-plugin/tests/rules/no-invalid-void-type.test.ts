@@ -119,6 +119,8 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type Generic<T> = [T];',
     'type voidPromiseUnion = void | Promise<void>;',
     'type promiseNeverUnion = Promise<void> | never;',
+    'const arrowGeneric1 = <T = void>(arg: T) => {};',
+    'declare function functionDeclaration1<T = void>(arg: T): void;',
   ],
   invalid: [
     {
@@ -142,27 +144,12 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       ],
     },
     {
-      code: 'const arrowGeneric1 = <T = void>(arg: T) => {};',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 28,
-        },
-      ],
-    },
-    {
       code: 'const arrowGeneric2 = <T extends void = void>(arg: T) => {};',
       errors: [
         {
           messageId: 'invalidVoidNotReturnOrGeneric',
           line: 1,
           column: 34,
-        },
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 41,
         },
       ],
     },
@@ -177,27 +164,12 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       ],
     },
     {
-      code: 'function functionGeneric1<T = void>(arg: T) {}',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 31,
-        },
-      ],
-    },
-    {
       code: 'function functionGeneric2<T extends void = void>(arg: T) {}',
       errors: [
         {
           messageId: 'invalidVoidNotReturnOrGeneric',
           line: 1,
           column: 37,
-        },
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 44,
         },
       ],
     },
@@ -212,27 +184,12 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       ],
     },
     {
-      code: 'declare function functionDeclaration1<T = void>(arg: T): void;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 43,
-        },
-      ],
-    },
-    {
       code: 'declare function functionDeclaration2<T extends void = void>(arg: T): void;',
       errors: [
         {
           messageId: 'invalidVoidNotReturnOrGeneric',
           line: 1,
           column: 49,
-        },
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 56,
         },
       ],
     },
@@ -359,7 +316,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       code: 'type UnionType2 = string | number | void;',
       errors: [
         {
-          messageId: 'invalidVoidNotReturnOrGeneric',
+          messageId: 'invalidVoidUnionConstituent',
           line: 1,
           column: 37,
         },
@@ -369,9 +326,29 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       code: 'type UnionType3 = string | ((number & any) | (string | void));',
       errors: [
         {
-          messageId: 'invalidVoidNotReturnOrGeneric',
+          messageId: 'invalidVoidUnionConstituent',
           line: 1,
           column: 56,
+        },
+      ],
+    },
+    {
+      code: 'declare function test(): number | void;',
+      errors: [
+        {
+          messageId: 'invalidVoidUnionConstituent',
+          line: 1,
+          column: 35,
+        },
+      ],
+    },
+    {
+      code: 'declare function test<T extends number | void>(): T;',
+      errors: [
+        {
+          messageId: 'invalidVoidUnionConstituent',
+          line: 1,
+          column: 42,
         },
       ],
     },
@@ -437,7 +414,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       code: 'type invalidVoidUnion = void | Map<string, number>;',
       errors: [
         {
-          messageId: 'invalidVoidNotReturnOrGeneric',
+          messageId: 'invalidVoidUnionConstituent',
           line: 1,
           column: 25,
         },

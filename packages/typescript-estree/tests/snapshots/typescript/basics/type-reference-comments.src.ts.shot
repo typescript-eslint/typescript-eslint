@@ -77,6 +77,42 @@ Object {
                   74,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 50,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 29,
+                      "line": 2,
+                    },
+                  },
+                  "params": Array [
+                    Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 33,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 30,
+                          "line": 2,
+                        },
+                      },
+                      "range": Array [
+                        54,
+                        57,
+                      ],
+                      "type": "TSAnyKeyword",
+                    },
+                  ],
+                  "range": Array [
+                    53,
+                    74,
+                  ],
+                  "type": "TSTypeParameterInstantiation",
+                },
                 "typeName": Object {
                   "left": Object {
                     "loc": Object {
@@ -129,42 +165,6 @@ Object {
                     "type": "Identifier",
                   },
                   "type": "TSQualifiedName",
-                },
-                "typeParameters": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 50,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 29,
-                      "line": 2,
-                    },
-                  },
-                  "params": Array [
-                    Object {
-                      "loc": Object {
-                        "end": Object {
-                          "column": 33,
-                          "line": 2,
-                        },
-                        "start": Object {
-                          "column": 30,
-                          "line": 2,
-                        },
-                      },
-                      "range": Array [
-                        54,
-                        57,
-                      ],
-                      "type": "TSAnyKeyword",
-                    },
-                  ],
-                  "range": Array [
-                    53,
-                    74,
-                  ],
-                  "type": "TSTypeParameterInstantiation",
                 },
               },
             },

@@ -1,10 +1,11 @@
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
-import { TSESTree } from './ts-estree';
+
+import type { TSESTree } from './ts-estree';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isValidNode(x: any): x is TSESTree.Node {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return x !== null && typeof x === 'object' && typeof x.type === 'string';
+  return x != null && typeof x === 'object' && typeof x.type === 'string';
 }
 
 function getVisitorKeysForNode(

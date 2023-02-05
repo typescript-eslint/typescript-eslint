@@ -1,11 +1,11 @@
-import { TSESTree } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
-import {
-  InferOptionsTypeFromRule,
+import type { TSESTree } from '@typescript-eslint/utils';
+
+import type {
   InferMessageIdsTypeFromRule,
-  createRule,
-  isTokenOnSameLine,
+  InferOptionsTypeFromRule,
 } from '../util';
+import { createRule, isTokenOnSameLine } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('brace-style');
 
@@ -29,6 +29,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['1tbs'],
   create(context) {
     const [style, { allowSingleLine } = { allowSingleLine: false }] =
+      // eslint-disable-next-line no-restricted-syntax -- Use raw options for extended rules.
       context.options;
 
     const isAllmanStyle = style === 'allman';

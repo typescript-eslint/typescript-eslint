@@ -1,15 +1,11 @@
-import {
-  ASTUtils,
-  AST_NODE_TYPES,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
-import {
+import type {
   Definition,
-  DefinitionType,
   ImportBindingDefinition,
-  ScopeType,
 } from '@typescript-eslint/scope-manager';
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type MessageIds = 'noShadow' | 'noShadowGlobal';
@@ -23,6 +19,12 @@ type Options = [
     ignoreFunctionTypeParameterNameValueShadow?: boolean;
   },
 ];
+
+const allowedFunctionVariableDefTypes = new Set([
+  AST_NODE_TYPES.TSCallSignatureDeclaration,
+  AST_NODE_TYPES.TSFunctionType,
+  AST_NODE_TYPES.TSMethodSignature,
+]);
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-shadow',
@@ -151,8 +153,9 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      const id = variable.identifiers[0];
-      return util.isFunctionType(id.parent);
+      return variable.defs.every(def =>
+        allowedFunctionVariableDefTypes.has(def.node.type),
+      );
     }
 
     function isGenericOfStaticMethod(

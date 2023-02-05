@@ -1,10 +1,11 @@
-import {
-  TSESTree,
+import type {
   ParserServices,
-  AST_NODE_TYPES,
   TSESLint,
+  TSESTree,
 } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SymbolFlags } from 'typescript';
+
 import * as util from '../util';
 
 type Options = [

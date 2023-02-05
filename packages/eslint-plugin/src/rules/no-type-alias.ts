@@ -1,8 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Values =
@@ -60,27 +58,36 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowAliases: {
+            description: 'Whether to allow direct one-to-one type aliases.',
             enum: enumValues,
           },
           allowCallbacks: {
+            description: 'Whether to allow type aliases for callbacks.',
             enum: ['always', 'never'],
           },
           allowConditionalTypes: {
+            description: 'Whether to allow type aliases for conditional types.',
             enum: ['always', 'never'],
           },
           allowConstructors: {
+            description: 'Whether to allow type aliases with constructors.',
             enum: ['always', 'never'],
           },
           allowLiterals: {
+            description:
+              'Whether to allow type aliases with object literal types.',
             enum: enumValues,
           },
           allowMappedTypes: {
+            description: 'Whether to allow type aliases with mapped types.',
             enum: enumValues,
           },
           allowTupleTypes: {
+            description: 'Whether to allow type aliases with tuple types.',
             enum: enumValues,
           },
           allowGenerics: {
+            description: 'Whether to allow type aliases with generic types.',
             enum: ['always', 'never'],
           },
         },

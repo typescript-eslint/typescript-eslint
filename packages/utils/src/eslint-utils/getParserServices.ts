@@ -1,5 +1,5 @@
-import * as TSESLint from '../ts-eslint';
-import { ParserServices } from '../ts-estree';
+import type * as TSESLint from '../ts-eslint';
+import type { ParserServices } from '../ts-estree';
 
 const ERROR_MESSAGE =
   'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
@@ -17,8 +17,7 @@ function getParserServices<
   // backwards compatibility check
   // old versions of the parser would not return any parserServices unless parserOptions.project was set
   if (
-    !context.parserServices ||
-    !context.parserServices.program ||
+    !context.parserServices?.program ||
     !context.parserServices.esTreeNodeToTSNodeMap ||
     !context.parserServices.tsNodeToESTreeNodeMap
   ) {

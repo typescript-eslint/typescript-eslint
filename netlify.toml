@@ -1,0 +1,42 @@
+# https://docs.netlify.com/configure-builds/file-based-configuration/#build-settings
+[build]
+  base = ""
+  publish = "packages/website/build"
+  command = "NX_VERBOSE_LOGGING=true yarn patch-package && yarn nx build website"
+[build.environment]
+  NETLIFY_USE_YARN = "true"
+  YARN_FLAGS = "--ignore-scripts"
+
+# https://docs.netlify.com/configure-builds/file-based-configuration/#redirects
+
+[[redirects]]
+  from = "/docs"
+  to = "/getting-started"
+
+[[redirects]]
+  from = "/docs/development/architecture/asts"
+  to = "/blog/asts-and-typescript-eslint"
+
+[[redirects]]
+  from = "/docs/development/architecture/packages"
+  to = "/architecture"
+
+[[redirects]]
+  from = "/docs/development/custom-rules"
+  to = "/custom-rules"
+
+[[redirects]]
+  from = "/docs/linting/type-linting"
+  to = "/linting/typed-linting"
+
+[[redirects]]
+  from = "/docs/linting/monorepo"
+  to = "/linting/typed-linting/monorepos"
+
+[[redirects]]
+  from = "/docs/linting/tslint"
+  to = "/linting/troubleshooting/tslint"
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/"

@@ -1,11 +1,15 @@
 import rule from '../../src/rules/consistent-type-imports';
-import { RuleTester, noFormat, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
+  },
+  // type-only imports were first added in TS3.8
+  dependencyConstraints: {
+    typescript: '3.8',
   },
 });
 
@@ -119,10 +123,82 @@ ruleTester.run('consistent-type-imports', rule, {
       options: [{ prefer: 'no-type-imports' }],
     },
     `
+      import { type A } from 'foo';
+      type T = A;
+    `,
+    `
       import { type A, B } from 'foo';
       type T = A;
       const b = B;
     `,
+    `
+      import { type A, type B } from 'foo';
+      type T = A;
+      type Z = B;
+    `,
+    `
+      import { B } from 'foo';
+      import { type A } from 'foo';
+      type T = A;
+      const b = B;
+    `,
+    {
+      code: `
+        import { B, type A } from 'foo';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ fixStyle: 'inline-type-imports' }],
+    },
+    {
+      code: `
+        import { B } from 'foo';
+        import type A from 'baz';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ fixStyle: 'inline-type-imports' }],
+    },
+    {
+      code: `
+        import { type B } from 'foo';
+        import type { A } from 'foo';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ fixStyle: 'inline-type-imports' }],
+    },
+    {
+      code: `
+        import { B, type C } from 'foo';
+        import type A from 'baz';
+        type T = A;
+        type Z = C;
+        const b = B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+    },
+    {
+      code: `
+        import { B } from 'foo';
+        import type { A } from 'foo';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+    },
+    {
+      code: `
+        import { B } from 'foo';
+        import { A } from 'foo';
+        type T = A;
+        const b = B;
+      `,
+      options: [{ prefer: 'no-type-imports', fixStyle: 'inline-type-imports' }],
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
+    },
     // exports
     `
       import Type from 'foo';
@@ -514,6 +590,24 @@ export type Y = {
     },
     {
       code: `
+        import Foo from 'foo';
+        let foo: Foo;
+      `,
+      output: `
+        import type Foo from 'foo';
+        let foo: Foo;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
         import { A, B } from 'foo';
         let foo: A;
         let bar: B;
@@ -661,7 +755,7 @@ let bar: B;
 import { A, B } from 'foo';
 const foo: A = B();
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B } from 'foo';
 const foo: A = B();
@@ -769,7 +863,7 @@ type T = A;
         import type { Already2 } from 'bar';
         type T = { b: B; c: C; d: D };
       `,
-      output: noFormat`
+      output: `
         import type Already1Def from 'foo';
         import type { Already1 , B } from 'foo';
         import A from 'foo';
@@ -817,7 +911,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = A | D;
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B, C } from 'foo';
 import type { D} from 'bar';
@@ -845,7 +939,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = B | E;
       `,
-      output: noFormat`
+      output: `
 import type { B} from 'foo';
 import { A, C } from 'foo';
 import type { E} from 'bar';
@@ -873,7 +967,7 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = C | F;
       `,
-      output: noFormat`
+      output: `
 import type { C } from 'foo';
 import { A, B } from 'foo';
 import type { F} from 'bar';
@@ -944,7 +1038,7 @@ import Value3, { Type3 } from 'default_import2';
 import Type4, { Type5, Value4 } from 'default_and_named_import';
 type T = Type1 | Type2 | Type3 | Type4 | Type5;
       `,
-      output: noFormat`
+      output: `
 import type { Type1 } from 'named_import';
 import { Value1 } from 'named_import';
 import type Type2 from 'default_import';
@@ -1324,7 +1418,7 @@ import type /*comment*/ { Type } from 'foo';
 type T = { a: AllType; b: DefType; c: Type };
       `,
       options: [{ prefer: 'no-type-imports' }],
-      output: noFormat`
+      output: `
 import /*comment*/ * as AllType from 'foo';
 import // comment
 DefType from 'foo';
@@ -1437,7 +1531,7 @@ import Default /*comment1*/, /*comment2*/ { Data } from 'module';
 const a: Default = '';
       `,
       options: [{ prefer: 'type-imports' }],
-      output: noFormat`
+      output: `
 import type Default /*comment1*/ from 'module';
 import /*comment2*/ { Data } from 'module';
 const a: Default = '';
@@ -1481,7 +1575,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import Foo from 'foo';
         @deco
         class A {
@@ -1506,7 +1600,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { Foo } from 'foo';
         @deco
         class A {
@@ -1533,7 +1627,7 @@ const a: Default = '';
         }
         type T = Bar;
       `,
-      output: noFormat`
+      output: `
         import type { Type , Bar } from 'foo';
         import { Foo } from 'foo';
         @deco
@@ -1562,7 +1656,7 @@ const a: Default = '';
           foo(@deco bar: Bar) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { V , Foo, Bar} from 'foo';
         import type { T } from 'foo';
         @deco
@@ -1590,7 +1684,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import type { T } from 'foo';
         import { V , Foo} from 'foo';
         @deco
@@ -1616,7 +1710,7 @@ const a: Default = '';
           constructor(foo: Type.Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import * as Type from 'foo';
         @deco
         class A {
@@ -1641,7 +1735,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import Foo from 'foo';
         @deco
         class A {
@@ -1666,7 +1760,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { Foo } from 'foo';
         @deco
         class A {
@@ -1693,7 +1787,7 @@ const a: Default = '';
         }
         type T = Bar;
       `,
-      output: noFormat`
+      output: `
         import type { Type , Bar } from 'foo';
         import { Foo } from 'foo';
         @deco
@@ -1722,7 +1816,7 @@ const a: Default = '';
           foo(@deco bar: Bar) {}
         }
       `,
-      output: noFormat`
+      output: `
         import { V , Foo, Bar} from 'foo';
         import type { T } from 'foo';
         @deco
@@ -1750,7 +1844,7 @@ const a: Default = '';
           constructor(foo: Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import type { T } from 'foo';
         import { V , Foo} from 'foo';
         @deco
@@ -1776,7 +1870,7 @@ const a: Default = '';
           constructor(foo: Type.Foo) {}
         }
       `,
-      output: noFormat`
+      output: `
         import * as Type from 'foo';
         @deco
         class A {
@@ -1804,6 +1898,9 @@ import { A, B } from 'foo';
 type T = A;
 const b = B;
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ prefer: 'no-type-imports' }],
       errors: [
         {
@@ -1818,18 +1915,293 @@ import { A, B, type C } from 'foo';
 type T = A | C;
 const b = B;
       `,
-      output: noFormat`
+      output: `
 import type { A} from 'foo';
 import { B, type C } from 'foo';
 type T = A | C;
 const b = B;
       `,
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [{ prefer: 'type-imports' }],
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
           data: { typeImports: '"A"' },
           line: 2,
+        },
+      ],
+    },
+
+    // inline-type-imports
+    {
+      code: `
+        import { A, B } from 'foo';
+        let foo: A;
+        let bar: B;
+      `,
+      output: `
+        import { type A, type B } from 'foo';
+        let foo: A;
+        let bar: B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+        import { A, B } from 'foo';
+
+        let foo: A;
+        B();
+      `,
+      output: `
+        import { type A, B } from 'foo';
+
+        let foo: A;
+        B();
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+        import { A, B } from 'foo';
+        type T = A;
+        B();
+      `,
+      output: `
+        import { type A, B } from 'foo';
+        type T = A;
+        B();
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+        import { A } from 'foo';
+        import { B } from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      output: `
+        import { type A } from 'foo';
+        import { type B } from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+        import { A } from 'foo';
+        import B from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      output: `
+        import { type A } from 'foo';
+        import type B from 'foo';
+        type T = A;
+        type U = B;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 9,
+        },
+        {
+          messageId: 'typeOverValue',
+          line: 3,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+import A, { B, C } from 'foo';
+type T = B;
+type U = C;
+A();
+      `,
+      output: `
+import A, { type B, type C } from 'foo';
+type T = B;
+type U = C;
+A();
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'someImportsAreOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import A, { B, C } from 'foo';
+type T = B;
+type U = C;
+type V = A;
+      `,
+      output: `
+import {type B, type C} from 'foo';
+import type A from 'foo';
+type T = B;
+type U = C;
+type V = A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import A, { B, C as D } from 'foo';
+type T = B;
+type U = D;
+type V = A;
+      `,
+      output: `
+import {type B, type C as D} from 'foo';
+import type A from 'foo';
+type T = B;
+type U = D;
+type V = A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+        import { /* comment */ A, B } from 'foo';
+        type T = A;
+      `,
+      output: `
+        import { /* comment */ type A, B } from 'foo';
+        type T = A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+        import { B, /* comment */ A } from 'foo';
+        type T = A;
+      `,
+      output: `
+        import { B, /* comment */ type A } from 'foo';
+        type T = A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 9,
+        },
+      ],
+    },
+    {
+      code: `
+import { A, B, C } from 'foo';
+import type { D } from 'deez';
+
+const foo: A = B();
+let bar: C;
+let baz: D;
+      `,
+      output: `
+import { type A, B, type C } from 'foo';
+import type { D } from 'deez';
+
+const foo: A = B();
+let bar: C;
+let baz: D;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'someImportsAreOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import { A, B, type C } from 'foo';
+import type { D } from 'deez';
+const foo: A = B();
+let bar: C;
+let baz: D;
+      `,
+      output: `
+import { type A, B, type C } from 'foo';
+import type { D } from 'deez';
+const foo: A = B();
+let bar: C;
+let baz: D;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
         },
       ],
     },

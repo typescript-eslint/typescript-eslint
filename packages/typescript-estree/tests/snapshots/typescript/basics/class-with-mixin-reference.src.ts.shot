@@ -103,6 +103,7 @@ Object {
                 44,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -121,7 +122,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
         },
@@ -160,25 +160,7 @@ Object {
                 35,
               ],
               "type": "TSTypeReference",
-              "typeName": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 32,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 21,
-                    "line": 1,
-                  },
-                },
-                "name": "Constructor",
-                "range": Array [
-                  21,
-                  32,
-                ],
-                "type": "Identifier",
-              },
-              "typeParameters": Object {
+              "typeArguments": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 35,
@@ -206,6 +188,7 @@ Object {
                       34,
                     ],
                     "type": "TSTypeReference",
+                    "typeArguments": undefined,
                     "typeName": Object {
                       "loc": Object {
                         "end": Object {
@@ -224,7 +207,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "typeParameters": undefined,
                   },
                 ],
                 "range": Array [
@@ -232,6 +214,24 @@ Object {
                   35,
                 ],
                 "type": "TSTypeParameterInstantiation",
+              },
+              "typeName": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 32,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                },
+                "name": "Constructor",
+                "range": Array [
+                  21,
+                  32,
+                ],
+                "type": "Identifier",
               },
             },
             "default": undefined,

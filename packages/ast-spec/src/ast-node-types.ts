@@ -1,4 +1,5 @@
 export enum AST_NODE_TYPES {
+  AccessorProperty = 'AccessorProperty',
   ArrayExpression = 'ArrayExpression',
   ArrayPattern = 'ArrayPattern',
   ArrowFunctionExpression = 'ArrowFunctionExpression',
@@ -90,6 +91,7 @@ export enum AST_NODE_TYPES {
   /**
    * TS-prefixed nodes
    */
+  TSAbstractAccessorProperty = 'TSAbstractAccessorProperty',
   TSAbstractKeyword = 'TSAbstractKeyword',
   TSAbstractMethodDefinition = 'TSAbstractMethodDefinition',
   TSAbstractPropertyDefinition = 'TSAbstractPropertyDefinition',
@@ -145,6 +147,7 @@ export enum AST_NODE_TYPES {
   TSQualifiedName = 'TSQualifiedName',
   TSReadonlyKeyword = 'TSReadonlyKeyword',
   TSRestType = 'TSRestType',
+  TSSatisfiesExpression = 'TSSatisfiesExpression',
   TSStaticKeyword = 'TSStaticKeyword',
   TSStringKeyword = 'TSStringKeyword',
   TSSymbolKeyword = 'TSSymbolKeyword',

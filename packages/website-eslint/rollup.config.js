@@ -27,15 +27,19 @@ module.exports = {
           match: [
             /eslint\/lib\/(rule-tester|eslint|cli-engine|init)\//u,
             /eslint\/lib\/cli\.js$/,
-            /utils\/dist\/eslint-utils\/RuleTester\.js$/,
+            /utils\/dist\/eslint-utils\/rule-tester\/RuleTester\.js$/,
             /utils\/dist\/ts-eslint\/CLIEngine\.js$/,
             /utils\/dist\/ts-eslint\/RuleTester\.js$/,
-            /typescript-estree\/dist\/create-program\/createWatchProgram\.js/,
+            /typescript-estree\/dist\/create-program\/getWatchProgramsForProjects\.js/,
             /typescript-estree\/dist\/create-program\/createProjectProgram\.js/,
             /typescript-estree\/dist\/create-program\/createIsolatedProgram\.js/,
             /utils\/dist\/ts-eslint\/ESLint\.js/,
             // 'eslint/lib/shared/ajv.js',
             // 'eslint/lib/shared/runtime-info.js',
+            /ajv\/lib\/definition_schema\.js/,
+            /stream/,
+            /os/,
+            /fs/,
           ],
           target: './src/mock/empty.js',
         },
@@ -63,6 +67,14 @@ module.exports = {
           // semver simplified, solve issue with circular dependencies
           match: /semver$/u,
           target: './src/mock/semver.js',
+        },
+        {
+          match: /^globby$/u,
+          target: './src/mock/globby.js',
+        },
+        {
+          match: /^is-glob$/u,
+          target: './src/mock/is-glob.js',
         },
       ],
       replace: [

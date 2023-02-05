@@ -4,7 +4,7 @@
 /* eslint-enable eslint-comments/no-use */
 
 import rule from '../../src/rules/no-extra-parens';
-import { RuleTester, batchedSingleLineTests } from '../RuleTester';
+import { batchedSingleLineTests, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -19,6 +19,8 @@ ruleTester.run('no-extra-parens', rule, {
   valid: [
     ...batchedSingleLineTests({
       code: `
+async function f(arg: any) { await (arg as Promise<void>); }
+async function f(arg: Promise<any>) { await arg; }
 (0).toString();
 (function(){}) ? a() : b();
 (/^a$/).test(x);
@@ -139,6 +141,10 @@ t.true((me.get as SinonStub).calledWithExactly('/foo', other));
 t.true((<SinonStub>me.get).calledWithExactly('/foo', other));
 (requestInit.headers as Headers).get('Cookie');
 (<Headers> requestInit.headers).get('Cookie');
+class Foo {}
+class Foo extends (Bar as any) {}
+const foo = class {};
+const foo = class extends (Bar as any) {}
       `,
       parserOptions: {
         ecmaFeatures: {
@@ -225,6 +231,17 @@ switch (foo) { case 1: case (<2>2): break; default: break; }
         },
       ],
     }),
+    ...batchedSingleLineTests({
+      code: `
+declare const f: <T>(x: T) => any
+f<(number | string)[]>(['a', 1])
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    }),
   ],
 
   invalid: [
@@ -238,6 +255,13 @@ for (a of (b));
 typeof (a);
 a<import('')>((1));
 new a<import('')>((1));
+a<(A)>((1));
+async function f(arg: Promise<any>) { await (arg); }
+async function f(arg: any) { await ((arg as Promise<void>)); }
+class Foo extends ((Bar as any)) {}
+class Foo extends (Bar) {}
+const foo = class extends ((Bar as any)) {}
+const foo = class extends (Bar) {}
       `,
       output: `
 a = b * c;
@@ -248,7 +272,13 @@ for (a of b);
 typeof a;
 a<import('')>(1);
 new a<import('')>(1);
-a<(A)>((1));
+a<(A)>(1);
+async function f(arg: Promise<any>) { await arg; }
+async function f(arg: any) { await (arg as Promise<void>); }
+class Foo extends (Bar as any) {}
+class Foo extends Bar {}
+const foo = class extends (Bar as any) {}
+const foo = class extends Bar {}
       `,
       errors: [
         {
@@ -295,6 +325,36 @@ a<(A)>((1));
           messageId: 'unexpected',
           line: 10,
           column: 8,
+        },
+        {
+          messageId: 'unexpected',
+          line: 11,
+          column: 45,
+        },
+        {
+          messageId: 'unexpected',
+          line: 12,
+          column: 37,
+        },
+        {
+          messageId: 'unexpected',
+          line: 13,
+          column: 20,
+        },
+        {
+          messageId: 'unexpected',
+          line: 14,
+          column: 19,
+        },
+        {
+          messageId: 'unexpected',
+          line: 15,
+          column: 28,
+        },
+        {
+          messageId: 'unexpected',
+          line: 16,
+          column: 27,
         },
       ],
     }),

@@ -40,7 +40,7 @@ Object {
           42,
         ],
         "type": "CallExpression",
-        "typeParameters": Object {
+        "typeArguments": Object {
           "loc": Object {
             "end": Object {
               "column": 40,
@@ -68,6 +68,7 @@ Object {
                 22,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -86,7 +87,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           ],
           "range": Array [
@@ -313,6 +313,7 @@ Object {
                 129,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -331,7 +332,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
             "in": false,
             "loc": Object {

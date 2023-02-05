@@ -1,5 +1,15 @@
 {
-  "root": "packages/eslint-plugin-internal",
+  "name": "eslint-plugin-internal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "implicitDependencies": []
+  "implicitDependencies": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/eslint-plugin-internal/**/*.ts"]
+      }
+    }
+  }
 }

@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+import * as ts from 'typescript';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -51,7 +53,7 @@ export default util.createRule({
 
       const alias = tryGetAliasedSymbol(symbol, checker);
 
-      return alias !== null && symbolIsNamespaceInScope(alias);
+      return alias != null && symbolIsNamespaceInScope(alias);
     }
 
     function getSymbolInScope(

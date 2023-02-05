@@ -1,6 +1,6 @@
-name: "📝 Documentation Request"
-description: "Request a change in documentation"
-title: "Docs: <a short description of my proposal>"
+name: '📝 Documentation Request'
+description: 'Request a change in documentation'
+title: 'Docs: <a short description of my proposal>'
 labels:
   - documentation
   - triage
@@ -12,7 +12,7 @@ body:
       options:
         - label: I have looked for existing [open or closed documentation requests](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3Adocumentation) that match my proposal.
           required: true
-        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+        - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
           required: true
   - type: markdown
     attributes:

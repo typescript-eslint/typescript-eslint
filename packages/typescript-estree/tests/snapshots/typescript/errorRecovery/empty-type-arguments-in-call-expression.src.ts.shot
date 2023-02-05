@@ -40,7 +40,7 @@ Object {
           7,
         ],
         "type": "CallExpression",
-        "typeParameters": Object {
+        "typeArguments": Object {
           "loc": Object {
             "end": Object {
               "column": 5,

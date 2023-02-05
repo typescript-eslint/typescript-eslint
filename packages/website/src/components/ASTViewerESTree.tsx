@@ -1,11 +1,10 @@
+import type { TSESTree } from '@typescript-eslint/utils';
 import React, { useMemo } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
-import type { ASTViewerBaseProps } from './ast/types';
-import type { TSESTree } from '@typescript-eslint/utils';
-
 import { serialize } from './ast/serializer/serializer';
 import { createESTreeSerializer } from './ast/serializer/serializerESTree';
+import type { ASTViewerBaseProps } from './ast/types';
 
 export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
   readonly value: TSESTree.BaseNode;

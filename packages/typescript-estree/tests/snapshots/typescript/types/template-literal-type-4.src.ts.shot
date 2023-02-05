@@ -182,25 +182,7 @@ Object {
               61,
             ],
             "type": "TSTypeReference",
-            "typeName": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 58,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 49,
-                  "line": 1,
-                },
-              },
-              "name": "Uppercase",
-              "range": Array [
-                49,
-                58,
-              ],
-              "type": "Identifier",
-            },
-            "typeParameters": Object {
+            "typeArguments": Object {
               "loc": Object {
                 "end": Object {
                   "column": 61,
@@ -228,6 +210,7 @@ Object {
                     60,
                   ],
                   "type": "TSTypeReference",
+                  "typeArguments": undefined,
                   "typeName": Object {
                     "loc": Object {
                       "end": Object {
@@ -246,7 +229,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "typeParameters": undefined,
                 },
               ],
               "range": Array [
@@ -254,6 +236,24 @@ Object {
                 61,
               ],
               "type": "TSTypeParameterInstantiation",
+            },
+            "typeName": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 58,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 49,
+                  "line": 1,
+                },
+              },
+              "name": "Uppercase",
+              "range": Array [
+                49,
+                58,
+              ],
+              "type": "Identifier",
             },
           },
           Object {
@@ -272,25 +272,7 @@ Object {
               79,
             ],
             "type": "TSTypeReference",
-            "typeName": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 76,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 67,
-                  "line": 1,
-                },
-              },
-              "name": "Lowercase",
-              "range": Array [
-                67,
-                76,
-              ],
-              "type": "Identifier",
-            },
-            "typeParameters": Object {
+            "typeArguments": Object {
               "loc": Object {
                 "end": Object {
                   "column": 79,
@@ -318,6 +300,7 @@ Object {
                     78,
                   ],
                   "type": "TSTypeReference",
+                  "typeArguments": undefined,
                   "typeName": Object {
                     "loc": Object {
                       "end": Object {
@@ -336,7 +319,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "typeParameters": undefined,
                 },
               ],
               "range": Array [
@@ -344,6 +326,24 @@ Object {
                 79,
               ],
               "type": "TSTypeParameterInstantiation",
+            },
+            "typeName": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 76,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 67,
+                  "line": 1,
+                },
+              },
+              "name": "Lowercase",
+              "range": Array [
+                67,
+                76,
+              ],
+              "type": "Identifier",
             },
           },
           Object {
@@ -362,25 +362,7 @@ Object {
               98,
             ],
             "type": "TSTypeReference",
-            "typeName": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 95,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 85,
-                  "line": 1,
-                },
-              },
-              "name": "Capitalize",
-              "range": Array [
-                85,
-                95,
-              ],
-              "type": "Identifier",
-            },
-            "typeParameters": Object {
+            "typeArguments": Object {
               "loc": Object {
                 "end": Object {
                   "column": 98,
@@ -408,6 +390,7 @@ Object {
                     97,
                   ],
                   "type": "TSTypeReference",
+                  "typeArguments": undefined,
                   "typeName": Object {
                     "loc": Object {
                       "end": Object {
@@ -426,7 +409,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "typeParameters": undefined,
                 },
               ],
               "range": Array [
@@ -434,6 +416,24 @@ Object {
                 98,
               ],
               "type": "TSTypeParameterInstantiation",
+            },
+            "typeName": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 95,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 85,
+                  "line": 1,
+                },
+              },
+              "name": "Capitalize",
+              "range": Array [
+                85,
+                95,
+              ],
+              "type": "Identifier",
             },
           },
           Object {
@@ -452,25 +452,7 @@ Object {
               119,
             ],
             "type": "TSTypeReference",
-            "typeName": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 116,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 104,
-                  "line": 1,
-                },
-              },
-              "name": "Uncapitalize",
-              "range": Array [
-                104,
-                116,
-              ],
-              "type": "Identifier",
-            },
-            "typeParameters": Object {
+            "typeArguments": Object {
               "loc": Object {
                 "end": Object {
                   "column": 119,
@@ -498,6 +480,7 @@ Object {
                     118,
                   ],
                   "type": "TSTypeReference",
+                  "typeArguments": undefined,
                   "typeName": Object {
                     "loc": Object {
                       "end": Object {
@@ -516,7 +499,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "typeParameters": undefined,
                 },
               ],
               "range": Array [
@@ -524,6 +506,24 @@ Object {
                 119,
               ],
               "type": "TSTypeParameterInstantiation",
+            },
+            "typeName": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 116,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 104,
+                  "line": 1,
+                },
+              },
+              "name": "Uncapitalize",
+              "range": Array [
+                104,
+                116,
+              ],
+              "type": "Identifier",
             },
           },
         ],
@@ -653,25 +653,7 @@ Object {
           165,
         ],
         "type": "TSTypeReference",
-        "typeName": Object {
-          "loc": Object {
-            "end": Object {
-              "column": 33,
-              "line": 2,
-            },
-            "start": Object {
-              "column": 13,
-              "line": 2,
-            },
-          },
-          "name": "EnthusiasticGreeting",
-          "range": Array [
-            136,
-            156,
-          ],
-          "type": "Identifier",
-        },
-        "typeParameters": Object {
+        "typeArguments": Object {
           "loc": Object {
             "end": Object {
               "column": 42,
@@ -725,6 +707,24 @@ Object {
             165,
           ],
           "type": "TSTypeParameterInstantiation",
+        },
+        "typeName": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 33,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 2,
+            },
+          },
+          "name": "EnthusiasticGreeting",
+          "range": Array [
+            136,
+            156,
+          ],
+          "type": "Identifier",
         },
       },
     },

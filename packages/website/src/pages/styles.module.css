@@ -6,15 +6,20 @@
  */
 
 .hero {
-  background-color: var(--ifm-color-primary-darkest);
+  background-color: var(--color-blurple-shadow);
   background-image: linear-gradient(
     135deg,
-    var(--ifm-color-primary-darker) 0%,
-    var(--ifm-color-primary-darkest) 100%
+    var(--color-blurple) 0%,
+    var(--color-blurple-shadow) 100%
   );
   --ifm-font-color-base: var(--ifm-color-white);
   --ifm-button-color: var(--ifm-color-white);
   text-align: center;
+}
+
+.hero__logo {
+  height: 10rem;
+  width: 10rem;
 }
 
 .hero__subtitle {
@@ -30,7 +35,25 @@
 }
 
 .buttons a {
+  --ifm-font-color-base: var(--ifm-color-white);
+  --ifm-button-color: var(--ifm-color-white);
   margin: 1rem 1rem;
+}
+
+.buttonCentered {
+  margin: auto;
+}
+
+.buttonPrimary {
+  border: var(--ifm-button-border-width) solid var(--ifm-button-color);
+}
+
+.buttonPrimary:hover {
+  box-shadow: 0 2px 8px var(--ifm-button-color);
+}
+
+[data-theme='dark'] .buttonPrimary {
+  border: var(--ifm-button-border-width) solid var(--ifm-button-color);
 }
 
 .lightBackground {

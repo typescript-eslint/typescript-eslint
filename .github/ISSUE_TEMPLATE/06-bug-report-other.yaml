@@ -1,6 +1,6 @@
-name: "🐛 Report a Bug With Another Package"
-description: "Report a bug you encountered with another one of our packages (parser, util, scope-manager, etc)"
-title: "Bug: <short description of the issue>"
+name: '🐛 Report a Bug With Another Package'
+description: 'Report a bug you encountered with another one of our packages (parser, util, scope-manager, etc)'
+title: 'Bug: <short description of the issue>'
 labels:
   - bug
   - triage
@@ -17,7 +17,7 @@ body:
           required: true
         - label: I have [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3Abug) and found none that matched my issue.
           required: true
-        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+        - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
           required: true
   - type: markdown
     id: complexity-note

@@ -1,5 +1,5 @@
-import { createSerializer } from './baseSerializer';
 import { ImplicitLibVariable, Variable } from '../../../src/variable';
+import { createSerializer } from './baseSerializer';
 
 const serializer = createSerializer(Variable, [
   //

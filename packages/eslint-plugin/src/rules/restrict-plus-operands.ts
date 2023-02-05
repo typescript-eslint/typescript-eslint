@@ -1,5 +1,6 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type Options = [
@@ -21,7 +22,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Require both operands of addition to have type `number` or `string`',
+        'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
       recommended: 'error',
       requiresTypeChecking: true,
     },
@@ -42,9 +43,11 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           checkCompoundAssignments: {
+            description: 'Whether to check compound assignments such as `+=`.',
             type: 'boolean',
           },
           allowAny: {
+            description: 'Whether to allow `any` typed values.',
             type: 'boolean',
           },
         },

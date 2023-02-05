@@ -1,9 +1,11 @@
-import React from 'react';
-import clsx from 'clsx';
-import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Heading from '@theme/Heading';
+import Layout from '@theme/Layout';
+import clsx from 'clsx';
+import React from 'react';
+
 import { FinancialContributors } from '../components/FinancialContributors';
 import styles from './styles.module.css';
 
@@ -107,10 +109,20 @@ const features: FeatureItem[] = [
 function Feature({ title, description }: FeatureItem): JSX.Element {
   return (
     <div className="col col--12 padding-vert--lg">
-      <h2 className="text--center">{title}</h2>
+      <div className="text--center">
+        <Heading
+          as="h2"
+          id={title.replace(/,/g, '').toLowerCase().replace(/\s|_/g, '-')}
+        >
+          {title}
+        </Heading>
+      </div>
       {description}
       <div className={styles.buttons}>
-        <Link className="button button--primary" to={useBaseUrl('docs/')}>
+        <Link
+          className={clsx('button button--primary', styles.buttonCentered)}
+          to={useBaseUrl('getting-started')}
+        >
           Get Started
         </Link>
       </div>
@@ -124,10 +136,14 @@ function Home(): JSX.Element {
     <Layout description={`${siteConfig.tagline}`}>
       <header className={clsx('hero hero--dark', styles.hero)}>
         <div className="container">
+          <img alt="" className={styles.hero__logo} src="/img/logo.svg" />
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
-            <Link className="button button--primary" to={useBaseUrl('docs/')}>
+            <Link
+              className="button button--primary"
+              to={useBaseUrl('getting-started')}
+            >
               Get Started
             </Link>
             <Link
@@ -157,7 +173,9 @@ function Home(): JSX.Element {
         ))}
         <section className={styles.sponsors}>
           <div className="container text--center padding-vert--lg">
-            <h2>Financial Contributors</h2>
+            <Heading as="h2" id="financial-contributors">
+              Financial Contributors
+            </Heading>
             <FinancialContributors />
           </div>
         </section>

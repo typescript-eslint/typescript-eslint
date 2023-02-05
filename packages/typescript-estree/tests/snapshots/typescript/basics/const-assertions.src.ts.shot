@@ -75,6 +75,7 @@ Object {
                 32,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -93,7 +94,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
           "loc": Object {
@@ -240,6 +240,7 @@ Object {
                 88,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -258,7 +259,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
           "loc": Object {
@@ -425,6 +425,7 @@ Object {
                 162,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -443,7 +444,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
           "loc": Object {
@@ -552,6 +552,7 @@ Object {
                 192,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -570,7 +571,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
           "loc": Object {
@@ -717,6 +717,7 @@ Object {
                 240,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -735,7 +736,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
           "loc": Object {
@@ -902,6 +902,7 @@ Object {
                 303,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -920,7 +921,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
           "loc": Object {

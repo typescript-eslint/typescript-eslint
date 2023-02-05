@@ -1,11 +1,32 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('keyword-spacing');
 
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const baseSchema = Array.isArray(baseRule.meta.schema)
+  ? baseRule.meta.schema[0]
+  : baseRule.meta.schema;
+const schema = util.deepMerge(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
+  baseSchema,
+  {
+    properties: {
+      overrides: {
+        properties: {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          type: baseSchema.properties.overrides.properties.import,
+        },
+      },
+    },
+  },
+);
 
 export default util.createRule<Options, MessageIds>({
   name: 'keyword-spacing',
@@ -18,12 +39,12 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'whitespace',
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
+    schema: [schema],
     messages: baseRule.meta.messages,
   },
   defaultOptions: [{}],
 
-  create(context) {
+  create(context, [{ after, overrides }]) {
     const sourceCode = context.getSourceCode();
     const baseRules = baseRule.create(context);
     return {
@@ -48,6 +69,49 @@ export default util.createRule<Options, MessageIds>({
 
         // make sure to reset the type afterward so we don't permanently mutate the AST
         asToken.type = oldTokenType;
+      },
+      'ImportDeclaration[importKind=type]'(
+        node: TSESTree.ImportDeclaration,
+      ): void {
+        const { type: typeOptionOverride = {} } = overrides ?? {};
+        const typeToken = sourceCode.getFirstToken(node, { skip: 1 })!;
+        const punctuatorToken = sourceCode.getTokenAfter(typeToken)!;
+        if (
+          node.specifiers?.[0]?.type === AST_NODE_TYPES.ImportDefaultSpecifier
+        ) {
+          return;
+        }
+        const spacesBetweenTypeAndPunctuator =
+          punctuatorToken.range[0] - typeToken.range[1];
+        if (
+          (typeOptionOverride.after ?? after) === true &&
+          spacesBetweenTypeAndPunctuator === 0
+        ) {
+          context.report({
+            loc: typeToken.loc,
+            messageId: 'expectedAfter',
+            data: { value: 'type' },
+            fix(fixer) {
+              return fixer.insertTextAfter(typeToken, ' ');
+            },
+          });
+        }
+        if (
+          (typeOptionOverride.after ?? after) === false &&
+          spacesBetweenTypeAndPunctuator > 0
+        ) {
+          context.report({
+            loc: typeToken.loc,
+            messageId: 'unexpectedAfter',
+            data: { value: 'type' },
+            fix(fixer) {
+              return fixer.removeRange([
+                typeToken.range[1],
+                typeToken.range[1] + spacesBetweenTypeAndPunctuator,
+              ]);
+            },
+          });
+        }
       },
     };
   },

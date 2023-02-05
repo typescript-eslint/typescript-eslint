@@ -1,5 +1,7 @@
-import { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import {
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../naming-convention';
+import type {
   IndividualAndMetaSelectorsString,
   MetaSelectors,
   Modifiers,
@@ -13,7 +15,6 @@ import {
   UnderscoreOptions,
   UnderscoreOptionsString,
 } from './enums';
-import { MessageIds, Options } from '../naming-convention';
 
 interface MatchRegex {
   regex: string;
@@ -63,7 +64,7 @@ type ValidatorFunction = (
   node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
   modifiers?: Set<Modifiers>,
 ) => void;
-type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
+type ParsedOptions = Record<SelectorsString, ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 
 export type {

@@ -2,27 +2,25 @@ import debug from 'debug';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
-import { Extra } from '../parser-options';
-import {
-  ASTAndProgram,
-  CORE_COMPILER_OPTIONS,
-  getAstFromProgram,
-} from './shared';
+
+import type { ParseSettings } from '../parseSettings';
+import type { ASTAndProgram } from './shared';
+import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
 function useProvidedPrograms(
   programInstances: Iterable<ts.Program>,
-  extra: Extra,
+  parseSettings: ParseSettings,
 ): ASTAndProgram | undefined {
   log(
     'Retrieving ast for %s from provided program instance(s)',
-    extra.filePath,
+    parseSettings.filePath,
   );
 
   let astAndProgram: ASTAndProgram | undefined;
   for (const programInstance of programInstances) {
-    astAndProgram = getAstFromProgram(programInstance, extra);
+    astAndProgram = getAstFromProgram(programInstance, parseSettings);
     // Stop at the first applicable program instance
     if (astAndProgram) {
       break;
@@ -31,8 +29,8 @@ function useProvidedPrograms(
 
   if (!astAndProgram) {
     const relativeFilePath = path.relative(
-      extra.tsconfigRootDir || process.cwd(),
-      extra.filePath,
+      parseSettings.tsconfigRootDir || process.cwd(),
+      parseSettings.filePath,
     );
     const errorLines = [
       '"parserOptions.programs" has been provided for @typescript-eslint/parser.',

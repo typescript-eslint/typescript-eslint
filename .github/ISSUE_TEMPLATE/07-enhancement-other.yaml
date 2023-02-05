@@ -1,6 +1,6 @@
-name: "✨ Propose an Enhancement With Another Package"
-description: "Report an enhancement to another one of our packages (parser, util, scope-manager, etc)"
-title: "Enhancement: <a short description of my proposal>"
+name: '✨ Propose an Enhancement With Another Package'
+description: 'Report an enhancement to another one of our packages (parser, util, scope-manager, etc)'
+title: 'Enhancement: <a short description of my proposal>'
 labels:
   - enhancement
   - triage
@@ -15,7 +15,7 @@ body:
           required: true
         - label: I have searched the [current rule list](https://typescript-eslint.io/rules/#supported-rules) and found no rules that match my proposal.
           required: true
-        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+        - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
           required: true
   - type: dropdown
     id: package

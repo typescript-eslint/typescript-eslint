@@ -1,5 +1,6 @@
 {
-  "root": "packages/website-eslint",
+  "name": "website-eslint",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
   "implicitDependencies": []
 }

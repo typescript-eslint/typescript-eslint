@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import clsx from 'clsx';
-
-import styles from './ConfigEditor.module.css';
-
-import Text from '../inputs/Text';
-import Checkbox from '../inputs/Checkbox';
-import useFocus from '../hooks/useFocus';
-import Modal from '@site/src/components/modals/Modal';
 import Dropdown from '@site/src/components/inputs/Dropdown';
+import Modal from '@site/src/components/modals/Modal';
+import clsx from 'clsx';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
+
+import useFocus from '../hooks/useFocus';
+import Checkbox from '../inputs/Checkbox';
+import Text from '../inputs/Text';
+import styles from './ConfigEditor.module.css';
 
 export interface ConfigOptionsField {
   key: string;
@@ -90,26 +89,27 @@ function isDefault(value: unknown, defaults?: unknown[]): boolean {
 }
 
 function ConfigEditor(props: ConfigEditorProps): JSX.Element {
+  const { onClose: onCloseProps, isOpen, values } = props;
   const [filter, setFilter] = useState<string>('');
   const [config, setConfig] = useReducer(reducerObject, {});
   const [filterInput, setFilterFocus] = useFocus();
 
   const onClose = useCallback(() => {
-    props.onClose(config);
-  }, [props.onClose, config]);
+    onCloseProps(config);
+  }, [onCloseProps, config]);
 
   useEffect(() => {
-    setConfig({ type: 'init', config: props.values });
-  }, [props.values]);
+    setConfig({ type: 'init', config: values });
+  }, [values]);
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (isOpen) {
       setFilterFocus();
     }
-  }, [props.isOpen]);
+  }, [isOpen, setFilterFocus]);
 
   return (
-    <Modal header={props.header} isOpen={props.isOpen} onClose={onClose}>
+    <Modal header={props.header} isOpen={isOpen} onClose={onClose}>
       <div className={styles.searchBar}>
         <Text
           ref={filterInput}
@@ -129,8 +129,12 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
                 <label className={styles.searchResult} key={item.key}>
                   <span className={styles.searchResultDescription}>
                     <span className={styles.searchResultName}>{item.key}</span>
-                    {item.label && <br />}
-                    {item.label && <span>{item.label}</span>}
+                    {item.label && (
+                      <>
+                        <br />
+                        <span> {item.label}</span>
+                      </>
+                    )}
                   </span>
                   {item.type === 'boolean' && (
                     <Checkbox

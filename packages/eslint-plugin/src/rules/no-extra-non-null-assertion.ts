@@ -1,4 +1,5 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export default util.createRule({
@@ -6,7 +7,7 @@ export default util.createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow extra non-null assertion',
+      description: 'Disallow extra non-null assertions',
       recommended: 'error',
     },
     fixable: 'code',

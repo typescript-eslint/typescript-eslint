@@ -70,6 +70,7 @@ Object {
               22,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -88,7 +89,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
           Object {
             "loc": Object {
@@ -174,25 +174,7 @@ Object {
                       46,
                     ],
                     "type": "TSTypeReference",
-                    "typeName": Object {
-                      "loc": Object {
-                        "end": Object {
-                          "column": 43,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 33,
-                          "line": 1,
-                        },
-                      },
-                      "name": "LinkedList",
-                      "range": Array [
-                        33,
-                        43,
-                      ],
-                      "type": "Identifier",
-                    },
-                    "typeParameters": Object {
+                    "typeArguments": Object {
                       "loc": Object {
                         "end": Object {
                           "column": 46,
@@ -220,6 +202,7 @@ Object {
                             45,
                           ],
                           "type": "TSTypeReference",
+                          "typeArguments": undefined,
                           "typeName": Object {
                             "loc": Object {
                               "end": Object {
@@ -238,7 +221,6 @@ Object {
                             ],
                             "type": "Identifier",
                           },
-                          "typeParameters": undefined,
                         },
                       ],
                       "range": Array [
@@ -246,6 +228,24 @@ Object {
                         46,
                       ],
                       "type": "TSTypeParameterInstantiation",
+                    },
+                    "typeName": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 43,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 33,
+                          "line": 1,
+                        },
+                      },
+                      "name": "LinkedList",
+                      "range": Array [
+                        33,
+                        43,
+                      ],
+                      "type": "Identifier",
                     },
                   },
                 },

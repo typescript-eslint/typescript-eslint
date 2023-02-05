@@ -1,4 +1,5 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 import { maybeGetESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -24,7 +25,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    /* istanbul ignore if */ if (baseRule === null) {
+    /* istanbul ignore if */ if (baseRule == null) {
       throw new Error(
         '@typescript-eslint/no-loss-of-precision requires at least ESLint v7.1.0',
       );

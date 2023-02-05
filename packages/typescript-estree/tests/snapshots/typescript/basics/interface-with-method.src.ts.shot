@@ -212,6 +212,7 @@ Object {
                       54,
                     ],
                     "type": "TSTypeReference",
+                    "typeArguments": undefined,
                     "typeName": Object {
                       "loc": Object {
                         "end": Object {
@@ -230,7 +231,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "typeParameters": undefined,
                   },
                 },
               },
@@ -271,6 +271,7 @@ Object {
                   58,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "loc": Object {
                     "end": Object {
@@ -289,7 +290,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "typeParameters": undefined,
               },
             },
             "type": "TSMethodSignature",

@@ -1,8 +1,6 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -89,7 +87,7 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       Program(node): void {
-        if (lib === 'always' && path === 'always' && types == 'always') {
+        if (lib === 'always' && path === 'always' && types === 'always') {
           return;
         }
         programNode = node;

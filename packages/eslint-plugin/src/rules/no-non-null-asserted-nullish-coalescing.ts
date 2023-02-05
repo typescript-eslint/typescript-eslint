@@ -1,5 +1,8 @@
-import { ASTUtils, TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { Definition, DefinitionType } from '@typescript-eslint/scope-manager';
+import type { Definition } from '@typescript-eslint/scope-manager';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 function hasAssignmentBeforeNode(
@@ -24,7 +27,7 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
 
   const variableDeclarator = definition.node;
   return (
-    variableDeclarator.definite === true || variableDeclarator.init !== null
+    variableDeclarator.definite === true || variableDeclarator.init != null
   );
 }
 

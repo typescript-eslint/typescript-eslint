@@ -92,22 +92,9 @@ interface MemberAccount {
   website: string;
 }
 
-interface MemberAccountAndTier extends MemberAccount {
-  tier?: Tier;
-}
-
 const excludedNames = new Set([
   'Guest', // Apparent anonymous donor equivalent without an avatar
   'Josh Goldberg', // Team member 💖
-
-  // These names *seem* to be spam websites, but we're not sure.
-  // If your name is mistakenly on this list, we're sorry; please let us know!
-  '420HUBS.COM',
-  'Deal Empire',
-  'Florian Studio',
-  'java',
-  'Loyalty Leo',
-  'Penalty.com',
 ]);
 
 async function requestGraphql<Data>(key: keyof typeof queries): Promise<Data> {
@@ -130,13 +117,12 @@ async function main(): Promise<void> {
   ]);
 
   const accountsById = account.orders.nodes.reduce<
-    Record<string, MemberAccountAndTier>
+    Record<string, MemberAccount>
   >((accumulator, account) => {
     const name = account.fromAccount.name || account.fromAccount.id;
     accumulator[name] = {
       ...accumulator[name],
       ...account.fromAccount,
-      tier: account.tier,
     };
     return accumulator;
   }, {});
@@ -154,25 +140,24 @@ async function main(): Promise<void> {
   const allSponsorsConfig = collective.members.nodes
     .map(member => {
       const name = member.account.name || member.account.id;
-      const fromAccount: MemberAccountAndTier = {
+      const fromAccount = {
         ...member.account,
         ...accountsById[name],
       };
       const totalDonations = totalDonationsById[name];
-      const slug = fromAccount.tier?.slug ?? 'contributor';
+      const website = fromAccount.website;
 
       return {
         id: name,
         image: fromAccount.imageUrl,
         name: fromAccount.name,
-        tier: getReportedTierSlug(slug, totalDonations),
         totalDonations,
         twitterHandle: fromAccount.twitterHandle,
-        website: fromAccount.website,
+        website,
       };
     })
-    .filter(({ id, tier }) => {
-      if (uniqueNames.has(id) || !tier) {
+    .filter(({ id, totalDonations, website }) => {
+      if (uniqueNames.has(id) || totalDonations < 10000 || !website) {
         return false;
       }
 
@@ -203,36 +188,6 @@ async function stringifyObject(
     ...config,
     parser: 'json',
   });
-}
-
-function getReportedTierSlug(slug: string, totalDonations: number): string {
-  // Sponsors: Donors of $750 and/or a monthly amount of $100 or more
-  if (
-    totalDonations >= 750_00 ||
-    (slug === 'sponsor' && totalDonations >= 100_00)
-  ) {
-    return 'sponsor';
-  }
-
-  // Gold Supporters: Donors of $150 and/or a monthly amount of $10 or more.
-  // We also only show gold supporters who have donated at least twice.
-  if (
-    totalDonations >= 150_00 ||
-    (slug === 'gold-supporter' && totalDonations >= 20_00)
-  ) {
-    return 'supporter';
-  }
-
-  // Supporters: Donors of $50 and/or a monthly amount of $3 or more.
-  // We also only show supporters who have donated at least twice.
-  if (
-    totalDonations >= 50_00 ||
-    (slug === 'supporter' && totalDonations >= 6_00)
-  ) {
-    return 'contributor';
-  }
-
-  return undefined;
 }
 
 main().catch(error => {

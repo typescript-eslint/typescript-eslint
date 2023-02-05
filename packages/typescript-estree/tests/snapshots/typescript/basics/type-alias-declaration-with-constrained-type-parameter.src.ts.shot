@@ -70,25 +70,7 @@ Object {
               38,
             ],
             "type": "TSTypeReference",
-            "typeName": Object {
-              "loc": Object {
-                "end": Object {
-                  "column": 35,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 28,
-                  "line": 1,
-                },
-              },
-              "name": "Success",
-              "range": Array [
-                28,
-                35,
-              ],
-              "type": "Identifier",
-            },
-            "typeParameters": Object {
+            "typeArguments": Object {
               "loc": Object {
                 "end": Object {
                   "column": 38,
@@ -116,6 +98,7 @@ Object {
                     37,
                   ],
                   "type": "TSTypeReference",
+                  "typeArguments": undefined,
                   "typeName": Object {
                     "loc": Object {
                       "end": Object {
@@ -134,7 +117,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "typeParameters": undefined,
                 },
               ],
               "range": Array [
@@ -142,6 +124,24 @@ Object {
                 38,
               ],
               "type": "TSTypeParameterInstantiation",
+            },
+            "typeName": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 35,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 28,
+                  "line": 1,
+                },
+              },
+              "name": "Success",
+              "range": Array [
+                28,
+                35,
+              ],
+              "type": "Identifier",
             },
           },
           Object {
@@ -160,6 +160,7 @@ Object {
               48,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -178,7 +179,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
         ],
       },

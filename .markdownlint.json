@@ -61,16 +61,19 @@
   "MD033": {
     "allowed_elements": [
       "a",
-      "img",
       "br",
-      "sup",
-      "h1",
-      "p",
       "details",
+      "em",
+      "figcaption",
+      "figure",
+      "h1",
+      "img",
+      "p",
+      "RulesTable",
       "summary",
-      "Tabs",
+      "sup",
       "TabItem",
-      "RulesTable"
+      "Tabs"
     ]
   },
   // MD034/no-bare-urls - Bare URL used
@@ -96,11 +99,11 @@
   // MD044/proper-names - Proper names should have the correct capitalization
   "MD044": {
     "names": [
-      "JavaScript",
-      "TypeScript",
-      "TSLint",
       "ESLint",
-      "typescript-eslint"
+      "JavaScript",
+      "TSLint",
+      "typescript-eslint",
+      "TypeScript"
     ],
     "code_blocks": false
   },

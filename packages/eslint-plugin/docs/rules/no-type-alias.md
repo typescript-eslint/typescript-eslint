@@ -1,3 +1,7 @@
+---
+description: 'Disallow type aliases.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-type-alias** for documentation.
@@ -74,24 +78,12 @@ On the other hand, using a type alias as an interface can limit your ability to:
 Finally, mapping types is an advanced technique and leaving it open can quickly become a pain point
 in your application.
 
-## Rule Details
+## Examples
 
 This rule disallows the use of type aliases in favor of interfaces
 and simplified types (primitives, tuples, unions, intersections, etc).
 
 ## Options
-
-This rule, in its default state, does not require any argument. If you would like to enable one
-or more of the following you may pass an object with the options set as follows:
-
-- `allowAliases` set to `"always"` will allow you to do aliasing (Defaults to `"never"`).
-- `allowCallbacks` set to `"always"` will allow you to use type aliases with callbacks (Defaults to `"never"`)
-- `allowConditionalTypes` set to `"always"` will allow you to use type aliases with conditional types (Defaults to `"never"`)
-- `allowConstructors` set to `"always"` will allow you to use type aliases with constructors (Defaults to `"never"`)
-- `allowLiterals` set to `"always"` will allow you to use type aliases with literal objects (Defaults to `"never"`)
-- `allowMappedTypes` set to `"always"` will allow you to use type aliases as mapping tools (Defaults to `"never"`)
-- `allowTupleTypes` set to `"always"` will allow you to use type aliases with tuples (Defaults to `"never"`)
-- `allowGenerics` set to `"always"` will allow you to use type aliases with generics (Defaults to `"never"`)
 
 ### `allowAliases`
 

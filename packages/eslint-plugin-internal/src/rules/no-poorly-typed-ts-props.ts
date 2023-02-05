@@ -1,4 +1,6 @@
-import { ESLintUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 /*
@@ -33,9 +35,8 @@ export default createRule({
     type: 'problem',
     docs: {
       description:
-        "Enforces rules don't use TS API properties with known bad type definitions",
+        "Enforce that rules don't use TS API properties with known bad type definitions",
       recommended: 'error',
-      suggestion: true,
       requiresTypeChecking: true,
     },
     fixable: 'code',

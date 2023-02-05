@@ -59,7 +59,7 @@ Object {
               20,
             ],
             "type": "NewExpression",
-            "typeParameters": Object {
+            "typeArguments": Object {
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -87,6 +87,7 @@ Object {
                     17,
                   ],
                   "type": "TSTypeReference",
+                  "typeArguments": undefined,
                   "typeName": Object {
                     "loc": Object {
                       "end": Object {
@@ -105,7 +106,6 @@ Object {
                     ],
                     "type": "Identifier",
                   },
-                  "typeParameters": undefined,
                 },
               ],
               "range": Array [

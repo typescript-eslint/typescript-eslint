@@ -1,12 +1,85 @@
+import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
+import * as globbyModule from 'globby';
 import { join, resolve } from 'path';
+import type * as typescriptModule from 'typescript';
+
 import * as parser from '../../src';
-import * as astConverter from '../../src/ast-converter';
-import { TSESTreeOptions } from '../../src/parser-options';
-import * as sharedParserUtils from '../../src/create-program/shared';
+import * as astConverterModule from '../../src/ast-converter';
+import * as sharedParserUtilsModule from '../../src/create-program/shared';
+import type { TSESTreeOptions } from '../../src/parser-options';
+import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
 import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
+
+// we can't spy on the exports of an ES module - so we instead have to mock the entire module
+jest.mock('../../src/ast-converter', () => {
+  const astConverterActual = jest.requireActual<typeof astConverterModule>(
+    '../../src/ast-converter',
+  );
+
+  return {
+    ...astConverterActual,
+    __esModule: true,
+    astConverter: jest.fn(astConverterActual.astConverter),
+  };
+});
+jest.mock('../../src/create-program/shared', () => {
+  const sharedActual = jest.requireActual<typeof sharedParserUtilsModule>(
+    '../../src/create-program/shared',
+  );
+
+  return {
+    ...sharedActual,
+    __esModule: true,
+    createDefaultCompilerOptionsFromExtra: jest.fn(
+      sharedActual.createDefaultCompilerOptionsFromExtra,
+    ),
+  };
+});
+
+// Tests in CI by default run with lowercase program file names,
+// resulting in path.relative results starting with many "../"s
+jest.mock('typescript', () => {
+  const ts = jest.requireActual<typeof typescriptModule>('typescript');
+  return {
+    ...ts,
+    sys: {
+      ...ts.sys,
+      useCaseSensitiveFileNames: true,
+    },
+  };
+});
+
+jest.mock('globby', () => {
+  const globby = jest.requireActual<typeof globbyModule>('globby');
+  return {
+    ...globby,
+    sync: jest.fn(globby.sync),
+  };
+});
+
+const hrtimeSpy = jest.spyOn(process, 'hrtime');
+
+const astConverterMock = jest.mocked(astConverterModule.astConverter);
+const createDefaultCompilerOptionsFromExtra = jest.mocked(
+  sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
+);
+const globbySyncMock = jest.mocked(globbyModule.sync);
+
+/**
+ * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
+ */
+function alignErrorPath(error: Error): never {
+  error.message = error.message.replace(/\\(?!["])/gm, '/');
+  throw error;
+}
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  clearGlobResolutionCache();
+});
 
 describe('parseWithNodeMaps()', () => {
   describe('basic functionality', () => {
@@ -25,10 +98,10 @@ describe('parseWithNodeMaps()', () => {
     it('should simple code', () => {
       const result = parser.parseWithNodeMaps('1;');
       expect(result.ast).toMatchInlineSnapshot(`
-        Object {
-          "body": Array [
-            Object {
-              "expression": Object {
+        {
+          "body": [
+            {
+              "expression": {
                 "raw": "1",
                 "type": "Literal",
                 "value": 1,
@@ -114,8 +187,6 @@ describe('parseWithNodeMaps()', () => {
 
   describe('loggerFn should be propagated to ast-converter', () => {
     it('output tokens, comments, locs, and ranges when called with those options', () => {
-      const spy = jest.spyOn(astConverter, 'astConverter');
-
       const loggerFn = jest.fn(() => {});
 
       parser.parseWithNodeMaps('let foo = bar;', {
@@ -126,8 +197,8 @@ describe('parseWithNodeMaps()', () => {
         loc: true,
       });
 
-      expect(spy).toHaveBeenCalled();
-      expect(spy.mock.calls[0][1]).toMatchObject({
+      expect(astConverterMock).toHaveBeenCalled();
+      expect(astConverterMock.mock.calls[0][1]).toMatchObject({
         code: 'let foo = bar;',
         comment: true,
         comments: [],
@@ -342,6 +413,7 @@ describe('parseAndGenerateServices', () => {
         let result:
           | parser.ParseAndGenerateServicesResult<typeof config>
           | undefined;
+        // eslint-disable-next-line jest/valid-expect
         const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
@@ -505,14 +577,7 @@ describe('parseAndGenerateServices', () => {
             filePath: join(PROJECT_DIR, filePath),
           });
         } catch (error) {
-          /**
-           * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
-           */
-          (error as Error).message = (error as Error).message.replace(
-            /\\(?!["])/gm,
-            '/',
-          );
-          throw error;
+          throw alignErrorPath(error as Error);
         }
       };
 
@@ -583,6 +648,33 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
+  describe('invalid project error messages', () => {
+    it('throws when non of multiple projects include the file', () => {
+      const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
+      const code = 'var a = true';
+      const config: TSESTreeOptions = {
+        comment: true,
+        tokens: true,
+        range: true,
+        loc: true,
+        tsconfigRootDir: PROJECT_DIR,
+        project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+      };
+      const testParse = (filePath: string) => (): void => {
+        try {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            filePath: join(PROJECT_DIR, filePath),
+          });
+        } catch (error) {
+          throw alignErrorPath(error as Error);
+        }
+      };
+
+      expect(testParse('ts/notIncluded0j1.ts')).toThrowErrorMatchingSnapshot();
+    });
+  });
+
   describe('debug options', () => {
     const debugEnable = jest.fn();
     beforeEach(() => {
@@ -625,16 +717,11 @@ describe('parseAndGenerateServices', () => {
     });
 
     it('should turn on typescript debugger', () => {
-      const spy = jest.spyOn(
-        sharedParserUtils,
-        'createDefaultCompilerOptionsFromExtra',
-      );
-
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript'],
       });
-      expect(spy).toHaveBeenCalled();
-      expect(spy).toHaveReturnedWith(
+      expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
+      expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
         expect.objectContaining({
           extendedDiagnostics: true,
         }),
@@ -678,97 +765,68 @@ describe('parseAndGenerateServices', () => {
 
     it('ignores a folder when given a string glob', () => {
       const ignore = ['**/ignoreme/**'];
+      // cspell:disable-next-line
       expect(testParse('ignoreme', ignore)).toThrow();
+      // cspell:disable-next-line
       expect(testParse('includeme', ignore)).not.toThrow();
     });
   });
 
-  describe('moduleResolver', () => {
-    beforeEach(() => {
-      parser.clearCaches();
-    });
+  describe('cacheLifetime', () => {
+    describe('glob', () => {
+      function doParse(lifetime: CacheDurationSeconds): void {
+        parser.parseAndGenerateServices('const x = 1', {
+          cacheLifetime: {
+            glob: lifetime,
+          },
+          filePath: join(FIXTURES_DIR, 'file.ts'),
+          tsconfigRootDir: FIXTURES_DIR,
+          project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+        });
+      }
 
-    const PROJECT_DIR = resolve(FIXTURES_DIR, '../moduleResolver');
-    const code = `
-      import { something } from '__PLACEHOLDER__';
-
-      something();
-    `;
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      project: './tsconfig.json',
-      tsconfigRootDir: PROJECT_DIR,
-      filePath: resolve(PROJECT_DIR, 'file.ts'),
-    };
-    const withDefaultProgramConfig: TSESTreeOptions = {
-      ...config,
-      project: './tsconfig.defaultProgram.json',
-      createDefaultProgram: true,
-    };
-
-    describe('when file is in the project', () => {
-      it('returns error if __PLACEHOLDER__ can not be resolved', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, config)
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveProperty(
-          [0, 'messageText'],
-          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
-        );
+      it('should cache globs if the lifetime is non-zero', () => {
+        doParse(30);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+        doParse(30);
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
       });
 
-      it('throws error if moduleResolver can not be found', () => {
-        expect(() =>
-          parser.parseAndGenerateServices(code, {
-            ...config,
-            moduleResolver: resolve(
-              PROJECT_DIR,
-              './this_moduleResolver_does_not_exist.js',
-            ),
-          }),
-        ).toThrowErrorMatchingInlineSnapshot(`
-        "Could not find the provided parserOptions.moduleResolver.
-        Hint: use an absolute path if you are not in control over where the ESLint instance runs."
-      `);
+      it('should not cache globs if the lifetime is zero', () => {
+        doParse(0);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+        doParse(0);
+        // should call globby again because we specified immediate cache expiry
+        expect(globbySyncMock).toHaveBeenCalledTimes(2);
       });
 
-      it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...config,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
-      });
-    });
+      it('should evict the cache if the entry expires', () => {
+        hrtimeSpy.mockReturnValueOnce([1, 0]);
 
-    describe('when file is not in the project and createDefaultProgram=true', () => {
-      it('returns error because __PLACEHOLDER__ can not be resolved', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, withDefaultProgramConfig)
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveProperty(
-          [0, 'messageText'],
-          "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",
-        );
+        doParse(30);
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+
+        // wow so much time has passed
+        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
+
+        doParse(30);
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(2);
       });
 
-      it('resolves __PLACEHOLDER__ correctly', () => {
-        expect(
-          parser
-            .parseAndGenerateServices(code, {
-              ...withDefaultProgramConfig,
-              moduleResolver: resolve(PROJECT_DIR, './moduleResolver.js'),
-            })
-            .services.program.getSemanticDiagnostics(),
-        ).toHaveLength(0);
+      it('should infinitely cache if passed Infinity', () => {
+        hrtimeSpy.mockReturnValueOnce([1, 0]);
+
+        doParse('Infinity');
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+
+        // wow so much time has passed
+        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
+
+        doParse('Infinity');
+        // shouldn't call globby again due to the caching
+        expect(globbySyncMock).toHaveBeenCalledTimes(1);
       });
     });
   });

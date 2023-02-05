@@ -1,8 +1,10 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 import { typeIsOrHasBaseType } from '../util';
-import { ASTUtils, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -117,7 +119,10 @@ export default util.createRule<Options, MessageIds>({
             ts.isArrayLiteralExpression(parent.parent))
         ) {
           current = parent;
-        } else if (ts.isBinaryExpression(parent)) {
+        } else if (
+          ts.isBinaryExpression(parent) &&
+          !ts.isPropertyAccessExpression(current)
+        ) {
           return (
             parent.left === current &&
             parent.operatorToken.kind === ts.SyntaxKind.EqualsToken

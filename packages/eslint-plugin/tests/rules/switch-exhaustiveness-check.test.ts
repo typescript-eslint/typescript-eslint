@@ -1,6 +1,7 @@
 import path from 'path';
+
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
-import { RuleTester, noFormat } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 
@@ -436,14 +437,14 @@ function test(value: T): number {
       return 1;
   }
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
-              output: noFormat`
+              output: `
 type T = 1 | 2;
 
 function test(value: T): number {
@@ -453,7 +454,7 @@ function test(value: T): number {
     case 2: { throw new Error('Not implemented yet: 2 case') }
   }
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -468,14 +469,14 @@ function test(value: T): number {
   switch (value) {
   }
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
-              output: noFormat`
+              output: `
 type T = 1 | 2;
 
 function test(value: T): number {
@@ -484,7 +485,7 @@ function test(value: T): number {
   case 2: { throw new Error('Not implemented yet: 2 case') }
   }
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -502,14 +503,14 @@ function test(arg: Enum): string {
   switch (arg) {
   }
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
-              output: noFormat`
+              output: `
 export enum Enum {
   'test-test' = 'test-test',
   'test' = 'test',
@@ -521,7 +522,7 @@ function test(arg: Enum): string {
   case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -539,14 +540,14 @@ function test(arg: Enum): string {
   switch (arg) {
   }
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
-              output: noFormat`
+              output: `
 export enum Enum {
   '' = 'test-test',
   'test' = 'test',
@@ -558,7 +559,7 @@ function test(arg: Enum): string {
   case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
 }
-              `.trimRight(),
+      `,
             },
           ],
         },
@@ -576,14 +577,14 @@ function test(arg: Enum): string {
   switch (arg) {
   }
 }
-      `.trimRight(),
+      `,
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
-              output: noFormat`
+              output: `
 export enum Enum {
   '9test' = 'test-test',
   'test' = 'test',
@@ -595,7 +596,7 @@ function test(arg: Enum): string {
   case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
 }
-              `.trimRight(),
+      `,
             },
           ],
         },

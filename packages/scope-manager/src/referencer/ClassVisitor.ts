@@ -1,6 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { ClassNameDefinition, ParameterDefinition } from '../definition';
-import { Referencer } from './Referencer';
+import type { Referencer } from './Referencer';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
@@ -81,9 +83,13 @@ class ClassVisitor extends Visitor {
   }
 
   protected visitPropertyDefinition(
-    node: TSESTree.TSAbstractPropertyDefinition | TSESTree.PropertyDefinition,
+    node:
+      | TSESTree.AccessorProperty
+      | TSESTree.PropertyDefinition
+      | TSESTree.TSAbstractAccessorProperty
+      | TSESTree.TSAbstractPropertyDefinition,
   ): void {
-    this.visitProperty(node);
+    this.visitPropertyBase(node);
     /**
      * class A {
      *   @meta     // <--- check this
@@ -157,7 +163,7 @@ class ClassVisitor extends Visitor {
        * }
        */
       if (
-        keyName !== null &&
+        keyName != null &&
         this.#classNode.body.body.find(
           (node): node is TSESTree.MethodDefinition =>
             node !== methodNode &&
@@ -227,9 +233,11 @@ class ClassVisitor extends Visitor {
     this.#referencer.close(node);
   }
 
-  protected visitProperty(
+  protected visitPropertyBase(
     node:
+      | TSESTree.AccessorProperty
       | TSESTree.PropertyDefinition
+      | TSESTree.TSAbstractAccessorProperty
       | TSESTree.TSAbstractPropertyDefinition
       | TSESTree.TSAbstractMethodDefinition,
   ): void {
@@ -238,7 +246,10 @@ class ClassVisitor extends Visitor {
     }
 
     if (node.value) {
-      if (node.type === AST_NODE_TYPES.PropertyDefinition) {
+      if (
+        node.type === AST_NODE_TYPES.PropertyDefinition ||
+        node.type === AST_NODE_TYPES.AccessorProperty
+      ) {
         this.#referencer.scopeManager.nestClassFieldInitializerScope(
           node.value,
         );
@@ -246,7 +257,10 @@ class ClassVisitor extends Visitor {
 
       this.#referencer.visit(node.value);
 
-      if (node.type === AST_NODE_TYPES.PropertyDefinition) {
+      if (
+        node.type === AST_NODE_TYPES.PropertyDefinition ||
+        node.type === AST_NODE_TYPES.AccessorProperty
+      ) {
         this.#referencer.close(node.value);
       }
     }
@@ -326,6 +340,10 @@ class ClassVisitor extends Visitor {
   // Visit selectors //
   /////////////////////
 
+  protected AccessorProperty(node: TSESTree.AccessorProperty): void {
+    this.visitPropertyDefinition(node);
+  }
+
   protected ClassBody(node: TSESTree.ClassBody): void {
     // this is here on purpose so that this visitor explicitly declares visitors
     // for all nodes it cares about (see the instance visit method above)
@@ -340,6 +358,12 @@ class ClassVisitor extends Visitor {
     this.visitMethod(node);
   }
 
+  protected TSAbstractAccessorProperty(
+    node: TSESTree.TSAbstractAccessorProperty,
+  ): void {
+    this.visitPropertyDefinition(node);
+  }
+
   protected TSAbstractPropertyDefinition(
     node: TSESTree.TSAbstractPropertyDefinition,
   ): void {
@@ -349,7 +373,7 @@ class ClassVisitor extends Visitor {
   protected TSAbstractMethodDefinition(
     node: TSESTree.TSAbstractMethodDefinition,
   ): void {
-    this.visitProperty(node);
+    this.visitPropertyBase(node);
   }
 
   protected Identifier(node: TSESTree.Identifier): void {
@@ -358,6 +382,14 @@ class ClassVisitor extends Visitor {
 
   protected PrivateIdentifier(): void {
     // intentionally skip
+  }
+
+  protected StaticBlock(node: TSESTree.StaticBlock): void {
+    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
+
+    node.body.forEach(b => this.visit(b));
+
+    this.#referencer.close(node);
   }
 }
 

@@ -1,21 +1,17 @@
 import React from 'react';
 
-import { SponsorData, SponsorIncludeOptions } from './types';
+import styles from './styles.module.css';
+import type { SponsorData } from './types';
 
 interface SponsorProps {
-  className?: string;
-  include?: SponsorIncludeOptions;
+  includeName?: boolean;
   sponsor: SponsorData;
 }
 
-export function Sponsor({
-  className,
-  include = {},
-  sponsor,
-}: SponsorProps): JSX.Element {
+export function Sponsor({ includeName, sponsor }: SponsorProps): JSX.Element {
   let children = <img alt={`${sponsor.name} logo`} src={sponsor.image} />;
 
-  if (include.name) {
+  if (includeName) {
     children = (
       <>
         {children}
@@ -24,19 +20,15 @@ export function Sponsor({
     );
   }
 
-  if (include.link) {
-    children = (
-      <a
-        className={className}
-        href={sponsor.website ?? undefined}
-        title={sponsor.name}
-        target="_blank"
-        rel="noopener sponsored"
-      >
-        {children}
-      </a>
-    );
-  }
-
-  return children;
+  return (
+    <a
+      className={styles.sponsorLink}
+      href={sponsor.website ?? undefined}
+      title={sponsor.name}
+      target="_blank"
+      rel="noopener sponsored"
+    >
+      {children}
+    </a>
+  );
 }

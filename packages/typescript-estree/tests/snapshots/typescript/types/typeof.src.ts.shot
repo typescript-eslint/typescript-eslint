@@ -108,7 +108,7 @@ Object {
                   17,
                 ],
                 "type": "TSTypeQuery",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
             },
           },

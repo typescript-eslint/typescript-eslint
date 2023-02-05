@@ -24,7 +24,7 @@ interface CreateFixturePatternConfig {
 }
 
 const fixturesDirPath = path.join(__dirname, '../fixtures');
-const sharedFixturesDirPath = path.join(
+export const sharedFixturesDirPath = path.join(
   __dirname,
   '../../../shared-fixtures/fixtures',
 );
@@ -397,6 +397,11 @@ tester.addFixturePatternConfig('typescript/basics', {
      * SyntaxError: Missing initializer in const declaration.
      */
     'var-with-definite-assignment',
+    /**
+     * [BABEL ERRORED, BUT TS-ESTREE DID NOT]
+     * SyntaxError: A JSON module can only be imported with `default`.
+     */
+    'export-with-import-assertions',
   ],
   ignoreSourceType: [
     /**
@@ -432,6 +437,19 @@ tester.addFixturePatternConfig('typescript/decorators/accessor-decorators', {
 });
 tester.addFixturePatternConfig('typescript/decorators/class-decorators', {
   fileType: 'ts',
+  ignore: [
+    /**
+     * babel sets the range of the export node to the start of the decorator
+     * TSESTree sets it to the start of the export keyword
+     */
+    'export-default-class-decorator',
+    'export-named-class-decorator',
+    /**
+     * babel sets the range of the export node to the start of the parameter
+     * TSESTree sets it to the start of the decorator
+     */
+    'class-parameter-property',
+  ],
 });
 tester.addFixturePatternConfig('typescript/decorators/method-decorators', {
   fileType: 'ts',
@@ -459,6 +477,11 @@ tester.addFixturePatternConfig('typescript/expressions', {
      * @see https://github.com/babel/babel/issues/14613
      */
     'instantiation-expression',
+    /**
+     * TS 4.9 `satisfies` operator has not been implemented in Babel yet.
+     * @see https://github.com/babel/babel/pull/14211
+     */
+    'satisfies-expression',
   ],
 });
 

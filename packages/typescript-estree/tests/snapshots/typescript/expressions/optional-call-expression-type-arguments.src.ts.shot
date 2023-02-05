@@ -78,7 +78,7 @@ Object {
             13,
           ],
           "type": "CallExpression",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -106,6 +106,7 @@ Object {
                   10,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "loc": Object {
                     "end": Object {
@@ -124,7 +125,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "typeParameters": undefined,
               },
             ],
             "range": Array [
@@ -241,7 +241,7 @@ Object {
             33,
           ],
           "type": "CallExpression",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 16,

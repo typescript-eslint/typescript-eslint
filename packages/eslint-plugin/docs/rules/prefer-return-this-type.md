@@ -1,13 +1,22 @@
+---
+description: 'Enforce that `this` is used when only `this` type is returned.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-return-this-type** for documentation.
 
-[Method chaining](https://en.wikipedia.org/wiki/Method_chaining) is a common pattern in OOP languages and TypeScript provides a special [polymorphic this type](https://www.typescriptlang.org/docs/handbook/2/classes.html#this-types).
-If any type other than `this` is specified as the return type of these chaining methods, TypeScript will fail to cast it when invoking in subclass.
+[Method chaining](https://en.wikipedia.org/wiki/Method_chaining) is a common pattern in OOP languages and TypeScript provides a special [polymorphic `this` type](https://www.typescriptlang.org/docs/handbook/2/classes.html#this-types) to facilitate it.
+Class methods that explicitly declare a return type of the class name instead of `this` make it harder for extending classes to call that method: the returned object will be typed as the base class, not the derived class.
+
+This rule reports when a class method declares a return type of that class name instead of `this`.
 
 ```ts
 class Animal {
   eat(): Animal {
+    //   ~~~~~~
+    // Either removing this type annotation or replacing
+    // it with `this` would remove the type error below.
     console.log("I'm moving!");
     return this;
   }
@@ -21,33 +30,13 @@ class Cat extends Animal {
 }
 
 const cat = new Cat();
+cat.eat().meow();
+//        ~~~~
 // Error: Property 'meow' does not exist on type 'Animal'.
 // because `eat` returns `Animal` and not all animals meow.
-cat.eat().meow();
-
-// the error can be fixed by removing the return type of `eat` or use `this` as the return type.
-class Animal {
-  eat(): this {
-    console.log("I'm moving!");
-    return this;
-  }
-}
-
-class Cat extends Animal {
-  meow(): this {
-    console.log('Meow~');
-    return this;
-  }
-}
-
-const cat = new Cat();
-// no errors. Because `eat` returns `Cat` now
-cat.eat().meow();
 ```
 
-## Rule Details
-
-Examples of code for this rule:
+## Examples
 
 <!--tabs-->
 
@@ -92,19 +81,6 @@ class Derived extends Base {
   }
 }
 ```
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-return-this-type": "warn"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## When Not To Use It
 

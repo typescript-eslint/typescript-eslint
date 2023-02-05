@@ -1,5 +1,8 @@
-import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST as RegExpAST, RegExpParser } from 'regexpp';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { AST as RegExpAST } from 'regexpp';
+import { RegExpParser } from 'regexpp';
+
 import {
   createRule,
   getParserServices,
@@ -44,7 +47,7 @@ export default createRule({
      * Check if a given node is a string.
      * @param node The node to check.
      */
-    function isStringType(node: TSESTree.LeftHandSideExpression): boolean {
+    function isStringType(node: TSESTree.Expression): boolean {
       const objectType = typeChecker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );
@@ -57,7 +60,7 @@ export default createRule({
      */
     function isNull(node: TSESTree.Node): node is TSESTree.Literal {
       const evaluated = getStaticValue(node, globalScope);
-      return evaluated != null && evaluated.value === null;
+      return evaluated != null && evaluated.value == null;
     }
 
     /**

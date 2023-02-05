@@ -1,9 +1,9 @@
-name: "✨ Propose a New Base Rule Extension"
-description: "Propose a new base lint rule extension"
-title: "Base rule extension: [rule-name] <a short description of my proposal>"
+name: '✨ Propose a New Base Rule Extension'
+description: 'Propose a new base lint rule extension'
+title: 'Base rule extension: [rule-name] <a short description of my proposal>'
 labels:
-  - "enhancement: new base rule extension"
-  - "package: eslint-plugin"
+  - 'enhancement: new base rule extension'
+  - 'package: eslint-plugin'
   - triage
 body:
   - type: markdown
@@ -23,7 +23,7 @@ body:
           required: true
         - label: I have searched the [current extension rule list](https://typescript-eslint.io/rules/#extension-rules) and found no rules that match my proposal.
           required: true
-        - label: I have [read the FAQ](https://typescript-eslint.io/docs/linting/troubleshooting) and my problem is not listed.
+        - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
           required: true
   - type: checkboxes
     id: rule-fits-the-brief

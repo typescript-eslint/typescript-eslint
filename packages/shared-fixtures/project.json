@@ -1,5 +1,6 @@
 {
-  "root": "packages/shared-fixtures",
+  "name": "shared-fixtures",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
   "implicitDependencies": []
 }

@@ -1,9 +1,7 @@
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+
 import * as util from '../util';
 
 type Options = [
@@ -37,9 +35,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowAny: {
+            description:
+              'Whether to consider `any` and `unknown` to be Promises.',
             type: 'boolean',
           },
           allowedPromiseNames: {
+            description:
+              'Any extra names of classes or interfaces to be considered Promises.',
             type: 'array',
             items: {
               type: 'string',
@@ -173,7 +175,10 @@ export default util.createRule<Options, MessageIds>({
             }
 
             // if current token is a keyword like `static` or `public` then skip it
-            while (keyToken.type === AST_TOKEN_TYPES.Keyword) {
+            while (
+              keyToken.type === AST_TOKEN_TYPES.Keyword &&
+              keyToken.range[0] < method.key.range[0]
+            ) {
               keyToken = sourceCode.getTokenAfter(keyToken)!;
             }
 

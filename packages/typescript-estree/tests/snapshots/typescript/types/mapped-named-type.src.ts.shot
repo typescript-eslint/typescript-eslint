@@ -106,6 +106,7 @@ Object {
               45,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -124,7 +125,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -152,6 +152,7 @@ Object {
               43,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -170,7 +171,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
           "range": Array [
             42,
@@ -212,6 +212,7 @@ Object {
                 32,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -230,7 +231,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
           "default": undefined,

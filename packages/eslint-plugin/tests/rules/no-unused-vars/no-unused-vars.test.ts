@@ -402,7 +402,8 @@ export const map: { [name in Foo]: Bar } = {
 };
     `,
     // 4.1 remapped mapped type
-    noFormat`
+    {
+      code: noFormat`
 type Foo = 'a' | 'b' | 'c';
 type Bar = number;
 
@@ -411,7 +412,11 @@ export const map: { [name in Foo as string]: Bar } = {
   b: 2,
   c: 3,
 };
-    `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
     `
 import { Nullable } from 'nullable';
 class A<T> {
@@ -747,6 +752,9 @@ function foo<T>(value: T): T {
 }
 export type Foo<T> = typeof foo<T>;
       `,
+      dependencyConstraints: {
+        typescript: '4.7',
+      },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2331
     {
@@ -922,7 +930,8 @@ export declare namespace Foo {
   }
 }
     `,
-    noFormat`
+    {
+      code: noFormat`
 class Foo<T> {
     value: T;
 }
@@ -930,7 +939,11 @@ class Bar<T> {
     foo = Foo<T>;
 }
 new Bar();
-    `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.7',
+      },
+    },
     {
       code: `
 declare namespace A {
@@ -946,21 +959,36 @@ declare function A(A: string): string;
       filename: 'foo.d.ts',
     },
     // 4.1 template literal types
-    noFormat`
+    {
+      code: noFormat`
 type Color = 'red' | 'blue';
 type Quantity = 'one' | 'two';
 export type SeussFish = \`\${Quantity | Color} fish\`;
-    `,
-    noFormat`
+      `,
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: noFormat`
 type VerticalAlignment = "top" | "middle" | "bottom";
 type HorizontalAlignment = "left" | "center" | "right";
 
 export declare function setAlignment(value: \`\${VerticalAlignment}-\${HorizontalAlignment}\`): void;
-    `,
-    noFormat`
+      `,
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: noFormat`
 type EnthusiasticGreeting<T extends string> = \`\${Uppercase<T>} - \${Lowercase<T>} - \${Capitalize<T>} - \${Uncapitalize<T>}\`;
 export type HELLO = EnthusiasticGreeting<"heLLo">;
-    `,
+      `,
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2714
     {
       code: `
@@ -1017,6 +1045,32 @@ export class TestClass {
 }
       `,
       parserOptions: withMetaParserOptions,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5577
+    `
+function foo() {}
+
+export class Foo {
+  constructor() {
+    foo();
+  }
+}
+    `,
+    {
+      code: `
+function foo() {}
+
+export class Foo {
+  static {}
+
+  constructor() {
+    foo();
+  }
+}
+      `,
+      dependencyConstraints: {
+        typescript: '4.4',
+      },
     },
   ],
 

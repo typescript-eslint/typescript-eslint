@@ -1,6 +1,7 @@
-import { TSESTree } from '@typescript-eslint/utils';
-import { getESLintCoreRule } from '../util/getESLintCoreRule';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('space-before-blocks');
 
@@ -28,9 +29,8 @@ export default util.createRule<Options, MessageIds>({
     },
   },
   defaultOptions: ['always'],
-  create(context) {
+  create(context, [config]) {
     const rules = baseRule.create(context);
-    const config = context.options[0];
     const sourceCode = context.getSourceCode();
 
     let requireSpace = true;
@@ -46,6 +46,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const precedingToken = sourceCode.getTokenBefore(node);
       if (precedingToken && util.isTokenOnSameLine(precedingToken, node)) {
+        // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
         const hasSpace = sourceCode.isSpaceBetweenTokens(
           precedingToken,
           node as TSESTree.Token,

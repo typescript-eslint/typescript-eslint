@@ -1,8 +1,10 @@
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
-import { TSESLint, AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 
 import * as util from '../util';
+import { OperatorPrecedence } from '../util';
 
 type Options = [
   {
@@ -11,7 +13,11 @@ type Options = [
   },
 ];
 
-type MessageId = 'floating' | 'floatingVoid' | 'floatingFixVoid';
+type MessageId =
+  | 'floating'
+  | 'floatingVoid'
+  | 'floatingFixVoid'
+  | 'floatingFixAwait';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',
@@ -20,13 +26,13 @@ export default util.createRule<Options, MessageId>({
       description:
         'Require Promise-like statements to be handled appropriately',
       recommended: 'error',
-      suggestion: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
     messages: {
       floating:
         'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.',
+      floatingFixAwait: 'Add await operator.',
       floatingVoid:
         'Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler' +
         ' or be explicitly marked as ignored with the `void` operator.',
@@ -36,8 +42,15 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          ignoreVoid: { type: 'boolean' },
-          ignoreIIFE: { type: 'boolean' },
+          ignoreVoid: {
+            description: 'Whether to ignore `void` expressions.',
+            type: 'boolean',
+          },
+          ignoreIIFE: {
+            description:
+              'Whether to ignore async IIFEs (Immediately Invocated Function Expressions).',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -54,7 +67,6 @@ export default util.createRule<Options, MessageId>({
   create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
 
     return {
       ExpressionStatement(node): void {
@@ -76,10 +88,21 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'floatingFixVoid',
-                  fix(fixer): TSESLint.RuleFix {
-                    let code = sourceCode.getText(node);
-                    code = `void ${code}`;
-                    return fixer.replaceText(node, code);
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                      return fixer.insertTextBefore(node, 'void ');
+                    } else {
+                      return [
+                        fixer.insertTextBefore(node, 'void ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    }
                   },
                 },
               ],
@@ -88,11 +111,49 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'floating',
+              suggest: [
+                {
+                  messageId: 'floatingFixAwait',
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                    if (
+                      expression.type === AST_NODE_TYPES.UnaryExpression &&
+                      expression.operator === 'void'
+                    ) {
+                      return fixer.replaceTextRange(
+                        [expression.range[0], expression.range[0] + 4],
+                        'await',
+                      );
+                    }
+                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                      return fixer.insertTextBefore(node, 'await ');
+                    } else {
+                      return [
+                        fixer.insertTextBefore(node, 'await ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    }
+                  },
+                },
+              ],
             });
           }
         }
       },
     };
+
+    function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
+      const operator = tsutils.isBinaryExpression(node)
+        ? node.operatorToken.kind
+        : ts.SyntaxKind.Unknown;
+      const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
+      return nodePrecedence > OperatorPrecedence.Unary;
+    }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
       if (node.expression.type !== AST_NODE_TYPES.CallExpression) {
@@ -160,6 +221,11 @@ export default util.createRule<Options, MessageId>({
         // `new Promise()`), the promise is not handled because it doesn't have the
         // necessary then/catch call at the end of the chain.
         return true;
+      } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
+        return (
+          isUnhandledPromise(checker, node.left) ||
+          isUnhandledPromise(checker, node.right)
+        );
       }
 
       // We conservatively return false for all other types of expressions because

@@ -101,6 +101,7 @@ Object {
                           19,
                         ],
                         "type": "TSTypeReference",
+                        "typeArguments": undefined,
                         "typeName": Object {
                           "loc": Object {
                             "end": Object {
@@ -119,7 +120,6 @@ Object {
                           ],
                           "type": "Identifier",
                         },
-                        "typeParameters": undefined,
                       },
                     },
                   },
@@ -160,6 +160,7 @@ Object {
                       25,
                     ],
                     "type": "TSTypeReference",
+                    "typeArguments": undefined,
                     "typeName": Object {
                       "loc": Object {
                         "end": Object {
@@ -178,7 +179,6 @@ Object {
                       ],
                       "type": "Identifier",
                     },
-                    "typeParameters": undefined,
                   },
                 },
                 "type": "TSConstructorType",

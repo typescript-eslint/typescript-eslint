@@ -3,26 +3,14 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import { es5 } from './es5';
-import { es6 } from './es6';
-import { es2015 } from './es2015';
-import { es7 } from './es7';
-import { es2016 } from './es2016';
-import { es2017 } from './es2017';
-import { es2018 } from './es2018';
-import { es2019 } from './es2019';
-import { es2020 } from './es2020';
-import { es2021 } from './es2021';
-import { es2022 } from './es2022';
-import { esnext } from './esnext';
 import { dom } from './dom';
 import { dom_iterable } from './dom.iterable';
-import { webworker } from './webworker';
-import { webworker_importscripts } from './webworker.importscripts';
-import { webworker_iterable } from './webworker.iterable';
-import { scripthost } from './scripthost';
-import { es2015_core } from './es2015.core';
+import { es5 } from './es5';
+import { es6 } from './es6';
+import { es7 } from './es7';
+import { es2015 } from './es2015';
 import { es2015_collection } from './es2015.collection';
+import { es2015_core } from './es2015.core';
 import { es2015_generator } from './es2015.generator';
 import { es2015_iterable } from './es2015.iterable';
 import { es2015_promise } from './es2015.promise';
@@ -30,54 +18,69 @@ import { es2015_proxy } from './es2015.proxy';
 import { es2015_reflect } from './es2015.reflect';
 import { es2015_symbol } from './es2015.symbol';
 import { es2015_symbol_wellknown } from './es2015.symbol.wellknown';
+import { es2016 } from './es2016';
 import { es2016_array_include } from './es2016.array.include';
+import { es2016_full } from './es2016.full';
+import { es2017 } from './es2017';
+import { es2017_full } from './es2017.full';
+import { es2017_intl } from './es2017.intl';
 import { es2017_object } from './es2017.object';
 import { es2017_sharedmemory } from './es2017.sharedmemory';
 import { es2017_string } from './es2017.string';
-import { es2017_intl } from './es2017.intl';
 import { es2017_typedarrays } from './es2017.typedarrays';
+import { es2018 } from './es2018';
 import { es2018_asyncgenerator } from './es2018.asyncgenerator';
 import { es2018_asynciterable } from './es2018.asynciterable';
+import { es2018_full } from './es2018.full';
 import { es2018_intl } from './es2018.intl';
 import { es2018_promise } from './es2018.promise';
 import { es2018_regexp } from './es2018.regexp';
+import { es2019 } from './es2019';
 import { es2019_array } from './es2019.array';
+import { es2019_full } from './es2019.full';
+import { es2019_intl } from './es2019.intl';
 import { es2019_object } from './es2019.object';
 import { es2019_string } from './es2019.string';
 import { es2019_symbol } from './es2019.symbol';
+import { es2020 } from './es2020';
 import { es2020_bigint } from './es2020.bigint';
 import { es2020_date } from './es2020.date';
+import { es2020_full } from './es2020.full';
+import { es2020_intl } from './es2020.intl';
+import { es2020_number } from './es2020.number';
 import { es2020_promise } from './es2020.promise';
 import { es2020_sharedmemory } from './es2020.sharedmemory';
 import { es2020_string } from './es2020.string';
 import { es2020_symbol_wellknown } from './es2020.symbol.wellknown';
-import { es2020_intl } from './es2020.intl';
-import { es2020_number } from './es2020.number';
+import { es2021 } from './es2021';
+import { es2021_full } from './es2021.full';
+import { es2021_intl } from './es2021.intl';
 import { es2021_promise } from './es2021.promise';
 import { es2021_string } from './es2021.string';
 import { es2021_weakref } from './es2021.weakref';
-import { es2021_intl } from './es2021.intl';
+import { es2022 } from './es2022';
 import { es2022_array } from './es2022.array';
 import { es2022_error } from './es2022.error';
-import { es2022_object } from './es2022.object';
-import { es2022_string } from './es2022.string';
-import { esnext_array } from './esnext.array';
-import { esnext_symbol } from './esnext.symbol';
-import { esnext_asynciterable } from './esnext.asynciterable';
-import { esnext_intl } from './esnext.intl';
-import { esnext_bigint } from './esnext.bigint';
-import { esnext_string } from './esnext.string';
-import { esnext_promise } from './esnext.promise';
-import { esnext_weakref } from './esnext.weakref';
-import { es2016_full } from './es2016.full';
-import { es2017_full } from './es2017.full';
-import { es2018_full } from './es2018.full';
-import { es2019_full } from './es2019.full';
-import { es2020_full } from './es2020.full';
-import { es2021_full } from './es2021.full';
 import { es2022_full } from './es2022.full';
+import { es2022_intl } from './es2022.intl';
+import { es2022_object } from './es2022.object';
+import { es2022_sharedmemory } from './es2022.sharedmemory';
+import { es2022_string } from './es2022.string';
+import { esnext } from './esnext';
+import { esnext_array } from './esnext.array';
+import { esnext_asynciterable } from './esnext.asynciterable';
+import { esnext_bigint } from './esnext.bigint';
 import { esnext_full } from './esnext.full';
+import { esnext_intl } from './esnext.intl';
+import { esnext_promise } from './esnext.promise';
+import { esnext_string } from './esnext.string';
+import { esnext_symbol } from './esnext.symbol';
+import { esnext_weakref } from './esnext.weakref';
 import { lib as libBase } from './lib';
+import { scripthost } from './scripthost';
+import { webworker } from './webworker';
+import { webworker_importscripts } from './webworker.importscripts';
+import { webworker_iterable } from './webworker.iterable';
 
 const lib = {
   es5,
@@ -122,6 +125,7 @@ const lib = {
   'es2019.object': es2019_object,
   'es2019.string': es2019_string,
   'es2019.symbol': es2019_symbol,
+  'es2019.intl': es2019_intl,
   'es2020.bigint': es2020_bigint,
   'es2020.date': es2020_date,
   'es2020.promise': es2020_promise,
@@ -136,7 +140,9 @@ const lib = {
   'es2021.intl': es2021_intl,
   'es2022.array': es2022_array,
   'es2022.error': es2022_error,
+  'es2022.intl': es2022_intl,
   'es2022.object': es2022_object,
+  'es2022.sharedmemory': es2022_sharedmemory,
   'es2022.string': es2022_string,
   'esnext.array': esnext_array,
   'esnext.symbol': esnext_symbol,

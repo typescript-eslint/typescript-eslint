@@ -54,6 +54,7 @@ Object {
             15,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -72,7 +73,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "extendsType": Object {
           "loc": Object {
@@ -368,6 +368,7 @@ Object {
             54,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -386,7 +387,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "type": "TSConditionalType",
       },

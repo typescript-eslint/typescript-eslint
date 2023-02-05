@@ -54,6 +54,7 @@ Object {
             14,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -72,7 +73,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "extendsType": Object {
           "elementTypes": Array [
@@ -212,25 +212,7 @@ Object {
             65,
           ],
           "type": "TSTypeReference",
-          "typeName": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 62,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 50,
-                "line": 1,
-              },
-            },
-            "name": "MustBeNumber",
-            "range": Array [
-              50,
-              62,
-            ],
-            "type": "Identifier",
-          },
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 65,
@@ -258,6 +240,7 @@ Object {
                   64,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "loc": Object {
                     "end": Object {
@@ -276,7 +259,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "typeParameters": undefined,
               },
             ],
             "range": Array [
@@ -284,6 +266,24 @@ Object {
               65,
             ],
             "type": "TSTypeParameterInstantiation",
+          },
+          "typeName": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 62,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 50,
+                "line": 1,
+              },
+            },
+            "name": "MustBeNumber",
+            "range": Array [
+              50,
+              62,
+            ],
+            "type": "Identifier",
           },
         },
         "type": "TSConditionalType",
@@ -398,6 +398,7 @@ Object {
             89,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -416,7 +417,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "extendsType": Object {
           "elementTypes": Array [
@@ -628,25 +628,7 @@ Object {
             164,
           ],
           "type": "TSTypeReference",
-          "typeName": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 86,
-                "line": 2,
-              },
-              "start": Object {
-                "column": 74,
-                "line": 2,
-              },
-            },
-            "name": "MustBeNumber",
-            "range": Array [
-              149,
-              161,
-            ],
-            "type": "Identifier",
-          },
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 89,
@@ -674,6 +656,7 @@ Object {
                   163,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "loc": Object {
                     "end": Object {
@@ -692,7 +675,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "typeParameters": undefined,
               },
             ],
             "range": Array [
@@ -700,6 +682,24 @@ Object {
               164,
             ],
             "type": "TSTypeParameterInstantiation",
+          },
+          "typeName": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 86,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 74,
+                "line": 2,
+              },
+            },
+            "name": "MustBeNumber",
+            "range": Array [
+              149,
+              161,
+            ],
+            "type": "Identifier",
           },
         },
         "type": "TSConditionalType",
@@ -814,6 +814,7 @@ Object {
             188,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -832,7 +833,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "extendsType": Object {
           "elementTypes": Array [
@@ -1028,25 +1028,7 @@ Object {
             248,
           ],
           "type": "TSTypeReference",
-          "typeName": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 71,
-                "line": 3,
-              },
-              "start": Object {
-                "column": 59,
-                "line": 3,
-              },
-            },
-            "name": "MustBeNumber",
-            "range": Array [
-              233,
-              245,
-            ],
-            "type": "Identifier",
-          },
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 74,
@@ -1074,6 +1056,7 @@ Object {
                   247,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "loc": Object {
                     "end": Object {
@@ -1092,7 +1075,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "typeParameters": undefined,
               },
             ],
             "range": Array [
@@ -1100,6 +1082,24 @@ Object {
               248,
             ],
             "type": "TSTypeParameterInstantiation",
+          },
+          "typeName": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 71,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 59,
+                "line": 3,
+              },
+            },
+            "name": "MustBeNumber",
+            "range": Array [
+              233,
+              245,
+            ],
+            "type": "Identifier",
           },
         },
         "type": "TSConditionalType",
@@ -1214,6 +1214,7 @@ Object {
             272,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -1232,7 +1233,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "extendsType": Object {
           "elementTypes": Array [
@@ -1428,25 +1428,7 @@ Object {
             332,
           ],
           "type": "TSTypeReference",
-          "typeName": Object {
-            "loc": Object {
-              "end": Object {
-                "column": 71,
-                "line": 4,
-              },
-              "start": Object {
-                "column": 59,
-                "line": 4,
-              },
-            },
-            "name": "MustBeNumber",
-            "range": Array [
-              317,
-              329,
-            ],
-            "type": "Identifier",
-          },
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 74,
@@ -1474,6 +1456,7 @@ Object {
                   331,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "loc": Object {
                     "end": Object {
@@ -1492,7 +1475,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "typeParameters": undefined,
               },
             ],
             "range": Array [
@@ -1500,6 +1482,24 @@ Object {
               332,
             ],
             "type": "TSTypeParameterInstantiation",
+          },
+          "typeName": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 71,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 59,
+                "line": 4,
+              },
+            },
+            "name": "MustBeNumber",
+            "range": Array [
+              317,
+              329,
+            ],
+            "type": "Identifier",
           },
         },
         "type": "TSConditionalType",
@@ -1614,6 +1614,7 @@ Object {
             356,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -1632,7 +1633,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "extendsType": Object {
           "elementTypes": Array [
@@ -1844,6 +1844,7 @@ Object {
             417,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -1862,7 +1863,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "type": "TSConditionalType",
       },

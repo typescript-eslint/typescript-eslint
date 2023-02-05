@@ -91,28 +91,33 @@ enum Modifiers {
   public = 1 << 3,
   protected = 1 << 4,
   private = 1 << 5,
-  abstract = 1 << 6,
+  '#private' = 1 << 6,
+  abstract = 1 << 7,
   // destructured variable
-  destructured = 1 << 7,
+  destructured = 1 << 8,
   // variables declared in the top-level scope
-  global = 1 << 8,
+  global = 1 << 9,
   // things that are exported
-  exported = 1 << 9,
+  exported = 1 << 10,
   // things that are unused
-  unused = 1 << 10,
+  unused = 1 << 11,
   // properties that require quoting
-  requiresQuotes = 1 << 11,
+  requiresQuotes = 1 << 12,
+  // class members that are overridden
+  override = 1 << 13,
+  // class methods, object function properties, or functions that are async via the `async` keyword
+  async = 1 << 14,
 
   // make sure TypeModifiers starts at Modifiers + 1 or else sorting won't work
 }
 type ModifiersString = keyof typeof Modifiers;
 
 enum TypeModifiers {
-  boolean = 1 << 12,
-  string = 1 << 13,
-  number = 1 << 14,
-  function = 1 << 15,
-  array = 1 << 16,
+  boolean = 1 << 15,
+  string = 1 << 16,
+  number = 1 << 17,
+  function = 1 << 18,
+  array = 1 << 19,
 }
 type TypeModifiersString = keyof typeof TypeModifiers;
 

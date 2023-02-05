@@ -1,38 +1,14 @@
-import { DebugLevel } from '@typescript-eslint/types';
-import * as ts from 'typescript';
-import { CanonicalPath } from './create-program/shared';
-import { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
+import type {
+  CacheDurationSeconds,
+  DebugLevel,
+} from '@typescript-eslint/types';
+import type * as ts from 'typescript';
 
-type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
+import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
-export interface Extra {
-  code: string;
-  comment: boolean;
-  comments: TSESTree.Comment[];
-  createDefaultProgram: boolean;
-  debugLevel: Set<DebugModule>;
-  errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
-  errorOnUnknownASTType: boolean;
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
-  extraFileExtensions: string[];
-  filePath: string;
-  jsx: boolean;
-  loc: boolean;
-  singleRun: boolean;
-  log: (message: string) => void;
-  preserveNodeMaps?: boolean;
-  programs: null | Iterable<ts.Program>;
-  projects: CanonicalPath[];
-  range: boolean;
-  strict: boolean;
-  tokens: null | TSESTree.Token[];
-  tsconfigRootDir: string;
-  moduleResolver: string;
-}
-
-////////////////////////////////////////////////////
-// MAKE SURE THIS IS KEPT IN SYNC WITH THE README //
-////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+// MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
+//////////////////////////////////////////////////////////
 
 interface ParseOptions {
   /**
@@ -195,6 +171,25 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    */
   allowAutomaticSingleRunInference?: boolean;
 
+  /**
+   * Granular control of the expiry lifetime of our internal caches.
+   * You can specify the number of seconds as an integer number, or the string
+   * 'Infinity' if you never want the cache to expire.
+   *
+   * By default cache entries will be evicted after 30 seconds, or will persist
+   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
+   * infers that it is a single run.
+   */
+  cacheLifetime?: {
+    /**
+     * Glob resolution for `parserOptions.project` values.
+     */
+    glob?: CacheDurationSeconds;
+  };
+
+  /**
+   * Path to a file exporting a custom `ModuleResolver`.
+   */
   moduleResolver?: string;
 }
 

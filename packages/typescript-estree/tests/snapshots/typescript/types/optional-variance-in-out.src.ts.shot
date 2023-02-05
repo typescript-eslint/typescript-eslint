@@ -98,6 +98,7 @@ Object {
                   32,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "loc": Object {
                     "end": Object {
@@ -116,7 +117,6 @@ Object {
                   ],
                   "type": "Identifier",
                 },
-                "typeParameters": undefined,
               },
             },
           },
@@ -157,6 +157,7 @@ Object {
               38,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -175,7 +176,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
         },
         "type": "TSFunctionType",

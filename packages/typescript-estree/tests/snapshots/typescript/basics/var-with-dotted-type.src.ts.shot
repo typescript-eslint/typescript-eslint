@@ -55,6 +55,7 @@ Object {
                   14,
                 ],
                 "type": "TSTypeReference",
+                "typeArguments": undefined,
                 "typeName": Object {
                   "left": Object {
                     "left": Object {
@@ -143,7 +144,6 @@ Object {
                   },
                   "type": "TSQualifiedName",
                 },
-                "typeParameters": undefined,
               },
             },
           },

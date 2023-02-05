@@ -1,4 +1,5 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type Options = [

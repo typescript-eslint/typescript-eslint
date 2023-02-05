@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 type Options = [
@@ -145,7 +147,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         case AST_NODE_TYPES.TSNullKeyword:
-          return init.type === AST_NODE_TYPES.Literal && init.value === null;
+          return init.type === AST_NODE_TYPES.Literal && init.value == null;
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (

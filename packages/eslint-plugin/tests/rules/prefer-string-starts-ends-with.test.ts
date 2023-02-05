@@ -1,6 +1,7 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/prefer-string-starts-ends-with';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -1082,7 +1083,7 @@ function addOptional<
   function makeOptional(code: string): string;
   function makeOptional(code: string | null | undefined): string | null;
   function makeOptional(code: string | null | undefined): string | null {
-    if (code === null || code === undefined) {
+    if (code == null) {
       return null;
     }
     return (

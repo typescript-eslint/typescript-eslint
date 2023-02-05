@@ -175,6 +175,7 @@ Object {
                 45,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -193,7 +194,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
           },
         },
@@ -232,25 +232,7 @@ Object {
                 36,
               ],
               "type": "TSTypeReference",
-              "typeName": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 32,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 21,
-                    "line": 1,
-                  },
-                },
-                "name": "Constructor",
-                "range": Array [
-                  21,
-                  32,
-                ],
-                "type": "Identifier",
-              },
-              "typeParameters": Object {
+              "typeArguments": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 36,
@@ -286,6 +268,24 @@ Object {
                   36,
                 ],
                 "type": "TSTypeParameterInstantiation",
+              },
+              "typeName": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 32,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 21,
+                    "line": 1,
+                  },
+                },
+                "name": "Constructor",
+                "range": Array [
+                  21,
+                  32,
+                ],
+                "type": "Identifier",
               },
             },
             "default": undefined,
@@ -476,7 +476,7 @@ Object {
           111,
         ],
         "type": "CallExpression",
-        "typeParameters": Object {
+        "typeArguments": Object {
           "loc": Object {
             "end": Object {
               "column": 22,
@@ -792,6 +792,7 @@ Object {
               205,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -810,7 +811,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
         },
         "type": "TSConstructorType",

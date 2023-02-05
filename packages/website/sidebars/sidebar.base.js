@@ -1,11 +1,12 @@
 module.exports = {
   docs: [
     {
-      collapsed: false,
+      collapsible: false,
       items: [
         {
           label: 'Linting with Type Information',
           items: ['linting/typed-linting/monorepos'],
+          collapsible: false,
           link: {
             id: 'linting/typed-linting',
             type: 'doc',
@@ -19,8 +20,10 @@ module.exports = {
             id: 'linting/troubleshooting',
             type: 'doc',
           },
+          collapsible: false,
           type: 'category',
           items: [
+            'linting/troubleshooting/performance-troubleshooting',
             'linting/troubleshooting/formatting',
             'linting/troubleshooting/tslint',
           ],
@@ -33,21 +36,69 @@ module.exports = {
       label: 'Getting Started',
       type: 'category',
     },
+    'custom-rules',
     {
-      type: 'category',
-      label: 'Development',
-      collapsed: false,
       items: [
-        {
-          label: 'Architecture',
-          type: 'category',
-          items: [
-            'development/architecture/asts',
-            'development/architecture/packages',
-          ],
-        },
-        'development/custom-rules',
+        'architecture/eslint-plugin',
+        'architecture/eslint-plugin-tslint',
+        'architecture/parser',
+        'architecture/scope-manager',
+        'architecture/typescript-estree',
+        'architecture/utils',
       ],
+      label: 'Architecture',
+      link: {
+        id: 'architecture',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      items: [
+        'contributing/discussions',
+        'contributing/issues',
+        'contributing/local-development',
+        'contributing/pull-requests',
+      ],
+      label: 'Contributing',
+      link: {
+        id: 'contributing',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      items: [
+        'maintenance/branding',
+        {
+          collapsible: false,
+          items: ['maintenance/issues/rule-deprecations'],
+          label: 'Issues',
+          link: {
+            id: 'maintenance/issues',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+        'maintenance/pull-requests',
+        'maintenance/releases',
+        {
+          collapsible: false,
+          items: ['maintenance/versioning/dependant-version-upgrades'],
+          label: 'Versioning',
+          link: {
+            id: 'maintenance/versioning',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+      ],
+      label: 'Maintenance',
+      link: {
+        id: 'maintenance',
+        type: 'doc',
+      },
+      type: 'category',
     },
   ],
 };

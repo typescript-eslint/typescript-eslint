@@ -1,30 +1,44 @@
+---
+description: 'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-namespace-keyword** for documentation.
 
-In an effort to prevent further confusion between custom TypeScript modules and the new ES2015 modules, starting
-with TypeScript `v1.5` the keyword `namespace` is now the preferred way to declare custom TypeScript modules.
+TypeScript historically allowed a form of code organization called "custom modules" (`module Example {}`), later renamed to "namespaces" (`namespace Example`).
 
-## Rule Details
+Namespaces are an outdated way to organize TypeScript code.
+ES2015 module syntax is now preferred (`import`/`export`).
 
-This rule aims to standardize the way modules are declared.
+For projects still using custom modules / namespaces, it's preferred to refer to them as namespaces.
+This rule reports when the `module` keyword is used instead of `namespace`.
+
+> This rule does not report on the use of TypeScript module declarations to describe external APIs (`declare module 'foo' {}`).
+
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+module Example {}
+```
+
+### ✅ Correct
+
+```ts
+namespace Example {}
+
+declare module 'foo' {}
+```
+
+<!--/tabs-->
 
 ## When Not To Use It
 
 If you are using the ES2015 module syntax, then you will not need this rule.
-
-## Options
-
-```jsonc
-// .eslintrc.json
-{
-  "rules": {
-    "@typescript-eslint/prefer-namespace-keyword": "error"
-  }
-}
-```
-
-This rule is not configurable.
 
 ## Further Reading
 

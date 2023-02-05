@@ -1,12 +1,6 @@
-import { AST_NODE_TYPES, Lib, TSESTree } from '@typescript-eslint/types';
-import { ClassVisitor } from './ClassVisitor';
-import { ExportVisitor } from './ExportVisitor';
-import { ImportVisitor } from './ImportVisitor';
-import { PatternVisitor } from './PatternVisitor';
-import { ReferenceFlag, ReferenceImplicitGlobal } from './Reference';
-import { ScopeManager } from '../ScopeManager';
-import { TypeVisitor } from './TypeVisitor';
-import { Visitor, VisitorOptions } from './Visitor';
+import type { Lib, TSESTree } from '@typescript-eslint/types';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
 import { assert } from '../assert';
 import {
   CatchClauseDefinition,
@@ -19,7 +13,17 @@ import {
   VariableDefinition,
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
-import { Scope, GlobalScope } from '../scope';
+import type { GlobalScope, Scope } from '../scope';
+import type { ScopeManager } from '../ScopeManager';
+import { ClassVisitor } from './ClassVisitor';
+import { ExportVisitor } from './ExportVisitor';
+import { ImportVisitor } from './ImportVisitor';
+import { PatternVisitor } from './PatternVisitor';
+import type { ReferenceImplicitGlobal } from './Reference';
+import { ReferenceFlag } from './Reference';
+import { TypeVisitor } from './TypeVisitor';
+import type { VisitorOptions } from './Visitor';
+import { Visitor } from './Visitor';
 
 interface ReferencerOptions extends VisitorOptions {
   jsxPragma: string | null;
@@ -120,7 +124,7 @@ class Referencer extends Visitor {
   }
 
   private referenceJsxPragma(): void {
-    if (this.#jsxPragma === null || this.#hasReferencedJsxFactory) {
+    if (this.#jsxPragma == null || this.#hasReferencedJsxFactory) {
       return;
     }
     this.#hasReferencedJsxFactory = this.referenceInSomeUpperScope(
@@ -130,7 +134,7 @@ class Referencer extends Visitor {
 
   private referenceJsxFragment(): void {
     if (
-      this.#jsxFragmentName === null ||
+      this.#jsxFragmentName == null ||
       this.#hasReferencedJsxFragmentFactory
     ) {
       return;
@@ -297,7 +301,10 @@ class Referencer extends Visitor {
   }
 
   protected visitTypeAssertion(
-    node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    node:
+      | TSESTree.TSAsExpression
+      | TSESTree.TSTypeAssertion
+      | TSESTree.TSSatisfiesExpression,
   ): void {
     this.visit(node.expression);
     this.visitType(node.typeAnnotation);
@@ -671,7 +678,7 @@ class Referencer extends Visitor {
         member.id.type === AST_NODE_TYPES.Literal &&
         typeof member.id.value === 'string'
       ) {
-        const name = member.id as TSESTree.StringLiteral;
+        const name = member.id;
         this.currentScope().defineLiteralIdentifier(
           name,
           new TSEnumMemberDefinition(name, member),
@@ -718,6 +725,10 @@ class Referencer extends Visitor {
     this.visit(node.body);
 
     this.close(node);
+  }
+
+  protected TSSatisfiesExpression(node: TSESTree.TSSatisfiesExpression): void {
+    this.visitTypeAssertion(node);
   }
 
   protected TSTypeAliasDeclaration(

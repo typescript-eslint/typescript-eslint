@@ -55,25 +55,7 @@ Object {
                   30,
                 ],
                 "type": "TSTypeReference",
-                "typeName": Object {
-                  "loc": Object {
-                    "end": Object {
-                      "column": 12,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 7,
-                      "line": 1,
-                    },
-                  },
-                  "name": "Array",
-                  "range": Array [
-                    7,
-                    12,
-                  ],
-                  "type": "Identifier",
-                },
-                "typeParameters": Object {
+                "typeArguments": Object {
                   "loc": Object {
                     "end": Object {
                       "column": 30,
@@ -144,6 +126,24 @@ Object {
                     30,
                   ],
                   "type": "TSTypeParameterInstantiation",
+                },
+                "typeName": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 12,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 7,
+                      "line": 1,
+                    },
+                  },
+                  "name": "Array",
+                  "range": Array [
+                    7,
+                    12,
+                  ],
+                  "type": "Identifier",
                 },
               },
             },

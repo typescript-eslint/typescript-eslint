@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { SourceCode as ESLintSourceCode } from 'eslint';
-import { ParserServices, TSESTree } from '../ts-estree';
-import { Scope } from './Scope';
+
+import type { ParserServices, TSESTree } from '../ts-estree';
+import type { Scope } from './Scope';
 
 declare class TokenStore {
   /**
@@ -388,10 +389,25 @@ namespace SourceCode {
   }
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
+  export type GetFilterPredicate<TFilter, TDefault> =
+    // https://github.com/prettier/prettier/issues/14275
+    // prettier-ignore
+    TFilter extends ((
+      token: TSESTree.Token,
+    ) => token is infer U extends TSESTree.Token)
+      ? U
+      : TDefault;
+  export type GetFilterPredicateFromOptions<TOptions, TDefault> =
+    TOptions extends { filter?: FilterPredicate }
+      ? GetFilterPredicate<TOptions['filter'], TDefault>
+      : GetFilterPredicate<TOptions, TDefault>;
 
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
-    ? TSESTree.Token
-    : Exclude<TSESTree.Token, TSESTree.Comment>;
+    ? GetFilterPredicateFromOptions<T, TSESTree.Token>
+    : GetFilterPredicateFromOptions<
+        T,
+        Exclude<TSESTree.Token, TSESTree.Comment>
+      >;
 
   export type CursorWithSkipOptions =
     | number

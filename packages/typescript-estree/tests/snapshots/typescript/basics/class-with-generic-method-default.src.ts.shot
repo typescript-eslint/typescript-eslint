@@ -113,6 +113,7 @@ Object {
                         28,
                       ],
                       "type": "TSTypeReference",
+                      "typeArguments": undefined,
                       "typeName": Object {
                         "loc": Object {
                           "end": Object {
@@ -131,7 +132,6 @@ Object {
                         ],
                         "type": "Identifier",
                       },
-                      "typeParameters": undefined,
                     },
                     "in": false,
                     "loc": Object {

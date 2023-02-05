@@ -1,15 +1,20 @@
+---
+description: 'Require explicit return types on functions and class methods.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/explicit-function-return-type** for documentation.
 
-Explicit types for function return values makes it clear to any calling code what type is returned.
-This ensures that the return value is assigned to a variable of the correct type; or in the case
-where there is no return value, that the calling code doesn't try to use the undefined value when it
-shouldn't.
+Functions in TypeScript often don't need to be given an explicit return type annotation.
+Leaving off the return type is less code to read or write and allows the compiler to infer it from the contents of the function.
 
-## Rule Details
+However, explicit return types do make it visually more clear what type is returned by a function.
+They can also speed up TypeScript type checking performance in large codebases with many large functions.
 
-This rule aims to ensure that the values returned from functions are of the expected type.
+This rule enforces that functions do have an explicit return type annotation.
+
+## Examples
 
 <!--tabs-->
 
@@ -63,36 +68,6 @@ class Test {
 
 ## Options
 
-The rule accepts an options object with the following properties:
-
-```ts
-type Options = {
-  // if true, only functions which are part of a declaration will be checked
-  allowExpressions?: boolean;
-  // if true, type annotations are also allowed on the variable of a function expression rather than on the function directly
-  allowTypedFunctionExpressions?: boolean;
-  // if true, functions immediately returning another function expression will not be checked
-  allowHigherOrderFunctions?: boolean;
-  // if true, arrow functions immediately returning a `as const` value will not be checked
-  allowDirectConstAssertionInArrowFunctions?: boolean;
-  // if true, concise arrow functions that start with the void keyword will not be checked
-  allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
-  /**
-   * An array of function/method names that will not have their arguments or their return values checked.
-   */
-  allowedNames?: string[];
-};
-
-const defaults = {
-  allowExpressions: false,
-  allowTypedFunctionExpressions: true,
-  allowHigherOrderFunctions: true,
-  allowDirectConstAssertionInArrowFunctions: true,
-  allowConciseArrowFunctionExpressionsStartingWithVoid: false,
-  allowedNames: [],
-};
-```
-
 ### Configuring in a mixed JS/TS codebase
 
 If you are working on a codebase within which you lint non-TypeScript code (i.e. `.js`/`.mjs`/`.cjs`/`.jsx`), you should ensure that you should use [ESLint `overrides`](https://eslint.org/docs/user-guide/configuring#disabling-rules-only-for-a-group-of-files) to only enable the rule on `.ts`/`.mts`/`.cts`/`.tsx` files. If you don't, then you will get unfixable lint errors reported within `.js`/`.mjs`/`.cjs`/`.jsx` files.
@@ -108,7 +83,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": ["error"]
+        "@typescript-eslint/explicit-function-return-type": "error"
       }
     }
   ]

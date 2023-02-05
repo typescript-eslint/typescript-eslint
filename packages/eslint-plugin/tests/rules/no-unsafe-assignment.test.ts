@@ -1,15 +1,16 @@
-import { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
 import rule from '../../src/rules/no-unsafe-assignment';
-import {
-  RuleTester,
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-} from '../RuleTester';
-import {
+import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+import {
+  batchedSingleLineTests,
+  getFixturesRootDir,
+  noFormat,
+  RuleTester,
+} from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -112,7 +113,7 @@ class Foo {
     'const x = new Set<any>();',
     'const x = { y: 1 };',
     'const x = { y = 1 };',
-    'const x = { y(); };',
+    noFormat`const x = { y(); };`,
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
     'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',

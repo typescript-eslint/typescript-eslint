@@ -54,6 +54,7 @@ Object {
             22,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -72,7 +73,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "extendsType": Object {
           "elementType": Object {
@@ -164,6 +164,7 @@ Object {
               54,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -182,7 +183,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
           "extendsType": Object {
             "loc": Object {
@@ -257,6 +257,7 @@ Object {
                 84,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -275,7 +276,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
             "extendsType": Object {
               "loc": Object {
@@ -293,25 +293,7 @@ Object {
                 109,
               ],
               "type": "TSTypeReference",
-              "typeName": Object {
-                "loc": Object {
-                  "end": Object {
-                    "column": 23,
-                    "line": 4,
-                  },
-                  "start": Object {
-                    "column": 16,
-                    "line": 4,
-                  },
-                },
-                "name": "Promise",
-                "range": Array [
-                  93,
-                  100,
-                ],
-                "type": "Identifier",
-              },
-              "typeParameters": Object {
+              "typeArguments": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 32,
@@ -386,6 +368,24 @@ Object {
                 ],
                 "type": "TSTypeParameterInstantiation",
               },
+              "typeName": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 23,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 16,
+                    "line": 4,
+                  },
+                },
+                "name": "Promise",
+                "range": Array [
+                  93,
+                  100,
+                ],
+                "type": "Identifier",
+              },
             },
             "falseType": Object {
               "loc": Object {
@@ -403,6 +403,7 @@ Object {
                 125,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -421,7 +422,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -453,6 +453,7 @@ Object {
                 113,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": Object {
                 "loc": Object {
                   "end": Object {
@@ -471,7 +472,6 @@ Object {
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
             },
             "type": "TSConditionalType",
           },
@@ -505,6 +505,7 @@ Object {
               74,
             ],
             "type": "TSTypeReference",
+            "typeArguments": undefined,
             "typeName": Object {
               "loc": Object {
                 "end": Object {
@@ -523,7 +524,6 @@ Object {
               ],
               "type": "Identifier",
             },
-            "typeParameters": undefined,
           },
           "type": "TSConditionalType",
         },
@@ -557,6 +557,7 @@ Object {
             46,
           ],
           "type": "TSTypeReference",
+          "typeArguments": undefined,
           "typeName": Object {
             "loc": Object {
               "end": Object {
@@ -575,7 +576,6 @@ Object {
             ],
             "type": "Identifier",
           },
-          "typeParameters": undefined,
         },
         "type": "TSConditionalType",
       },

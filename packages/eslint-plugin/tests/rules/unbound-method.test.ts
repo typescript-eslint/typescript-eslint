@@ -1,6 +1,8 @@
-import { TSESLint } from '@typescript-eslint/utils';
-import rule, { MessageIds, Options } from '../../src/rules/unbound-method';
-import { RuleTester, getFixturesRootDir } from '../RuleTester';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import type { MessageIds, Options } from '../../src/rules/unbound-method';
+import rule from '../../src/rules/unbound-method';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -584,6 +586,60 @@ class OtherClass extends BaseClass {
         {
           line: 9,
           column: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a, b } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { a: c } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 9,
+          endColumn: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const values = {
+  a() {},
+  b: () => {},
+};
+
+const { b, a } = values;
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 12,
+          endColumn: 13,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],

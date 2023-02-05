@@ -1,3 +1,7 @@
+---
+description: 'Disallow Promises in places not designed to handle them.'
+---
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-misused-promises** for documentation.
@@ -11,39 +15,7 @@ functions are handled/awaited.
 See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled Promise _statements_.
 :::
 
-## Rule Details
-
-This rule accepts a single option which is an object with `checksConditionals`,
-`checksVoidReturn`, and `checksSpreads` properties indicating which types of
-misuse to flag. All are enabled by default.
-
 ## Options
-
-```ts
-type Options = [
-  {
-    checksConditionals?: boolean;
-    checksVoidReturn?: boolean | ChecksVoidReturnOptions;
-    checksSpreads?: boolean;
-  },
-];
-
-interface ChecksVoidReturnOptions {
-  arguments?: boolean;
-  attributes?: boolean;
-  properties?: boolean;
-  returns?: boolean;
-  variables?: boolean;
-}
-
-const defaultOptions: Options = [
-  {
-    checksConditionals: true,
-    checksVoidReturn: true,
-    checksSpreads: true,
-  },
-];
-```
 
 ### `"checksConditionals"`
 
@@ -61,6 +33,45 @@ If you don't want to check conditionals, you can configure the rule with `"check
 ```
 
 Doing so prevents the rule from looking at code like `if (somePromise)`.
+
+Examples of code for this rule with `checksConditionals: true`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+const promise = Promise.resolve('value');
+
+if (promise) {
+  // Do something
+}
+
+const val = promise ? 123 : 456;
+
+while (promise) {
+  // Do something
+}
+```
+
+#### ✅ Correct
+
+```ts
+const promise = Promise.resolve('value');
+
+// Always `await` the Promise in a conditional
+if (await promise) {
+  // Do something
+}
+
+const val = (await promise) ? 123 : 456;
+
+while (await promise) {
+  // Do something
+}
+```
+
+<!--/tabs-->
 
 ### `"checksVoidReturn"`
 
@@ -102,64 +113,6 @@ For example, if you don't mind that passing a `() => Promise<void>` to a `() => 
   ]
 }
 ```
-
-### `"checksSpreads"`
-
-If you don't want to check object spreads, you can add this configuration:
-
-```json
-{
-  "@typescript-eslint/no-misused-promises": [
-    "error",
-    {
-      "checksSpreads": false
-    }
-  ]
-}
-```
-
-### `checksConditionals: true`
-
-Examples of code for this rule with `checksConditionals: true`:
-
-<!--tabs-->
-
-#### ❌ Incorrect
-
-```ts
-const promise = Promise.resolve('value');
-
-if (promise) {
-  // Do something
-}
-
-const val = promise ? 123 : 456;
-
-while (promise) {
-  // Do something
-}
-```
-
-#### ✅ Correct
-
-```ts
-const promise = Promise.resolve('value');
-
-// Always `await` the Promise in a conditional
-if (await promise) {
-  // Do something
-}
-
-const val = (await promise) ? 123 : 456;
-
-while (await promise) {
-  // Do something
-}
-```
-
-<!--/tabs-->
-
-### `checksVoidReturn: true`
 
 Examples of code for this rule with `checksVoidReturn: true`:
 
@@ -229,7 +182,20 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
-### `checksSpreads: true`
+### `"checksSpreads"`
+
+If you don't want to check object spreads, you can add this configuration:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksSpreads": false
+    }
+  ]
+}
+```
 
 Examples of code for this rule with `checksSpreads: true`:
 

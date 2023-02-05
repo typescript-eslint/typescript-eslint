@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import type React from 'react';
+import { useRef } from 'react';
 
 function useFocus(): [React.RefObject<HTMLOrSVGElement>, () => void] {
   const htmlElRef = useRef<HTMLOrSVGElement>(null);

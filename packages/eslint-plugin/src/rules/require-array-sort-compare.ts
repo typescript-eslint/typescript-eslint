@@ -1,4 +1,5 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as util from '../util';
 
 export type Options = [
@@ -32,6 +33,8 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreStringArrays: {
+            description:
+              'Whether to ignore arrays in which all elements are strings.',
             type: 'boolean',
           },
         },
@@ -47,7 +50,7 @@ export default util.createRule<Options, MessageIds>({
      * Check if a given node is an array which all elements are string.
      * @param node
      */
-    function isStringArrayNode(node: TSESTree.LeftHandSideExpression): boolean {
+    function isStringArrayNode(node: TSESTree.Expression): boolean {
       const type = checker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );

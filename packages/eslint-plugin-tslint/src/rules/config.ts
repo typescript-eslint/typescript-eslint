@@ -1,6 +1,8 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 import memoize from 'lodash/memoize';
-import { Configuration, RuleSeverity } from 'tslint';
+import type { RuleSeverity } from 'tslint';
+import { Configuration } from 'tslint';
+
 import { CustomLinter } from '../custom-linter';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
@@ -62,7 +64,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description:
-        'Wraps a TSLint configuration and lints the whole source using TSLint',
+        'Wraps a TSLint configuration and lints the whole source using TSLint', // eslint-disable-line eslint-plugin/require-meta-docs-description
       recommended: false,
     },
     fixable: 'code',
@@ -96,18 +98,13 @@ export default createRule<Options, MessageIds>({
     ],
   },
   defaultOptions: [{}],
-  create(context) {
+  create(
+    context,
+    [{ rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile }],
+  ) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
     const parserServices = ESLintUtils.getParserServices(context);
-
-    /**
-     * The TSLint rules configuration passed in by the user
-     */
-    const [
-      { rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile },
-    ] = context.options;
-
     const program = parserServices.program;
 
     /**
