@@ -10,7 +10,7 @@ tags: [typescript, imports, exports, types, transpiling]
 title: 'Consistent Type Exports and Imports: Why and How'
 ---
 
-TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html):
+TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) to the language:
 
 ```ts
 import type { SomeThing } from './some-module.js';
@@ -76,8 +76,8 @@ export type { SomeThing } from './may-include-side-effects.js';
 
 typescript-eslint provides two ESLint rules that can standardize using (or not using) type-only exports and imports:
 
-- [`@typescript-eslint/consistent-type-exports`](https://typescript-eslint.io/rules/consistent-type-exports): Enforce consistent usage of type exports.
-- [`@typescript-eslint/consistent-type-imports`](https://typescript-eslint.io/rules/consistent-type-imports): Enforce consistent usage of type imports.
+- [`@typescript-eslint/consistent-type-exports`](/rules/consistent-type-exports): Enforce consistent usage of type exports.
+- [`@typescript-eslint/consistent-type-imports`](/rules/consistent-type-imports): Enforce consistent usage of type imports.
 
 You can enable them in your [ESLint configuration](https://eslint.org/docs/latest/user-guide/configuring):
 
@@ -85,15 +85,23 @@ You can enable them in your [ESLint configuration](https://eslint.org/docs/lates
 {
   "rules": {
     "@typescript-eslint/consistent-type-exports": "error",
-    "@typescript-eslint/consistent-type-imports": "warn"
+    "@typescript-eslint/consistent-type-imports": "error"
   }
 }
 ```
 
 The two rules can auto-fix code to use `type`s as necessary when ESLint is run on the command-line with `--fix` or configured in an editor extension such as the [VSCode ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
 
+## Further Reading
+
 You can read more about the rules' configuration options in their docs pages.
-See [our Getting Started docs](https://typescript-eslint.io/getting-started) for more information on linting your TypeScript code with typescript-eslint.
+See [our Getting Started docs](/getting-started) for more information on linting your TypeScript code with typescript-eslint.
+
+TypeScript 4.5 also added [inline type qualifiers](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names), which allow for specifying type-only imports:
+
+```ts
+import { type SomeType, SomeValue } from './some-module.js';
+```
 
 ## Supporting typescript-eslint
 
