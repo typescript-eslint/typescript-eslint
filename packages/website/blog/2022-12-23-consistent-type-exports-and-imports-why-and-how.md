@@ -17,7 +17,7 @@ import type { SomeThing } from './some-module.js';
 export type { SomeThing };
 ```
 
-The key difference with `export type` and `import type` is that they are _only in the type system_.
+The key difference with `export type` and `import type` is that they _do not represent runtime code_.
 Attempting to use a _value_ imported as only a _type_ in runtime code will cause a TypeScript error:
 
 ```ts twoslash
@@ -29,6 +29,7 @@ new SomeThing();
 // because it was imported using 'import type'.
 ```
 
+This is because type-only imports and exports are not emitted as runtime code when code is transpiled to JavaScript.
 This brings up two questions:
 
 - Why would you want to use these type-only imports and exports?
