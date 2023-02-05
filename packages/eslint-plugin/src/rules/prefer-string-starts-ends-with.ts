@@ -58,7 +58,7 @@ export default createRule({
      */
     function isNull(node: TSESTree.Node): node is TSESTree.Literal {
       const evaluated = getStaticValue(node, globalScope);
-      return evaluated != null && evaluated.value === null;
+      return evaluated != null && evaluated.value == null;
     }
 
     /**

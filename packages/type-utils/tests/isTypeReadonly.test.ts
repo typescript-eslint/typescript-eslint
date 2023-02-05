@@ -4,8 +4,8 @@ import path from 'path';
 import type * as ts from 'typescript';
 
 import {
-  type ReadonlynessOptions,
   isTypeReadonly,
+  type ReadonlynessOptions,
 } from '../src/isTypeReadonly';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 

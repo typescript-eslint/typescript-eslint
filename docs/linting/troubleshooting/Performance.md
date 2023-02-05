@@ -3,7 +3,7 @@ id: performance-troubleshooting
 title: Performance Troubleshooting
 ---
 
-As mentioned in the [type-aware linting doc](../Typed_Linting.md), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+As mentioned in the [type-aware linting doc](../Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
 
 If you're experiencing times much slower than that, then there are a few common culprits.
 
@@ -53,7 +53,7 @@ Across a large codebase, these can add up, and severely impact performance.
 
 We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
 
-See our [documentation on formatting](./Formatting.md) for more information.
+See our [documentation on formatting](./Formatting.mdx) for more information.
 
 ## `eslint-plugin-prettier`
 

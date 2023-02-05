@@ -19,4 +19,4 @@ runs:
       shell: bash
       # Website will be built by the Netlify GitHub App
       run: |
-        yarn build --exclude website
+        npx nx run-many --target=build --parallel --exclude website

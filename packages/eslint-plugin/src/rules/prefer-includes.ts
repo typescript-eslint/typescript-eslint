@@ -38,7 +38,7 @@ export default createRule({
 
     function isNumber(node: TSESTree.Node, value: number): boolean {
       const evaluated = getStaticValue(node, globalScope);
-      return evaluated !== null && evaluated.value === value;
+      return evaluated != null && evaluated.value === value;
     }
 
     function isPositiveCheck(node: TSESTree.BinaryExpression): boolean {

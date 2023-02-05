@@ -117,7 +117,7 @@ export default createRule({
 
         if (
           argumentNode.type === AST_NODE_TYPES.Literal &&
-          typeof argumentNode.value == 'string'
+          typeof argumentNode.value === 'string'
         ) {
           const regExp = RegExp(argumentNode.value);
           return context.report({

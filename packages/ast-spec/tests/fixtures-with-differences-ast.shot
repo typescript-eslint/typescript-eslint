@@ -17,6 +17,8 @@ Set {
   "declaration/FunctionDeclaration/fixtures/type-param-one/fixture.ts",
   "declaration/TSDeclareFunction/fixtures/type-param-many/fixture.ts",
   "declaration/TSDeclareFunction/fixtures/type-param-one/fixture.ts",
+  "declaration/TSImportEqualsDeclaration/fixtures/entity-name-many/fixture.ts",
+  "declaration/TSImportEqualsDeclaration/fixtures/entity-name-one/fixture.ts",
   "declaration/TSImportEqualsDeclaration/fixtures/external-module-ref-string/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/extends-many/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/extends-one/fixture.ts",

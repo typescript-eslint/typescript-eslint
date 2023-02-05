@@ -64,7 +64,7 @@ type ValidatorFunction = (
   node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
   modifiers?: Set<Modifiers>,
 ) => void;
-type ParsedOptions = Record<SelectorsString, null | ValidatorFunction>;
+type ParsedOptions = Record<SelectorsString, ValidatorFunction>;
 type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
 
 export type {

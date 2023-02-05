@@ -133,7 +133,7 @@ export default util.createRule({
       node: TSESTree.NewExpression | TSESTree.CallExpression,
     ): void {
       const calleeName = getCalleeName(node.callee);
-      if (calleeName === null) {
+      if (calleeName == null) {
         return;
       }
 

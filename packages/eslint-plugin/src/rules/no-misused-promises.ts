@@ -250,7 +250,7 @@ export default util.createRule<Options, MessageId>({
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.initializer === undefined || node.init === null) {
+      if (tsNode.initializer === undefined || node.init == null) {
         return;
       }
       const varType = services.getTypeAtLocation(node.id);
@@ -344,7 +344,7 @@ export default util.createRule<Options, MessageId>({
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.expression === undefined || node.argument === null) {
+      if (tsNode.expression === undefined || node.argument == null) {
         return;
       }
       const contextualType = checker.getContextualType(tsNode.expression);
@@ -368,7 +368,7 @@ export default util.createRule<Options, MessageId>({
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const value = tsNode.initializer;
       if (
-        node.value === null ||
+        node.value == null ||
         value === undefined ||
         !ts.isJsxExpression(value) ||
         value.expression === undefined

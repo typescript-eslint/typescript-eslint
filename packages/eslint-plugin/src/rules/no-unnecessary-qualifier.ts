@@ -52,7 +52,7 @@ export default util.createRule({
 
       const alias = tryGetAliasedSymbol(symbol, checker);
 
-      return alias !== null && symbolIsNamespaceInScope(alias);
+      return alias != null && symbolIsNamespaceInScope(alias);
     }
 
     function getSymbolInScope(
