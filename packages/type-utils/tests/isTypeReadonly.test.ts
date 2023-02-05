@@ -329,15 +329,32 @@ describe('isTypeReadonly', () => {
         runTestForAliasDeclaration(code, options, true);
       }
 
-      describe('is readonly', () => {
-        const runTests = runTestIsReadonly;
+      function runTestIsNotReadonly(code: string): void {
+        runTestForAliasDeclaration(code, options, false);
+      }
 
+      describe('is readonly', () => {
         it.each([
           [
-            'interface Bar {readonly prop: RegExp}; type Test = (arg: Bar) => void;',
+            'interface Foo {readonly prop: RegExp}; type Test = (arg: Foo) => void;',
+          ],
+          [
+            'interface Foo {prop: RegExp}; type Test = (arg: Readonly<Foo>) => void;',
           ],
           ['interface Foo {prop: string}; type Test = (arg: Foo) => void;'],
-        ])('correctly marks allowlisted types as readonly', runTests);
+        ])('correctly marks allowlisted types as readonly', runTestIsReadonly);
+      });
+
+      describe('is not readonly', () => {
+        it.each([
+          [
+            'interface Bar {prop: RegExp}; type Test = (arg: Readonly<Bar>) => void;',
+          ],
+          ['interface Bar {prop: string}; type Test = (arg: Bar) => void;'],
+        ])(
+          'correctly marks allowlisted types as readonly',
+          runTestIsNotReadonly,
+        );
       });
     });
   });
