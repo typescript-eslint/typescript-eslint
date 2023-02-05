@@ -14,13 +14,11 @@ describe('TypeOrValueSpecifier', () => {
     const ajv = new Ajv();
     const validate = ajv.compile(typeOrValueSpecifierSchema);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function runTestPositive(data: any): void {
+    function runTestPositive(data: unknown): void {
       expect(validate(data)).toBe(true);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function runTestNegative(data: any): void {
+    function runTestNegative(data: unknown): void {
       expect(validate(data)).toBe(false);
     }
 
