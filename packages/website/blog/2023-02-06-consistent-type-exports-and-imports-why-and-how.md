@@ -5,9 +5,9 @@ authors:
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
 description: Why enforcing TypeScript imports use the `type` modifier when possible benefits some project setups.
-slug: consistent-type-exports-and-imports-why-and-how
+slug: consistent-type-imports-and-exports-why-and-how
 tags: [typescript, imports, exports, types, transpiling]
-title: 'Consistent Type Exports and Imports: Why and How'
+title: 'Consistent Type Imports and Exports: Why and How'
 ---
 
 TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) to the language:
