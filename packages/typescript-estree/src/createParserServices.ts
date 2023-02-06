@@ -33,14 +33,17 @@ export function createParserServices(
 
   const checker = program.getTypeChecker();
 
+  checker.getSymbolAtLocation = memoize(
+    checker.getSymbolAtLocation.bind(checker),
+  );
+  checker.getTypeAtLocation = memoize(checker.getTypeAtLocation.bind(checker));
+
   return {
     program,
     ...astMaps,
-    getSymbolAtLocation: memoize(node =>
+    getSymbolAtLocation: node =>
       checker.getSymbolAtLocation(astMaps.esTreeNodeToTSNodeMap.get(node)),
-    ),
-    getTypeAtLocation: memoize(node =>
+    getTypeAtLocation: node =>
       checker.getTypeAtLocation(astMaps.esTreeNodeToTSNodeMap.get(node)),
-    ),
   };
 }
