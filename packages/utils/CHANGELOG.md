@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
+
+
+### Features
+
+* **eslint-plugin:** [no-import-type-side-effects] add rule to warn against runtime side effects with `verbatimModuleSyntax` ([#6394](https://github.com/typescript-eslint/typescript-eslint/issues/6394)) ([b14d3be](https://github.com/typescript-eslint/typescript-eslint/commit/b14d3be0f305d71e0adfc9381e9de993898b2b43))
+
+
+
+
+
 # [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
 
 **Note:** Version bump only for package @typescript-eslint/utils
