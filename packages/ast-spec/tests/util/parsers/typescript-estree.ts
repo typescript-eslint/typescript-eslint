@@ -13,6 +13,7 @@ export function parseTSESTree(
       loc: true,
       range: true,
       tokens: true,
+      errorOnInvalidAST: fixture.config.errorOnInvalidAST,
     });
     const { tokens: _, comments: __, ...program } = result;
 

@@ -240,66 +240,26 @@ describe('convert', () => {
   });
 
   describe('errorOnInvalidAST', () => {
-    function generateTest(title: string, code: string, error: string): void {
-      it(`does not throw an error for ${title} when errorOnInvalidAST is false`, () => {
-        const ast = convertCode(code);
+    const code = 'const;';
+    const error =
+      'A variable declaration list must have at least one variable declarator.';
 
-        const instance = new Converter(ast);
+    it(`does not throw an error for an invalid AST when errorOnInvalidAST is false`, () => {
+      const ast = convertCode(code);
 
-        expect(() => instance.convertProgram()).not.toThrow();
+      const instance = new Converter(ast);
+
+      expect(() => instance.convertProgram()).not.toThrow();
+    });
+
+    it(`throws an error for an invalid AST when errorOnInvalidAST is true`, () => {
+      const ast = convertCode(code);
+
+      const instance = new Converter(ast, {
+        errorOnInvalidAST: true,
       });
 
-      it(`throws an error for ${title} when errorOnInvalidAST is true`, () => {
-        const ast = convertCode(code);
-
-        const instance = new Converter(ast, {
-          errorOnInvalidAST: true,
-        });
-
-        expect(() => instance.convertProgram()).toThrow(error);
-      });
-    }
-
-    generateTest(
-      'a throw statement inside a block',
-      '{ throw }',
-      'A throw statement must throw an expression.',
-    );
-
-    generateTest(
-      'a decorator on an enum declaration',
-      '@decl let value;',
-      'Decorators are not valid here.',
-    );
-
-    generateTest(
-      'a decorator on an interface declaration',
-      '@decl interface _ {};',
-      'Decorators are not valid here.',
-    );
-
-    generateTest(
-      'a decorator on a type alias declaration',
-      '@decl type _ = {};',
-      'Decorators are not valid here.',
-    );
-
-    generateTest(
-      'a decorator on a variable statement',
-      '@decl let value;',
-      'Decorators are not valid here.',
-    );
-
-    generateTest(
-      'an exported class declaration without a name',
-      'export class { }',
-      "A class declaration without the 'default' modifier must have a name.",
-    );
-
-    generateTest(
-      'a variable declaration with no variables',
-      'const;',
-      'A variable declaration list must have at least one variable declarator.',
-    );
+      expect(() => instance.convertProgram()).toThrow(error);
+    });
   });
 });

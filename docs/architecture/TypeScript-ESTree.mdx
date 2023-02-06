@@ -51,10 +51,6 @@ interface ParseOptions {
   /**
    * Causes the parser to an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.
-   *
-   * @remarks
-   * This is because TypeScript reports some syntax issues as semantic diagnostics.
-   * See https://github.com/typescript-eslint/typescript-eslint/issues/1852.
    */
   errorOnInvalidAST?: boolean;
 
@@ -109,7 +105,6 @@ interface ParseOptions {
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {
   comment: false,
-
   filePath: 'estree.ts', // or 'estree.tsx', if you pass jsx: true
   jsx: false,
   loc: false,

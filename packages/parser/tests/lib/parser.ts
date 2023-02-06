@@ -35,7 +35,6 @@ describe('parser', () => {
       // ts-estree specific
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',
       extraFileExtensions: ['.foo'],
@@ -89,7 +88,6 @@ describe('parser', () => {
       // ts-estree specific
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: 'tests/fixtures/services',
       extraFileExtensions: ['.foo'],
