@@ -1,7 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
-import { isBinaryExpression } from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -166,7 +165,7 @@ export default util.createRule({
     }
 
     function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
-      const operator = isBinaryExpression(node)
+      const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
       const nodePrecedence = getOperatorPrecedence(node.kind, operator);
@@ -189,7 +188,7 @@ export default util.createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const isThenable = tsutils.isThenableType(checker, expression, type);
+      const isThenable = tools.isThenableType(checker, expression, type);
 
       if (!isAwait && !isThenable) {
         return;

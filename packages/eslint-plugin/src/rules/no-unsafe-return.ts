@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -30,7 +30,7 @@ export default util.createRule({
     const services = util.getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
@@ -82,7 +82,7 @@ export default util.createRule({
       // so we have to use the contextual typing in these cases, i.e.
       // const foo1: () => Set<string> = () => new Set<any>();
       // the return type of the arrow function is Set<any> even though the variable is typed as Set<string>
-      let functionType = tsutils.isExpression(functionTSNode)
+      let functionType = tools.isExpression(functionTSNode)
         ? util.getContextualType(checker, functionTSNode)
         : services.getTypeAtLocation(functionNode);
       if (!functionType) {

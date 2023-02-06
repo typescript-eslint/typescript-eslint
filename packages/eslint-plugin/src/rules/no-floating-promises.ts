@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -148,7 +148,7 @@ export default util.createRule<Options, MessageId>({
     };
 
     function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
-      const operator = tsutils.isBinaryExpression(node)
+      const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
       const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
@@ -240,7 +240,7 @@ export default util.createRule<Options, MessageId>({
 //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
 function isPromiseLike(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
-  for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
+  for (const ty of tools.unionTypeParts(checker.getApparentType(type))) {
     const then = ty.getProperty('then');
     if (then === undefined) {
       continue;
@@ -266,7 +266,7 @@ function hasMatchingSignature(
   type: ts.Type,
   matcher: (signature: ts.Signature) => boolean,
 ): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tools.unionTypeParts(type)) {
     if (t.getCallSignatures().some(matcher)) {
       return true;
     }
@@ -283,7 +283,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tools.unionTypeParts(type)) {
     if (t.getCallSignatures().length !== 0) {
       return true;
     }

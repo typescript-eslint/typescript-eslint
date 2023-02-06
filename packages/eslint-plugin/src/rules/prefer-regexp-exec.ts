@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import type * as ts from 'typescript';
 
 import {
@@ -134,7 +134,7 @@ export default createRule({
 
         const argumentType = services.getTypeAtLocation(argumentNode);
         const argumentTypes = collectArgumentTypes(
-          tsutils.unionTypeParts(argumentType),
+          tools.unionTypeParts(argumentType),
         );
         switch (argumentTypes) {
           case ArgumentType.RegExp:

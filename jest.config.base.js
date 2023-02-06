@@ -11,6 +11,7 @@ module.exports = {
     'tsx',
     'mts',
     'mtsx',
+    'cjs',
     'js',
     'jsx',
     'mjs',
