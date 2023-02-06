@@ -1,13 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import {
-  getCallSignaturesOfType,
-  isBooleanLiteralType,
-  isFalsyType,
-  isLiteralType,
-  isStrictCompilerOptionEnabled,
-  unionTypeParts,
-} from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import {
@@ -28,17 +21,19 @@ import {
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
-  isBooleanLiteralType(type, true) || (isLiteralType(type) && !!type.value);
+  tools.isBooleanLiteralType(type, true) ||
+  (tools.isLiteralType(type) && !!type.value);
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
-  unionTypeParts(type)
+  tools
+    .unionTypeParts(type)
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
     .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
-  unionTypeParts(type).some(type => !isFalsyType(type));
+  tools.unionTypeParts(type).some(type => !tools.isFalsyType(type));
 
 // Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
@@ -46,19 +41,19 @@ const isNullishType = (type: ts.Type): boolean =>
   isTypeFlagSet(type, nullishFlag);
 
 const isPossiblyNullish = (type: ts.Type): boolean =>
-  unionTypeParts(type).some(isNullishType);
+  tools.unionTypeParts(type).some(isNullishType);
 
 const isAlwaysNullish = (type: ts.Type): boolean =>
-  unionTypeParts(type).every(isNullishType);
+  tools.unionTypeParts(type).every(isNullishType);
 
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
-  isBooleanLiteralType(type, true) ||
-  isBooleanLiteralType(type, false) ||
+  tools.isBooleanLiteralType(type, true) ||
+  tools.isBooleanLiteralType(type, false) ||
   type.flags === ts.TypeFlags.Undefined ||
   type.flags === ts.TypeFlags.Null ||
   type.flags === ts.TypeFlags.Void ||
-  isLiteralType(type);
+  tools.isLiteralType(type);
 // #endregion
 
 export type Options = [
@@ -150,7 +145,7 @@ export default createRule<Options, MessageId>({
     const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
     const compilerOptions = services.program.getCompilerOptions();
-    const isStrictNullChecks = isStrictCompilerOptionEnabled(
+    const isStrictNullChecks = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
     );
@@ -232,12 +227,14 @@ export default createRule<Options, MessageId>({
       // Conditional is always necessary if it involves:
       //    `any` or `unknown` or a naked type parameter
       if (
-        unionTypeParts(type).some(
-          part =>
-            isTypeAnyType(part) ||
-            isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
-        )
+        tools
+          .unionTypeParts(type)
+          .some(
+            part =>
+              isTypeAnyType(part) ||
+              isTypeUnknownType(part) ||
+              isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
+          )
       ) {
         return;
       }
@@ -392,7 +389,7 @@ export default createRule<Options, MessageId>({
        */
       if (
         allowConstantLoopConditions &&
-        isBooleanLiteralType(
+        tools.isBooleanLiteralType(
           getConstrainedTypeAtLocation(services, node.test),
           true,
         )
@@ -449,9 +446,11 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
         // Otherwise just do type analysis on the function as a whole.
-        const returnTypes = getCallSignaturesOfType(
-          getConstrainedTypeAtLocation(services, callback),
-        ).map(sig => sig.getReturnType());
+        const returnTypes = tools
+          .getCallSignaturesOfType(
+            getConstrainedTypeAtLocation(services, callback),
+          )
+          .map(sig => sig.getReturnType());
         /* istanbul ignore if */ if (returnTypes.length === 0) {
           // Not a callable function
           return;

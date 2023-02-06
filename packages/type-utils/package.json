@@ -42,7 +42,7 @@
     "@typescript-eslint/typescript-estree": "5.50.0",
     "@typescript-eslint/utils": "5.50.0",
     "debug": "^4.3.4",
-    "tsutils": "^3.21.0"
+    "ts-api-tools": "^0.0.14"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "5.50.0",

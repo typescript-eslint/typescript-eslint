@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -83,7 +83,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       if (
         parent.left === node &&
-        tsutils.isAssignmentKind(parent.operatorToken.kind)
+        tools.isAssignmentKind(parent.operatorToken.kind)
       ) {
         classScope.addVariableModification(node);
       }
@@ -141,7 +141,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.MethodDefinition,
-    ): boolean | tsutils.ScopeBoundary {
+    ): boolean | tools.ScopeBoundary {
       if (classScopeStack.length === 0) {
         return false;
       }
@@ -151,7 +151,7 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
-      return tsutils.isFunctionScopeBoundary(tsNode);
+      return tools.isFunctionScopeBoundary(tsNode);
     }
 
     function getEsNodesFromViolatingNode(
@@ -274,7 +274,7 @@ class ClassScope {
     private readonly onlyInlineLambdas?: boolean,
   ) {
     const classType = checker.getTypeAtLocation(classNode);
-    if (tsutils.isIntersectionType(classType)) {
+    if (tools.isIntersectionType(classType)) {
       this.classType = classType.types[0];
     } else {
       this.classType = classType;
@@ -289,8 +289,8 @@ class ClassScope {
 
   public addDeclaredVariable(node: ParameterOrPropertyDeclaration): void {
     if (
-      !tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
-      tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
+      !tools.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+      tools.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
       ts.isComputedPropertyName(node.name)
     ) {
       return;
@@ -304,7 +304,7 @@ class ClassScope {
       return;
     }
 
-    (tsutils.isModifierFlagSet(node, ts.ModifierFlags.Static)
+    (tools.isModifierFlagSet(node, ts.ModifierFlags.Static)
       ? this.privateModifiableStatics
       : this.privateModifiableMembers
     ).set(node.name.getText(), node);
@@ -320,8 +320,8 @@ class ClassScope {
     }
 
     const modifyingStatic =
-      tsutils.isObjectType(modifierType) &&
-      tsutils.isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
+      tools.isObjectType(modifierType) &&
+      tools.isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
     if (
       !modifyingStatic &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
@@ -345,7 +345,7 @@ class ClassScope {
     this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
 
     for (const parameter of node.parameters) {
-      if (tsutils.isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
+      if (tools.isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
         this.addDeclaredVariable(parameter);
       }
     }

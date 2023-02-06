@@ -230,8 +230,8 @@ This rule bans for-of looping over an enum by using the TypeScript type checker 
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
-import * as tsutils from 'tsutils';
 
 export const rule = createRule({
   create(context) {
@@ -244,7 +244,7 @@ export const rule = createRule({
         const type = services.getTypeAtLocation(node);
 
         // 3. Check the TS type using the TypeScript APIs
-        if (tsutils.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
+        if (tools.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
           context.report({
             messageId: 'loopOverEnum',
             node: node.right,

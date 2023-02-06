@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -82,7 +82,7 @@ export default util.createRule<Options, MessageId>({
       ): void {
         const services = util.getParserServices(context);
         const type = util.getConstrainedTypeAtLocation(services, node);
-        if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        if (!tools.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
         }
