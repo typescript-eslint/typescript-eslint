@@ -13,6 +13,20 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice AST
 -       body: TSModuleBlock {
 -         type: 'TSModuleBlock',
 -         body: Array [],
+-
+-         range: [22, 24],
+-         loc: {
+-           start: { column: 22, line: 1 },
+-           end: { column: 24, line: 1 },
+-         },
+-       },
+-       id: TSQualifiedName {
+-         type: 'TSQualifiedName',
+-         left: TSQualifiedName {
+-           type: 'TSQualifiedName',
+-           left: Identifier {
+-             type: 'Identifier',
+-             name: 'abc',
 +       body: TSModuleDeclaration {
 +         type: 'TSModuleDeclaration',
 +         body: TSModuleDeclaration {
@@ -20,55 +34,68 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice AST
 +           body: TSModuleBlock {
 +             type: 'TSModuleBlock',
 +             body: Array [],
-+
+
+-             range: [10, 13],
 +             range: [22, 24],
-+             loc: {
+              loc: {
+-               start: { column: 10, line: 1 },
+-               end: { column: 13, line: 1 },
 +               start: { column: 22, line: 1 },
 +               end: { column: 24, line: 1 },
-+             },
-+           },
+              },
+            },
+-           right: Identifier {
 +           id: Identifier {
-+             type: 'Identifier',
+              type: 'Identifier',
+-             name: 'def',
 +             name: 'ghi',
 
--         range: [22, 24],
+-             range: [14, 17],
 +             range: [18, 21],
-+             loc: {
+              loc: {
+-               start: { column: 14, line: 1 },
+-               end: { column: 17, line: 1 },
 +               start: { column: 18, line: 1 },
 +               end: { column: 21, line: 1 },
-+             },
-+           },
-+
+              },
+            },
+
+-           range: [10, 17],
 +           range: [18, 24],
-+           loc: {
+            loc: {
+-             start: { column: 10, line: 1 },
+-             end: { column: 17, line: 1 },
 +             start: { column: 18, line: 1 },
 +             end: { column: 24, line: 1 },
-+           },
-+         },
+            },
+          },
+-         right: Identifier {
 +         id: Identifier {
-+           type: 'Identifier',
+            type: 'Identifier',
+-           name: 'ghi',
 +           name: 'def',
-+
+
+-           range: [18, 21],
 +           range: [14, 17],
-+           loc: {
+            loc: {
+-             start: { column: 18, line: 1 },
+-             end: { column: 21, line: 1 },
 +             start: { column: 14, line: 1 },
 +             end: { column: 17, line: 1 },
-+           },
-+         },
-+
-+         range: [14, 24],
-          loc: {
--           start: { column: 22, line: 1 },
-+           start: { column: 14, line: 1 },
-            end: { column: 24, line: 1 },
+            },
           },
-        },
-        id: Identifier {
-          type: 'Identifier',
--         name: 'abc.def.ghi',
-+         name: 'abc',
 
 -         range: [10, 21],
++         range: [14, 24],
++         loc: {
++           start: { column: 14, line: 1 },
++           end: { column: 24, line: 1 },
++         },
++       },
++       id: Identifier {
++         type: 'Identifier',
++         name: 'abc',
++
 +         range: [10, 13],
           loc: {
             start: { column: 10, line: 1 },

@@ -16,9 +16,47 @@ Program {
           end: { column: 15, line: 1 },
         },
       },
-      id: Identifier {
-        type: "Identifier",
-        name: "A.B.C",
+      id: TSQualifiedName {
+        type: "TSQualifiedName",
+        left: TSQualifiedName {
+          type: "TSQualifiedName",
+          left: Identifier {
+            type: "Identifier",
+            name: "A",
+
+            range: [7, 8],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 8, line: 1 },
+            },
+          },
+          right: Identifier {
+            type: "Identifier",
+            name: "B",
+
+            range: [9, 10],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+
+          range: [7, 10],
+          loc: {
+            start: { column: 7, line: 1 },
+            end: { column: 10, line: 1 },
+          },
+        },
+        right: Identifier {
+          type: "Identifier",
+          name: "C",
+
+          range: [11, 12],
+          loc: {
+            start: { column: 11, line: 1 },
+            end: { column: 12, line: 1 },
+          },
+        },
 
         range: [7, 12],
         loc: {

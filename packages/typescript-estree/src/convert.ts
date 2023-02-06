@@ -738,32 +738,62 @@ export class Converter {
    */
   private collectModuleDeclaration(
     node: ts.ModuleDeclaration,
-  ): [ts.Identifier | ts.ModuleBlock | undefined, TSESTree.Identifier] {
-    const startingNode = node;
-
+  ): [
+    ts.Identifier | ts.ModuleBlock | undefined,
+    TSESTree.Identifier | TSESTree.TSQualifiedName,
+  ] {
     // String literal names (e.g. `declare module "abc"`) won't be nested.
-    if (ts.isStringLiteral(startingNode.name)) {
+    if (ts.isStringLiteral(node.name)) {
       return [
         node.body as ts.ModuleBlock | undefined,
         this.convertChild(node.name),
       ];
     }
 
-    let name = node.name.text;
-
-    while (node.body && ts.isModuleDeclaration(node.body)) {
-      node = node.body;
-      name = `${name}.${node.name.text}`;
+    // If the node has no no body or isn't a module declaration, it's not nested.
+    // We can assume its name is a single identifier.
+    if (!node.body || !ts.isModuleDeclaration(node.body)) {
+      return [
+        node.body,
+        this.createNode<TSESTree.Identifier>(node.name, {
+          name: node.name.text,
+          range: [node.name.getStart(this.ast), node.name.getEnd()],
+          type: AST_NODE_TYPES.Identifier,
+        }),
+      ];
     }
 
-    return [
-      node.body,
-      this.createNode(startingNode.name, {
-        name,
-        range: [startingNode.name.getStart(this.ast), node.name.getEnd()],
+    // Nested module declarations are stored in TypeScript as nested tree nodes.
+    // We "unravel" them here by making our own nested TSQualifiedName,
+    // with the innermost node's body as the actual node body.
+
+    let name: TSESTree.Identifier | TSESTree.TSQualifiedName =
+      this.createNode<TSESTree.Identifier>(node.name, {
+        name: node.name.text,
+        range: [node.name.getStart(this.ast), node.name.getEnd()],
         type: AST_NODE_TYPES.Identifier,
-      }),
-    ];
+      });
+
+    do {
+      node = node.body;
+
+      const nextName = node.name as ts.Identifier;
+
+      const right = this.createNode<TSESTree.Identifier>(nextName, {
+        name: nextName.text,
+        range: [nextName.getStart(this.ast), nextName.getEnd()],
+        type: AST_NODE_TYPES.Identifier,
+      });
+
+      name = this.createNode<TSESTree.TSQualifiedName>(nextName, {
+        left: name,
+        right: right,
+        range: [name.range[0], right.range[1]],
+        type: AST_NODE_TYPES.TSQualifiedName,
+      });
+    } while (node.body && ts.isModuleDeclaration(node.body));
+
+    return [node.body, name];
   }
 
   /**

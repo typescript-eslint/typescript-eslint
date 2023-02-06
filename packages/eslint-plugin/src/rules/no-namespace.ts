@@ -63,7 +63,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     return {
-      "TSModuleDeclaration[global!=true][id.type='Identifier']"(
+      "TSModuleDeclaration[global!=true][id.type!='Literal']"(
         node: TSESTree.TSModuleDeclaration,
       ): void {
         if (
