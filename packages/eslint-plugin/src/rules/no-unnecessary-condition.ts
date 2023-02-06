@@ -126,7 +126,8 @@ export default createRule<Options, MessageId>({
       noOverlapBooleanExpression:
         'Unnecessary conditional, the types have no overlap.',
       never: 'Unnecessary conditional, value is `never`.',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
+      neverOptionalChain:
+        'Unnecessary optional chain on a non-nullish value. Please ensure you are not declaring a variable with the `void` type outside of a return type or generic type argument. Use `undefined` instead.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
