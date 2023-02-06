@@ -120,6 +120,10 @@ describe('Validating rule docs', () => {
 });
 
 describe('Validating rule metadata', () => {
+  const rulesThatRequireTypeInformationInAWayThatsHardToDetect = new Set([
+    // the core rule file doesn't use type information, instead it's used in `src/rules/naming-convention-utils/validator.ts`
+    'naming-convention',
+  ]);
   function requiresFullTypeInformation(content: string): boolean {
     return /getParserServices(\(\s*[^,\s)]+)\s*(,\s*false\s*)?\)/.test(content);
   }
@@ -135,6 +139,13 @@ describe('Validating rule metadata', () => {
       });
 
       it('`requiresTypeChecking` should be set if the rule uses type information', () => {
+        if (
+          rulesThatRequireTypeInformationInAWayThatsHardToDetect.has(ruleName)
+        ) {
+          expect(true).toEqual(rule.meta.docs?.requiresTypeChecking ?? false);
+          return;
+        }
+
         // quick-and-dirty check to see if it uses parserServices
         // not perfect but should be good enough
         const ruleFileContents = fs.readFileSync(

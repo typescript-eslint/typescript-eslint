@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import type * as ts from 'typescript';
 
 import * as util from '../util';
@@ -42,10 +42,10 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
-    const compilerOptions = program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
+    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
@@ -59,8 +59,8 @@ export default util.createRule({
         return false;
       }
 
-      const senderTsNode = esTreeNodeToTSNodeMap.get(senderNode);
-      const senderType = checker.getTypeAtLocation(senderTsNode);
+      const senderTsNode = services.esTreeNodeToTSNodeMap.get(senderNode);
+      const senderType = services.getTypeAtLocation(senderNode);
 
       return checkArrayDestructure(receiverNode, senderType, senderTsNode);
     }
@@ -145,8 +145,8 @@ export default util.createRule({
         return false;
       }
 
-      const senderTsNode = esTreeNodeToTSNodeMap.get(senderNode);
-      const senderType = checker.getTypeAtLocation(senderTsNode);
+      const senderTsNode = services.esTreeNodeToTSNodeMap.get(senderNode);
+      const senderType = services.getTypeAtLocation(senderNode);
 
       return checkObjectDestructure(receiverNode, senderType, senderTsNode);
     }
@@ -232,15 +232,13 @@ export default util.createRule({
       reportingNode: TSESTree.Node,
       comparisonType: ComparisonType,
     ): boolean {
-      const receiverTsNode = esTreeNodeToTSNodeMap.get(receiverNode);
+      const receiverTsNode = services.esTreeNodeToTSNodeMap.get(receiverNode);
       const receiverType =
         comparisonType === ComparisonType.Contextual
           ? util.getContextualType(checker, receiverTsNode as ts.Expression) ??
-            checker.getTypeAtLocation(receiverTsNode)
-          : checker.getTypeAtLocation(receiverTsNode);
-      const senderType = checker.getTypeAtLocation(
-        esTreeNodeToTSNodeMap.get(senderNode),
-      );
+            services.getTypeAtLocation(receiverNode)
+          : services.getTypeAtLocation(receiverNode);
+      const senderType = services.getTypeAtLocation(senderNode);
 
       if (util.isTypeAnyType(senderType)) {
         // handle cases when we assign any ==> unknown.
@@ -256,10 +254,7 @@ export default util.createRule({
           if (
             thisExpression &&
             util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
-                checker,
-                esTreeNodeToTSNodeMap.get(thisExpression),
-              ),
+              util.getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'anyAssignmentThis';
@@ -372,8 +367,7 @@ export default util.createRule({
         checkAssignment(node.key, node.value, node, ComparisonType.Contextual);
       },
       'ArrayExpression > SpreadElement'(node: TSESTree.SpreadElement): void {
-        const resetNode = esTreeNodeToTSNodeMap.get(node.argument);
-        const restType = checker.getTypeAtLocation(resetNode);
+        const restType = services.getTypeAtLocation(node.argument);
         if (
           util.isTypeAnyType(restType) ||
           util.isTypeAnyArrayType(restType, checker)

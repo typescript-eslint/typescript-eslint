@@ -1,4 +1,4 @@
-import { forEachComment } from 'tsutils/util/util';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import { getLocFor } from './node-utils';
@@ -18,11 +18,11 @@ export function convertComments(
 ): TSESTree.Comment[] {
   const comments: TSESTree.Comment[] = [];
 
-  forEachComment(
+  tools.forEachComment(
     ast,
     (_, comment) => {
       const type =
-        comment.kind == ts.SyntaxKind.SingleLineCommentTrivia
+        comment.kind === ts.SyntaxKind.SingleLineCommentTrivia
           ? AST_TOKEN_TYPES.Line
           : AST_TOKEN_TYPES.Block;
       const range: TSESTree.Range = [comment.pos, comment.end];

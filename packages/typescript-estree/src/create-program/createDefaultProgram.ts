@@ -3,7 +3,7 @@ import path from 'path';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
-import type { ASTAndProgram } from './shared';
+import type { ASTAndDefiniteProgram } from './shared';
 import {
   createDefaultCompilerOptionsFromExtra,
   getModuleResolver,
@@ -20,7 +20,7 @@ const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
  */
 function createDefaultProgram(
   parseSettings: ParseSettings,
-): ASTAndProgram | undefined {
+): ASTAndDefiniteProgram | undefined {
   log(
     'Getting default program for: %s',
     parseSettings.filePath || 'unnamed file',

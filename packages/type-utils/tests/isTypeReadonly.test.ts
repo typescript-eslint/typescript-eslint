@@ -4,9 +4,10 @@ import path from 'path';
 import type * as ts from 'typescript';
 
 import {
-  type ReadonlynessOptions,
   isTypeReadonly,
+  type ReadonlynessOptions,
 } from '../src/isTypeReadonly';
+import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe('isTypeReadonly', () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -21,6 +22,7 @@ describe('isTypeReadonly', () => {
         filePath: path.join(rootDir, 'file.ts'),
         tsconfigRootDir: rootDir,
       });
+      expectToHaveParserServices(services);
       const checker = services.program.getTypeChecker();
       const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
 

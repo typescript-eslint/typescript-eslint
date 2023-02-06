@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -80,11 +80,10 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   ) {
-    const parserServices = util.getParserServices(context);
-    const compilerOptions = parserServices.program.getCompilerOptions();
+    const services = util.getParserServices(context);
+    const compilerOptions = services.program.getCompilerOptions();
     const sourceCode = context.getSourceCode();
-    const checker = parserServices.program.getTypeChecker();
-    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
+    const isStrictNullChecks = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
     );
@@ -107,8 +106,7 @@ export default util.createRule<Options, MessageIds>({
       description: string,
       equals: string,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode.left);
+      const type = services.getTypeAtLocation(node.left);
       const isNullish = util.isNullableType(type, { allowUndefined: true });
       if (!isNullish) {
         return;
@@ -278,8 +276,7 @@ export default util.createRule<Options, MessageIds>({
             return true;
           }
 
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(identifier);
-          const type = checker.getTypeAtLocation(tsNode);
+          const type = services.getTypeAtLocation(identifier);
           const flags = util.getTypeFlags(type);
 
           if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
