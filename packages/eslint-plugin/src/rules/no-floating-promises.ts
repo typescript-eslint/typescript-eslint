@@ -234,7 +234,7 @@ export default util.createRule<Options, MessageId>({
   },
 });
 
-// Modified from ts-api-tools.isThenable() to only consider thenables which can be
+// Modified from tsutils.isThenable() to only consider thenables which can be
 // rejected/caught via a second parameter. Original source (MIT licensed):
 //
 //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
