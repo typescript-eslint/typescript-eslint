@@ -706,8 +706,7 @@ export class Converter {
     allowNull: boolean,
   ): void {
     if (!allowNull && node.moduleSpecifier == null) {
-      throw createError(
-        this.ast,
+      this.#throwIfErrorOnInvalidAST(
         node.pos,
         'Module specifier must be a string literal.',
       );
@@ -717,8 +716,7 @@ export class Converter {
       node.moduleSpecifier &&
       node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
     ) {
-      throw createError(
-        this.ast,
+      this.#throwIfErrorOnInvalidAST(
         node.moduleSpecifier.pos,
         'Module specifier must be a string literal.',
       );
@@ -839,6 +837,13 @@ export class Converter {
       // Exceptions
 
       case SyntaxKind.ThrowStatement:
+        if (node.expression.end === node.expression.pos) {
+          this.#throwIfErrorOnInvalidAST(
+            node.pos,
+            'A throw statement must throw an expression.',
+          );
+        }
+
         return this.createNode<TSESTree.ThrowStatement>(node, {
           type: AST_NODE_TYPES.ThrowStatement,
           argument: this.convertChild(node.expression),
@@ -983,9 +988,8 @@ export class Converter {
           kind: getDeclarationKind(node.declarationList),
         });
 
-        if (this.options.errorOnInvalidAST && !result.declarations.length) {
-          throw createError(
-            this.ast,
+        if (!result.declarations.length) {
+          this.#throwIfErrorOnInvalidAST(
             node.pos,
             'A variable declaration list must have at least one variable declarator.',
           );
@@ -1226,6 +1230,18 @@ export class Converter {
           });
         } else {
           // class
+
+          if (
+            !node.body &&
+            !node.questionToken &&
+            !hasModifier(ts.SyntaxKind.AbstractKeyword, node) &&
+            !hasModifier(ts.SyntaxKind.AbstractKeyword, node.parent)
+          ) {
+            this.#throwIfErrorOnInvalidAST(
+              node.name.pos,
+              'Function implementation is missing or not immediately following the declaration.',
+            );
+          }
 
           /**
            * Unlike in object literal methods, class method params can have decorators
@@ -1639,19 +1655,18 @@ export class Converter {
       // Classes
 
       case SyntaxKind.ClassDeclaration:
-      case SyntaxKind.ClassExpression: {
         if (
-          this.options.errorOnInvalidAST &&
-          node.modifiers?.length === 1 &&
-          node.modifiers[0].kind === ts.SyntaxKind.ExportKeyword
+          !node.name &&
+          (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
+            !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
         ) {
-          throw createError(
-            this.ast,
+          this.#throwIfErrorOnInvalidAST(
             node.pos,
             "A class declaration without the 'default' modifier must have a name.",
           );
         }
-
+      /* intentional fallthrough */
+      case SyntaxKind.ClassExpression: {
         const heritageClauses = node.heritageClauses ?? [];
         const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration
@@ -1683,8 +1698,7 @@ export class Converter {
 
         if (superClass) {
           if (superClass.types.length > 1) {
-            throw createError(
-              this.ast,
+            this.#throwIfErrorOnInvalidAST(
               superClass.types[1].pos,
               'Classes can only extend a single class.',
             );
@@ -2011,8 +2025,7 @@ export class Converter {
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
           if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-            throw createError(
-              this.ast,
+            this.#throwIfErrorOnInvalidAST(
               node.arguments.pos,
               'Dynamic import requires exactly one or two arguments.',
             );
@@ -2938,8 +2951,17 @@ export class Converter {
   }
 
   #checkIllegalDecorators(node: ts.Node): void {
-    if (this.options.errorOnInvalidAST && nodeHasIllegalDecorators(node)) {
-      throw createError(this.ast, node.pos, 'Decorators are not valid here.');
+    if (nodeHasIllegalDecorators(node)) {
+      this.#throwIfErrorOnInvalidAST(
+        node.pos,
+        'Decorators are not valid here.',
+      );
+    }
+  }
+
+  #throwIfErrorOnInvalidAST(pos: number, message: string): void {
+    if (this.options.errorOnInvalidAST) {
+      throw createError(this.ast, pos, message);
     }
   }
 }

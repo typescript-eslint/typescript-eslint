@@ -64,6 +64,7 @@ function parseWithTypeScriptESTree(text: string, jsx = true): AST<any> {
       range: true,
       tokens: false,
       comment: false,
+      errorOnInvalidAST: true,
       errorOnUnknownASTType: true,
       /**
        * Babel will always throw on these types of issues, so we enable

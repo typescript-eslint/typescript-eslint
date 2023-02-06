@@ -261,6 +261,12 @@ describe('convert', () => {
     }
 
     generateTest(
+      'a throw statement inside a block',
+      '{ throw }',
+      'A throw statement must throw an expression.',
+    );
+
+    generateTest(
       'a decorator on an enum declaration',
       '@decl let value;',
       'Decorators are not valid here.',
