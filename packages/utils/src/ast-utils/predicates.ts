@@ -139,6 +139,20 @@ const isAwaitKeyword = isTokenOfTypeWithConditions(AST_TOKEN_TYPES.Identifier, {
   value: 'await',
 });
 
+/**
+ * Checks if a possible token is the `type` keyword.
+ */
+const isTypeKeyword = isTokenOfTypeWithConditions(AST_TOKEN_TYPES.Identifier, {
+  value: 'type',
+});
+
+/**
+ * Checks if a possible token is the `import` keyword.
+ */
+const isImportKeyword = isTokenOfTypeWithConditions(AST_TOKEN_TYPES.Keyword, {
+  value: 'import',
+});
+
 const isLoop = isNodeOfTypes([
   AST_NODE_TYPES.DoWhileStatement,
   AST_NODE_TYPES.ForStatement,
@@ -156,6 +170,7 @@ export {
   isFunctionOrFunctionType,
   isFunctionType,
   isIdentifier,
+  isImportKeyword,
   isLoop,
   isLogicalOrOperator,
   isNonNullAssertionPunctuator,
@@ -167,5 +182,6 @@ export {
   isTSConstructorType,
   isTSFunctionType,
   isTypeAssertion,
+  isTypeKeyword,
   isVariableDeclarator,
 };

@@ -117,7 +117,7 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
           {title}
         </Heading>
       </div>
-      <p>{description}</p>
+      {description}
       <div className={styles.buttons}>
         <Link
           className={clsx('button button--primary', styles.buttonCentered)}

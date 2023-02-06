@@ -76,7 +76,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
     items: [
       {
         to: 'getting-started/',
-        label: 'Getting started',
+        label: 'Docs',
         position: 'left',
       },
       {
