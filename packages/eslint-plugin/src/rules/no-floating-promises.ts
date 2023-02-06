@@ -237,7 +237,7 @@ export default util.createRule<Options, MessageId>({
 // Modified from ts-api-tools.isThenable() to only consider thenables which can be
 // rejected/caught via a second parameter. Original source (MIT licensed):
 //
-//   https://github.com/ajafff/ts-api-tools/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
+//   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
 function isPromiseLike(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
   for (const ty of tools.unionTypeParts(checker.getApparentType(type))) {
