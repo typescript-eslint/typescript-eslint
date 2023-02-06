@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -27,10 +27,10 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
-    const compilerOptions = program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
+    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
@@ -64,7 +64,7 @@ export default util.createRule({
       returnNode: TSESTree.Node,
       reportingNode: TSESTree.Node = returnNode,
     ): void {
-      const tsNode = esTreeNodeToTSNodeMap.get(returnNode);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
       const anyType = util.isAnyOrAnyArrayTypeDiscriminated(tsNode, checker);
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
@@ -73,20 +73,20 @@ export default util.createRule({
 
       // function has an explicit return type, so ensure it's a safe return
       const returnNodeType = util.getConstrainedTypeAtLocation(
-        checker,
-        esTreeNodeToTSNodeMap.get(returnNode),
+        services,
+        returnNode,
       );
-      const functionTSNode = esTreeNodeToTSNodeMap.get(functionNode);
+      const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
       // function expressions will not have their return type modified based on receiver typing
       // so we have to use the contextual typing in these cases, i.e.
       // const foo1: () => Set<string> = () => new Set<any>();
       // the return type of the arrow function is Set<any> even though the variable is typed as Set<string>
-      let functionType = tsutils.isExpression(functionTSNode)
+      let functionType = tools.isExpression(functionTSNode)
         ? util.getContextualType(checker, functionTSNode)
-        : checker.getTypeAtLocation(functionTSNode);
+        : services.getTypeAtLocation(functionNode);
       if (!functionType) {
-        functionType = checker.getTypeAtLocation(functionTSNode);
+        functionType = services.getTypeAtLocation(functionNode);
       }
 
       // If there is an explicit type annotation *and* that type matches the actual
@@ -126,10 +126,7 @@ export default util.createRule({
           if (
             thisExpression &&
             util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
-                checker,
-                esTreeNodeToTSNodeMap.get(thisExpression),
-              ),
+              util.getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeReturnThis';

@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -48,8 +48,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const classScopeStack: ClassScope[] = [];
 
     function handlePropertyAccessExpression(
@@ -82,7 +82,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       if (
         parent.left === node &&
-        tsutils.isAssignmentKind(parent.operatorToken.kind)
+        tools.isAssignmentKind(parent.operatorToken.kind)
       ) {
         classScope.addVariableModification(node);
       }
@@ -140,17 +140,17 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.MethodDefinition,
-    ): boolean | tsutils.ScopeBoundary {
+    ): boolean | tools.ScopeBoundary {
       if (classScopeStack.length === 0) {
         return false;
       }
 
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (ts.isConstructorDeclaration(tsNode)) {
         return false;
       }
 
-      return tsutils.isFunctionScopeBoundary(tsNode);
+      return tools.isFunctionScopeBoundary(tsNode);
     }
 
     function getEsNodesFromViolatingNode(
@@ -160,16 +160,14 @@ export default util.createRule<Options, MessageIds>({
         ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
       ) {
         return {
-          esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
-          nameNode: parserServices.tsNodeToESTreeNodeMap.get(
-            violatingNode.name,
-          ),
+          esNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
+          nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
         };
       }
 
       return {
-        esNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode),
-        nameNode: parserServices.tsNodeToESTreeNodeMap.get(violatingNode.name),
+        esNode: services.tsNodeToESTreeNodeMap.get(violatingNode),
+        nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
       };
     }
 
@@ -180,7 +178,7 @@ export default util.createRule<Options, MessageIds>({
         classScopeStack.push(
           new ClassScope(
             checker,
-            parserServices.esTreeNodeToTSNodeMap.get(node),
+            services.esTreeNodeToTSNodeMap.get(node),
             onlyInlineLambdas,
           ),
         );
@@ -204,7 +202,7 @@ export default util.createRule<Options, MessageIds>({
       },
       MemberExpression(node): void {
         if (classScopeStack.length !== 0 && !node.computed) {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+          const tsNode = services.esTreeNodeToTSNodeMap.get(
             node,
           ) as ts.PropertyAccessExpression;
           handlePropertyAccessExpression(
@@ -223,7 +221,7 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (ASTUtils.isConstructor(node)) {
           classScopeStack[classScopeStack.length - 1].enterConstructor(
-            parserServices.esTreeNodeToTSNodeMap.get(node),
+            services.esTreeNodeToTSNodeMap.get(node),
           );
         } else if (isFunctionScopeBoundaryInStack(node)) {
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();
@@ -275,7 +273,7 @@ class ClassScope {
     private readonly onlyInlineLambdas?: boolean,
   ) {
     const classType = checker.getTypeAtLocation(classNode);
-    if (tsutils.isIntersectionType(classType)) {
+    if (tools.isIntersectionType(classType)) {
       this.classType = classType.types[0];
     } else {
       this.classType = classType;
@@ -290,8 +288,8 @@ class ClassScope {
 
   public addDeclaredVariable(node: ParameterOrPropertyDeclaration): void {
     if (
-      !tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
-      tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
+      !tools.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+      tools.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
       ts.isComputedPropertyName(node.name)
     ) {
       return;
@@ -305,7 +303,7 @@ class ClassScope {
       return;
     }
 
-    (tsutils.isModifierFlagSet(node, ts.ModifierFlags.Static)
+    (tools.isModifierFlagSet(node, ts.ModifierFlags.Static)
       ? this.privateModifiableStatics
       : this.privateModifiableMembers
     ).set(node.name.getText(), node);
@@ -321,8 +319,8 @@ class ClassScope {
     }
 
     const modifyingStatic =
-      tsutils.isObjectType(modifierType) &&
-      tsutils.isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
+      tools.isObjectType(modifierType) &&
+      tools.isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
     if (
       !modifyingStatic &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
@@ -346,7 +344,7 @@ class ClassScope {
     this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
 
     for (const parameter of node.parameters) {
-      if (tsutils.isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
+      if (tools.isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
         this.addDeclaredVariable(parameter);
       }
     }

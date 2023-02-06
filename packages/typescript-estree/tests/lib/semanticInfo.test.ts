@@ -80,8 +80,17 @@ describe('semanticInfo', () => {
       ...options,
       project: ['./tsconfig.json'],
     };
-    expect(parseAndGenerateServices(code, optionsProjectString)).toEqual(
-      parseAndGenerateServices(code, optionsProjectArray),
+    const fromString = parseAndGenerateServices(code, optionsProjectString);
+    const fromArray = parseAndGenerateServices(code, optionsProjectArray);
+
+    expect(fromString.services.program).toBe(fromArray.services.program);
+
+    expect(fromString.ast).toEqual(fromArray.ast);
+    expect(fromString.services.esTreeNodeToTSNodeMap).toEqual(
+      fromArray.services.esTreeNodeToTSNodeMap,
+    );
+    expect(fromString.services.tsNodeToESTreeNodeMap).toEqual(
+      fromArray.services.tsNodeToESTreeNodeMap,
     );
   });
 

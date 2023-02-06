@@ -68,7 +68,7 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceCode = context.getSourceCode();
     const sourceExportsMap: { [key: string]: SourceExports } = {};
-    const parserServices = util.getParserServices(context);
+    const services = util.getParserServices(context);
 
     /**
      * Helper for identifying if an export specifier resolves to a
@@ -80,9 +80,8 @@ export default util.createRule<Options, MessageIds>({
     function isSpecifierTypeBased(
       specifier: TSESTree.ExportSpecifier,
     ): boolean | undefined {
-      const checker = parserServices.program.getTypeChecker();
-      const node = parserServices.esTreeNodeToTSNodeMap.get(specifier.exported);
-      const symbol = checker.getSymbolAtLocation(node);
+      const checker = services.program.getTypeChecker();
+      const symbol = services.getSymbolAtLocation(specifier.exported);
       const aliasedSymbol = checker.getAliasedSymbol(symbol!);
 
       if (!aliasedSymbol || aliasedSymbol.escapedName === 'unknown') {

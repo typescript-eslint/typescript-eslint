@@ -152,8 +152,8 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       'CallExpression, NewExpression'(
@@ -164,15 +164,11 @@ export default util.createRule<[], MessageIds>({
         }
 
         // ignore any-typed calls as these are caught by no-unsafe-call
-        if (
-          util.isTypeAnyType(
-            checker.getTypeAtLocation(esTreeNodeToTSNodeMap.get(node.callee)),
-          )
-        ) {
+        if (util.isTypeAnyType(services.getTypeAtLocation(node.callee))) {
           return;
         }
 
-        const tsNode = esTreeNodeToTSNodeMap.get(node);
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node);
         const signature = FunctionSignature.create(checker, tsNode);
         if (!signature) {
           return;
@@ -182,8 +178,8 @@ export default util.createRule<[], MessageIds>({
           switch (argument.type) {
             // spreads consume
             case AST_NODE_TYPES.SpreadElement: {
-              const spreadArgType = checker.getTypeAtLocation(
-                esTreeNodeToTSNodeMap.get(argument.argument),
+              const spreadArgType = services.getTypeAtLocation(
+                argument.argument,
               );
 
               if (util.isTypeAnyType(spreadArgType)) {
@@ -247,9 +243,7 @@ export default util.createRule<[], MessageIds>({
                 continue;
               }
 
-              const argumentType = checker.getTypeAtLocation(
-                esTreeNodeToTSNodeMap.get(argument),
-              );
+              const argumentType = services.getTypeAtLocation(argument);
               const result = util.isUnsafeAssignment(
                 argumentType,
                 parameterType,

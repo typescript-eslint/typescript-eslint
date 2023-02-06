@@ -51,9 +51,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } =
-      ESLintUtils.getParserServices(context);
-    const checker = program.getTypeChecker();
+    const services = ESLintUtils.getParserServices(context);
 
     return {
       'MemberExpression[computed = false]'(
@@ -65,15 +63,13 @@ export default createRule({
           }
 
           // make sure the type name matches
-          const tsObjectNode = esTreeNodeToTSNodeMap.get(node.object);
-          const objectType = checker.getTypeAtLocation(tsObjectNode);
+          const objectType = services.getTypeAtLocation(node.object);
           const objectSymbol = objectType.getSymbol();
           if (objectSymbol?.getName() !== banned.type) {
             continue;
           }
 
-          const tsNode = esTreeNodeToTSNodeMap.get(node.property);
-          const symbol = checker.getSymbolAtLocation(tsNode);
+          const symbol = services.getSymbolAtLocation(node.property);
           const decls = symbol?.getDeclarations();
           const isFromTs = decls?.some(decl =>
             decl.getSourceFile().fileName.includes('/node_modules/typescript/'),

@@ -52,8 +52,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [option]) {
-    const parserServices = util.getParserServices(context);
-    const typeChecker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
@@ -62,10 +62,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const certainty = collectToStringCertainty(
-        type ??
-          typeChecker.getTypeAtLocation(
-            parserServices.esTreeNodeToTSNodeMap.get(node),
-          ),
+        type ?? services.getTypeAtLocation(node),
       );
       if (certainty === Usefulness.Always) {
         return;
@@ -82,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      const toString = typeChecker.getPropertyOfType(type, 'toString');
+      const toString = checker.getPropertyOfType(type, 'toString');
       const declarations = toString?.getDeclarations();
       if (!toString || !declarations || declarations.length === 0) {
         return Usefulness.Always;
@@ -96,7 +93,7 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (ignoredTypeNames.includes(util.getTypeName(typeChecker, type))) {
+      if (ignoredTypeNames.includes(util.getTypeName(checker, type))) {
         return Usefulness.Always;
       }
 
@@ -155,17 +152,13 @@ export default util.createRule<Options, MessageIds>({
       'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
       ): void {
-        const leftType = typeChecker.getTypeAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(node.left),
-        );
-        const rightType = typeChecker.getTypeAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(node.right),
-        );
+        const leftType = services.getTypeAtLocation(node.left);
+        const rightType = services.getTypeAtLocation(node.right);
 
-        if (util.getTypeName(typeChecker, leftType) === 'string') {
+        if (util.getTypeName(checker, leftType) === 'string') {
           checkExpression(node.right, rightType);
         } else if (
-          util.getTypeName(typeChecker, rightType) === 'string' &&
+          util.getTypeName(checker, rightType) === 'string' &&
           node.left.type !== AST_NODE_TYPES.PrivateIdentifier
         ) {
           checkExpression(node.left, leftType);

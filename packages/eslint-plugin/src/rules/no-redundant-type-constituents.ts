@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -106,11 +106,11 @@ function describeLiteralType(type: ts.Type): string {
     return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
   }
 
-  if (tsutils.isBooleanLiteralType(type, true)) {
+  if (tools.isBooleanLiteralType(type, true)) {
     return 'true';
   }
 
-  if (tsutils.isBooleanLiteralType(type, false)) {
+  if (tools.isBooleanLiteralType(type, false)) {
     return 'false';
   }
 
@@ -166,10 +166,10 @@ function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
 function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
   return type.isUnion() &&
     type.types.length === 2 &&
-    tsutils.isBooleanLiteralType(type.types[0], false) &&
-    tsutils.isBooleanLiteralType(type.types[1], true)
+    tools.isBooleanLiteralType(type.types[0], false) &&
+    tools.isBooleanLiteralType(type.types[1], true)
     ? [type]
-    : tsutils.unionTypeParts(type);
+    : tools.unionTypeParts(type);
 }
 
 export default util.createRule({
@@ -191,7 +191,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
+    const services = util.getParserServices(context);
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
     function getTypeNodeTypePartFlags(
@@ -227,9 +227,7 @@ export default util.createRule({
         return typeNode.types.flatMap(getTypeNodeTypePartFlags);
       }
 
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(typeNode);
-      const checker = parserServices.program.getTypeChecker();
-      const nodeType = checker.getTypeAtLocation(tsNode);
+      const nodeType = services.getTypeAtLocation(typeNode);
       const typeParts = unionTypePartsUnlessBoolean(nodeType);
 
       return typeParts.map(typePart => ({
