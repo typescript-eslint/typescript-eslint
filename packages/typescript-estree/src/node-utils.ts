@@ -7,36 +7,84 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 
-const LOGICAL_OPERATORS: (
-  | ts.LogicalOperator
-  | ts.SyntaxKind.QuestionQuestionToken
-)[] = [
+type LogicalOperatorKind =
+  | ts.SyntaxKind.AmpersandAmpersandToken
+  | ts.SyntaxKind.BarBarToken
+  | ts.SyntaxKind.QuestionQuestionToken;
+const LOGICAL_OPERATORS: ReadonlySet<LogicalOperatorKind> = new Set([
   SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
   SyntaxKind.QuestionQuestionToken,
-];
+]);
 
-interface TokenToText extends TSESTree.PunctuatorTokenToText {
+interface TokenToText
+  extends TSESTree.PunctuatorTokenToText,
+    TSESTree.BinaryOperatorToText {
   [SyntaxKind.ImportKeyword]: 'import';
-  [SyntaxKind.InKeyword]: 'in';
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
   [SyntaxKind.NewKeyword]: 'new';
   [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.ReadonlyKeyword]: 'readonly';
   [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
+type AssignmentOperatorKind = keyof TSESTree.AssignmentOperatorToText;
+const ASSIGNMENT_OPERATORS: ReadonlySet<AssignmentOperatorKind> = new Set([
+  ts.SyntaxKind.EqualsToken,
+  ts.SyntaxKind.PlusEqualsToken,
+  ts.SyntaxKind.MinusEqualsToken,
+  ts.SyntaxKind.AsteriskEqualsToken,
+  ts.SyntaxKind.AsteriskAsteriskEqualsToken,
+  ts.SyntaxKind.SlashEqualsToken,
+  ts.SyntaxKind.PercentEqualsToken,
+  ts.SyntaxKind.LessThanLessThanEqualsToken,
+  ts.SyntaxKind.GreaterThanGreaterThanEqualsToken,
+  ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
+  ts.SyntaxKind.AmpersandEqualsToken,
+  ts.SyntaxKind.BarEqualsToken,
+  ts.SyntaxKind.BarBarEqualsToken,
+  ts.SyntaxKind.AmpersandAmpersandEqualsToken,
+  ts.SyntaxKind.QuestionQuestionEqualsToken,
+  ts.SyntaxKind.CaretEqualsToken,
+]);
+
+type BinaryOperatorKind = keyof TSESTree.BinaryOperatorToText;
+const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
+  SyntaxKind.InstanceOfKeyword,
+  SyntaxKind.InKeyword,
+  SyntaxKind.AsteriskAsteriskToken,
+  SyntaxKind.AsteriskToken,
+  SyntaxKind.SlashToken,
+  SyntaxKind.PercentToken,
+  SyntaxKind.PlusToken,
+  SyntaxKind.MinusToken,
+  SyntaxKind.AmpersandToken,
+  SyntaxKind.BarToken,
+  SyntaxKind.CaretToken,
+  SyntaxKind.LessThanLessThanToken,
+  SyntaxKind.GreaterThanGreaterThanToken,
+  SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+  SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.BarBarToken,
+  SyntaxKind.LessThanToken,
+  SyntaxKind.LessThanEqualsToken,
+  SyntaxKind.GreaterThanToken,
+  SyntaxKind.GreaterThanEqualsToken,
+  SyntaxKind.EqualsEqualsToken,
+  SyntaxKind.EqualsEqualsEqualsToken,
+  SyntaxKind.ExclamationEqualsEqualsToken,
+  SyntaxKind.ExclamationEqualsToken,
+]);
+
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
  * @returns is assignment
  */
-export function isAssignmentOperator<T extends ts.SyntaxKind>(
-  operator: ts.Token<T>,
-): boolean {
-  return (
-    operator.kind >= SyntaxKind.FirstAssignment &&
-    operator.kind <= SyntaxKind.LastAssignment
+function isAssignmentOperator(
+  operator: ts.BinaryOperatorToken,
+): operator is ts.Token<AssignmentOperatorKind> {
+  return (ASSIGNMENT_OPERATORS as ReadonlySet<ts.SyntaxKind>).has(
+    operator.kind,
   );
 }
 
@@ -45,12 +93,21 @@ export function isAssignmentOperator<T extends ts.SyntaxKind>(
  * @param operator the operator token
  * @returns is a logical operator
  */
-export function isLogicalOperator<T extends ts.SyntaxKind>(
-  operator: ts.Token<T>,
-): boolean {
-  return (LOGICAL_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
+function isLogicalOperator(
+  operator: ts.BinaryOperatorToken,
+): operator is ts.Token<LogicalOperatorKind> {
+  return (LOGICAL_OPERATORS as ReadonlySet<ts.SyntaxKind>).has(operator.kind);
 }
 
+function isESTreeBinaryOperator(
+  operator: ts.BinaryOperatorToken,
+): operator is ts.Token<BinaryOperatorKind> {
+  return (BINARY_OPERATORS as ReadonlySet<ts.SyntaxKind>).has(operator.kind);
+}
+
+type TokenForTokenKind<T extends ts.SyntaxKind> = T extends keyof TokenToText
+  ? TokenToText[T]
+  : string | undefined;
 /**
  * Returns the string form of the given TSToken SyntaxKind
  * @param kind the token's SyntaxKind
@@ -58,7 +115,7 @@ export function isLogicalOperator<T extends ts.SyntaxKind>(
  */
 export function getTextForTokenKind<T extends ts.SyntaxKind>(
   kind: T,
-): T extends keyof TokenToText ? TokenToText[T] : string | undefined {
+): TokenForTokenKind<T> {
   return ts.tokenToString(kind) as T extends keyof TokenToText
     ? TokenToText[T]
     : string | undefined;
@@ -116,7 +173,7 @@ export function isComma(
  * @param node the TypeScript node
  * @returns is comment
  */
-export function isComment(node: ts.Node): boolean {
+function isComment(node: ts.Node): boolean {
   return (
     node.kind === SyntaxKind.SingleLineCommentTrivia ||
     node.kind === SyntaxKind.MultiLineCommentTrivia
@@ -128,7 +185,7 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  * @returns is JSDoc comment
  */
-export function isJSDocComment(node: ts.Node): node is ts.JSDoc {
+function isJSDocComment(node: ts.Node): node is ts.JSDoc {
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -137,18 +194,39 @@ export function isJSDocComment(node: ts.Node): node is ts.JSDoc {
  * @param operator the operator token
  * @returns the binary expression type
  */
-export function getBinaryExpressionType<T extends ts.SyntaxKind>(
-  operator: ts.Token<T>,
-):
-  | AST_NODE_TYPES.AssignmentExpression
-  | AST_NODE_TYPES.LogicalExpression
-  | AST_NODE_TYPES.BinaryExpression {
+export function getBinaryExpressionType(operator: ts.BinaryOperatorToken):
+  | {
+      type: AST_NODE_TYPES.AssignmentExpression;
+      operator: TokenForTokenKind<AssignmentOperatorKind>;
+    }
+  | {
+      type: AST_NODE_TYPES.LogicalExpression;
+      operator: TokenForTokenKind<LogicalOperatorKind>;
+    }
+  | {
+      type: AST_NODE_TYPES.BinaryExpression;
+      operator: TokenForTokenKind<BinaryOperatorKind>;
+    } {
   if (isAssignmentOperator(operator)) {
-    return AST_NODE_TYPES.AssignmentExpression;
+    return {
+      type: AST_NODE_TYPES.AssignmentExpression,
+      operator: getTextForTokenKind(operator.kind),
+    };
   } else if (isLogicalOperator(operator)) {
-    return AST_NODE_TYPES.LogicalExpression;
+    return {
+      type: AST_NODE_TYPES.LogicalExpression,
+      operator: getTextForTokenKind(operator.kind),
+    };
+  } else if (isESTreeBinaryOperator(operator)) {
+    return {
+      type: AST_NODE_TYPES.BinaryExpression,
+      operator: getTextForTokenKind(operator.kind),
+    };
   }
-  return AST_NODE_TYPES.BinaryExpression;
+
+  throw new Error(
+    `Unexpected binary operator ${ts.tokenToString(operator.kind)}`,
+  );
 }
 
 /**
@@ -231,7 +309,7 @@ export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
  * @param node the ts.Node
  * @returns is a token
  */
-export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
+function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
   return (
     node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
   );
@@ -242,7 +320,7 @@ export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
  * @param node ts.Node to be checked
  * @returns is a JSX token
  */
-export function isJSXToken(node: ts.Node): boolean {
+function isJSXToken(node: ts.Node): boolean {
   return (
     node.kind >= SyntaxKind.JsxElement && node.kind <= SyntaxKind.JsxAttribute
   );
@@ -430,7 +508,7 @@ export function isChildUnwrappableOptionalChain(
  * @param token the ts.Token
  * @returns the token type
  */
-export function getTokenType(
+function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
 ): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
   if ('originalKeywordKind' in token && token.originalKeywordKind) {
@@ -630,7 +708,7 @@ export function createError(
  * @param n the TSNode
  * @param ast the TS AST
  */
-export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
+function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
   return n.kind === SyntaxKind.EndOfFileToken
@@ -662,13 +740,11 @@ export function firstDefined<T, U>(
   return undefined;
 }
 
-export function identifierIsThisKeyword(id: ts.Identifier): boolean {
+function identifierIsThisKeyword(id: ts.Identifier): boolean {
   return id.originalKeywordKind === SyntaxKind.ThisKeyword;
 }
 
-export function isThisIdentifier(
-  node: ts.Node | undefined,
-): node is ts.Identifier {
+function isThisIdentifier(node: ts.Node | undefined): node is ts.Identifier {
   return (
     !!node &&
     node.kind === SyntaxKind.Identifier &&

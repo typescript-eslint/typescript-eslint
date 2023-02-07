@@ -2001,10 +2001,10 @@ export class Converter {
           );
           return result;
         } else {
-          const type = getBinaryExpressionType(node.operatorToken);
+          const expressionType = getBinaryExpressionType(node.operatorToken);
           if (
             this.allowPattern &&
-            type === AST_NODE_TYPES.AssignmentExpression
+            expressionType.type === AST_NODE_TYPES.AssignmentExpression
           ) {
             return this.createNode<TSESTree.AssignmentPattern>(node, {
               type: AST_NODE_TYPES.AssignmentPattern,
@@ -2017,13 +2017,12 @@ export class Converter {
             | TSESTree.LogicalExpression
             | TSESTree.BinaryExpression
           >(node, {
-            type,
-            operator: getTextForTokenKind(node.operatorToken.kind),
+            ...expressionType,
             left: this.converter(
               node.left,
               node,
               this.inTypeMode,
-              type === AST_NODE_TYPES.AssignmentExpression,
+              expressionType.type === AST_NODE_TYPES.AssignmentExpression,
             ),
             right: this.convertChild(node.right),
           });

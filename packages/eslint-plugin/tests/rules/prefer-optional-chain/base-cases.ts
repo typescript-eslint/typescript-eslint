@@ -182,26 +182,6 @@ const baseCases: Array<BaseCase> = [
     output: 'foo.bar?.()?.baz',
     canReplaceAndWithOr: true,
   },
-  {
-    code: 'foo !== null && foo.bar !== null',
-    output: 'foo?.bar != null',
-    canReplaceAndWithOr: false,
-  },
-  {
-    code: 'foo != null && foo.bar != null',
-    output: 'foo?.bar != null',
-    canReplaceAndWithOr: false,
-  },
-  {
-    code: 'foo != null && foo.bar !== null',
-    output: 'foo?.bar != null',
-    canReplaceAndWithOr: false,
-  },
-  {
-    code: 'foo !== null && foo.bar != null',
-    output: 'foo?.bar != null',
-    canReplaceAndWithOr: false,
-  },
 ];
 
 interface Selector {
