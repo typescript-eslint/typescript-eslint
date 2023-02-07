@@ -92,7 +92,7 @@ type UnknownObject = Record<string, unknown>;
 
 function isObjectLike(value: unknown | null): value is UnknownObject {
   return (
-    typeof value === 'object' && !(value instanceof RegExp) && value !== null
+    typeof value === 'object' && !(value instanceof RegExp) && value != null
   );
 }
 

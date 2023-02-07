@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [sort-type-constituents] fixed behavior change ([#6384](https://github.com/typescript-eslint/typescript-eslint/issues/6384)) ([5bf7f7f](https://github.com/typescript-eslint/typescript-eslint/commit/5bf7f7fe48aee61a676dfbe829c2a5e9e44cd552)), closes [#6339](https://github.com/typescript-eslint/typescript-eslint/issues/6339)
+* **eslint-plugin:** do not use .at(), Node 14 does not support it ([#6402](https://github.com/typescript-eslint/typescript-eslint/issues/6402)) ([077ed1b](https://github.com/typescript-eslint/typescript-eslint/commit/077ed1b5be844df35b7fba554ddae579b3144787))
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] improve performance by removing unnecessary selectors ([#6376](https://github.com/typescript-eslint/typescript-eslint/issues/6376)) ([3647a1c](https://github.com/typescript-eslint/typescript-eslint/commit/3647a1c1bbcfe6551647632fc2d978fa90881de1))
+* **eslint-plugin:** [no-floating-promises] error on logical expression ([#6356](https://github.com/typescript-eslint/typescript-eslint/issues/6356)) ([f330e06](https://github.com/typescript-eslint/typescript-eslint/commit/f330e0651548d55163ddc3233c90fd3cbe37c9c0))
+* **eslint-plugin:** [no-import-type-side-effects] add rule to warn against runtime side effects with `verbatimModuleSyntax` ([#6394](https://github.com/typescript-eslint/typescript-eslint/issues/6394)) ([b14d3be](https://github.com/typescript-eslint/typescript-eslint/commit/b14d3be0f305d71e0adfc9381e9de993898b2b43))
+* **eslint-plugin:** [strict-boolean-expressions] add allow nullable enum to strict boolean expressions ([#6096](https://github.com/typescript-eslint/typescript-eslint/issues/6096)) ([d4747cd](https://github.com/typescript-eslint/typescript-eslint/commit/d4747cd8cc9dad2bf2cb64e1c0e8980ce34d82c7))
+
+
+
+
+
+# [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [ban-ts-comment] counts graphemes instead of `String.prototype.length` ([#5704](https://github.com/typescript-eslint/typescript-eslint/issues/5704)) ([09d57ce](https://github.com/typescript-eslint/typescript-eslint/commit/09d57cec8901880c6b24ea80dfa7d9fcdc463930))
+* **eslint-plugin:** [prefer-optional-chain] fix `ThisExpression` and `PrivateIdentifier` errors ([#6028](https://github.com/typescript-eslint/typescript-eslint/issues/6028)) ([85e783c](https://github.com/typescript-eslint/typescript-eslint/commit/85e783c1fabe96d390729a5796d6d346e401692b))
+* **eslint-plugin:** [prefer-optional-chain] fixer produces wrong logic ([#5919](https://github.com/typescript-eslint/typescript-eslint/issues/5919)) ([b0f6c8e](https://github.com/typescript-eslint/typescript-eslint/commit/b0f6c8ec0b372696ef26ca3a2b4f82dafd9dc417)), closes [#1438](https://github.com/typescript-eslint/typescript-eslint/issues/1438)
+
+
+### Features
+
+* **eslint-plugin:** add `key-spacing` rule extension for interface & type declarations ([#6211](https://github.com/typescript-eslint/typescript-eslint/issues/6211)) ([67706e7](https://github.com/typescript-eslint/typescript-eslint/commit/67706e72e332bf11c82fdf51f3d417d3c93a86cf))
+
+
+
+
+
 # [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
 
 
