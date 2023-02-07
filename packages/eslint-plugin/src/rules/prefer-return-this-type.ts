@@ -32,8 +32,8 @@ export default createRule({
   },
 
   create(context) {
-    const parserServices = getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function tryGetNameInType(
       name: string,
@@ -76,14 +76,14 @@ export default createRule({
         return false;
       }
 
-      const func = parserServices.esTreeNodeToTSNodeMap.get(originalFunc);
+      const func = services.esTreeNodeToTSNodeMap.get(originalFunc);
 
       if (!func.body) {
         return false;
       }
 
-      const classType = checker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(originalClass),
+      const classType = services.getTypeAtLocation(
+        originalClass,
       ) as ts.InterfaceType;
 
       if (func.body.kind !== ts.SyntaxKind.Block) {
@@ -151,7 +151,7 @@ export default createRule({
 
     return {
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
-        checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
+        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
       },
       'ClassBody > PropertyDefinition'(
         node: TSESTree.PropertyDefinition,
@@ -165,7 +165,7 @@ export default createRule({
           return;
         }
 
-        checkFunction(node.value, node.parent!.parent as ClassLikeDeclaration);
+        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
       },
     };
   },

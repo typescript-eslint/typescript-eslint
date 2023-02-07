@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -80,8 +80,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -91,9 +90,7 @@ export default util.createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const expressionType = checker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(comparison.expression),
-      );
+      const expressionType = services.getTypeAtLocation(comparison.expression);
 
       if (isBooleanType(expressionType)) {
         return {
@@ -113,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isBooleanType(expressionType: ts.Type): boolean {
-      return tsutils.isTypeFlagSet(
+      return tools.isTypeFlagSet(
         expressionType,
         ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
       );
@@ -134,7 +131,7 @@ export default util.createRule<Options, MessageIds>({
 
       const nonNullishTypes = types.filter(
         type =>
-          !tsutils.isTypeFlagSet(
+          !tools.isTypeFlagSet(
             type,
             ts.TypeFlags.Undefined | ts.TypeFlags.Null,
           ),

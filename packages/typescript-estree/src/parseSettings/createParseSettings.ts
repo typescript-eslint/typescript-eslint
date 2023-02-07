@@ -1,7 +1,9 @@
 import debug from 'debug';
+import type * as ts from 'typescript';
 
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
+import { isSourceFile } from '../source-files';
 import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
@@ -12,18 +14,22 @@ const log = debug(
 );
 
 export function createParseSettings(
-  code: string,
+  code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
+  const codeFullText = enforceCodeString(code);
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
-    code: enforceString(code),
+    code,
+    codeFullText,
     comment: options.comment === true,
     comments: [],
-    createDefaultProgram: options.createDefaultProgram === true,
+    DEPRECATED__createDefaultProgram:
+      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+      options.DEPRECATED__createDefaultProgram === true,
     debugLevel:
       options.debugLevel === true
         ? new Set(['typescript-eslint'])
@@ -110,12 +116,12 @@ export function createParseSettings(
 /**
  * Ensures source code is a string.
  */
-function enforceString(code: unknown): string {
-  if (typeof code !== 'string') {
-    return String(code);
-  }
-
-  return code;
+function enforceCodeString(code: unknown): string {
+  return isSourceFile(code)
+    ? code.getFullText(code)
+    : typeof code === 'string'
+    ? code
+    : String(code);
 }
 
 /**

@@ -1,5 +1,6 @@
 export * from './base/Accessibility';
 export * from './base/BaseNode'; // this is exported so that the `types` package can merge the decl and add the `parent` property
+export * from './base/NodeOrTokenData';
 export * from './base/OptionalRangeAndLoc';
 export * from './base/Position';
 export * from './base/Range';
@@ -26,7 +27,6 @@ export * from './unions/JSXTagNameExpression';
 export * from './unions/LeftHandSideExpression';
 export * from './unions/Literal';
 export * from './unions/LiteralExpression';
-export * from './unions/Modifier';
 export * from './unions/Node';
 export * from './unions/ObjectLiteralElement';
 export * from './unions/Parameter';

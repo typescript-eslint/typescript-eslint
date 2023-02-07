@@ -9,7 +9,7 @@
     "typescript"
   ],
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
   "files": [
     "dist",
@@ -53,7 +53,7 @@
     "natural-compare-lite": "^1.4.0",
     "regexpp": "^3.2.0",
     "semver": "^7.3.7",
-    "tsutils": "^3.21.0"
+    "ts-api-tools": "^0.0.15"
   },
   "devDependencies": {
     "@types/debug": "*",
@@ -73,7 +73,7 @@
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"
+    "eslint": "^7.0.0 || ^8.0.0"
   },
   "peerDependenciesMeta": {
     "typescript": {

@@ -11,7 +11,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",
     "semver": "^7.3.7",
-    "tsutils": "^3.21.0"
+    "ts-api-tools": "^0.0.15"
   },
   "devDependencies": {
     "@babel/code-frame": "*",

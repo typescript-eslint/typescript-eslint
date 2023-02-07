@@ -66,18 +66,7 @@ Object {
           },
           "params": Array [
             Object {
-              "isTypeOf": false,
-              "loc": Object {
-                "end": Object {
-                  "column": 28,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 11,
-                  "line": 1,
-                },
-              },
-              "parameter": Object {
+              "argument": Object {
                 "literal": Object {
                   "loc": Object {
                     "end": Object {
@@ -113,6 +102,16 @@ Object {
                 ],
                 "type": "TSLiteralType",
               },
+              "loc": Object {
+                "end": Object {
+                  "column": 28,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 11,
+                  "line": 1,
+                },
+              },
               "qualifier": Object {
                 "loc": Object {
                   "end": Object {
@@ -136,7 +135,7 @@ Object {
                 28,
               ],
               "type": "TSImportType",
-              "typeParameters": Object {
+              "typeArguments": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 28,

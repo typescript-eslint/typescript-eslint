@@ -588,9 +588,8 @@ function getExportingNode(
   | TSESTree.ExportNamedDeclaration
   | TSESTree.ExportDefaultDeclaration
   | undefined {
-  return node.parent &&
-    (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
-      node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration)
+  return node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+    node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ? node.parent
     : undefined;
 }

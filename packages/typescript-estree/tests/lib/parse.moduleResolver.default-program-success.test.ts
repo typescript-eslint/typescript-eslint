@@ -15,7 +15,7 @@ describe('parseAndGenerateServices', () => {
     const withDefaultProgramConfig: TSESTreeOptions = {
       ...config,
       project: './tsconfig.defaultProgram.json',
-      createDefaultProgram: true,
+      DEPRECATED__createDefaultProgram: true,
     };
 
     describe('when file is not in the project and createDefaultProgram=true', () => {
@@ -26,7 +26,7 @@ describe('parseAndGenerateServices', () => {
               ...withDefaultProgramConfig,
               moduleResolver: resolve(projectDirectory, './moduleResolver.js'),
             })
-            .services.program.getSemanticDiagnostics(),
+            .services.program!.getSemanticDiagnostics(),
         ).toHaveLength(0);
       });
     });

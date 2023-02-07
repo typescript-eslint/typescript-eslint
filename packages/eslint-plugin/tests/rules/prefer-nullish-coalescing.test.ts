@@ -22,20 +22,28 @@ const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
 
 function typeValidTest(
-  cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
+  cb: (
+    type: string,
+    equals: '' | '=',
+  ) => TSESLint.ValidTestCase<Options> | string,
 ): (TSESLint.ValidTestCase<Options> | string)[] {
-  return types.map(type => cb(type));
+  return [
+    ...types.map(type => cb(type, '')),
+    ...types.map(type => cb(type, '=')),
+  ];
 }
+
 function nullishTypeValidTest(
   cb: (
     nullish: string,
     type: string,
+    equals: string,
   ) => TSESLint.ValidTestCase<Options> | string,
 ): (TSESLint.ValidTestCase<Options> | string)[] {
   return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
     (acc, nullish) => {
       types.forEach(type => {
-        acc.push(cb(nullish, type));
+        acc.push(cb(nullish, type, ''), cb(nullish, type, '='));
       });
       return acc;
     },
@@ -46,12 +54,14 @@ function nullishTypeInvalidTest(
   cb: (
     nullish: string,
     type: string,
+    equals: string,
   ) => TSESLint.InvalidTestCase<MessageIds, Options>,
 ): TSESLint.InvalidTestCase<MessageIds, Options>[] {
   return nullishTypes.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
     (acc, nullish) => {
       types.forEach(type => {
-        acc.push(cb(nullish, type));
+        acc.push(cb(nullish, type, ''));
+        acc.push(cb(nullish, type, '='));
       });
       return acc;
     },
@@ -62,15 +72,15 @@ function nullishTypeInvalidTest(
 ruleTester.run('prefer-nullish-coalescing', rule, {
   valid: [
     ...typeValidTest(
-      type => `
-declare const x: ${type};
-x || 'foo';
+      (type, equals) => `
+declare let x: ${type};
+(x ||${equals} 'foo');
       `,
     ),
     ...nullishTypeValidTest(
-      (nullish, type) => `
-declare const x: ${type} | ${nullish};
-x ?? 'foo';
+      (nullish, type, equals) => `
+declare let x: ${type} | ${nullish};
+x ??${equals} 'foo';
       `,
     ),
 
@@ -103,35 +113,35 @@ x ?? 'foo';
       'null != x ? y : x;',
       'undefined != x ? y : x;',
       `
-declare const x: string;
+declare let x: string;
 x === null ? x : y;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x === null ? x : y;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 x === undefined ? x : y;
       `,
       `
-declare const x: string | undefined | null;
+declare let x: string | undefined | null;
 x !== undefined ? x : y;
       `,
       `
-declare const x: string | undefined | null;
+declare let x: string | undefined | null;
 x !== null ? x : y;
       `,
       `
-declare const x: string | null | any;
+declare let x: string | null | any;
 x === null ? x : y;
       `,
       `
-declare const x: string | null | unknown;
+declare let x: string | null | unknown;
 x === null ? x : y;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x === null ? x : y;
       `,
     ].map(code => ({
@@ -140,38 +150,38 @@ x === null ? x : y;
     })),
 
     // ignoreConditionalTests
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-x || 'foo' ? null : null;
+declare let x: ${type} | ${nullish};
+(x ||${equals} 'foo') ? null : null;
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+if ((x ||${equals} 'foo')) {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-do {} while (x || 'foo')
+declare let x: ${type} | ${nullish};
+do {} while ((x ||${equals} 'foo'))
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-for (;x || 'foo';) {}
+declare let x: ${type} | ${nullish};
+for (;(x ||${equals} 'foo');) {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeValidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-while (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+while ((x ||${equals} 'foo')) {}
       `,
       options: [{ ignoreConditionalTests: true }],
     })),
@@ -179,54 +189,54 @@ while (x || 'foo') {}
     // ignoreMixedLogicalExpressions
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
 a || b && c;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a || b || c && d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
   ],
   invalid: [
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-x || 'foo';
+declare let x: ${type} | ${nullish};
+(x ||${equals} 'foo');
       `,
       output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 3,
+          column: 4,
           endLine: 3,
-          endColumn: 5,
+          endColumn: 6 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-x ?? 'foo';
+declare let x: ${type} | ${nullish};
+(x ??${equals} 'foo');
       `,
             },
           ],
@@ -331,35 +341,35 @@ x ?? 'foo';
 
     ...[
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x !== undefined ? x : y;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 undefined !== x ? x : y;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 undefined === x ? y : x;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 undefined === x ? y : x;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 x !== null ? x : y;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 null !== x ? x : y;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 null === x ? y : x;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 null === x ? y : x;
       `,
     ].map(code => ({
@@ -406,10 +416,10 @@ if (x) {
     },
 
     // ignoreConditionalTests
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-x || 'foo' ? null : null;
+declare let x: ${type} | ${nullish};
+(x ||${equals} 'foo') ? null : null;
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -417,25 +427,25 @@ x || 'foo' ? null : null;
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 3,
+          column: 4,
           endLine: 3,
-          endColumn: 5,
+          endColumn: 6 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-x ?? 'foo' ? null : null;
+declare let x: ${type} | ${nullish};
+(x ??${equals} 'foo') ? null : null;
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+if ((x ||${equals} 'foo')) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -443,25 +453,25 @@ if (x || 'foo') {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 7,
+          column: 8,
           endLine: 3,
-          endColumn: 9,
+          endColumn: 10 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-if (x ?? 'foo') {}
+declare let x: ${type} | ${nullish};
+if ((x ??${equals} 'foo')) {}
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-do {} while (x || 'foo')
+declare let x: ${type} | ${nullish};
+do {} while ((x ||${equals} 'foo'))
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -469,51 +479,25 @@ do {} while (x || 'foo')
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 16,
+          column: 17,
           endLine: 3,
-          endColumn: 18,
+          endColumn: 19 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-do {} while (x ?? 'foo')
+declare let x: ${type} | ${nullish};
+do {} while ((x ??${equals} 'foo'))
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-for (;x || 'foo';) {}
-      `,
-      output: null,
-      options: [{ ignoreConditionalTests: false }],
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-          line: 3,
-          column: 9,
-          endLine: 3,
-          endColumn: 11,
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: ${type} | ${nullish};
-for (;x ?? 'foo';) {}
-      `,
-            },
-          ],
-        },
-      ],
-    })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
-      code: `
-declare const x: ${type} | ${nullish};
-while (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+for (;(x ||${equals} 'foo');) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: false }],
@@ -523,13 +507,39 @@ while (x || 'foo') {}
           line: 3,
           column: 10,
           endLine: 3,
-          endColumn: 12,
+          endColumn: 12 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-while (x ?? 'foo') {}
+declare let x: ${type} | ${nullish};
+for (;(x ??${equals} 'foo');) {}
+      `,
+            },
+          ],
+        },
+      ],
+    })),
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
+      code: `
+declare let x: ${type} | ${nullish};
+while ((x ||${equals} 'foo')) {}
+      `,
+      output: null,
+      options: [{ ignoreConditionalTests: false }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          line: 3,
+          column: 11,
+          endLine: 3,
+          endColumn: 13 + equals.length,
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: ${type} | ${nullish};
+while ((x ??${equals} 'foo')) {}
       `,
             },
           ],
@@ -540,9 +550,9 @@ while (x ?? 'foo') {}
     // ignoreMixedLogicalExpressions
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
 a || b && c;
       `,
       options: [{ ignoreMixedLogicalExpressions: false }],
@@ -557,9 +567,9 @@ a || b && c;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
 a ?? b && c;
       `,
             },
@@ -569,10 +579,10 @@ a ?? b && c;
     })),
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a || b || c && d;
       `,
       options: [{ ignoreMixedLogicalExpressions: false }],
@@ -587,10 +597,10 @@ a || b || c && d;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 (a ?? b) || c && d;
       `,
             },
@@ -606,10 +616,10 @@ declare const d: ${type} | ${nullish};
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a || b ?? c && d;
       `,
             },
@@ -619,10 +629,10 @@ a || b ?? c && d;
     })),
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: false }],
@@ -637,10 +647,10 @@ a && b || c || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && (b ?? c) || d;
       `,
             },
@@ -656,10 +666,10 @@ a && (b ?? c) || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && b || c ?? d;
       `,
             },
@@ -669,10 +679,10 @@ a && b || c ?? d;
     })),
 
     // should not false positive for functions inside conditional tests
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (() => x || 'foo') {}
+declare let x: ${type} | ${nullish};
+if (() => (x ||${equals} 'foo')) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
@@ -680,25 +690,25 @@ if (() => x || 'foo') {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 13,
+          column: 14,
           endLine: 3,
-          endColumn: 15,
+          endColumn: 16 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-if (() => x ?? 'foo') {}
+declare let x: ${type} | ${nullish};
+if (() => (x ??${equals} 'foo')) {}
       `,
             },
           ],
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeInvalidTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (function werid() { return x || 'foo' }) {}
+declare let x: ${type} | ${nullish};
+if (function weird() { return (x ||${equals} 'foo') }) {}
       `,
       output: null,
       options: [{ ignoreConditionalTests: true }],
@@ -706,15 +716,15 @@ if (function werid() { return x || 'foo' }) {}
         {
           messageId: 'preferNullishOverOr',
           line: 3,
-          column: 33,
+          column: 34,
           endLine: 3,
-          endColumn: 35,
+          endColumn: 36 + equals.length,
           suggestions: [
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-if (function werid() { return x ?? 'foo' }) {}
+declare let x: ${type} | ${nullish};
+if (function weird() { return (x ??${equals} 'foo') }) {}
       `,
             },
           ],
@@ -724,9 +734,9 @@ if (function werid() { return x ?? 'foo' }) {}
     // https://github.com/typescript-eslint/typescript-eslint/issues/1290
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type};
-declare const c: ${type};
+declare let a: ${type} | ${nullish};
+declare let b: ${type};
+declare let c: ${type};
 a || b || c;
       `,
       output: null,
@@ -741,9 +751,9 @@ a || b || c;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type};
-declare const c: ${type};
+declare let a: ${type} | ${nullish};
+declare let b: ${type};
+declare let c: ${type};
 (a ?? b) || c;
       `,
             },

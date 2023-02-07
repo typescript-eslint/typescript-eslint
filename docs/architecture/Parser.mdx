@@ -174,7 +174,7 @@ interface ModuleResolver {
 > Default `undefined`.
 
 This option allows you to programmatically provide an instance of a TypeScript Program object that will provide type information to rules.
-This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
+This will override any programs that would have been computed from `parserOptions.project`.
 All linted files must be part of the provided program(s).
 
 [Refer to the TypeScript Wiki for an example on how to write the `resolveModuleNames` function](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#customizing-module-resolution).
@@ -204,7 +204,7 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
 - TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
 
-- Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
+- Note that if this setting is specified, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
   ```jsonc
   {

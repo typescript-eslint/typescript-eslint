@@ -849,32 +849,6 @@ declare module 'eslint/lib/rules/comma-dangle' {
   export = rule;
 }
 
-declare module 'eslint/lib/rules/no-duplicate-imports' {
-  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-
-  const rule: TSESLint.RuleModule<
-    | 'import'
-    | 'importAs'
-    | 'export'
-    | 'exportAs'
-    | 'importType'
-    | 'importTypeAs'
-    | 'exportType'
-    | 'exportTypeAs',
-    [
-      {
-        includeExports?: boolean;
-      },
-    ],
-    {
-      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-      ExportNamedDeclaration?(node: TSESTree.ExportNamedDeclaration): void;
-      ExportAllDeclaration?(node: TSESTree.ExportAllDeclaration): void;
-    }
-  >;
-  export = rule;
-}
-
 declare module 'eslint/lib/rules/space-infix-ops' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 

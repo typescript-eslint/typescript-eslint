@@ -23,10 +23,7 @@ export default createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
-    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
-    messages: baseRule.meta.messages ?? {
-      unexpectedThis: "Unexpected 'this'.",
-    },
+    messages: baseRule.meta.messages,
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
   },

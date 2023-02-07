@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -80,11 +80,9 @@ export default util.createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const type = util.getConstrainedTypeAtLocation(checker, tsNode);
-        if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        const services = util.getParserServices(context);
+        const type = util.getConstrainedTypeAtLocation(services, node);
+        if (!tools.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
         }
@@ -186,7 +184,7 @@ export default util.createRule<Options, MessageId>({
                 // put a semicolon at the beginning of the line
                 newReturnStmtText = `;${newReturnStmtText}`;
               }
-              if (returnStmt.parent?.type !== AST_NODE_TYPES.BlockStatement) {
+              if (returnStmt.parent.type !== AST_NODE_TYPES.BlockStatement) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;

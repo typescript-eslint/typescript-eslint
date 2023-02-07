@@ -21,14 +21,10 @@ export default util.createRule({
   create(context) {
     return {
       ForInStatement(node): void {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const services = util.getParserServices(context);
+        const checker = services.program.getTypeChecker();
 
-        const type = util.getConstrainedTypeAtLocation(
-          checker,
-          originalNode.expression,
-        );
+        const type = util.getConstrainedTypeAtLocation(services, node.right);
 
         if (
           util.isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||

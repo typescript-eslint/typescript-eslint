@@ -8,7 +8,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
   "files": [
     "dist",
@@ -42,14 +42,14 @@
     "@typescript-eslint/typescript-estree": "5.50.0",
     "@typescript-eslint/utils": "5.50.0",
     "debug": "^4.3.4",
-    "tsutils": "^3.21.0"
+    "ts-api-tools": "^0.0.15"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "5.50.0",
     "typescript": "*"
   },
   "peerDependencies": {
-    "eslint": "*"
+    "eslint": "^7.0.0 || ^8.0.0"
   },
   "peerDependenciesMeta": {
     "typescript": {

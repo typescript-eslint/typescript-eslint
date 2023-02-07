@@ -116,9 +116,6 @@ function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
 
     case AST_NODE_TYPES.TSQualifiedName:
     case AST_NODE_TYPES.Identifier:
-      if (!node.parent) {
-        return false;
-      }
       return referenceContainsTypeQuery(node.parent);
 
     default:
@@ -196,7 +193,7 @@ function isInInitializer(
     return false;
   }
 
-  let node = variable.identifiers[0].parent;
+  let node: TSESTree.Node | undefined = variable.identifiers[0].parent;
   const location = reference.identifier.range[1];
 
   while (node) {

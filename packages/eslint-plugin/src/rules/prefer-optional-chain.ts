@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -51,7 +50,7 @@ export default util.createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
-    const parserServices = util.getParserServices(context, true);
+    const services = util.getParserServices(context, true);
 
     return {
       'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
@@ -73,10 +72,10 @@ export default util.createRule({
         }
 
         function isLeftSideLowerPrecedence(): boolean {
-          const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+          const logicalTsNode = services.esTreeNodeToTSNodeMap.get(node);
 
-          const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
-          const operator = isBinaryExpression(logicalTsNode)
+          const leftTsNode = services.esTreeNodeToTSNodeMap.get(leftNode);
+          const operator = ts.isBinaryExpression(logicalTsNode)
             ? logicalTsNode.operatorToken.kind
             : ts.SyntaxKind.Unknown;
           const leftPrecedence = util.getOperatorPrecedence(
@@ -126,7 +125,7 @@ export default util.createRule({
       ): void {
         // selector guarantees this cast
         const initialExpression = (
-          initialIdentifierOrNotEqualsExpr.parent!.type ===
+          initialIdentifierOrNotEqualsExpr.parent.type ===
           AST_NODE_TYPES.ChainExpression
             ? initialIdentifierOrNotEqualsExpr.parent.parent
             : initialIdentifierOrNotEqualsExpr.parent

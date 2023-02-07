@@ -38,19 +38,27 @@ Object {
       ],
       "type": "TSTypeAliasDeclaration",
       "typeAnnotation": Object {
-        "isTypeOf": true,
-        "loc": Object {
-          "end": Object {
-            "column": 27,
-            "line": 1,
-          },
-          "start": Object {
-            "column": 9,
-            "line": 1,
-          },
-        },
-        "parameter": Object {
-          "literal": Object {
+        "exprName": Object {
+          "argument": Object {
+            "literal": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 26,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 23,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                23,
+                26,
+              ],
+              "raw": "'A'",
+              "type": "Literal",
+              "value": "A",
+            },
             "loc": Object {
               "end": Object {
                 "column": 26,
@@ -65,33 +73,41 @@ Object {
               23,
               26,
             ],
-            "raw": "'A'",
-            "type": "Literal",
-            "value": "A",
+            "type": "TSLiteralType",
           },
           "loc": Object {
             "end": Object {
-              "column": 26,
+              "column": 27,
               "line": 1,
             },
             "start": Object {
-              "column": 23,
+              "column": 16,
               "line": 1,
             },
           },
+          "qualifier": null,
           "range": Array [
-            23,
-            26,
+            16,
+            27,
           ],
-          "type": "TSLiteralType",
+          "type": "TSImportType",
+          "typeArguments": null,
         },
-        "qualifier": null,
+        "loc": Object {
+          "end": Object {
+            "column": 27,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 1,
+          },
+        },
         "range": Array [
           9,
           27,
         ],
-        "type": "TSImportType",
-        "typeParameters": null,
+        "type": "TSTypeQuery",
       },
     },
     Object {
@@ -129,18 +145,7 @@ Object {
       ],
       "type": "TSTypeAliasDeclaration",
       "typeAnnotation": Object {
-        "isTypeOf": false,
-        "loc": Object {
-          "end": Object {
-            "column": 25,
-            "line": 2,
-          },
-          "start": Object {
-            "column": 9,
-            "line": 2,
-          },
-        },
-        "parameter": Object {
+        "argument": Object {
           "literal": Object {
             "loc": Object {
               "end": Object {
@@ -156,7 +161,7 @@ Object {
               45,
               48,
             ],
-            "raw": "\\"B\\"",
+            "raw": "'B'",
             "type": "Literal",
             "value": "B",
           },
@@ -175,6 +180,16 @@ Object {
             48,
           ],
           "type": "TSLiteralType",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 25,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 9,
+            "line": 2,
+          },
         },
         "qualifier": Object {
           "loc": Object {
@@ -199,7 +214,7 @@ Object {
           54,
         ],
         "type": "TSImportType",
-        "typeParameters": Object {
+        "typeArguments": Object {
           "loc": Object {
             "end": Object {
               "column": 25,
@@ -542,7 +557,7 @@ Object {
         48,
       ],
       "type": "String",
-      "value": "\\"B\\"",
+      "value": "'B'",
     },
     Object {
       "loc": Object {

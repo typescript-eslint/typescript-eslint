@@ -2,7 +2,9 @@ import debug from 'debug';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
+import { isSourceFile } from '../source-files';
 import { getScriptKind } from './getScriptKind';
+import type { ASTAndNoProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createSourceFile');
 
@@ -13,13 +15,22 @@ function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
     parseSettings.filePath,
   );
 
-  return ts.createSourceFile(
-    parseSettings.filePath,
-    parseSettings.code,
-    ts.ScriptTarget.Latest,
-    /* setParentNodes */ true,
-    getScriptKind(parseSettings.filePath, parseSettings.jsx),
-  );
+  return isSourceFile(parseSettings.code)
+    ? parseSettings.code
+    : ts.createSourceFile(
+        parseSettings.filePath,
+        parseSettings.codeFullText,
+        ts.ScriptTarget.Latest,
+        /* setParentNodes */ true,
+        getScriptKind(parseSettings.filePath, parseSettings.jsx),
+      );
 }
 
-export { createSourceFile };
+function createNoProgram(parseSettings: ParseSettings): ASTAndNoProgram {
+  return {
+    ast: createSourceFile(parseSettings),
+    program: null,
+  };
+}
+
+export { createSourceFile, createNoProgram };

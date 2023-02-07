@@ -4,7 +4,7 @@
   "private": true,
   "description": "ESLint which works in browsers.",
   "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
   "types": "types/index.d.ts",
   "main": "dist/index.js",

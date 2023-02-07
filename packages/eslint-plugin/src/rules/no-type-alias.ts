@@ -42,6 +42,7 @@ interface TypeWithLabel {
 export default util.createRule<Options, MessageIds>({
   name: 'no-type-alias',
   meta: {
+    deprecated: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow type aliases',

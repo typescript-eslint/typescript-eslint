@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isTypeReference } from 'tsutils';
+import * as tools from 'ts-api-tools';
 import type * as ts from 'typescript';
 
 import { isTypeAnyType, isTypeUnknownType } from './predicates';
@@ -32,7 +32,7 @@ export function isUnsafeAssignment(
     }
   }
 
-  if (isTypeReference(type) && isTypeReference(receiver)) {
+  if (tools.isTypeReference(type) && tools.isTypeReference(receiver)) {
     // TODO - figure out how to handle cases like this,
     // where the types are assignable, but not the same type
     /*

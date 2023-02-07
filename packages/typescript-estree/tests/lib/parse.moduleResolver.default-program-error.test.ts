@@ -13,7 +13,7 @@ describe('parseAndGenerateServices', () => {
     const withDefaultProgramConfig: TSESTreeOptions = {
       ...config,
       project: './tsconfig.defaultProgram.json',
-      createDefaultProgram: true,
+      DEPRECATED__createDefaultProgram: true,
     };
 
     describe('when file is not in the project and createDefaultProgram=true', () => {
@@ -21,7 +21,7 @@ describe('parseAndGenerateServices', () => {
         expect(
           parser
             .parseAndGenerateServices(code, withDefaultProgramConfig)
-            .services.program.getSemanticDiagnostics(),
+            .services.program!.getSemanticDiagnostics(),
         ).toHaveProperty(
           [0, 'messageText'],
           "Cannot find module '__PLACEHOLDER__' or its corresponding type declarations.",

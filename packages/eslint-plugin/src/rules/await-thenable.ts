@@ -1,4 +1,4 @@
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-tools';
 
 import * as util from '../util';
 
@@ -19,19 +19,19 @@ export default util.createRule({
   defaultOptions: [],
 
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       AwaitExpression(node): void {
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const type = checker.getTypeAtLocation(originalNode.expression);
+        const type = services.getTypeAtLocation(node.argument);
+        if (util.isTypeAnyType(type) || util.isTypeUnknownType(type)) {
+          return;
+        }
 
-        if (
-          !util.isTypeAnyType(type) &&
-          !util.isTypeUnknownType(type) &&
-          !tsutils.isThenableType(checker, originalNode.expression, type)
-        ) {
+        const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+
+        if (!tools.isThenableType(checker, originalNode.expression, type)) {
           context.report({
             messageId: 'await',
             node,

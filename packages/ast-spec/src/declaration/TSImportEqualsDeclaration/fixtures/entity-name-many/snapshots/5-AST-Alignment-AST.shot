@@ -2,5 +2,88 @@
 
 exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSImportEqualsDeclaration {
+        type: 'TSImportEqualsDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'F',
+
+          range: [7, 8],
+          loc: {
+            start: { column: 7, line: 1 },
+            end: { column: 8, line: 1 },
+          },
+        },
+        importKind: 'value',
++       isExport: false,
+        moduleReference: TSQualifiedName {
+          type: 'TSQualifiedName',
+          left: TSQualifiedName {
+            type: 'TSQualifiedName',
+            left: Identifier {
+              type: 'Identifier',
+              name: 'A',
+
+              range: [11, 12],
+              loc: {
+                start: { column: 11, line: 1 },
+                end: { column: 12, line: 1 },
+              },
+            },
+            right: Identifier {
+              type: 'Identifier',
+              name: 'B',
+
+              range: [13, 14],
+              loc: {
+                start: { column: 13, line: 1 },
+                end: { column: 14, line: 1 },
+              },
+            },
+
+            range: [11, 14],
+            loc: {
+              start: { column: 11, line: 1 },
+              end: { column: 14, line: 1 },
+            },
+          },
+          right: Identifier {
+            type: 'Identifier',
+            name: 'C',
+
+            range: [15, 16],
+            loc: {
+              start: { column: 15, line: 1 },
+              end: { column: 16, line: 1 },
+            },
+          },
+
+          range: [11, 16],
+          loc: {
+            start: { column: 11, line: 1 },
+            end: { column: 16, line: 1 },
+          },
+        },
+
+        range: [0, 17],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 17, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 18],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

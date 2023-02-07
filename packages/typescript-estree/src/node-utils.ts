@@ -222,7 +222,10 @@ export function canContainDirective(
  * @param ast the AST object
  * @returns the range data
  */
-export function getRange(node: ts.Node, ast: ts.SourceFile): [number, number] {
+export function getRange(
+  node: Pick<ts.Node, 'getEnd' | 'getStart'>,
+  ast: ts.SourceFile,
+): [number, number] {
   return [node.getStart(ast), node.getEnd()];
 }
 
@@ -484,9 +487,8 @@ export function getTokenType(
       // A TypeScript-StringLiteral token with a TypeScript-JsxAttribute or TypeScript-JsxElement parent,
       // must actually be an ESTree-JSXText token
       if (
-        token.parent &&
-        (token.parent.kind === SyntaxKind.JsxAttribute ||
-          token.parent.kind === SyntaxKind.JsxElement)
+        token.parent.kind === SyntaxKind.JsxAttribute ||
+        token.parent.kind === SyntaxKind.JsxElement
       ) {
         return AST_TOKEN_TYPES.JSXText;
       }
@@ -506,7 +508,7 @@ export function getTokenType(
   }
 
   // Some JSX tokens have to be determined based on their parent
-  if (token.parent && token.kind === SyntaxKind.Identifier) {
+  if (token.kind === SyntaxKind.Identifier) {
     if (isJSXToken(token.parent)) {
       return AST_TOKEN_TYPES.JSXIdentifier;
     }

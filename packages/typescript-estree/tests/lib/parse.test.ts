@@ -212,39 +212,6 @@ describe('parseWithNodeMaps()', () => {
 });
 
 describe('parseAndGenerateServices', () => {
-  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
-    const code = '@test const foo = 2';
-    const options: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true,
-    };
-
-    it('should throw on invalid option when used in parseWithNodeMaps', () => {
-      expect(() => {
-        parser.parseWithNodeMaps(code, options);
-      }).toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should not throw when used in parseAndGenerateServices', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).not.toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should error on invalid code', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).toThrow('Decorators are not valid here.');
-    });
-  });
-
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
@@ -337,16 +304,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
-          parseResult.services.esTreeNodeToTSNodeMap.has(
+          parseResult.services.esTreeNodeToTSNodeMap?.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile('estree.ts'),
           ),
         ).toBe(setting);
       });
@@ -357,18 +317,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
           parseResult.services.esTreeNodeToTSNodeMap.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile(
-              join(FIXTURES_DIR, 'file.ts'),
-            ),
           ),
         ).toBe(setting);
       });
@@ -428,14 +379,16 @@ describe('parseAndGenerateServices', () => {
         }
 
         if (!shouldThrow) {
-          expect(result?.services.program).toBeDefined();
           expect(result?.ast).toBeDefined();
           expect({
             ...result,
             services: {
               ...result?.services,
-              // Reduce noise in snapshot
-              program: {},
+              // Reduce noise in snapshot by not printing the TS program
+              program:
+                result?.services.program == null
+                  ? 'No Program'
+                  : 'With Program',
             },
           }).toMatchSnapshot();
         }
@@ -717,9 +670,14 @@ describe('parseAndGenerateServices', () => {
     });
 
     it('should turn on typescript debugger', () => {
-      parser.parseAndGenerateServices('const x = 1;', {
-        debugLevel: ['typescript'],
-      });
+      expect(() =>
+        parser.parseAndGenerateServices('const x = 1;', {
+          debugLevel: ['typescript'],
+          filePath: './path-that-doesnt-exist.ts',
+          project: ['./tsconfig-that-doesnt-exist.json'],
+        }),
+      ) // should throw because the file and tsconfig don't exist
+        .toThrow();
       expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
       expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
         expect.objectContaining({

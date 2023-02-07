@@ -1,4 +1,4 @@
-import { unionTypeParts } from 'tsutils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
 
 /**
@@ -6,7 +6,7 @@ import * as ts from 'typescript';
  */
 export function getTypeFlags(type: ts.Type): ts.TypeFlags {
   let flags: ts.TypeFlags = 0;
-  for (const t of unionTypeParts(type)) {
+  for (const t of tools.unionTypeParts(type)) {
     flags |= t.flags;
   }
   return flags;

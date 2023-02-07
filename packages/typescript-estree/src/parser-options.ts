@@ -147,15 +147,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   programs?: ts.Program[];
 
   /**
-   ***************************************************************************************
-   * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
-   ***************************************************************************************
-   *
-   * When passed with `project`, this allows the parser to create a catch-all, default program.
-   * This means that if the parser encounters a file not included in any of the provided `project`s,
-   * it will not error, but will instead parse the file and its dependencies in a new program.
+   * @deprecated - this flag will be removed in the next major.
+   * Do not rely on the behavior provided by this flag.
    */
-  createDefaultProgram?: boolean;
+  DEPRECATED__createDefaultProgram?: boolean;
 
   /**
    * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
@@ -209,12 +204,23 @@ export interface ParserWeakMapESTreeToTSNode<
   has(key: unknown): boolean;
 }
 
-export interface ParserServices {
-  program: ts.Program;
+export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
-  hasFullTypeInformation: boolean;
 }
+export interface ParserServicesWithTypeInformation
+  extends ParserServicesNodeMaps {
+  program: ts.Program;
+  getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
+  getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
+}
+export interface ParserServicesWithoutTypeInformation
+  extends ParserServicesNodeMaps {
+  program: null;
+}
+export type ParserServices =
+  | ParserServicesWithTypeInformation
+  | ParserServicesWithoutTypeInformation;
 
 export interface ModuleResolver {
   version: 1;
