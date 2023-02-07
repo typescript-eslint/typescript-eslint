@@ -1468,6 +1468,47 @@ foo?.bar(/* comment */a,
           },
         ],
       },
+      // mixed logical checks are followed and flagged
+      {
+        code: `
+          a &&
+          a.b != null &&
+          a.b.c !== undefined &&
+          a.b.c !== null &&
+          a.b.c.d != null &&
+          a.b.c.d.e !== null &&
+          a.b.c.d.e.f !== undefined &&
+          typeof a.b.c.d.e.f.g !== 'undefined' &&
+          a.b.c.d.e.f.g.h
+        `,
+        output: 'a?.b?.c?.d?.e?.f?.g?.h',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      {
+        code: `
+          !a ||
+          a.b == null ||
+          a.b.c === undefined ||
+          a.b.c === null ||
+          a.b.c.d == null ||
+          a.b.c.d.e === null ||
+          a.b.c.d.e.f === undefined ||
+          typeof a.b.c.d.e.f.g === 'undefined' ||
+          a.b.c.d.e.f.g.h
+        `,
+        output: 'a?.b?.c?.d?.e?.f?.g?.h',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
     ]
       // TODO - remove this once fixer is reimplemented
       .map(tempRemoveFixerTODO),
