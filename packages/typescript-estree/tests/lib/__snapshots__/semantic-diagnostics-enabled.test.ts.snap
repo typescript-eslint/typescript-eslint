@@ -830,11 +830,15 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/accessor-decorators/fixtures/accessor-decorator-static-member/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/babylon-convergence/fixtures/type-parameter-whitespace-loc/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/babylon-convergence/fixtures/type-parameters/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/abstract-class-with-abstract-static-constructor/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 41,
-  "lineNumber": 2,
+  "index": 114,
+  "lineNumber": 4,
   "message": "'abstract' modifier can only appear on a class, method, or property declaration.",
 }
 `;
@@ -844,8 +848,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/abstract-interface/fixture 1`] = `
 TSError {
   "column": 7,
-  "index": 7,
-  "lineNumber": 1,
+  "index": 80,
+  "lineNumber": 3,
   "message": "'abstract' modifier can only appear on a class, method, or property declaration.",
 }
 `;
@@ -853,8 +857,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/await-without-async-function/fixture 1`] = `
 TSError {
   "column": 14,
-  "index": 31,
-  "lineNumber": 2,
+  "index": 104,
+  "lineNumber": 4,
   "message": "'await' expressions are only allowed within async functions and at the top levels of modules.",
 }
 `;
@@ -866,8 +870,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/class-with-export-parameter-properties/fixture 1`] = `
 TSError {
   "column": 16,
-  "index": 28,
-  "lineNumber": 2,
+  "index": 101,
+  "lineNumber": 4,
   "message": "'export' modifier cannot appear on a parameter.",
 }
 `;
@@ -875,8 +879,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/class-with-implements-and-extends/fixture 1`] = `
 TSError {
   "column": 57,
-  "index": 57,
-  "lineNumber": 1,
+  "index": 130,
+  "lineNumber": 3,
   "message": "'extends' clause must precede 'implements' clause.",
 }
 `;
@@ -884,8 +888,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/class-with-static-parameter-properties/fixture 1`] = `
 TSError {
   "column": 16,
-  "index": 28,
-  "lineNumber": 2,
+  "index": 101,
+  "lineNumber": 4,
   "message": "'static' modifier cannot appear on a parameter.",
 }
 `;
@@ -897,8 +901,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/export-named-enum-computed-number/fixture 1`] = `
 TSError {
   "column": 4,
-  "index": 22,
-  "lineNumber": 2,
+  "index": 95,
+  "lineNumber": 4,
   "message": "An enum member cannot have a numeric name.",
 }
 `;
@@ -908,8 +912,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/export-named-enum-computed-var-ref/fixture 1`] = `
 TSError {
   "column": 4,
-  "index": 22,
-  "lineNumber": 2,
+  "index": 95,
+  "lineNumber": 4,
   "message": "Computed property names are not allowed in enums.",
 }
 `;
@@ -923,8 +927,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/interface-with-construct-signature-with-parameter-accessibility/fixture 1`] = `
 TSError {
   "column": 9,
-  "index": 26,
-  "lineNumber": 2,
+  "index": 99,
+  "lineNumber": 4,
   "message": "A parameter property is only allowed in a constructor implementation.",
 }
 `;
@@ -932,8 +936,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/_error_/new-target-in-arrow-function-body/fixture 1`] = `
 TSError {
   "column": 16,
-  "index": 16,
-  "lineNumber": 1,
+  "index": 89,
+  "lineNumber": 3,
   "message": "Meta-property 'new.target' is only allowed in the body of a function declaration, function expression, or constructor.",
 }
 `;
@@ -943,8 +947,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/abstract-class-with-abstract-constructor/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 41,
-  "lineNumber": 2,
+  "index": 114,
+  "lineNumber": 4,
   "message": "'abstract' modifier can only appear on a class, method, or property declaration.",
 }
 `;
@@ -992,8 +996,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/basics/fixtures/catch-clause-with-invalid-annotation/fixture 1`] = `
 TSError {
   "column": 12,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "Catch clause variable type annotation must be 'any' or 'unknown' if specified.",
 }
 `;
@@ -1377,8 +1381,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/class-empty-extends/fixture 1`] = `
 TSError {
   "column": 17,
-  "index": 17,
-  "lineNumber": 1,
+  "index": 90,
+  "lineNumber": 3,
   "message": "'extends' list cannot be empty.",
 }
 `;
@@ -1386,8 +1390,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/class-empty-extends-implements/fixture 1`] = `
 TSError {
   "column": 17,
-  "index": 17,
-  "lineNumber": 1,
+  "index": 90,
+  "lineNumber": 3,
   "message": "'extends' list cannot be empty.",
 }
 `;
@@ -1395,8 +1399,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/class-extends-empty-implements/fixture 1`] = `
 TSError {
   "column": 32,
-  "index": 32,
-  "lineNumber": 1,
+  "index": 105,
+  "lineNumber": 3,
   "message": "'implements' list cannot be empty.",
 }
 `;
@@ -1404,8 +1408,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/class-multiple-implements/fixture 1`] = `
 TSError {
   "column": 21,
-  "index": 21,
-  "lineNumber": 1,
+  "index": 94,
+  "lineNumber": 3,
   "message": "'implements' clause already seen.",
 }
 `;
@@ -1413,8 +1417,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/decorator-on-enum-declaration/fixture 1`] = `
 TSError {
   "column": 0,
-  "index": 0,
-  "lineNumber": 1,
+  "index": 73,
+  "lineNumber": 3,
   "message": "Decorators are not valid here.",
 }
 `;
@@ -1422,8 +1426,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/decorator-on-function/fixture 1`] = `
 TSError {
   "column": 0,
-  "index": 0,
-  "lineNumber": 1,
+  "index": 73,
+  "lineNumber": 3,
   "message": "Decorators are not valid here.",
 }
 `;
@@ -1431,8 +1435,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/decorator-on-interface-declaration/fixture 1`] = `
 TSError {
   "column": 0,
-  "index": 0,
-  "lineNumber": 1,
+  "index": 73,
+  "lineNumber": 3,
   "message": "Decorators are not valid here.",
 }
 `;
@@ -1440,8 +1444,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/decorator-on-variable/fixture 1`] = `
 TSError {
   "column": 0,
-  "index": 0,
-  "lineNumber": 1,
+  "index": 73,
+  "lineNumber": 3,
   "message": "Decorators are not valid here.",
 }
 `;
@@ -1449,8 +1453,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments/fixture 1`] = `
 TSError {
   "column": 14,
-  "index": 14,
-  "lineNumber": 1,
+  "index": 87,
+  "lineNumber": 3,
   "message": "Type argument list cannot be empty.",
 }
 `;
@@ -1458,8 +1462,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-call-expression/fixture 1`] = `
 TSError {
   "column": 3,
-  "index": 3,
-  "lineNumber": 1,
+  "index": 76,
+  "lineNumber": 3,
   "message": "Type argument list cannot be empty.",
 }
 `;
@@ -1467,8 +1471,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-new-expression/fixture 1`] = `
 TSError {
   "column": 7,
-  "index": 7,
-  "lineNumber": 1,
+  "index": 80,
+  "lineNumber": 3,
   "message": "Type argument list cannot be empty.",
 }
 `;
@@ -1476,8 +1480,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters/fixture 1`] = `
 TSError {
   "column": 11,
-  "index": 11,
-  "lineNumber": 1,
+  "index": 84,
+  "lineNumber": 3,
   "message": "Type parameter list cannot be empty.",
 }
 `;
@@ -1485,8 +1489,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-arrow-function/fixture 1`] = `
 TSError {
   "column": 11,
-  "index": 11,
-  "lineNumber": 1,
+  "index": 84,
+  "lineNumber": 3,
   "message": "Type parameter list cannot be empty.",
 }
 `;
@@ -1494,8 +1498,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-constructor/fixture 1`] = `
 TSError {
   "column": 13,
-  "index": 25,
-  "lineNumber": 2,
+  "index": 98,
+  "lineNumber": 4,
   "message": "Type parameter list cannot be empty.",
 }
 `;
@@ -1503,8 +1507,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-function-expression/fixture 1`] = `
 TSError {
   "column": 20,
-  "index": 20,
-  "lineNumber": 1,
+  "index": 93,
+  "lineNumber": 3,
   "message": "Type parameter list cannot be empty.",
 }
 `;
@@ -1512,8 +1516,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-method/fixture 1`] = `
 TSError {
   "column": 6,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "Type parameter list cannot be empty.",
 }
 `;
@@ -1521,8 +1525,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-method-signature/fixture 1`] = `
 TSError {
   "column": 6,
-  "index": 22,
-  "lineNumber": 2,
+  "index": 95,
+  "lineNumber": 4,
   "message": "Type parameter list cannot be empty.",
 }
 `;
@@ -1530,8 +1534,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/enum-with-keywords/fixture 1`] = `
 TSError {
   "column": 7,
-  "index": 7,
-  "lineNumber": 1,
+  "index": 80,
+  "lineNumber": 3,
   "message": "'private' modifier cannot appear on a module or namespace element.",
 }
 `;
@@ -1539,8 +1543,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/index-signature-parameters/fixture 1`] = `
 TSError {
   "column": 3,
-  "index": 16,
-  "lineNumber": 2,
+  "index": 89,
+  "lineNumber": 4,
   "message": "An index signature must have exactly one parameter.",
 }
 `;
@@ -1548,8 +1552,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-empty-extends/fixture 1`] = `
 TSError {
   "column": 21,
-  "index": 21,
-  "lineNumber": 1,
+  "index": 94,
+  "lineNumber": 3,
   "message": "'extends' list cannot be empty.",
 }
 `;
@@ -1557,8 +1561,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-implements/fixture 1`] = `
 TSError {
   "column": 12,
-  "index": 12,
-  "lineNumber": 1,
+  "index": 85,
+  "lineNumber": 3,
   "message": "Interface declaration cannot have 'implements' clause.",
 }
 `;
@@ -1566,8 +1570,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-export/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'export' modifier cannot appear on an index signature.",
 }
 `;
@@ -1575,8 +1579,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-private/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'private' modifier cannot appear on an index signature.",
 }
 `;
@@ -1584,8 +1588,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-protected/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'protected' modifier cannot appear on an index signature.",
 }
 `;
@@ -1593,8 +1597,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-public/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'public' modifier cannot appear on an index signature.",
 }
 `;
@@ -1602,8 +1606,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-static/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'static' modifier cannot appear on an index signature.",
 }
 `;
@@ -1611,8 +1615,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-method-export/fixture 1`] = `
 TSError {
   "column": 4,
-  "index": 20,
-  "lineNumber": 2,
+  "index": 93,
+  "lineNumber": 4,
   "message": "'export' modifier cannot appear on a type member.",
 }
 `;
@@ -1620,8 +1624,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-method-private/fixture 1`] = `
 TSError {
   "column": 4,
-  "index": 20,
-  "lineNumber": 2,
+  "index": 93,
+  "lineNumber": 4,
   "message": "'private' modifier cannot appear on a type member.",
 }
 `;
@@ -1629,8 +1633,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-method-protected/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'protected' modifier cannot appear on a type member.",
 }
 `;
@@ -1638,8 +1642,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-method-public/fixture 1`] = `
 TSError {
   "column": 4,
-  "index": 20,
-  "lineNumber": 2,
+  "index": 93,
+  "lineNumber": 4,
   "message": "'public' modifier cannot appear on a type member.",
 }
 `;
@@ -1649,8 +1653,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-method-static/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'static' modifier cannot appear on a type member.",
 }
 `;
@@ -1658,8 +1662,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-multiple-extends/fixture 1`] = `
 TSError {
   "column": 26,
-  "index": 26,
-  "lineNumber": 1,
+  "index": 99,
+  "lineNumber": 3,
   "message": "'extends' clause already seen.",
 }
 `;
@@ -1667,8 +1671,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-property-export/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'export' modifier cannot appear on a type member.",
 }
 `;
@@ -1676,8 +1680,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-property-private/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'private' modifier cannot appear on a type member.",
 }
 `;
@@ -1685,8 +1689,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-property-protected/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'protected' modifier cannot appear on a type member.",
 }
 `;
@@ -1694,8 +1698,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-property-public/fixture 1`] = `
 TSError {
   "column": 4,
-  "index": 20,
-  "lineNumber": 2,
+  "index": 93,
+  "lineNumber": 4,
   "message": "'public' modifier cannot appear on a type member.",
 }
 `;
@@ -1703,8 +1707,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-property-static/fixture 1`] = `
 TSError {
   "column": 2,
-  "index": 18,
-  "lineNumber": 2,
+  "index": 91,
+  "lineNumber": 4,
   "message": "'static' modifier cannot appear on a type member.",
 }
 `;
@@ -1712,8 +1716,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-property-with-default-value/fixture 1`] = `
 TSError {
   "column": 16,
-  "index": 32,
-  "lineNumber": 2,
+  "index": 105,
+  "lineNumber": 4,
   "message": "An interface property cannot have an initializer.",
 }
 `;
@@ -1721,8 +1725,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/interface-with-no-body/fixture 1`] = `
 TSError {
   "column": 0,
-  "index": 14,
-  "lineNumber": 2,
+  "index": 87,
+  "lineNumber": 4,
   "message": "'{' expected.",
 }
 `;
@@ -1732,8 +1736,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/object-assertion-not-allowed/fixture 1`] = `
 TSError {
   "column": 3,
-  "index": 3,
-  "lineNumber": 1,
+  "index": 76,
+  "lineNumber": 3,
   "message": "A definite assignment assertion '!' is not permitted in this context.",
 }
 `;
@@ -1741,8 +1745,8 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/object-optional-not-allowed/fixture 1`] = `
 TSError {
   "column": 3,
-  "index": 3,
-  "lineNumber": 1,
+  "index": 76,
+  "lineNumber": 3,
   "message": "An object member cannot be declared optional.",
 }
 `;
@@ -1750,22 +1754,22 @@ TSError {
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/errorRecovery/fixtures/_error_/solo-const/fixture 1`] = `
 TSError {
   "column": 5,
-  "index": 5,
-  "lineNumber": 1,
+  "index": 78,
+  "lineNumber": 3,
   "message": "Variable declaration list cannot be empty.",
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/expressions/fixtures/call-expression-type-arguments/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/expressions/fixtures/instantiation-expression/fixture 1`] = `
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/expressions/fixtures/_error_/instantiation-expression/fixture 1`] = `
 TSError {
   "column": 7,
-  "index": 14,
-  "lineNumber": 3,
+  "index": 87,
+  "lineNumber": 5,
   "message": "Expression expected.",
 }
 `;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/expressions/fixtures/call-expression-type-arguments/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/unsorted-fixtures/expressions/fixtures/new-expression-type-arguments/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
