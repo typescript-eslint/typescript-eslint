@@ -545,6 +545,10 @@ type OptionalFoo = Foo | undefined;
 declare const foo: OptionalFoo;
 foo?.[1]?.length;
     `,
+    `
+let variable = 'abc' as string | void;
+variable?.[0];
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
