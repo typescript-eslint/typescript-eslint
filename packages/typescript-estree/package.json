@@ -59,7 +59,6 @@
     "@types/is-glob": "*",
     "@types/semver": "*",
     "@types/tmp": "*",
-    "@typescript-eslint/shared-fixtures": "5.51.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

@@ -1,1 +1,0 @@
-function c({a, ...b}) {}
