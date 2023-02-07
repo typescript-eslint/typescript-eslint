@@ -499,7 +499,7 @@ function compareNodesUncached(
       // we don't want to check the arguments in this case
       const aSubsetOfB = compareNodes(nodeA, nodeBCall.callee);
       if (aSubsetOfB !== NodeComparisonResult.Invalid) {
-        return aSubsetOfB;
+        return NodeComparisonResult.Subset;
       }
 
       const calleeCompare = compareNodes(nodeA.callee, nodeBCall.callee);
@@ -625,6 +625,7 @@ function compareNodesUncached(
     // https://github.com/typescript-eslint/typescript-eslint/blob/20d7caee35ab84ae6381fdf04338c9e2b9e2bc48/packages/ast-spec/src/unions/Expression.ts#L37-L43
     case AST_NODE_TYPES.ArrayPattern:
     case AST_NODE_TYPES.ObjectPattern:
+      /* istanbul ignore next */
       return NodeComparisonResult.Invalid;
 
     // update expression returns a number and also changes the value each time - so it makes no sense to compare the chain
@@ -787,6 +788,7 @@ function analyzeChain(
         return analyzeOrChainOperand;
 
       case '??':
+        /* istanbul ignore next -- previous checks make this unreachable, but keep it for exhaustiveness check */
         return null;
     }
   })();

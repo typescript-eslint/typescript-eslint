@@ -931,6 +931,21 @@ describe('hand-crafted cases', () => {
           },
         ],
       },
+      {
+        code: 'foo && foo[`some ${long} string`] && foo[`some ${long} string`].baz;',
+        output: null,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'foo?.[`some ${long} string`]?.baz;',
+              },
+            ],
+          },
+        ],
+      },
       // complex computed properties should be handled correctly
       {
         code: 'foo && foo[bar as string] && foo[bar as string].baz;',
@@ -980,6 +995,16 @@ describe('hand-crafted cases', () => {
       {
         code: 'foo && foo.bar(a) && foo.bar(a, b).baz',
         output: 'foo?.bar(a) && foo.bar(a, b).baz',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      {
+        code: 'foo() && foo()(bar)',
+        output: 'foo()?.(bar)',
         errors: [
           {
             messageId: 'preferOptionalChain',
