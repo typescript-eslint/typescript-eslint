@@ -72,16 +72,17 @@ function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
         // check for "yoda" style logical: null != x
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
         const { comparedExpression, comparedValue } = (() => {
-          const comparedValueLeft = getComparisonValueType(node.left);
-          if (comparedValueLeft) {
+          // non-yoda checks are by far the most common, so check for them first
+          const comparedValueRight = getComparisonValueType(operand.right);
+          if (comparedValueRight) {
             return {
-              comparedExpression: operand.right,
-              comparedValue: comparedValueLeft,
+              comparedExpression: operand.left,
+              comparedValue: comparedValueRight,
             };
           } else {
             return {
-              comparedExpression: operand.left,
-              comparedValue: getComparisonValueType(operand.right),
+              comparedExpression: operand.right,
+              comparedValue: getComparisonValueType(operand.left),
             };
           }
         })();
@@ -95,7 +96,7 @@ function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
             result.push({
               type: OperandValidity.Valid,
               comparedName: comparedExpression.argument,
-              comparisonType: node.operator.startsWith('!')
+              comparisonType: operand.operator.startsWith('!')
                 ? NullishComparisonType.NotStrictEqualUndefined
                 : NullishComparisonType.StrictEqualUndefined,
               node: operand,
@@ -103,7 +104,7 @@ function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
             continue;
           }
 
-          // typeof x === 'string' et al :(
+          // y === 'undefined'
           result.push({ type: OperandValidity.Invalid });
           continue;
         }
@@ -254,7 +255,7 @@ function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
   }
 
   function getComparisonValueType(
-    node: TSESTree.Expression,
+    node: TSESTree.Node,
   ): ComparisonValueType | null {
     switch (node.type) {
       case AST_NODE_TYPES.Literal:
@@ -326,6 +327,7 @@ function compareUnknownValues(
   valueA: unknown,
   valueB: unknown,
 ): NodeComparisonResult {
+  /* istanbul ignore if -- not possible for us to test this - it's just a sanity safeguard */
   if (valueA == null || valueB == null) {
     if (valueA !== valueB) {
       return NodeComparisonResult.Invalid;
@@ -333,6 +335,7 @@ function compareUnknownValues(
     return NodeComparisonResult.Equal;
   }
 
+  /* istanbul ignore if -- not possible for us to test this - it's just a sanity safeguard */
   if (!isValidNode(valueA) || !isValidNode(valueB)) {
     return NodeComparisonResult.Invalid;
   }
@@ -344,6 +347,7 @@ function compareByVisiting(
   nodeB: TSESTree.Node,
 ): NodeComparisonResult.Equal | NodeComparisonResult.Invalid {
   const currentVisitorKeys = visitorKeys[nodeA.type];
+  /* istanbul ignore if -- not possible for us to test this - it's just a sanity safeguard */
   if (currentVisitorKeys == null) {
     // we don't know how to visit this node, so assume it's invalid to avoid false-positives / broken fixers
     return NodeComparisonResult.Invalid;
@@ -365,7 +369,7 @@ function compareByVisiting(
       const arrayB = nodeBChildOrChildren as unknown[];
 
       const result = compareArrays(arrayA, arrayB);
-      if (!result) {
+      if (result !== NodeComparisonResult.Equal) {
         return NodeComparisonResult.Invalid;
       }
       // fallthrough to the next key as the key was "equal"
@@ -550,31 +554,6 @@ function compareNodesUncached(
       return NodeComparisonResult.Invalid;
     }
 
-    case AST_NODE_TYPES.LogicalExpression: {
-      const nodeBLogical = nodeB as typeof nodeA;
-
-      // TODO - we could handle this, but it's pretty nonsensical and needlessly complicated to do something like
-      // (x || y) && (x || y).z
-      // Let's put a pin in this unless someone asks for it
-      if (
-        (nodeA.parent?.type === AST_NODE_TYPES.MemberExpression &&
-          nodeA.parent.object === nodeA) ||
-        nodeA.parent?.type === AST_NODE_TYPES.LogicalExpression
-      ) {
-        return NodeComparisonResult.Invalid;
-      }
-
-      const leftCompare = compareNodes(nodeA.left, nodeBLogical.left);
-      if (leftCompare !== NodeComparisonResult.Equal) {
-        return NodeComparisonResult.Invalid;
-      }
-      const rightCompare = compareNodes(nodeA.right, nodeBLogical.right);
-      if (rightCompare === NodeComparisonResult.Equal) {
-        return NodeComparisonResult.Equal;
-      }
-      return NodeComparisonResult.Invalid;
-    }
-
     case AST_NODE_TYPES.MemberExpression: {
       const nodeBMember = nodeB as typeof nodeA;
 
@@ -618,14 +597,6 @@ function compareNodesUncached(
 
       return compareNodes(nodeA.property, nodeBMember.property);
     }
-
-    // TODO - we could handle this, but it's pretty nonsensical and needlessly complicated to do something like
-    // tag`foo${bar}` && tag`foo${bar}`.prop
-    // Additionally the template tag might return a new value each time.
-    // Let's put a pin in this unless someone asks for it.
-    case AST_NODE_TYPES.TaggedTemplateExpression:
-      return NodeComparisonResult.Invalid;
-
     case AST_NODE_TYPES.TSTemplateLiteralType:
     case AST_NODE_TYPES.TemplateLiteral: {
       const nodeBTemplate = nodeB as typeof nodeA;
@@ -649,10 +620,6 @@ function compareNodesUncached(
       }
       return NodeComparisonResult.Invalid;
     }
-
-    // it's syntactically invalid for an instantiation expression to be part of a chain
-    case AST_NODE_TYPES.TSInstantiationExpression:
-      return NodeComparisonResult.Invalid;
 
     // these aren't actually valid expressions.
     // https://github.com/typescript-eslint/typescript-eslint/blob/20d7caee35ab84ae6381fdf04338c9e2b9e2bc48/packages/ast-spec/src/unions/Expression.ts#L37-L43

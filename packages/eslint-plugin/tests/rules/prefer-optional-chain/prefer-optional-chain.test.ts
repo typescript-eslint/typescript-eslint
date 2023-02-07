@@ -711,6 +711,21 @@ describe('hand-crafted cases', () => {
       'result && this.options.shouldPreserveNodeMaps;',
       'foo && fooBar.baz;',
       'match && match$1 !== undefined;',
+      "typeof foo === 'number' && foo.toFixed();",
+      "foo === 'undefined' && foo.length;",
+      'foo == bar && foo.bar == null;',
+      'foo === 1 && foo.toFixed();',
+      // call arguments are considered
+      'foo.bar(a) && foo.bar(a, b).baz;',
+      // type parameters are considered
+      'foo.bar<a>() && foo.bar<a, b>().baz;',
+      // array elements are considered
+      '[1, 2].length && [1, 2, 3].length.toFixed();',
+      noFormat`[1,].length && [1, 2].length.toFixed();`,
+      // short-circuiting chains are considered
+      '(foo?.a).b && foo.a.b.c;',
+      '(foo?.a)() && foo.a().b;',
+      '(foo?.a)() && foo.a()();',
       // looks like a chain, but isn't actually a chain - just a pair of strict nullish checks
       'foo !== null && foo !== undefined;',
       "x['y'] !== undefined && x['y'] !== null;",
@@ -740,6 +755,28 @@ describe('hand-crafted cases', () => {
       // Do not handle direct optional chaining on private properties because this TS limitation (https://github.com/microsoft/TypeScript/issues/42734)
       'foo && foo.#bar;',
       '!foo || !foo.#bar;',
+      // weird non-constant cases are ignored
+      '({} && {}.toString());',
+      '[] && [].length;',
+      '(() => {}) && (() => {}).name;',
+      '(function () {} && function () {}.name);',
+      '(class Foo {} && class Foo {}.constructor);',
+      "new Map().get('a') && new Map().get('a').what;",
+      {
+        code: '<div /> && (<div />).wtf;',
+        parserOptions: { ecmaFeatures: { jsx: true } },
+      },
+      {
+        code: '<></> && (<></>).wtf;',
+        parserOptions: { ecmaFeatures: { jsx: true } },
+      },
+      'foo[x++] && foo[x++].bar;',
+      'foo[yield x] && foo[yield x].bar;',
+      'a = b && (a = b).wtf;',
+      // TODO - should we handle this?
+      '(x || y) != null && (x || y).foo;',
+      // TODO - should we handle this?
+      '(await foo) && (await foo).bar;',
     ],
     invalid: [
       // two  errors
@@ -879,6 +916,21 @@ describe('hand-crafted cases', () => {
           },
         ],
       },
+      {
+        code: 'foo && foo[`some long string`] && foo[`some long string`].baz;',
+        output: null,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'foo?.[`some long string`]?.baz;',
+              },
+            ],
+          },
+        ],
+      },
       // complex computed properties should be handled correctly
       {
         code: 'foo && foo[bar as string] && foo[bar as string].baz;',
@@ -922,6 +974,37 @@ describe('hand-crafted cases', () => {
                 output: 'foo?.[typeof bar]?.baz;',
               },
             ],
+          },
+        ],
+      },
+      {
+        code: 'foo && foo.bar(a) && foo.bar(a, b).baz',
+        output: 'foo?.bar(a) && foo.bar(a, b).baz',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      // type parameters are considered
+      {
+        code: 'foo && foo<string>() && foo<string>().bar',
+        output: 'foo?.<string>()?.bar',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      {
+        code: 'foo && foo<string>() && foo<string, number>().bar',
+        output: 'foo?.<string>() && foo<string, number>().bar',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
           },
         ],
       },
@@ -1502,6 +1585,38 @@ foo?.bar(/* comment */a,
           a.b.c.d.e.f.g.h
         `,
         output: 'a?.b?.c?.d?.e?.f?.g?.h',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      // yoda checks are flagged
+      {
+        code: 'undefined !== foo && null !== foo.bar && foo.bar.baz',
+        output: 'foo?.bar?.baz',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      {
+        code: "null != foo && 'undefined' !== typeof foo.bar && foo.bar.baz",
+        output: 'foo?.bar?.baz',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      // await
+      {
+        code: '(await foo).bar && (await foo).bar.baz',
+        output: '(await foo).bar?.baz',
         errors: [
           {
             messageId: 'preferOptionalChain',

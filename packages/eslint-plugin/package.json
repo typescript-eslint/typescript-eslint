@@ -41,6 +41,7 @@
     "generate:configs": "yarn tsx tools/generate-configs.ts",
     "lint": "nx lint",
     "test": "jest --coverage",
+    "test-single": "jest --no-coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
