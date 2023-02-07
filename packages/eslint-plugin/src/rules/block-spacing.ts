@@ -42,7 +42,7 @@ export default util.createRule<Options, MessageIds>({
       // This is the only change made here from the base rule
       return sourceCode.getFirstToken(node, {
         filter: token =>
-          token.type === AST_TOKEN_TYPES.Punctuator && token.value == '{',
+          token.type === AST_TOKEN_TYPES.Punctuator && token.value === '{',
       }) as TSESTree.PunctuatorToken;
     }
 
