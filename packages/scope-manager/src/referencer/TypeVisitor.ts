@@ -120,7 +120,7 @@ class TypeVisitor extends Visitor {
 
   protected TSImportType(node: TSESTree.TSImportType): void {
     // the TS parser allows any type to be the parameter, but it's a syntax error - so we can ignore it
-    this.visit(node.typeParameters);
+    this.visit(node.typeArguments);
     // the qualifier is just part of a standard EntityName, so it should not be visited
   }
 

@@ -231,7 +231,7 @@ Object {
           ],
           "selfClosing": false,
           "type": "JSXOpeningElement",
-          "typeParameters": undefined,
+          "typeArguments": undefined,
         },
         "range": Array [
           0,

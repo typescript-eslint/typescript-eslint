@@ -127,7 +127,7 @@ Object {
               ],
               "selfClosing": false,
               "type": "JSXOpeningElement",
-              "typeParameters": undefined,
+              "typeArguments": undefined,
             },
             "range": Array [
               14,
@@ -368,7 +368,7 @@ Object {
                   ],
                   "selfClosing": true,
                   "type": "JSXOpeningElement",
-                  "typeParameters": undefined,
+                  "typeArguments": undefined,
                 },
                 "range": Array [
                   106,
@@ -477,7 +477,7 @@ Object {
               ],
               "selfClosing": false,
               "type": "JSXOpeningElement",
-              "typeParameters": undefined,
+              "typeArguments": undefined,
             },
             "range": Array [
               101,
@@ -625,7 +625,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": undefined,
+                  "typeArguments": undefined,
                 },
                 "range": Array [
                   159,
@@ -734,7 +734,7 @@ Object {
               ],
               "selfClosing": false,
               "type": "JSXOpeningElement",
-              "typeParameters": undefined,
+              "typeArguments": undefined,
             },
             "range": Array [
               154,
@@ -934,7 +934,7 @@ Object {
               ],
               "selfClosing": false,
               "type": "JSXOpeningElement",
-              "typeParameters": undefined,
+              "typeArguments": undefined,
             },
             "range": Array [
               213,

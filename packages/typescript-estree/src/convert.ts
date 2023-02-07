@@ -1520,7 +1520,7 @@ export class Converter {
       case SyntaxKind.TaggedTemplateExpression:
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
-          typeParameters: node.typeArguments
+          typeArguments: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameterInstantiation(
                 node.typeArguments,
                 node,
@@ -2196,7 +2196,7 @@ export class Converter {
            */
           openingElement: this.createNode<TSESTree.JSXOpeningElement>(node, {
             type: AST_NODE_TYPES.JSXOpeningElement,
-            typeParameters: node.typeArguments
+            typeArguments: node.typeArguments
               ? this.convertTypeArgumentsToTypeParameterInstantiation(
                   node.typeArguments,
                   node,
@@ -2217,7 +2217,7 @@ export class Converter {
       case SyntaxKind.JsxOpeningElement:
         return this.createNode<TSESTree.JSXOpeningElement>(node, {
           type: AST_NODE_TYPES.JSXOpeningElement,
-          typeParameters: node.typeArguments
+          typeArguments: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameterInstantiation(
                 node.typeArguments,
                 node,

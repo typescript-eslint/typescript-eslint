@@ -130,7 +130,7 @@ Object {
                   ],
                   "selfClosing": true,
                   "type": "JSXOpeningElement",
-                  "typeParameters": undefined,
+                  "typeArguments": undefined,
                 },
                 "range": Array [
                   27,
@@ -220,7 +220,7 @@ Object {
               ],
               "selfClosing": false,
               "type": "JSXOpeningElement",
-              "typeParameters": undefined,
+              "typeArguments": undefined,
             },
             "range": Array [
               24,
@@ -400,7 +400,7 @@ Object {
           ],
           "selfClosing": false,
           "type": "JSXOpeningElement",
-          "typeParameters": undefined,
+          "typeArguments": undefined,
         },
         "range": Array [
           0,

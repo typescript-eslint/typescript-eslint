@@ -125,7 +125,7 @@ Object {
           ],
           "selfClosing": true,
           "type": "JSXOpeningElement",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 20,

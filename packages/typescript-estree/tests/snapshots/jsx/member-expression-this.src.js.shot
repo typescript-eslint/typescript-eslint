@@ -123,7 +123,7 @@ Object {
           ],
           "selfClosing": true,
           "type": "JSXOpeningElement",
-          "typeParameters": undefined,
+          "typeArguments": undefined,
         },
         "range": Array [
           0,
@@ -232,7 +232,7 @@ Object {
           ],
           "selfClosing": true,
           "type": "JSXOpeningElement",
-          "typeParameters": undefined,
+          "typeArguments": undefined,
         },
         "range": Array [
           26,

@@ -329,7 +329,7 @@ Object {
           "type": "Identifier",
         },
         "type": "TaggedTemplateExpression",
-        "typeParameters": undefined,
+        "typeArguments": undefined,
       },
       "loc": Object {
         "end": Object {

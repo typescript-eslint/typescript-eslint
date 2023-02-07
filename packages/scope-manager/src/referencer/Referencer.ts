@@ -540,7 +540,7 @@ class Referencer extends Visitor {
     } else {
       this.visit(node.name);
     }
-    this.visitType(node.typeParameters);
+    this.visitType(node.typeArguments);
     for (const attr of node.attributes) {
       this.visit(attr);
     }
@@ -613,7 +613,7 @@ class Referencer extends Visitor {
   ): void {
     this.visit(node.tag);
     this.visit(node.quasi);
-    this.visitType(node.typeParameters);
+    this.visitType(node.typeArguments);
   }
 
   protected TSAsExpression(node: TSESTree.TSAsExpression): void {

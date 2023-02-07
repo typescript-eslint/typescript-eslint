@@ -130,7 +130,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -314,7 +314,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -498,7 +498,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -718,7 +718,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -867,7 +867,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -1051,7 +1051,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -1235,7 +1235,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
@@ -1455,7 +1455,7 @@ Object {
                   ],
                   "selfClosing": false,
                   "type": "JSXOpeningElement",
-                  "typeParameters": Object {
+                  "typeArguments": Object {
                     "loc": Object {
                       "end": Object {
                         "column": 22,
