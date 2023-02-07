@@ -60,7 +60,7 @@ export default util.createRule<Options, MessageIds>({
           if (
             node.kind !== 'get' ||
             !node.value.body ||
-            !node.value.body.body.length
+            node.value.body.body.length === 0
           ) {
             return;
           }

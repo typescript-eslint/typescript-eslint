@@ -1468,7 +1468,7 @@ foo?.bar(/* comment */a,
           },
         ],
       },
-      // mixed logical checks are followed and flagged
+      // mixed binary checks are followed and flagged
       {
         code: `
           a &&

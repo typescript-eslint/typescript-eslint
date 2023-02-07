@@ -235,7 +235,7 @@ export default util.createRule<Options, MessageIds>({
      * Checks if a function name is allowed and should not be checked.
      */
     function isAllowedName(node: TSESTree.Node | undefined): boolean {
-      if (!node || !options.allowedNames || !options.allowedNames.length) {
+      if (!node || !options.allowedNames || options.allowedNames.length === 0) {
         return false;
       }
 

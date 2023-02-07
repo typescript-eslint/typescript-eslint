@@ -161,8 +161,7 @@ export default createRule({
           .getProperty('includes')
           ?.getDeclarations();
         if (
-          includesMethodDecl == null ||
-          !includesMethodDecl.some(includesMethodDecl =>
+          !includesMethodDecl?.some(includesMethodDecl =>
             hasSameParameters(includesMethodDecl, instanceofMethodDecl),
           )
         ) {
