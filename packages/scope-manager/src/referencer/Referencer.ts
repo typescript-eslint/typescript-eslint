@@ -695,8 +695,8 @@ class Referencer extends Visitor {
   protected TSInstantiationExpression(
     node: TSESTree.TSInstantiationExpression,
   ): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected TSInterfaceDeclaration(

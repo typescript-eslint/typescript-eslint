@@ -460,7 +460,7 @@ Object {
             241,
           ],
           "type": "TSInterfaceHeritage",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 76,
@@ -663,7 +663,7 @@ Object {
             335,
           ],
           "type": "TSInterfaceHeritage",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 90,

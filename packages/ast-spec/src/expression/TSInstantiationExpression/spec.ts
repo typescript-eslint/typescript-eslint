@@ -6,5 +6,5 @@ import type { Expression } from '../../unions/Expression';
 export interface TSInstantiationExpression extends BaseNode {
   type: AST_NODE_TYPES.TSInstantiationExpression;
   expression: Expression;
-  typeParameters: TSTypeParameterInstantiation;
+  typeArguments: TSTypeParameterInstantiation;
 }

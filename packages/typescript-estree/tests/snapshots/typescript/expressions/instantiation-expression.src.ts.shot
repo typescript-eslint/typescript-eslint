@@ -38,7 +38,7 @@ Object {
           4,
         ],
         "type": "TSInstantiationExpression",
-        "typeParameters": Object {
+        "typeArguments": Object {
           "loc": Object {
             "end": Object {
               "column": 4,
@@ -146,7 +146,7 @@ Object {
             12,
           ],
           "type": "TSInstantiationExpression",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -217,7 +217,7 @@ Object {
           16,
         ],
         "type": "TSInstantiationExpression",
-        "typeParameters": Object {
+        "typeArguments": Object {
           "loc": Object {
             "end": Object {
               "column": 9,
@@ -326,7 +326,7 @@ Object {
             23,
           ],
           "type": "TSInstantiationExpression",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -509,7 +509,7 @@ Object {
                 36,
               ],
               "type": "TSInstantiationExpression",
-              "typeParameters": Object {
+              "typeArguments": Object {
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -580,7 +580,7 @@ Object {
               40,
             ],
             "type": "TSInstantiationExpression",
-            "typeParameters": Object {
+            "typeArguments": Object {
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -776,7 +776,7 @@ Object {
             54,
           ],
           "type": "TSInstantiationExpression",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -957,7 +957,7 @@ Object {
             71,
           ],
           "type": "TSInstantiationExpression",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 9,

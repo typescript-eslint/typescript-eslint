@@ -75,7 +75,7 @@ Object {
             30,
           ],
           "type": "TSClassImplements",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 30,

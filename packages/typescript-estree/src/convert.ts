@@ -2586,7 +2586,7 @@ export class Converter {
         });
 
         if (node.typeArguments) {
-          result.typeParameters =
+          result.typeArguments =
             this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
               node,

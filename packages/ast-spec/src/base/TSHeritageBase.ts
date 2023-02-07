@@ -5,5 +5,5 @@ import type { BaseNode } from './BaseNode';
 export interface TSHeritageBase extends BaseNode {
   // TODO(#1852) - this should be restricted to MemberExpression | Identifier
   expression: Expression;
-  typeParameters?: TSTypeParameterInstantiation;
+  typeArguments?: TSTypeParameterInstantiation;
 }

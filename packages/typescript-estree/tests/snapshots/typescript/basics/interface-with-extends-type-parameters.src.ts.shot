@@ -57,7 +57,7 @@ Object {
             31,
           ],
           "type": "TSInterfaceHeritage",
-          "typeParameters": Object {
+          "typeArguments": Object {
             "loc": Object {
               "end": Object {
                 "column": 31,
