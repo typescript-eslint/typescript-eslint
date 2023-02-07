@@ -1,0 +1,211 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-factory-static-member Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: CallExpression {
+                  type: "CallExpression",
+                  arguments: Array [
+                    ObjectExpression {
+                      type: "ObjectExpression",
+                      properties: Array [
+                        Property {
+                          type: "Property",
+                          computed: false,
+                          key: Identifier {
+                            type: "Identifier",
+                            name: "baz",
+
+                            range: [98, 101],
+                            loc: {
+                              start: { column: 11, line: 4 },
+                              end: { column: 14, line: 4 },
+                            },
+                          },
+                          kind: "init",
+                          method: false,
+                          shorthand: false,
+                          value: Literal {
+                            type: "Literal",
+                            raw: "true",
+                            value: true,
+
+                            range: [103, 107],
+                            loc: {
+                              start: { column: 16, line: 4 },
+                              end: { column: 20, line: 4 },
+                            },
+                          },
+
+                          range: [98, 107],
+                          loc: {
+                            start: { column: 11, line: 4 },
+                            end: { column: 20, line: 4 },
+                          },
+                        },
+                      ],
+
+                      range: [96, 109],
+                      loc: {
+                        start: { column: 9, line: 4 },
+                        end: { column: 22, line: 4 },
+                      },
+                    },
+                  ],
+                  callee: Identifier {
+                    type: "Identifier",
+                    name: "foo",
+
+                    range: [92, 95],
+                    loc: {
+                      start: { column: 5, line: 4 },
+                      end: { column: 8, line: 4 },
+                    },
+                  },
+                  optional: false,
+
+                  range: [92, 110],
+                  loc: {
+                    start: { column: 5, line: 4 },
+                    end: { column: 23, line: 4 },
+                  },
+                },
+
+                range: [91, 110],
+                loc: {
+                  start: { column: 4, line: 4 },
+                  end: { column: 23, line: 4 },
+                },
+              },
+            ],
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [126, 129],
+              loc: {
+                start: { column: 15, line: 5 },
+                end: { column: 18, line: 5 },
+              },
+            },
+            kind: "get",
+            static: true,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: ThisExpression {
+                        type: "ThisExpression",
+
+                        range: [141, 145],
+                        loc: {
+                          start: { column: 30, line: 5 },
+                          end: { column: 34, line: 5 },
+                        },
+                      },
+                      optional: false,
+                      property: Identifier {
+                        type: "Identifier",
+                        name: "_bar",
+
+                        range: [146, 150],
+                        loc: {
+                          start: { column: 35, line: 5 },
+                          end: { column: 39, line: 5 },
+                        },
+                      },
+
+                      range: [141, 150],
+                      loc: {
+                        start: { column: 30, line: 5 },
+                        end: { column: 39, line: 5 },
+                      },
+                    },
+
+                    range: [134, 151],
+                    loc: {
+                      start: { column: 23, line: 5 },
+                      end: { column: 40, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [132, 153],
+                loc: {
+                  start: { column: 21, line: 5 },
+                  end: { column: 42, line: 5 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [129, 153],
+              loc: {
+                start: { column: 18, line: 5 },
+                end: { column: 42, line: 5 },
+              },
+            },
+
+            range: [91, 153],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 42, line: 5 },
+            },
+          },
+        ],
+
+        range: [85, 155],
+        loc: {
+          start: { column: 12, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Other",
+
+        range: [79, 84],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 11, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 155],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 155],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 6 },
+  },
+}
+`;

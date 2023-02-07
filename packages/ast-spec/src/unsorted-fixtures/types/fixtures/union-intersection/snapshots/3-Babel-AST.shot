@@ -1,0 +1,345 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures types union-intersection Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "union",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSUnionType {
+                type: "TSUnionType",
+                types: Array [
+                  TSNumberKeyword {
+                    type: "TSNumberKeyword",
+
+                    range: [84, 90],
+                    loc: {
+                      start: { column: 11, line: 3 },
+                      end: { column: 17, line: 3 },
+                    },
+                  },
+                  TSNullKeyword {
+                    type: "TSNullKeyword",
+
+                    range: [93, 97],
+                    loc: {
+                      start: { column: 20, line: 3 },
+                      end: { column: 24, line: 3 },
+                    },
+                  },
+                  TSUndefinedKeyword {
+                    type: "TSUndefinedKeyword",
+
+                    range: [100, 109],
+                    loc: {
+                      start: { column: 27, line: 3 },
+                      end: { column: 36, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [84, 109],
+                loc: {
+                  start: { column: 11, line: 3 },
+                  end: { column: 36, line: 3 },
+                },
+              },
+
+              range: [82, 109],
+              loc: {
+                start: { column: 9, line: 3 },
+                end: { column: 36, line: 3 },
+              },
+            },
+
+            range: [77, 109],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 36, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 109],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 36, line: 3 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [73, 110],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 37, line: 3 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "intersection",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSIntersectionType {
+                type: "TSIntersectionType",
+                types: Array [
+                  TSNumberKeyword {
+                    type: "TSNumberKeyword",
+
+                    range: [129, 135],
+                    loc: {
+                      start: { column: 18, line: 4 },
+                      end: { column: 24, line: 4 },
+                    },
+                  },
+                  TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [138, 144],
+                    loc: {
+                      start: { column: 27, line: 4 },
+                      end: { column: 33, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [129, 144],
+                loc: {
+                  start: { column: 18, line: 4 },
+                  end: { column: 33, line: 4 },
+                },
+              },
+
+              range: [127, 144],
+              loc: {
+                start: { column: 16, line: 4 },
+                end: { column: 33, line: 4 },
+              },
+            },
+
+            range: [115, 144],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 33, line: 4 },
+            },
+          },
+          init: null,
+
+          range: [115, 144],
+          loc: {
+            start: { column: 4, line: 4 },
+            end: { column: 33, line: 4 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [111, 145],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 34, line: 4 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "precedence1",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSUnionType {
+                type: "TSUnionType",
+                types: Array [
+                  TSNumberKeyword {
+                    type: "TSNumberKeyword",
+
+                    range: [163, 169],
+                    loc: {
+                      start: { column: 17, line: 5 },
+                      end: { column: 23, line: 5 },
+                    },
+                  },
+                  TSIntersectionType {
+                    type: "TSIntersectionType",
+                    types: Array [
+                      TSStringKeyword {
+                        type: "TSStringKeyword",
+
+                        range: [172, 178],
+                        loc: {
+                          start: { column: 26, line: 5 },
+                          end: { column: 32, line: 5 },
+                        },
+                      },
+                      TSBooleanKeyword {
+                        type: "TSBooleanKeyword",
+
+                        range: [181, 188],
+                        loc: {
+                          start: { column: 35, line: 5 },
+                          end: { column: 42, line: 5 },
+                        },
+                      },
+                    ],
+
+                    range: [172, 188],
+                    loc: {
+                      start: { column: 26, line: 5 },
+                      end: { column: 42, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [163, 188],
+                loc: {
+                  start: { column: 17, line: 5 },
+                  end: { column: 42, line: 5 },
+                },
+              },
+
+              range: [161, 188],
+              loc: {
+                start: { column: 15, line: 5 },
+                end: { column: 42, line: 5 },
+              },
+            },
+
+            range: [150, 188],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 42, line: 5 },
+            },
+          },
+          init: null,
+
+          range: [150, 188],
+          loc: {
+            start: { column: 4, line: 5 },
+            end: { column: 42, line: 5 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [146, 189],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 43, line: 5 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "precedence2",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSUnionType {
+                type: "TSUnionType",
+                types: Array [
+                  TSIntersectionType {
+                    type: "TSIntersectionType",
+                    types: Array [
+                      TSNumberKeyword {
+                        type: "TSNumberKeyword",
+
+                        range: [207, 213],
+                        loc: {
+                          start: { column: 17, line: 6 },
+                          end: { column: 23, line: 6 },
+                        },
+                      },
+                      TSStringKeyword {
+                        type: "TSStringKeyword",
+
+                        range: [216, 222],
+                        loc: {
+                          start: { column: 26, line: 6 },
+                          end: { column: 32, line: 6 },
+                        },
+                      },
+                    ],
+
+                    range: [207, 222],
+                    loc: {
+                      start: { column: 17, line: 6 },
+                      end: { column: 32, line: 6 },
+                    },
+                  },
+                  TSBooleanKeyword {
+                    type: "TSBooleanKeyword",
+
+                    range: [225, 232],
+                    loc: {
+                      start: { column: 35, line: 6 },
+                      end: { column: 42, line: 6 },
+                    },
+                  },
+                ],
+
+                range: [207, 232],
+                loc: {
+                  start: { column: 17, line: 6 },
+                  end: { column: 42, line: 6 },
+                },
+              },
+
+              range: [205, 232],
+              loc: {
+                start: { column: 15, line: 6 },
+                end: { column: 42, line: 6 },
+              },
+            },
+
+            range: [194, 232],
+            loc: {
+              start: { column: 4, line: 6 },
+              end: { column: 42, line: 6 },
+            },
+          },
+          init: null,
+
+          range: [194, 232],
+          loc: {
+            start: { column: 4, line: 6 },
+            end: { column: 42, line: 6 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [190, 233],
+      loc: {
+        start: { column: 0, line: 6 },
+        end: { column: 43, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 234],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-static-blocks TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "count",
+
+              range: [94, 99],
+              loc: {
+                start: { column: 9, line: 4 },
+                end: { column: 14, line: 4 },
+              },
+            },
+            override: false,
+            static: true,
+            value: Literal {
+              type: "Literal",
+              raw: "0",
+              value: 0,
+
+              range: [102, 103],
+              loc: {
+                start: { column: 17, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+
+            range: [87, 104],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 19, line: 4 },
+            },
+          },
+          StaticBlock {
+            type: "StaticBlock",
+            body: Array [
+              IfStatement {
+                type: "IfStatement",
+                alternate: null,
+                consequent: BlockStatement {
+                  type: "BlockStatement",
+                  body: Array [
+                    ExpressionStatement {
+                      type: "ExpressionStatement",
+                      expression: UpdateExpression {
+                        type: "UpdateExpression",
+                        argument: Identifier {
+                          type: "Identifier",
+                          name: "count",
+
+                          range: [149, 154],
+                          loc: {
+                            start: { column: 6, line: 7 },
+                            end: { column: 11, line: 7 },
+                          },
+                        },
+                        operator: "++",
+                        prefix: false,
+
+                        range: [149, 156],
+                        loc: {
+                          start: { column: 6, line: 7 },
+                          end: { column: 13, line: 7 },
+                        },
+                      },
+
+                      range: [149, 157],
+                      loc: {
+                        start: { column: 6, line: 7 },
+                        end: { column: 14, line: 7 },
+                      },
+                    },
+                  ],
+
+                  range: [141, 163],
+                  loc: {
+                    start: { column: 25, line: 6 },
+                    end: { column: 5, line: 8 },
+                  },
+                },
+                test: CallExpression {
+                  type: "CallExpression",
+                  arguments: Array [],
+                  callee: Identifier {
+                    type: "Identifier",
+                    name: "someCondition",
+
+                    range: [124, 137],
+                    loc: {
+                      start: { column: 8, line: 6 },
+                      end: { column: 21, line: 6 },
+                    },
+                  },
+                  optional: false,
+
+                  range: [124, 139],
+                  loc: {
+                    start: { column: 8, line: 6 },
+                    end: { column: 23, line: 6 },
+                  },
+                },
+
+                range: [120, 163],
+                loc: {
+                  start: { column: 4, line: 6 },
+                  end: { column: 5, line: 8 },
+                },
+              },
+            ],
+
+            range: [107, 167],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 3, line: 9 },
+            },
+          },
+        ],
+
+        range: [83, 169],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 169],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 170],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

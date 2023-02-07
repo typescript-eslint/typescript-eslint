@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-private-identifier-field-with-annotation Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            key: PrivateIdentifier {
+              type: "PrivateIdentifier",
+              name: "priv1",
+
+              range: [87, 93],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 8, line: 4 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [95, 101],
+                loc: {
+                  start: { column: 10, line: 4 },
+                  end: { column: 16, line: 4 },
+                },
+              },
+
+              range: [93, 101],
+              loc: {
+                start: { column: 8, line: 4 },
+                end: { column: 16, line: 4 },
+              },
+            },
+            value: null,
+
+            range: [87, 102],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 17, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            key: PrivateIdentifier {
+              type: "PrivateIdentifier",
+              name: "priv2",
+
+              range: [105, 111],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 8, line: 5 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [113, 119],
+                loc: {
+                  start: { column: 10, line: 5 },
+                  end: { column: 16, line: 5 },
+                },
+              },
+
+              range: [111, 119],
+              loc: {
+                start: { column: 8, line: 5 },
+                end: { column: 16, line: 5 },
+              },
+            },
+            value: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [122, 123],
+              loc: {
+                start: { column: 19, line: 5 },
+                end: { column: 20, line: 5 },
+              },
+            },
+
+            range: [105, 124],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 21, line: 5 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "constructor",
+
+              range: [128, 139],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 13, line: 7 },
+              },
+            },
+            kind: "constructor",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: AssignmentExpression {
+                      type: "AssignmentExpression",
+                      left: MemberExpression {
+                        type: "MemberExpression",
+                        computed: false,
+                        object: ThisExpression {
+                          type: "ThisExpression",
+
+                          range: [148, 152],
+                          loc: {
+                            start: { column: 4, line: 8 },
+                            end: { column: 8, line: 8 },
+                          },
+                        },
+                        optional: false,
+                        property: PrivateIdentifier {
+                          type: "PrivateIdentifier",
+                          name: "priv1",
+
+                          range: [153, 159],
+                          loc: {
+                            start: { column: 9, line: 8 },
+                            end: { column: 15, line: 8 },
+                          },
+                        },
+
+                        range: [148, 159],
+                        loc: {
+                          start: { column: 4, line: 8 },
+                          end: { column: 15, line: 8 },
+                        },
+                      },
+                      operator: "=",
+                      right: Literal {
+                        type: "Literal",
+                        raw: "1",
+                        value: 1,
+
+                        range: [162, 163],
+                        loc: {
+                          start: { column: 18, line: 8 },
+                          end: { column: 19, line: 8 },
+                        },
+                      },
+
+                      range: [148, 163],
+                      loc: {
+                        start: { column: 4, line: 8 },
+                        end: { column: 19, line: 8 },
+                      },
+                    },
+
+                    range: [148, 164],
+                    loc: {
+                      start: { column: 4, line: 8 },
+                      end: { column: 20, line: 8 },
+                    },
+                  },
+                ],
+
+                range: [142, 168],
+                loc: {
+                  start: { column: 16, line: 7 },
+                  end: { column: 3, line: 9 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [139, 168],
+              loc: {
+                start: { column: 13, line: 7 },
+                end: { column: 3, line: 9 },
+              },
+            },
+
+            range: [128, 168],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 3, line: 9 },
+            },
+          },
+        ],
+
+        range: [83, 170],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 170],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 171],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

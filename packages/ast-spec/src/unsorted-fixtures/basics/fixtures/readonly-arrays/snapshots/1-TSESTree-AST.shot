@@ -1,0 +1,419 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics readonly-arrays TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: CallExpression {
+              type: "CallExpression",
+              arguments: Array [],
+              callee: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: Identifier {
+                  type: "Identifier",
+                  name: "arr",
+
+                  range: [118, 121],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 5, line: 4 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "slice",
+
+                  range: [122, 127],
+                  loc: {
+                    start: { column: 6, line: 4 },
+                    end: { column: 11, line: 4 },
+                  },
+                },
+
+                range: [118, 127],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 11, line: 4 },
+                },
+              },
+              optional: false,
+
+              range: [118, 129],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 13, line: 4 },
+              },
+            },
+
+            range: [118, 130],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 14, line: 4 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: CallExpression {
+              type: "CallExpression",
+              arguments: Array [
+                Literal {
+                  type: "Literal",
+                  raw: "\\"hello!\\"",
+                  value: "hello!",
+
+                  range: [157, 165],
+                  loc: {
+                    start: { column: 11, line: 5 },
+                    end: { column: 19, line: 5 },
+                  },
+                },
+              ],
+              callee: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: Identifier {
+                  type: "Identifier",
+                  name: "arr",
+
+                  range: [148, 151],
+                  loc: {
+                    start: { column: 2, line: 5 },
+                    end: { column: 5, line: 5 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "push",
+
+                  range: [152, 156],
+                  loc: {
+                    start: { column: 6, line: 5 },
+                    end: { column: 10, line: 5 },
+                  },
+                },
+
+                range: [148, 156],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 10, line: 5 },
+                },
+              },
+              optional: false,
+
+              range: [148, 166],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 20, line: 5 },
+              },
+            },
+
+            range: [148, 167],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 21, line: 5 },
+            },
+          },
+        ],
+
+        range: [114, 179],
+        loc: {
+          start: { column: 41, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [82, 85],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 12, line: 3 },
+        },
+      },
+      params: Array [
+        Identifier {
+          type: "Identifier",
+          name: "arr",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "ReadonlyArray",
+
+                range: [91, 104],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 31, line: 3 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [105, 111],
+                    loc: {
+                      start: { column: 32, line: 3 },
+                      end: { column: 38, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [104, 112],
+                loc: {
+                  start: { column: 31, line: 3 },
+                  end: { column: 39, line: 3 },
+                },
+              },
+
+              range: [91, 112],
+              loc: {
+                start: { column: 18, line: 3 },
+                end: { column: 39, line: 3 },
+              },
+            },
+
+            range: [89, 112],
+            loc: {
+              start: { column: 16, line: 3 },
+              end: { column: 39, line: 3 },
+            },
+          },
+
+          range: [86, 112],
+          loc: {
+            start: { column: 13, line: 3 },
+            end: { column: 39, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 179],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: CallExpression {
+              type: "CallExpression",
+              arguments: Array [],
+              callee: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: Identifier {
+                  type: "Identifier",
+                  name: "arr",
+
+                  range: [222, 225],
+                  loc: {
+                    start: { column: 2, line: 9 },
+                    end: { column: 5, line: 9 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "slice",
+
+                  range: [226, 231],
+                  loc: {
+                    start: { column: 6, line: 9 },
+                    end: { column: 11, line: 9 },
+                  },
+                },
+
+                range: [222, 231],
+                loc: {
+                  start: { column: 2, line: 9 },
+                  end: { column: 11, line: 9 },
+                },
+              },
+              optional: false,
+
+              range: [222, 233],
+              loc: {
+                start: { column: 2, line: 9 },
+                end: { column: 13, line: 9 },
+              },
+            },
+
+            range: [222, 234],
+            loc: {
+              start: { column: 2, line: 9 },
+              end: { column: 14, line: 9 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: CallExpression {
+              type: "CallExpression",
+              arguments: Array [
+                Literal {
+                  type: "Literal",
+                  raw: "\\"hello!\\"",
+                  value: "hello!",
+
+                  range: [261, 269],
+                  loc: {
+                    start: { column: 11, line: 10 },
+                    end: { column: 19, line: 10 },
+                  },
+                },
+              ],
+              callee: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: Identifier {
+                  type: "Identifier",
+                  name: "arr",
+
+                  range: [252, 255],
+                  loc: {
+                    start: { column: 2, line: 10 },
+                    end: { column: 5, line: 10 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "push",
+
+                  range: [256, 260],
+                  loc: {
+                    start: { column: 6, line: 10 },
+                    end: { column: 10, line: 10 },
+                  },
+                },
+
+                range: [252, 260],
+                loc: {
+                  start: { column: 2, line: 10 },
+                  end: { column: 10, line: 10 },
+                },
+              },
+              optional: false,
+
+              range: [252, 270],
+              loc: {
+                start: { column: 2, line: 10 },
+                end: { column: 20, line: 10 },
+              },
+            },
+
+            range: [252, 271],
+            loc: {
+              start: { column: 2, line: 10 },
+              end: { column: 21, line: 10 },
+            },
+          },
+        ],
+
+        range: [218, 283],
+        loc: {
+          start: { column: 37, line: 8 },
+          end: { column: 1, line: 11 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [190, 193],
+        loc: {
+          start: { column: 9, line: 8 },
+          end: { column: 12, line: 8 },
+        },
+      },
+      params: Array [
+        Identifier {
+          type: "Identifier",
+          name: "arr",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSTypeOperator {
+              type: "TSTypeOperator",
+              operator: "readonly",
+              typeAnnotation: TSArrayType {
+                type: "TSArrayType",
+                elementType: TSStringKeyword {
+                  type: "TSStringKeyword",
+
+                  range: [208, 214],
+                  loc: {
+                    start: { column: 27, line: 8 },
+                    end: { column: 33, line: 8 },
+                  },
+                },
+
+                range: [208, 216],
+                loc: {
+                  start: { column: 27, line: 8 },
+                  end: { column: 35, line: 8 },
+                },
+              },
+
+              range: [199, 216],
+              loc: {
+                start: { column: 18, line: 8 },
+                end: { column: 35, line: 8 },
+              },
+            },
+
+            range: [197, 216],
+            loc: {
+              start: { column: 16, line: 8 },
+              end: { column: 35, line: 8 },
+            },
+          },
+
+          range: [194, 216],
+          loc: {
+            start: { column: 13, line: 8 },
+            end: { column: 35, line: 8 },
+          },
+        },
+      ],
+
+      range: [181, 283],
+      loc: {
+        start: { column: 0, line: 8 },
+        end: { column: 1, line: 11 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 284],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 12 },
+  },
+}
+`;

@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics export-default-interface Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportDefaultDeclaration {
+      type: "ExportDefaultDeclaration",
+      declaration: TSInterfaceDeclaration {
+        type: "TSInterfaceDeclaration",
+        body: TSInterfaceBody {
+          type: "TSInterfaceBody",
+          body: Array [
+            TSMethodSignature {
+              type: "TSMethodSignature",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "method1",
+
+                range: [104, 111],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 9, line: 4 },
+                },
+              },
+              kind: "method",
+              parameters: Array [],
+              typeAnnotation: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSVoidKeyword {
+                  type: "TSVoidKeyword",
+
+                  range: [115, 119],
+                  loc: {
+                    start: { column: 13, line: 4 },
+                    end: { column: 17, line: 4 },
+                  },
+                },
+
+                range: [113, 119],
+                loc: {
+                  start: { column: 11, line: 4 },
+                  end: { column: 17, line: 4 },
+                },
+              },
+
+              range: [104, 120],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+          ],
+
+          range: [100, 122],
+          loc: {
+            start: { column: 27, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+        id: Identifier {
+          type: "Identifier",
+          name: "T",
+
+          range: [98, 99],
+          loc: {
+            start: { column: 25, line: 3 },
+            end: { column: 26, line: 3 },
+          },
+        },
+
+        range: [88, 122],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      exportKind: "value",
+
+      range: [73, 122],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 123],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

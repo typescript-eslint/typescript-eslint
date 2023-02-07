@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics angle-bracket-type-assertion TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "foo",
+
+            range: [79, 82],
+            loc: {
+              start: { column: 6, line: 3 },
+              end: { column: 9, line: 3 },
+            },
+          },
+          init: TSTypeAssertion {
+            type: "TSTypeAssertion",
+            expression: Literal {
+              type: "Literal",
+              raw: "2",
+              value: 2,
+
+              range: [99, 100],
+              loc: {
+                start: { column: 26, line: 3 },
+                end: { column: 27, line: 3 },
+              },
+            },
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [86, 89],
+              loc: {
+                start: { column: 13, line: 3 },
+                end: { column: 16, line: 3 },
+              },
+            },
+
+            range: [85, 100],
+            loc: {
+              start: { column: 12, line: 3 },
+              end: { column: 27, line: 3 },
+            },
+          },
+
+          range: [79, 100],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 27, line: 3 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [73, 101],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 28, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 102],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

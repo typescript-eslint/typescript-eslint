@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures parameter-decorators parameter-object-pattern-decorator TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [87, 90],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            kind: "method",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [120, 122],
+                loc: {
+                  start: { column: 35, line: 4 },
+                  end: { column: 37, line: 4 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [
+                ObjectPattern {
+                  type: "ObjectPattern",
+                  decorators: Array [
+                    Decorator {
+                      type: "Decorator",
+                      expression: CallExpression {
+                        type: "CallExpression",
+                        arguments: Array [
+                          Literal {
+                            type: "Literal",
+                            raw: "true",
+                            value: true,
+
+                            range: [100, 104],
+                            loc: {
+                              start: { column: 15, line: 4 },
+                              end: { column: 19, line: 4 },
+                            },
+                          },
+                        ],
+                        callee: Identifier {
+                          type: "Identifier",
+                          name: "special",
+
+                          range: [92, 99],
+                          loc: {
+                            start: { column: 7, line: 4 },
+                            end: { column: 14, line: 4 },
+                          },
+                        },
+                        optional: false,
+
+                        range: [92, 105],
+                        loc: {
+                          start: { column: 7, line: 4 },
+                          end: { column: 20, line: 4 },
+                        },
+                      },
+
+                      range: [91, 105],
+                      loc: {
+                        start: { column: 6, line: 4 },
+                        end: { column: 20, line: 4 },
+                      },
+                    },
+                  ],
+                  properties: Array [
+                    Property {
+                      type: "Property",
+                      computed: false,
+                      key: Identifier {
+                        type: "Identifier",
+                        name: "bar",
+
+                        range: [108, 111],
+                        loc: {
+                          start: { column: 23, line: 4 },
+                          end: { column: 26, line: 4 },
+                        },
+                      },
+                      kind: "init",
+                      method: false,
+                      shorthand: true,
+                      value: Identifier {
+                        type: "Identifier",
+                        name: "bar",
+
+                        range: [108, 111],
+                        loc: {
+                          start: { column: 23, line: 4 },
+                          end: { column: 26, line: 4 },
+                        },
+                      },
+
+                      range: [108, 111],
+                      loc: {
+                        start: { column: 23, line: 4 },
+                        end: { column: 26, line: 4 },
+                      },
+                    },
+                  ],
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSAnyKeyword {
+                      type: "TSAnyKeyword",
+
+                      range: [115, 118],
+                      loc: {
+                        start: { column: 30, line: 4 },
+                        end: { column: 33, line: 4 },
+                      },
+                    },
+
+                    range: [113, 118],
+                    loc: {
+                      start: { column: 28, line: 4 },
+                      end: { column: 33, line: 4 },
+                    },
+                  },
+
+                  range: [106, 118],
+                  loc: {
+                    start: { column: 21, line: 4 },
+                    end: { column: 33, line: 4 },
+                  },
+                },
+              ],
+
+              range: [90, 122],
+              loc: {
+                start: { column: 5, line: 4 },
+                end: { column: 37, line: 4 },
+              },
+            },
+
+            range: [87, 122],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 37, line: 4 },
+            },
+          },
+        ],
+
+        range: [83, 124],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 124],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 125],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

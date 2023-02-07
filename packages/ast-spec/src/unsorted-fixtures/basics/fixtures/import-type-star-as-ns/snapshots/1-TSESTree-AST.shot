@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics import-type-star-as-ns TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ImportDeclaration {
+      type: "ImportDeclaration",
+      assertions: Array [],
+      importKind: "type",
+      source: Literal {
+        type: "Literal",
+        raw: "'./bar'",
+        value: "./bar",
+
+        range: [99, 106],
+        loc: {
+          start: { column: 26, line: 3 },
+          end: { column: 33, line: 3 },
+        },
+      },
+      specifiers: Array [
+        ImportNamespaceSpecifier {
+          type: "ImportNamespaceSpecifier",
+          local: Identifier {
+            type: "Identifier",
+            name: "foo",
+
+            range: [90, 93],
+            loc: {
+              start: { column: 17, line: 3 },
+              end: { column: 20, line: 3 },
+            },
+          },
+
+          range: [85, 93],
+          loc: {
+            start: { column: 12, line: 3 },
+            end: { column: 20, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 107],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 34, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 108],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

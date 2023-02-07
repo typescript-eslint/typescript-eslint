@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "EnthusiasticGreeting",
+
+        range: [78, 98],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 25, line: 3 },
+        },
+      },
+      typeAnnotation: TSLiteralType {
+        type: "TSLiteralType",
+        literal: TemplateLiteral {
+          type: "TemplateLiteral",
+          expressions: Array [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Uppercase",
+
+                range: [122, 131],
+                loc: {
+                  start: { column: 49, line: 3 },
+                  end: { column: 58, line: 3 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [132, 133],
+                      loc: {
+                        start: { column: 59, line: 3 },
+                        end: { column: 60, line: 3 },
+                      },
+                    },
+
+                    range: [132, 133],
+                    loc: {
+                      start: { column: 59, line: 3 },
+                      end: { column: 60, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [131, 134],
+                loc: {
+                  start: { column: 58, line: 3 },
+                  end: { column: 61, line: 3 },
+                },
+              },
+
+              range: [122, 134],
+              loc: {
+                start: { column: 49, line: 3 },
+                end: { column: 61, line: 3 },
+              },
+            },
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Lowercase",
+
+                range: [140, 149],
+                loc: {
+                  start: { column: 67, line: 3 },
+                  end: { column: 76, line: 3 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [150, 151],
+                      loc: {
+                        start: { column: 77, line: 3 },
+                        end: { column: 78, line: 3 },
+                      },
+                    },
+
+                    range: [150, 151],
+                    loc: {
+                      start: { column: 77, line: 3 },
+                      end: { column: 78, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [149, 152],
+                loc: {
+                  start: { column: 76, line: 3 },
+                  end: { column: 79, line: 3 },
+                },
+              },
+
+              range: [140, 152],
+              loc: {
+                start: { column: 67, line: 3 },
+                end: { column: 79, line: 3 },
+              },
+            },
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Capitalize",
+
+                range: [158, 168],
+                loc: {
+                  start: { column: 85, line: 3 },
+                  end: { column: 95, line: 3 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [169, 170],
+                      loc: {
+                        start: { column: 96, line: 3 },
+                        end: { column: 97, line: 3 },
+                      },
+                    },
+
+                    range: [169, 170],
+                    loc: {
+                      start: { column: 96, line: 3 },
+                      end: { column: 97, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [168, 171],
+                loc: {
+                  start: { column: 95, line: 3 },
+                  end: { column: 98, line: 3 },
+                },
+              },
+
+              range: [158, 171],
+              loc: {
+                start: { column: 85, line: 3 },
+                end: { column: 98, line: 3 },
+              },
+            },
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Uncapitalize",
+
+                range: [177, 189],
+                loc: {
+                  start: { column: 104, line: 3 },
+                  end: { column: 116, line: 3 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [190, 191],
+                      loc: {
+                        start: { column: 117, line: 3 },
+                        end: { column: 118, line: 3 },
+                      },
+                    },
+
+                    range: [190, 191],
+                    loc: {
+                      start: { column: 117, line: 3 },
+                      end: { column: 118, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [189, 192],
+                loc: {
+                  start: { column: 116, line: 3 },
+                  end: { column: 119, line: 3 },
+                },
+              },
+
+              range: [177, 192],
+              loc: {
+                start: { column: 104, line: 3 },
+                end: { column: 119, line: 3 },
+              },
+            },
+          ],
+          quasis: Array [
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: Object {
+                "cooked": "",
+                "raw": "",
+              },
+
+              range: [119, 122],
+              loc: {
+                start: { column: 46, line: 3 },
+                end: { column: 49, line: 3 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: Object {
+                "cooked": " - ",
+                "raw": " - ",
+              },
+
+              range: [134, 140],
+              loc: {
+                start: { column: 61, line: 3 },
+                end: { column: 67, line: 3 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: Object {
+                "cooked": " - ",
+                "raw": " - ",
+              },
+
+              range: [152, 158],
+              loc: {
+                start: { column: 79, line: 3 },
+                end: { column: 85, line: 3 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: Object {
+                "cooked": " - ",
+                "raw": " - ",
+              },
+
+              range: [171, 177],
+              loc: {
+                start: { column: 98, line: 3 },
+                end: { column: 104, line: 3 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: true,
+              value: Object {
+                "cooked": "",
+                "raw": "",
+              },
+
+              range: [192, 194],
+              loc: {
+                start: { column: 119, line: 3 },
+                end: { column: 121, line: 3 },
+              },
+            },
+          ],
+
+          range: [119, 194],
+          loc: {
+            start: { column: 46, line: 3 },
+            end: { column: 121, line: 3 },
+          },
+        },
+
+        range: [119, 194],
+        loc: {
+          start: { column: 46, line: 3 },
+          end: { column: 121, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            constraint: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [109, 115],
+              loc: {
+                start: { column: 36, line: 3 },
+                end: { column: 42, line: 3 },
+              },
+            },
+            name: "T",
+
+            range: [99, 115],
+            loc: {
+              start: { column: 26, line: 3 },
+              end: { column: 42, line: 3 },
+            },
+          },
+        ],
+
+        range: [98, 116],
+        loc: {
+          start: { column: 25, line: 3 },
+          end: { column: 43, line: 3 },
+        },
+      },
+
+      range: [73, 195],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 122, line: 3 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "HELLO",
+
+        range: [201, 206],
+        loc: {
+          start: { column: 5, line: 4 },
+          end: { column: 10, line: 4 },
+        },
+      },
+      typeAnnotation: TSTypeReference {
+        type: "TSTypeReference",
+        typeName: Identifier {
+          type: "Identifier",
+          name: "EnthusiasticGreeting",
+
+          range: [209, 229],
+          loc: {
+            start: { column: 13, line: 4 },
+            end: { column: 33, line: 4 },
+          },
+        },
+        typeParameters: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "\\"heLLo\\"",
+                value: "heLLo",
+
+                range: [230, 237],
+                loc: {
+                  start: { column: 34, line: 4 },
+                  end: { column: 41, line: 4 },
+                },
+              },
+
+              range: [230, 237],
+              loc: {
+                start: { column: 34, line: 4 },
+                end: { column: 41, line: 4 },
+              },
+            },
+          ],
+
+          range: [229, 238],
+          loc: {
+            start: { column: 33, line: 4 },
+            end: { column: 42, line: 4 },
+          },
+        },
+
+        range: [209, 238],
+        loc: {
+          start: { column: 13, line: 4 },
+          end: { column: 42, line: 4 },
+        },
+      },
+
+      range: [196, 239],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 43, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 240],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

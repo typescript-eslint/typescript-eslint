@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-constructor-and-return-type Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "constructor",
+
+              range: [85, 96],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 13, line: 4 },
+              },
+            },
+            kind: "constructor",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [107, 110],
+                loc: {
+                  start: { column: 24, line: 4 },
+                  end: { column: 27, line: 4 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [100, 106],
+                  loc: {
+                    start: { column: 17, line: 4 },
+                    end: { column: 23, line: 4 },
+                  },
+                },
+
+                range: [98, 106],
+                loc: {
+                  start: { column: 15, line: 4 },
+                  end: { column: 23, line: 4 },
+                },
+              },
+
+              range: [96, 110],
+              loc: {
+                start: { column: 13, line: 4 },
+                end: { column: 27, line: 4 },
+              },
+            },
+
+            range: [85, 110],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 27, line: 4 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: true,
+            key: Literal {
+              type: "Literal",
+              raw: "'constructor'",
+              value: "constructor",
+
+              range: [115, 128],
+              loc: {
+                start: { column: 3, line: 6 },
+                end: { column: 16, line: 6 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [140, 143],
+                loc: {
+                  start: { column: 28, line: 6 },
+                  end: { column: 31, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [133, 139],
+                  loc: {
+                    start: { column: 21, line: 6 },
+                    end: { column: 27, line: 6 },
+                  },
+                },
+
+                range: [131, 139],
+                loc: {
+                  start: { column: 19, line: 6 },
+                  end: { column: 27, line: 6 },
+                },
+              },
+
+              range: [129, 143],
+              loc: {
+                start: { column: 17, line: 6 },
+                end: { column: 31, line: 6 },
+              },
+            },
+
+            range: [114, 143],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 31, line: 6 },
+            },
+          },
+        ],
+
+        range: [81, 145],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "C",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 145],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 146],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

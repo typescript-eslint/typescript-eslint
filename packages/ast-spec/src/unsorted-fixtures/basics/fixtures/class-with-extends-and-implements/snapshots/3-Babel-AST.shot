@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-extends-and-implements Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [151, 153],
+        loc: {
+          start: { column: 78, line: 3 },
+          end: { column: 80, line: 3 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "ClassWithParentAndInterface",
+
+        range: [79, 106],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 33, line: 3 },
+        },
+      },
+      implements: Array [
+        TSExpressionWithTypeArguments {
+          type: "TSExpressionWithTypeArguments",
+          expression: Identifier {
+            type: "Identifier",
+            name: "MyInterface",
+
+            range: [139, 150],
+            loc: {
+              start: { column: 66, line: 3 },
+              end: { column: 77, line: 3 },
+            },
+          },
+
+          range: [139, 150],
+          loc: {
+            start: { column: 66, line: 3 },
+            end: { column: 77, line: 3 },
+          },
+        },
+      ],
+      superClass: Identifier {
+        type: "Identifier",
+        name: "MyOtherClass",
+
+        range: [115, 127],
+        loc: {
+          start: { column: 42, line: 3 },
+          end: { column: 54, line: 3 },
+        },
+      },
+
+      range: [73, 153],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 80, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 154],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

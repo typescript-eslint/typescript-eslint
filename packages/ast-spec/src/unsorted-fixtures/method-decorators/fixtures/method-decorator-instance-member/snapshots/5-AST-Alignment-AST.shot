@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures method-decorators method-decorator-instance-member AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: false,
+              decorators: Array [
+                Decorator {
+                  type: 'Decorator',
+                  expression: Identifier {
+                    type: 'Identifier',
+                    name: 'onlyRead',
+
+                    range: [88, 96],
+                    loc: {
+                      start: { column: 5, line: 4 },
+                      end: { column: 13, line: 4 },
+                    },
+                  },
+
+                  range: [87, 96],
+                  loc: {
+                    start: { column: 4, line: 4 },
+                    end: { column: 13, line: 4 },
+                  },
+                },
+              ],
+              key: Identifier {
+                type: 'Identifier',
+                name: 'instanceMethod',
+
+                range: [101, 115],
+                loc: {
+                  start: { column: 4, line: 5 },
+                  end: { column: 18, line: 5 },
+                },
+              },
+              kind: 'method',
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [118, 120],
+                  loc: {
+                    start: { column: 21, line: 5 },
+                    end: { column: 23, line: 5 },
+                  },
+                },
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [115, 120],
+                loc: {
+                  start: { column: 18, line: 5 },
+                  end: { column: 23, line: 5 },
+                },
+              },
+
+              range: [87, 120],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 23, line: 5 },
+              },
+            },
+          ],
+
+          range: [81, 122],
+          loc: {
+            start: { column: 8, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'A',
+
+          range: [79, 80],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 7, line: 3 },
+          },
+        },
+        superClass: null,
+
+        range: [73, 122],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 123],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
+`;

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics _error_ export-named-enum-computed-string Babel - Error 1`] = `[SyntaxError: Unexpected token (4:4)]`;

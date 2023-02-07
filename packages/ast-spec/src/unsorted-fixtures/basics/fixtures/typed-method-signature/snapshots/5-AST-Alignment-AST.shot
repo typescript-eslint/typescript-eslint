@@ -1,0 +1,245 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics typed-method-signature AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [78, 81],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+        typeAnnotation: TSTypeLiteral {
+          type: 'TSTypeLiteral',
+          members: Array [
+            TSMethodSignature {
+              type: 'TSMethodSignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'h',
+
+                range: [88, 89],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 3, line: 4 },
+                },
+              },
+              kind: 'method',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'bar',
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [95, 101],
+                      loc: {
+                        start: { column: 9, line: 4 },
+                        end: { column: 15, line: 4 },
+                      },
+                    },
+
+                    range: [93, 101],
+                    loc: {
+                      start: { column: 7, line: 4 },
+                      end: { column: 15, line: 4 },
+                    },
+                  },
+
+                  range: [90, 101],
+                  loc: {
+                    start: { column: 4, line: 4 },
+                    end: { column: 15, line: 4 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSVoidKeyword {
+                  type: 'TSVoidKeyword',
+
+                  range: [104, 108],
+                  loc: {
+                    start: { column: 18, line: 4 },
+                    end: { column: 22, line: 4 },
+                  },
+                },
+
+                range: [102, 108],
+                loc: {
+                  start: { column: 16, line: 4 },
+                  end: { column: 22, line: 4 },
+                },
+              },
+
+              range: [88, 109],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+            TSMethodSignature {
+              type: 'TSMethodSignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'g',
+
+                range: [112, 113],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 3, line: 5 },
+                },
+              },
+              kind: 'method',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'bar',
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSTypeReference {
+                      type: 'TSTypeReference',
+                      typeName: Identifier {
+                        type: 'Identifier',
+                        name: 'T',
+
+                        range: [122, 123],
+                        loc: {
+                          start: { column: 12, line: 5 },
+                          end: { column: 13, line: 5 },
+                        },
+                      },
+
+                      range: [122, 123],
+                      loc: {
+                        start: { column: 12, line: 5 },
+                        end: { column: 13, line: 5 },
+                      },
+                    },
+
+                    range: [120, 123],
+                    loc: {
+                      start: { column: 10, line: 5 },
+                      end: { column: 13, line: 5 },
+                    },
+                  },
+
+                  range: [117, 123],
+                  loc: {
+                    start: { column: 7, line: 5 },
+                    end: { column: 13, line: 5 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSTypeReference {
+                  type: 'TSTypeReference',
+                  typeName: Identifier {
+                    type: 'Identifier',
+                    name: 'T',
+
+                    range: [126, 127],
+                    loc: {
+                      start: { column: 16, line: 5 },
+                      end: { column: 17, line: 5 },
+                    },
+                  },
+
+                  range: [126, 127],
+                  loc: {
+                    start: { column: 16, line: 5 },
+                    end: { column: 17, line: 5 },
+                  },
+                },
+
+                range: [124, 127],
+                loc: {
+                  start: { column: 14, line: 5 },
+                  end: { column: 17, line: 5 },
+                },
+              },
+              typeParameters: TSTypeParameterDeclaration {
+                type: 'TSTypeParameterDeclaration',
+                params: Array [
+                  TSTypeParameter {
+                    type: 'TSTypeParameter',
+-                   in: false,
+-                   name: Identifier {
+-                     type: 'Identifier',
+-                     name: 'T',
+-
+-                     range: [114, 115],
+-                     loc: {
+-                       start: { column: 4, line: 5 },
+-                       end: { column: 5, line: 5 },
+-                     },
+-                   },
+-                   out: false,
++                   name: 'T',
+
+                    range: [114, 115],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 5, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [113, 116],
+                loc: {
+                  start: { column: 3, line: 5 },
+                  end: { column: 6, line: 5 },
+                },
+              },
+
+              range: [112, 128],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 18, line: 5 },
+              },
+            },
+          ],
+
+          range: [84, 130],
+          loc: {
+            start: { column: 11, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+
+        range: [73, 130],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 131],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
+`;

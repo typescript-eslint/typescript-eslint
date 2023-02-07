@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures class-decorators class-decorator-factory TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [129, 131],
+        loc: {
+          start: { column: 19, line: 6 },
+          end: { column: 21, line: 6 },
+        },
+      },
+      decorators: Array [
+        Decorator {
+          type: "Decorator",
+          expression: CallExpression {
+            type: "CallExpression",
+            arguments: Array [
+              ObjectExpression {
+                type: "ObjectExpression",
+                properties: Array [
+                  Property {
+                    type: "Property",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      name: "selector",
+
+                      range: [90, 98],
+                      loc: {
+                        start: { column: 4, line: 4 },
+                        end: { column: 12, line: 4 },
+                      },
+                    },
+                    kind: "init",
+                    method: false,
+                    shorthand: false,
+                    value: Literal {
+                      type: "Literal",
+                      raw: "'foo'",
+                      value: "foo",
+
+                      range: [100, 105],
+                      loc: {
+                        start: { column: 14, line: 4 },
+                        end: { column: 19, line: 4 },
+                      },
+                    },
+
+                    range: [90, 105],
+                    loc: {
+                      start: { column: 4, line: 4 },
+                      end: { column: 19, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [84, 108],
+                loc: {
+                  start: { column: 11, line: 3 },
+                  end: { column: 1, line: 5 },
+                },
+              },
+            ],
+            callee: Identifier {
+              type: "Identifier",
+              name: "Component",
+
+              range: [74, 83],
+              loc: {
+                start: { column: 1, line: 3 },
+                end: { column: 10, line: 3 },
+              },
+            },
+            optional: false,
+
+            range: [74, 109],
+            loc: {
+              start: { column: 1, line: 3 },
+              end: { column: 2, line: 5 },
+            },
+          },
+
+          range: [73, 109],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 2, line: 5 },
+          },
+        },
+      ],
+      id: Identifier {
+        type: "Identifier",
+        name: "FooComponent",
+
+        range: [116, 128],
+        loc: {
+          start: { column: 6, line: 6 },
+          end: { column: 18, line: 6 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 131],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 21, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 131],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 21, line: 6 },
+  },
+}
+`;

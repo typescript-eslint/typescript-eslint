@@ -1,0 +1,221 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-property-function AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'foo',
+
+                range: [87, 90],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 5, line: 4 },
+                },
+              },
+-             override: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSFunctionType {
+                  type: 'TSFunctionType',
+-                 params: Array [],
+-                 returnType: TSTypeAnnotation {
++                 parameters: Array [],
++                 typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSBooleanKeyword {
+                      type: 'TSBooleanKeyword',
+
+                      range: [98, 105],
+                      loc: {
+                        start: { column: 13, line: 4 },
+                        end: { column: 20, line: 4 },
+                      },
+                    },
+
+                    range: [95, 105],
+                    loc: {
+                      start: { column: 10, line: 4 },
+                      end: { column: 20, line: 4 },
+                    },
+                  },
+
+                  range: [92, 105],
+                  loc: {
+                    start: { column: 7, line: 4 },
+                    end: { column: 20, line: 4 },
+                  },
+                },
+
+                range: [90, 105],
+                loc: {
+                  start: { column: 5, line: 4 },
+                  end: { column: 20, line: 4 },
+                },
+              },
+              value: ArrowFunctionExpression {
+                type: 'ArrowFunctionExpression',
+                async: false,
+                body: Literal {
+                  type: 'Literal',
+                  raw: 'true',
+                  value: true,
+
+                  range: [123, 127],
+                  loc: {
+                    start: { column: 38, line: 4 },
+                    end: { column: 42, line: 4 },
+                  },
+                },
+                expression: true,
+                generator: false,
+                id: null,
+                params: Array [],
+                returnType: TSTypeAnnotation {
+                  type: 'TSTypeAnnotation',
+                  typeAnnotation: TSBooleanKeyword {
+                    type: 'TSBooleanKeyword',
+
+                    range: [112, 119],
+                    loc: {
+                      start: { column: 27, line: 4 },
+                      end: { column: 34, line: 4 },
+                    },
+                  },
+
+                  range: [110, 119],
+                  loc: {
+                    start: { column: 25, line: 4 },
+                    end: { column: 34, line: 4 },
+                  },
+                },
+
+                range: [108, 127],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 42, line: 4 },
+                },
+              },
+
+              range: [87, 128],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 43, line: 4 },
+              },
+            },
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'bar',
+
+                range: [131, 134],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 5, line: 5 },
+                },
+              },
+-             override: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [136, 142],
+                  loc: {
+                    start: { column: 7, line: 5 },
+                    end: { column: 13, line: 5 },
+                  },
+                },
+
+                range: [134, 142],
+                loc: {
+                  start: { column: 5, line: 5 },
+                  end: { column: 13, line: 5 },
+                },
+              },
+              value: ArrowFunctionExpression {
+                type: 'ArrowFunctionExpression',
+                async: false,
+                body: Identifier {
+                  type: 'Identifier',
+                  name: 'test',
+
+                  range: [151, 155],
+                  loc: {
+                    start: { column: 22, line: 5 },
+                    end: { column: 26, line: 5 },
+                  },
+                },
+                expression: true,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [145, 155],
+                loc: {
+                  start: { column: 16, line: 5 },
+                  end: { column: 26, line: 5 },
+                },
+              },
+
+              range: [131, 156],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 27, line: 5 },
+              },
+            },
+          ],
+
+          range: [83, 158],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [79, 82],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 9, line: 3 },
+          },
+        },
+        superClass: null,
+
+        range: [73, 158],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 159],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
+`;

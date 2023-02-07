@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures declare function Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSDeclareFunction {
+      type: "TSDeclareFunction",
+      async: false,
+      declare: true,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [90, 93],
+        loc: {
+          start: { column: 17, line: 3 },
+          end: { column: 20, line: 3 },
+        },
+      },
+      params: Array [],
+      returnType: TSTypeAnnotation {
+        type: "TSTypeAnnotation",
+        typeAnnotation: TSVoidKeyword {
+          type: "TSVoidKeyword",
+
+          range: [97, 101],
+          loc: {
+            start: { column: 24, line: 3 },
+            end: { column: 28, line: 3 },
+          },
+        },
+
+        range: [95, 101],
+        loc: {
+          start: { column: 22, line: 3 },
+          end: { column: 28, line: 3 },
+        },
+      },
+
+      range: [73, 101],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 28, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 102],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

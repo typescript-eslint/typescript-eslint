@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics export-star-as-ns-from TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportAllDeclaration {
+      type: "ExportAllDeclaration",
+      assertions: Array [],
+      exported: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [85, 88],
+        loc: {
+          start: { column: 12, line: 3 },
+          end: { column: 15, line: 3 },
+        },
+      },
+      exportKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'bar'",
+        value: "bar",
+
+        range: [94, 99],
+        loc: {
+          start: { column: 21, line: 3 },
+          end: { column: 26, line: 3 },
+        },
+      },
+
+      range: [73, 100],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 27, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 101],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

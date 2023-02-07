@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-factory-instance-member AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+              decorators: Array [
+                Decorator {
+                  type: 'Decorator',
+                  expression: CallExpression {
+                    type: 'CallExpression',
+                    arguments: Array [],
+                    callee: Identifier {
+                      type: 'Identifier',
+                      name: 'Input',
+
+                      range: [100, 105],
+                      loc: {
+                        start: { column: 5, line: 4 },
+                        end: { column: 10, line: 4 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [100, 107],
+                    loc: {
+                      start: { column: 5, line: 4 },
+                      end: { column: 12, line: 4 },
+                    },
+                  },
+
+                  range: [99, 107],
+                  loc: {
+                    start: { column: 4, line: 4 },
+                    end: { column: 12, line: 4 },
+                  },
+                },
+              ],
+              key: Identifier {
+                type: 'Identifier',
+                name: 'data',
+
+                range: [108, 112],
+                loc: {
+                  start: { column: 13, line: 4 },
+                  end: { column: 17, line: 4 },
+                },
+              },
+-             override: false,
+              static: false,
+              value: null,
+
+              range: [99, 113],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+              decorators: Array [
+                Decorator {
+                  type: 'Decorator',
+                  expression: CallExpression {
+                    type: 'CallExpression',
+                    arguments: Array [],
+                    callee: Identifier {
+                      type: 'Identifier',
+                      name: 'Output',
+
+                      range: [119, 125],
+                      loc: {
+                        start: { column: 5, line: 5 },
+                        end: { column: 11, line: 5 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [119, 127],
+                    loc: {
+                      start: { column: 5, line: 5 },
+                      end: { column: 13, line: 5 },
+                    },
+                  },
+
+                  range: [118, 127],
+                  loc: {
+                    start: { column: 4, line: 5 },
+                    end: { column: 13, line: 5 },
+                  },
+                },
+              ],
+              key: Identifier {
+                type: 'Identifier',
+                name: 'click',
+
+                range: [132, 137],
+                loc: {
+                  start: { column: 4, line: 6 },
+                  end: { column: 9, line: 6 },
+                },
+              },
+-             override: false,
+              static: false,
+              value: NewExpression {
+                type: 'NewExpression',
+                arguments: Array [],
+                callee: Identifier {
+                  type: 'Identifier',
+                  name: 'EventEmitter',
+
+                  range: [144, 156],
+                  loc: {
+                    start: { column: 16, line: 6 },
+                    end: { column: 28, line: 6 },
+                  },
+                },
+
+                range: [140, 158],
+                loc: {
+                  start: { column: 12, line: 6 },
+                  end: { column: 30, line: 6 },
+                },
+              },
+
+              range: [118, 159],
+              loc: {
+                start: { column: 4, line: 5 },
+                end: { column: 31, line: 6 },
+              },
+            },
+          ],
+
+          range: [93, 161],
+          loc: {
+            start: { column: 20, line: 3 },
+            end: { column: 1, line: 7 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'SomeComponent',
+
+          range: [79, 92],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+        superClass: null,
+
+        range: [73, 161],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 161],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 7 },
+    },
+  }"
+`;

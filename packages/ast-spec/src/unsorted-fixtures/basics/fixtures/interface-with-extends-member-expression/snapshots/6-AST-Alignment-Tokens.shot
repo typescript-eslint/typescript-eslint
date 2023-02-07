@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics interface-with-extends-member-expression AST Alignment - Token 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'interface',
+
+      range: [73, 82],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 9, line: 3 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'foo',
+
+      range: [83, 86],
+      loc: {
+        start: { column: 10, line: 3 },
+        end: { column: 13, line: 3 },
+      },
+    },
+    Keyword {
+      type: 'Keyword',
+      value: 'extends',
+
+      range: [87, 94],
+      loc: {
+        start: { column: 14, line: 3 },
+        end: { column: 21, line: 3 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'bar',
+
+      range: [95, 98],
+      loc: {
+        start: { column: 22, line: 3 },
+        end: { column: 25, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '.',
+
+      range: [98, 99],
+      loc: {
+        start: { column: 25, line: 3 },
+        end: { column: 26, line: 3 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'baz',
+
+      range: [99, 102],
+      loc: {
+        start: { column: 26, line: 3 },
+        end: { column: 29, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [103, 104],
+      loc: {
+        start: { column: 30, line: 3 },
+        end: { column: 31, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [105, 106],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 1, line: 4 },
+      },
+    },
+  ]"
+`;

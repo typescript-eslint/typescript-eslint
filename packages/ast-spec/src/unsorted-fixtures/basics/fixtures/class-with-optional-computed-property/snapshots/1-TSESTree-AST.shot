@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-optional-computed-property TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "private",
+            computed: true,
+            declare: false,
+            key: Literal {
+              type: "Literal",
+              raw: "'foo'",
+              value: "foo",
+
+              range: [96, 101],
+              loc: {
+                start: { column: 13, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            value: Identifier {
+              type: "Identifier",
+              name: "undefined",
+
+              range: [106, 115],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 32, line: 4 },
+              },
+            },
+
+            range: [87, 116],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 33, line: 4 },
+            },
+          },
+        ],
+
+        range: [81, 118],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "X",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 118],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 119],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

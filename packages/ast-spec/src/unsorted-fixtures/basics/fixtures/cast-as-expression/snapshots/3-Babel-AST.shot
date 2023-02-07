@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics cast-as-expression Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: TSAsExpression {
+        type: "TSAsExpression",
+        expression: BinaryExpression {
+          type: "BinaryExpression",
+          left: Identifier {
+            type: "Identifier",
+            name: "x",
+
+            range: [73, 74],
+            loc: {
+              start: { column: 0, line: 3 },
+              end: { column: 1, line: 3 },
+            },
+          },
+          operator: "<",
+          right: Identifier {
+            type: "Identifier",
+            name: "y",
+
+            range: [77, 78],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 5, line: 3 },
+            },
+          },
+
+          range: [73, 78],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 5, line: 3 },
+          },
+        },
+        typeAnnotation: TSBooleanKeyword {
+          type: "TSBooleanKeyword",
+
+          range: [82, 89],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 16, line: 3 },
+          },
+        },
+
+        range: [73, 89],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+
+      range: [73, 90],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 17, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 91],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

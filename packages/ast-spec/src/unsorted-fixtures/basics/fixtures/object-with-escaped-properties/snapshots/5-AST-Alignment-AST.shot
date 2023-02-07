@@ -1,0 +1,264 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: ObjectExpression {
+          type: 'ObjectExpression',
+          properties: Array [
+            Property {
+              type: 'Property',
+              computed: false,
+              key: Literal {
+                type: 'Literal',
+                raw: '\\\\'__\\\\'',
+                value: '__',
+
+                range: [76, 80],
+                loc: {
+                  start: { column: 3, line: 3 },
+                  end: { column: 7, line: 3 },
+                },
+              },
+              kind: 'init',
+              method: false,
+              shorthand: false,
+              value: Literal {
+                type: 'Literal',
+                raw: 'null',
+                value: null,
+
+                range: [82, 86],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 13, line: 3 },
+                },
+              },
+
+              range: [76, 86],
+              loc: {
+                start: { column: 3, line: 3 },
+                end: { column: 13, line: 3 },
+              },
+            },
+          ],
+
+          range: [74, 88],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 15, line: 3 },
+          },
+        },
+
+        range: [73, 90],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 17, line: 3 },
+        },
+      },
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: ObjectExpression {
+          type: 'ObjectExpression',
+          properties: Array [
+            Property {
+              type: 'Property',
+              computed: false,
+              key: Literal {
+                type: 'Literal',
+                raw: '\\\\'__\\\\'',
+                value: '__',
+
+                range: [95, 99],
+                loc: {
+                  start: { column: 3, line: 5 },
+                  end: { column: 7, line: 5 },
+                },
+              },
+              kind: 'init',
+              method: true,
+              shorthand: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [102, 104],
+                  loc: {
+                    start: { column: 10, line: 5 },
+                    end: { column: 12, line: 5 },
+                  },
+                },
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [99, 104],
+                loc: {
+                  start: { column: 7, line: 5 },
+                  end: { column: 12, line: 5 },
+                },
+              },
+
+              range: [95, 104],
+              loc: {
+                start: { column: 3, line: 5 },
+                end: { column: 12, line: 5 },
+              },
+            },
+          ],
+
+          range: [93, 106],
+          loc: {
+            start: { column: 1, line: 5 },
+            end: { column: 14, line: 5 },
+          },
+        },
+
+        range: [92, 108],
+        loc: {
+          start: { column: 0, line: 5 },
+          end: { column: 16, line: 5 },
+        },
+      },
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: ObjectExpression {
+          type: 'ObjectExpression',
+          properties: Array [
+            Property {
+              type: 'Property',
+              computed: true,
+              key: Literal {
+                type: 'Literal',
+                raw: '\\\\'__\\\\'',
+                value: '__',
+
+                range: [114, 118],
+                loc: {
+                  start: { column: 4, line: 7 },
+                  end: { column: 8, line: 7 },
+                },
+              },
+              kind: 'init',
+              method: false,
+              shorthand: false,
+              value: Literal {
+                type: 'Literal',
+                raw: 'null',
+                value: null,
+
+                range: [121, 125],
+                loc: {
+                  start: { column: 11, line: 7 },
+                  end: { column: 15, line: 7 },
+                },
+              },
+
+              range: [113, 125],
+              loc: {
+                start: { column: 3, line: 7 },
+                end: { column: 15, line: 7 },
+              },
+            },
+          ],
+
+          range: [111, 127],
+          loc: {
+            start: { column: 1, line: 7 },
+            end: { column: 17, line: 7 },
+          },
+        },
+
+        range: [110, 129],
+        loc: {
+          start: { column: 0, line: 7 },
+          end: { column: 19, line: 7 },
+        },
+      },
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+              key: Literal {
+                type: 'Literal',
+                raw: '\\\\'__\\\\'',
+                value: '__',
+
+                range: [141, 145],
+                loc: {
+                  start: { column: 10, line: 9 },
+                  end: { column: 14, line: 9 },
+                },
+              },
+-             override: false,
+              static: false,
+              value: Literal {
+                type: 'Literal',
+                raw: 'null',
+                value: null,
+
+                range: [148, 152],
+                loc: {
+                  start: { column: 17, line: 9 },
+                  end: { column: 21, line: 9 },
+                },
+              },
+
+              range: [141, 152],
+              loc: {
+                start: { column: 10, line: 9 },
+                end: { column: 21, line: 9 },
+              },
+            },
+          ],
+
+          range: [139, 154],
+          loc: {
+            start: { column: 8, line: 9 },
+            end: { column: 23, line: 9 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'X',
+
+          range: [137, 138],
+          loc: {
+            start: { column: 6, line: 9 },
+            end: { column: 7, line: 9 },
+          },
+        },
+        superClass: null,
+
+        range: [131, 154],
+        loc: {
+          start: { column: 0, line: 9 },
+          end: { column: 23, line: 9 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 155],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 10 },
+    },
+  }"
+`;

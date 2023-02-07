@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics interface-with-jsdoc TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "interface",
+
+    range: [73, 82],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 9, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Test",
+
+    range: [83, 87],
+    loc: {
+      start: { column: 10, line: 3 },
+      end: { column: 14, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [88, 89],
+    loc: {
+      start: { column: 15, line: 3 },
+      end: { column: 16, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [149, 152],
+    loc: {
+      start: { column: 4, line: 8 },
+      end: { column: 7, line: 8 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [152, 153],
+    loc: {
+      start: { column: 7, line: 8 },
+      end: { column: 8, line: 8 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "bar",
+
+    range: [153, 156],
+    loc: {
+      start: { column: 8, line: 8 },
+      end: { column: 11, line: 8 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [156, 157],
+    loc: {
+      start: { column: 11, line: 8 },
+      end: { column: 12, line: 8 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [157, 158],
+    loc: {
+      start: { column: 12, line: 8 },
+      end: { column: 13, line: 8 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [159, 160],
+    loc: {
+      start: { column: 0, line: 9 },
+      end: { column: 1, line: 9 },
+    },
+  },
+]
+`;

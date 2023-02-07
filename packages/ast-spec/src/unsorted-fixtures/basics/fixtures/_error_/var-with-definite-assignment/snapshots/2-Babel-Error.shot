@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics _error_ var-with-definite-assignment Babel - Error 1`] = `[SyntaxError: Missing initializer in const declaration. (3:16)]`;

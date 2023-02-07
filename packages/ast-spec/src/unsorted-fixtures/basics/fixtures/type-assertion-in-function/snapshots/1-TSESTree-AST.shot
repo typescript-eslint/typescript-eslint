@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics type-assertion-in-function TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [
+          ReturnStatement {
+            type: "ReturnStatement",
+            argument: null,
+
+            range: [121, 127],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 10, line: 4 },
+            },
+          },
+        ],
+
+        range: [115, 129],
+        loc: {
+          start: { column: 42, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "assertsString",
+
+        range: [82, 95],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 22, line: 3 },
+        },
+      },
+      params: Array [
+        Identifier {
+          type: "Identifier",
+          name: "x",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [99, 102],
+              loc: {
+                start: { column: 26, line: 3 },
+                end: { column: 29, line: 3 },
+              },
+            },
+
+            range: [97, 102],
+            loc: {
+              start: { column: 24, line: 3 },
+              end: { column: 29, line: 3 },
+            },
+          },
+
+          range: [96, 102],
+          loc: {
+            start: { column: 23, line: 3 },
+            end: { column: 29, line: 3 },
+          },
+        },
+      ],
+      returnType: TSTypeAnnotation {
+        type: "TSTypeAnnotation",
+        typeAnnotation: TSTypePredicate {
+          type: "TSTypePredicate",
+          asserts: true,
+          parameterName: Identifier {
+            type: "Identifier",
+            name: "x",
+
+            range: [113, 114],
+            loc: {
+              start: { column: 40, line: 3 },
+              end: { column: 41, line: 3 },
+            },
+          },
+          typeAnnotation: null,
+
+          range: [105, 114],
+          loc: {
+            start: { column: 32, line: 3 },
+            end: { column: 41, line: 3 },
+          },
+        },
+
+        range: [103, 114],
+        loc: {
+          start: { column: 30, line: 3 },
+          end: { column: 41, line: 3 },
+        },
+      },
+
+      range: [73, 129],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 130],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

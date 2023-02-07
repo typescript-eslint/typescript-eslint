@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures types parenthesized-type AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [78, 81],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+-       typeAnnotation: TSUnionType {
+-         type: 'TSUnionType',
+-         types: Array [
+-           TSStringKeyword {
+-             type: 'TSStringKeyword',
++       typeAnnotation: TSParenthesizedType {
++         type: 'TSParenthesizedType',
++         typeAnnotation: TSUnionType {
++           type: 'TSUnionType',
++           types: Array [
++             TSStringKeyword {
++               type: 'TSStringKeyword',
+
+-             range: [85, 91],
+-             loc: {
+-               start: { column: 12, line: 3 },
+-               end: { column: 18, line: 3 },
++               range: [85, 91],
++               loc: {
++                 start: { column: 12, line: 3 },
++                 end: { column: 18, line: 3 },
++               },
+              },
+-           },
+-           TSNumberKeyword {
+-             type: 'TSNumberKeyword',
++             TSNumberKeyword {
++               type: 'TSNumberKeyword',
+
+-             range: [94, 100],
+-             loc: {
+-               start: { column: 21, line: 3 },
+-               end: { column: 27, line: 3 },
++               range: [94, 100],
++               loc: {
++                 start: { column: 21, line: 3 },
++                 end: { column: 27, line: 3 },
++               },
+              },
++           ],
++
++           range: [85, 100],
++           loc: {
++             start: { column: 12, line: 3 },
++             end: { column: 27, line: 3 },
+            },
+-         ],
++         },
+
+-         range: [85, 100],
++         range: [84, 101],
+          loc: {
+-           start: { column: 12, line: 3 },
+-           end: { column: 27, line: 3 },
++           start: { column: 11, line: 3 },
++           end: { column: 28, line: 3 },
+          },
+        },
+
+        range: [73, 101],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 28, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 102],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

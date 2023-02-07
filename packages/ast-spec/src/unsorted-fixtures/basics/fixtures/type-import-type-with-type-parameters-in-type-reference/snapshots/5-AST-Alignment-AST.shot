@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics type-import-type-with-type-parameters-in-type-reference AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'X',
+
+          range: [78, 79],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 6, line: 3 },
+          },
+        },
+        typeAnnotation: TSTypeReference {
+          type: 'TSTypeReference',
+          typeName: Identifier {
+            type: 'Identifier',
+            name: 'A',
+
+            range: [82, 83],
+            loc: {
+              start: { column: 9, line: 3 },
+              end: { column: 10, line: 3 },
+            },
+          },
+          typeParameters: TSTypeParameterInstantiation {
+            type: 'TSTypeParameterInstantiation',
+            params: Array [
+              TSImportType {
+                type: 'TSImportType',
+-               isTypeOf: false,
+-               parameter: TSLiteralType {
+-                 type: 'TSLiteralType',
+-                 literal: Literal {
+-                   type: 'Literal',
+-                   raw: '\\"\\"',
+-                   value: '',
+-
+-                   range: [91, 93],
+-                   loc: {
+-                     start: { column: 18, line: 3 },
+-                     end: { column: 20, line: 3 },
+-                   },
+-                 },
++               argument: Literal {
++                 type: 'Literal',
++                 raw: '\\"\\"',
++                 value: '',
+
+                  range: [91, 93],
+                  loc: {
+                    start: { column: 18, line: 3 },
+                    end: { column: 20, line: 3 },
+                  },
+                },
+                qualifier: Identifier {
+                  type: 'Identifier',
+                  name: 'B',
+
+                  range: [95, 96],
+                  loc: {
+                    start: { column: 22, line: 3 },
+                    end: { column: 23, line: 3 },
+                  },
+                },
+                typeParameters: TSTypeParameterInstantiation {
+                  type: 'TSTypeParameterInstantiation',
+                  params: Array [
+                    TSAnyKeyword {
+                      type: 'TSAnyKeyword',
+
+                      range: [97, 100],
+                      loc: {
+                        start: { column: 24, line: 3 },
+                        end: { column: 27, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [96, 101],
+                  loc: {
+                    start: { column: 23, line: 3 },
+                    end: { column: 28, line: 3 },
+                  },
+                },
+
+                range: [84, 101],
+                loc: {
+                  start: { column: 11, line: 3 },
+                  end: { column: 28, line: 3 },
+                },
+              },
+            ],
+
+            range: [83, 102],
+            loc: {
+              start: { column: 10, line: 3 },
+              end: { column: 29, line: 3 },
+            },
+          },
+
+          range: [82, 102],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 29, line: 3 },
+          },
+        },
+
+        range: [73, 103],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 30, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 104],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

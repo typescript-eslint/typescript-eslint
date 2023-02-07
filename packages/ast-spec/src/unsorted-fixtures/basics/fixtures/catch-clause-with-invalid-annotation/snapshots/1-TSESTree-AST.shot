@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics catch-clause-with-invalid-annotation TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TryStatement {
+      type: "TryStatement",
+      block: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [77, 81],
+        loc: {
+          start: { column: 4, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      finalizer: null,
+      handler: CatchClause {
+        type: "CatchClause",
+        body: BlockStatement {
+          type: "BlockStatement",
+          body: Array [],
+
+          range: [100, 104],
+          loc: {
+            start: { column: 20, line: 5 },
+            end: { column: 1, line: 7 },
+          },
+        },
+        param: Identifier {
+          type: "Identifier",
+          name: "e",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [92, 98],
+              loc: {
+                start: { column: 12, line: 5 },
+                end: { column: 18, line: 5 },
+              },
+            },
+
+            range: [90, 98],
+            loc: {
+              start: { column: 10, line: 5 },
+              end: { column: 18, line: 5 },
+            },
+          },
+
+          range: [89, 98],
+          loc: {
+            start: { column: 9, line: 5 },
+            end: { column: 18, line: 5 },
+          },
+        },
+
+        range: [82, 104],
+        loc: {
+          start: { column: 2, line: 5 },
+          end: { column: 1, line: 7 },
+        },
+      },
+
+      range: [73, 104],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 105],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics export-default-class-with-generic Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportDefaultDeclaration {
+      type: "ExportDefaultDeclaration",
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        body: ClassBody {
+          type: "ClassBody",
+          body: Array [],
+
+          range: [97, 101],
+          loc: {
+            start: { column: 24, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+        id: null,
+        superClass: null,
+        typeParameters: TSTypeParameterDeclaration {
+          type: "TSTypeParameterDeclaration",
+          params: Array [
+            TSTypeParameter {
+              type: "TSTypeParameter",
+              name: "T",
+
+              range: [94, 95],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 22, line: 3 },
+              },
+            },
+          ],
+
+          range: [93, 96],
+          loc: {
+            start: { column: 20, line: 3 },
+            end: { column: 23, line: 3 },
+          },
+        },
+
+        range: [88, 101],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      exportKind: "value",
+
+      range: [73, 101],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 102],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

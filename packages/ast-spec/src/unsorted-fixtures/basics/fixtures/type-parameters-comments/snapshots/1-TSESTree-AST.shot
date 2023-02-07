@@ -1,0 +1,225 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics type-parameters-comments TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: CallExpression {
+        type: "CallExpression",
+        arguments: Array [],
+        callee: Identifier {
+          type: "Identifier",
+          name: "foo",
+
+          range: [73, 76],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 3, line: 3 },
+          },
+        },
+        optional: false,
+        typeParameters: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "A",
+
+                range: [94, 95],
+                loc: {
+                  start: { column: 21, line: 3 },
+                  end: { column: 22, line: 3 },
+                },
+              },
+
+              range: [94, 95],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 22, line: 3 },
+              },
+            },
+          ],
+
+          range: [76, 113],
+          loc: {
+            start: { column: 3, line: 3 },
+            end: { column: 40, line: 3 },
+          },
+        },
+
+        range: [73, 115],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 42, line: 3 },
+        },
+      },
+
+      range: [73, 116],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 43, line: 3 },
+      },
+    },
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [157, 160],
+        loc: {
+          start: { column: 40, line: 4 },
+          end: { column: 43, line: 4 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "bar",
+
+        range: [126, 129],
+        loc: {
+          start: { column: 9, line: 4 },
+          end: { column: 12, line: 4 },
+        },
+      },
+      params: Array [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "A",
+
+              range: [141, 142],
+              loc: {
+                start: { column: 24, line: 4 },
+                end: { column: 25, line: 4 },
+              },
+            },
+            out: false,
+
+            range: [141, 142],
+            loc: {
+              start: { column: 24, line: 4 },
+              end: { column: 25, line: 4 },
+            },
+          },
+        ],
+
+        range: [129, 154],
+        loc: {
+          start: { column: 12, line: 4 },
+          end: { column: 37, line: 4 },
+        },
+      },
+
+      range: [117, 160],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 43, line: 4 },
+      },
+    },
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [207, 210],
+        loc: {
+          start: { column: 46, line: 5 },
+          end: { column: 49, line: 5 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "baz",
+
+        range: [170, 173],
+        loc: {
+          start: { column: 9, line: 5 },
+          end: { column: 12, line: 5 },
+        },
+      },
+      params: Array [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            default: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Foo",
+
+                range: [199, 202],
+                loc: {
+                  start: { column: 38, line: 5 },
+                  end: { column: 41, line: 5 },
+                },
+              },
+
+              range: [199, 202],
+              loc: {
+                start: { column: 38, line: 5 },
+                end: { column: 41, line: 5 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "A",
+
+              range: [185, 186],
+              loc: {
+                start: { column: 24, line: 5 },
+                end: { column: 25, line: 5 },
+              },
+            },
+            out: false,
+
+            range: [185, 202],
+            loc: {
+              start: { column: 24, line: 5 },
+              end: { column: 41, line: 5 },
+            },
+          },
+        ],
+
+        range: [173, 204],
+        loc: {
+          start: { column: 12, line: 5 },
+          end: { column: 43, line: 5 },
+        },
+      },
+
+      range: [161, 210],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 49, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 211],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

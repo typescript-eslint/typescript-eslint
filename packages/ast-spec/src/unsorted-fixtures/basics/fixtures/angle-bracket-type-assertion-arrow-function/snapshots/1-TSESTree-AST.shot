@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics angle-bracket-type-assertion-arrow-function TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "asserted2",
+
+            range: [77, 86],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 13, line: 3 },
+            },
+          },
+          init: TSTypeAssertion {
+            type: "TSTypeAssertion",
+            expression: ArrowFunctionExpression {
+              type: "ArrowFunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: Identifier {
+                      type: "Identifier",
+                      name: "n",
+
+                      range: [111, 112],
+                      loc: {
+                        start: { column: 38, line: 3 },
+                        end: { column: 39, line: 3 },
+                      },
+                    },
+
+                    range: [104, 113],
+                    loc: {
+                      start: { column: 31, line: 3 },
+                      end: { column: 40, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [102, 115],
+                loc: {
+                  start: { column: 29, line: 3 },
+                  end: { column: 42, line: 3 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [
+                Identifier {
+                  type: "Identifier",
+                  name: "n",
+
+                  range: [96, 97],
+                  loc: {
+                    start: { column: 23, line: 3 },
+                    end: { column: 24, line: 3 },
+                  },
+                },
+              ],
+
+              range: [95, 115],
+              loc: {
+                start: { column: 22, line: 3 },
+                end: { column: 42, line: 3 },
+              },
+            },
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [90, 93],
+              loc: {
+                start: { column: 17, line: 3 },
+                end: { column: 20, line: 3 },
+              },
+            },
+
+            range: [89, 116],
+            loc: {
+              start: { column: 16, line: 3 },
+              end: { column: 43, line: 3 },
+            },
+          },
+
+          range: [77, 116],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 43, line: 3 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [73, 117],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 44, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 118],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

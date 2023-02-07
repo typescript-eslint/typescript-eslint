@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics async-function-with-var-declaration Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: true,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [
+          VariableDeclaration {
+            type: "VariableDeclaration",
+            declarations: Array [
+              VariableDeclarator {
+                type: "VariableDeclarator",
+                id: Identifier {
+                  type: "Identifier",
+                  name: "foo",
+
+                  range: [105, 108],
+                  loc: {
+                    start: { column: 8, line: 4 },
+                    end: { column: 11, line: 4 },
+                  },
+                },
+                init: Literal {
+                  type: "Literal",
+                  raw: "'foo'",
+                  value: "foo",
+
+                  range: [111, 116],
+                  loc: {
+                    start: { column: 14, line: 4 },
+                    end: { column: 19, line: 4 },
+                  },
+                },
+
+                range: [105, 116],
+                loc: {
+                  start: { column: 8, line: 4 },
+                  end: { column: 19, line: 4 },
+                },
+              },
+            ],
+            kind: "var",
+
+            range: [101, 117],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 20, line: 4 },
+            },
+          },
+          VariableDeclaration {
+            type: "VariableDeclaration",
+            declarations: Array [
+              VariableDeclarator {
+                type: "VariableDeclarator",
+                id: Identifier {
+                  type: "Identifier",
+                  name: "bar",
+
+                  range: [126, 129],
+                  loc: {
+                    start: { column: 8, line: 5 },
+                    end: { column: 11, line: 5 },
+                  },
+                },
+                init: Literal {
+                  type: "Literal",
+                  raw: "'bar'",
+                  value: "bar",
+
+                  range: [132, 137],
+                  loc: {
+                    start: { column: 14, line: 5 },
+                    end: { column: 19, line: 5 },
+                  },
+                },
+
+                range: [126, 137],
+                loc: {
+                  start: { column: 8, line: 5 },
+                  end: { column: 19, line: 5 },
+                },
+              },
+            ],
+            kind: "let",
+
+            range: [122, 138],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 20, line: 5 },
+            },
+          },
+          VariableDeclaration {
+            type: "VariableDeclaration",
+            declarations: Array [
+              VariableDeclarator {
+                type: "VariableDeclarator",
+                id: Identifier {
+                  type: "Identifier",
+                  name: "fooBar",
+
+                  range: [149, 155],
+                  loc: {
+                    start: { column: 10, line: 6 },
+                    end: { column: 16, line: 6 },
+                  },
+                },
+                init: Literal {
+                  type: "Literal",
+                  raw: "'fooBar'",
+                  value: "fooBar",
+
+                  range: [158, 166],
+                  loc: {
+                    start: { column: 19, line: 6 },
+                    end: { column: 27, line: 6 },
+                  },
+                },
+
+                range: [149, 166],
+                loc: {
+                  start: { column: 10, line: 6 },
+                  end: { column: 27, line: 6 },
+                },
+              },
+            ],
+            kind: "const",
+
+            range: [143, 167],
+            loc: {
+              start: { column: 4, line: 6 },
+              end: { column: 28, line: 6 },
+            },
+          },
+        ],
+
+        range: [95, 169],
+        loc: {
+          start: { column: 22, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "test",
+
+        range: [88, 92],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+      params: Array [],
+
+      range: [73, 169],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 170],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

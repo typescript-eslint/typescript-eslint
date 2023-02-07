@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-static-member Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: Identifier {
+                  type: "Identifier",
+                  name: "baz",
+
+                  range: [88, 91],
+                  loc: {
+                    start: { column: 5, line: 4 },
+                    end: { column: 8, line: 4 },
+                  },
+                },
+
+                range: [87, 91],
+                loc: {
+                  start: { column: 4, line: 4 },
+                  end: { column: 8, line: 4 },
+                },
+              },
+            ],
+            key: Identifier {
+              type: "Identifier",
+              name: "a",
+
+              range: [99, 100],
+              loc: {
+                start: { column: 16, line: 4 },
+                end: { column: 17, line: 4 },
+              },
+            },
+            static: true,
+            value: null,
+
+            range: [87, 101],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 18, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: Identifier {
+                  type: "Identifier",
+                  name: "qux",
+
+                  range: [107, 110],
+                  loc: {
+                    start: { column: 5, line: 5 },
+                    end: { column: 8, line: 5 },
+                  },
+                },
+
+                range: [106, 110],
+                loc: {
+                  start: { column: 4, line: 5 },
+                  end: { column: 8, line: 5 },
+                },
+              },
+            ],
+            key: Identifier {
+              type: "Identifier",
+              name: "b",
+
+              range: [122, 123],
+              loc: {
+                start: { column: 11, line: 6 },
+                end: { column: 12, line: 6 },
+              },
+            },
+            static: true,
+            value: null,
+
+            range: [106, 124],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 13, line: 6 },
+            },
+          },
+        ],
+
+        range: [81, 126],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "C",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 126],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 127],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

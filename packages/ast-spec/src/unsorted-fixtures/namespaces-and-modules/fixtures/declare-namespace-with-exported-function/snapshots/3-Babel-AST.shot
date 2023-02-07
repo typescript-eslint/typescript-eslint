@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures namespaces-and-modules declare-namespace-with-exported-function Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [
+          ExportNamedDeclaration {
+            type: "ExportNamedDeclaration",
+            assertions: Array [],
+            declaration: TSDeclareFunction {
+              type: "TSDeclareFunction",
+              async: false,
+              expression: false,
+              generator: false,
+              id: Identifier {
+                type: "Identifier",
+                name: "select",
+
+                range: [114, 120],
+                loc: {
+                  start: { column: 18, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+              params: Array [
+                Identifier {
+                  type: "Identifier",
+                  name: "selector",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [131, 137],
+                      loc: {
+                        start: { column: 35, line: 4 },
+                        end: { column: 41, line: 4 },
+                      },
+                    },
+
+                    range: [129, 137],
+                    loc: {
+                      start: { column: 33, line: 4 },
+                      end: { column: 41, line: 4 },
+                    },
+                  },
+
+                  range: [121, 137],
+                  loc: {
+                    start: { column: 25, line: 4 },
+                    end: { column: 41, line: 4 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    name: "Selection",
+
+                    range: [140, 149],
+                    loc: {
+                      start: { column: 44, line: 4 },
+                      end: { column: 53, line: 4 },
+                    },
+                  },
+                  typeParameters: TSTypeParameterInstantiation {
+                    type: "TSTypeParameterInstantiation",
+                    params: Array [
+                      TSAnyKeyword {
+                        type: "TSAnyKeyword",
+
+                        range: [150, 153],
+                        loc: {
+                          start: { column: 54, line: 4 },
+                          end: { column: 57, line: 4 },
+                        },
+                      },
+                    ],
+
+                    range: [149, 154],
+                    loc: {
+                      start: { column: 53, line: 4 },
+                      end: { column: 58, line: 4 },
+                    },
+                  },
+
+                  range: [140, 154],
+                  loc: {
+                    start: { column: 44, line: 4 },
+                    end: { column: 58, line: 4 },
+                  },
+                },
+
+                range: [138, 154],
+                loc: {
+                  start: { column: 42, line: 4 },
+                  end: { column: 58, line: 4 },
+                },
+              },
+
+              range: [105, 155],
+              loc: {
+                start: { column: 9, line: 4 },
+                end: { column: 59, line: 4 },
+              },
+            },
+            exportKind: "value",
+            source: null,
+            specifiers: Array [],
+
+            range: [98, 155],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 59, line: 4 },
+            },
+          },
+        ],
+
+        range: [94, 157],
+        loc: {
+          start: { column: 21, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      declare: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "d3",
+
+        range: [91, 93],
+        loc: {
+          start: { column: 18, line: 3 },
+          end: { column: 20, line: 3 },
+        },
+      },
+
+      range: [73, 157],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 157],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 5 },
+  },
+}
+`;

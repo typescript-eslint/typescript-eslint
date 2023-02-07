@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics global-this Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "abc",
+
+            range: [99, 102],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 7, line: 5 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "100",
+            value: 100,
+
+            range: [105, 108],
+            loc: {
+              start: { column: 10, line: 5 },
+              end: { column: 13, line: 5 },
+            },
+          },
+
+          range: [99, 108],
+          loc: {
+            start: { column: 4, line: 5 },
+            end: { column: 13, line: 5 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [95, 109],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 14, line: 5 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: MemberExpression {
+          type: "MemberExpression",
+          computed: false,
+          object: Identifier {
+            type: "Identifier",
+            name: "globalThis",
+
+            range: [142, 152],
+            loc: {
+              start: { column: 0, line: 8 },
+              end: { column: 10, line: 8 },
+            },
+          },
+          optional: false,
+          property: Identifier {
+            type: "Identifier",
+            name: "abc",
+
+            range: [153, 156],
+            loc: {
+              start: { column: 11, line: 8 },
+              end: { column: 14, line: 8 },
+            },
+          },
+
+          range: [142, 156],
+          loc: {
+            start: { column: 0, line: 8 },
+            end: { column: 14, line: 8 },
+          },
+        },
+        operator: "=",
+        right: Literal {
+          type: "Literal",
+          raw: "200",
+          value: 200,
+
+          range: [159, 162],
+          loc: {
+            start: { column: 17, line: 8 },
+            end: { column: 20, line: 8 },
+          },
+        },
+
+        range: [142, 162],
+        loc: {
+          start: { column: 0, line: 8 },
+          end: { column: 20, line: 8 },
+        },
+      },
+
+      range: [142, 163],
+      loc: {
+        start: { column: 0, line: 8 },
+        end: { column: 21, line: 8 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "answer",
+
+            range: [170, 176],
+            loc: {
+              start: { column: 4, line: 11 },
+              end: { column: 10, line: 11 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "42",
+            value: 42,
+
+            range: [179, 181],
+            loc: {
+              start: { column: 13, line: 11 },
+              end: { column: 15, line: 11 },
+            },
+          },
+
+          range: [170, 181],
+          loc: {
+            start: { column: 4, line: 11 },
+            end: { column: 15, line: 11 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [166, 182],
+      loc: {
+        start: { column: 0, line: 11 },
+        end: { column: 16, line: 11 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: MemberExpression {
+          type: "MemberExpression",
+          computed: false,
+          object: Identifier {
+            type: "Identifier",
+            name: "globalThis",
+
+            range: [251, 261],
+            loc: {
+              start: { column: 0, line: 14 },
+              end: { column: 10, line: 14 },
+            },
+          },
+          optional: false,
+          property: Identifier {
+            type: "Identifier",
+            name: "answer",
+
+            range: [262, 268],
+            loc: {
+              start: { column: 11, line: 14 },
+              end: { column: 17, line: 14 },
+            },
+          },
+
+          range: [251, 268],
+          loc: {
+            start: { column: 0, line: 14 },
+            end: { column: 17, line: 14 },
+          },
+        },
+        operator: "=",
+        right: Literal {
+          type: "Literal",
+          raw: "333333",
+          value: 333333,
+
+          range: [271, 277],
+          loc: {
+            start: { column: 20, line: 14 },
+            end: { column: 26, line: 14 },
+          },
+        },
+
+        range: [251, 277],
+        loc: {
+          start: { column: 0, line: 14 },
+          end: { column: 26, line: 14 },
+        },
+      },
+
+      range: [251, 278],
+      loc: {
+        start: { column: 0, line: 14 },
+        end: { column: 27, line: 14 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [95, 279],
+  loc: {
+    start: { column: 0, line: 5 },
+    end: { column: 0, line: 15 },
+  },
+}
+`;

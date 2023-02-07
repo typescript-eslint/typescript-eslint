@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures parameter-decorators parameter-decorator-instance-member AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'greet',
+
+                range: [93, 98],
+                loc: {
+                  start: { column: 4, line: 4 },
+                  end: { column: 9, line: 4 },
+                },
+              },
+              kind: 'method',
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [
+                    ReturnStatement {
+                      type: 'ReturnStatement',
+                      argument: BinaryExpression {
+                        type: 'BinaryExpression',
+                        left: BinaryExpression {
+                          type: 'BinaryExpression',
+                          left: Literal {
+                            type: 'Literal',
+                            raw: '\\"Hello \\"',
+                            value: 'Hello ',
+
+                            range: [140, 148],
+                            loc: {
+                              start: { column: 15, line: 5 },
+                              end: { column: 23, line: 5 },
+                            },
+                          },
+                          operator: '+',
+                          right: Identifier {
+                            type: 'Identifier',
+                            name: 'name',
+
+                            range: [151, 155],
+                            loc: {
+                              start: { column: 26, line: 5 },
+                              end: { column: 30, line: 5 },
+                            },
+                          },
+
+                          range: [140, 155],
+                          loc: {
+                            start: { column: 15, line: 5 },
+                            end: { column: 30, line: 5 },
+                          },
+                        },
+                        operator: '+',
+                        right: Literal {
+                          type: 'Literal',
+                          raw: '\\"!\\"',
+                          value: '!',
+
+                          range: [158, 161],
+                          loc: {
+                            start: { column: 33, line: 5 },
+                            end: { column: 36, line: 5 },
+                          },
+                        },
+
+                        range: [140, 161],
+                        loc: {
+                          start: { column: 15, line: 5 },
+                          end: { column: 36, line: 5 },
+                        },
+                      },
+
+                      range: [133, 162],
+                      loc: {
+                        start: { column: 8, line: 5 },
+                        end: { column: 37, line: 5 },
+                      },
+                    },
+                  ],
+
+                  range: [123, 168],
+                  loc: {
+                    start: { column: 34, line: 4 },
+                    end: { column: 5, line: 6 },
+                  },
+                },
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [
+                  Identifier {
+                    type: 'Identifier',
+                    decorators: Array [
+                      Decorator {
+                        type: 'Decorator',
+                        expression: Identifier {
+                          type: 'Identifier',
+                          name: 'required',
+
+                          range: [100, 108],
+                          loc: {
+                            start: { column: 11, line: 4 },
+                            end: { column: 19, line: 4 },
+                          },
+                        },
+
+                        range: [99, 108],
+                        loc: {
+                          start: { column: 10, line: 4 },
+                          end: { column: 19, line: 4 },
+                        },
+                      },
+                    ],
+                    name: 'name',
+                    typeAnnotation: TSTypeAnnotation {
+                      type: 'TSTypeAnnotation',
+                      typeAnnotation: TSStringKeyword {
+                        type: 'TSStringKeyword',
+
+                        range: [115, 121],
+                        loc: {
+                          start: { column: 26, line: 4 },
+                          end: { column: 32, line: 4 },
+                        },
+                      },
+
+                      range: [113, 121],
+                      loc: {
+                        start: { column: 24, line: 4 },
+                        end: { column: 32, line: 4 },
+                      },
+                    },
+
+                    range: [109, 121],
+                    loc: {
+                      start: { column: 20, line: 4 },
+                      end: { column: 32, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [98, 168],
+                loc: {
+                  start: { column: 9, line: 4 },
+                  end: { column: 5, line: 6 },
+                },
+              },
+
+              range: [93, 168],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 5, line: 6 },
+              },
+            },
+          ],
+
+          range: [87, 170],
+          loc: {
+            start: { column: 14, line: 3 },
+            end: { column: 1, line: 7 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Greeter',
+
+          range: [79, 86],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 13, line: 3 },
+          },
+        },
+        superClass: null,
+
+        range: [73, 170],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 171],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 8 },
+    },
+  }"
+`;

@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures comments type-assertion-regression-test TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "foo",
+
+            range: [79, 82],
+            loc: {
+              start: { column: 6, line: 3 },
+              end: { column: 9, line: 3 },
+            },
+          },
+          init: TSTypeAssertion {
+            type: "TSTypeAssertion",
+            expression: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [101, 104],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            typeAnnotation: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Foo",
+
+                range: [86, 89],
+                loc: {
+                  start: { column: 13, line: 3 },
+                  end: { column: 16, line: 3 },
+                },
+              },
+
+              range: [86, 89],
+              loc: {
+                start: { column: 13, line: 3 },
+                end: { column: 16, line: 3 },
+              },
+            },
+
+            range: [85, 104],
+            loc: {
+              start: { column: 12, line: 3 },
+              end: { column: 5, line: 4 },
+            },
+          },
+
+          range: [79, 104],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 5, line: 4 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [73, 105],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 6, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 106],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

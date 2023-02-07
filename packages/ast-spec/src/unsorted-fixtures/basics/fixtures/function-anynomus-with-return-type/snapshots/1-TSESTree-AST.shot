@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics function-anynomus-with-return-type TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "obj",
+
+            range: [77, 80],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 7, line: 3 },
+            },
+          },
+          init: FunctionExpression {
+            type: "FunctionExpression",
+            async: false,
+            body: BlockStatement {
+              type: "BlockStatement",
+              body: Array [],
+
+              range: [101, 104],
+              loc: {
+                start: { column: 28, line: 3 },
+                end: { column: 1, line: 4 },
+              },
+            },
+            expression: false,
+            generator: false,
+            id: null,
+            params: Array [],
+            returnType: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSVoidKeyword {
+                type: "TSVoidKeyword",
+
+                range: [96, 100],
+                loc: {
+                  start: { column: 23, line: 3 },
+                  end: { column: 27, line: 3 },
+                },
+              },
+
+              range: [94, 100],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 27, line: 3 },
+              },
+            },
+
+            range: [83, 104],
+            loc: {
+              start: { column: 10, line: 3 },
+              end: { column: 1, line: 4 },
+            },
+          },
+
+          range: [77, 104],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 1, line: 4 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [73, 105],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 2, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 106],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

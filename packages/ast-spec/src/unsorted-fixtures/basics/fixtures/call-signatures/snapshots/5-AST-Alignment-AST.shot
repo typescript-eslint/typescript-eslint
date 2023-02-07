@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics call-signatures AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'foo',
+
+          range: [78, 81],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+        typeAnnotation: TSTypeLiteral {
+          type: 'TSTypeLiteral',
+          members: Array [
+            TSCallSignatureDeclaration {
+              type: 'TSCallSignatureDeclaration',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'a',
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [92, 98],
+                      loc: {
+                        start: { column: 6, line: 4 },
+                        end: { column: 12, line: 4 },
+                      },
+                    },
+
+                    range: [90, 98],
+                    loc: {
+                      start: { column: 4, line: 4 },
+                      end: { column: 12, line: 4 },
+                    },
+                  },
+
+                  range: [89, 98],
+                  loc: {
+                    start: { column: 3, line: 4 },
+                    end: { column: 12, line: 4 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [101, 107],
+                  loc: {
+                    start: { column: 15, line: 4 },
+                    end: { column: 21, line: 4 },
+                  },
+                },
+
+                range: [99, 107],
+                loc: {
+                  start: { column: 13, line: 4 },
+                  end: { column: 21, line: 4 },
+                },
+              },
+
+              range: [88, 107],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 21, line: 4 },
+              },
+            },
+            TSConstructSignatureDeclaration {
+              type: 'TSConstructSignatureDeclaration',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'a',
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [117, 123],
+                      loc: {
+                        start: { column: 9, line: 5 },
+                        end: { column: 15, line: 5 },
+                      },
+                    },
+
+                    range: [115, 123],
+                    loc: {
+                      start: { column: 7, line: 5 },
+                      end: { column: 15, line: 5 },
+                    },
+                  },
+
+                  range: [114, 123],
+                  loc: {
+                    start: { column: 6, line: 5 },
+                    end: { column: 15, line: 5 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [126, 132],
+                  loc: {
+                    start: { column: 18, line: 5 },
+                    end: { column: 24, line: 5 },
+                  },
+                },
+
+                range: [124, 132],
+                loc: {
+                  start: { column: 16, line: 5 },
+                  end: { column: 24, line: 5 },
+                },
+              },
+
+              range: [110, 132],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 24, line: 5 },
+              },
+            },
+          ],
+
+          range: [84, 134],
+          loc: {
+            start: { column: 11, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+
+        range: [73, 134],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 135],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
+`;

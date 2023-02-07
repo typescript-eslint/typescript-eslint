@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics export-named-enum Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: TSEnumDeclaration {
+        type: "TSEnumDeclaration",
+        id: Identifier {
+          type: "Identifier",
+          name: "Foo",
+
+          range: [85, 88],
+          loc: {
+            start: { column: 12, line: 3 },
+            end: { column: 15, line: 3 },
+          },
+        },
+        members: Array [
+          TSEnumMember {
+            type: "TSEnumMember",
+            id: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [95, 98],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 7, line: 4 },
+              },
+            },
+            initializer: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [101, 102],
+              loc: {
+                start: { column: 10, line: 4 },
+                end: { column: 11, line: 4 },
+              },
+            },
+
+            range: [95, 102],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 11, line: 4 },
+            },
+          },
+          TSEnumMember {
+            type: "TSEnumMember",
+            id: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [108, 111],
+              loc: {
+                start: { column: 4, line: 5 },
+                end: { column: 7, line: 5 },
+              },
+            },
+
+            range: [108, 111],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 7, line: 5 },
+            },
+          },
+        ],
+
+        range: [80, 113],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: Array [],
+
+      range: [73, 113],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 113],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 6 },
+  },
+}
+`;

@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics const-enum Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSEnumDeclaration {
+      type: "TSEnumDeclaration",
+      const: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [84, 87],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+      members: Array [
+        TSEnumMember {
+          type: "TSEnumMember",
+          id: Identifier {
+            type: "Identifier",
+            name: "foo",
+
+            range: [94, 97],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 7, line: 4 },
+            },
+          },
+          initializer: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [100, 101],
+            loc: {
+              start: { column: 10, line: 4 },
+              end: { column: 11, line: 4 },
+            },
+          },
+
+          range: [94, 101],
+          loc: {
+            start: { column: 4, line: 4 },
+            end: { column: 11, line: 4 },
+          },
+        },
+        TSEnumMember {
+          type: "TSEnumMember",
+          id: Identifier {
+            type: "Identifier",
+            name: "bar",
+
+            range: [107, 110],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 7, line: 5 },
+            },
+          },
+
+          range: [107, 110],
+          loc: {
+            start: { column: 4, line: 5 },
+            end: { column: 7, line: 5 },
+          },
+        },
+      ],
+
+      range: [73, 112],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 112],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 6 },
+  },
+}
+`;

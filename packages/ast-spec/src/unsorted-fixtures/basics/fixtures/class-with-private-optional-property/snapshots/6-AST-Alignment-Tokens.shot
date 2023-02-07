@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-private-optional-property AST Alignment - Token 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+    Keyword {
+      type: 'Keyword',
+      value: 'class',
+
+      range: [73, 78],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 5, line: 3 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'Foo',
+
+      range: [79, 82],
+      loc: {
+        start: { column: 6, line: 3 },
+        end: { column: 9, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [83, 84],
+      loc: {
+        start: { column: 10, line: 3 },
+        end: { column: 11, line: 3 },
+      },
+    },
+-   Identifier {
+-     type: 'Identifier',
+-     value: '#prop',
++   PrivateIdentifier {
++     type: 'PrivateIdentifier',
++     value: 'prop',
+
+      range: [87, 92],
+      loc: {
+        start: { column: 2, line: 4 },
+        end: { column: 7, line: 4 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '?',
+
+      range: [92, 93],
+      loc: {
+        start: { column: 7, line: 4 },
+        end: { column: 8, line: 4 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ':',
+
+      range: [93, 94],
+      loc: {
+        start: { column: 8, line: 4 },
+        end: { column: 9, line: 4 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'string',
+
+      range: [95, 101],
+      loc: {
+        start: { column: 10, line: 4 },
+        end: { column: 16, line: 4 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [101, 102],
+      loc: {
+        start: { column: 16, line: 4 },
+        end: { column: 17, line: 4 },
+      },
+    },
+-   Identifier {
+-     type: 'Identifier',
+-     value: '#propExplicitWithValue',
++   PrivateIdentifier {
++     type: 'PrivateIdentifier',
++     value: 'propExplicitWithValue',
+
+      range: [105, 127],
+      loc: {
+        start: { column: 2, line: 5 },
+        end: { column: 24, line: 5 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '?',
+
+      range: [127, 128],
+      loc: {
+        start: { column: 24, line: 5 },
+        end: { column: 25, line: 5 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ':',
+
+      range: [128, 129],
+      loc: {
+        start: { column: 25, line: 5 },
+        end: { column: 26, line: 5 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'string',
+
+      range: [130, 136],
+      loc: {
+        start: { column: 27, line: 5 },
+        end: { column: 33, line: 5 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '=',
+
+      range: [137, 138],
+      loc: {
+        start: { column: 34, line: 5 },
+        end: { column: 35, line: 5 },
+      },
+    },
+    String {
+      type: 'String',
+      value: '\\\\'\\\\'',
+
+      range: [139, 141],
+      loc: {
+        start: { column: 36, line: 5 },
+        end: { column: 38, line: 5 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [141, 142],
+      loc: {
+        start: { column: 38, line: 5 },
+        end: { column: 39, line: 5 },
+      },
+    },
+-   Identifier {
+-     type: 'Identifier',
+-     value: '#propImplicitWithValue',
++   PrivateIdentifier {
++     type: 'PrivateIdentifier',
++     value: 'propImplicitWithValue',
+
+      range: [145, 167],
+      loc: {
+        start: { column: 2, line: 6 },
+        end: { column: 24, line: 6 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '?',
+
+      range: [167, 168],
+      loc: {
+        start: { column: 24, line: 6 },
+        end: { column: 25, line: 6 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '=',
+
+      range: [169, 170],
+      loc: {
+        start: { column: 26, line: 6 },
+        end: { column: 27, line: 6 },
+      },
+    },
+    String {
+      type: 'String',
+      value: '\\\\'\\\\'',
+
+      range: [171, 173],
+      loc: {
+        start: { column: 28, line: 6 },
+        end: { column: 30, line: 6 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [173, 174],
+      loc: {
+        start: { column: 30, line: 6 },
+        end: { column: 31, line: 6 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [175, 176],
+      loc: {
+        start: { column: 0, line: 7 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ]"
+`;

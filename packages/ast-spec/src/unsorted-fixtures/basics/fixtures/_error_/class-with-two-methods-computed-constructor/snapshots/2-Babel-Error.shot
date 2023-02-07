@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics _error_ class-with-two-methods-computed-constructor Babel - Error 1`] = `[SyntaxError: Type parameters cannot appear on a constructor declaration. (4:15)]`;

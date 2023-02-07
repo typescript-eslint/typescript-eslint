@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures babylon-convergence type-parameter-whitespace-loc Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [95, 97],
+        loc: {
+          start: { column: 22, line: 3 },
+          end: { column: 24, line: 3 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "f",
+
+        range: [82, 83],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 10, line: 3 },
+        },
+      },
+      params: Array [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            name: "T",
+
+            range: [86, 87],
+            loc: {
+              start: { column: 13, line: 3 },
+              end: { column: 14, line: 3 },
+            },
+          },
+        ],
+
+        range: [83, 92],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [73, 97],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 24, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 97],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 24, line: 3 },
+  },
+}
+`;

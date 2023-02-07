@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-optional-method Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        abstract: true,
+        body: ClassBody {
+          type: "ClassBody",
+          body: Array [
+            MethodDefinition {
+              type: "MethodDefinition",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "createSocket",
+
+                range: [116, 128],
+                loc: {
+                  start: { column: 4, line: 4 },
+                  end: { column: 16, line: 4 },
+                },
+              },
+              kind: "method",
+              optional: true,
+              static: false,
+              value: FunctionExpression {
+                type: "FunctionExpression",
+                async: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+                returnType: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "Promise",
+
+                      range: [133, 140],
+                      loc: {
+                        start: { column: 21, line: 4 },
+                        end: { column: 28, line: 4 },
+                      },
+                    },
+                    typeParameters: TSTypeParameterInstantiation {
+                      type: "TSTypeParameterInstantiation",
+                      params: Array [
+                        TSStringKeyword {
+                          type: "TSStringKeyword",
+
+                          range: [141, 147],
+                          loc: {
+                            start: { column: 29, line: 4 },
+                            end: { column: 35, line: 4 },
+                          },
+                        },
+                      ],
+
+                      range: [140, 148],
+                      loc: {
+                        start: { column: 28, line: 4 },
+                        end: { column: 36, line: 4 },
+                      },
+                    },
+
+                    range: [133, 148],
+                    loc: {
+                      start: { column: 21, line: 4 },
+                      end: { column: 36, line: 4 },
+                    },
+                  },
+
+                  range: [131, 148],
+                  loc: {
+                    start: { column: 19, line: 4 },
+                    end: { column: 36, line: 4 },
+                  },
+                },
+
+                range: [129, 149],
+                loc: {
+                  start: { column: 17, line: 4 },
+                  end: { column: 37, line: 4 },
+                },
+              },
+
+              range: [116, 149],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 37, line: 4 },
+              },
+            },
+          ],
+
+          range: [110, 151],
+          loc: {
+            start: { column: 37, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+        id: Identifier {
+          type: "Identifier",
+          name: "AbstractSocket",
+
+          range: [95, 109],
+          loc: {
+            start: { column: 22, line: 3 },
+            end: { column: 36, line: 3 },
+          },
+        },
+        superClass: null,
+
+        range: [80, 151],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: Array [],
+
+      range: [73, 151],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 151],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 5 },
+  },
+}
+`;

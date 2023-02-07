@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics interface-type-parameters TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: Array [],
+
+        range: [90, 94],
+        loc: {
+          start: { column: 17, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [83, 86],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "T",
+
+              range: [87, 88],
+              loc: {
+                start: { column: 14, line: 3 },
+                end: { column: 15, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [87, 88],
+            loc: {
+              start: { column: 14, line: 3 },
+              end: { column: 15, line: 3 },
+            },
+          },
+        ],
+
+        range: [86, 89],
+        loc: {
+          start: { column: 13, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+
+      range: [73, 94],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 95],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

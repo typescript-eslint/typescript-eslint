@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-abstract-method Babel - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [73, 79],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "abstract",
+
+    range: [80, 88],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 15, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [89, 94],
+    loc: {
+      start: { column: 16, line: 3 },
+      end: { column: 21, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "AbstractSocket",
+
+    range: [95, 109],
+    loc: {
+      start: { column: 22, line: 3 },
+      end: { column: 36, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [110, 111],
+    loc: {
+      start: { column: 37, line: 3 },
+      end: { column: 38, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "abstract",
+
+    range: [116, 124],
+    loc: {
+      start: { column: 4, line: 4 },
+      end: { column: 12, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "createSocket",
+
+    range: [125, 137],
+    loc: {
+      start: { column: 13, line: 4 },
+      end: { column: 25, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [137, 138],
+    loc: {
+      start: { column: 25, line: 4 },
+      end: { column: 26, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [138, 139],
+    loc: {
+      start: { column: 26, line: 4 },
+      end: { column: 27, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [139, 140],
+    loc: {
+      start: { column: 27, line: 4 },
+      end: { column: 28, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Promise",
+
+    range: [141, 148],
+    loc: {
+      start: { column: 29, line: 4 },
+      end: { column: 36, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [148, 149],
+    loc: {
+      start: { column: 36, line: 4 },
+      end: { column: 37, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [149, 155],
+    loc: {
+      start: { column: 37, line: 4 },
+      end: { column: 43, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [155, 156],
+    loc: {
+      start: { column: 43, line: 4 },
+      end: { column: 44, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [156, 157],
+    loc: {
+      start: { column: 44, line: 4 },
+      end: { column: 45, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [158, 159],
+    loc: {
+      start: { column: 0, line: 5 },
+      end: { column: 1, line: 5 },
+    },
+  },
+]
+`;

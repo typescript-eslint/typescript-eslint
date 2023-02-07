@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures types typeof-this AST Alignment - Token 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'let',
+
+      range: [73, 76],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 3, line: 3 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'self',
+
+      range: [77, 81],
+      loc: {
+        start: { column: 4, line: 3 },
+        end: { column: 8, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ':',
+
+      range: [81, 82],
+      loc: {
+        start: { column: 8, line: 3 },
+        end: { column: 9, line: 3 },
+      },
+    },
+    Keyword {
+      type: 'Keyword',
+      value: 'typeof',
+
+      range: [83, 89],
+      loc: {
+        start: { column: 10, line: 3 },
+        end: { column: 16, line: 3 },
+      },
+    },
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'this',
+
+      range: [90, 94],
+      loc: {
+        start: { column: 17, line: 3 },
+        end: { column: 21, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [94, 95],
+      loc: {
+        start: { column: 21, line: 3 },
+        end: { column: 22, line: 3 },
+      },
+    },
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'let',
+
+      range: [96, 99],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 3, line: 4 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'foo',
+
+      range: [100, 103],
+      loc: {
+        start: { column: 4, line: 4 },
+        end: { column: 7, line: 4 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ':',
+
+      range: [103, 104],
+      loc: {
+        start: { column: 7, line: 4 },
+        end: { column: 8, line: 4 },
+      },
+    },
+    Keyword {
+      type: 'Keyword',
+      value: 'typeof',
+
+      range: [105, 111],
+      loc: {
+        start: { column: 9, line: 4 },
+        end: { column: 15, line: 4 },
+      },
+    },
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'this',
+
+      range: [112, 116],
+      loc: {
+        start: { column: 16, line: 4 },
+        end: { column: 20, line: 4 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '.',
+
+      range: [116, 117],
+      loc: {
+        start: { column: 20, line: 4 },
+        end: { column: 21, line: 4 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'foo',
+
+      range: [117, 120],
+      loc: {
+        start: { column: 21, line: 4 },
+        end: { column: 24, line: 4 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [120, 121],
+      loc: {
+        start: { column: 24, line: 4 },
+        end: { column: 25, line: 4 },
+      },
+    },
+  ]"
+`;

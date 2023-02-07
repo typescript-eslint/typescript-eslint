@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-readonly-parameter-properties TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "constructor",
+
+              range: [87, 98],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 13, line: 4 },
+              },
+            },
+            kind: "constructor",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [178, 180],
+                loc: {
+                  start: { column: 51, line: 5 },
+                  end: { column: 53, line: 5 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  parameter: Identifier {
+                    type: "Identifier",
+                    name: "firstName",
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSStringKeyword {
+                        type: "TSStringKeyword",
+
+                        range: [119, 125],
+                        loc: {
+                          start: { column: 34, line: 4 },
+                          end: { column: 40, line: 4 },
+                        },
+                      },
+
+                      range: [117, 125],
+                      loc: {
+                        start: { column: 32, line: 4 },
+                        end: { column: 40, line: 4 },
+                      },
+                    },
+
+                    range: [108, 125],
+                    loc: {
+                      start: { column: 23, line: 4 },
+                      end: { column: 40, line: 4 },
+                    },
+                  },
+                  readonly: true,
+
+                  range: [99, 125],
+                  loc: {
+                    start: { column: 14, line: 4 },
+                    end: { column: 40, line: 4 },
+                  },
+                },
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  parameter: AssignmentPattern {
+                    type: "AssignmentPattern",
+                    left: Identifier {
+                      type: "Identifier",
+                      name: "lastName",
+                      typeAnnotation: TSTypeAnnotation {
+                        type: "TSTypeAnnotation",
+                        typeAnnotation: TSStringKeyword {
+                          type: "TSStringKeyword",
+
+                          range: [160, 166],
+                          loc: {
+                            start: { column: 33, line: 5 },
+                            end: { column: 39, line: 5 },
+                          },
+                        },
+
+                        range: [158, 166],
+                        loc: {
+                          start: { column: 31, line: 5 },
+                          end: { column: 39, line: 5 },
+                        },
+                      },
+
+                      range: [150, 166],
+                      loc: {
+                        start: { column: 23, line: 5 },
+                        end: { column: 39, line: 5 },
+                      },
+                    },
+                    right: Literal {
+                      type: "Literal",
+                      raw: "'Smith'",
+                      value: "Smith",
+
+                      range: [169, 176],
+                      loc: {
+                        start: { column: 42, line: 5 },
+                        end: { column: 49, line: 5 },
+                      },
+                    },
+
+                    range: [150, 176],
+                    loc: {
+                      start: { column: 23, line: 5 },
+                      end: { column: 49, line: 5 },
+                    },
+                  },
+                  readonly: true,
+
+                  range: [141, 176],
+                  loc: {
+                    start: { column: 14, line: 5 },
+                    end: { column: 49, line: 5 },
+                  },
+                },
+              ],
+
+              range: [98, 180],
+              loc: {
+                start: { column: 13, line: 4 },
+                end: { column: 53, line: 5 },
+              },
+            },
+
+            range: [87, 180],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 53, line: 5 },
+            },
+          },
+        ],
+
+        range: [83, 182],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 182],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 182],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 6 },
+  },
+}
+`;

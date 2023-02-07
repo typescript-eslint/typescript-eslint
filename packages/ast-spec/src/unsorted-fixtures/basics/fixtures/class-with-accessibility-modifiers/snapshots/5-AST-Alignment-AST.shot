@@ -1,0 +1,362 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-accessibility-modifiers AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              accessibility: 'private',
+              computed: false,
+-             declare: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'bar',
+
+                range: [95, 98],
+                loc: {
+                  start: { column: 10, line: 4 },
+                  end: { column: 13, line: 4 },
+                },
+              },
+-             override: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [101, 107],
+                  loc: {
+                    start: { column: 16, line: 4 },
+                    end: { column: 22, line: 4 },
+                  },
+                },
+
+                range: [99, 107],
+                loc: {
+                  start: { column: 14, line: 4 },
+                  end: { column: 22, line: 4 },
+                },
+              },
+              value: null,
+
+              range: [87, 108],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              accessibility: 'public',
+              computed: false,
+-             declare: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'baz',
+
+                range: [125, 128],
+                loc: {
+                  start: { column: 16, line: 5 },
+                  end: { column: 19, line: 5 },
+                },
+              },
+-             override: false,
+              static: true,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSNumberKeyword {
+                  type: 'TSNumberKeyword',
+
+                  range: [131, 137],
+                  loc: {
+                    start: { column: 22, line: 5 },
+                    end: { column: 28, line: 5 },
+                  },
+                },
+
+                range: [129, 137],
+                loc: {
+                  start: { column: 20, line: 5 },
+                  end: { column: 28, line: 5 },
+                },
+              },
+              value: null,
+
+              range: [111, 138],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 29, line: 5 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              accessibility: 'public',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'getBar',
+
+                range: [148, 154],
+                loc: {
+                  start: { column: 9, line: 6 },
+                  end: { column: 15, line: 6 },
+                },
+              },
+              kind: 'method',
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [
+                    ReturnStatement {
+                      type: 'ReturnStatement',
+                      argument: MemberExpression {
+                        type: 'MemberExpression',
+                        computed: false,
+                        object: ThisExpression {
+                          type: 'ThisExpression',
+
+                          range: [171, 175],
+                          loc: {
+                            start: { column: 11, line: 7 },
+                            end: { column: 15, line: 7 },
+                          },
+                        },
+                        optional: false,
+                        property: Identifier {
+                          type: 'Identifier',
+                          name: 'bar',
+
+                          range: [176, 179],
+                          loc: {
+                            start: { column: 16, line: 7 },
+                            end: { column: 19, line: 7 },
+                          },
+                        },
+
+                        range: [171, 179],
+                        loc: {
+                          start: { column: 11, line: 7 },
+                          end: { column: 19, line: 7 },
+                        },
+                      },
+
+                      range: [164, 180],
+                      loc: {
+                        start: { column: 4, line: 7 },
+                        end: { column: 20, line: 7 },
+                      },
+                    },
+                  ],
+
+                  range: [158, 184],
+                  loc: {
+                    start: { column: 19, line: 6 },
+                    end: { column: 3, line: 8 },
+                  },
+                },
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [155, 184],
+                loc: {
+                  start: { column: 16, line: 6 },
+                  end: { column: 3, line: 8 },
+                },
+              },
+
+              range: [141, 184],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 3, line: 8 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              accessibility: 'protected',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'setBar',
+
+                range: [197, 203],
+                loc: {
+                  start: { column: 12, line: 9 },
+                  end: { column: 18, line: 9 },
+                },
+              },
+              kind: 'method',
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [
+                    ExpressionStatement {
+                      type: 'ExpressionStatement',
+                      expression: AssignmentExpression {
+                        type: 'AssignmentExpression',
+                        left: MemberExpression {
+                          type: 'MemberExpression',
+                          computed: false,
+                          object: ThisExpression {
+                            type: 'ThisExpression',
+
+                            range: [225, 229],
+                            loc: {
+                              start: { column: 4, line: 10 },
+                              end: { column: 8, line: 10 },
+                            },
+                          },
+                          optional: false,
+                          property: Identifier {
+                            type: 'Identifier',
+                            name: 'bar',
+
+                            range: [230, 233],
+                            loc: {
+                              start: { column: 9, line: 10 },
+                              end: { column: 12, line: 10 },
+                            },
+                          },
+
+                          range: [225, 233],
+                          loc: {
+                            start: { column: 4, line: 10 },
+                            end: { column: 12, line: 10 },
+                          },
+                        },
+                        operator: '=',
+                        right: Identifier {
+                          type: 'Identifier',
+                          name: 'bar',
+
+                          range: [236, 239],
+                          loc: {
+                            start: { column: 15, line: 10 },
+                            end: { column: 18, line: 10 },
+                          },
+                        },
+
+                        range: [225, 239],
+                        loc: {
+                          start: { column: 4, line: 10 },
+                          end: { column: 18, line: 10 },
+                        },
+                      },
+
+                      range: [225, 240],
+                      loc: {
+                        start: { column: 4, line: 10 },
+                        end: { column: 19, line: 10 },
+                      },
+                    },
+                  ],
+
+                  range: [219, 244],
+                  loc: {
+                    start: { column: 34, line: 9 },
+                    end: { column: 3, line: 11 },
+                  },
+                },
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [
+                  Identifier {
+                    type: 'Identifier',
+                    name: 'bar',
+                    typeAnnotation: TSTypeAnnotation {
+                      type: 'TSTypeAnnotation',
+                      typeAnnotation: TSStringKeyword {
+                        type: 'TSStringKeyword',
+
+                        range: [211, 217],
+                        loc: {
+                          start: { column: 26, line: 9 },
+                          end: { column: 32, line: 9 },
+                        },
+                      },
+
+                      range: [209, 217],
+                      loc: {
+                        start: { column: 24, line: 9 },
+                        end: { column: 32, line: 9 },
+                      },
+                    },
+
+                    range: [205, 217],
+                    loc: {
+                      start: { column: 20, line: 9 },
+                      end: { column: 32, line: 9 },
+                    },
+                  },
+                ],
+
+                range: [204, 244],
+                loc: {
+                  start: { column: 19, line: 9 },
+                  end: { column: 3, line: 11 },
+                },
+              },
+
+              range: [187, 244],
+              loc: {
+                start: { column: 2, line: 9 },
+                end: { column: 3, line: 11 },
+              },
+            },
+          ],
+
+          range: [83, 246],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 1, line: 12 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [79, 82],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 9, line: 3 },
+          },
+        },
+        superClass: null,
+
+        range: [73, 246],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 12 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 247],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 13 },
+    },
+  }"
+`;

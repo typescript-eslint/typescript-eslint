@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics function-with-type-parameters-that-have-comments TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [106, 108],
+        loc: {
+          start: { column: 33, line: 3 },
+          end: { column: 35, line: 3 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "compare",
+
+        range: [82, 89],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+      params: Array [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "T",
+
+              range: [101, 102],
+              loc: {
+                start: { column: 28, line: 3 },
+                end: { column: 29, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [101, 102],
+            loc: {
+              start: { column: 28, line: 3 },
+              end: { column: 29, line: 3 },
+            },
+          },
+        ],
+
+        range: [89, 103],
+        loc: {
+          start: { column: 16, line: 3 },
+          end: { column: 30, line: 3 },
+        },
+      },
+
+      range: [73, 108],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 35, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 108],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 35, line: 3 },
+  },
+}
+`;

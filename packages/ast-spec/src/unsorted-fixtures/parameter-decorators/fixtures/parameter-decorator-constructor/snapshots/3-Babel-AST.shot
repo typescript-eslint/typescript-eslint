@@ -1,0 +1,256 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures parameter-decorators parameter-decorator-constructor Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "constructor",
+
+              range: [93, 104],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+            kind: "constructor",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: AssignmentExpression {
+                      type: "AssignmentExpression",
+                      left: MemberExpression {
+                        type: "MemberExpression",
+                        computed: false,
+                        object: ThisExpression {
+                          type: "ThisExpression",
+
+                          range: [154, 158],
+                          loc: {
+                            start: { column: 8, line: 5 },
+                            end: { column: 12, line: 5 },
+                          },
+                        },
+                        optional: false,
+                        property: Identifier {
+                          type: "Identifier",
+                          name: "title",
+
+                          range: [159, 164],
+                          loc: {
+                            start: { column: 13, line: 5 },
+                            end: { column: 18, line: 5 },
+                          },
+                        },
+
+                        range: [154, 164],
+                        loc: {
+                          start: { column: 8, line: 5 },
+                          end: { column: 18, line: 5 },
+                        },
+                      },
+                      operator: "=",
+                      right: MemberExpression {
+                        type: "MemberExpression",
+                        computed: false,
+                        object: Identifier {
+                          type: "Identifier",
+                          name: "config",
+
+                          range: [167, 173],
+                          loc: {
+                            start: { column: 21, line: 5 },
+                            end: { column: 27, line: 5 },
+                          },
+                        },
+                        optional: false,
+                        property: Identifier {
+                          type: "Identifier",
+                          name: "title",
+
+                          range: [174, 179],
+                          loc: {
+                            start: { column: 28, line: 5 },
+                            end: { column: 33, line: 5 },
+                          },
+                        },
+
+                        range: [167, 179],
+                        loc: {
+                          start: { column: 21, line: 5 },
+                          end: { column: 33, line: 5 },
+                        },
+                      },
+
+                      range: [154, 179],
+                      loc: {
+                        start: { column: 8, line: 5 },
+                        end: { column: 33, line: 5 },
+                      },
+                    },
+
+                    range: [154, 180],
+                    loc: {
+                      start: { column: 8, line: 5 },
+                      end: { column: 34, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [144, 186],
+                loc: {
+                  start: { column: 55, line: 4 },
+                  end: { column: 5, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [
+                Identifier {
+                  type: "Identifier",
+                  decorators: Array [
+                    Decorator {
+                      type: "Decorator",
+                      expression: CallExpression {
+                        type: "CallExpression",
+                        arguments: Array [
+                          Identifier {
+                            type: "Identifier",
+                            name: "APP_CONFIG",
+
+                            range: [113, 123],
+                            loc: {
+                              start: { column: 24, line: 4 },
+                              end: { column: 34, line: 4 },
+                            },
+                          },
+                        ],
+                        callee: Identifier {
+                          type: "Identifier",
+                          name: "Inject",
+
+                          range: [106, 112],
+                          loc: {
+                            start: { column: 17, line: 4 },
+                            end: { column: 23, line: 4 },
+                          },
+                        },
+                        optional: false,
+
+                        range: [106, 124],
+                        loc: {
+                          start: { column: 17, line: 4 },
+                          end: { column: 35, line: 4 },
+                        },
+                      },
+
+                      range: [105, 124],
+                      loc: {
+                        start: { column: 16, line: 4 },
+                        end: { column: 35, line: 4 },
+                      },
+                    },
+                  ],
+                  name: "config",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        name: "AppConfig",
+
+                        range: [133, 142],
+                        loc: {
+                          start: { column: 44, line: 4 },
+                          end: { column: 53, line: 4 },
+                        },
+                      },
+
+                      range: [133, 142],
+                      loc: {
+                        start: { column: 44, line: 4 },
+                        end: { column: 53, line: 4 },
+                      },
+                    },
+
+                    range: [131, 142],
+                    loc: {
+                      start: { column: 42, line: 4 },
+                      end: { column: 53, line: 4 },
+                    },
+                  },
+
+                  range: [125, 142],
+                  loc: {
+                    start: { column: 36, line: 4 },
+                    end: { column: 53, line: 4 },
+                  },
+                },
+              ],
+
+              range: [104, 186],
+              loc: {
+                start: { column: 15, line: 4 },
+                end: { column: 5, line: 6 },
+              },
+            },
+
+            range: [93, 186],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 5, line: 6 },
+            },
+          },
+        ],
+
+        range: [87, 188],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Service",
+
+        range: [79, 86],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 188],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 189],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

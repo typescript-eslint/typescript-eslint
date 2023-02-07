@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics type-assertion-with-guard-in-arrow-function AST Alignment - Token 1`] = `
+"Snapshot Diff:
+Compared values have no visual difference."
+`;

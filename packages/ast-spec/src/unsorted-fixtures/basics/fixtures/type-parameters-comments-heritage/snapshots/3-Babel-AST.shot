@@ -1,0 +1,438 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics type-parameters-comments-heritage Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [145, 147],
+        loc: {
+          start: { column: 72, line: 3 },
+          end: { column: 74, line: 3 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: Identifier {
+        type: "Identifier",
+        name: "bar",
+
+        range: [116, 119],
+        loc: {
+          start: { column: 43, line: 3 },
+          end: { column: 46, line: 3 },
+        },
+      },
+      superTypeParameters: TSTypeParameterInstantiation {
+        type: "TSTypeParameterInstantiation",
+        params: Array [
+          TSTypeReference {
+            type: "TSTypeReference",
+            typeName: Identifier {
+              type: "Identifier",
+              name: "A",
+
+              range: [132, 133],
+              loc: {
+                start: { column: 59, line: 3 },
+                end: { column: 60, line: 3 },
+              },
+            },
+
+            range: [132, 133],
+            loc: {
+              start: { column: 59, line: 3 },
+              end: { column: 60, line: 3 },
+            },
+          },
+        ],
+
+        range: [120, 144],
+        loc: {
+          start: { column: 47, line: 3 },
+          end: { column: 71, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            name: "A",
+
+            range: [95, 96],
+            loc: {
+              start: { column: 22, line: 3 },
+              end: { column: 23, line: 3 },
+            },
+          },
+        ],
+
+        range: [83, 107],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 34, line: 3 },
+        },
+      },
+
+      range: [73, 147],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 74, line: 3 },
+      },
+    },
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [235, 237],
+        loc: {
+          start: { column: 87, line: 4 },
+          end: { column: 89, line: 4 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "foo2",
+
+        range: [154, 158],
+        loc: {
+          start: { column: 6, line: 4 },
+          end: { column: 10, line: 4 },
+        },
+      },
+      superClass: Identifier {
+        type: "Identifier",
+        name: "bar",
+
+        range: [206, 209],
+        loc: {
+          start: { column: 58, line: 4 },
+          end: { column: 61, line: 4 },
+        },
+      },
+      superTypeParameters: TSTypeParameterInstantiation {
+        type: "TSTypeParameterInstantiation",
+        params: Array [
+          TSTypeReference {
+            type: "TSTypeReference",
+            typeName: Identifier {
+              type: "Identifier",
+              name: "A",
+
+              range: [222, 223],
+              loc: {
+                start: { column: 74, line: 4 },
+                end: { column: 75, line: 4 },
+              },
+            },
+
+            range: [222, 223],
+            loc: {
+              start: { column: 74, line: 4 },
+              end: { column: 75, line: 4 },
+            },
+          },
+        ],
+
+        range: [210, 234],
+        loc: {
+          start: { column: 62, line: 4 },
+          end: { column: 86, line: 4 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            default: TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "2",
+                value: 2,
+
+                range: [185, 186],
+                loc: {
+                  start: { column: 37, line: 4 },
+                  end: { column: 38, line: 4 },
+                },
+              },
+
+              range: [185, 186],
+              loc: {
+                start: { column: 37, line: 4 },
+                end: { column: 38, line: 4 },
+              },
+            },
+            name: "A",
+
+            range: [171, 186],
+            loc: {
+              start: { column: 23, line: 4 },
+              end: { column: 38, line: 4 },
+            },
+          },
+        ],
+
+        range: [159, 197],
+        loc: {
+          start: { column: 11, line: 4 },
+          end: { column: 49, line: 4 },
+        },
+      },
+
+      range: [148, 237],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 89, line: 4 },
+      },
+    },
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: Array [],
+
+        range: [315, 317],
+        loc: {
+          start: { column: 77, line: 5 },
+          end: { column: 79, line: 5 },
+        },
+      },
+      extends: Array [
+        TSExpressionWithTypeArguments {
+          type: "TSExpressionWithTypeArguments",
+          expression: Identifier {
+            type: "Identifier",
+            name: "bar2",
+
+            range: [285, 289],
+            loc: {
+              start: { column: 47, line: 5 },
+              end: { column: 51, line: 5 },
+            },
+          },
+          typeParameters: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: Array [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  name: "A",
+
+                  range: [302, 303],
+                  loc: {
+                    start: { column: 64, line: 5 },
+                    end: { column: 65, line: 5 },
+                  },
+                },
+
+                range: [302, 303],
+                loc: {
+                  start: { column: 64, line: 5 },
+                  end: { column: 65, line: 5 },
+                },
+              },
+            ],
+
+            range: [290, 314],
+            loc: {
+              start: { column: 52, line: 5 },
+              end: { column: 76, line: 5 },
+            },
+          },
+
+          range: [285, 314],
+          loc: {
+            start: { column: 47, line: 5 },
+            end: { column: 76, line: 5 },
+          },
+        },
+      ],
+      id: Identifier {
+        type: "Identifier",
+        name: "bar",
+
+        range: [248, 251],
+        loc: {
+          start: { column: 10, line: 5 },
+          end: { column: 13, line: 5 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            name: "A",
+
+            range: [264, 265],
+            loc: {
+              start: { column: 26, line: 5 },
+              end: { column: 27, line: 5 },
+            },
+          },
+        ],
+
+        range: [252, 276],
+        loc: {
+          start: { column: 14, line: 5 },
+          end: { column: 38, line: 5 },
+        },
+      },
+
+      range: [238, 317],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 79, line: 5 },
+      },
+    },
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: Array [],
+
+        range: [409, 411],
+        loc: {
+          start: { column: 91, line: 6 },
+          end: { column: 93, line: 6 },
+        },
+      },
+      extends: Array [
+        TSExpressionWithTypeArguments {
+          type: "TSExpressionWithTypeArguments",
+          expression: Identifier {
+            type: "Identifier",
+            name: "bar",
+
+            range: [380, 383],
+            loc: {
+              start: { column: 62, line: 6 },
+              end: { column: 65, line: 6 },
+            },
+          },
+          typeParameters: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: Array [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  name: "A",
+
+                  range: [396, 397],
+                  loc: {
+                    start: { column: 78, line: 6 },
+                    end: { column: 79, line: 6 },
+                  },
+                },
+
+                range: [396, 397],
+                loc: {
+                  start: { column: 78, line: 6 },
+                  end: { column: 79, line: 6 },
+                },
+              },
+            ],
+
+            range: [384, 408],
+            loc: {
+              start: { column: 66, line: 6 },
+              end: { column: 90, line: 6 },
+            },
+          },
+
+          range: [380, 408],
+          loc: {
+            start: { column: 62, line: 6 },
+            end: { column: 90, line: 6 },
+          },
+        },
+      ],
+      id: Identifier {
+        type: "Identifier",
+        name: "bar2",
+
+        range: [328, 332],
+        loc: {
+          start: { column: 10, line: 6 },
+          end: { column: 14, line: 6 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            default: TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "2",
+                value: 2,
+
+                range: [359, 360],
+                loc: {
+                  start: { column: 41, line: 6 },
+                  end: { column: 42, line: 6 },
+                },
+              },
+
+              range: [359, 360],
+              loc: {
+                start: { column: 41, line: 6 },
+                end: { column: 42, line: 6 },
+              },
+            },
+            name: "A",
+
+            range: [345, 360],
+            loc: {
+              start: { column: 27, line: 6 },
+              end: { column: 42, line: 6 },
+            },
+          },
+        ],
+
+        range: [333, 371],
+        loc: {
+          start: { column: 15, line: 6 },
+          end: { column: 53, line: 6 },
+        },
+      },
+
+      range: [318, 411],
+      loc: {
+        start: { column: 0, line: 6 },
+        end: { column: 93, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 412],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

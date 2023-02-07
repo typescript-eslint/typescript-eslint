@@ -1,0 +1,560 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics optional-chain-element-access-with-non-null-assertion TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: TSNonNullExpression {
+                  type: "TSNonNullExpression",
+                  expression: MemberExpression {
+                    type: "MemberExpression",
+                    computed: true,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [113, 116],
+                      loc: {
+                        start: { column: 2, line: 4 },
+                        end: { column: 5, line: 4 },
+                      },
+                    },
+                    optional: true,
+                    property: Literal {
+                      type: "Literal",
+                      raw: "'two'",
+                      value: "two",
+
+                      range: [119, 124],
+                      loc: {
+                        start: { column: 8, line: 4 },
+                        end: { column: 13, line: 4 },
+                      },
+                    },
+
+                    range: [113, 125],
+                    loc: {
+                      start: { column: 2, line: 4 },
+                      end: { column: 14, line: 4 },
+                    },
+                  },
+
+                  range: [113, 126],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 15, line: 4 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "three",
+
+                  range: [127, 132],
+                  loc: {
+                    start: { column: 16, line: 4 },
+                    end: { column: 21, line: 4 },
+                  },
+                },
+
+                range: [113, 132],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 21, line: 4 },
+                },
+              },
+
+              range: [113, 132],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 21, line: 4 },
+              },
+            },
+
+            range: [113, 133],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 22, line: 4 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: false,
+              object: TSNonNullExpression {
+                type: "TSNonNullExpression",
+                expression: ChainExpression {
+                  type: "ChainExpression",
+                  expression: MemberExpression {
+                    type: "MemberExpression",
+                    computed: true,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [137, 140],
+                      loc: {
+                        start: { column: 3, line: 5 },
+                        end: { column: 6, line: 5 },
+                      },
+                    },
+                    optional: true,
+                    property: Literal {
+                      type: "Literal",
+                      raw: "'two'",
+                      value: "two",
+
+                      range: [143, 148],
+                      loc: {
+                        start: { column: 9, line: 5 },
+                        end: { column: 14, line: 5 },
+                      },
+                    },
+
+                    range: [137, 149],
+                    loc: {
+                      start: { column: 3, line: 5 },
+                      end: { column: 15, line: 5 },
+                    },
+                  },
+
+                  range: [137, 149],
+                  loc: {
+                    start: { column: 3, line: 5 },
+                    end: { column: 15, line: 5 },
+                  },
+                },
+
+                range: [136, 151],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 17, line: 5 },
+                },
+              },
+              optional: false,
+              property: Identifier {
+                type: "Identifier",
+                name: "three",
+
+                range: [152, 157],
+                loc: {
+                  start: { column: 18, line: 5 },
+                  end: { column: 23, line: 5 },
+                },
+              },
+
+              range: [136, 157],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 23, line: 5 },
+              },
+            },
+
+            range: [136, 158],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 24, line: 5 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: false,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: TSNonNullExpression {
+                  type: "TSNonNullExpression",
+                  expression: MemberExpression {
+                    type: "MemberExpression",
+                    computed: true,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [162, 165],
+                      loc: {
+                        start: { column: 3, line: 6 },
+                        end: { column: 6, line: 6 },
+                      },
+                    },
+                    optional: true,
+                    property: Literal {
+                      type: "Literal",
+                      raw: "'two'",
+                      value: "two",
+
+                      range: [168, 173],
+                      loc: {
+                        start: { column: 9, line: 6 },
+                        end: { column: 14, line: 6 },
+                      },
+                    },
+
+                    range: [162, 174],
+                    loc: {
+                      start: { column: 3, line: 6 },
+                      end: { column: 15, line: 6 },
+                    },
+                  },
+
+                  range: [162, 175],
+                  loc: {
+                    start: { column: 3, line: 6 },
+                    end: { column: 16, line: 6 },
+                  },
+                },
+
+                range: [162, 175],
+                loc: {
+                  start: { column: 3, line: 6 },
+                  end: { column: 16, line: 6 },
+                },
+              },
+              optional: false,
+              property: Identifier {
+                type: "Identifier",
+                name: "three",
+
+                range: [177, 182],
+                loc: {
+                  start: { column: 18, line: 6 },
+                  end: { column: 23, line: 6 },
+                },
+              },
+
+              range: [161, 182],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 23, line: 6 },
+              },
+            },
+
+            range: [161, 183],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 24, line: 6 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: true,
+                object: TSNonNullExpression {
+                  type: "TSNonNullExpression",
+                  expression: MemberExpression {
+                    type: "MemberExpression",
+                    computed: false,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [186, 189],
+                      loc: {
+                        start: { column: 2, line: 7 },
+                        end: { column: 5, line: 7 },
+                      },
+                    },
+                    optional: true,
+                    property: Identifier {
+                      type: "Identifier",
+                      name: "two",
+
+                      range: [191, 194],
+                      loc: {
+                        start: { column: 7, line: 7 },
+                        end: { column: 10, line: 7 },
+                      },
+                    },
+
+                    range: [186, 194],
+                    loc: {
+                      start: { column: 2, line: 7 },
+                      end: { column: 10, line: 7 },
+                    },
+                  },
+
+                  range: [186, 195],
+                  loc: {
+                    start: { column: 2, line: 7 },
+                    end: { column: 11, line: 7 },
+                  },
+                },
+                optional: false,
+                property: Literal {
+                  type: "Literal",
+                  raw: "'three'",
+                  value: "three",
+
+                  range: [196, 203],
+                  loc: {
+                    start: { column: 12, line: 7 },
+                    end: { column: 19, line: 7 },
+                  },
+                },
+
+                range: [186, 204],
+                loc: {
+                  start: { column: 2, line: 7 },
+                  end: { column: 20, line: 7 },
+                },
+              },
+
+              range: [186, 204],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 20, line: 7 },
+              },
+            },
+
+            range: [186, 205],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 21, line: 7 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: true,
+              object: TSNonNullExpression {
+                type: "TSNonNullExpression",
+                expression: ChainExpression {
+                  type: "ChainExpression",
+                  expression: MemberExpression {
+                    type: "MemberExpression",
+                    computed: false,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [209, 212],
+                      loc: {
+                        start: { column: 3, line: 8 },
+                        end: { column: 6, line: 8 },
+                      },
+                    },
+                    optional: true,
+                    property: Identifier {
+                      type: "Identifier",
+                      name: "two",
+
+                      range: [214, 217],
+                      loc: {
+                        start: { column: 8, line: 8 },
+                        end: { column: 11, line: 8 },
+                      },
+                    },
+
+                    range: [209, 217],
+                    loc: {
+                      start: { column: 3, line: 8 },
+                      end: { column: 11, line: 8 },
+                    },
+                  },
+
+                  range: [209, 217],
+                  loc: {
+                    start: { column: 3, line: 8 },
+                    end: { column: 11, line: 8 },
+                  },
+                },
+
+                range: [208, 219],
+                loc: {
+                  start: { column: 2, line: 8 },
+                  end: { column: 13, line: 8 },
+                },
+              },
+              optional: false,
+              property: Literal {
+                type: "Literal",
+                raw: "'three'",
+                value: "three",
+
+                range: [220, 227],
+                loc: {
+                  start: { column: 14, line: 8 },
+                  end: { column: 21, line: 8 },
+                },
+              },
+
+              range: [208, 228],
+              loc: {
+                start: { column: 2, line: 8 },
+                end: { column: 22, line: 8 },
+              },
+            },
+
+            range: [208, 229],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 23, line: 8 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: true,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: TSNonNullExpression {
+                  type: "TSNonNullExpression",
+                  expression: MemberExpression {
+                    type: "MemberExpression",
+                    computed: false,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [233, 236],
+                      loc: {
+                        start: { column: 3, line: 9 },
+                        end: { column: 6, line: 9 },
+                      },
+                    },
+                    optional: true,
+                    property: Identifier {
+                      type: "Identifier",
+                      name: "two",
+
+                      range: [238, 241],
+                      loc: {
+                        start: { column: 8, line: 9 },
+                        end: { column: 11, line: 9 },
+                      },
+                    },
+
+                    range: [233, 241],
+                    loc: {
+                      start: { column: 3, line: 9 },
+                      end: { column: 11, line: 9 },
+                    },
+                  },
+
+                  range: [233, 242],
+                  loc: {
+                    start: { column: 3, line: 9 },
+                    end: { column: 12, line: 9 },
+                  },
+                },
+
+                range: [233, 242],
+                loc: {
+                  start: { column: 3, line: 9 },
+                  end: { column: 12, line: 9 },
+                },
+              },
+              optional: false,
+              property: Literal {
+                type: "Literal",
+                raw: "'three'",
+                value: "three",
+
+                range: [244, 251],
+                loc: {
+                  start: { column: 14, line: 9 },
+                  end: { column: 21, line: 9 },
+                },
+              },
+
+              range: [232, 252],
+              loc: {
+                start: { column: 2, line: 9 },
+                end: { column: 22, line: 9 },
+              },
+            },
+
+            range: [232, 253],
+            loc: {
+              start: { column: 2, line: 9 },
+              end: { column: 23, line: 9 },
+            },
+          },
+        ],
+
+        range: [109, 255],
+        loc: {
+          start: { column: 36, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "processOptional",
+
+        range: [82, 97],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 24, line: 3 },
+        },
+      },
+      params: Array [
+        Identifier {
+          type: "Identifier",
+          name: "one",
+          optional: true,
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [104, 107],
+              loc: {
+                start: { column: 31, line: 3 },
+                end: { column: 34, line: 3 },
+              },
+            },
+
+            range: [102, 107],
+            loc: {
+              start: { column: 29, line: 3 },
+              end: { column: 34, line: 3 },
+            },
+          },
+
+          range: [98, 107],
+          loc: {
+            start: { column: 25, line: 3 },
+            end: { column: 34, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 255],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 256],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

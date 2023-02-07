@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-factory-instance-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: CallExpression {
+                  type: "CallExpression",
+                  arguments: Array [
+                    Literal {
+                      type: "Literal",
+                      raw: "false",
+                      value: false,
+
+                      range: [105, 110],
+                      loc: {
+                        start: { column: 18, line: 4 },
+                        end: { column: 23, line: 4 },
+                      },
+                    },
+                  ],
+                  callee: Identifier {
+                    type: "Identifier",
+                    name: "configurable",
+
+                    range: [92, 104],
+                    loc: {
+                      start: { column: 5, line: 4 },
+                      end: { column: 17, line: 4 },
+                    },
+                  },
+                  optional: false,
+
+                  range: [92, 111],
+                  loc: {
+                    start: { column: 5, line: 4 },
+                    end: { column: 24, line: 4 },
+                  },
+                },
+
+                range: [91, 111],
+                loc: {
+                  start: { column: 4, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+            ],
+            key: Identifier {
+              type: "Identifier",
+              name: "x",
+
+              range: [120, 121],
+              loc: {
+                start: { column: 8, line: 5 },
+                end: { column: 9, line: 5 },
+              },
+            },
+            kind: "get",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: ThisExpression {
+                        type: "ThisExpression",
+
+                        range: [133, 137],
+                        loc: {
+                          start: { column: 21, line: 5 },
+                          end: { column: 25, line: 5 },
+                        },
+                      },
+                      optional: false,
+                      property: Identifier {
+                        type: "Identifier",
+                        name: "_x",
+
+                        range: [138, 140],
+                        loc: {
+                          start: { column: 26, line: 5 },
+                          end: { column: 28, line: 5 },
+                        },
+                      },
+
+                      range: [133, 140],
+                      loc: {
+                        start: { column: 21, line: 5 },
+                        end: { column: 28, line: 5 },
+                      },
+                    },
+
+                    range: [126, 141],
+                    loc: {
+                      start: { column: 14, line: 5 },
+                      end: { column: 29, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [124, 143],
+                loc: {
+                  start: { column: 12, line: 5 },
+                  end: { column: 31, line: 5 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [121, 143],
+              loc: {
+                start: { column: 9, line: 5 },
+                end: { column: 31, line: 5 },
+              },
+            },
+
+            range: [91, 143],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 31, line: 5 },
+            },
+          },
+        ],
+
+        range: [85, 145],
+        loc: {
+          start: { column: 12, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Point",
+
+        range: [79, 84],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 11, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 145],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 145],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 6 },
+  },
+}
+`;

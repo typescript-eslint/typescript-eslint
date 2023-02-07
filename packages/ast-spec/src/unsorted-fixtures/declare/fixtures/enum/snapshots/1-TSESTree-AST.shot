@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures declare enum TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSEnumDeclaration {
+      type: "TSEnumDeclaration",
+      declare: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [86, 89],
+        loc: {
+          start: { column: 13, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+      members: Array [
+        TSEnumMember {
+          type: "TSEnumMember",
+          id: Identifier {
+            type: "Identifier",
+            name: "Bar",
+
+            range: [96, 99],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 7, line: 4 },
+            },
+          },
+
+          range: [96, 99],
+          loc: {
+            start: { column: 4, line: 4 },
+            end: { column: 7, line: 4 },
+          },
+        },
+        TSEnumMember {
+          type: "TSEnumMember",
+          id: Identifier {
+            type: "Identifier",
+            name: "Baz",
+
+            range: [105, 108],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 7, line: 5 },
+            },
+          },
+
+          range: [105, 108],
+          loc: {
+            start: { column: 4, line: 5 },
+            end: { column: 7, line: 5 },
+          },
+        },
+      ],
+
+      range: [73, 110],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 111],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-abstract-properties Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: true,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            abstract: true,
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [107, 110],
+              loc: {
+                start: { column: 13, line: 4 },
+                end: { column: 16, line: 4 },
+              },
+            },
+            static: false,
+            value: null,
+
+            range: [98, 111],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 17, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            abstract: true,
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "baz",
+
+              range: [125, 128],
+              loc: {
+                start: { column: 13, line: 5 },
+                end: { column: 16, line: 5 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [130, 136],
+                loc: {
+                  start: { column: 18, line: 5 },
+                  end: { column: 24, line: 5 },
+                },
+              },
+
+              range: [128, 136],
+              loc: {
+                start: { column: 16, line: 5 },
+                end: { column: 24, line: 5 },
+              },
+            },
+            value: null,
+
+            range: [116, 137],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 25, line: 5 },
+            },
+          },
+        ],
+
+        range: [92, 139],
+        loc: {
+          start: { column: 19, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [88, 91],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 18, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 139],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 140],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

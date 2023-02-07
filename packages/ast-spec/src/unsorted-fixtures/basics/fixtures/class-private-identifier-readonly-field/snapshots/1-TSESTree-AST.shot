@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-private-identifier-readonly-field TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            key: PrivateIdentifier {
+              type: "PrivateIdentifier",
+              name: "priv",
+
+              range: [96, 101],
+              loc: {
+                start: { column: 11, line: 4 },
+                end: { column: 16, line: 4 },
+              },
+            },
+            override: false,
+            readonly: true,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [103, 109],
+                loc: {
+                  start: { column: 18, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+
+              range: [101, 109],
+              loc: {
+                start: { column: 16, line: 4 },
+                end: { column: 24, line: 4 },
+              },
+            },
+            value: null,
+
+            range: [87, 109],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 24, line: 4 },
+            },
+          },
+        ],
+
+        range: [83, 111],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 111],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 112],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

@@ -1,0 +1,563 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics optional-chain-with-parens TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: Identifier {
+                  type: "Identifier",
+                  name: "one",
+
+                  range: [120, 123],
+                  loc: {
+                    start: { column: 3, line: 4 },
+                    end: { column: 6, line: 4 },
+                  },
+                },
+                optional: true,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "two",
+
+                  range: [125, 128],
+                  loc: {
+                    start: { column: 8, line: 4 },
+                    end: { column: 11, line: 4 },
+                  },
+                },
+
+                range: [120, 128],
+                loc: {
+                  start: { column: 3, line: 4 },
+                  end: { column: 11, line: 4 },
+                },
+              },
+
+              range: [120, 128],
+              loc: {
+                start: { column: 3, line: 4 },
+                end: { column: 11, line: 4 },
+              },
+            },
+
+            range: [119, 130],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 13, line: 4 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: false,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: MemberExpression {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: Identifier {
+                    type: "Identifier",
+                    name: "one",
+
+                    range: [134, 137],
+                    loc: {
+                      start: { column: 3, line: 5 },
+                      end: { column: 6, line: 5 },
+                    },
+                  },
+                  optional: true,
+                  property: Identifier {
+                    type: "Identifier",
+                    name: "two",
+
+                    range: [139, 142],
+                    loc: {
+                      start: { column: 8, line: 5 },
+                      end: { column: 11, line: 5 },
+                    },
+                  },
+
+                  range: [134, 142],
+                  loc: {
+                    start: { column: 3, line: 5 },
+                    end: { column: 11, line: 5 },
+                  },
+                },
+
+                range: [134, 142],
+                loc: {
+                  start: { column: 3, line: 5 },
+                  end: { column: 11, line: 5 },
+                },
+              },
+              optional: false,
+              property: Identifier {
+                type: "Identifier",
+                name: "three",
+
+                range: [144, 149],
+                loc: {
+                  start: { column: 13, line: 5 },
+                  end: { column: 18, line: 5 },
+                },
+              },
+
+              range: [133, 149],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 18, line: 5 },
+              },
+            },
+
+            range: [133, 150],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 19, line: 5 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: MemberExpression {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: Identifier {
+                    type: "Identifier",
+                    name: "one",
+
+                    range: [154, 157],
+                    loc: {
+                      start: { column: 3, line: 6 },
+                      end: { column: 6, line: 6 },
+                    },
+                  },
+                  optional: false,
+                  property: Identifier {
+                    type: "Identifier",
+                    name: "two",
+
+                    range: [158, 161],
+                    loc: {
+                      start: { column: 7, line: 6 },
+                      end: { column: 10, line: 6 },
+                    },
+                  },
+
+                  range: [154, 161],
+                  loc: {
+                    start: { column: 3, line: 6 },
+                    end: { column: 10, line: 6 },
+                  },
+                },
+                optional: true,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "three",
+
+                  range: [163, 168],
+                  loc: {
+                    start: { column: 12, line: 6 },
+                    end: { column: 17, line: 6 },
+                  },
+                },
+
+                range: [154, 168],
+                loc: {
+                  start: { column: 3, line: 6 },
+                  end: { column: 17, line: 6 },
+                },
+              },
+
+              range: [154, 168],
+              loc: {
+                start: { column: 3, line: 6 },
+                end: { column: 17, line: 6 },
+              },
+            },
+
+            range: [153, 170],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 19, line: 6 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: false,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: MemberExpression {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: MemberExpression {
+                    type: "MemberExpression",
+                    computed: false,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [174, 177],
+                      loc: {
+                        start: { column: 3, line: 7 },
+                        end: { column: 6, line: 7 },
+                      },
+                    },
+                    optional: false,
+                    property: Identifier {
+                      type: "Identifier",
+                      name: "two",
+
+                      range: [178, 181],
+                      loc: {
+                        start: { column: 7, line: 7 },
+                        end: { column: 10, line: 7 },
+                      },
+                    },
+
+                    range: [174, 181],
+                    loc: {
+                      start: { column: 3, line: 7 },
+                      end: { column: 10, line: 7 },
+                    },
+                  },
+                  optional: true,
+                  property: Identifier {
+                    type: "Identifier",
+                    name: "three",
+
+                    range: [183, 188],
+                    loc: {
+                      start: { column: 12, line: 7 },
+                      end: { column: 17, line: 7 },
+                    },
+                  },
+
+                  range: [174, 188],
+                  loc: {
+                    start: { column: 3, line: 7 },
+                    end: { column: 17, line: 7 },
+                  },
+                },
+
+                range: [174, 188],
+                loc: {
+                  start: { column: 3, line: 7 },
+                  end: { column: 17, line: 7 },
+                },
+              },
+              optional: false,
+              property: Identifier {
+                type: "Identifier",
+                name: "four",
+
+                range: [190, 194],
+                loc: {
+                  start: { column: 19, line: 7 },
+                  end: { column: 23, line: 7 },
+                },
+              },
+
+              range: [173, 194],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 23, line: 7 },
+              },
+            },
+
+            range: [173, 195],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 24, line: 7 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: false,
+                object: MemberExpression {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: MemberExpression {
+                    type: "MemberExpression",
+                    computed: false,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [199, 202],
+                      loc: {
+                        start: { column: 3, line: 8 },
+                        end: { column: 6, line: 8 },
+                      },
+                    },
+                    optional: false,
+                    property: Identifier {
+                      type: "Identifier",
+                      name: "two",
+
+                      range: [203, 206],
+                      loc: {
+                        start: { column: 7, line: 8 },
+                        end: { column: 10, line: 8 },
+                      },
+                    },
+
+                    range: [199, 206],
+                    loc: {
+                      start: { column: 3, line: 8 },
+                      end: { column: 10, line: 8 },
+                    },
+                  },
+                  optional: true,
+                  property: Identifier {
+                    type: "Identifier",
+                    name: "three",
+
+                    range: [208, 213],
+                    loc: {
+                      start: { column: 12, line: 8 },
+                      end: { column: 17, line: 8 },
+                    },
+                  },
+
+                  range: [199, 213],
+                  loc: {
+                    start: { column: 3, line: 8 },
+                    end: { column: 17, line: 8 },
+                  },
+                },
+                optional: true,
+                property: Identifier {
+                  type: "Identifier",
+                  name: "four",
+
+                  range: [215, 219],
+                  loc: {
+                    start: { column: 19, line: 8 },
+                    end: { column: 23, line: 8 },
+                  },
+                },
+
+                range: [199, 219],
+                loc: {
+                  start: { column: 3, line: 8 },
+                  end: { column: 23, line: 8 },
+                },
+              },
+
+              range: [199, 219],
+              loc: {
+                start: { column: 3, line: 8 },
+                end: { column: 23, line: 8 },
+              },
+            },
+
+            range: [198, 221],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 25, line: 8 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: false,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: MemberExpression {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: MemberExpression {
+                    type: "MemberExpression",
+                    computed: false,
+                    object: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: Identifier {
+                        type: "Identifier",
+                        name: "one",
+
+                        range: [225, 228],
+                        loc: {
+                          start: { column: 3, line: 9 },
+                          end: { column: 6, line: 9 },
+                        },
+                      },
+                      optional: false,
+                      property: Identifier {
+                        type: "Identifier",
+                        name: "two",
+
+                        range: [229, 232],
+                        loc: {
+                          start: { column: 7, line: 9 },
+                          end: { column: 10, line: 9 },
+                        },
+                      },
+
+                      range: [225, 232],
+                      loc: {
+                        start: { column: 3, line: 9 },
+                        end: { column: 10, line: 9 },
+                      },
+                    },
+                    optional: true,
+                    property: Identifier {
+                      type: "Identifier",
+                      name: "three",
+
+                      range: [234, 239],
+                      loc: {
+                        start: { column: 12, line: 9 },
+                        end: { column: 17, line: 9 },
+                      },
+                    },
+
+                    range: [225, 239],
+                    loc: {
+                      start: { column: 3, line: 9 },
+                      end: { column: 17, line: 9 },
+                    },
+                  },
+                  optional: true,
+                  property: Identifier {
+                    type: "Identifier",
+                    name: "four",
+
+                    range: [241, 245],
+                    loc: {
+                      start: { column: 19, line: 9 },
+                      end: { column: 23, line: 9 },
+                    },
+                  },
+
+                  range: [225, 245],
+                  loc: {
+                    start: { column: 3, line: 9 },
+                    end: { column: 23, line: 9 },
+                  },
+                },
+
+                range: [225, 245],
+                loc: {
+                  start: { column: 3, line: 9 },
+                  end: { column: 23, line: 9 },
+                },
+              },
+              optional: false,
+              property: Identifier {
+                type: "Identifier",
+                name: "five",
+
+                range: [247, 251],
+                loc: {
+                  start: { column: 25, line: 9 },
+                  end: { column: 29, line: 9 },
+                },
+              },
+
+              range: [224, 251],
+              loc: {
+                start: { column: 2, line: 9 },
+                end: { column: 29, line: 9 },
+              },
+            },
+
+            range: [224, 252],
+            loc: {
+              start: { column: 2, line: 9 },
+              end: { column: 30, line: 9 },
+            },
+          },
+        ],
+
+        range: [115, 254],
+        loc: {
+          start: { column: 42, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "processOptionalParens",
+
+        range: [82, 103],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 30, line: 3 },
+        },
+      },
+      params: Array [
+        Identifier {
+          type: "Identifier",
+          name: "one",
+          optional: true,
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [110, 113],
+              loc: {
+                start: { column: 37, line: 3 },
+                end: { column: 40, line: 3 },
+              },
+            },
+
+            range: [108, 113],
+            loc: {
+              start: { column: 35, line: 3 },
+              end: { column: 40, line: 3 },
+            },
+          },
+
+          range: [104, 113],
+          loc: {
+            start: { column: 31, line: 3 },
+            end: { column: 40, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 254],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 255],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

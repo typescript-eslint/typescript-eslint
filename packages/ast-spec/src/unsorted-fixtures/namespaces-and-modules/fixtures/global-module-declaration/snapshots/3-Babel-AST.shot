@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures namespaces-and-modules global-module-declaration Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [
+          TSModuleDeclaration {
+            type: "TSModuleDeclaration",
+            body: TSModuleBlock {
+              type: "TSModuleBlock",
+              body: Array [],
+
+              range: [116, 124],
+              loc: {
+                start: { column: 26, line: 4 },
+                end: { column: 5, line: 6 },
+              },
+            },
+            declare: true,
+            id: Identifier {
+              type: "Identifier",
+              name: "global",
+
+              range: [109, 115],
+              loc: {
+                start: { column: 19, line: 4 },
+                end: { column: 25, line: 4 },
+              },
+            },
+
+            range: [94, 124],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 5, line: 6 },
+            },
+          },
+          TSModuleDeclaration {
+            type: "TSModuleDeclaration",
+            body: TSModuleBlock {
+              type: "TSModuleBlock",
+              body: Array [],
+
+              range: [154, 162],
+              loc: {
+                start: { column: 29, line: 7 },
+                end: { column: 5, line: 9 },
+              },
+            },
+            declare: true,
+            id: Identifier {
+              type: "Identifier",
+              name: "global",
+
+              range: [147, 153],
+              loc: {
+                start: { column: 22, line: 7 },
+                end: { column: 28, line: 7 },
+              },
+            },
+
+            range: [129, 162],
+            loc: {
+              start: { column: 4, line: 7 },
+              end: { column: 5, line: 9 },
+            },
+          },
+        ],
+
+        range: [88, 164],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      declare: true,
+      global: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "global",
+
+        range: [81, 87],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+
+      range: [73, 164],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 165],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

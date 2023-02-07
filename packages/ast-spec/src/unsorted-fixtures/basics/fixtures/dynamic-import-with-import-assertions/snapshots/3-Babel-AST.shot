@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics dynamic-import-with-import-assertions Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ImportExpression {
+        type: "ImportExpression",
+        attributes: ObjectExpression {
+          type: "ObjectExpression",
+          properties: Array [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "assert",
+
+                range: [89, 95],
+                loc: {
+                  start: { column: 16, line: 3 },
+                  end: { column: 22, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              shorthand: false,
+              value: ObjectExpression {
+                type: "ObjectExpression",
+                properties: Array [
+                  Property {
+                    type: "Property",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      name: "type",
+
+                      range: [99, 103],
+                      loc: {
+                        start: { column: 26, line: 3 },
+                        end: { column: 30, line: 3 },
+                      },
+                    },
+                    kind: "init",
+                    method: false,
+                    shorthand: false,
+                    value: Literal {
+                      type: "Literal",
+                      raw: "\\"json\\"",
+                      value: "json",
+
+                      range: [105, 111],
+                      loc: {
+                        start: { column: 32, line: 3 },
+                        end: { column: 38, line: 3 },
+                      },
+                    },
+
+                    range: [99, 111],
+                    loc: {
+                      start: { column: 26, line: 3 },
+                      end: { column: 38, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [97, 113],
+                loc: {
+                  start: { column: 24, line: 3 },
+                  end: { column: 40, line: 3 },
+                },
+              },
+
+              range: [89, 113],
+              loc: {
+                start: { column: 16, line: 3 },
+                end: { column: 40, line: 3 },
+              },
+            },
+          ],
+
+          range: [87, 115],
+          loc: {
+            start: { column: 14, line: 3 },
+            end: { column: 42, line: 3 },
+          },
+        },
+        source: Literal {
+          type: "Literal",
+          raw: "\\"foo\\"",
+          value: "foo",
+
+          range: [80, 85],
+          loc: {
+            start: { column: 7, line: 3 },
+            end: { column: 12, line: 3 },
+          },
+        },
+
+        range: [73, 116],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 43, line: 3 },
+        },
+      },
+
+      range: [73, 117],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 44, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 118],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

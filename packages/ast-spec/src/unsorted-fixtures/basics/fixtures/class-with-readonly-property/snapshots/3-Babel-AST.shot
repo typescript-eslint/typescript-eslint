@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-readonly-property Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "public",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [105, 108],
+              loc: {
+                start: { column: 20, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+            readonly: true,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "'string'",
+              value: "string",
+
+              range: [111, 119],
+              loc: {
+                start: { column: 26, line: 4 },
+                end: { column: 34, line: 4 },
+              },
+            },
+
+            range: [89, 120],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 35, line: 4 },
+            },
+          },
+        ],
+
+        range: [83, 122],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 122],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 123],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

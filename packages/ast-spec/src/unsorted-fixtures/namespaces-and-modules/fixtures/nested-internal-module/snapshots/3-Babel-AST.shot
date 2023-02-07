@@ -1,0 +1,392 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures namespaces-and-modules nested-internal-module Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [
+          ExportNamedDeclaration {
+            type: "ExportNamedDeclaration",
+            assertions: Array [],
+            declaration: VariableDeclaration {
+              type: "VariableDeclaration",
+              declarations: Array [
+                VariableDeclarator {
+                  type: "VariableDeclarator",
+                  id: Identifier {
+                    type: "Identifier",
+                    name: "x",
+
+                    range: [100, 101],
+                    loc: {
+                      start: { column: 15, line: 5 },
+                      end: { column: 16, line: 5 },
+                    },
+                  },
+                  init: Literal {
+                    type: "Literal",
+                    raw: "'hello world'",
+                    value: "hello world",
+
+                    range: [104, 117],
+                    loc: {
+                      start: { column: 19, line: 5 },
+                      end: { column: 32, line: 5 },
+                    },
+                  },
+
+                  range: [100, 117],
+                  loc: {
+                    start: { column: 15, line: 5 },
+                    end: { column: 32, line: 5 },
+                  },
+                },
+              ],
+              kind: "var",
+
+              range: [96, 117],
+              loc: {
+                start: { column: 11, line: 5 },
+                end: { column: 32, line: 5 },
+              },
+            },
+            exportKind: "value",
+            source: null,
+            specifiers: Array [],
+
+            range: [89, 117],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 32, line: 5 },
+            },
+          },
+          ExportNamedDeclaration {
+            type: "ExportNamedDeclaration",
+            assertions: Array [],
+            declaration: ClassDeclaration {
+              type: "ClassDeclaration",
+              body: ClassBody {
+                type: "ClassBody",
+                body: Array [
+                  MethodDefinition {
+                    type: "MethodDefinition",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      name: "constructor",
+
+                      range: [151, 162],
+                      loc: {
+                        start: { column: 8, line: 7 },
+                        end: { column: 19, line: 7 },
+                      },
+                    },
+                    kind: "constructor",
+                    static: false,
+                    value: FunctionExpression {
+                      type: "FunctionExpression",
+                      async: false,
+                      body: BlockStatement {
+                        type: "BlockStatement",
+                        body: Array [],
+
+                        range: [199, 202],
+                        loc: {
+                          start: { column: 56, line: 7 },
+                          end: { column: 59, line: 7 },
+                        },
+                      },
+                      expression: false,
+                      generator: false,
+                      id: null,
+                      params: Array [
+                        TSParameterProperty {
+                          type: "TSParameterProperty",
+                          accessibility: "public",
+                          parameter: Identifier {
+                            type: "Identifier",
+                            name: "x",
+                            typeAnnotation: TSTypeAnnotation {
+                              type: "TSTypeAnnotation",
+                              typeAnnotation: TSNumberKeyword {
+                                type: "TSNumberKeyword",
+
+                                range: [173, 179],
+                                loc: {
+                                  start: { column: 30, line: 7 },
+                                  end: { column: 36, line: 7 },
+                                },
+                              },
+
+                              range: [171, 179],
+                              loc: {
+                                start: { column: 28, line: 7 },
+                                end: { column: 36, line: 7 },
+                              },
+                            },
+
+                            range: [170, 179],
+                            loc: {
+                              start: { column: 27, line: 7 },
+                              end: { column: 36, line: 7 },
+                            },
+                          },
+
+                          range: [163, 179],
+                          loc: {
+                            start: { column: 20, line: 7 },
+                            end: { column: 36, line: 7 },
+                          },
+                        },
+                        TSParameterProperty {
+                          type: "TSParameterProperty",
+                          accessibility: "public",
+                          parameter: Identifier {
+                            type: "Identifier",
+                            name: "y",
+                            typeAnnotation: TSTypeAnnotation {
+                              type: "TSTypeAnnotation",
+                              typeAnnotation: TSNumberKeyword {
+                                type: "TSNumberKeyword",
+
+                                range: [191, 197],
+                                loc: {
+                                  start: { column: 48, line: 7 },
+                                  end: { column: 54, line: 7 },
+                                },
+                              },
+
+                              range: [189, 197],
+                              loc: {
+                                start: { column: 46, line: 7 },
+                                end: { column: 54, line: 7 },
+                              },
+                            },
+
+                            range: [188, 197],
+                            loc: {
+                              start: { column: 45, line: 7 },
+                              end: { column: 54, line: 7 },
+                            },
+                          },
+
+                          range: [181, 197],
+                          loc: {
+                            start: { column: 38, line: 7 },
+                            end: { column: 54, line: 7 },
+                          },
+                        },
+                      ],
+
+                      range: [162, 202],
+                      loc: {
+                        start: { column: 19, line: 7 },
+                        end: { column: 59, line: 7 },
+                      },
+                    },
+
+                    range: [151, 202],
+                    loc: {
+                      start: { column: 8, line: 7 },
+                      end: { column: 59, line: 7 },
+                    },
+                  },
+                ],
+
+                range: [141, 208],
+                loc: {
+                  start: { column: 23, line: 6 },
+                  end: { column: 5, line: 8 },
+                },
+              },
+              id: Identifier {
+                type: "Identifier",
+                name: "Point",
+
+                range: [135, 140],
+                loc: {
+                  start: { column: 17, line: 6 },
+                  end: { column: 22, line: 6 },
+                },
+              },
+              superClass: null,
+
+              range: [129, 208],
+              loc: {
+                start: { column: 11, line: 6 },
+                end: { column: 5, line: 8 },
+              },
+            },
+            exportKind: "value",
+            source: null,
+            specifiers: Array [],
+
+            range: [122, 208],
+            loc: {
+              start: { column: 4, line: 6 },
+              end: { column: 5, line: 8 },
+            },
+          },
+          ExportNamedDeclaration {
+            type: "ExportNamedDeclaration",
+            assertions: Array [],
+            declaration: TSModuleDeclaration {
+              type: "TSModuleDeclaration",
+              body: TSModuleBlock {
+                type: "TSModuleBlock",
+                body: Array [
+                  ExportNamedDeclaration {
+                    type: "ExportNamedDeclaration",
+                    assertions: Array [],
+                    declaration: TSInterfaceDeclaration {
+                      type: "TSInterfaceDeclaration",
+                      body: TSInterfaceBody {
+                        type: "TSInterfaceBody",
+                        body: Array [
+                          TSPropertySignature {
+                            type: "TSPropertySignature",
+                            computed: false,
+                            key: Identifier {
+                              type: "Identifier",
+                              name: "name",
+
+                              range: [273, 277],
+                              loc: {
+                                start: { column: 12, line: 11 },
+                                end: { column: 16, line: 11 },
+                              },
+                            },
+                            typeAnnotation: TSTypeAnnotation {
+                              type: "TSTypeAnnotation",
+                              typeAnnotation: TSStringKeyword {
+                                type: "TSStringKeyword",
+
+                                range: [279, 285],
+                                loc: {
+                                  start: { column: 18, line: 11 },
+                                  end: { column: 24, line: 11 },
+                                },
+                              },
+
+                              range: [277, 285],
+                              loc: {
+                                start: { column: 16, line: 11 },
+                                end: { column: 24, line: 11 },
+                              },
+                            },
+
+                            range: [273, 286],
+                            loc: {
+                              start: { column: 12, line: 11 },
+                              end: { column: 25, line: 11 },
+                            },
+                          },
+                        ],
+
+                        range: [259, 296],
+                        loc: {
+                          start: { column: 28, line: 10 },
+                          end: { column: 9, line: 12 },
+                        },
+                      },
+                      id: Identifier {
+                        type: "Identifier",
+                        name: "Id",
+
+                        range: [256, 258],
+                        loc: {
+                          start: { column: 25, line: 10 },
+                          end: { column: 27, line: 10 },
+                        },
+                      },
+
+                      range: [246, 296],
+                      loc: {
+                        start: { column: 15, line: 10 },
+                        end: { column: 9, line: 12 },
+                      },
+                    },
+                    exportKind: "type",
+                    source: null,
+                    specifiers: Array [],
+
+                    range: [239, 296],
+                    loc: {
+                      start: { column: 8, line: 10 },
+                      end: { column: 9, line: 12 },
+                    },
+                  },
+                ],
+
+                range: [229, 302],
+                loc: {
+                  start: { column: 20, line: 9 },
+                  end: { column: 5, line: 13 },
+                },
+              },
+              id: Identifier {
+                type: "Identifier",
+                name: "B",
+
+                range: [227, 228],
+                loc: {
+                  start: { column: 18, line: 9 },
+                  end: { column: 19, line: 9 },
+                },
+              },
+
+              range: [220, 302],
+              loc: {
+                start: { column: 11, line: 9 },
+                end: { column: 5, line: 13 },
+              },
+            },
+            exportKind: "value",
+            source: null,
+            specifiers: Array [],
+
+            range: [213, 302],
+            loc: {
+              start: { column: 4, line: 9 },
+              end: { column: 5, line: 13 },
+            },
+          },
+        ],
+
+        range: [82, 304],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 1, line: 14 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "A",
+
+        range: [80, 81],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+
+      range: [73, 304],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 14 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 304],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 14 },
+  },
+}
+`;

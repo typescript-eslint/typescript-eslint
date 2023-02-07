@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics typed-this Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: Array [
+          TSMethodSignature {
+            type: "TSMethodSignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "addClickListener",
+
+              range: [96, 112],
+              loc: {
+                start: { column: 1, line: 4 },
+                end: { column: 17, line: 4 },
+              },
+            },
+            kind: "method",
+            parameters: Array [
+              Identifier {
+                type: "Identifier",
+                name: "onclick",
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSFunctionType {
+                    type: "TSFunctionType",
+                    parameters: Array [
+                      Identifier {
+                        type: "Identifier",
+                        name: "this",
+                        typeAnnotation: TSTypeAnnotation {
+                          type: "TSTypeAnnotation",
+                          typeAnnotation: TSVoidKeyword {
+                            type: "TSVoidKeyword",
+
+                            range: [129, 133],
+                            loc: {
+                              start: { column: 34, line: 4 },
+                              end: { column: 38, line: 4 },
+                            },
+                          },
+
+                          range: [127, 133],
+                          loc: {
+                            start: { column: 32, line: 4 },
+                            end: { column: 38, line: 4 },
+                          },
+                        },
+
+                        range: [123, 133],
+                        loc: {
+                          start: { column: 28, line: 4 },
+                          end: { column: 38, line: 4 },
+                        },
+                      },
+                      Identifier {
+                        type: "Identifier",
+                        name: "e",
+                        typeAnnotation: TSTypeAnnotation {
+                          type: "TSTypeAnnotation",
+                          typeAnnotation: TSTypeReference {
+                            type: "TSTypeReference",
+                            typeName: Identifier {
+                              type: "Identifier",
+                              name: "Event",
+
+                              range: [138, 143],
+                              loc: {
+                                start: { column: 43, line: 4 },
+                                end: { column: 48, line: 4 },
+                              },
+                            },
+
+                            range: [138, 143],
+                            loc: {
+                              start: { column: 43, line: 4 },
+                              end: { column: 48, line: 4 },
+                            },
+                          },
+
+                          range: [136, 143],
+                          loc: {
+                            start: { column: 41, line: 4 },
+                            end: { column: 48, line: 4 },
+                          },
+                        },
+
+                        range: [135, 143],
+                        loc: {
+                          start: { column: 40, line: 4 },
+                          end: { column: 48, line: 4 },
+                        },
+                      },
+                    ],
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSVoidKeyword {
+                        type: "TSVoidKeyword",
+
+                        range: [148, 152],
+                        loc: {
+                          start: { column: 53, line: 4 },
+                          end: { column: 57, line: 4 },
+                        },
+                      },
+
+                      range: [145, 152],
+                      loc: {
+                        start: { column: 50, line: 4 },
+                        end: { column: 57, line: 4 },
+                      },
+                    },
+
+                    range: [122, 152],
+                    loc: {
+                      start: { column: 27, line: 4 },
+                      end: { column: 57, line: 4 },
+                    },
+                  },
+
+                  range: [120, 152],
+                  loc: {
+                    start: { column: 25, line: 4 },
+                    end: { column: 57, line: 4 },
+                  },
+                },
+
+                range: [113, 152],
+                loc: {
+                  start: { column: 18, line: 4 },
+                  end: { column: 57, line: 4 },
+                },
+              },
+            ],
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSVoidKeyword {
+                type: "TSVoidKeyword",
+
+                range: [155, 159],
+                loc: {
+                  start: { column: 60, line: 4 },
+                  end: { column: 64, line: 4 },
+                },
+              },
+
+              range: [153, 159],
+              loc: {
+                start: { column: 58, line: 4 },
+                end: { column: 64, line: 4 },
+              },
+            },
+
+            range: [96, 160],
+            loc: {
+              start: { column: 1, line: 4 },
+              end: { column: 65, line: 4 },
+            },
+          },
+        ],
+
+        range: [93, 162],
+        loc: {
+          start: { column: 20, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "UIElement",
+
+        range: [83, 92],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [73, 162],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 163],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

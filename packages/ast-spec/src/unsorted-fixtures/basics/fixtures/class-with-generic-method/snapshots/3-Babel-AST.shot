@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-generic-method Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "getBar",
+
+              range: [87, 93],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 8, line: 4 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [99, 101],
+                loc: {
+                  start: { column: 14, line: 4 },
+                  end: { column: 16, line: 4 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              typeParameters: TSTypeParameterDeclaration {
+                type: "TSTypeParameterDeclaration",
+                params: Array [
+                  TSTypeParameter {
+                    type: "TSTypeParameter",
+                    name: "T",
+
+                    range: [94, 95],
+                    loc: {
+                      start: { column: 9, line: 4 },
+                      end: { column: 10, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [93, 96],
+                loc: {
+                  start: { column: 8, line: 4 },
+                  end: { column: 11, line: 4 },
+                },
+              },
+
+              range: [96, 101],
+              loc: {
+                start: { column: 11, line: 4 },
+                end: { column: 16, line: 4 },
+              },
+            },
+
+            range: [87, 101],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 16, line: 4 },
+            },
+          },
+        ],
+
+        range: [83, 103],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 103],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 104],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

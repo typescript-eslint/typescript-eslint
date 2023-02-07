@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures types optional-variance-in Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Consumer",
+
+        range: [78, 86],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      typeAnnotation: TSFunctionType {
+        type: "TSFunctionType",
+        parameters: Array [
+          Identifier {
+            type: "Identifier",
+            name: "x",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  name: "T",
+
+                  range: [99, 100],
+                  loc: {
+                    start: { column: 26, line: 3 },
+                    end: { column: 27, line: 3 },
+                  },
+                },
+
+                range: [99, 100],
+                loc: {
+                  start: { column: 26, line: 3 },
+                  end: { column: 27, line: 3 },
+                },
+              },
+
+              range: [97, 100],
+              loc: {
+                start: { column: 24, line: 3 },
+                end: { column: 27, line: 3 },
+              },
+            },
+
+            range: [96, 100],
+            loc: {
+              start: { column: 23, line: 3 },
+              end: { column: 27, line: 3 },
+            },
+          },
+        ],
+        typeAnnotation: TSTypeAnnotation {
+          type: "TSTypeAnnotation",
+          typeAnnotation: TSVoidKeyword {
+            type: "TSVoidKeyword",
+
+            range: [105, 109],
+            loc: {
+              start: { column: 32, line: 3 },
+              end: { column: 36, line: 3 },
+            },
+          },
+
+          range: [102, 109],
+          loc: {
+            start: { column: 29, line: 3 },
+            end: { column: 36, line: 3 },
+          },
+        },
+
+        range: [95, 109],
+        loc: {
+          start: { column: 22, line: 3 },
+          end: { column: 36, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            in: true,
+            name: "T",
+
+            range: [87, 91],
+            loc: {
+              start: { column: 14, line: 3 },
+              end: { column: 18, line: 3 },
+            },
+          },
+        ],
+
+        range: [86, 92],
+        loc: {
+          start: { column: 13, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [73, 110],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 37, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 111],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

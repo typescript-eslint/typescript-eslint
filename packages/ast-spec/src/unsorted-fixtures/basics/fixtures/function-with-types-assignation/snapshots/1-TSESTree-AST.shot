@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics function-with-types-assignation TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [
+          ReturnStatement {
+            type: "ReturnStatement",
+            argument: Identifier {
+              type: "Identifier",
+              name: "name",
+
+              range: [162, 166],
+              loc: {
+                start: { column: 9, line: 4 },
+                end: { column: 13, line: 4 },
+              },
+            },
+
+            range: [155, 167],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 14, line: 4 },
+            },
+          },
+        ],
+
+        range: [151, 169],
+        loc: {
+          start: { column: 78, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "message",
+
+        range: [82, 89],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+      params: Array [
+        Identifier {
+          type: "Identifier",
+          name: "name",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [95, 101],
+              loc: {
+                start: { column: 22, line: 3 },
+                end: { column: 28, line: 3 },
+              },
+            },
+
+            range: [94, 101],
+            loc: {
+              start: { column: 21, line: 3 },
+              end: { column: 28, line: 3 },
+            },
+          },
+
+          range: [90, 101],
+          loc: {
+            start: { column: 17, line: 3 },
+            end: { column: 28, line: 3 },
+          },
+        },
+        AssignmentPattern {
+          type: "AssignmentPattern",
+          left: Identifier {
+            type: "Identifier",
+            name: "age",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [107, 113],
+                loc: {
+                  start: { column: 34, line: 3 },
+                  end: { column: 40, line: 3 },
+                },
+              },
+
+              range: [106, 113],
+              loc: {
+                start: { column: 33, line: 3 },
+                end: { column: 40, line: 3 },
+              },
+            },
+
+            range: [103, 113],
+            loc: {
+              start: { column: 30, line: 3 },
+              end: { column: 40, line: 3 },
+            },
+          },
+          right: Literal {
+            type: "Literal",
+            raw: "100",
+            value: 100,
+
+            range: [116, 119],
+            loc: {
+              start: { column: 43, line: 3 },
+              end: { column: 46, line: 3 },
+            },
+          },
+
+          range: [103, 119],
+          loc: {
+            start: { column: 30, line: 3 },
+            end: { column: 46, line: 3 },
+          },
+        },
+        RestElement {
+          type: "RestElement",
+          argument: Identifier {
+            type: "Identifier",
+            name: "args",
+
+            range: [124, 128],
+            loc: {
+              start: { column: 51, line: 3 },
+              end: { column: 55, line: 3 },
+            },
+          },
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Array",
+
+                range: [129, 134],
+                loc: {
+                  start: { column: 56, line: 3 },
+                  end: { column: 61, line: 3 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [135, 141],
+                    loc: {
+                      start: { column: 62, line: 3 },
+                      end: { column: 68, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [134, 142],
+                loc: {
+                  start: { column: 61, line: 3 },
+                  end: { column: 69, line: 3 },
+                },
+              },
+
+              range: [129, 142],
+              loc: {
+                start: { column: 56, line: 3 },
+                end: { column: 69, line: 3 },
+              },
+            },
+
+            range: [128, 142],
+            loc: {
+              start: { column: 55, line: 3 },
+              end: { column: 69, line: 3 },
+            },
+          },
+
+          range: [121, 142],
+          loc: {
+            start: { column: 48, line: 3 },
+            end: { column: 69, line: 3 },
+          },
+        },
+      ],
+      returnType: TSTypeAnnotation {
+        type: "TSTypeAnnotation",
+        typeAnnotation: TSStringKeyword {
+          type: "TSStringKeyword",
+
+          range: [144, 150],
+          loc: {
+            start: { column: 71, line: 3 },
+            end: { column: 77, line: 3 },
+          },
+        },
+
+        range: [143, 150],
+        loc: {
+          start: { column: 70, line: 3 },
+          end: { column: 77, line: 3 },
+        },
+      },
+
+      range: [73, 169],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 170],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

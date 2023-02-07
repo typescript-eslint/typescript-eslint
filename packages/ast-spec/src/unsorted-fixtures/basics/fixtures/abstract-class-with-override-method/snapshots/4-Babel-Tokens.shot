@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-override-method Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "abstract",
+
+    range: [73, 81],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [82, 87],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 14, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "SpecializedComponent",
+
+    range: [88, 108],
+    loc: {
+      start: { column: 15, line: 3 },
+      end: { column: 35, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "extends",
+
+    range: [109, 116],
+    loc: {
+      start: { column: 36, line: 3 },
+      end: { column: 43, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "SomeComponent",
+
+    range: [117, 130],
+    loc: {
+      start: { column: 44, line: 3 },
+      end: { column: 57, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [131, 132],
+    loc: {
+      start: { column: 58, line: 3 },
+      end: { column: 59, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "abstract",
+
+    range: [135, 143],
+    loc: {
+      start: { column: 2, line: 4 },
+      end: { column: 10, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "override",
+
+    range: [144, 152],
+    loc: {
+      start: { column: 11, line: 4 },
+      end: { column: 19, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "show",
+
+    range: [153, 157],
+    loc: {
+      start: { column: 20, line: 4 },
+      end: { column: 24, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [157, 158],
+    loc: {
+      start: { column: 24, line: 4 },
+      end: { column: 25, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [158, 159],
+    loc: {
+      start: { column: 25, line: 4 },
+      end: { column: 26, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [159, 160],
+    loc: {
+      start: { column: 26, line: 4 },
+      end: { column: 27, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [161, 162],
+    loc: {
+      start: { column: 0, line: 5 },
+      end: { column: 1, line: 5 },
+    },
+  },
+]
+`;

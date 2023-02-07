@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-instance-member Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: Identifier {
+                  type: "Identifier",
+                  name: "hidden",
+
+                  range: [88, 94],
+                  loc: {
+                    start: { column: 5, line: 4 },
+                    end: { column: 11, line: 4 },
+                  },
+                },
+
+                range: [87, 94],
+                loc: {
+                  start: { column: 4, line: 4 },
+                  end: { column: 11, line: 4 },
+                },
+              },
+            ],
+            key: Identifier {
+              type: "Identifier",
+              name: "z",
+
+              range: [103, 104],
+              loc: {
+                start: { column: 8, line: 5 },
+                end: { column: 9, line: 5 },
+              },
+            },
+            kind: "get",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: ThisExpression {
+                        type: "ThisExpression",
+
+                        range: [116, 120],
+                        loc: {
+                          start: { column: 21, line: 5 },
+                          end: { column: 25, line: 5 },
+                        },
+                      },
+                      optional: false,
+                      property: Identifier {
+                        type: "Identifier",
+                        name: "_z",
+
+                        range: [121, 123],
+                        loc: {
+                          start: { column: 26, line: 5 },
+                          end: { column: 28, line: 5 },
+                        },
+                      },
+
+                      range: [116, 123],
+                      loc: {
+                        start: { column: 21, line: 5 },
+                        end: { column: 28, line: 5 },
+                      },
+                    },
+
+                    range: [109, 124],
+                    loc: {
+                      start: { column: 14, line: 5 },
+                      end: { column: 29, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [107, 126],
+                loc: {
+                  start: { column: 12, line: 5 },
+                  end: { column: 31, line: 5 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [104, 126],
+              loc: {
+                start: { column: 9, line: 5 },
+                end: { column: 31, line: 5 },
+              },
+            },
+
+            range: [87, 126],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 31, line: 5 },
+            },
+          },
+        ],
+
+        range: [81, 128],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "P",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 128],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 128],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 1, line: 6 },
+  },
+}
+`;

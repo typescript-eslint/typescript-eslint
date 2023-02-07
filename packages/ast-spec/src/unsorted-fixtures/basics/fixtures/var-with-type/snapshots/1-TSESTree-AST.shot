@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics var-with-type TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "name",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [82, 88],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 15, line: 3 },
+                },
+              },
+
+              range: [81, 88],
+              loc: {
+                start: { column: 8, line: 3 },
+                end: { column: 15, line: 3 },
+              },
+            },
+
+            range: [77, 88],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 15, line: 3 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "\\"Nicholas\\"",
+            value: "Nicholas",
+
+            range: [91, 101],
+            loc: {
+              start: { column: 18, line: 3 },
+              end: { column: 28, line: 3 },
+            },
+          },
+
+          range: [77, 101],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 28, line: 3 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [73, 102],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 29, line: 3 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "foo",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [112, 118],
+                loc: {
+                  start: { column: 9, line: 4 },
+                  end: { column: 15, line: 4 },
+                },
+              },
+
+              range: [110, 118],
+              loc: {
+                start: { column: 7, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+
+            range: [107, 118],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 15, line: 4 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "\\"Bar\\"",
+            value: "Bar",
+
+            range: [121, 126],
+            loc: {
+              start: { column: 18, line: 4 },
+              end: { column: 23, line: 4 },
+            },
+          },
+
+          range: [107, 126],
+          loc: {
+            start: { column: 4, line: 4 },
+            end: { column: 23, line: 4 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [103, 127],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 24, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 128],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

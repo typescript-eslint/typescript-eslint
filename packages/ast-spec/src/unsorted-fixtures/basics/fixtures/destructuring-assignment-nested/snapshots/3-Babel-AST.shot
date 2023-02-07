@@ -1,0 +1,546 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics destructuring-assignment-nested Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: ObjectPattern {
+          type: "ObjectPattern",
+          properties: Array [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "foo",
+
+                range: [76, 79],
+                loc: {
+                  start: { column: 3, line: 3 },
+                  end: { column: 6, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              shorthand: false,
+              value: AssignmentPattern {
+                type: "AssignmentPattern",
+                left: ObjectPattern {
+                  type: "ObjectPattern",
+                  properties: Array [
+                    Property {
+                      type: "Property",
+                      computed: false,
+                      key: Identifier {
+                        type: "Identifier",
+                        name: "bar",
+
+                        range: [83, 86],
+                        loc: {
+                          start: { column: 10, line: 3 },
+                          end: { column: 13, line: 3 },
+                        },
+                      },
+                      kind: "init",
+                      method: false,
+                      shorthand: false,
+                      value: AssignmentPattern {
+                        type: "AssignmentPattern",
+                        left: ObjectPattern {
+                          type: "ObjectPattern",
+                          properties: Array [
+                            Property {
+                              type: "Property",
+                              computed: false,
+                              key: Identifier {
+                                type: "Identifier",
+                                name: "baz",
+
+                                range: [90, 93],
+                                loc: {
+                                  start: { column: 17, line: 3 },
+                                  end: { column: 20, line: 3 },
+                                },
+                              },
+                              kind: "init",
+                              method: false,
+                              shorthand: false,
+                              value: AssignmentPattern {
+                                type: "AssignmentPattern",
+                                left: ArrayPattern {
+                                  type: "ArrayPattern",
+                                  elements: Array [
+                                    Identifier {
+                                      type: "Identifier",
+                                      name: "a",
+
+                                      range: [96, 97],
+                                      loc: {
+                                        start: { column: 23, line: 3 },
+                                        end: { column: 24, line: 3 },
+                                      },
+                                    },
+                                    AssignmentPattern {
+                                      type: "AssignmentPattern",
+                                      left: ObjectPattern {
+                                        type: "ObjectPattern",
+                                        properties: Array [
+                                          Property {
+                                            type: "Property",
+                                            computed: false,
+                                            key: Identifier {
+                                              type: "Identifier",
+                                              name: "foo",
+
+                                              range: [101, 104],
+                                              loc: {
+                                                start: { column: 28, line: 3 },
+                                                end: { column: 31, line: 3 },
+                                              },
+                                            },
+                                            kind: "init",
+                                            method: false,
+                                            shorthand: false,
+                                            value: AssignmentPattern {
+                                              type: "AssignmentPattern",
+                                              left: ArrayPattern {
+                                                type: "ArrayPattern",
+                                                elements: Array [
+                                                  Identifier {
+                                                    type: "Identifier",
+                                                    name: "x",
+
+                                                    range: [107, 108],
+                                                    loc: {
+                                                      start: { column: 34, line: 3 },
+                                                      end: { column: 35, line: 3 },
+                                                    },
+                                                  },
+                                                ],
+
+                                                range: [106, 109],
+                                                loc: {
+                                                  start: { column: 33, line: 3 },
+                                                  end: { column: 36, line: 3 },
+                                                },
+                                              },
+                                              right: ArrayExpression {
+                                                type: "ArrayExpression",
+                                                elements: Array [
+                                                  Literal {
+                                                    type: "Literal",
+                                                    raw: "3",
+                                                    value: 3,
+
+                                                    range: [113, 114],
+                                                    loc: {
+                                                      start: { column: 40, line: 3 },
+                                                      end: { column: 41, line: 3 },
+                                                    },
+                                                  },
+                                                ],
+
+                                                range: [112, 115],
+                                                loc: {
+                                                  start: { column: 39, line: 3 },
+                                                  end: { column: 42, line: 3 },
+                                                },
+                                              },
+
+                                              range: [106, 115],
+                                              loc: {
+                                                start: { column: 33, line: 3 },
+                                                end: { column: 42, line: 3 },
+                                              },
+                                            },
+
+                                            range: [101, 115],
+                                            loc: {
+                                              start: { column: 28, line: 3 },
+                                              end: { column: 42, line: 3 },
+                                            },
+                                          },
+                                        ],
+
+                                        range: [99, 117],
+                                        loc: {
+                                          start: { column: 26, line: 3 },
+                                          end: { column: 44, line: 3 },
+                                        },
+                                      },
+                                      right: ObjectExpression {
+                                        type: "ObjectExpression",
+                                        properties: Array [
+                                          Property {
+                                            type: "Property",
+                                            computed: false,
+                                            key: Identifier {
+                                              type: "Identifier",
+                                              name: "foo",
+
+                                              range: [122, 125],
+                                              loc: {
+                                                start: { column: 49, line: 3 },
+                                                end: { column: 52, line: 3 },
+                                              },
+                                            },
+                                            kind: "init",
+                                            method: false,
+                                            shorthand: false,
+                                            value: ArrayExpression {
+                                              type: "ArrayExpression",
+                                              elements: Array [
+                                                Literal {
+                                                  type: "Literal",
+                                                  raw: "2",
+                                                  value: 2,
+
+                                                  range: [128, 129],
+                                                  loc: {
+                                                    start: { column: 55, line: 3 },
+                                                    end: { column: 56, line: 3 },
+                                                  },
+                                                },
+                                              ],
+
+                                              range: [127, 130],
+                                              loc: {
+                                                start: { column: 54, line: 3 },
+                                                end: { column: 57, line: 3 },
+                                              },
+                                            },
+
+                                            range: [122, 130],
+                                            loc: {
+                                              start: { column: 49, line: 3 },
+                                              end: { column: 57, line: 3 },
+                                            },
+                                          },
+                                        ],
+
+                                        range: [120, 131],
+                                        loc: {
+                                          start: { column: 47, line: 3 },
+                                          end: { column: 58, line: 3 },
+                                        },
+                                      },
+
+                                      range: [99, 131],
+                                      loc: {
+                                        start: { column: 26, line: 3 },
+                                        end: { column: 58, line: 3 },
+                                      },
+                                    },
+                                  ],
+
+                                  range: [95, 132],
+                                  loc: {
+                                    start: { column: 22, line: 3 },
+                                    end: { column: 59, line: 3 },
+                                  },
+                                },
+                                right: ArrayExpression {
+                                  type: "ArrayExpression",
+                                  elements: Array [],
+
+                                  range: [135, 137],
+                                  loc: {
+                                    start: { column: 62, line: 3 },
+                                    end: { column: 64, line: 3 },
+                                  },
+                                },
+
+                                range: [95, 137],
+                                loc: {
+                                  start: { column: 22, line: 3 },
+                                  end: { column: 64, line: 3 },
+                                },
+                              },
+
+                              range: [90, 137],
+                              loc: {
+                                start: { column: 17, line: 3 },
+                                end: { column: 64, line: 3 },
+                              },
+                            },
+                          ],
+
+                          range: [88, 139],
+                          loc: {
+                            start: { column: 15, line: 3 },
+                            end: { column: 66, line: 3 },
+                          },
+                        },
+                        right: ObjectExpression {
+                          type: "ObjectExpression",
+                          properties: Array [],
+
+                          range: [142, 144],
+                          loc: {
+                            start: { column: 69, line: 3 },
+                            end: { column: 71, line: 3 },
+                          },
+                        },
+
+                        range: [88, 144],
+                        loc: {
+                          start: { column: 15, line: 3 },
+                          end: { column: 71, line: 3 },
+                        },
+                      },
+
+                      range: [83, 144],
+                      loc: {
+                        start: { column: 10, line: 3 },
+                        end: { column: 71, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [81, 146],
+                  loc: {
+                    start: { column: 8, line: 3 },
+                    end: { column: 73, line: 3 },
+                  },
+                },
+                right: ObjectExpression {
+                  type: "ObjectExpression",
+                  properties: Array [],
+
+                  range: [149, 152],
+                  loc: {
+                    start: { column: 76, line: 3 },
+                    end: { column: 79, line: 3 },
+                  },
+                },
+
+                range: [81, 152],
+                loc: {
+                  start: { column: 8, line: 3 },
+                  end: { column: 79, line: 3 },
+                },
+              },
+
+              range: [76, 152],
+              loc: {
+                start: { column: 3, line: 3 },
+                end: { column: 79, line: 3 },
+              },
+            },
+          ],
+
+          range: [74, 154],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 81, line: 3 },
+          },
+        },
+        operator: "=",
+        right: ObjectExpression {
+          type: "ObjectExpression",
+          properties: Array [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "foo",
+
+                range: [159, 162],
+                loc: {
+                  start: { column: 86, line: 3 },
+                  end: { column: 89, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              shorthand: false,
+              value: ObjectExpression {
+                type: "ObjectExpression",
+                properties: Array [
+                  Property {
+                    type: "Property",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      name: "bar",
+
+                      range: [166, 169],
+                      loc: {
+                        start: { column: 93, line: 3 },
+                        end: { column: 96, line: 3 },
+                      },
+                    },
+                    kind: "init",
+                    method: false,
+                    shorthand: false,
+                    value: ObjectExpression {
+                      type: "ObjectExpression",
+                      properties: Array [
+                        Property {
+                          type: "Property",
+                          computed: false,
+                          key: Identifier {
+                            type: "Identifier",
+                            name: "baz",
+
+                            range: [173, 176],
+                            loc: {
+                              start: { column: 100, line: 3 },
+                              end: { column: 103, line: 3 },
+                            },
+                          },
+                          kind: "init",
+                          method: false,
+                          shorthand: false,
+                          value: ArrayExpression {
+                            type: "ArrayExpression",
+                            elements: Array [
+                              Literal {
+                                type: "Literal",
+                                raw: "2",
+                                value: 2,
+
+                                range: [179, 180],
+                                loc: {
+                                  start: { column: 106, line: 3 },
+                                  end: { column: 107, line: 3 },
+                                },
+                              },
+                              ObjectExpression {
+                                type: "ObjectExpression",
+                                properties: Array [
+                                  Property {
+                                    type: "Property",
+                                    computed: false,
+                                    key: Identifier {
+                                      type: "Identifier",
+                                      name: "foo",
+
+                                      range: [184, 187],
+                                      loc: {
+                                        start: { column: 111, line: 3 },
+                                        end: { column: 114, line: 3 },
+                                      },
+                                    },
+                                    kind: "init",
+                                    method: false,
+                                    shorthand: false,
+                                    value: ArrayExpression {
+                                      type: "ArrayExpression",
+                                      elements: Array [
+                                        Literal {
+                                          type: "Literal",
+                                          raw: "3",
+                                          value: 3,
+
+                                          range: [190, 191],
+                                          loc: {
+                                            start: { column: 117, line: 3 },
+                                            end: { column: 118, line: 3 },
+                                          },
+                                        },
+                                      ],
+
+                                      range: [189, 192],
+                                      loc: {
+                                        start: { column: 116, line: 3 },
+                                        end: { column: 119, line: 3 },
+                                      },
+                                    },
+
+                                    range: [184, 192],
+                                    loc: {
+                                      start: { column: 111, line: 3 },
+                                      end: { column: 119, line: 3 },
+                                    },
+                                  },
+                                ],
+
+                                range: [182, 194],
+                                loc: {
+                                  start: { column: 109, line: 3 },
+                                  end: { column: 121, line: 3 },
+                                },
+                              },
+                            ],
+
+                            range: [178, 195],
+                            loc: {
+                              start: { column: 105, line: 3 },
+                              end: { column: 122, line: 3 },
+                            },
+                          },
+
+                          range: [173, 195],
+                          loc: {
+                            start: { column: 100, line: 3 },
+                            end: { column: 122, line: 3 },
+                          },
+                        },
+                      ],
+
+                      range: [171, 197],
+                      loc: {
+                        start: { column: 98, line: 3 },
+                        end: { column: 124, line: 3 },
+                      },
+                    },
+
+                    range: [166, 197],
+                    loc: {
+                      start: { column: 93, line: 3 },
+                      end: { column: 124, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [164, 199],
+                loc: {
+                  start: { column: 91, line: 3 },
+                  end: { column: 126, line: 3 },
+                },
+              },
+
+              range: [159, 199],
+              loc: {
+                start: { column: 86, line: 3 },
+                end: { column: 126, line: 3 },
+              },
+            },
+          ],
+
+          range: [157, 200],
+          loc: {
+            start: { column: 84, line: 3 },
+            end: { column: 127, line: 3 },
+          },
+        },
+
+        range: [74, 200],
+        loc: {
+          start: { column: 1, line: 3 },
+          end: { column: 127, line: 3 },
+        },
+      },
+
+      range: [73, 202],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 129, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 203],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

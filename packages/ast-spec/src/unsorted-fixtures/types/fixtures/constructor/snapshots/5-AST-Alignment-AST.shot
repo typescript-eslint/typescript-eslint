@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures types constructor AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+            id: Identifier {
+              type: 'Identifier',
+              name: 'f',
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSConstructorType {
+                  type: 'TSConstructorType',
+                  abstract: false,
+-                 params: Array [
++                 parameters: Array [
+                    Identifier {
+                      type: 'Identifier',
+                      name: 'a',
+                      typeAnnotation: TSTypeAnnotation {
+                        type: 'TSTypeAnnotation',
+                        typeAnnotation: TSNumberKeyword {
+                          type: 'TSNumberKeyword',
+
+                          range: [88, 94],
+                          loc: {
+                            start: { column: 15, line: 3 },
+                            end: { column: 21, line: 3 },
+                          },
+                        },
+
+                        range: [86, 94],
+                        loc: {
+                          start: { column: 13, line: 3 },
+                          end: { column: 21, line: 3 },
+                        },
+                      },
+
+                      range: [85, 94],
+                      loc: {
+                        start: { column: 12, line: 3 },
+                        end: { column: 21, line: 3 },
+                      },
+                    },
+                    Identifier {
+                      type: 'Identifier',
+                      name: 'b',
+                      optional: true,
+                      typeAnnotation: TSTypeAnnotation {
+                        type: 'TSTypeAnnotation',
+                        typeAnnotation: TSNumberKeyword {
+                          type: 'TSNumberKeyword',
+
+                          range: [100, 106],
+                          loc: {
+                            start: { column: 27, line: 3 },
+                            end: { column: 33, line: 3 },
+                          },
+                        },
+
+                        range: [98, 106],
+                        loc: {
+                          start: { column: 25, line: 3 },
+                          end: { column: 33, line: 3 },
+                        },
+                      },
+
+                      range: [96, 106],
+                      loc: {
+                        start: { column: 23, line: 3 },
+                        end: { column: 33, line: 3 },
+                      },
+                    },
+                  ],
+-                 returnType: TSTypeAnnotation {
++                 typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSVoidKeyword {
+                      type: 'TSVoidKeyword',
+
+                      range: [111, 115],
+                      loc: {
+                        start: { column: 38, line: 3 },
+                        end: { column: 42, line: 3 },
+                      },
+                    },
+
+                    range: [108, 115],
+                    loc: {
+                      start: { column: 35, line: 3 },
+                      end: { column: 42, line: 3 },
+                    },
+                  },
+
+                  range: [80, 115],
+                  loc: {
+                    start: { column: 7, line: 3 },
+                    end: { column: 42, line: 3 },
+                  },
+                },
+
+                range: [78, 115],
+                loc: {
+                  start: { column: 5, line: 3 },
+                  end: { column: 42, line: 3 },
+                },
+              },
+
+              range: [77, 115],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 42, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 115],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 42, line: 3 },
+            },
+          },
+        ],
+        kind: 'let',
+
+        range: [73, 116],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 43, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 117],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

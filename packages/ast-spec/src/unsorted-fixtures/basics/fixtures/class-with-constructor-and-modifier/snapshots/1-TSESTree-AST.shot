@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures unsorted-fixtures basics class-with-constructor-and-modifier TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            accessibility: "protected",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "constructor",
+
+              range: [95, 106],
+              loc: {
+                start: { column: 12, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+            kind: "constructor",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [109, 112],
+                loc: {
+                  start: { column: 26, line: 4 },
+                  end: { column: 29, line: 4 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [106, 112],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 29, line: 4 },
+              },
+            },
+
+            range: [85, 112],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 29, line: 4 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            accessibility: "public",
+            computed: true,
+            key: Literal {
+              type: "Literal",
+              raw: "'constructor'",
+              value: "constructor",
+
+              range: [124, 137],
+              loc: {
+                start: { column: 10, line: 6 },
+                end: { column: 23, line: 6 },
+              },
+            },
+            kind: "method",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [141, 144],
+                loc: {
+                  start: { column: 27, line: 6 },
+                  end: { column: 30, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [138, 144],
+              loc: {
+                start: { column: 24, line: 6 },
+                end: { column: 30, line: 6 },
+              },
+            },
+
+            range: [116, 144],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 30, line: 6 },
+            },
+          },
+        ],
+
+        range: [81, 146],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "C",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 146],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 147],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;
