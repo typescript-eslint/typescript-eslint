@@ -126,40 +126,50 @@ Array [
     type: "Keyword",
     value: "return",
 
-    range: [95, 101],
+    range: [93, 99],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 10, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 8, line: 4 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "b",
 
-    range: [102, 103],
+    range: [100, 101],
     loc: {
-      start: { column: 11, line: 4 },
-      end: { column: 12, line: 4 },
+      start: { column: 9, line: 4 },
+      end: { column: 10, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [103, 104],
+    range: [101, 102],
     loc: {
-      start: { column: 12, line: 4 },
-      end: { column: 13, line: 4 },
+      start: { column: 10, line: 4 },
+      end: { column: 11, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [105, 106],
+    range: [103, 104],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 1, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [104, 105],
+    loc: {
+      start: { column: 1, line: 5 },
+      end: { column: 2, line: 5 },
     },
   },
 ]

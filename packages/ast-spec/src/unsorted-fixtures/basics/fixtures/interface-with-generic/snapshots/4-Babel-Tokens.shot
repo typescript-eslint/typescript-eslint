@@ -66,10 +66,10 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [93, 94],
+    range: [92, 93],
     loc: {
-      start: { column: 0, line: 4 },
-      end: { column: 1, line: 4 },
+      start: { column: 19, line: 3 },
+      end: { column: 20, line: 3 },
     },
   },
 ]

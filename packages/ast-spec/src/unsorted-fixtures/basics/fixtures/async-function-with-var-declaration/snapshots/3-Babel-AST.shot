@@ -19,10 +19,10 @@ Program {
                   type: "Identifier",
                   name: "foo",
 
-                  range: [105, 108],
+                  range: [103, 106],
                   loc: {
-                    start: { column: 8, line: 4 },
-                    end: { column: 11, line: 4 },
+                    start: { column: 6, line: 4 },
+                    end: { column: 9, line: 4 },
                   },
                 },
                 init: Literal {
@@ -30,26 +30,26 @@ Program {
                   raw: "'foo'",
                   value: "foo",
 
-                  range: [111, 116],
+                  range: [109, 114],
                   loc: {
-                    start: { column: 14, line: 4 },
-                    end: { column: 19, line: 4 },
+                    start: { column: 12, line: 4 },
+                    end: { column: 17, line: 4 },
                   },
                 },
 
-                range: [105, 116],
+                range: [103, 114],
                 loc: {
-                  start: { column: 8, line: 4 },
-                  end: { column: 19, line: 4 },
+                  start: { column: 6, line: 4 },
+                  end: { column: 17, line: 4 },
                 },
               },
             ],
             kind: "var",
 
-            range: [101, 117],
+            range: [99, 115],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 20, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 18, line: 4 },
             },
           },
           VariableDeclaration {
@@ -61,10 +61,10 @@ Program {
                   type: "Identifier",
                   name: "bar",
 
-                  range: [126, 129],
+                  range: [122, 125],
                   loc: {
-                    start: { column: 8, line: 5 },
-                    end: { column: 11, line: 5 },
+                    start: { column: 6, line: 5 },
+                    end: { column: 9, line: 5 },
                   },
                 },
                 init: Literal {
@@ -72,26 +72,26 @@ Program {
                   raw: "'bar'",
                   value: "bar",
 
-                  range: [132, 137],
+                  range: [128, 133],
                   loc: {
-                    start: { column: 14, line: 5 },
-                    end: { column: 19, line: 5 },
+                    start: { column: 12, line: 5 },
+                    end: { column: 17, line: 5 },
                   },
                 },
 
-                range: [126, 137],
+                range: [122, 133],
                 loc: {
-                  start: { column: 8, line: 5 },
-                  end: { column: 19, line: 5 },
+                  start: { column: 6, line: 5 },
+                  end: { column: 17, line: 5 },
                 },
               },
             ],
             kind: "let",
 
-            range: [122, 138],
+            range: [118, 134],
             loc: {
-              start: { column: 4, line: 5 },
-              end: { column: 20, line: 5 },
+              start: { column: 2, line: 5 },
+              end: { column: 18, line: 5 },
             },
           },
           VariableDeclaration {
@@ -103,10 +103,10 @@ Program {
                   type: "Identifier",
                   name: "fooBar",
 
-                  range: [149, 155],
+                  range: [143, 149],
                   loc: {
-                    start: { column: 10, line: 6 },
-                    end: { column: 16, line: 6 },
+                    start: { column: 8, line: 6 },
+                    end: { column: 14, line: 6 },
                   },
                 },
                 init: Literal {
@@ -114,31 +114,31 @@ Program {
                   raw: "'fooBar'",
                   value: "fooBar",
 
-                  range: [158, 166],
+                  range: [152, 160],
                   loc: {
-                    start: { column: 19, line: 6 },
-                    end: { column: 27, line: 6 },
+                    start: { column: 17, line: 6 },
+                    end: { column: 25, line: 6 },
                   },
                 },
 
-                range: [149, 166],
+                range: [143, 160],
                 loc: {
-                  start: { column: 10, line: 6 },
-                  end: { column: 27, line: 6 },
+                  start: { column: 8, line: 6 },
+                  end: { column: 25, line: 6 },
                 },
               },
             ],
             kind: "const",
 
-            range: [143, 167],
+            range: [137, 161],
             loc: {
-              start: { column: 4, line: 6 },
-              end: { column: 28, line: 6 },
+              start: { column: 2, line: 6 },
+              end: { column: 26, line: 6 },
             },
           },
         ],
 
-        range: [95, 169],
+        range: [95, 163],
         loc: {
           start: { column: 22, line: 3 },
           end: { column: 1, line: 7 },
@@ -158,7 +158,7 @@ Program {
       },
       params: Array [],
 
-      range: [73, 169],
+      range: [73, 163],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 7 },
@@ -167,7 +167,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 170],
+  range: [73, 164],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 8 },

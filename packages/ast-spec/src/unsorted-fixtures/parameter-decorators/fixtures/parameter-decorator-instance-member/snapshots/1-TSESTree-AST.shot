@@ -16,10 +16,10 @@ Program {
               type: "Identifier",
               name: "greet",
 
-              range: [93, 98],
+              range: [91, 96],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 9, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 7, line: 4 },
               },
             },
             kind: "method",
@@ -39,13 +39,13 @@ Program {
                         type: "BinaryExpression",
                         left: Literal {
                           type: "Literal",
-                          raw: "\\"Hello \\"",
+                          raw: "'Hello '",
                           value: "Hello ",
 
-                          range: [140, 148],
+                          range: [134, 142],
                           loc: {
-                            start: { column: 15, line: 5 },
-                            end: { column: 23, line: 5 },
+                            start: { column: 11, line: 5 },
+                            end: { column: 19, line: 5 },
                           },
                         },
                         operator: "+",
@@ -53,51 +53,51 @@ Program {
                           type: "Identifier",
                           name: "name",
 
-                          range: [151, 155],
+                          range: [145, 149],
                           loc: {
-                            start: { column: 26, line: 5 },
-                            end: { column: 30, line: 5 },
+                            start: { column: 22, line: 5 },
+                            end: { column: 26, line: 5 },
                           },
                         },
 
-                        range: [140, 155],
+                        range: [134, 149],
                         loc: {
-                          start: { column: 15, line: 5 },
-                          end: { column: 30, line: 5 },
+                          start: { column: 11, line: 5 },
+                          end: { column: 26, line: 5 },
                         },
                       },
                       operator: "+",
                       right: Literal {
                         type: "Literal",
-                        raw: "\\"!\\"",
+                        raw: "'!'",
                         value: "!",
 
-                        range: [158, 161],
+                        range: [152, 155],
                         loc: {
-                          start: { column: 33, line: 5 },
-                          end: { column: 36, line: 5 },
+                          start: { column: 29, line: 5 },
+                          end: { column: 32, line: 5 },
                         },
                       },
 
-                      range: [140, 161],
+                      range: [134, 155],
                       loc: {
-                        start: { column: 15, line: 5 },
-                        end: { column: 36, line: 5 },
+                        start: { column: 11, line: 5 },
+                        end: { column: 32, line: 5 },
                       },
                     },
 
-                    range: [133, 162],
+                    range: [127, 156],
                     loc: {
-                      start: { column: 8, line: 5 },
-                      end: { column: 37, line: 5 },
+                      start: { column: 4, line: 5 },
+                      end: { column: 33, line: 5 },
                     },
                   },
                 ],
 
-                range: [123, 168],
+                range: [121, 160],
                 loc: {
-                  start: { column: 34, line: 4 },
-                  end: { column: 5, line: 6 },
+                  start: { column: 32, line: 4 },
+                  end: { column: 3, line: 6 },
                 },
               },
               expression: false,
@@ -113,17 +113,17 @@ Program {
                         type: "Identifier",
                         name: "required",
 
-                        range: [100, 108],
+                        range: [98, 106],
                         loc: {
-                          start: { column: 11, line: 4 },
-                          end: { column: 19, line: 4 },
+                          start: { column: 9, line: 4 },
+                          end: { column: 17, line: 4 },
                         },
                       },
 
-                      range: [99, 108],
+                      range: [97, 106],
                       loc: {
-                        start: { column: 10, line: 4 },
-                        end: { column: 19, line: 4 },
+                        start: { column: 8, line: 4 },
+                        end: { column: 17, line: 4 },
                       },
                     },
                   ],
@@ -133,44 +133,44 @@ Program {
                     typeAnnotation: TSStringKeyword {
                       type: "TSStringKeyword",
 
-                      range: [115, 121],
+                      range: [113, 119],
                       loc: {
-                        start: { column: 26, line: 4 },
-                        end: { column: 32, line: 4 },
+                        start: { column: 24, line: 4 },
+                        end: { column: 30, line: 4 },
                       },
                     },
 
-                    range: [113, 121],
+                    range: [111, 119],
                     loc: {
-                      start: { column: 24, line: 4 },
-                      end: { column: 32, line: 4 },
+                      start: { column: 22, line: 4 },
+                      end: { column: 30, line: 4 },
                     },
                   },
 
-                  range: [109, 121],
+                  range: [107, 119],
                   loc: {
-                    start: { column: 20, line: 4 },
-                    end: { column: 32, line: 4 },
+                    start: { column: 18, line: 4 },
+                    end: { column: 30, line: 4 },
                   },
                 },
               ],
 
-              range: [98, 168],
+              range: [96, 160],
               loc: {
-                start: { column: 9, line: 4 },
-                end: { column: 5, line: 6 },
+                start: { column: 7, line: 4 },
+                end: { column: 3, line: 6 },
               },
             },
 
-            range: [93, 168],
+            range: [91, 160],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 5, line: 6 },
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
             },
           },
         ],
 
-        range: [87, 170],
+        range: [87, 162],
         loc: {
           start: { column: 14, line: 3 },
           end: { column: 1, line: 7 },
@@ -188,7 +188,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 170],
+      range: [73, 162],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 7 },
@@ -197,7 +197,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 171],
+  range: [73, 163],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 8 },

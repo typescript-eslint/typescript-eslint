@@ -77,10 +77,10 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-property-unde
     ],
     sourceType: 'script',
 
-    range: [73, 114],
+    range: [73, 113],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 7 },
+      end: { column: 0, line: 6 },
     },
   }"
 `;

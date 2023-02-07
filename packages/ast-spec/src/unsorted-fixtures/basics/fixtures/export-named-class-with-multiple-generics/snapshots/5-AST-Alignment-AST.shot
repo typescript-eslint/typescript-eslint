@@ -17,10 +17,10 @@ exports[`AST Fixtures unsorted-fixtures basics export-named-class-with-multiple-
             type: 'ClassBody',
             body: Array [],
 
-            range: [96, 100],
+            range: [96, 98],
             loc: {
               start: { column: 23, line: 3 },
-              end: { column: 1, line: 5 },
+              end: { column: 25, line: 3 },
             },
           },
           id: Identifier {
@@ -90,29 +90,29 @@ exports[`AST Fixtures unsorted-fixtures basics export-named-class-with-multiple-
             },
           },
 
-          range: [80, 100],
+          range: [80, 98],
           loc: {
             start: { column: 7, line: 3 },
-            end: { column: 1, line: 5 },
+            end: { column: 25, line: 3 },
           },
         },
         exportKind: 'value',
         source: null,
         specifiers: Array [],
 
-        range: [73, 100],
+        range: [73, 98],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 25, line: 3 },
         },
       },
     ],
     sourceType: 'module',
 
-    range: [73, 101],
+    range: [73, 99],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 6 },
+      end: { column: 0, line: 4 },
     },
   }"
 `;

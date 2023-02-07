@@ -15,10 +15,10 @@ Program {
               type: "TSModuleBlock",
               body: Array [],
 
-              range: [116, 124],
+              range: [114, 116],
               loc: {
-                start: { column: 26, line: 4 },
-                end: { column: 5, line: 6 },
+                start: { column: 24, line: 4 },
+                end: { column: 26, line: 4 },
               },
             },
             declare: true,
@@ -26,17 +26,17 @@ Program {
               type: "Identifier",
               name: "global",
 
-              range: [109, 115],
+              range: [107, 113],
               loc: {
-                start: { column: 19, line: 4 },
-                end: { column: 25, line: 4 },
+                start: { column: 17, line: 4 },
+                end: { column: 23, line: 4 },
               },
             },
 
-            range: [94, 124],
+            range: [92, 116],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 5, line: 6 },
+              start: { column: 2, line: 4 },
+              end: { column: 26, line: 4 },
             },
           },
           TSModuleDeclaration {
@@ -45,10 +45,10 @@ Program {
               type: "TSModuleBlock",
               body: Array [],
 
-              range: [154, 162],
+              range: [144, 146],
               loc: {
-                start: { column: 29, line: 7 },
-                end: { column: 5, line: 9 },
+                start: { column: 27, line: 5 },
+                end: { column: 29, line: 5 },
               },
             },
             declare: true,
@@ -56,25 +56,25 @@ Program {
               type: "Identifier",
               name: "global",
 
-              range: [147, 153],
+              range: [137, 143],
               loc: {
-                start: { column: 22, line: 7 },
-                end: { column: 28, line: 7 },
+                start: { column: 20, line: 5 },
+                end: { column: 26, line: 5 },
               },
             },
 
-            range: [129, 162],
+            range: [119, 146],
             loc: {
-              start: { column: 4, line: 7 },
-              end: { column: 5, line: 9 },
+              start: { column: 2, line: 5 },
+              end: { column: 29, line: 5 },
             },
           },
         ],
 
-        range: [88, 164],
+        range: [88, 148],
         loc: {
           start: { column: 15, line: 3 },
-          end: { column: 1, line: 10 },
+          end: { column: 1, line: 6 },
         },
       },
       declare: true,
@@ -90,19 +90,19 @@ Program {
         },
       },
 
-      range: [73, 164],
+      range: [73, 148],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 10 },
+        end: { column: 1, line: 6 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 165],
+  range: [73, 149],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 11 },
+    end: { column: 0, line: 7 },
   },
 }
 `;

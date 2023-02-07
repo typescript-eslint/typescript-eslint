@@ -82,23 +82,23 @@ Array [
       end: { column: 24, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "declare",
-
-    range: [118, 125],
-    loc: {
-      start: { column: 2, line: 5 },
-      end: { column: 9, line: 5 },
-    },
-  },
   Keyword {
     type: "Keyword",
     value: "public",
 
-    range: [126, 132],
+    range: [118, 124],
     loc: {
-      start: { column: 10, line: 5 },
+      start: { column: 2, line: 5 },
+      end: { column: 8, line: 5 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [125, 132],
+    loc: {
+      start: { column: 9, line: 5 },
       end: { column: 16, line: 5 },
     },
   },
@@ -262,23 +262,23 @@ Array [
       end: { column: 33, line: 7 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "declare",
-
-    range: [216, 223],
-    loc: {
-      start: { column: 2, line: 8 },
-      end: { column: 9, line: 8 },
-    },
-  },
   Keyword {
     type: "Keyword",
     value: "public",
 
-    range: [224, 230],
+    range: [216, 222],
     loc: {
-      start: { column: 10, line: 8 },
+      start: { column: 2, line: 8 },
+      end: { column: 8, line: 8 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [223, 230],
+    loc: {
+      start: { column: 9, line: 8 },
       end: { column: 16, line: 8 },
     },
   },
@@ -332,23 +332,23 @@ Array [
       end: { column: 40, line: 8 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "declare",
-
-    range: [257, 264],
-    loc: {
-      start: { column: 2, line: 9 },
-      end: { column: 9, line: 9 },
-    },
-  },
   Keyword {
     type: "Keyword",
     value: "public",
 
-    range: [265, 271],
+    range: [257, 263],
     loc: {
-      start: { column: 10, line: 9 },
+      start: { column: 2, line: 9 },
+      end: { column: 8, line: 9 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [264, 271],
+    loc: {
+      start: { column: 9, line: 9 },
       end: { column: 16, line: 9 },
     },
   },
@@ -402,23 +402,23 @@ Array [
       end: { column: 38, line: 9 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "declare",
-
-    range: [296, 303],
-    loc: {
-      start: { column: 2, line: 10 },
-      end: { column: 9, line: 10 },
-    },
-  },
   Keyword {
     type: "Keyword",
     value: "public",
 
-    range: [304, 310],
+    range: [296, 302],
     loc: {
-      start: { column: 10, line: 10 },
+      start: { column: 2, line: 10 },
+      end: { column: 8, line: 10 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [303, 310],
+    loc: {
+      start: { column: 9, line: 10 },
       end: { column: 16, line: 10 },
     },
   },

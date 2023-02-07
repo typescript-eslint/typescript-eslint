@@ -24,7 +24,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"foo\\"",
+    value: "'foo'",
 
     range: [80, 85],
     loc: {
@@ -104,7 +104,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"json\\"",
+    value: "'json'",
 
     range: [105, 111],
     loc: {

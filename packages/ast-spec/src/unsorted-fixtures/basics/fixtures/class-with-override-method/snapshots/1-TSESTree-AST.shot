@@ -32,7 +32,7 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [142, 160],
+                range: [142, 158],
                 loc: {
                   start: { column: 18, line: 4 },
                   end: { column: 3, line: 6 },
@@ -43,14 +43,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [139, 160],
+              range: [139, 158],
               loc: {
                 start: { column: 15, line: 4 },
                 end: { column: 3, line: 6 },
               },
             },
 
-            range: [126, 160],
+            range: [126, 158],
             loc: {
               start: { column: 2, line: 4 },
               end: { column: 3, line: 6 },
@@ -58,7 +58,7 @@ Program {
           },
         ],
 
-        range: [122, 162],
+        range: [122, 160],
         loc: {
           start: { column: 49, line: 3 },
           end: { column: 1, line: 7 },
@@ -85,7 +85,7 @@ Program {
         },
       },
 
-      range: [73, 162],
+      range: [73, 160],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 7 },
@@ -94,7 +94,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 163],
+  range: [73, 161],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 8 },

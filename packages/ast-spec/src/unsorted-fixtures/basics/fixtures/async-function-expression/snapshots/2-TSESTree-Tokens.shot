@@ -76,50 +76,50 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [98, 99],
+    range: [97, 98],
     loc: {
-      start: { column: 0, line: 4 },
-      end: { column: 1, line: 4 },
+      start: { column: 24, line: 3 },
+      end: { column: 25, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ")",
 
-    range: [99, 100],
+    range: [98, 99],
     loc: {
-      start: { column: 1, line: 4 },
-      end: { column: 2, line: 4 },
+      start: { column: 25, line: 3 },
+      end: { column: 26, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "(",
 
-    range: [100, 101],
+    range: [99, 100],
     loc: {
-      start: { column: 2, line: 4 },
-      end: { column: 3, line: 4 },
+      start: { column: 26, line: 3 },
+      end: { column: 27, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ")",
 
-    range: [101, 102],
+    range: [100, 101],
     loc: {
-      start: { column: 3, line: 4 },
-      end: { column: 4, line: 4 },
+      start: { column: 27, line: 3 },
+      end: { column: 28, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [102, 103],
+    range: [101, 102],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 5, line: 4 },
+      start: { column: 28, line: 3 },
+      end: { column: 29, line: 3 },
     },
   },
 ]

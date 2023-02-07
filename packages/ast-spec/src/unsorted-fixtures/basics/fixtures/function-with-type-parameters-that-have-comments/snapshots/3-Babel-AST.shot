@@ -11,10 +11,10 @@ Program {
         type: "BlockStatement",
         body: Array [],
 
-        range: [106, 108],
+        range: [107, 109],
         loc: {
-          start: { column: 33, line: 3 },
-          end: { column: 35, line: 3 },
+          start: { column: 34, line: 3 },
+          end: { column: 36, line: 3 },
         },
       },
       expression: false,
@@ -37,34 +37,34 @@ Program {
             type: "TSTypeParameter",
             name: "T",
 
-            range: [101, 102],
+            range: [102, 103],
             loc: {
-              start: { column: 28, line: 3 },
-              end: { column: 29, line: 3 },
+              start: { column: 29, line: 3 },
+              end: { column: 30, line: 3 },
             },
           },
         ],
 
-        range: [89, 103],
+        range: [89, 104],
         loc: {
           start: { column: 16, line: 3 },
-          end: { column: 30, line: 3 },
+          end: { column: 31, line: 3 },
         },
       },
 
-      range: [73, 108],
+      range: [73, 109],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 35, line: 3 },
+        end: { column: 36, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 108],
+  range: [73, 110],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 35, line: 3 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

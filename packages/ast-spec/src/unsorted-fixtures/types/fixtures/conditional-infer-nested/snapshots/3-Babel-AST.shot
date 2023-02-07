@@ -24,17 +24,17 @@ Program {
             type: "Identifier",
             name: "T",
 
-            range: [94, 95],
+            range: [92, 93],
             loc: {
-              start: { column: 2, line: 4 },
-              end: { column: 3, line: 4 },
+              start: { column: 19, line: 3 },
+              end: { column: 20, line: 3 },
             },
           },
 
-          range: [94, 95],
+          range: [92, 93],
           loc: {
-            start: { column: 2, line: 4 },
-            end: { column: 3, line: 4 },
+            start: { column: 19, line: 3 },
+            end: { column: 20, line: 3 },
           },
         },
         extendsType: TSArrayType {
@@ -47,31 +47,31 @@ Program {
                 type: "TSTypeParameter",
                 name: "U",
 
-                range: [111, 112],
+                range: [109, 110],
                 loc: {
-                  start: { column: 19, line: 4 },
-                  end: { column: 20, line: 4 },
+                  start: { column: 36, line: 3 },
+                  end: { column: 37, line: 3 },
                 },
               },
 
-              range: [105, 112],
+              range: [103, 110],
               loc: {
-                start: { column: 13, line: 4 },
-                end: { column: 20, line: 4 },
+                start: { column: 30, line: 3 },
+                end: { column: 37, line: 3 },
               },
             },
 
-            range: [104, 113],
+            range: [102, 111],
             loc: {
-              start: { column: 12, line: 4 },
-              end: { column: 21, line: 4 },
+              start: { column: 29, line: 3 },
+              end: { column: 38, line: 3 },
             },
           },
 
-          range: [104, 115],
+          range: [102, 113],
           loc: {
-            start: { column: 12, line: 4 },
-            end: { column: 23, line: 4 },
+            start: { column: 29, line: 3 },
+            end: { column: 40, line: 3 },
           },
         },
         falseType: TSConditionalType {
@@ -82,14 +82,14 @@ Program {
               type: "Identifier",
               name: "T",
 
-              range: [126, 127],
+              range: [124, 125],
               loc: {
                 start: { column: 4, line: 5 },
                 end: { column: 5, line: 5 },
               },
             },
 
-            range: [126, 127],
+            range: [124, 125],
             loc: {
               start: { column: 4, line: 5 },
               end: { column: 5, line: 5 },
@@ -101,14 +101,14 @@ Program {
               type: "TSTypeParameter",
               name: "U",
 
-              range: [142, 143],
+              range: [140, 141],
               loc: {
                 start: { column: 20, line: 5 },
                 end: { column: 21, line: 5 },
               },
             },
 
-            range: [136, 143],
+            range: [134, 141],
             loc: {
               start: { column: 14, line: 5 },
               end: { column: 21, line: 5 },
@@ -122,17 +122,17 @@ Program {
                 type: "Identifier",
                 name: "T",
 
-                range: [156, 157],
+                range: [152, 153],
                 loc: {
-                  start: { column: 6, line: 6 },
-                  end: { column: 7, line: 6 },
+                  start: { column: 4, line: 7 },
+                  end: { column: 5, line: 7 },
                 },
               },
 
-              range: [156, 157],
+              range: [152, 153],
               loc: {
-                start: { column: 6, line: 6 },
-                end: { column: 7, line: 6 },
+                start: { column: 4, line: 7 },
+                end: { column: 5, line: 7 },
               },
             },
             extendsType: TSTypeReference {
@@ -141,10 +141,10 @@ Program {
                 type: "Identifier",
                 name: "Promise",
 
-                range: [166, 173],
+                range: [162, 169],
                 loc: {
-                  start: { column: 16, line: 6 },
-                  end: { column: 23, line: 6 },
+                  start: { column: 14, line: 7 },
+                  end: { column: 21, line: 7 },
                 },
               },
               typeParameters: TSTypeParameterInstantiation {
@@ -156,32 +156,32 @@ Program {
                       type: "TSTypeParameter",
                       name: "U",
 
-                      range: [180, 181],
+                      range: [176, 177],
                       loc: {
-                        start: { column: 30, line: 6 },
-                        end: { column: 31, line: 6 },
+                        start: { column: 28, line: 7 },
+                        end: { column: 29, line: 7 },
                       },
                     },
 
-                    range: [174, 181],
+                    range: [170, 177],
                     loc: {
-                      start: { column: 24, line: 6 },
-                      end: { column: 31, line: 6 },
+                      start: { column: 22, line: 7 },
+                      end: { column: 29, line: 7 },
                     },
                   },
                 ],
 
-                range: [173, 182],
+                range: [169, 178],
                 loc: {
-                  start: { column: 23, line: 6 },
-                  end: { column: 32, line: 6 },
+                  start: { column: 21, line: 7 },
+                  end: { column: 30, line: 7 },
                 },
               },
 
-              range: [166, 182],
+              range: [162, 178],
               loc: {
-                start: { column: 16, line: 6 },
-                end: { column: 32, line: 6 },
+                start: { column: 14, line: 7 },
+                end: { column: 30, line: 7 },
               },
             },
             falseType: TSTypeReference {
@@ -190,17 +190,17 @@ Program {
                 type: "Identifier",
                 name: "T",
 
-                range: [197, 198],
+                range: [189, 190],
                 loc: {
-                  start: { column: 8, line: 7 },
-                  end: { column: 9, line: 7 },
+                  start: { column: 4, line: 9 },
+                  end: { column: 5, line: 9 },
                 },
               },
 
-              range: [197, 198],
+              range: [189, 190],
               loc: {
-                start: { column: 8, line: 7 },
-                end: { column: 9, line: 7 },
+                start: { column: 4, line: 9 },
+                end: { column: 5, line: 9 },
               },
             },
             trueType: TSTypeReference {
@@ -209,24 +209,24 @@ Program {
                 type: "Identifier",
                 name: "U",
 
-                range: [185, 186],
+                range: [183, 184],
                 loc: {
-                  start: { column: 35, line: 6 },
-                  end: { column: 36, line: 6 },
+                  start: { column: 4, line: 8 },
+                  end: { column: 5, line: 8 },
                 },
               },
 
-              range: [185, 186],
+              range: [183, 184],
               loc: {
-                start: { column: 35, line: 6 },
-                end: { column: 36, line: 6 },
+                start: { column: 4, line: 8 },
+                end: { column: 5, line: 8 },
               },
             },
 
-            range: [156, 198],
+            range: [152, 190],
             loc: {
-              start: { column: 6, line: 6 },
-              end: { column: 9, line: 7 },
+              start: { column: 4, line: 7 },
+              end: { column: 5, line: 9 },
             },
           },
           trueType: TSTypeReference {
@@ -237,22 +237,22 @@ Program {
 
               range: [146, 147],
               loc: {
-                start: { column: 24, line: 5 },
-                end: { column: 25, line: 5 },
+                start: { column: 4, line: 6 },
+                end: { column: 5, line: 6 },
               },
             },
 
             range: [146, 147],
             loc: {
-              start: { column: 24, line: 5 },
-              end: { column: 25, line: 5 },
+              start: { column: 4, line: 6 },
+              end: { column: 5, line: 6 },
             },
           },
 
-          range: [126, 198],
+          range: [124, 190],
           loc: {
             start: { column: 4, line: 5 },
-            end: { column: 9, line: 7 },
+            end: { column: 5, line: 9 },
           },
         },
         trueType: TSTypeReference {
@@ -263,22 +263,22 @@ Program {
 
             range: [118, 119],
             loc: {
-              start: { column: 26, line: 4 },
-              end: { column: 27, line: 4 },
+              start: { column: 4, line: 4 },
+              end: { column: 5, line: 4 },
             },
           },
 
           range: [118, 119],
           loc: {
-            start: { column: 26, line: 4 },
-            end: { column: 27, line: 4 },
+            start: { column: 4, line: 4 },
+            end: { column: 5, line: 4 },
           },
         },
 
-        range: [94, 198],
+        range: [92, 190],
         loc: {
-          start: { column: 2, line: 4 },
-          end: { column: 9, line: 7 },
+          start: { column: 19, line: 3 },
+          end: { column: 5, line: 9 },
         },
       },
       typeParameters: TSTypeParameterDeclaration {
@@ -303,19 +303,19 @@ Program {
         },
       },
 
-      range: [73, 199],
+      range: [73, 191],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 10, line: 7 },
+        end: { column: 6, line: 9 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 200],
+  range: [73, 192],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 8 },
+    end: { column: 0, line: 10 },
   },
 }
 `;

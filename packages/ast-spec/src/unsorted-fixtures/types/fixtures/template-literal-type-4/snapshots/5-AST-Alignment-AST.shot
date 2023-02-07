@@ -41,10 +41,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 type: 'Identifier',
 +                 name: 'Uppercase',
 
--             range: [119, 122],
+-             range: [121, 124],
 -             loc: {
--               start: { column: 46, line: 3 },
--               end: { column: 49, line: 3 },
+-               start: { column: 2, line: 4 },
+-               end: { column: 5, line: 4 },
 -             },
 -           },
 -           TemplateElement {
@@ -54,10 +54,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -               'cooked': ' - ',
 -               'raw': ' - ',
 -             },
-+                 range: [122, 131],
++                 range: [124, 133],
 +                 loc: {
-+                   start: { column: 49, line: 3 },
-+                   end: { column: 58, line: 3 },
++                   start: { column: 5, line: 4 },
++                   end: { column: 14, line: 4 },
 +                 },
 +               },
 +               typeParameters: TSTypeParameterInstantiation {
@@ -69,10 +69,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                       type: 'Identifier',
 +                       name: 'T',
 
--             range: [134, 140],
+-             range: [136, 142],
 -             loc: {
--               start: { column: 61, line: 3 },
--               end: { column: 67, line: 3 },
+-               start: { column: 17, line: 4 },
+-               end: { column: 23, line: 4 },
 -             },
 -           },
 -           TemplateElement {
@@ -83,10 +83,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -               'raw': ' - ',
 -             },
 -
--             range: [152, 158],
+-             range: [154, 160],
 -             loc: {
--               start: { column: 79, line: 3 },
--               end: { column: 85, line: 3 },
+-               start: { column: 35, line: 4 },
+-               end: { column: 41, line: 4 },
 -             },
 -           },
 -           TemplateElement {
@@ -97,10 +97,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -               'raw': ' - ',
 -             },
 -
--             range: [171, 177],
+-             range: [173, 179],
 -             loc: {
--               start: { column: 98, line: 3 },
--               end: { column: 104, line: 3 },
+-               start: { column: 54, line: 4 },
+-               end: { column: 60, line: 4 },
 -             },
 -           },
 -           TemplateElement {
@@ -111,10 +111,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -               'raw': '',
 -             },
 -
--             range: [192, 194],
+-             range: [194, 196],
 -             loc: {
--               start: { column: 119, line: 3 },
--               end: { column: 121, line: 3 },
+-               start: { column: 75, line: 4 },
+-               end: { column: 77, line: 4 },
 -             },
 -           },
 -         ],
@@ -125,10 +125,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -               type: 'Identifier',
 -               name: 'Uppercase',
 -
--               range: [122, 131],
+-               range: [124, 133],
 -               loc: {
--                 start: { column: 49, line: 3 },
--                 end: { column: 58, line: 3 },
+-                 start: { column: 5, line: 4 },
+-                 end: { column: 14, line: 4 },
 -               },
 -             },
 -             typeParameters: TSTypeParameterInstantiation {
@@ -139,40 +139,40 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -                   typeName: Identifier {
 -                     type: 'Identifier',
 -                     name: 'T',
-+                       range: [132, 133],
++                       range: [134, 135],
 +                       loc: {
-+                         start: { column: 59, line: 3 },
-+                         end: { column: 60, line: 3 },
++                         start: { column: 15, line: 4 },
++                         end: { column: 16, line: 4 },
 +                       },
 +                     },
 
-                      range: [132, 133],
+                      range: [134, 135],
                       loc: {
-                        start: { column: 59, line: 3 },
-                        end: { column: 60, line: 3 },
+                        start: { column: 15, line: 4 },
+                        end: { column: 16, line: 4 },
                       },
                     },
 +                 ],
 
--                   range: [132, 133],
+-                   range: [134, 135],
 -                   loc: {
--                     start: { column: 59, line: 3 },
--                     end: { column: 60, line: 3 },
+-                     start: { column: 15, line: 4 },
+-                     end: { column: 16, line: 4 },
 -                   },
-+                 range: [131, 134],
++                 range: [133, 136],
 +                 loc: {
-+                   start: { column: 58, line: 3 },
-+                   end: { column: 61, line: 3 },
++                   start: { column: 14, line: 4 },
++                   end: { column: 17, line: 4 },
                   },
 -               ],
 +               },
 
--               range: [131, 134],
-+               range: [122, 134],
+-               range: [133, 136],
++               range: [124, 136],
                 loc: {
--                 start: { column: 58, line: 3 },
-+                 start: { column: 49, line: 3 },
-                  end: { column: 61, line: 3 },
+-                 start: { column: 14, line: 4 },
++                 start: { column: 5, line: 4 },
+                  end: { column: 17, line: 4 },
                 },
               },
 +             TSTypeReference {
@@ -181,10 +181,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 type: 'Identifier',
 +                 name: 'Lowercase',
 
--             range: [122, 134],
+-             range: [124, 136],
 -             loc: {
--               start: { column: 49, line: 3 },
--               end: { column: 61, line: 3 },
+-               start: { column: 5, line: 4 },
+-               end: { column: 17, line: 4 },
 -             },
 -           },
 -           TSTypeReference {
@@ -193,14 +193,14 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -               type: 'Identifier',
 -               name: 'Lowercase',
 -
--               range: [140, 149],
+-               range: [142, 151],
 -               loc: {
--                 start: { column: 67, line: 3 },
--                 end: { column: 76, line: 3 },
-+                 range: [140, 149],
+-                 start: { column: 23, line: 4 },
+-                 end: { column: 32, line: 4 },
++                 range: [142, 151],
 +                 loc: {
-+                   start: { column: 67, line: 3 },
-+                   end: { column: 76, line: 3 },
++                   start: { column: 23, line: 4 },
++                   end: { column: 32, line: 4 },
 +                 },
                 },
 -             },
@@ -221,40 +221,40 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                       type: 'Identifier',
 +                       name: 'T',
 +
-+                       range: [150, 151],
++                       range: [152, 153],
 +                       loc: {
-+                         start: { column: 77, line: 3 },
-+                         end: { column: 78, line: 3 },
++                         start: { column: 33, line: 4 },
++                         end: { column: 34, line: 4 },
 +                       },
 +                     },
 
-                      range: [150, 151],
+                      range: [152, 153],
                       loc: {
-                        start: { column: 77, line: 3 },
-                        end: { column: 78, line: 3 },
+                        start: { column: 33, line: 4 },
+                        end: { column: 34, line: 4 },
                       },
                     },
 +                 ],
 
--                   range: [150, 151],
+-                   range: [152, 153],
 -                   loc: {
--                     start: { column: 77, line: 3 },
--                     end: { column: 78, line: 3 },
+-                     start: { column: 33, line: 4 },
+-                     end: { column: 34, line: 4 },
 -                   },
-+                 range: [149, 152],
++                 range: [151, 154],
 +                 loc: {
-+                   start: { column: 76, line: 3 },
-+                   end: { column: 79, line: 3 },
++                   start: { column: 32, line: 4 },
++                   end: { column: 35, line: 4 },
                   },
 -               ],
 +               },
 
--               range: [149, 152],
-+               range: [140, 152],
+-               range: [151, 154],
++               range: [142, 154],
                 loc: {
--                 start: { column: 76, line: 3 },
-+                 start: { column: 67, line: 3 },
-                  end: { column: 79, line: 3 },
+-                 start: { column: 32, line: 4 },
++                 start: { column: 23, line: 4 },
+                  end: { column: 35, line: 4 },
                 },
               },
 +             TSTypeReference {
@@ -263,10 +263,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 type: 'Identifier',
 +                 name: 'Capitalize',
 
--             range: [140, 152],
+-             range: [142, 154],
 -             loc: {
--               start: { column: 67, line: 3 },
--               end: { column: 79, line: 3 },
+-               start: { column: 23, line: 4 },
+-               end: { column: 35, line: 4 },
 -             },
 -           },
 -           TSTypeReference {
@@ -274,10 +274,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -             typeName: Identifier {
 -               type: 'Identifier',
 -               name: 'Capitalize',
-+                 range: [158, 168],
++                 range: [160, 170],
 +                 loc: {
-+                   start: { column: 85, line: 3 },
-+                   end: { column: 95, line: 3 },
++                   start: { column: 41, line: 4 },
++                   end: { column: 51, line: 4 },
 +                 },
 +               },
 +               typeParameters: TSTypeParameterInstantiation {
@@ -289,10 +289,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                       type: 'Identifier',
 +                       name: 'T',
 
--               range: [158, 168],
+-               range: [160, 170],
 -               loc: {
--                 start: { column: 85, line: 3 },
--                 end: { column: 95, line: 3 },
+-                 start: { column: 41, line: 4 },
+-                 end: { column: 51, line: 4 },
 -               },
 -             },
 -             typeParameters: TSTypeParameterInstantiation {
@@ -303,40 +303,40 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -                   typeName: Identifier {
 -                     type: 'Identifier',
 -                     name: 'T',
-+                       range: [169, 170],
++                       range: [171, 172],
 +                       loc: {
-+                         start: { column: 96, line: 3 },
-+                         end: { column: 97, line: 3 },
++                         start: { column: 52, line: 4 },
++                         end: { column: 53, line: 4 },
 +                       },
 +                     },
 
-                      range: [169, 170],
+                      range: [171, 172],
                       loc: {
-                        start: { column: 96, line: 3 },
-                        end: { column: 97, line: 3 },
+                        start: { column: 52, line: 4 },
+                        end: { column: 53, line: 4 },
                       },
                     },
 +                 ],
 
--                   range: [169, 170],
+-                   range: [171, 172],
 -                   loc: {
--                     start: { column: 96, line: 3 },
--                     end: { column: 97, line: 3 },
+-                     start: { column: 52, line: 4 },
+-                     end: { column: 53, line: 4 },
 -                   },
-+                 range: [168, 171],
++                 range: [170, 173],
 +                 loc: {
-+                   start: { column: 95, line: 3 },
-+                   end: { column: 98, line: 3 },
++                   start: { column: 51, line: 4 },
++                   end: { column: 54, line: 4 },
                   },
 -               ],
 +               },
 
--               range: [168, 171],
-+               range: [158, 171],
+-               range: [170, 173],
++               range: [160, 173],
                 loc: {
--                 start: { column: 95, line: 3 },
-+                 start: { column: 85, line: 3 },
-                  end: { column: 98, line: 3 },
+-                 start: { column: 51, line: 4 },
++                 start: { column: 41, line: 4 },
+                  end: { column: 54, line: 4 },
                 },
               },
 +             TSTypeReference {
@@ -345,10 +345,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 type: 'Identifier',
 +                 name: 'Uncapitalize',
 
--             range: [158, 171],
+-             range: [160, 173],
 -             loc: {
--               start: { column: 85, line: 3 },
--               end: { column: 98, line: 3 },
+-               start: { column: 41, line: 4 },
+-               end: { column: 54, line: 4 },
 -             },
 -           },
 -           TSTypeReference {
@@ -356,10 +356,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -             typeName: Identifier {
 -               type: 'Identifier',
 -               name: 'Uncapitalize',
-+                 range: [177, 189],
++                 range: [179, 191],
 +                 loc: {
-+                   start: { column: 104, line: 3 },
-+                   end: { column: 116, line: 3 },
++                   start: { column: 60, line: 4 },
++                   end: { column: 72, line: 4 },
 +                 },
 +               },
 +               typeParameters: TSTypeParameterInstantiation {
@@ -371,10 +371,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                       type: 'Identifier',
 +                       name: 'T',
 
--               range: [177, 189],
+-               range: [179, 191],
 -               loc: {
--                 start: { column: 104, line: 3 },
--                 end: { column: 116, line: 3 },
+-                 start: { column: 60, line: 4 },
+-                 end: { column: 72, line: 4 },
 -               },
 -             },
 -             typeParameters: TSTypeParameterInstantiation {
@@ -385,40 +385,40 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 -                   typeName: Identifier {
 -                     type: 'Identifier',
 -                     name: 'T',
-+                       range: [190, 191],
++                       range: [192, 193],
 +                       loc: {
-+                         start: { column: 117, line: 3 },
-+                         end: { column: 118, line: 3 },
++                         start: { column: 73, line: 4 },
++                         end: { column: 74, line: 4 },
 +                       },
 +                     },
 
-                      range: [190, 191],
+                      range: [192, 193],
                       loc: {
-                        start: { column: 117, line: 3 },
-                        end: { column: 118, line: 3 },
+                        start: { column: 73, line: 4 },
+                        end: { column: 74, line: 4 },
                       },
                     },
 +                 ],
 
--                   range: [190, 191],
+-                   range: [192, 193],
 -                   loc: {
--                     start: { column: 117, line: 3 },
--                     end: { column: 118, line: 3 },
+-                     start: { column: 73, line: 4 },
+-                     end: { column: 74, line: 4 },
 -                   },
-+                 range: [189, 192],
++                 range: [191, 194],
 +                 loc: {
-+                   start: { column: 116, line: 3 },
-+                   end: { column: 119, line: 3 },
++                   start: { column: 72, line: 4 },
++                   end: { column: 75, line: 4 },
                   },
 -               ],
 +               },
 
--               range: [189, 192],
-+               range: [177, 192],
+-               range: [191, 194],
++               range: [179, 194],
                 loc: {
--                 start: { column: 116, line: 3 },
-+                 start: { column: 104, line: 3 },
-                  end: { column: 119, line: 3 },
+-                 start: { column: 72, line: 4 },
++                 start: { column: 60, line: 4 },
+                  end: { column: 75, line: 4 },
                 },
               },
 +           ],
@@ -431,14 +431,14 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 'raw': '',
 +               },
 
--             range: [177, 192],
+-             range: [179, 194],
 -             loc: {
--               start: { column: 104, line: 3 },
--               end: { column: 119, line: 3 },
-+               range: [119, 122],
+-               start: { column: 60, line: 4 },
+-               end: { column: 75, line: 4 },
++               range: [121, 124],
 +               loc: {
-+                 start: { column: 46, line: 3 },
-+                 end: { column: 49, line: 3 },
++                 start: { column: 2, line: 4 },
++                 end: { column: 5, line: 4 },
 +               },
 +             },
 +             TemplateElement {
@@ -449,10 +449,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 'raw': ' - ',
 +               },
 +
-+               range: [134, 140],
++               range: [136, 142],
 +               loc: {
-+                 start: { column: 61, line: 3 },
-+                 end: { column: 67, line: 3 },
++                 start: { column: 17, line: 4 },
++                 end: { column: 23, line: 4 },
 +               },
 +             },
 +             TemplateElement {
@@ -463,10 +463,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 'raw': ' - ',
 +               },
 +
-+               range: [152, 158],
++               range: [154, 160],
 +               loc: {
-+                 start: { column: 79, line: 3 },
-+                 end: { column: 85, line: 3 },
++                 start: { column: 35, line: 4 },
++                 end: { column: 41, line: 4 },
 +               },
 +             },
 +             TemplateElement {
@@ -477,10 +477,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 'raw': ' - ',
 +               },
 +
-+               range: [171, 177],
++               range: [173, 179],
 +               loc: {
-+                 start: { column: 98, line: 3 },
-+                 end: { column: 104, line: 3 },
++                 start: { column: 54, line: 4 },
++                 end: { column: 60, line: 4 },
 +               },
 +             },
 +             TemplateElement {
@@ -491,26 +491,26 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
 +                 'raw': '',
 +               },
 +
-+               range: [192, 194],
++               range: [194, 196],
 +               loc: {
-+                 start: { column: 119, line: 3 },
-+                 end: { column: 121, line: 3 },
++                 start: { column: 75, line: 4 },
++                 end: { column: 77, line: 4 },
 +               },
               },
 +           ],
 +
-+           range: [119, 194],
++           range: [121, 196],
 +           loc: {
-+             start: { column: 46, line: 3 },
-+             end: { column: 121, line: 3 },
++             start: { column: 2, line: 4 },
++             end: { column: 77, line: 4 },
             },
 -         ],
 +         },
 
-          range: [119, 194],
+          range: [121, 196],
           loc: {
-            start: { column: 46, line: 3 },
-            end: { column: 121, line: 3 },
+            start: { column: 2, line: 4 },
+            end: { column: 77, line: 4 },
           },
         },
         typeParameters: TSTypeParameterDeclaration {
@@ -556,10 +556,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
           },
         },
 
-        range: [73, 195],
+        range: [73, 197],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 122, line: 3 },
+          end: { column: 78, line: 4 },
         },
       },
       TSTypeAliasDeclaration {
@@ -568,10 +568,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
           type: 'Identifier',
           name: 'HELLO',
 
-          range: [201, 206],
+          range: [203, 208],
           loc: {
-            start: { column: 5, line: 4 },
-            end: { column: 10, line: 4 },
+            start: { column: 5, line: 5 },
+            end: { column: 10, line: 5 },
           },
         },
         typeAnnotation: TSTypeReference {
@@ -580,10 +580,10 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
             type: 'Identifier',
             name: 'EnthusiasticGreeting',
 
-            range: [209, 229],
+            range: [211, 231],
             loc: {
-              start: { column: 13, line: 4 },
-              end: { column: 33, line: 4 },
+              start: { column: 13, line: 5 },
+              end: { column: 33, line: 5 },
             },
           },
           typeParameters: TSTypeParameterInstantiation {
@@ -593,51 +593,51 @@ exports[`AST Fixtures unsorted-fixtures types template-literal-type-4 AST Alignm
                 type: 'TSLiteralType',
                 literal: Literal {
                   type: 'Literal',
-                  raw: '\\"heLLo\\"',
+                  raw: '\\\\'heLLo\\\\'',
                   value: 'heLLo',
 
-                  range: [230, 237],
+                  range: [232, 239],
                   loc: {
-                    start: { column: 34, line: 4 },
-                    end: { column: 41, line: 4 },
+                    start: { column: 34, line: 5 },
+                    end: { column: 41, line: 5 },
                   },
                 },
 
-                range: [230, 237],
+                range: [232, 239],
                 loc: {
-                  start: { column: 34, line: 4 },
-                  end: { column: 41, line: 4 },
+                  start: { column: 34, line: 5 },
+                  end: { column: 41, line: 5 },
                 },
               },
             ],
 
-            range: [229, 238],
+            range: [231, 240],
             loc: {
-              start: { column: 33, line: 4 },
-              end: { column: 42, line: 4 },
+              start: { column: 33, line: 5 },
+              end: { column: 42, line: 5 },
             },
           },
 
-          range: [209, 238],
+          range: [211, 240],
           loc: {
-            start: { column: 13, line: 4 },
-            end: { column: 42, line: 4 },
+            start: { column: 13, line: 5 },
+            end: { column: 42, line: 5 },
           },
         },
 
-        range: [196, 239],
+        range: [198, 241],
         loc: {
-          start: { column: 0, line: 4 },
-          end: { column: 43, line: 4 },
+          start: { column: 0, line: 5 },
+          end: { column: 43, line: 5 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 240],
+    range: [73, 242],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 5 },
+      end: { column: 0, line: 6 },
     },
   }"
 `;

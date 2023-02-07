@@ -26,10 +26,10 @@ Program {
               type: "BlockStatement",
               body: Array [],
 
-              range: [101, 104],
+              range: [101, 103],
               loc: {
                 start: { column: 28, line: 3 },
-                end: { column: 1, line: 4 },
+                end: { column: 30, line: 3 },
               },
             },
             expression: false,
@@ -55,35 +55,35 @@ Program {
               },
             },
 
-            range: [83, 104],
+            range: [83, 103],
             loc: {
               start: { column: 10, line: 3 },
-              end: { column: 1, line: 4 },
+              end: { column: 30, line: 3 },
             },
           },
 
-          range: [77, 104],
+          range: [77, 103],
           loc: {
             start: { column: 4, line: 3 },
-            end: { column: 1, line: 4 },
+            end: { column: 30, line: 3 },
           },
         },
       ],
       kind: "var",
 
-      range: [73, 105],
+      range: [73, 104],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 2, line: 4 },
+        end: { column: 31, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 106],
+  range: [73, 105],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 5 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

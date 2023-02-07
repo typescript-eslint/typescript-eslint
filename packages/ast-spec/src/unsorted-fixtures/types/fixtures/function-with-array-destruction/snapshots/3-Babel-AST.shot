@@ -85,16 +85,16 @@ Program {
         },
       },
 
-      range: [73, 101],
+      range: [73, 102],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 28, line: 3 },
+        end: { column: 29, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 102],
+  range: [73, 103],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

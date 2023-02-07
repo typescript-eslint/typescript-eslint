@@ -23,10 +23,10 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-computed-prop
                 raw: '\\\\'foo\\\\'',
                 value: 'foo',
 
-                range: [96, 101],
+                range: [94, 99],
                 loc: {
-                  start: { column: 13, line: 4 },
-                  end: { column: 18, line: 4 },
+                  start: { column: 11, line: 4 },
+                  end: { column: 16, line: 4 },
                 },
               },
               optional: true,
@@ -36,22 +36,22 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-computed-prop
                 type: 'Identifier',
                 name: 'undefined',
 
-                range: [106, 115],
+                range: [104, 113],
                 loc: {
-                  start: { column: 23, line: 4 },
-                  end: { column: 32, line: 4 },
+                  start: { column: 21, line: 4 },
+                  end: { column: 30, line: 4 },
                 },
               },
 
-              range: [87, 116],
+              range: [85, 114],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 33, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 31, line: 4 },
               },
             },
           ],
 
-          range: [81, 118],
+          range: [81, 116],
           loc: {
             start: { column: 8, line: 3 },
             end: { column: 1, line: 5 },
@@ -69,7 +69,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-computed-prop
         },
         superClass: null,
 
-        range: [73, 118],
+        range: [73, 116],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 5 },
@@ -78,7 +78,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-computed-prop
     ],
     sourceType: 'script',
 
-    range: [73, 119],
+    range: [73, 117],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },

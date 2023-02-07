@@ -14,10 +14,10 @@ Program {
             type: "Identifier",
             name: "x",
 
-            range: [73, 74],
+            range: [74, 75],
             loc: {
-              start: { column: 0, line: 3 },
-              end: { column: 1, line: 3 },
+              start: { column: 1, line: 3 },
+              end: { column: 2, line: 3 },
             },
           },
           operator: "<",
@@ -25,46 +25,46 @@ Program {
             type: "Identifier",
             name: "y",
 
-            range: [77, 78],
+            range: [78, 79],
             loc: {
-              start: { column: 4, line: 3 },
-              end: { column: 5, line: 3 },
+              start: { column: 5, line: 3 },
+              end: { column: 6, line: 3 },
             },
           },
 
-          range: [73, 78],
+          range: [74, 79],
           loc: {
-            start: { column: 0, line: 3 },
-            end: { column: 5, line: 3 },
+            start: { column: 1, line: 3 },
+            end: { column: 6, line: 3 },
           },
         },
         typeAnnotation: TSBooleanKeyword {
           type: "TSBooleanKeyword",
 
-          range: [82, 89],
+          range: [84, 91],
           loc: {
-            start: { column: 9, line: 3 },
-            end: { column: 16, line: 3 },
+            start: { column: 11, line: 3 },
+            end: { column: 18, line: 3 },
           },
         },
 
-        range: [73, 89],
+        range: [73, 91],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 16, line: 3 },
+          end: { column: 18, line: 3 },
         },
       },
 
-      range: [73, 90],
+      range: [73, 92],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 17, line: 3 },
+        end: { column: 19, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 91],
+  range: [73, 93],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

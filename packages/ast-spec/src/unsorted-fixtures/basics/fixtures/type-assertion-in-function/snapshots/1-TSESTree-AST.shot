@@ -14,15 +14,15 @@ Program {
             type: "ReturnStatement",
             argument: null,
 
-            range: [121, 127],
+            range: [119, 126],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 10, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 9, line: 4 },
             },
           },
         ],
 
-        range: [115, 129],
+        range: [115, 128],
         loc: {
           start: { column: 42, line: 3 },
           end: { column: 1, line: 5 },
@@ -101,7 +101,7 @@ Program {
         },
       },
 
-      range: [73, 129],
+      range: [73, 128],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -110,7 +110,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 130],
+  range: [73, 129],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 6 },

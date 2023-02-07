@@ -18,10 +18,10 @@ Program {
               type: "Identifier",
               name: "foo",
 
-              range: [105, 108],
+              range: [103, 106],
               loc: {
-                start: { column: 20, line: 4 },
-                end: { column: 23, line: 4 },
+                start: { column: 18, line: 4 },
+                end: { column: 21, line: 4 },
               },
             },
             override: false,
@@ -32,22 +32,22 @@ Program {
               raw: "'string'",
               value: "string",
 
-              range: [111, 119],
+              range: [109, 117],
               loc: {
-                start: { column: 26, line: 4 },
-                end: { column: 34, line: 4 },
+                start: { column: 24, line: 4 },
+                end: { column: 32, line: 4 },
               },
             },
 
-            range: [89, 120],
+            range: [87, 118],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 35, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 33, line: 4 },
             },
           },
         ],
 
-        range: [83, 122],
+        range: [83, 120],
         loc: {
           start: { column: 10, line: 3 },
           end: { column: 1, line: 5 },
@@ -65,7 +65,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 122],
+      range: [73, 120],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -74,7 +74,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 123],
+  range: [73, 121],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 6 },

@@ -19,17 +19,17 @@ Program {
                   type: "Identifier",
                   name: "hidden",
 
-                  range: [88, 94],
+                  range: [86, 92],
                   loc: {
-                    start: { column: 5, line: 4 },
-                    end: { column: 11, line: 4 },
+                    start: { column: 3, line: 4 },
+                    end: { column: 9, line: 4 },
                   },
                 },
 
-                range: [87, 94],
+                range: [85, 92],
                 loc: {
-                  start: { column: 4, line: 4 },
-                  end: { column: 11, line: 4 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 9, line: 4 },
                 },
               },
             ],
@@ -37,10 +37,10 @@ Program {
               type: "Identifier",
               name: "z",
 
-              range: [103, 104],
+              range: [99, 100],
               loc: {
-                start: { column: 8, line: 5 },
-                end: { column: 9, line: 5 },
+                start: { column: 6, line: 5 },
+                end: { column: 7, line: 5 },
               },
             },
             kind: "get",
@@ -62,8 +62,8 @@ Program {
 
                         range: [116, 120],
                         loc: {
-                          start: { column: 21, line: 5 },
-                          end: { column: 25, line: 5 },
+                          start: { column: 11, line: 6 },
+                          end: { column: 15, line: 6 },
                         },
                       },
                       optional: false,
@@ -73,30 +73,30 @@ Program {
 
                         range: [121, 123],
                         loc: {
-                          start: { column: 26, line: 5 },
-                          end: { column: 28, line: 5 },
+                          start: { column: 16, line: 6 },
+                          end: { column: 18, line: 6 },
                         },
                       },
 
                       range: [116, 123],
                       loc: {
-                        start: { column: 21, line: 5 },
-                        end: { column: 28, line: 5 },
+                        start: { column: 11, line: 6 },
+                        end: { column: 18, line: 6 },
                       },
                     },
 
                     range: [109, 124],
                     loc: {
-                      start: { column: 14, line: 5 },
-                      end: { column: 29, line: 5 },
+                      start: { column: 4, line: 6 },
+                      end: { column: 19, line: 6 },
                     },
                   },
                 ],
 
-                range: [107, 126],
+                range: [103, 128],
                 loc: {
-                  start: { column: 12, line: 5 },
-                  end: { column: 31, line: 5 },
+                  start: { column: 10, line: 5 },
+                  end: { column: 3, line: 7 },
                 },
               },
               expression: false,
@@ -104,25 +104,25 @@ Program {
               id: null,
               params: Array [],
 
-              range: [104, 126],
+              range: [100, 128],
               loc: {
-                start: { column: 9, line: 5 },
-                end: { column: 31, line: 5 },
+                start: { column: 7, line: 5 },
+                end: { column: 3, line: 7 },
               },
             },
 
-            range: [87, 126],
+            range: [85, 128],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 31, line: 5 },
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 7 },
             },
           },
         ],
 
-        range: [81, 128],
+        range: [81, 130],
         loc: {
           start: { column: 8, line: 3 },
-          end: { column: 1, line: 6 },
+          end: { column: 1, line: 8 },
         },
       },
       id: Identifier {
@@ -137,19 +137,19 @@ Program {
       },
       superClass: null,
 
-      range: [73, 128],
+      range: [73, 130],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 6 },
+        end: { column: 1, line: 8 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 128],
+  range: [73, 131],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 1, line: 6 },
+    end: { column: 0, line: 9 },
   },
 }
 `;

@@ -52,5 +52,15 @@ Array [
       end: { column: 25, line: 3 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [98, 99],
+    loc: {
+      start: { column: 25, line: 3 },
+      end: { column: 26, line: 3 },
+    },
+  },
 ]
 `;

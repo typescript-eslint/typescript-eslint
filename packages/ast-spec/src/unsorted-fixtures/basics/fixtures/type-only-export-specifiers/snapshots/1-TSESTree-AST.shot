@@ -11,7 +11,7 @@ Program {
       exportKind: "value",
       source: Literal {
         type: "Literal",
-        raw: "\\"mod\\"",
+        raw: "'mod'",
         value: "mod",
 
         range: [104, 109],

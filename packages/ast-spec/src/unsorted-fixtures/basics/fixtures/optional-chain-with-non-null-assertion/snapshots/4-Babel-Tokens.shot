@@ -294,7 +294,7 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
-    value: "!",
+    value: ")",
 
     range: [162, 163],
     loc: {
@@ -304,7 +304,7 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
-    value: ")",
+    value: "!",
 
     range: [163, 164],
     loc: {

@@ -13,10 +13,10 @@ Program {
           type: "ClassBody",
           body: Array [],
 
-          range: [93, 97],
+          range: [93, 95],
           loc: {
             start: { column: 20, line: 3 },
-            end: { column: 1, line: 5 },
+            end: { column: 22, line: 3 },
           },
         },
         id: Identifier {
@@ -63,29 +63,29 @@ Program {
           },
         },
 
-        range: [80, 97],
+        range: [80, 95],
         loc: {
           start: { column: 7, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 22, line: 3 },
         },
       },
       exportKind: "value",
       source: null,
       specifiers: Array [],
 
-      range: [73, 97],
+      range: [73, 95],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 22, line: 3 },
       },
     },
   ],
   sourceType: "module",
 
-  range: [73, 98],
+  range: [73, 96],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 6 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

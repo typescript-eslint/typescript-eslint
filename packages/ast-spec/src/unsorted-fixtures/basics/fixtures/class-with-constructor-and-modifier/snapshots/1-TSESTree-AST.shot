@@ -33,10 +33,10 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [109, 112],
+                range: [109, 111],
                 loc: {
                   start: { column: 26, line: 4 },
-                  end: { column: 29, line: 4 },
+                  end: { column: 28, line: 4 },
                 },
               },
               expression: false,
@@ -44,17 +44,17 @@ Program {
               id: null,
               params: Array [],
 
-              range: [106, 112],
+              range: [106, 111],
               loc: {
                 start: { column: 23, line: 4 },
-                end: { column: 29, line: 4 },
+                end: { column: 28, line: 4 },
               },
             },
 
-            range: [85, 112],
+            range: [85, 111],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 29, line: 4 },
+              end: { column: 28, line: 4 },
             },
           },
           MethodDefinition {
@@ -66,7 +66,7 @@ Program {
               raw: "'constructor'",
               value: "constructor",
 
-              range: [124, 137],
+              range: [123, 136],
               loc: {
                 start: { column: 10, line: 6 },
                 end: { column: 23, line: 6 },
@@ -82,10 +82,10 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [141, 144],
+                range: [140, 142],
                 loc: {
                   start: { column: 27, line: 6 },
-                  end: { column: 30, line: 6 },
+                  end: { column: 29, line: 6 },
                 },
               },
               expression: false,
@@ -93,22 +93,22 @@ Program {
               id: null,
               params: Array [],
 
-              range: [138, 144],
+              range: [137, 142],
               loc: {
                 start: { column: 24, line: 6 },
-                end: { column: 30, line: 6 },
+                end: { column: 29, line: 6 },
               },
             },
 
-            range: [116, 144],
+            range: [115, 142],
             loc: {
               start: { column: 2, line: 6 },
-              end: { column: 30, line: 6 },
+              end: { column: 29, line: 6 },
             },
           },
         ],
 
-        range: [81, 146],
+        range: [81, 144],
         loc: {
           start: { column: 8, line: 3 },
           end: { column: 1, line: 7 },
@@ -126,7 +126,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 146],
+      range: [73, 144],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 7 },
@@ -135,7 +135,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 147],
+  range: [73, 145],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 8 },

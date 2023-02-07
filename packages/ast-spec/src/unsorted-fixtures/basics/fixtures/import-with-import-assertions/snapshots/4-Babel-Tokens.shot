@@ -34,7 +34,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"mod\\"",
+    value: "'mod'",
 
     range: [89, 94],
     loc: {
@@ -84,7 +84,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"json\\"",
+    value: "'json'",
 
     range: [110, 116],
     loc: {

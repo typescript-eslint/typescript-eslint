@@ -16,22 +16,22 @@ Program {
               type: "Identifier",
               name: "foo",
 
-              range: [94, 97],
+              range: [92, 95],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 7, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
               },
             },
 
-            range: [94, 98],
+            range: [92, 96],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 8, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 6, line: 4 },
             },
           },
         ],
 
-        range: [88, 100],
+        range: [88, 98],
         loc: {
           start: { column: 15, line: 3 },
           end: { column: 1, line: 5 },
@@ -48,7 +48,7 @@ Program {
         },
       },
 
-      range: [73, 100],
+      range: [73, 98],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -57,7 +57,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 101],
+  range: [73, 99],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 6 },

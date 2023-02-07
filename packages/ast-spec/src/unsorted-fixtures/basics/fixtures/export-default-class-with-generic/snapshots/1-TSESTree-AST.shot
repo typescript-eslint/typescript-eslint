@@ -12,10 +12,10 @@ Program {
           type: "ClassBody",
           body: Array [],
 
-          range: [97, 101],
+          range: [97, 99],
           loc: {
             start: { column: 24, line: 3 },
-            end: { column: 1, line: 5 },
+            end: { column: 26, line: 3 },
           },
         },
         id: null,
@@ -53,27 +53,27 @@ Program {
           },
         },
 
-        range: [88, 101],
+        range: [88, 99],
         loc: {
           start: { column: 15, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 26, line: 3 },
         },
       },
       exportKind: "value",
 
-      range: [73, 101],
+      range: [73, 99],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 26, line: 3 },
       },
     },
   ],
   sourceType: "module",
 
-  range: [73, 102],
+  range: [73, 100],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 6 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

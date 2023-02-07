@@ -122,10 +122,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-extends-type-param
       type: 'Punctuator',
       value: '}',
 
-      range: [108, 109],
+      range: [106, 107],
       loc: {
-        start: { column: 0, line: 5 },
-        end: { column: 1, line: 5 },
+        start: { column: 33, line: 3 },
+        end: { column: 34, line: 3 },
       },
     },
   ]"

@@ -122,9 +122,9 @@ Array [
       end: { column: 11, line: 4 },
     },
   },
-  Punctuator {
-    type: "Punctuator",
-    value: "(",
+  Identifier {
+    type: "Identifier",
+    value: "s",
 
     range: [131, 132],
     loc: {
@@ -132,61 +132,41 @@ Array [
       end: { column: 13, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "s",
-
-    range: [132, 133],
-    loc: {
-      start: { column: 13, line: 4 },
-      end: { column: 14, line: 4 },
-    },
-  },
   Punctuator {
     type: "Punctuator",
     value: "??",
 
-    range: [134, 136],
+    range: [133, 135],
     loc: {
-      start: { column: 15, line: 4 },
-      end: { column: 17, line: 4 },
+      start: { column: 14, line: 4 },
+      end: { column: 16, line: 4 },
     },
   },
   String {
     type: "String",
     value: "''",
 
-    range: [137, 139],
+    range: [136, 138],
     loc: {
-      start: { column: 18, line: 4 },
-      end: { column: 20, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ")",
-
-    range: [139, 140],
-    loc: {
-      start: { column: 20, line: 4 },
-      end: { column: 21, line: 4 },
+      start: { column: 17, line: 4 },
+      end: { column: 19, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [140, 141],
+    range: [138, 139],
     loc: {
-      start: { column: 21, line: 4 },
-      end: { column: 22, line: 4 },
+      start: { column: 19, line: 4 },
+      end: { column: 20, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [142, 143],
+    range: [140, 141],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 1, line: 5 },

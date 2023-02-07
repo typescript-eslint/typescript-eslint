@@ -14,7 +14,7 @@ Program {
             directive: "use strict",
             expression: Literal {
               type: "Literal",
-              raw: "\\"use strict\\"",
+              raw: "'use strict'",
               value: "use strict",
 
               range: [88, 100],
@@ -76,7 +76,7 @@ Program {
             type: "ExpressionStatement",
             expression: Literal {
               type: "Literal",
-              raw: "\\"use strict\\"",
+              raw: "'use strict'",
               value: "use strict",
 
               range: [117, 129],

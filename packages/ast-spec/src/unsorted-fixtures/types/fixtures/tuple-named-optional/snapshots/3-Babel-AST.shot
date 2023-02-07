@@ -77,42 +77,33 @@ Program {
                   },
                   TSNamedTupleMember {
                     type: "TSNamedTupleMember",
-                    elementType: TSParenthesizedType {
-                      type: "TSParenthesizedType",
-                      typeAnnotation: TSUnionType {
-                        type: "TSUnionType",
-                        types: Array [
-                          TSStringKeyword {
-                            type: "TSStringKeyword",
+                    elementType: TSUnionType {
+                      type: "TSUnionType",
+                      types: Array [
+                        TSStringKeyword {
+                          type: "TSStringKeyword",
 
-                            range: [109, 115],
-                            loc: {
-                              start: { column: 36, line: 3 },
-                              end: { column: 42, line: 3 },
-                            },
+                          range: [108, 114],
+                          loc: {
+                            start: { column: 35, line: 3 },
+                            end: { column: 41, line: 3 },
                           },
-                          TSNumberKeyword {
-                            type: "TSNumberKeyword",
-
-                            range: [118, 124],
-                            loc: {
-                              start: { column: 45, line: 3 },
-                              end: { column: 51, line: 3 },
-                            },
-                          },
-                        ],
-
-                        range: [109, 124],
-                        loc: {
-                          start: { column: 36, line: 3 },
-                          end: { column: 51, line: 3 },
                         },
-                      },
+                        TSNumberKeyword {
+                          type: "TSNumberKeyword",
 
-                      range: [108, 125],
+                          range: [117, 123],
+                          loc: {
+                            start: { column: 44, line: 3 },
+                            end: { column: 50, line: 3 },
+                          },
+                        },
+                      ],
+
+                      range: [108, 123],
                       loc: {
                         start: { column: 35, line: 3 },
-                        end: { column: 52, line: 3 },
+                        end: { column: 50, line: 3 },
                       },
                     },
                     label: Identifier {
@@ -127,55 +118,55 @@ Program {
                     },
                     optional: true,
 
-                    range: [104, 125],
+                    range: [104, 123],
                     loc: {
                       start: { column: 31, line: 3 },
-                      end: { column: 52, line: 3 },
+                      end: { column: 50, line: 3 },
                     },
                   },
                 ],
 
-                range: [80, 126],
+                range: [80, 124],
                 loc: {
                   start: { column: 7, line: 3 },
-                  end: { column: 53, line: 3 },
+                  end: { column: 51, line: 3 },
                 },
               },
 
-              range: [78, 126],
+              range: [78, 124],
               loc: {
                 start: { column: 5, line: 3 },
-                end: { column: 53, line: 3 },
+                end: { column: 51, line: 3 },
               },
             },
 
-            range: [77, 126],
+            range: [77, 124],
             loc: {
               start: { column: 4, line: 3 },
-              end: { column: 53, line: 3 },
+              end: { column: 51, line: 3 },
             },
           },
           init: null,
 
-          range: [77, 126],
+          range: [77, 124],
           loc: {
             start: { column: 4, line: 3 },
-            end: { column: 53, line: 3 },
+            end: { column: 51, line: 3 },
           },
         },
       ],
       kind: "let",
 
-      range: [73, 126],
+      range: [73, 125],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 53, line: 3 },
+        end: { column: 52, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 127],
+  range: [73, 126],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

@@ -26,24 +26,24 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
         end: { column: 2, line: 3 },
       },
     },
-    String {
-      type: 'String',
-      value: '\\\\'__\\\\'',
+    Identifier {
+      type: 'Identifier',
+      value: '__',
 
-      range: [76, 80],
+      range: [76, 78],
       loc: {
         start: { column: 3, line: 3 },
-        end: { column: 7, line: 3 },
+        end: { column: 5, line: 3 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ':',
 
-      range: [80, 81],
+      range: [78, 79],
       loc: {
-        start: { column: 7, line: 3 },
-        end: { column: 8, line: 3 },
+        start: { column: 5, line: 3 },
+        end: { column: 6, line: 3 },
       },
     },
 -   Keyword {
@@ -52,15 +52,35 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
 +     type: 'Null',
       value: 'null',
 
-      range: [82, 86],
+      range: [80, 84],
       loc: {
-        start: { column: 9, line: 3 },
-        end: { column: 13, line: 3 },
+        start: { column: 7, line: 3 },
+        end: { column: 11, line: 3 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '}',
+
+      range: [85, 86],
+      loc: {
+        start: { column: 12, line: 3 },
+        end: { column: 13, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ')',
+
+      range: [86, 87],
+      loc: {
+        start: { column: 13, line: 3 },
+        end: { column: 14, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
 
       range: [87, 88],
       loc: {
@@ -70,29 +90,9 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
     },
     Punctuator {
       type: 'Punctuator',
-      value: ')',
-
-      range: [88, 89],
-      loc: {
-        start: { column: 15, line: 3 },
-        end: { column: 16, line: 3 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: ';',
-
-      range: [89, 90],
-      loc: {
-        start: { column: 16, line: 3 },
-        end: { column: 17, line: 3 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
       value: '(',
 
-      range: [92, 93],
+      range: [90, 91],
       loc: {
         start: { column: 0, line: 5 },
         end: { column: 1, line: 5 },
@@ -102,37 +102,47 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: '{',
 
-      range: [93, 94],
+      range: [91, 92],
       loc: {
         start: { column: 1, line: 5 },
         end: { column: 2, line: 5 },
       },
     },
-    String {
-      type: 'String',
-      value: '\\\\'__\\\\'',
+    Identifier {
+      type: 'Identifier',
+      value: '__',
 
-      range: [95, 99],
+      range: [93, 95],
       loc: {
         start: { column: 3, line: 5 },
-        end: { column: 7, line: 5 },
+        end: { column: 5, line: 5 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '(',
 
-      range: [99, 100],
+      range: [95, 96],
       loc: {
-        start: { column: 7, line: 5 },
-        end: { column: 8, line: 5 },
+        start: { column: 5, line: 5 },
+        end: { column: 6, line: 5 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ')',
 
-      range: [100, 101],
+      range: [96, 97],
+      loc: {
+        start: { column: 6, line: 5 },
+        end: { column: 7, line: 5 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [98, 99],
       loc: {
         start: { column: 8, line: 5 },
         end: { column: 9, line: 5 },
@@ -140,19 +150,19 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
     },
     Punctuator {
       type: 'Punctuator',
-      value: '{',
+      value: '}',
 
-      range: [102, 103],
+      range: [99, 100],
       loc: {
-        start: { column: 10, line: 5 },
-        end: { column: 11, line: 5 },
+        start: { column: 9, line: 5 },
+        end: { column: 10, line: 5 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '}',
 
-      range: [103, 104],
+      range: [101, 102],
       loc: {
         start: { column: 11, line: 5 },
         end: { column: 12, line: 5 },
@@ -160,9 +170,19 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
     },
     Punctuator {
       type: 'Punctuator',
-      value: '}',
+      value: ')',
 
-      range: [105, 106],
+      range: [102, 103],
+      loc: {
+        start: { column: 12, line: 5 },
+        end: { column: 13, line: 5 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [103, 104],
       loc: {
         start: { column: 13, line: 5 },
         end: { column: 14, line: 5 },
@@ -170,29 +190,9 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
     },
     Punctuator {
       type: 'Punctuator',
-      value: ')',
-
-      range: [106, 107],
-      loc: {
-        start: { column: 14, line: 5 },
-        end: { column: 15, line: 5 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: ';',
-
-      range: [107, 108],
-      loc: {
-        start: { column: 15, line: 5 },
-        end: { column: 16, line: 5 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
       value: '(',
 
-      range: [110, 111],
+      range: [106, 107],
       loc: {
         start: { column: 0, line: 7 },
         end: { column: 1, line: 7 },
@@ -202,7 +202,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: '{',
 
-      range: [111, 112],
+      range: [107, 108],
       loc: {
         start: { column: 1, line: 7 },
         end: { column: 2, line: 7 },
@@ -212,7 +212,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: '[',
 
-      range: [113, 114],
+      range: [109, 110],
       loc: {
         start: { column: 3, line: 7 },
         end: { column: 4, line: 7 },
@@ -222,7 +222,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'String',
       value: '\\\\'__\\\\'',
 
-      range: [114, 118],
+      range: [110, 114],
       loc: {
         start: { column: 4, line: 7 },
         end: { column: 8, line: 7 },
@@ -232,7 +232,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: ']',
 
-      range: [118, 119],
+      range: [114, 115],
       loc: {
         start: { column: 8, line: 7 },
         end: { column: 9, line: 7 },
@@ -242,7 +242,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: ':',
 
-      range: [119, 120],
+      range: [115, 116],
       loc: {
         start: { column: 9, line: 7 },
         end: { column: 10, line: 7 },
@@ -254,7 +254,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
 +     type: 'Null',
       value: 'null',
 
-      range: [121, 125],
+      range: [117, 121],
       loc: {
         start: { column: 11, line: 7 },
         end: { column: 15, line: 7 },
@@ -264,7 +264,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: '}',
 
-      range: [126, 127],
+      range: [122, 123],
       loc: {
         start: { column: 16, line: 7 },
         end: { column: 17, line: 7 },
@@ -274,7 +274,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: ')',
 
-      range: [127, 128],
+      range: [123, 124],
       loc: {
         start: { column: 17, line: 7 },
         end: { column: 18, line: 7 },
@@ -284,7 +284,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: ';',
 
-      range: [128, 129],
+      range: [124, 125],
       loc: {
         start: { column: 18, line: 7 },
         end: { column: 19, line: 7 },
@@ -294,7 +294,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Keyword',
       value: 'class',
 
-      range: [131, 136],
+      range: [127, 132],
       loc: {
         start: { column: 0, line: 9 },
         end: { column: 5, line: 9 },
@@ -304,7 +304,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Identifier',
       value: 'X',
 
-      range: [137, 138],
+      range: [133, 134],
       loc: {
         start: { column: 6, line: 9 },
         end: { column: 7, line: 9 },
@@ -314,7 +314,7 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'Punctuator',
       value: '{',
 
-      range: [139, 140],
+      range: [135, 136],
       loc: {
         start: { column: 8, line: 9 },
         end: { column: 9, line: 9 },
@@ -324,20 +324,20 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
       type: 'String',
       value: '\\\\'__\\\\'',
 
-      range: [141, 145],
+      range: [139, 143],
       loc: {
-        start: { column: 10, line: 9 },
-        end: { column: 14, line: 9 },
+        start: { column: 2, line: 10 },
+        end: { column: 6, line: 10 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '=',
 
-      range: [146, 147],
+      range: [144, 145],
       loc: {
-        start: { column: 15, line: 9 },
-        end: { column: 16, line: 9 },
+        start: { column: 7, line: 10 },
+        end: { column: 8, line: 10 },
       },
     },
 -   Keyword {
@@ -346,20 +346,30 @@ exports[`AST Fixtures unsorted-fixtures basics object-with-escaped-properties AS
 +     type: 'Null',
       value: 'null',
 
-      range: [148, 152],
+      range: [146, 150],
       loc: {
-        start: { column: 17, line: 9 },
-        end: { column: 21, line: 9 },
+        start: { column: 9, line: 10 },
+        end: { column: 13, line: 10 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [150, 151],
+      loc: {
+        start: { column: 13, line: 10 },
+        end: { column: 14, line: 10 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '}',
 
-      range: [153, 154],
+      range: [152, 153],
       loc: {
-        start: { column: 22, line: 9 },
-        end: { column: 23, line: 9 },
+        start: { column: 0, line: 11 },
+        end: { column: 1, line: 11 },
       },
     },
   ]"

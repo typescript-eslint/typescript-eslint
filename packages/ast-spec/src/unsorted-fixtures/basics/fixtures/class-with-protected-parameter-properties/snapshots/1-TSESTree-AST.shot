@@ -32,10 +32,10 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [280, 282],
+                range: [259, 261],
                 loc: {
-                  start: { column: 59, line: 7 },
-                  end: { column: 61, line: 7 },
+                  start: { column: 4, line: 9 },
+                  end: { column: 6, line: 9 },
                 },
               },
               expression: false,
@@ -53,31 +53,31 @@ Program {
                       typeAnnotation: TSStringKeyword {
                         type: "TSStringKeyword",
 
-                        range: [120, 126],
+                        range: [125, 131],
                         loc: {
-                          start: { column: 35, line: 4 },
-                          end: { column: 41, line: 4 },
+                          start: { column: 25, line: 5 },
+                          end: { column: 31, line: 5 },
                         },
                       },
 
-                      range: [118, 126],
+                      range: [123, 131],
                       loc: {
-                        start: { column: 33, line: 4 },
-                        end: { column: 41, line: 4 },
+                        start: { column: 23, line: 5 },
+                        end: { column: 31, line: 5 },
                       },
                     },
 
-                    range: [109, 126],
+                    range: [114, 131],
                     loc: {
-                      start: { column: 24, line: 4 },
-                      end: { column: 41, line: 4 },
+                      start: { column: 14, line: 5 },
+                      end: { column: 31, line: 5 },
                     },
                   },
 
-                  range: [99, 126],
+                  range: [104, 131],
                   loc: {
-                    start: { column: 14, line: 4 },
-                    end: { column: 41, line: 4 },
+                    start: { column: 4, line: 5 },
+                    end: { column: 31, line: 5 },
                   },
                 },
                 TSParameterProperty {
@@ -91,32 +91,32 @@ Program {
                       typeAnnotation: TSStringKeyword {
                         type: "TSStringKeyword",
 
-                        range: [171, 177],
+                        range: [166, 172],
                         loc: {
-                          start: { column: 43, line: 5 },
-                          end: { column: 49, line: 5 },
+                          start: { column: 33, line: 6 },
+                          end: { column: 39, line: 6 },
                         },
                       },
 
-                      range: [169, 177],
+                      range: [164, 172],
                       loc: {
-                        start: { column: 41, line: 5 },
-                        end: { column: 49, line: 5 },
+                        start: { column: 31, line: 6 },
+                        end: { column: 39, line: 6 },
                       },
                     },
 
-                    range: [161, 177],
+                    range: [156, 172],
                     loc: {
-                      start: { column: 33, line: 5 },
-                      end: { column: 49, line: 5 },
+                      start: { column: 23, line: 6 },
+                      end: { column: 39, line: 6 },
                     },
                   },
                   readonly: true,
 
-                  range: [142, 177],
+                  range: [137, 172],
                   loc: {
-                    start: { column: 14, line: 5 },
-                    end: { column: 49, line: 5 },
+                    start: { column: 4, line: 6 },
+                    end: { column: 39, line: 6 },
                   },
                 },
                 TSParameterProperty {
@@ -132,24 +132,24 @@ Program {
                         typeAnnotation: TSNumberKeyword {
                           type: "TSNumberKeyword",
 
-                          range: [208, 214],
+                          range: [193, 199],
                           loc: {
-                            start: { column: 29, line: 6 },
-                            end: { column: 35, line: 6 },
+                            start: { column: 19, line: 7 },
+                            end: { column: 25, line: 7 },
                           },
                         },
 
-                        range: [206, 214],
+                        range: [191, 199],
                         loc: {
-                          start: { column: 27, line: 6 },
-                          end: { column: 35, line: 6 },
+                          start: { column: 17, line: 7 },
+                          end: { column: 25, line: 7 },
                         },
                       },
 
-                      range: [203, 214],
+                      range: [188, 199],
                       loc: {
-                        start: { column: 24, line: 6 },
-                        end: { column: 35, line: 6 },
+                        start: { column: 14, line: 7 },
+                        end: { column: 25, line: 7 },
                       },
                     },
                     right: Literal {
@@ -157,24 +157,24 @@ Program {
                       raw: "30",
                       value: 30,
 
-                      range: [217, 219],
+                      range: [202, 204],
                       loc: {
-                        start: { column: 38, line: 6 },
-                        end: { column: 40, line: 6 },
+                        start: { column: 28, line: 7 },
+                        end: { column: 30, line: 7 },
                       },
                     },
 
-                    range: [203, 219],
+                    range: [188, 204],
                     loc: {
-                      start: { column: 24, line: 6 },
-                      end: { column: 40, line: 6 },
+                      start: { column: 14, line: 7 },
+                      end: { column: 30, line: 7 },
                     },
                   },
 
-                  range: [193, 219],
+                  range: [178, 204],
                   loc: {
-                    start: { column: 14, line: 6 },
-                    end: { column: 40, line: 6 },
+                    start: { column: 4, line: 7 },
+                    end: { column: 30, line: 7 },
                   },
                 },
                 TSParameterProperty {
@@ -190,24 +190,24 @@ Program {
                         typeAnnotation: TSBooleanKeyword {
                           type: "TSBooleanKeyword",
 
-                          range: [263, 270],
+                          range: [238, 245],
                           loc: {
-                            start: { column: 42, line: 7 },
-                            end: { column: 49, line: 7 },
+                            start: { column: 32, line: 8 },
+                            end: { column: 39, line: 8 },
                           },
                         },
 
-                        range: [261, 270],
+                        range: [236, 245],
                         loc: {
-                          start: { column: 40, line: 7 },
-                          end: { column: 49, line: 7 },
+                          start: { column: 30, line: 8 },
+                          end: { column: 39, line: 8 },
                         },
                       },
 
-                      range: [254, 270],
+                      range: [229, 245],
                       loc: {
-                        start: { column: 33, line: 7 },
-                        end: { column: 49, line: 7 },
+                        start: { column: 23, line: 8 },
+                        end: { column: 39, line: 8 },
                       },
                     },
                     right: Literal {
@@ -215,48 +215,48 @@ Program {
                       raw: "false",
                       value: false,
 
-                      range: [273, 278],
+                      range: [248, 253],
                       loc: {
-                        start: { column: 52, line: 7 },
-                        end: { column: 57, line: 7 },
+                        start: { column: 42, line: 8 },
+                        end: { column: 47, line: 8 },
                       },
                     },
 
-                    range: [254, 278],
+                    range: [229, 253],
                     loc: {
-                      start: { column: 33, line: 7 },
-                      end: { column: 57, line: 7 },
+                      start: { column: 23, line: 8 },
+                      end: { column: 47, line: 8 },
                     },
                   },
                   readonly: true,
 
-                  range: [235, 278],
+                  range: [210, 253],
                   loc: {
-                    start: { column: 14, line: 7 },
-                    end: { column: 57, line: 7 },
+                    start: { column: 4, line: 8 },
+                    end: { column: 47, line: 8 },
                   },
                 },
               ],
 
-              range: [98, 282],
+              range: [98, 261],
               loc: {
                 start: { column: 13, line: 4 },
-                end: { column: 61, line: 7 },
+                end: { column: 6, line: 9 },
               },
             },
 
-            range: [87, 282],
+            range: [87, 261],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 61, line: 7 },
+              end: { column: 6, line: 9 },
             },
           },
         ],
 
-        range: [83, 284],
+        range: [83, 263],
         loc: {
           start: { column: 10, line: 3 },
-          end: { column: 1, line: 8 },
+          end: { column: 1, line: 10 },
         },
       },
       id: Identifier {
@@ -271,19 +271,19 @@ Program {
       },
       superClass: null,
 
-      range: [73, 284],
+      range: [73, 263],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 8 },
+        end: { column: 1, line: 10 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 284],
+  range: [73, 264],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 1, line: 8 },
+    end: { column: 0, line: 11 },
   },
 }
 `;

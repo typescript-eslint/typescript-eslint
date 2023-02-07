@@ -14,10 +14,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-extends-type-param
           type: 'TSInterfaceBody',
           body: Array [],
 
-          range: [105, 109],
+          range: [105, 107],
           loc: {
             start: { column: 32, line: 3 },
-            end: { column: 1, line: 5 },
+            end: { column: 34, line: 3 },
           },
         },
         extends: Array [
@@ -117,19 +117,19 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-extends-type-param
           },
         },
 
-        range: [73, 109],
+        range: [73, 107],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 34, line: 3 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 110],
+    range: [73, 108],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 6 },
+      end: { column: 0, line: 4 },
     },
   }"
 `;

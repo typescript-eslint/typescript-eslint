@@ -73,10 +73,10 @@ exports[`AST Fixtures unsorted-fixtures basics type-alias-declaration-export AST
 -   sourceType: 'module',
 +   sourceType: 'script',
 
-    range: [73, 113],
+    range: [73, 114],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 40, line: 3 },
+      end: { column: 0, line: 4 },
     },
   }"
 `;

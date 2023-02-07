@@ -148,16 +148,16 @@ exports[`AST Fixtures unsorted-fixtures types tuple-optional AST Alignment - AST
         ],
         kind: 'let',
 
-        range: [73, 117],
+        range: [73, 118],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 44, line: 3 },
+          end: { column: 45, line: 3 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 118],
+    range: [73, 119],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },

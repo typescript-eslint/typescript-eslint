@@ -38,7 +38,7 @@ Program {
                 type: "TSLiteralType",
                 literal: Literal {
                   type: "Literal",
-                  raw: "\\"\\"",
+                  raw: "''",
                   value: "",
 
                   range: [91, 93],

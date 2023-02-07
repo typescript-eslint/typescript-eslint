@@ -68,7 +68,7 @@ Program {
         type: "TSImportType",
         argument: Literal {
           type: "Literal",
-          raw: "\\"B\\"",
+          raw: "'B'",
           value: "B",
 
           range: [118, 121],

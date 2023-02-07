@@ -24,7 +24,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"i-use-things\\"",
+    value: "'i-use-things'",
 
     range: [88, 102],
     loc: {

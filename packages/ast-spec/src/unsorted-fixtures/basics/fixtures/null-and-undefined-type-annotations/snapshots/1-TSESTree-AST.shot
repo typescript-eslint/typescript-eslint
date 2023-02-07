@@ -107,10 +107,10 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 103],
+  range: [73, 104],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 17, line: 4 },
+    end: { column: 0, line: 5 },
   },
 }
 `;

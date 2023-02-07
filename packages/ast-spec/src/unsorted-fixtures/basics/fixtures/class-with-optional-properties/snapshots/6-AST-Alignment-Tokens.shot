@@ -190,30 +190,30 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ':',
 
-      range: [151, 152],
+      range: [150, 151],
       loc: {
-        start: { column: 7, line: 7 },
-        end: { column: 8, line: 7 },
+        start: { column: 6, line: 7 },
+        end: { column: 7, line: 7 },
       },
     },
     Identifier {
       type: 'Identifier',
       value: 'string',
 
-      range: [153, 159],
+      range: [152, 158],
       loc: {
-        start: { column: 9, line: 7 },
-        end: { column: 15, line: 7 },
+        start: { column: 8, line: 7 },
+        end: { column: 14, line: 7 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ';',
 
-      range: [159, 160],
+      range: [158, 159],
       loc: {
-        start: { column: 15, line: 7 },
-        end: { column: 16, line: 7 },
+        start: { column: 14, line: 7 },
+        end: { column: 15, line: 7 },
       },
     },
 -   Keyword {
@@ -222,7 +222,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
 +     type: 'Identifier',
       value: 'private',
 
-      range: [163, 170],
+      range: [162, 169],
       loc: {
         start: { column: 2, line: 8 },
         end: { column: 9, line: 8 },
@@ -232,7 +232,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Identifier',
       value: 'baz',
 
-      range: [171, 174],
+      range: [170, 173],
       loc: {
         start: { column: 10, line: 8 },
         end: { column: 13, line: 8 },
@@ -242,7 +242,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '?',
 
-      range: [174, 175],
+      range: [173, 174],
       loc: {
         start: { column: 13, line: 8 },
         end: { column: 14, line: 8 },
@@ -252,37 +252,37 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ':',
 
-      range: [176, 177],
+      range: [174, 175],
       loc: {
-        start: { column: 15, line: 8 },
-        end: { column: 16, line: 8 },
+        start: { column: 14, line: 8 },
+        end: { column: 15, line: 8 },
       },
     },
     Identifier {
       type: 'Identifier',
       value: 'string',
 
-      range: [178, 184],
+      range: [176, 182],
       loc: {
-        start: { column: 17, line: 8 },
-        end: { column: 23, line: 8 },
+        start: { column: 16, line: 8 },
+        end: { column: 22, line: 8 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ';',
 
-      range: [184, 185],
+      range: [182, 183],
       loc: {
-        start: { column: 23, line: 8 },
-        end: { column: 24, line: 8 },
+        start: { column: 22, line: 8 },
+        end: { column: 23, line: 8 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '[',
 
-      range: [188, 189],
+      range: [186, 187],
       loc: {
         start: { column: 2, line: 9 },
         end: { column: 3, line: 9 },
@@ -292,7 +292,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Identifier',
       value: 'computed',
 
-      range: [189, 197],
+      range: [187, 195],
       loc: {
         start: { column: 3, line: 9 },
         end: { column: 11, line: 9 },
@@ -302,7 +302,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ']',
 
-      range: [197, 198],
+      range: [195, 196],
       loc: {
         start: { column: 11, line: 9 },
         end: { column: 12, line: 9 },
@@ -312,7 +312,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '?',
 
-      range: [198, 199],
+      range: [196, 197],
       loc: {
         start: { column: 12, line: 9 },
         end: { column: 13, line: 9 },
@@ -322,7 +322,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ';',
 
-      range: [199, 200],
+      range: [197, 198],
       loc: {
         start: { column: 13, line: 9 },
         end: { column: 14, line: 9 },
@@ -332,7 +332,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '[',
 
-      range: [203, 204],
+      range: [201, 202],
       loc: {
         start: { column: 2, line: 10 },
         end: { column: 3, line: 10 },
@@ -342,7 +342,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'String',
       value: '\\\\'literal\\\\'',
 
-      range: [204, 213],
+      range: [202, 211],
       loc: {
         start: { column: 3, line: 10 },
         end: { column: 12, line: 10 },
@@ -352,7 +352,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ']',
 
-      range: [213, 214],
+      range: [211, 212],
       loc: {
         start: { column: 12, line: 10 },
         end: { column: 13, line: 10 },
@@ -362,7 +362,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '?',
 
-      range: [214, 215],
+      range: [212, 213],
       loc: {
         start: { column: 13, line: 10 },
         end: { column: 14, line: 10 },
@@ -372,7 +372,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ';',
 
-      range: [215, 216],
+      range: [213, 214],
       loc: {
         start: { column: 14, line: 10 },
         end: { column: 15, line: 10 },
@@ -382,7 +382,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '[',
 
-      range: [219, 220],
+      range: [217, 218],
       loc: {
         start: { column: 2, line: 11 },
         end: { column: 3, line: 11 },
@@ -392,7 +392,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Numeric',
       value: '1',
 
-      range: [220, 221],
+      range: [218, 219],
       loc: {
         start: { column: 3, line: 11 },
         end: { column: 4, line: 11 },
@@ -402,7 +402,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ']',
 
-      range: [221, 222],
+      range: [219, 220],
       loc: {
         start: { column: 4, line: 11 },
         end: { column: 5, line: 11 },
@@ -412,7 +412,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '?',
 
-      range: [222, 223],
+      range: [220, 221],
       loc: {
         start: { column: 5, line: 11 },
         end: { column: 6, line: 11 },
@@ -422,7 +422,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ';',
 
-      range: [223, 224],
+      range: [221, 222],
       loc: {
         start: { column: 6, line: 11 },
         end: { column: 7, line: 11 },
@@ -432,7 +432,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '[',
 
-      range: [227, 228],
+      range: [225, 226],
       loc: {
         start: { column: 2, line: 12 },
         end: { column: 3, line: 12 },
@@ -442,7 +442,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Identifier',
       value: 'computed2',
 
-      range: [228, 237],
+      range: [226, 235],
       loc: {
         start: { column: 3, line: 12 },
         end: { column: 12, line: 12 },
@@ -452,7 +452,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ']',
 
-      range: [237, 238],
+      range: [235, 236],
       loc: {
         start: { column: 12, line: 12 },
         end: { column: 13, line: 12 },
@@ -462,7 +462,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '?',
 
-      range: [238, 239],
+      range: [236, 237],
       loc: {
         start: { column: 13, line: 12 },
         end: { column: 14, line: 12 },
@@ -472,7 +472,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ':',
 
-      range: [239, 240],
+      range: [237, 238],
       loc: {
         start: { column: 14, line: 12 },
         end: { column: 15, line: 12 },
@@ -482,7 +482,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Identifier',
       value: 'string',
 
-      range: [241, 247],
+      range: [239, 245],
       loc: {
         start: { column: 16, line: 12 },
         end: { column: 22, line: 12 },
@@ -492,7 +492,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ';',
 
-      range: [247, 248],
+      range: [245, 246],
       loc: {
         start: { column: 22, line: 12 },
         end: { column: 23, line: 12 },
@@ -502,7 +502,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '[',
 
-      range: [251, 252],
+      range: [249, 250],
       loc: {
         start: { column: 2, line: 13 },
         end: { column: 3, line: 13 },
@@ -512,7 +512,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'String',
       value: '\\\\'literal2\\\\'',
 
-      range: [252, 262],
+      range: [250, 260],
       loc: {
         start: { column: 3, line: 13 },
         end: { column: 13, line: 13 },
@@ -522,7 +522,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ']',
 
-      range: [262, 263],
+      range: [260, 261],
       loc: {
         start: { column: 13, line: 13 },
         end: { column: 14, line: 13 },
@@ -532,7 +532,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '?',
 
-      range: [263, 264],
+      range: [261, 262],
       loc: {
         start: { column: 14, line: 13 },
         end: { column: 15, line: 13 },
@@ -542,7 +542,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ':',
 
-      range: [264, 265],
+      range: [262, 263],
       loc: {
         start: { column: 15, line: 13 },
         end: { column: 16, line: 13 },
@@ -552,7 +552,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Identifier',
       value: 'string',
 
-      range: [266, 272],
+      range: [264, 270],
       loc: {
         start: { column: 17, line: 13 },
         end: { column: 23, line: 13 },
@@ -562,7 +562,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ';',
 
-      range: [272, 273],
+      range: [270, 271],
       loc: {
         start: { column: 23, line: 13 },
         end: { column: 24, line: 13 },
@@ -572,7 +572,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '[',
 
-      range: [276, 277],
+      range: [274, 275],
       loc: {
         start: { column: 2, line: 14 },
         end: { column: 3, line: 14 },
@@ -582,7 +582,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Numeric',
       value: '2',
 
-      range: [277, 278],
+      range: [275, 276],
       loc: {
         start: { column: 3, line: 14 },
         end: { column: 4, line: 14 },
@@ -592,7 +592,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ']',
 
-      range: [278, 279],
+      range: [276, 277],
       loc: {
         start: { column: 4, line: 14 },
         end: { column: 5, line: 14 },
@@ -602,7 +602,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '?',
 
-      range: [279, 280],
+      range: [277, 278],
       loc: {
         start: { column: 5, line: 14 },
         end: { column: 6, line: 14 },
@@ -612,7 +612,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ':',
 
-      range: [280, 281],
+      range: [278, 279],
       loc: {
         start: { column: 6, line: 14 },
         end: { column: 7, line: 14 },
@@ -622,7 +622,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Identifier',
       value: 'string',
 
-      range: [282, 288],
+      range: [280, 286],
       loc: {
         start: { column: 8, line: 14 },
         end: { column: 14, line: 14 },
@@ -632,7 +632,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: ';',
 
-      range: [288, 289],
+      range: [286, 287],
       loc: {
         start: { column: 14, line: 14 },
         end: { column: 15, line: 14 },
@@ -642,7 +642,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-optional-properties AS
       type: 'Punctuator',
       value: '}',
 
-      range: [290, 291],
+      range: [288, 289],
       loc: {
         start: { column: 0, line: 15 },
         end: { column: 1, line: 15 },

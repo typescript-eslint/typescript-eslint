@@ -10,10 +10,10 @@ Program {
         type: "TSInterfaceBody",
         body: Array [],
 
-        range: [103, 107],
+        range: [104, 106],
         loc: {
-          start: { column: 30, line: 3 },
-          end: { column: 1, line: 5 },
+          start: { column: 31, line: 3 },
+          end: { column: 33, line: 3 },
         },
       },
       extends: Array [
@@ -42,17 +42,17 @@ Program {
             type: "Identifier",
             name: "Baz",
 
-            range: [99, 102],
+            range: [100, 103],
             loc: {
-              start: { column: 26, line: 3 },
-              end: { column: 29, line: 3 },
+              start: { column: 27, line: 3 },
+              end: { column: 30, line: 3 },
             },
           },
 
-          range: [99, 102],
+          range: [100, 103],
           loc: {
-            start: { column: 26, line: 3 },
-            end: { column: 29, line: 3 },
+            start: { column: 27, line: 3 },
+            end: { column: 30, line: 3 },
           },
         },
       ],
@@ -67,19 +67,19 @@ Program {
         },
       },
 
-      range: [73, 107],
+      range: [73, 106],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 33, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 108],
+  range: [73, 107],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 6 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

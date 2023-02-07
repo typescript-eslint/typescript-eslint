@@ -91,10 +91,10 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 87],
+  range: [73, 88],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 14, line: 3 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

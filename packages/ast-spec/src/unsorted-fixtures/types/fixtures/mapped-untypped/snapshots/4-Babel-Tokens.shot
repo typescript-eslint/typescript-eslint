@@ -94,32 +94,22 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
-    value: ";",
+    value: "}",
 
-    range: [97, 98],
+    range: [98, 99],
     loc: {
-      start: { column: 24, line: 3 },
-      end: { column: 25, line: 3 },
+      start: { column: 25, line: 3 },
+      end: { column: 26, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
-    value: "}",
+    value: ";",
 
     range: [99, 100],
     loc: {
       start: { column: 26, line: 3 },
       end: { column: 27, line: 3 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ";",
-
-    range: [100, 101],
-    loc: {
-      start: { column: 27, line: 3 },
-      end: { column: 28, line: 3 },
     },
   },
 ]

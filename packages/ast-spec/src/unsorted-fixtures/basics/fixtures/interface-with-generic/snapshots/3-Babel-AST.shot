@@ -10,10 +10,10 @@ Program {
         type: "TSInterfaceBody",
         body: Array [],
 
-        range: [91, 94],
+        range: [91, 93],
         loc: {
           start: { column: 18, line: 3 },
-          end: { column: 1, line: 4 },
+          end: { column: 20, line: 3 },
         },
       },
       id: Identifier {
@@ -48,19 +48,19 @@ Program {
         },
       },
 
-      range: [73, 94],
+      range: [73, 93],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 4 },
+        end: { column: 20, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 95],
+  range: [73, 94],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 5 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

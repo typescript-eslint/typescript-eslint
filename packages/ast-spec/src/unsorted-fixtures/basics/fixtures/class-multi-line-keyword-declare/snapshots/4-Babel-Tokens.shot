@@ -12,11 +12,21 @@ Array [
       end: { column: 7, line: 3 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [80, 81],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
   Keyword {
     type: "Keyword",
     value: "class",
 
-    range: [81, 86],
+    range: [82, 87],
     loc: {
       start: { column: 0, line: 4 },
       end: { column: 5, line: 4 },
@@ -26,7 +36,7 @@ Array [
     type: "Identifier",
     value: "B",
 
-    range: [87, 88],
+    range: [88, 89],
     loc: {
       start: { column: 6, line: 4 },
       end: { column: 7, line: 4 },
@@ -36,7 +46,7 @@ Array [
     type: "Punctuator",
     value: "{",
 
-    range: [89, 90],
+    range: [90, 91],
     loc: {
       start: { column: 8, line: 4 },
       end: { column: 9, line: 4 },
@@ -46,7 +56,7 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [90, 91],
+    range: [91, 92],
     loc: {
       start: { column: 9, line: 4 },
       end: { column: 10, line: 4 },

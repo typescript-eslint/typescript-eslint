@@ -158,5 +158,15 @@ exports[`AST Fixtures unsorted-fixtures types tuple-named-rest AST Alignment - T
         end: { column: 34, line: 3 },
       },
     },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [107, 108],
+      loc: {
+        start: { column: 34, line: 3 },
+        end: { column: 35, line: 3 },
+      },
+    },
   ]"
 `;

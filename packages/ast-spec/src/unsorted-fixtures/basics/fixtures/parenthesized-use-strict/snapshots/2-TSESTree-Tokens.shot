@@ -14,7 +14,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"use strict\\"",
+    value: "'use strict'",
 
     range: [119, 131],
     loc: {

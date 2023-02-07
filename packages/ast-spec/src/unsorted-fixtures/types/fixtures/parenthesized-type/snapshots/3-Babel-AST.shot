@@ -16,55 +16,46 @@ Program {
           end: { column: 8, line: 3 },
         },
       },
-      typeAnnotation: TSParenthesizedType {
-        type: "TSParenthesizedType",
-        typeAnnotation: TSUnionType {
-          type: "TSUnionType",
-          types: Array [
-            TSStringKeyword {
-              type: "TSStringKeyword",
+      typeAnnotation: TSUnionType {
+        type: "TSUnionType",
+        types: Array [
+          TSStringKeyword {
+            type: "TSStringKeyword",
 
-              range: [85, 91],
-              loc: {
-                start: { column: 12, line: 3 },
-                end: { column: 18, line: 3 },
-              },
+            range: [84, 90],
+            loc: {
+              start: { column: 11, line: 3 },
+              end: { column: 17, line: 3 },
             },
-            TSNumberKeyword {
-              type: "TSNumberKeyword",
-
-              range: [94, 100],
-              loc: {
-                start: { column: 21, line: 3 },
-                end: { column: 27, line: 3 },
-              },
-            },
-          ],
-
-          range: [85, 100],
-          loc: {
-            start: { column: 12, line: 3 },
-            end: { column: 27, line: 3 },
           },
-        },
+          TSNumberKeyword {
+            type: "TSNumberKeyword",
 
-        range: [84, 101],
+            range: [93, 99],
+            loc: {
+              start: { column: 20, line: 3 },
+              end: { column: 26, line: 3 },
+            },
+          },
+        ],
+
+        range: [84, 99],
         loc: {
           start: { column: 11, line: 3 },
-          end: { column: 28, line: 3 },
+          end: { column: 26, line: 3 },
         },
       },
 
-      range: [73, 101],
+      range: [73, 100],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 28, line: 3 },
+        end: { column: 27, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 102],
+  range: [73, 101],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

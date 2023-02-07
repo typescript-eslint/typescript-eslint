@@ -11,10 +11,10 @@ Program {
         type: "BlockStatement",
         body: Array [],
 
-        range: [118, 122],
+        range: [122, 124],
         loc: {
-          start: { column: 45, line: 3 },
-          end: { column: 1, line: 5 },
+          start: { column: 49, line: 3 },
+          end: { column: 51, line: 3 },
         },
       },
       expression: false,
@@ -40,10 +40,10 @@ Program {
                 type: "Identifier",
                 name: "bar",
 
-                range: [87, 90],
+                range: [88, 91],
                 loc: {
-                  start: { column: 14, line: 3 },
-                  end: { column: 17, line: 3 },
+                  start: { column: 15, line: 3 },
+                  end: { column: 18, line: 3 },
                 },
               },
               kind: "init",
@@ -53,17 +53,17 @@ Program {
                 type: "Identifier",
                 name: "bar",
 
-                range: [87, 90],
+                range: [88, 91],
                 loc: {
-                  start: { column: 14, line: 3 },
-                  end: { column: 17, line: 3 },
+                  start: { column: 15, line: 3 },
+                  end: { column: 18, line: 3 },
                 },
               },
 
-              range: [87, 90],
+              range: [88, 91],
               loc: {
-                start: { column: 14, line: 3 },
-                end: { column: 17, line: 3 },
+                start: { column: 15, line: 3 },
+                end: { column: 18, line: 3 },
               },
             },
             Property {
@@ -73,10 +73,10 @@ Program {
                 type: "Identifier",
                 name: "baz",
 
-                range: [92, 95],
+                range: [93, 96],
                 loc: {
-                  start: { column: 19, line: 3 },
-                  end: { column: 22, line: 3 },
+                  start: { column: 20, line: 3 },
+                  end: { column: 23, line: 3 },
                 },
               },
               kind: "init",
@@ -86,17 +86,17 @@ Program {
                 type: "Identifier",
                 name: "baz",
 
-                range: [92, 95],
+                range: [93, 96],
                 loc: {
-                  start: { column: 19, line: 3 },
-                  end: { column: 22, line: 3 },
+                  start: { column: 20, line: 3 },
+                  end: { column: 23, line: 3 },
                 },
               },
 
-              range: [92, 95],
+              range: [93, 96],
               loc: {
-                start: { column: 19, line: 3 },
-                end: { column: 22, line: 3 },
+                start: { column: 20, line: 3 },
+                end: { column: 23, line: 3 },
               },
             },
           ],
@@ -112,10 +112,10 @@ Program {
                     type: "Identifier",
                     name: "bar",
 
-                    range: [99, 102],
+                    range: [102, 105],
                     loc: {
-                      start: { column: 26, line: 3 },
-                      end: { column: 29, line: 3 },
+                      start: { column: 29, line: 3 },
+                      end: { column: 32, line: 3 },
                     },
                   },
                   typeAnnotation: TSTypeAnnotation {
@@ -123,24 +123,24 @@ Program {
                     typeAnnotation: TSStringKeyword {
                       type: "TSStringKeyword",
 
-                      range: [104, 110],
+                      range: [107, 113],
                       loc: {
-                        start: { column: 31, line: 3 },
-                        end: { column: 37, line: 3 },
+                        start: { column: 34, line: 3 },
+                        end: { column: 40, line: 3 },
                       },
                     },
 
-                    range: [102, 110],
+                    range: [105, 113],
                     loc: {
-                      start: { column: 29, line: 3 },
-                      end: { column: 37, line: 3 },
+                      start: { column: 32, line: 3 },
+                      end: { column: 40, line: 3 },
                     },
                   },
 
-                  range: [99, 111],
+                  range: [102, 114],
                   loc: {
-                    start: { column: 26, line: 3 },
-                    end: { column: 38, line: 3 },
+                    start: { column: 29, line: 3 },
+                    end: { column: 41, line: 3 },
                   },
                 },
                 TSPropertySignature {
@@ -150,56 +150,56 @@ Program {
                     type: "Identifier",
                     name: "baz",
 
-                    range: [112, 115],
+                    range: [115, 118],
                     loc: {
-                      start: { column: 39, line: 3 },
-                      end: { column: 42, line: 3 },
+                      start: { column: 42, line: 3 },
+                      end: { column: 45, line: 3 },
                     },
                   },
 
-                  range: [112, 115],
+                  range: [115, 118],
                   loc: {
-                    start: { column: 39, line: 3 },
-                    end: { column: 42, line: 3 },
+                    start: { column: 42, line: 3 },
+                    end: { column: 45, line: 3 },
                   },
                 },
               ],
 
-              range: [98, 116],
+              range: [100, 120],
               loc: {
-                start: { column: 25, line: 3 },
-                end: { column: 43, line: 3 },
+                start: { column: 27, line: 3 },
+                end: { column: 47, line: 3 },
               },
             },
 
-            range: [96, 116],
+            range: [98, 120],
             loc: {
-              start: { column: 23, line: 3 },
-              end: { column: 43, line: 3 },
+              start: { column: 25, line: 3 },
+              end: { column: 47, line: 3 },
             },
           },
 
-          range: [86, 116],
+          range: [86, 120],
           loc: {
             start: { column: 13, line: 3 },
-            end: { column: 43, line: 3 },
+            end: { column: 47, line: 3 },
           },
         },
       ],
 
-      range: [73, 122],
+      range: [73, 124],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 51, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 123],
+  range: [73, 125],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 6 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

@@ -35,19 +35,19 @@ Program {
                         type: "Identifier",
                         name: "x",
 
-                        range: [135, 136],
+                        range: [133, 134],
                         loc: {
-                          start: { column: 18, line: 4 },
-                          end: { column: 19, line: 4 },
+                          start: { column: 16, line: 4 },
+                          end: { column: 17, line: 4 },
                         },
                       },
                       operator: "typeof",
                       prefix: true,
 
-                      range: [128, 136],
+                      range: [126, 134],
                       loc: {
-                        start: { column: 11, line: 4 },
-                        end: { column: 19, line: 4 },
+                        start: { column: 9, line: 4 },
+                        end: { column: 17, line: 4 },
                       },
                     },
                     operator: "===",
@@ -56,29 +56,29 @@ Program {
                       raw: "'string'",
                       value: "string",
 
-                      range: [141, 149],
+                      range: [139, 147],
                       loc: {
-                        start: { column: 24, line: 4 },
-                        end: { column: 32, line: 4 },
+                        start: { column: 22, line: 4 },
+                        end: { column: 30, line: 4 },
                       },
                     },
 
-                    range: [128, 149],
+                    range: [126, 147],
                     loc: {
-                      start: { column: 11, line: 4 },
-                      end: { column: 32, line: 4 },
+                      start: { column: 9, line: 4 },
+                      end: { column: 30, line: 4 },
                     },
                   },
 
-                  range: [121, 149],
+                  range: [119, 148],
                   loc: {
-                    start: { column: 4, line: 4 },
-                    end: { column: 32, line: 4 },
+                    start: { column: 2, line: 4 },
+                    end: { column: 31, line: 4 },
                   },
                 },
               ],
 
-              range: [115, 151],
+              range: [115, 150],
               loc: {
                 start: { column: 42, line: 3 },
                 end: { column: 1, line: 5 },
@@ -165,14 +165,14 @@ Program {
               },
             },
 
-            range: [90, 151],
+            range: [90, 150],
             loc: {
               start: { column: 17, line: 3 },
               end: { column: 1, line: 5 },
             },
           },
 
-          range: [79, 151],
+          range: [79, 150],
           loc: {
             start: { column: 6, line: 3 },
             end: { column: 1, line: 5 },
@@ -184,7 +184,7 @@ Program {
       range: [73, 151],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 2, line: 5 },
       },
     },
   ],

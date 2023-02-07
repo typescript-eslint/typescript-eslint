@@ -28,10 +28,10 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
                         raw: 'true',
                         value: true,
 
-                        range: [101, 105],
+                        range: [99, 103],
                         loc: {
-                          start: { column: 18, line: 4 },
-                          end: { column: 22, line: 4 },
+                          start: { column: 16, line: 4 },
+                          end: { column: 20, line: 4 },
                         },
                       },
                     ],
@@ -39,25 +39,25 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
                       type: 'Identifier',
                       name: 'configurable',
 
-                      range: [88, 100],
+                      range: [86, 98],
                       loc: {
-                        start: { column: 5, line: 4 },
-                        end: { column: 17, line: 4 },
+                        start: { column: 3, line: 4 },
+                        end: { column: 15, line: 4 },
                       },
                     },
                     optional: false,
 
-                    range: [88, 106],
+                    range: [86, 104],
                     loc: {
-                      start: { column: 5, line: 4 },
-                      end: { column: 23, line: 4 },
+                      start: { column: 3, line: 4 },
+                      end: { column: 21, line: 4 },
                     },
                   },
 
-                  range: [87, 106],
+                  range: [85, 104],
                   loc: {
-                    start: { column: 4, line: 4 },
-                    end: { column: 23, line: 4 },
+                    start: { column: 2, line: 4 },
+                    end: { column: 21, line: 4 },
                   },
                 },
               ],
@@ -65,20 +65,20 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
                 type: 'Identifier',
                 name: 'prop1',
 
-                range: [114, 119],
+                range: [112, 117],
                 loc: {
-                  start: { column: 31, line: 4 },
-                  end: { column: 36, line: 4 },
+                  start: { column: 29, line: 4 },
+                  end: { column: 34, line: 4 },
                 },
               },
 -             override: false,
               static: true,
               value: null,
 
-              range: [87, 120],
+              range: [85, 118],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 37, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 35, line: 4 },
               },
             },
             PropertyDefinition {
@@ -96,10 +96,10 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
                         raw: 'false',
                         value: false,
 
-                        range: [140, 145],
+                        range: [136, 141],
                         loc: {
-                          start: { column: 18, line: 6 },
-                          end: { column: 23, line: 6 },
+                          start: { column: 16, line: 6 },
+                          end: { column: 21, line: 6 },
                         },
                       },
                     ],
@@ -107,25 +107,25 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
                       type: 'Identifier',
                       name: 'configurable',
 
-                      range: [127, 139],
+                      range: [123, 135],
                       loc: {
-                        start: { column: 5, line: 6 },
-                        end: { column: 17, line: 6 },
+                        start: { column: 3, line: 6 },
+                        end: { column: 15, line: 6 },
                       },
                     },
                     optional: false,
 
-                    range: [127, 146],
+                    range: [123, 142],
                     loc: {
-                      start: { column: 5, line: 6 },
-                      end: { column: 24, line: 6 },
+                      start: { column: 3, line: 6 },
+                      end: { column: 22, line: 6 },
                     },
                   },
 
-                  range: [126, 146],
+                  range: [122, 142],
                   loc: {
-                    start: { column: 4, line: 6 },
-                    end: { column: 24, line: 6 },
+                    start: { column: 2, line: 6 },
+                    end: { column: 22, line: 6 },
                   },
                 },
               ],
@@ -133,25 +133,25 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
                 type: 'Identifier',
                 name: 'prop2',
 
-                range: [158, 163],
+                range: [152, 157],
                 loc: {
-                  start: { column: 11, line: 7 },
-                  end: { column: 16, line: 7 },
+                  start: { column: 9, line: 7 },
+                  end: { column: 14, line: 7 },
                 },
               },
 -             override: false,
               static: true,
               value: null,
 
-              range: [126, 164],
+              range: [122, 158],
               loc: {
-                start: { column: 4, line: 6 },
-                end: { column: 17, line: 7 },
+                start: { column: 2, line: 6 },
+                end: { column: 15, line: 7 },
               },
             },
           ],
 
-          range: [81, 166],
+          range: [81, 160],
           loc: {
             start: { column: 8, line: 3 },
             end: { column: 1, line: 8 },
@@ -169,7 +169,7 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
         },
         superClass: null,
 
-        range: [73, 166],
+        range: [73, 160],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 8 },
@@ -178,10 +178,10 @@ exports[`AST Fixtures unsorted-fixtures property-decorators property-decorator-f
     ],
     sourceType: 'script',
 
-    range: [73, 166],
+    range: [73, 161],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 1, line: 8 },
+      end: { column: 0, line: 9 },
     },
   }"
 `;

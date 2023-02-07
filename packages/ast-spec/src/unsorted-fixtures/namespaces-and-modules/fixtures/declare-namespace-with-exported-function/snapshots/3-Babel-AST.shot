@@ -151,10 +151,10 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 157],
+  range: [73, 158],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 1, line: 5 },
+    end: { column: 0, line: 6 },
   },
 }
 `;

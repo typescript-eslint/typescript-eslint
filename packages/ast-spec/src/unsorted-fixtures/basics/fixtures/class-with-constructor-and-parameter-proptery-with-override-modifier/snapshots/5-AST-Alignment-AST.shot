@@ -43,30 +43,30 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-constructor-and-parame
                         callee: Super {
                           type: 'Super',
 
-                          range: [170, 175],
+                          range: [168, 173],
                           loc: {
-                            start: { column: 6, line: 5 },
-                            end: { column: 11, line: 5 },
+                            start: { column: 4, line: 5 },
+                            end: { column: 9, line: 5 },
                           },
                         },
                         optional: false,
 
-                        range: [170, 177],
+                        range: [168, 175],
                         loc: {
-                          start: { column: 6, line: 5 },
-                          end: { column: 13, line: 5 },
+                          start: { column: 4, line: 5 },
+                          end: { column: 11, line: 5 },
                         },
                       },
 
-                      range: [170, 178],
+                      range: [168, 176],
                       loc: {
-                        start: { column: 6, line: 5 },
-                        end: { column: 14, line: 5 },
+                        start: { column: 4, line: 5 },
+                        end: { column: 12, line: 5 },
                       },
                     },
                   ],
 
-                  range: [162, 182],
+                  range: [162, 180],
                   loc: {
                     start: { column: 38, line: 4 },
                     end: { column: 3, line: 6 },
@@ -116,14 +116,14 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-constructor-and-parame
                   },
                 ],
 
-                range: [137, 182],
+                range: [137, 180],
                 loc: {
                   start: { column: 13, line: 4 },
                   end: { column: 3, line: 6 },
                 },
               },
 
-              range: [126, 182],
+              range: [126, 180],
               loc: {
                 start: { column: 2, line: 4 },
                 end: { column: 3, line: 6 },
@@ -131,7 +131,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-constructor-and-parame
             },
           ],
 
-          range: [122, 184],
+          range: [122, 182],
           loc: {
             start: { column: 49, line: 3 },
             end: { column: 1, line: 7 },
@@ -158,7 +158,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-constructor-and-parame
           },
         },
 
-        range: [73, 184],
+        range: [73, 182],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 7 },
@@ -167,7 +167,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-constructor-and-parame
     ],
     sourceType: 'script',
 
-    range: [73, 185],
+    range: [73, 183],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 8 },

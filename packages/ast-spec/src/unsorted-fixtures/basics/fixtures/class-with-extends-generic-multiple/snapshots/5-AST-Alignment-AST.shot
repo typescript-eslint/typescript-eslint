@@ -14,10 +14,10 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-extends-generic-multip
           type: 'ClassBody',
           body: Array [],
 
-          range: [114, 118],
+          range: [114, 116],
           loc: {
             start: { column: 41, line: 3 },
-            end: { column: 1, line: 5 },
+            end: { column: 43, line: 3 },
           },
         },
         id: Identifier {
@@ -142,19 +142,19 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-extends-generic-multip
           },
         },
 
-        range: [73, 118],
+        range: [73, 116],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 43, line: 3 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 119],
+    range: [73, 117],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 6 },
+      end: { column: 0, line: 4 },
     },
   }"
 `;

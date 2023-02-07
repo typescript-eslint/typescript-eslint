@@ -13,7 +13,7 @@ Program {
             type: "ExpressionStatement",
             expression: Literal {
               type: "Literal",
-              raw: "\\"use strict\\"",
+              raw: "'use strict'",
               value: "use strict",
 
               range: [91, 103],
@@ -75,7 +75,7 @@ Program {
             type: "ExpressionStatement",
             expression: Literal {
               type: "Literal",
-              raw: "\\"use strict\\"",
+              raw: "'use strict'",
               value: "use strict",
 
               range: [120, 132],

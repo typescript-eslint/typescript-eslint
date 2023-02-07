@@ -119,7 +119,7 @@ Program {
             static: false,
             value: Literal {
               type: "Literal",
-              raw: "\\"\\"",
+              raw: "''",
               value: "",
 
               range: [120, 122],

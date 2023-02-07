@@ -24,7 +24,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"hot-new-module\\"",
+    value: "'hot-new-module'",
 
     range: [88, 104],
     loc: {

@@ -36,87 +36,87 @@ Array [
     type: "Punctuator",
     value: "@",
 
-    range: [87, 88],
+    range: [85, 86],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 5, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 3, line: 4 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "foo",
 
-    range: [88, 91],
+    range: [86, 89],
     loc: {
-      start: { column: 5, line: 4 },
-      end: { column: 8, line: 4 },
+      start: { column: 3, line: 4 },
+      end: { column: 6, line: 4 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "x",
 
-    range: [92, 93],
+    range: [90, 91],
     loc: {
-      start: { column: 9, line: 4 },
-      end: { column: 10, line: 4 },
+      start: { column: 7, line: 4 },
+      end: { column: 8, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [93, 94],
+    range: [91, 92],
     loc: {
-      start: { column: 10, line: 4 },
-      end: { column: 11, line: 4 },
+      start: { column: 8, line: 4 },
+      end: { column: 9, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "@",
 
-    range: [99, 100],
+    range: [95, 96],
     loc: {
-      start: { column: 4, line: 5 },
-      end: { column: 5, line: 5 },
+      start: { column: 2, line: 5 },
+      end: { column: 3, line: 5 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "bar",
 
-    range: [100, 103],
+    range: [96, 99],
     loc: {
-      start: { column: 5, line: 5 },
-      end: { column: 8, line: 5 },
+      start: { column: 3, line: 5 },
+      end: { column: 6, line: 5 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "y",
 
-    range: [108, 109],
+    range: [102, 103],
     loc: {
-      start: { column: 4, line: 6 },
-      end: { column: 5, line: 6 },
+      start: { column: 2, line: 6 },
+      end: { column: 3, line: 6 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [109, 110],
+    range: [103, 104],
     loc: {
-      start: { column: 5, line: 6 },
-      end: { column: 6, line: 6 },
+      start: { column: 3, line: 6 },
+      end: { column: 4, line: 6 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [111, 112],
+    range: [105, 106],
     loc: {
       start: { column: 0, line: 7 },
       end: { column: 1, line: 7 },

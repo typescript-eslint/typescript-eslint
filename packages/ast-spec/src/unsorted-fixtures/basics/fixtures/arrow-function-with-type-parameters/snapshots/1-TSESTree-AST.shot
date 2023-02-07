@@ -18,22 +18,22 @@ Program {
                 type: "Identifier",
                 name: "b",
 
-                range: [102, 103],
+                range: [100, 101],
                 loc: {
-                  start: { column: 11, line: 4 },
-                  end: { column: 12, line: 4 },
+                  start: { column: 9, line: 4 },
+                  end: { column: 10, line: 4 },
                 },
               },
 
-              range: [95, 104],
+              range: [93, 102],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 13, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 11, line: 4 },
               },
             },
           ],
 
-          range: [89, 106],
+          range: [89, 104],
           loc: {
             start: { column: 16, line: 3 },
             end: { column: 1, line: 5 },
@@ -143,17 +143,17 @@ Program {
           },
         },
 
-        range: [73, 106],
+        range: [73, 104],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 5 },
         },
       },
 
-      range: [73, 106],
+      range: [73, 105],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 2, line: 5 },
       },
     },
   ],
@@ -162,7 +162,7 @@ Program {
   range: [73, 106],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 1, line: 5 },
+    end: { column: 0, line: 6 },
   },
 }
 `;

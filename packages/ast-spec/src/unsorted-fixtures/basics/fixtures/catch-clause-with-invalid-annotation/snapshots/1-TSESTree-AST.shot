@@ -10,10 +10,10 @@ Program {
         type: "BlockStatement",
         body: Array [],
 
-        range: [77, 81],
+        range: [77, 80],
         loc: {
           start: { column: 4, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 1, line: 4 },
         },
       },
       finalizer: null,
@@ -23,10 +23,10 @@ Program {
           type: "BlockStatement",
           body: Array [],
 
-          range: [100, 104],
+          range: [99, 101],
           loc: {
-            start: { column: 20, line: 5 },
-            end: { column: 1, line: 7 },
+            start: { column: 20, line: 4 },
+            end: { column: 22, line: 4 },
           },
         },
         param: Identifier {
@@ -37,47 +37,47 @@ Program {
             typeAnnotation: TSStringKeyword {
               type: "TSStringKeyword",
 
-              range: [92, 98],
+              range: [91, 97],
               loc: {
-                start: { column: 12, line: 5 },
-                end: { column: 18, line: 5 },
+                start: { column: 12, line: 4 },
+                end: { column: 18, line: 4 },
               },
             },
 
-            range: [90, 98],
+            range: [89, 97],
             loc: {
-              start: { column: 10, line: 5 },
-              end: { column: 18, line: 5 },
+              start: { column: 10, line: 4 },
+              end: { column: 18, line: 4 },
             },
           },
 
-          range: [89, 98],
+          range: [88, 97],
           loc: {
-            start: { column: 9, line: 5 },
-            end: { column: 18, line: 5 },
+            start: { column: 9, line: 4 },
+            end: { column: 18, line: 4 },
           },
         },
 
-        range: [82, 104],
+        range: [81, 101],
         loc: {
-          start: { column: 2, line: 5 },
-          end: { column: 1, line: 7 },
+          start: { column: 2, line: 4 },
+          end: { column: 22, line: 4 },
         },
       },
 
-      range: [73, 104],
+      range: [73, 101],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 7 },
+        end: { column: 22, line: 4 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 105],
+  range: [73, 102],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 8 },
+    end: { column: 0, line: 5 },
   },
 }
 `;

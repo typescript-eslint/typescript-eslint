@@ -66,20 +66,20 @@ Array [
     type: "Numeric",
     value: "2",
 
-    range: [99, 100],
+    range: [90, 91],
     loc: {
-      start: { column: 26, line: 3 },
-      end: { column: 27, line: 3 },
+      start: { column: 17, line: 3 },
+      end: { column: 18, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [100, 101],
+    range: [91, 92],
     loc: {
-      start: { column: 27, line: 3 },
-      end: { column: 28, line: 3 },
+      start: { column: 18, line: 3 },
+      end: { column: 19, line: 3 },
     },
   },
 ]

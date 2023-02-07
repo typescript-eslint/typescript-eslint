@@ -16,10 +16,10 @@ Program {
               type: "Identifier",
               name: "addClickListener",
 
-              range: [96, 112],
+              range: [97, 113],
               loc: {
-                start: { column: 1, line: 4 },
-                end: { column: 17, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 18, line: 4 },
               },
             },
             kind: "method",
@@ -40,24 +40,24 @@ Program {
                           typeAnnotation: TSVoidKeyword {
                             type: "TSVoidKeyword",
 
-                            range: [129, 133],
+                            range: [130, 134],
                             loc: {
-                              start: { column: 34, line: 4 },
-                              end: { column: 38, line: 4 },
+                              start: { column: 35, line: 4 },
+                              end: { column: 39, line: 4 },
                             },
                           },
 
-                          range: [127, 133],
+                          range: [128, 134],
                           loc: {
-                            start: { column: 32, line: 4 },
-                            end: { column: 38, line: 4 },
+                            start: { column: 33, line: 4 },
+                            end: { column: 39, line: 4 },
                           },
                         },
 
-                        range: [123, 133],
+                        range: [124, 134],
                         loc: {
-                          start: { column: 28, line: 4 },
-                          end: { column: 38, line: 4 },
+                          start: { column: 29, line: 4 },
+                          end: { column: 39, line: 4 },
                         },
                       },
                       Identifier {
@@ -71,31 +71,31 @@ Program {
                               type: "Identifier",
                               name: "Event",
 
-                              range: [138, 143],
+                              range: [139, 144],
                               loc: {
-                                start: { column: 43, line: 4 },
-                                end: { column: 48, line: 4 },
+                                start: { column: 44, line: 4 },
+                                end: { column: 49, line: 4 },
                               },
                             },
 
-                            range: [138, 143],
+                            range: [139, 144],
                             loc: {
-                              start: { column: 43, line: 4 },
-                              end: { column: 48, line: 4 },
+                              start: { column: 44, line: 4 },
+                              end: { column: 49, line: 4 },
                             },
                           },
 
-                          range: [136, 143],
+                          range: [137, 144],
                           loc: {
-                            start: { column: 41, line: 4 },
-                            end: { column: 48, line: 4 },
+                            start: { column: 42, line: 4 },
+                            end: { column: 49, line: 4 },
                           },
                         },
 
-                        range: [135, 143],
+                        range: [136, 144],
                         loc: {
-                          start: { column: 40, line: 4 },
-                          end: { column: 48, line: 4 },
+                          start: { column: 41, line: 4 },
+                          end: { column: 49, line: 4 },
                         },
                       },
                     ],
@@ -104,38 +104,38 @@ Program {
                       typeAnnotation: TSVoidKeyword {
                         type: "TSVoidKeyword",
 
-                        range: [148, 152],
+                        range: [149, 153],
                         loc: {
-                          start: { column: 53, line: 4 },
-                          end: { column: 57, line: 4 },
+                          start: { column: 54, line: 4 },
+                          end: { column: 58, line: 4 },
                         },
                       },
 
-                      range: [145, 152],
+                      range: [146, 153],
                       loc: {
-                        start: { column: 50, line: 4 },
-                        end: { column: 57, line: 4 },
+                        start: { column: 51, line: 4 },
+                        end: { column: 58, line: 4 },
                       },
                     },
 
-                    range: [122, 152],
+                    range: [123, 153],
                     loc: {
-                      start: { column: 27, line: 4 },
-                      end: { column: 57, line: 4 },
+                      start: { column: 28, line: 4 },
+                      end: { column: 58, line: 4 },
                     },
                   },
 
-                  range: [120, 152],
+                  range: [121, 153],
                   loc: {
-                    start: { column: 25, line: 4 },
-                    end: { column: 57, line: 4 },
+                    start: { column: 26, line: 4 },
+                    end: { column: 58, line: 4 },
                   },
                 },
 
-                range: [113, 152],
+                range: [114, 153],
                 loc: {
-                  start: { column: 18, line: 4 },
-                  end: { column: 57, line: 4 },
+                  start: { column: 19, line: 4 },
+                  end: { column: 58, line: 4 },
                 },
               },
             ],
@@ -144,29 +144,29 @@ Program {
               typeAnnotation: TSVoidKeyword {
                 type: "TSVoidKeyword",
 
-                range: [155, 159],
+                range: [156, 160],
                 loc: {
-                  start: { column: 60, line: 4 },
-                  end: { column: 64, line: 4 },
+                  start: { column: 61, line: 4 },
+                  end: { column: 65, line: 4 },
                 },
               },
 
-              range: [153, 159],
+              range: [154, 160],
               loc: {
-                start: { column: 58, line: 4 },
-                end: { column: 64, line: 4 },
+                start: { column: 59, line: 4 },
+                end: { column: 65, line: 4 },
               },
             },
 
-            range: [96, 160],
+            range: [97, 161],
             loc: {
-              start: { column: 1, line: 4 },
-              end: { column: 65, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 66, line: 4 },
             },
           },
         ],
 
-        range: [93, 162],
+        range: [93, 163],
         loc: {
           start: { column: 20, line: 3 },
           end: { column: 1, line: 5 },
@@ -183,7 +183,7 @@ Program {
         },
       },
 
-      range: [73, 162],
+      range: [73, 163],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -192,7 +192,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 163],
+  range: [73, 164],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 6 },

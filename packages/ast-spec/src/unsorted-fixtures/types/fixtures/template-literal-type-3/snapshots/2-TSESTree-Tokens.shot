@@ -34,7 +34,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"red\\"",
+    value: "'red'",
 
     range: [86, 91],
     loc: {
@@ -54,7 +54,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"blue\\"",
+    value: "'blue'",
 
     range: [94, 100],
     loc: {
@@ -104,7 +104,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"one\\"",
+    value: "'one'",
 
     range: [118, 123],
     loc: {
@@ -124,7 +124,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"two\\"",
+    value: "'two'",
 
     range: [126, 131],
     loc: {

@@ -106,7 +106,7 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [159, 160],
+    range: [157, 158],
     loc: {
       start: { column: 2, line: 6 },
       end: { column: 3, line: 6 },
@@ -116,7 +116,7 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [161, 162],
+    range: [159, 160],
     loc: {
       start: { column: 0, line: 7 },
       end: { column: 1, line: 7 },

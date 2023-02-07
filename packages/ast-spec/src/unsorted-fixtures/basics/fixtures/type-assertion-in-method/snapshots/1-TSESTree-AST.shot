@@ -177,15 +177,15 @@ Program {
               },
             },
 
-            range: [136, 181],
+            range: [136, 182],
             loc: {
               start: { column: 2, line: 7 },
-              end: { column: 3, line: 9 },
+              end: { column: 4, line: 9 },
             },
           },
         ],
 
-        range: [90, 183],
+        range: [90, 184],
         loc: {
           start: { column: 17, line: 3 },
           end: { column: 1, line: 10 },
@@ -203,7 +203,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 183],
+      range: [73, 184],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 10 },
@@ -212,7 +212,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 184],
+  range: [73, 185],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 11 },

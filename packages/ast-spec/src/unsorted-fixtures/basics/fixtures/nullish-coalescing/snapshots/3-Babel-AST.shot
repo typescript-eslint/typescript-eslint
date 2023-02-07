@@ -31,10 +31,10 @@ Program {
                     type: "Identifier",
                     name: "s",
 
-                    range: [132, 133],
+                    range: [131, 132],
                     loc: {
-                      start: { column: 13, line: 4 },
-                      end: { column: 14, line: 4 },
+                      start: { column: 12, line: 4 },
+                      end: { column: 13, line: 4 },
                     },
                   },
                   operator: "??",
@@ -43,38 +43,38 @@ Program {
                     raw: "''",
                     value: "",
 
-                    range: [137, 139],
+                    range: [136, 138],
                     loc: {
-                      start: { column: 18, line: 4 },
-                      end: { column: 20, line: 4 },
+                      start: { column: 17, line: 4 },
+                      end: { column: 19, line: 4 },
                     },
                   },
 
-                  range: [132, 139],
+                  range: [131, 138],
                   loc: {
-                    start: { column: 13, line: 4 },
-                    end: { column: 20, line: 4 },
+                    start: { column: 12, line: 4 },
+                    end: { column: 19, line: 4 },
                   },
                 },
 
-                range: [125, 140],
+                range: [125, 138],
                 loc: {
                   start: { column: 6, line: 4 },
-                  end: { column: 21, line: 4 },
+                  end: { column: 19, line: 4 },
                 },
               },
             ],
             kind: "let",
 
-            range: [121, 141],
+            range: [121, 139],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 22, line: 4 },
+              end: { column: 20, line: 4 },
             },
           },
         ],
 
-        range: [117, 143],
+        range: [117, 141],
         loc: {
           start: { column: 44, line: 3 },
           end: { column: 1, line: 5 },
@@ -124,7 +124,7 @@ Program {
         },
       ],
 
-      range: [73, 143],
+      range: [73, 141],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -133,7 +133,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 144],
+  range: [73, 142],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 6 },

@@ -36,10 +36,10 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
                   type: 'BlockStatement',
                   body: Array [],
 
-                  range: [272, 274],
+                  range: [251, 253],
                   loc: {
-                    start: { column: 57, line: 7 },
-                    end: { column: 59, line: 7 },
+                    start: { column: 4, line: 9 },
+                    end: { column: 6, line: 9 },
                   },
                 },
                 expression: false,
@@ -57,31 +57,31 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
                         typeAnnotation: TSStringKeyword {
                           type: 'TSStringKeyword',
 
-                          range: [118, 124],
+                          range: [123, 129],
                           loc: {
-                            start: { column: 33, line: 4 },
-                            end: { column: 39, line: 4 },
+                            start: { column: 23, line: 5 },
+                            end: { column: 29, line: 5 },
                           },
                         },
 
-                        range: [116, 124],
+                        range: [121, 129],
                         loc: {
-                          start: { column: 31, line: 4 },
-                          end: { column: 39, line: 4 },
+                          start: { column: 21, line: 5 },
+                          end: { column: 29, line: 5 },
                         },
                       },
 
-                      range: [107, 124],
+                      range: [112, 129],
                       loc: {
-                        start: { column: 22, line: 4 },
-                        end: { column: 39, line: 4 },
+                        start: { column: 12, line: 5 },
+                        end: { column: 29, line: 5 },
                       },
                     },
 
-                    range: [99, 124],
+                    range: [104, 129],
                     loc: {
-                      start: { column: 14, line: 4 },
-                      end: { column: 39, line: 4 },
+                      start: { column: 4, line: 5 },
+                      end: { column: 29, line: 5 },
                     },
                   },
                   TSParameterProperty {
@@ -95,32 +95,32 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
                         typeAnnotation: TSStringKeyword {
                           type: 'TSStringKeyword',
 
-                          range: [167, 173],
+                          range: [162, 168],
                           loc: {
-                            start: { column: 41, line: 5 },
-                            end: { column: 47, line: 5 },
+                            start: { column: 31, line: 6 },
+                            end: { column: 37, line: 6 },
                           },
                         },
 
-                        range: [165, 173],
+                        range: [160, 168],
                         loc: {
-                          start: { column: 39, line: 5 },
-                          end: { column: 47, line: 5 },
+                          start: { column: 29, line: 6 },
+                          end: { column: 37, line: 6 },
                         },
                       },
 
-                      range: [157, 173],
+                      range: [152, 168],
                       loc: {
-                        start: { column: 31, line: 5 },
-                        end: { column: 47, line: 5 },
+                        start: { column: 21, line: 6 },
+                        end: { column: 37, line: 6 },
                       },
                     },
                     readonly: true,
 
-                    range: [140, 173],
+                    range: [135, 168],
                     loc: {
-                      start: { column: 14, line: 5 },
-                      end: { column: 47, line: 5 },
+                      start: { column: 4, line: 6 },
+                      end: { column: 37, line: 6 },
                     },
                   },
                   TSParameterProperty {
@@ -136,24 +136,24 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
                           typeAnnotation: TSNumberKeyword {
                             type: 'TSNumberKeyword',
 
-                            range: [202, 208],
+                            range: [187, 193],
                             loc: {
-                              start: { column: 27, line: 6 },
-                              end: { column: 33, line: 6 },
+                              start: { column: 17, line: 7 },
+                              end: { column: 23, line: 7 },
                             },
                           },
 
-                          range: [200, 208],
+                          range: [185, 193],
                           loc: {
-                            start: { column: 25, line: 6 },
-                            end: { column: 33, line: 6 },
+                            start: { column: 15, line: 7 },
+                            end: { column: 23, line: 7 },
                           },
                         },
 
-                        range: [197, 208],
+                        range: [182, 193],
                         loc: {
-                          start: { column: 22, line: 6 },
-                          end: { column: 33, line: 6 },
+                          start: { column: 12, line: 7 },
+                          end: { column: 23, line: 7 },
                         },
                       },
                       right: Literal {
@@ -161,24 +161,24 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
                         raw: '30',
                         value: 30,
 
-                        range: [211, 213],
+                        range: [196, 198],
                         loc: {
-                          start: { column: 36, line: 6 },
-                          end: { column: 38, line: 6 },
+                          start: { column: 26, line: 7 },
+                          end: { column: 28, line: 7 },
                         },
                       },
 
-                      range: [197, 213],
+                      range: [182, 198],
                       loc: {
-                        start: { column: 22, line: 6 },
-                        end: { column: 38, line: 6 },
+                        start: { column: 12, line: 7 },
+                        end: { column: 28, line: 7 },
                       },
                     },
 
-                    range: [189, 213],
+                    range: [174, 198],
                     loc: {
-                      start: { column: 14, line: 6 },
-                      end: { column: 38, line: 6 },
+                      start: { column: 4, line: 7 },
+                      end: { column: 28, line: 7 },
                     },
                   },
                   TSParameterProperty {
@@ -194,24 +194,24 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
                           typeAnnotation: TSBooleanKeyword {
                             type: 'TSBooleanKeyword',
 
-                            range: [255, 262],
+                            range: [230, 237],
                             loc: {
-                              start: { column: 40, line: 7 },
-                              end: { column: 47, line: 7 },
+                              start: { column: 30, line: 8 },
+                              end: { column: 37, line: 8 },
                             },
                           },
 
-                          range: [253, 262],
+                          range: [228, 237],
                           loc: {
-                            start: { column: 38, line: 7 },
-                            end: { column: 47, line: 7 },
+                            start: { column: 28, line: 8 },
+                            end: { column: 37, line: 8 },
                           },
                         },
 
-                        range: [246, 262],
+                        range: [221, 237],
                         loc: {
-                          start: { column: 31, line: 7 },
-                          end: { column: 47, line: 7 },
+                          start: { column: 21, line: 8 },
+                          end: { column: 37, line: 8 },
                         },
                       },
                       right: Literal {
@@ -219,48 +219,48 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
                         raw: 'false',
                         value: false,
 
-                        range: [265, 270],
+                        range: [240, 245],
                         loc: {
-                          start: { column: 50, line: 7 },
-                          end: { column: 55, line: 7 },
+                          start: { column: 40, line: 8 },
+                          end: { column: 45, line: 8 },
                         },
                       },
 
-                      range: [246, 270],
+                      range: [221, 245],
                       loc: {
-                        start: { column: 31, line: 7 },
-                        end: { column: 55, line: 7 },
+                        start: { column: 21, line: 8 },
+                        end: { column: 45, line: 8 },
                       },
                     },
                     readonly: true,
 
-                    range: [229, 270],
+                    range: [204, 245],
                     loc: {
-                      start: { column: 14, line: 7 },
-                      end: { column: 55, line: 7 },
+                      start: { column: 4, line: 8 },
+                      end: { column: 45, line: 8 },
                     },
                   },
                 ],
 
-                range: [98, 274],
+                range: [98, 253],
                 loc: {
                   start: { column: 13, line: 4 },
-                  end: { column: 59, line: 7 },
+                  end: { column: 6, line: 9 },
                 },
               },
 
-              range: [87, 274],
+              range: [87, 253],
               loc: {
                 start: { column: 2, line: 4 },
-                end: { column: 59, line: 7 },
+                end: { column: 6, line: 9 },
               },
             },
           ],
 
-          range: [83, 276],
+          range: [83, 255],
           loc: {
             start: { column: 10, line: 3 },
-            end: { column: 1, line: 8 },
+            end: { column: 1, line: 10 },
           },
         },
         id: Identifier {
@@ -275,19 +275,19 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-private-parameter-prop
         },
         superClass: null,
 
-        range: [73, 276],
+        range: [73, 255],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 1, line: 8 },
+          end: { column: 1, line: 10 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 276],
+    range: [73, 256],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 1, line: 8 },
+      end: { column: 0, line: 11 },
     },
   }"
 `;

@@ -181,66 +181,66 @@ Program {
                       TSStringKeyword {
                         type: "TSStringKeyword",
 
-                        range: [172, 178],
+                        range: [173, 179],
                         loc: {
-                          start: { column: 26, line: 5 },
-                          end: { column: 32, line: 5 },
+                          start: { column: 27, line: 5 },
+                          end: { column: 33, line: 5 },
                         },
                       },
                       TSBooleanKeyword {
                         type: "TSBooleanKeyword",
 
-                        range: [181, 188],
+                        range: [182, 189],
                         loc: {
-                          start: { column: 35, line: 5 },
-                          end: { column: 42, line: 5 },
+                          start: { column: 36, line: 5 },
+                          end: { column: 43, line: 5 },
                         },
                       },
                     ],
 
-                    range: [172, 188],
+                    range: [173, 189],
                     loc: {
-                      start: { column: 26, line: 5 },
-                      end: { column: 42, line: 5 },
+                      start: { column: 27, line: 5 },
+                      end: { column: 43, line: 5 },
                     },
                   },
                 ],
 
-                range: [163, 188],
+                range: [163, 190],
                 loc: {
                   start: { column: 17, line: 5 },
-                  end: { column: 42, line: 5 },
+                  end: { column: 44, line: 5 },
                 },
               },
 
-              range: [161, 188],
+              range: [161, 190],
               loc: {
                 start: { column: 15, line: 5 },
-                end: { column: 42, line: 5 },
+                end: { column: 44, line: 5 },
               },
             },
 
-            range: [150, 188],
+            range: [150, 190],
             loc: {
               start: { column: 4, line: 5 },
-              end: { column: 42, line: 5 },
+              end: { column: 44, line: 5 },
             },
           },
           init: null,
 
-          range: [150, 188],
+          range: [150, 190],
           loc: {
             start: { column: 4, line: 5 },
-            end: { column: 42, line: 5 },
+            end: { column: 44, line: 5 },
           },
         },
       ],
       kind: "let",
 
-      range: [146, 189],
+      range: [146, 191],
       loc: {
         start: { column: 0, line: 5 },
-        end: { column: 43, line: 5 },
+        end: { column: 45, line: 5 },
       },
     },
     VariableDeclaration {
@@ -262,81 +262,81 @@ Program {
                       TSNumberKeyword {
                         type: "TSNumberKeyword",
 
-                        range: [207, 213],
+                        range: [210, 216],
                         loc: {
-                          start: { column: 17, line: 6 },
-                          end: { column: 23, line: 6 },
+                          start: { column: 18, line: 6 },
+                          end: { column: 24, line: 6 },
                         },
                       },
                       TSStringKeyword {
                         type: "TSStringKeyword",
 
-                        range: [216, 222],
+                        range: [219, 225],
                         loc: {
-                          start: { column: 26, line: 6 },
-                          end: { column: 32, line: 6 },
+                          start: { column: 27, line: 6 },
+                          end: { column: 33, line: 6 },
                         },
                       },
                     ],
 
-                    range: [207, 222],
+                    range: [210, 225],
                     loc: {
-                      start: { column: 17, line: 6 },
-                      end: { column: 32, line: 6 },
+                      start: { column: 18, line: 6 },
+                      end: { column: 33, line: 6 },
                     },
                   },
                   TSBooleanKeyword {
                     type: "TSBooleanKeyword",
 
-                    range: [225, 232],
+                    range: [229, 236],
                     loc: {
-                      start: { column: 35, line: 6 },
-                      end: { column: 42, line: 6 },
+                      start: { column: 37, line: 6 },
+                      end: { column: 44, line: 6 },
                     },
                   },
                 ],
 
-                range: [207, 232],
+                range: [209, 236],
                 loc: {
                   start: { column: 17, line: 6 },
-                  end: { column: 42, line: 6 },
+                  end: { column: 44, line: 6 },
                 },
               },
 
-              range: [205, 232],
+              range: [207, 236],
               loc: {
                 start: { column: 15, line: 6 },
-                end: { column: 42, line: 6 },
+                end: { column: 44, line: 6 },
               },
             },
 
-            range: [194, 232],
+            range: [196, 236],
             loc: {
               start: { column: 4, line: 6 },
-              end: { column: 42, line: 6 },
+              end: { column: 44, line: 6 },
             },
           },
           init: null,
 
-          range: [194, 232],
+          range: [196, 236],
           loc: {
             start: { column: 4, line: 6 },
-            end: { column: 42, line: 6 },
+            end: { column: 44, line: 6 },
           },
         },
       ],
       kind: "let",
 
-      range: [190, 233],
+      range: [192, 237],
       loc: {
         start: { column: 0, line: 6 },
-        end: { column: 43, line: 6 },
+        end: { column: 45, line: 6 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 234],
+  range: [73, 238],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 7 },

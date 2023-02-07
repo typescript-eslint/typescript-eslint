@@ -194,7 +194,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"\\"",
+    value: "''",
 
     range: [120, 122],
     loc: {

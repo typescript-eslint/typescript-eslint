@@ -28,10 +28,10 @@ Program {
               type: "Identifier",
               name: "foo",
 
-              range: [109, 112],
+              range: [107, 110],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 7, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
               },
             },
             initializer: Literal {
@@ -39,17 +39,17 @@ Program {
               raw: "1",
               value: 1,
 
-              range: [115, 116],
+              range: [113, 114],
               loc: {
-                start: { column: 10, line: 4 },
-                end: { column: 11, line: 4 },
+                start: { column: 8, line: 4 },
+                end: { column: 9, line: 4 },
               },
             },
 
-            range: [109, 116],
+            range: [107, 114],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 11, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 9, line: 4 },
             },
           },
           TSEnumMember {
@@ -58,22 +58,22 @@ Program {
               type: "Identifier",
               name: "bar",
 
-              range: [122, 125],
+              range: [118, 121],
               loc: {
-                start: { column: 4, line: 5 },
-                end: { column: 7, line: 5 },
+                start: { column: 2, line: 5 },
+                end: { column: 5, line: 5 },
               },
             },
 
-            range: [122, 125],
+            range: [118, 121],
             loc: {
-              start: { column: 4, line: 5 },
-              end: { column: 7, line: 5 },
+              start: { column: 2, line: 5 },
+              end: { column: 5, line: 5 },
             },
           },
         ],
 
-        range: [80, 127],
+        range: [80, 124],
         loc: {
           start: { column: 7, line: 3 },
           end: { column: 1, line: 6 },
@@ -83,7 +83,7 @@ Program {
       source: null,
       specifiers: Array [],
 
-      range: [73, 127],
+      range: [73, 124],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 6 },
@@ -92,7 +92,7 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 128],
+  range: [73, 125],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 7 },

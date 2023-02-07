@@ -94,7 +94,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"mod\\"",
+    value: "'mod'",
 
     range: [104, 109],
     loc: {

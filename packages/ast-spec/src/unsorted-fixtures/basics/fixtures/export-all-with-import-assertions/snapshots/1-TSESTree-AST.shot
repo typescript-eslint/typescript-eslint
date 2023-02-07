@@ -21,7 +21,7 @@ Program {
           },
           value: Literal {
             type: "Literal",
-            raw: "\\"json\\"",
+            raw: "'json'",
             value: "json",
 
             range: [108, 114],
@@ -42,7 +42,7 @@ Program {
       exportKind: "value",
       source: Literal {
         type: "Literal",
-        raw: "\\"mod\\"",
+        raw: "'mod'",
         value: "mod",
 
         range: [87, 92],

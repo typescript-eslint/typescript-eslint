@@ -23,17 +23,17 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
                     type: 'Identifier',
                     name: 'adminonly',
 
-                    range: [91, 100],
+                    range: [89, 98],
                     loc: {
-                      start: { column: 5, line: 4 },
-                      end: { column: 14, line: 4 },
+                      start: { column: 3, line: 4 },
+                      end: { column: 12, line: 4 },
                     },
                   },
 
-                  range: [90, 100],
+                  range: [88, 98],
                   loc: {
-                    start: { column: 4, line: 4 },
-                    end: { column: 14, line: 4 },
+                    start: { column: 2, line: 4 },
+                    end: { column: 12, line: 4 },
                   },
                 },
               ],
@@ -41,10 +41,10 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
                 type: 'Identifier',
                 name: 'y',
 
-                range: [116, 117],
+                range: [112, 113],
                 loc: {
-                  start: { column: 15, line: 5 },
-                  end: { column: 16, line: 5 },
+                  start: { column: 13, line: 5 },
+                  end: { column: 14, line: 5 },
                 },
               },
               kind: 'set',
@@ -66,10 +66,10 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
                           object: ThisExpression {
                             type: 'ThisExpression',
 
-                            range: [131, 135],
+                            range: [123, 127],
                             loc: {
-                              start: { column: 8, line: 6 },
-                              end: { column: 12, line: 6 },
+                              start: { column: 4, line: 6 },
+                              end: { column: 8, line: 6 },
                             },
                           },
                           optional: false,
@@ -77,17 +77,17 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
                             type: 'Identifier',
                             name: '_y',
 
-                            range: [136, 138],
+                            range: [128, 130],
                             loc: {
-                              start: { column: 13, line: 6 },
-                              end: { column: 15, line: 6 },
+                              start: { column: 9, line: 6 },
+                              end: { column: 11, line: 6 },
                             },
                           },
 
-                          range: [131, 138],
+                          range: [123, 130],
                           loc: {
-                            start: { column: 8, line: 6 },
-                            end: { column: 15, line: 6 },
+                            start: { column: 4, line: 6 },
+                            end: { column: 11, line: 6 },
                           },
                         },
                         operator: '=',
@@ -95,32 +95,32 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
                           type: 'Identifier',
                           name: 'a',
 
-                          range: [141, 142],
+                          range: [133, 134],
                           loc: {
-                            start: { column: 18, line: 6 },
-                            end: { column: 19, line: 6 },
+                            start: { column: 14, line: 6 },
+                            end: { column: 15, line: 6 },
                           },
                         },
 
-                        range: [131, 142],
+                        range: [123, 134],
                         loc: {
-                          start: { column: 8, line: 6 },
-                          end: { column: 19, line: 6 },
+                          start: { column: 4, line: 6 },
+                          end: { column: 15, line: 6 },
                         },
                       },
 
-                      range: [131, 143],
+                      range: [123, 135],
                       loc: {
-                        start: { column: 8, line: 6 },
-                        end: { column: 20, line: 6 },
+                        start: { column: 4, line: 6 },
+                        end: { column: 16, line: 6 },
                       },
                     },
                   ],
 
-                  range: [121, 149],
+                  range: [117, 139],
                   loc: {
-                    start: { column: 20, line: 5 },
-                    end: { column: 5, line: 7 },
+                    start: { column: 18, line: 5 },
+                    end: { column: 3, line: 7 },
                   },
                 },
                 expression: false,
@@ -131,30 +131,30 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
                     type: 'Identifier',
                     name: 'a',
 
-                    range: [118, 119],
+                    range: [114, 115],
                     loc: {
-                      start: { column: 17, line: 5 },
-                      end: { column: 18, line: 5 },
+                      start: { column: 15, line: 5 },
+                      end: { column: 16, line: 5 },
                     },
                   },
                 ],
 
-                range: [117, 149],
+                range: [113, 139],
                 loc: {
-                  start: { column: 16, line: 5 },
-                  end: { column: 5, line: 7 },
+                  start: { column: 14, line: 5 },
+                  end: { column: 3, line: 7 },
                 },
               },
 
-              range: [90, 149],
+              range: [88, 139],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 5, line: 7 },
+                start: { column: 2, line: 4 },
+                end: { column: 3, line: 7 },
               },
             },
           ],
 
-          range: [84, 151],
+          range: [84, 141],
           loc: {
             start: { column: 11, line: 3 },
             end: { column: 1, line: 8 },
@@ -172,7 +172,7 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
         },
         superClass: null,
 
-        range: [73, 151],
+        range: [73, 141],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 8 },
@@ -181,10 +181,10 @@ exports[`AST Fixtures unsorted-fixtures accessor-decorators accessor-decorator-s
     ],
     sourceType: 'script',
 
-    range: [73, 151],
+    range: [73, 142],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 1, line: 8 },
+      end: { column: 0, line: 9 },
     },
   }"
 `;

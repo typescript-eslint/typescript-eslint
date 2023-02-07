@@ -154,21 +154,21 @@ Array [
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [169, 176],
+    range: [169, 175],
     loc: {
       start: { column: 2, line: 6 },
-      end: { column: 9, line: 6 },
+      end: { column: 8, line: 6 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [177, 183],
+    range: [176, 183],
     loc: {
-      start: { column: 10, line: 6 },
+      start: { column: 9, line: 6 },
       end: { column: 16, line: 6 },
     },
   },
@@ -234,7 +234,7 @@ Array [
   },
   Identifier {
     type: "Identifier",
-    value: "readonly",
+    value: "abstract",
 
     range: [218, 226],
     loc: {
@@ -244,7 +244,7 @@ Array [
   },
   Identifier {
     type: "Identifier",
-    value: "abstract",
+    value: "readonly",
 
     range: [227, 235],
     loc: {
@@ -294,27 +294,27 @@ Array [
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [253, 260],
+    range: [253, 259],
     loc: {
       start: { column: 2, line: 8 },
-      end: { column: 9, line: 8 },
+      end: { column: 8, line: 8 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [261, 267],
+    range: [260, 267],
     loc: {
-      start: { column: 10, line: 8 },
+      start: { column: 9, line: 8 },
       end: { column: 16, line: 8 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "readonly",
+    value: "abstract",
 
     range: [268, 276],
     loc: {
@@ -324,7 +324,7 @@ Array [
   },
   Identifier {
     type: "Identifier",
-    value: "abstract",
+    value: "readonly",
 
     range: [277, 285],
     loc: {

@@ -132,5 +132,15 @@ Array [
       end: { column: 1, line: 5 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [110, 111],
+    loc: {
+      start: { column: 1, line: 5 },
+      end: { column: 2, line: 5 },
+    },
+  },
 ]
 `;

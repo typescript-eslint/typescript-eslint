@@ -23,17 +23,17 @@ exports[`AST Fixtures unsorted-fixtures method-decorators method-decorator-stati
                     type: 'Identifier',
                     name: 'Foo',
 
-                    range: [88, 91],
+                    range: [86, 89],
                     loc: {
-                      start: { column: 5, line: 4 },
-                      end: { column: 8, line: 4 },
+                      start: { column: 3, line: 4 },
+                      end: { column: 6, line: 4 },
                     },
                   },
 
-                  range: [87, 91],
+                  range: [85, 89],
                   loc: {
-                    start: { column: 4, line: 4 },
-                    end: { column: 8, line: 4 },
+                    start: { column: 2, line: 4 },
+                    end: { column: 6, line: 4 },
                   },
                 },
               ],
@@ -41,10 +41,10 @@ exports[`AST Fixtures unsorted-fixtures method-decorators method-decorator-stati
                 type: 'Identifier',
                 name: 'staticMethod',
 
-                range: [103, 115],
+                range: [99, 111],
                 loc: {
-                  start: { column: 11, line: 5 },
-                  end: { column: 23, line: 5 },
+                  start: { column: 9, line: 5 },
+                  end: { column: 21, line: 5 },
                 },
               },
               kind: 'method',
@@ -57,10 +57,10 @@ exports[`AST Fixtures unsorted-fixtures method-decorators method-decorator-stati
                   type: 'BlockStatement',
                   body: Array [],
 
-                  range: [118, 120],
+                  range: [114, 116],
                   loc: {
-                    start: { column: 26, line: 5 },
-                    end: { column: 28, line: 5 },
+                    start: { column: 24, line: 5 },
+                    end: { column: 26, line: 5 },
                   },
                 },
                 expression: false,
@@ -68,22 +68,22 @@ exports[`AST Fixtures unsorted-fixtures method-decorators method-decorator-stati
                 id: null,
                 params: Array [],
 
-                range: [115, 120],
+                range: [111, 116],
                 loc: {
-                  start: { column: 23, line: 5 },
-                  end: { column: 28, line: 5 },
+                  start: { column: 21, line: 5 },
+                  end: { column: 26, line: 5 },
                 },
               },
 
-              range: [87, 120],
+              range: [85, 116],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 28, line: 5 },
+                start: { column: 2, line: 4 },
+                end: { column: 26, line: 5 },
               },
             },
           ],
 
-          range: [81, 122],
+          range: [81, 118],
           loc: {
             start: { column: 8, line: 3 },
             end: { column: 1, line: 6 },
@@ -101,7 +101,7 @@ exports[`AST Fixtures unsorted-fixtures method-decorators method-decorator-stati
         },
         superClass: null,
 
-        range: [73, 122],
+        range: [73, 118],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 6 },
@@ -110,7 +110,7 @@ exports[`AST Fixtures unsorted-fixtures method-decorators method-decorator-stati
     ],
     sourceType: 'script',
 
-    range: [73, 123],
+    range: [73, 119],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },

@@ -140,25 +140,25 @@ Program {
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
 
-                range: [153, 159],
+                range: [152, 158],
                 loc: {
-                  start: { column: 9, line: 7 },
-                  end: { column: 15, line: 7 },
+                  start: { column: 8, line: 7 },
+                  end: { column: 14, line: 7 },
                 },
               },
 
-              range: [151, 159],
+              range: [150, 158],
               loc: {
-                start: { column: 7, line: 7 },
-                end: { column: 15, line: 7 },
+                start: { column: 6, line: 7 },
+                end: { column: 14, line: 7 },
               },
             },
             value: null,
 
-            range: [146, 160],
+            range: [146, 159],
             loc: {
               start: { column: 2, line: 7 },
-              end: { column: 16, line: 7 },
+              end: { column: 15, line: 7 },
             },
           },
           PropertyDefinition {
@@ -170,7 +170,7 @@ Program {
               type: "Identifier",
               name: "baz",
 
-              range: [171, 174],
+              range: [170, 173],
               loc: {
                 start: { column: 10, line: 8 },
                 end: { column: 13, line: 8 },
@@ -184,25 +184,25 @@ Program {
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
 
-                range: [178, 184],
+                range: [176, 182],
                 loc: {
-                  start: { column: 17, line: 8 },
-                  end: { column: 23, line: 8 },
+                  start: { column: 16, line: 8 },
+                  end: { column: 22, line: 8 },
                 },
               },
 
-              range: [176, 184],
+              range: [174, 182],
               loc: {
-                start: { column: 15, line: 8 },
-                end: { column: 23, line: 8 },
+                start: { column: 14, line: 8 },
+                end: { column: 22, line: 8 },
               },
             },
             value: null,
 
-            range: [163, 185],
+            range: [162, 183],
             loc: {
               start: { column: 2, line: 8 },
-              end: { column: 24, line: 8 },
+              end: { column: 23, line: 8 },
             },
           },
           PropertyDefinition {
@@ -213,7 +213,7 @@ Program {
               type: "Identifier",
               name: "computed",
 
-              range: [189, 197],
+              range: [187, 195],
               loc: {
                 start: { column: 3, line: 9 },
                 end: { column: 11, line: 9 },
@@ -224,7 +224,7 @@ Program {
             static: false,
             value: null,
 
-            range: [188, 200],
+            range: [186, 198],
             loc: {
               start: { column: 2, line: 9 },
               end: { column: 14, line: 9 },
@@ -239,7 +239,7 @@ Program {
               raw: "'literal'",
               value: "literal",
 
-              range: [204, 213],
+              range: [202, 211],
               loc: {
                 start: { column: 3, line: 10 },
                 end: { column: 12, line: 10 },
@@ -250,7 +250,7 @@ Program {
             static: false,
             value: null,
 
-            range: [203, 216],
+            range: [201, 214],
             loc: {
               start: { column: 2, line: 10 },
               end: { column: 15, line: 10 },
@@ -265,7 +265,7 @@ Program {
               raw: "1",
               value: 1,
 
-              range: [220, 221],
+              range: [218, 219],
               loc: {
                 start: { column: 3, line: 11 },
                 end: { column: 4, line: 11 },
@@ -276,7 +276,7 @@ Program {
             static: false,
             value: null,
 
-            range: [219, 224],
+            range: [217, 222],
             loc: {
               start: { column: 2, line: 11 },
               end: { column: 7, line: 11 },
@@ -290,7 +290,7 @@ Program {
               type: "Identifier",
               name: "computed2",
 
-              range: [228, 237],
+              range: [226, 235],
               loc: {
                 start: { column: 3, line: 12 },
                 end: { column: 12, line: 12 },
@@ -304,14 +304,14 @@ Program {
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
 
-                range: [241, 247],
+                range: [239, 245],
                 loc: {
                   start: { column: 16, line: 12 },
                   end: { column: 22, line: 12 },
                 },
               },
 
-              range: [239, 247],
+              range: [237, 245],
               loc: {
                 start: { column: 14, line: 12 },
                 end: { column: 22, line: 12 },
@@ -319,7 +319,7 @@ Program {
             },
             value: null,
 
-            range: [227, 248],
+            range: [225, 246],
             loc: {
               start: { column: 2, line: 12 },
               end: { column: 23, line: 12 },
@@ -334,7 +334,7 @@ Program {
               raw: "'literal2'",
               value: "literal2",
 
-              range: [252, 262],
+              range: [250, 260],
               loc: {
                 start: { column: 3, line: 13 },
                 end: { column: 13, line: 13 },
@@ -348,14 +348,14 @@ Program {
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
 
-                range: [266, 272],
+                range: [264, 270],
                 loc: {
                   start: { column: 17, line: 13 },
                   end: { column: 23, line: 13 },
                 },
               },
 
-              range: [264, 272],
+              range: [262, 270],
               loc: {
                 start: { column: 15, line: 13 },
                 end: { column: 23, line: 13 },
@@ -363,7 +363,7 @@ Program {
             },
             value: null,
 
-            range: [251, 273],
+            range: [249, 271],
             loc: {
               start: { column: 2, line: 13 },
               end: { column: 24, line: 13 },
@@ -378,7 +378,7 @@ Program {
               raw: "2",
               value: 2,
 
-              range: [277, 278],
+              range: [275, 276],
               loc: {
                 start: { column: 3, line: 14 },
                 end: { column: 4, line: 14 },
@@ -392,14 +392,14 @@ Program {
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
 
-                range: [282, 288],
+                range: [280, 286],
                 loc: {
                   start: { column: 8, line: 14 },
                   end: { column: 14, line: 14 },
                 },
               },
 
-              range: [280, 288],
+              range: [278, 286],
               loc: {
                 start: { column: 6, line: 14 },
                 end: { column: 14, line: 14 },
@@ -407,7 +407,7 @@ Program {
             },
             value: null,
 
-            range: [276, 289],
+            range: [274, 287],
             loc: {
               start: { column: 2, line: 14 },
               end: { column: 15, line: 14 },
@@ -415,7 +415,7 @@ Program {
           },
         ],
 
-        range: [134, 291],
+        range: [134, 289],
         loc: {
           start: { column: 10, line: 5 },
           end: { column: 1, line: 15 },
@@ -433,7 +433,7 @@ Program {
       },
       superClass: null,
 
-      range: [124, 291],
+      range: [124, 289],
       loc: {
         start: { column: 0, line: 5 },
         end: { column: 1, line: 15 },
@@ -442,7 +442,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 292],
+  range: [73, 290],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 16 },

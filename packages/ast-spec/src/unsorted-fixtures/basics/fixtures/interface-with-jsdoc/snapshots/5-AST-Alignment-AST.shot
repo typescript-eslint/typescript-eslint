@@ -20,10 +20,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-jsdoc AST Alignmen
                 type: 'Identifier',
                 name: 'foo',
 
-                range: [149, 152],
+                range: [138, 141],
                 loc: {
-                  start: { column: 4, line: 8 },
-                  end: { column: 7, line: 8 },
+                  start: { column: 2, line: 8 },
+                  end: { column: 5, line: 8 },
                 },
               },
               kind: 'method',
@@ -33,23 +33,23 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-jsdoc AST Alignmen
                   type: 'Identifier',
                   name: 'bar',
 
-                  range: [153, 156],
+                  range: [142, 145],
                   loc: {
-                    start: { column: 8, line: 8 },
-                    end: { column: 11, line: 8 },
+                    start: { column: 6, line: 8 },
+                    end: { column: 9, line: 8 },
                   },
                 },
               ],
 
-              range: [149, 158],
+              range: [138, 147],
               loc: {
-                start: { column: 4, line: 8 },
-                end: { column: 13, line: 8 },
+                start: { column: 2, line: 8 },
+                end: { column: 11, line: 8 },
               },
             },
           ],
 
-          range: [88, 160],
+          range: [88, 149],
           loc: {
             start: { column: 15, line: 3 },
             end: { column: 1, line: 9 },
@@ -66,7 +66,7 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-jsdoc AST Alignmen
           },
         },
 
-        range: [73, 160],
+        range: [73, 149],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 9 },
@@ -75,7 +75,7 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-jsdoc AST Alignmen
     ],
     sourceType: 'script',
 
-    range: [73, 161],
+    range: [73, 150],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 10 },

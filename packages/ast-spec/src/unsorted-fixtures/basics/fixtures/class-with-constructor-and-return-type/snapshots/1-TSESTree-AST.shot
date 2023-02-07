@@ -32,10 +32,10 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [107, 110],
+                range: [107, 109],
                 loc: {
                   start: { column: 24, line: 4 },
-                  end: { column: 27, line: 4 },
+                  end: { column: 26, line: 4 },
                 },
               },
               expression: false,
@@ -61,17 +61,17 @@ Program {
                 },
               },
 
-              range: [96, 110],
+              range: [96, 109],
               loc: {
                 start: { column: 13, line: 4 },
-                end: { column: 27, line: 4 },
+                end: { column: 26, line: 4 },
               },
             },
 
-            range: [85, 110],
+            range: [85, 109],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 27, line: 4 },
+              end: { column: 26, line: 4 },
             },
           },
           MethodDefinition {
@@ -82,7 +82,7 @@ Program {
               raw: "'constructor'",
               value: "constructor",
 
-              range: [115, 128],
+              range: [114, 127],
               loc: {
                 start: { column: 3, line: 6 },
                 end: { column: 16, line: 6 },
@@ -98,10 +98,10 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [140, 143],
+                range: [139, 141],
                 loc: {
                   start: { column: 28, line: 6 },
-                  end: { column: 31, line: 6 },
+                  end: { column: 30, line: 6 },
                 },
               },
               expression: false,
@@ -113,36 +113,36 @@ Program {
                 typeAnnotation: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
-                  range: [133, 139],
+                  range: [132, 138],
                   loc: {
                     start: { column: 21, line: 6 },
                     end: { column: 27, line: 6 },
                   },
                 },
 
-                range: [131, 139],
+                range: [130, 138],
                 loc: {
                   start: { column: 19, line: 6 },
                   end: { column: 27, line: 6 },
                 },
               },
 
-              range: [129, 143],
+              range: [128, 141],
               loc: {
                 start: { column: 17, line: 6 },
-                end: { column: 31, line: 6 },
+                end: { column: 30, line: 6 },
               },
             },
 
-            range: [114, 143],
+            range: [113, 141],
             loc: {
               start: { column: 2, line: 6 },
-              end: { column: 31, line: 6 },
+              end: { column: 30, line: 6 },
             },
           },
         ],
 
-        range: [81, 145],
+        range: [81, 143],
         loc: {
           start: { column: 8, line: 3 },
           end: { column: 1, line: 7 },
@@ -160,7 +160,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 145],
+      range: [73, 143],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 7 },
@@ -169,7 +169,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 146],
+  range: [73, 144],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 8 },

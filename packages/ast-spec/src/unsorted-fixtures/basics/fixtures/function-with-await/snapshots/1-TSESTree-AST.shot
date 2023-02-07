@@ -18,29 +18,29 @@ Program {
                 type: "Identifier",
                 name: "future",
 
-                range: [113, 119],
+                range: [111, 117],
                 loc: {
-                  start: { column: 10, line: 4 },
-                  end: { column: 16, line: 4 },
+                  start: { column: 8, line: 4 },
+                  end: { column: 14, line: 4 },
                 },
               },
 
-              range: [107, 119],
+              range: [105, 117],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 16, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 14, line: 4 },
               },
             },
 
-            range: [107, 120],
+            range: [105, 118],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 17, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 15, line: 4 },
             },
           },
         ],
 
-        range: [101, 122],
+        range: [101, 120],
         loc: {
           start: { column: 28, line: 3 },
           end: { column: 1, line: 5 },
@@ -71,7 +71,7 @@ Program {
         },
       ],
 
-      range: [73, 122],
+      range: [73, 120],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -80,7 +80,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 123],
+  range: [73, 121],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 6 },

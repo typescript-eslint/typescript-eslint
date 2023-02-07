@@ -27,10 +27,10 @@ exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-abstract-cons
                   type: 'Identifier',
                   name: 'constructor',
 
-                  range: [125, 136],
+                  range: [123, 134],
                   loc: {
-                    start: { column: 13, line: 4 },
-                    end: { column: 24, line: 4 },
+                    start: { column: 11, line: 4 },
+                    end: { column: 22, line: 4 },
                   },
                 },
                 kind: 'constructor',
@@ -47,22 +47,22 @@ exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-abstract-cons
                   id: null,
                   params: Array [],
 
-                  range: [136, 139],
+                  range: [134, 137],
                   loc: {
-                    start: { column: 24, line: 4 },
-                    end: { column: 27, line: 4 },
+                    start: { column: 22, line: 4 },
+                    end: { column: 25, line: 4 },
                   },
                 },
 
-                range: [116, 139],
+                range: [114, 137],
                 loc: {
-                  start: { column: 4, line: 4 },
-                  end: { column: 27, line: 4 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 25, line: 4 },
                 },
               },
             ],
 
-            range: [110, 141],
+            range: [110, 139],
             loc: {
               start: { column: 37, line: 3 },
               end: { column: 1, line: 5 },
@@ -80,7 +80,7 @@ exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-abstract-cons
           },
           superClass: null,
 
-          range: [80, 141],
+          range: [80, 139],
           loc: {
             start: { column: 7, line: 3 },
             end: { column: 1, line: 5 },
@@ -90,7 +90,7 @@ exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-abstract-cons
         source: null,
         specifiers: Array [],
 
-        range: [73, 141],
+        range: [73, 139],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 5 },
@@ -99,10 +99,10 @@ exports[`AST Fixtures unsorted-fixtures basics abstract-class-with-abstract-cons
     ],
     sourceType: 'module',
 
-    range: [73, 141],
+    range: [73, 140],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 1, line: 5 },
+      end: { column: 0, line: 6 },
     },
   }"
 `;

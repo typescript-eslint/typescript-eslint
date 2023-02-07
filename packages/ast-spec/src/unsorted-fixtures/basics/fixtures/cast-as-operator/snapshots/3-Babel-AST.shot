@@ -26,46 +26,46 @@ Program {
             raw: "1",
             value: 1,
 
-            range: [79, 80],
+            range: [80, 81],
             loc: {
-              start: { column: 6, line: 3 },
-              end: { column: 7, line: 3 },
+              start: { column: 7, line: 3 },
+              end: { column: 8, line: 3 },
             },
           },
           typeAnnotation: TSNumberKeyword {
             type: "TSNumberKeyword",
 
-            range: [84, 90],
+            range: [85, 91],
             loc: {
-              start: { column: 11, line: 3 },
-              end: { column: 17, line: 3 },
+              start: { column: 12, line: 3 },
+              end: { column: 18, line: 3 },
             },
           },
 
-          range: [79, 90],
+          range: [80, 91],
           loc: {
-            start: { column: 6, line: 3 },
-            end: { column: 17, line: 3 },
+            start: { column: 7, line: 3 },
+            end: { column: 18, line: 3 },
           },
         },
 
-        range: [73, 90],
+        range: [73, 92],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 17, line: 3 },
+          end: { column: 19, line: 3 },
         },
       },
 
-      range: [73, 91],
+      range: [73, 93],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 18, line: 3 },
+        end: { column: 20, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 92],
+  range: [73, 94],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

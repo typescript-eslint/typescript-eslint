@@ -131,7 +131,7 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-property-values AST Al
               static: false,
               value: Literal {
                 type: 'Literal',
-                raw: '\\"\\"',
+                raw: '\\\\'\\\\'',
                 value: '',
 
                 range: [120, 122],

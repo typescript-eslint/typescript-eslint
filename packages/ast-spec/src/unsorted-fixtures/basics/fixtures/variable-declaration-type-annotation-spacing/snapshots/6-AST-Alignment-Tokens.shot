@@ -32,30 +32,30 @@ exports[`AST Fixtures unsorted-fixtures basics variable-declaration-type-annotat
       type: 'Punctuator',
       value: ':',
 
-      range: [81, 82],
+      range: [78, 79],
       loc: {
-        start: { column: 8, line: 3 },
-        end: { column: 9, line: 3 },
+        start: { column: 5, line: 3 },
+        end: { column: 6, line: 3 },
       },
     },
     Identifier {
       type: 'Identifier',
       value: 'string',
 
-      range: [88, 94],
+      range: [80, 86],
       loc: {
-        start: { column: 15, line: 3 },
-        end: { column: 21, line: 3 },
+        start: { column: 7, line: 3 },
+        end: { column: 13, line: 3 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ';',
 
-      range: [94, 95],
+      range: [86, 87],
       loc: {
-        start: { column: 21, line: 3 },
-        end: { column: 22, line: 3 },
+        start: { column: 13, line: 3 },
+        end: { column: 14, line: 3 },
       },
     },
   ]"

@@ -48,5 +48,15 @@ exports[`AST Fixtures unsorted-fixtures basics typed-keyword-null AST Alignment 
         end: { column: 15, line: 3 },
       },
     },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [88, 89],
+      loc: {
+        start: { column: 15, line: 3 },
+        end: { column: 16, line: 3 },
+      },
+    },
   ]"
 `;

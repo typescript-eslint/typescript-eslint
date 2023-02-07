@@ -16,25 +16,25 @@ Program {
               type: "Identifier",
               name: "name",
 
-              range: [162, 166],
+              range: [174, 178],
               loc: {
-                start: { column: 9, line: 4 },
-                end: { column: 13, line: 4 },
+                start: { column: 9, line: 8 },
+                end: { column: 13, line: 8 },
               },
             },
 
-            range: [155, 167],
+            range: [167, 179],
             loc: {
-              start: { column: 2, line: 4 },
-              end: { column: 14, line: 4 },
+              start: { column: 2, line: 8 },
+              end: { column: 14, line: 8 },
             },
           },
         ],
 
-        range: [151, 169],
+        range: [163, 181],
         loc: {
-          start: { column: 78, line: 3 },
-          end: { column: 1, line: 5 },
+          start: { column: 10, line: 7 },
+          end: { column: 1, line: 9 },
         },
       },
       expression: false,
@@ -58,24 +58,24 @@ Program {
             typeAnnotation: TSStringKeyword {
               type: "TSStringKeyword",
 
-              range: [95, 101],
+              range: [99, 105],
               loc: {
-                start: { column: 22, line: 3 },
-                end: { column: 28, line: 3 },
+                start: { column: 8, line: 4 },
+                end: { column: 14, line: 4 },
               },
             },
 
-            range: [94, 101],
+            range: [97, 105],
             loc: {
-              start: { column: 21, line: 3 },
-              end: { column: 28, line: 3 },
+              start: { column: 6, line: 4 },
+              end: { column: 14, line: 4 },
             },
           },
 
-          range: [90, 101],
+          range: [93, 105],
           loc: {
-            start: { column: 17, line: 3 },
-            end: { column: 28, line: 3 },
+            start: { column: 2, line: 4 },
+            end: { column: 14, line: 4 },
           },
         },
         AssignmentPattern {
@@ -88,24 +88,24 @@ Program {
               typeAnnotation: TSNumberKeyword {
                 type: "TSNumberKeyword",
 
-                range: [107, 113],
+                range: [114, 120],
                 loc: {
-                  start: { column: 34, line: 3 },
-                  end: { column: 40, line: 3 },
+                  start: { column: 7, line: 5 },
+                  end: { column: 13, line: 5 },
                 },
               },
 
-              range: [106, 113],
+              range: [112, 120],
               loc: {
-                start: { column: 33, line: 3 },
-                end: { column: 40, line: 3 },
+                start: { column: 5, line: 5 },
+                end: { column: 13, line: 5 },
               },
             },
 
-            range: [103, 113],
+            range: [109, 120],
             loc: {
-              start: { column: 30, line: 3 },
-              end: { column: 40, line: 3 },
+              start: { column: 2, line: 5 },
+              end: { column: 13, line: 5 },
             },
           },
           right: Literal {
@@ -113,17 +113,17 @@ Program {
             raw: "100",
             value: 100,
 
-            range: [116, 119],
+            range: [123, 126],
             loc: {
-              start: { column: 43, line: 3 },
-              end: { column: 46, line: 3 },
+              start: { column: 16, line: 5 },
+              end: { column: 19, line: 5 },
             },
           },
 
-          range: [103, 119],
+          range: [109, 126],
           loc: {
-            start: { column: 30, line: 3 },
-            end: { column: 46, line: 3 },
+            start: { column: 2, line: 5 },
+            end: { column: 19, line: 5 },
           },
         },
         RestElement {
@@ -132,10 +132,10 @@ Program {
             type: "Identifier",
             name: "args",
 
-            range: [124, 128],
+            range: [133, 137],
             loc: {
-              start: { column: 51, line: 3 },
-              end: { column: 55, line: 3 },
+              start: { column: 5, line: 6 },
+              end: { column: 9, line: 6 },
             },
           },
           typeAnnotation: TSTypeAnnotation {
@@ -146,10 +146,10 @@ Program {
                 type: "Identifier",
                 name: "Array",
 
-                range: [129, 134],
+                range: [139, 144],
                 loc: {
-                  start: { column: 56, line: 3 },
-                  end: { column: 61, line: 3 },
+                  start: { column: 11, line: 6 },
+                  end: { column: 16, line: 6 },
                 },
               },
               typeParameters: TSTypeParameterInstantiation {
@@ -158,39 +158,39 @@ Program {
                   TSStringKeyword {
                     type: "TSStringKeyword",
 
-                    range: [135, 141],
+                    range: [145, 151],
                     loc: {
-                      start: { column: 62, line: 3 },
-                      end: { column: 68, line: 3 },
+                      start: { column: 17, line: 6 },
+                      end: { column: 23, line: 6 },
                     },
                   },
                 ],
 
-                range: [134, 142],
+                range: [144, 152],
                 loc: {
-                  start: { column: 61, line: 3 },
-                  end: { column: 69, line: 3 },
+                  start: { column: 16, line: 6 },
+                  end: { column: 24, line: 6 },
                 },
               },
 
-              range: [129, 142],
+              range: [139, 152],
               loc: {
-                start: { column: 56, line: 3 },
-                end: { column: 69, line: 3 },
+                start: { column: 11, line: 6 },
+                end: { column: 24, line: 6 },
               },
             },
 
-            range: [128, 142],
+            range: [137, 152],
             loc: {
-              start: { column: 55, line: 3 },
-              end: { column: 69, line: 3 },
+              start: { column: 9, line: 6 },
+              end: { column: 24, line: 6 },
             },
           },
 
-          range: [121, 142],
+          range: [130, 152],
           loc: {
-            start: { column: 48, line: 3 },
-            end: { column: 69, line: 3 },
+            start: { column: 2, line: 6 },
+            end: { column: 24, line: 6 },
           },
         },
       ],
@@ -199,33 +199,33 @@ Program {
         typeAnnotation: TSStringKeyword {
           type: "TSStringKeyword",
 
-          range: [144, 150],
+          range: [156, 162],
           loc: {
-            start: { column: 71, line: 3 },
-            end: { column: 77, line: 3 },
+            start: { column: 3, line: 7 },
+            end: { column: 9, line: 7 },
           },
         },
 
-        range: [143, 150],
+        range: [154, 162],
         loc: {
-          start: { column: 70, line: 3 },
-          end: { column: 77, line: 3 },
+          start: { column: 1, line: 7 },
+          end: { column: 9, line: 7 },
         },
       },
 
-      range: [73, 169],
+      range: [73, 181],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 1, line: 9 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 170],
+  range: [73, 182],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 6 },
+    end: { column: 0, line: 10 },
   },
 }
 `;

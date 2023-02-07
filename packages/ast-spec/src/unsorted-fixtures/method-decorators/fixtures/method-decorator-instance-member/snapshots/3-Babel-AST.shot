@@ -19,17 +19,17 @@ Program {
                   type: "Identifier",
                   name: "onlyRead",
 
-                  range: [88, 96],
+                  range: [86, 94],
                   loc: {
-                    start: { column: 5, line: 4 },
-                    end: { column: 13, line: 4 },
+                    start: { column: 3, line: 4 },
+                    end: { column: 11, line: 4 },
                   },
                 },
 
-                range: [87, 96],
+                range: [85, 94],
                 loc: {
-                  start: { column: 4, line: 4 },
-                  end: { column: 13, line: 4 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 11, line: 4 },
                 },
               },
             ],
@@ -37,10 +37,10 @@ Program {
               type: "Identifier",
               name: "instanceMethod",
 
-              range: [101, 115],
+              range: [97, 111],
               loc: {
-                start: { column: 4, line: 5 },
-                end: { column: 18, line: 5 },
+                start: { column: 2, line: 5 },
+                end: { column: 16, line: 5 },
               },
             },
             kind: "method",
@@ -52,10 +52,10 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [118, 120],
+                range: [114, 116],
                 loc: {
-                  start: { column: 21, line: 5 },
-                  end: { column: 23, line: 5 },
+                  start: { column: 19, line: 5 },
+                  end: { column: 21, line: 5 },
                 },
               },
               expression: false,
@@ -63,22 +63,22 @@ Program {
               id: null,
               params: Array [],
 
-              range: [115, 120],
+              range: [111, 116],
               loc: {
-                start: { column: 18, line: 5 },
-                end: { column: 23, line: 5 },
+                start: { column: 16, line: 5 },
+                end: { column: 21, line: 5 },
               },
             },
 
-            range: [87, 120],
+            range: [85, 116],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 23, line: 5 },
+              start: { column: 2, line: 4 },
+              end: { column: 21, line: 5 },
             },
           },
         ],
 
-        range: [81, 122],
+        range: [81, 118],
         loc: {
           start: { column: 8, line: 3 },
           end: { column: 1, line: 6 },
@@ -96,7 +96,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 122],
+      range: [73, 118],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 6 },
@@ -105,7 +105,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 123],
+  range: [73, 119],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 7 },

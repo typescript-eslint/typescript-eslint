@@ -56,25 +56,15 @@ Array [
     type: "Identifier",
     value: "string",
 
-    range: [95, 101],
+    range: [96, 102],
     loc: {
-      start: { column: 22, line: 3 },
-      end: { column: 28, line: 3 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ")",
-
-    range: [101, 102],
-    loc: {
-      start: { column: 28, line: 3 },
+      start: { column: 23, line: 3 },
       end: { column: 29, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
-    value: ":",
+    value: ")",
 
     range: [102, 103],
     loc: {
@@ -82,24 +72,34 @@ Array [
       end: { column: 30, line: 3 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [103, 104],
+    loc: {
+      start: { column: 30, line: 3 },
+      end: { column: 31, line: 3 },
+    },
+  },
   Identifier {
     type: "Identifier",
     value: "string",
 
-    range: [103, 109],
+    range: [105, 111],
     loc: {
-      start: { column: 30, line: 3 },
-      end: { column: 36, line: 3 },
+      start: { column: 32, line: 3 },
+      end: { column: 38, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [110, 111],
+    range: [112, 113],
     loc: {
-      start: { column: 37, line: 3 },
-      end: { column: 38, line: 3 },
+      start: { column: 39, line: 3 },
+      end: { column: 40, line: 3 },
     },
   },
   Keyword {
@@ -108,8 +108,8 @@ Array [
 
     range: [116, 122],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 10, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 8, line: 4 },
     },
   },
   Identifier {
@@ -118,8 +118,8 @@ Array [
 
     range: [123, 127],
     loc: {
-      start: { column: 11, line: 4 },
-      end: { column: 15, line: 4 },
+      start: { column: 9, line: 4 },
+      end: { column: 13, line: 4 },
     },
   },
   Punctuator {
@@ -128,8 +128,8 @@ Array [
 
     range: [127, 128],
     loc: {
-      start: { column: 15, line: 4 },
-      end: { column: 16, line: 4 },
+      start: { column: 13, line: 4 },
+      end: { column: 14, line: 4 },
     },
   },
   Punctuator {

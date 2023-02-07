@@ -136,37 +136,37 @@ Array [
     type: "Keyword",
     value: "return",
 
-    range: [102, 108],
+    range: [100, 106],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 10, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 8, line: 4 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "b",
 
-    range: [109, 110],
+    range: [107, 108],
     loc: {
-      start: { column: 11, line: 4 },
-      end: { column: 12, line: 4 },
+      start: { column: 9, line: 4 },
+      end: { column: 10, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [110, 111],
+    range: [108, 109],
     loc: {
-      start: { column: 12, line: 4 },
-      end: { column: 13, line: 4 },
+      start: { column: 10, line: 4 },
+      end: { column: 11, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [112, 113],
+    range: [110, 111],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 1, line: 5 },

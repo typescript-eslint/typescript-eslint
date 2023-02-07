@@ -116,10 +116,10 @@ Program {
             type: "Identifier",
             name: "answer",
 
-            range: [170, 176],
+            range: [169, 175],
             loc: {
-              start: { column: 4, line: 11 },
-              end: { column: 10, line: 11 },
+              start: { column: 4, line: 10 },
+              end: { column: 10, line: 10 },
             },
           },
           init: Literal {
@@ -127,26 +127,26 @@ Program {
             raw: "42",
             value: 42,
 
-            range: [179, 181],
+            range: [178, 180],
             loc: {
-              start: { column: 13, line: 11 },
-              end: { column: 15, line: 11 },
+              start: { column: 13, line: 10 },
+              end: { column: 15, line: 10 },
             },
           },
 
-          range: [170, 181],
+          range: [169, 180],
           loc: {
-            start: { column: 4, line: 11 },
-            end: { column: 15, line: 11 },
+            start: { column: 4, line: 10 },
+            end: { column: 15, line: 10 },
           },
         },
       ],
       kind: "let",
 
-      range: [166, 182],
+      range: [165, 181],
       loc: {
-        start: { column: 0, line: 11 },
-        end: { column: 16, line: 11 },
+        start: { column: 0, line: 10 },
+        end: { column: 16, line: 10 },
       },
     },
     ExpressionStatement {
@@ -160,10 +160,10 @@ Program {
             type: "Identifier",
             name: "globalThis",
 
-            range: [251, 261],
+            range: [250, 260],
             loc: {
-              start: { column: 0, line: 14 },
-              end: { column: 10, line: 14 },
+              start: { column: 0, line: 13 },
+              end: { column: 10, line: 13 },
             },
           },
           optional: false,
@@ -171,17 +171,17 @@ Program {
             type: "Identifier",
             name: "answer",
 
-            range: [262, 268],
+            range: [261, 267],
             loc: {
-              start: { column: 11, line: 14 },
-              end: { column: 17, line: 14 },
+              start: { column: 11, line: 13 },
+              end: { column: 17, line: 13 },
             },
           },
 
-          range: [251, 268],
+          range: [250, 267],
           loc: {
-            start: { column: 0, line: 14 },
-            end: { column: 17, line: 14 },
+            start: { column: 0, line: 13 },
+            end: { column: 17, line: 13 },
           },
         },
         operator: "=",
@@ -190,33 +190,33 @@ Program {
           raw: "333333",
           value: 333333,
 
-          range: [271, 277],
+          range: [270, 276],
           loc: {
-            start: { column: 20, line: 14 },
-            end: { column: 26, line: 14 },
+            start: { column: 20, line: 13 },
+            end: { column: 26, line: 13 },
           },
         },
 
-        range: [251, 277],
+        range: [250, 276],
         loc: {
-          start: { column: 0, line: 14 },
-          end: { column: 26, line: 14 },
+          start: { column: 0, line: 13 },
+          end: { column: 26, line: 13 },
         },
       },
 
-      range: [251, 278],
+      range: [250, 277],
       loc: {
-        start: { column: 0, line: 14 },
-        end: { column: 27, line: 14 },
+        start: { column: 0, line: 13 },
+        end: { column: 27, line: 13 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [95, 279],
+  range: [95, 278],
   loc: {
     start: { column: 0, line: 5 },
-    end: { column: 0, line: 15 },
+    end: { column: 0, line: 14 },
   },
 }
 `;

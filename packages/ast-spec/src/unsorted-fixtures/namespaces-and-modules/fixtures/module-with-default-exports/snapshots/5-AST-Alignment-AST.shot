@@ -27,10 +27,10 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
                         type: 'Identifier',
                         name: 'method',
 
-                        range: [125, 131],
+                        range: [119, 125],
                         loc: {
-                          start: { column: 8, line: 5 },
-                          end: { column: 14, line: 5 },
+                          start: { column: 4, line: 5 },
+                          end: { column: 10, line: 5 },
                         },
                       },
                       kind: 'method',
@@ -43,10 +43,10 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
                           type: 'BlockStatement',
                           body: Array [],
 
-                          range: [137, 139],
+                          range: [131, 133],
                           loc: {
-                            start: { column: 20, line: 5 },
-                            end: { column: 22, line: 5 },
+                            start: { column: 16, line: 5 },
+                            end: { column: 18, line: 5 },
                           },
                         },
                         expression: false,
@@ -61,72 +61,72 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
                               type: 'Identifier',
                               name: 'C',
 
-                              range: [135, 136],
+                              range: [129, 130],
                               loc: {
-                                start: { column: 18, line: 5 },
-                                end: { column: 19, line: 5 },
+                                start: { column: 14, line: 5 },
+                                end: { column: 15, line: 5 },
                               },
                             },
 
-                            range: [135, 136],
+                            range: [129, 130],
                             loc: {
-                              start: { column: 18, line: 5 },
-                              end: { column: 19, line: 5 },
+                              start: { column: 14, line: 5 },
+                              end: { column: 15, line: 5 },
                             },
                           },
 
-                          range: [133, 136],
+                          range: [127, 130],
                           loc: {
-                            start: { column: 16, line: 5 },
-                            end: { column: 19, line: 5 },
+                            start: { column: 12, line: 5 },
+                            end: { column: 15, line: 5 },
                           },
                         },
 
-                        range: [131, 139],
+                        range: [125, 133],
                         loc: {
-                          start: { column: 14, line: 5 },
-                          end: { column: 22, line: 5 },
+                          start: { column: 10, line: 5 },
+                          end: { column: 18, line: 5 },
                         },
                       },
 
-                      range: [125, 139],
+                      range: [119, 133],
                       loc: {
-                        start: { column: 8, line: 5 },
-                        end: { column: 22, line: 5 },
+                        start: { column: 4, line: 5 },
+                        end: { column: 18, line: 5 },
                       },
                     },
                   ],
 
-                  range: [115, 146],
+                  range: [113, 137],
                   loc: {
-                    start: { column: 27, line: 4 },
-                    end: { column: 5, line: 6 },
+                    start: { column: 25, line: 4 },
+                    end: { column: 3, line: 6 },
                   },
                 },
                 id: Identifier {
                   type: 'Identifier',
                   name: 'C',
 
-                  range: [113, 114],
+                  range: [111, 112],
                   loc: {
-                    start: { column: 25, line: 4 },
-                    end: { column: 26, line: 4 },
+                    start: { column: 23, line: 4 },
+                    end: { column: 24, line: 4 },
                   },
                 },
                 superClass: null,
 
-                range: [107, 146],
+                range: [105, 137],
                 loc: {
-                  start: { column: 19, line: 4 },
-                  end: { column: 5, line: 6 },
+                  start: { column: 17, line: 4 },
+                  end: { column: 3, line: 6 },
                 },
               },
               exportKind: 'value',
 
-              range: [92, 146],
+              range: [90, 137],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 5, line: 6 },
+                start: { column: 2, line: 4 },
+                end: { column: 3, line: 6 },
               },
             },
             ExportDefaultDeclaration {
@@ -138,10 +138,10 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
                   type: 'BlockStatement',
                   body: Array [],
 
-                  range: [181, 183],
+                  range: [170, 172],
                   loc: {
-                    start: { column: 34, line: 7 },
-                    end: { column: 36, line: 7 },
+                    start: { column: 32, line: 7 },
+                    end: { column: 34, line: 7 },
                   },
                 },
                 expression: false,
@@ -150,31 +150,31 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
                   type: 'Identifier',
                   name: 'bar',
 
-                  range: [175, 178],
+                  range: [164, 167],
                   loc: {
-                    start: { column: 28, line: 7 },
-                    end: { column: 31, line: 7 },
+                    start: { column: 26, line: 7 },
+                    end: { column: 29, line: 7 },
                   },
                 },
                 params: Array [],
 
-                range: [166, 183],
+                range: [155, 172],
                 loc: {
-                  start: { column: 19, line: 7 },
-                  end: { column: 36, line: 7 },
+                  start: { column: 17, line: 7 },
+                  end: { column: 34, line: 7 },
                 },
               },
               exportKind: 'value',
 
-              range: [151, 183],
+              range: [140, 172],
               loc: {
-                start: { column: 4, line: 7 },
-                end: { column: 36, line: 7 },
+                start: { column: 2, line: 7 },
+                end: { column: 34, line: 7 },
               },
             },
           ],
 
-          range: [86, 185],
+          range: [86, 174],
           loc: {
             start: { column: 13, line: 3 },
             end: { column: 1, line: 8 },
@@ -182,7 +182,7 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
         },
         id: Literal {
           type: 'Literal',
-          raw: '\\"foo\\"',
+          raw: '\\\\'foo\\\\'',
           value: 'foo',
 
           range: [80, 85],
@@ -192,7 +192,7 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
           },
         },
 
-        range: [73, 185],
+        range: [73, 174],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 8 },
@@ -202,10 +202,10 @@ exports[`AST Fixtures unsorted-fixtures namespaces-and-modules module-with-defau
 -   sourceType: 'script',
 +   sourceType: 'module',
 
-    range: [73, 187],
+    range: [73, 175],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 10 },
+      end: { column: 0, line: 9 },
     },
   }"
 `;

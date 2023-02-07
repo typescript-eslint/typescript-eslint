@@ -21,7 +21,7 @@ Program {
           },
           init: Literal {
             type: "Literal",
-            raw: "\\"buzz\\"",
+            raw: "'buzz'",
             value: "buzz",
 
             range: [91, 97],
@@ -63,7 +63,7 @@ Program {
           },
           init: Literal {
             type: "Literal",
-            raw: "\\"bazz\\"",
+            raw: "'bazz'",
             value: "bazz",
 
             range: [117, 123],
@@ -124,7 +124,7 @@ Program {
                 shorthand: false,
                 value: Literal {
                   type: "Literal",
-                  raw: "\\"member\\"",
+                  raw: "'member'",
                   value: "member",
 
                   range: [149, 157],
@@ -158,7 +158,7 @@ Program {
                 shorthand: false,
                 value: Literal {
                   type: "Literal",
-                  raw: "\\"member2\\"",
+                  raw: "'member2'",
                   value: "member2",
 
                   range: [170, 179],
@@ -295,7 +295,7 @@ Program {
               raw: "1",
               value: 1,
 
-              range: [236, 237],
+              range: [235, 236],
               loc: {
                 start: { column: 3, line: 12 },
                 end: { column: 4, line: 12 },
@@ -312,14 +312,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [239, 242],
+              range: [238, 241],
               loc: {
                 start: { column: 6, line: 12 },
                 end: { column: 9, line: 12 },
               },
             },
 
-            range: [235, 242],
+            range: [234, 241],
             loc: {
               start: { column: 2, line: 12 },
               end: { column: 9, line: 12 },
@@ -333,7 +333,7 @@ Program {
               raw: "2",
               value: 2,
 
-              range: [246, 247],
+              range: [245, 246],
               loc: {
                 start: { column: 3, line: 13 },
                 end: { column: 4, line: 13 },
@@ -349,7 +349,7 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [252, 254],
+                range: [251, 253],
                 loc: {
                   start: { column: 9, line: 13 },
                   end: { column: 11, line: 13 },
@@ -360,14 +360,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [249, 254],
+              range: [248, 253],
               loc: {
                 start: { column: 6, line: 13 },
                 end: { column: 11, line: 13 },
               },
             },
 
-            range: [245, 254],
+            range: [244, 253],
             loc: {
               start: { column: 2, line: 13 },
               end: { column: 11, line: 13 },
@@ -378,10 +378,10 @@ Program {
             computed: true,
             key: Literal {
               type: "Literal",
-              raw: "\\"literal1\\"",
+              raw: "'literal1'",
               value: "literal1",
 
-              range: [259, 269],
+              range: [257, 267],
               loc: {
                 start: { column: 3, line: 14 },
                 end: { column: 13, line: 14 },
@@ -398,14 +398,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [271, 274],
+              range: [269, 272],
               loc: {
                 start: { column: 15, line: 14 },
                 end: { column: 18, line: 14 },
               },
             },
 
-            range: [258, 274],
+            range: [256, 272],
             loc: {
               start: { column: 2, line: 14 },
               end: { column: 18, line: 14 },
@@ -416,10 +416,10 @@ Program {
             computed: true,
             key: Literal {
               type: "Literal",
-              raw: "\\"literal2\\"",
+              raw: "'literal2'",
               value: "literal2",
 
-              range: [278, 288],
+              range: [276, 286],
               loc: {
                 start: { column: 3, line: 15 },
                 end: { column: 13, line: 15 },
@@ -435,7 +435,7 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [293, 295],
+                range: [291, 293],
                 loc: {
                   start: { column: 18, line: 15 },
                   end: { column: 20, line: 15 },
@@ -446,14 +446,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [290, 295],
+              range: [288, 293],
               loc: {
                 start: { column: 15, line: 15 },
                 end: { column: 20, line: 15 },
               },
             },
 
-            range: [277, 295],
+            range: [275, 293],
             loc: {
               start: { column: 2, line: 15 },
               end: { column: 20, line: 15 },
@@ -469,7 +469,7 @@ Program {
                 type: "Identifier",
                 name: "obj",
 
-                range: [300, 303],
+                range: [297, 300],
                 loc: {
                   start: { column: 3, line: 16 },
                   end: { column: 6, line: 16 },
@@ -480,14 +480,14 @@ Program {
                 type: "Identifier",
                 name: "member",
 
-                range: [304, 310],
+                range: [301, 307],
                 loc: {
                   start: { column: 7, line: 16 },
                   end: { column: 13, line: 16 },
                 },
               },
 
-              range: [300, 310],
+              range: [297, 307],
               loc: {
                 start: { column: 3, line: 16 },
                 end: { column: 13, line: 16 },
@@ -503,7 +503,7 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [315, 317],
+                range: [312, 314],
                 loc: {
                   start: { column: 18, line: 16 },
                   end: { column: 20, line: 16 },
@@ -514,14 +514,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [312, 317],
+              range: [309, 314],
               loc: {
                 start: { column: 15, line: 16 },
                 end: { column: 20, line: 16 },
               },
             },
 
-            range: [299, 317],
+            range: [296, 314],
             loc: {
               start: { column: 2, line: 16 },
               end: { column: 20, line: 16 },
@@ -537,7 +537,7 @@ Program {
                 type: "Identifier",
                 name: "obj",
 
-                range: [322, 325],
+                range: [318, 321],
                 loc: {
                   start: { column: 3, line: 17 },
                   end: { column: 6, line: 17 },
@@ -548,14 +548,14 @@ Program {
                 type: "Identifier",
                 name: "member2",
 
-                range: [326, 333],
+                range: [322, 329],
                 loc: {
                   start: { column: 7, line: 17 },
                   end: { column: 14, line: 17 },
                 },
               },
 
-              range: [322, 333],
+              range: [318, 329],
               loc: {
                 start: { column: 3, line: 17 },
                 end: { column: 14, line: 17 },
@@ -572,14 +572,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [335, 338],
+              range: [331, 334],
               loc: {
                 start: { column: 16, line: 17 },
                 end: { column: 19, line: 17 },
               },
             },
 
-            range: [321, 338],
+            range: [317, 334],
             loc: {
               start: { column: 2, line: 17 },
               end: { column: 19, line: 17 },
@@ -595,7 +595,7 @@ Program {
                 type: "Identifier",
                 name: "f",
 
-                range: [342, 343],
+                range: [338, 339],
                 loc: {
                   start: { column: 3, line: 18 },
                   end: { column: 4, line: 18 },
@@ -603,7 +603,7 @@ Program {
               },
               optional: false,
 
-              range: [342, 345],
+              range: [338, 341],
               loc: {
                 start: { column: 3, line: 18 },
                 end: { column: 6, line: 18 },
@@ -619,7 +619,7 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [350, 352],
+                range: [346, 348],
                 loc: {
                   start: { column: 11, line: 18 },
                   end: { column: 13, line: 18 },
@@ -630,14 +630,14 @@ Program {
               id: null,
               params: Array [],
 
-              range: [347, 352],
+              range: [343, 348],
               loc: {
                 start: { column: 8, line: 18 },
                 end: { column: 13, line: 18 },
               },
             },
 
-            range: [341, 352],
+            range: [337, 348],
             loc: {
               start: { column: 2, line: 18 },
               end: { column: 13, line: 18 },
@@ -645,7 +645,7 @@ Program {
           },
         ],
 
-        range: [192, 354],
+        range: [192, 350],
         loc: {
           start: { column: 8, line: 9 },
           end: { column: 1, line: 19 },
@@ -663,7 +663,7 @@ Program {
       },
       superClass: null,
 
-      range: [184, 354],
+      range: [184, 350],
       loc: {
         start: { column: 0, line: 9 },
         end: { column: 1, line: 19 },
@@ -672,7 +672,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 355],
+  range: [73, 351],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 20 },

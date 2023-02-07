@@ -68,10 +68,10 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 113],
+  range: [73, 114],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 40, line: 3 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

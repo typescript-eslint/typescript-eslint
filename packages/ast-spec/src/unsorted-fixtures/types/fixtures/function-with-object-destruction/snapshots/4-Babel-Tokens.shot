@@ -56,16 +56,6 @@ Array [
     type: "Identifier",
     value: "a",
 
-    range: [86, 87],
-    loc: {
-      start: { column: 13, line: 3 },
-      end: { column: 14, line: 3 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "}",
-
     range: [87, 88],
     loc: {
       start: { column: 14, line: 3 },
@@ -74,52 +64,72 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
+    value: "}",
+
+    range: [89, 90],
+    loc: {
+      start: { column: 16, line: 3 },
+      end: { column: 17, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
     value: ":",
 
-    range: [88, 89],
+    range: [90, 91],
     loc: {
-      start: { column: 15, line: 3 },
-      end: { column: 16, line: 3 },
+      start: { column: 17, line: 3 },
+      end: { column: 18, line: 3 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "any",
 
-    range: [90, 93],
+    range: [92, 95],
     loc: {
-      start: { column: 17, line: 3 },
-      end: { column: 20, line: 3 },
+      start: { column: 19, line: 3 },
+      end: { column: 22, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ")",
 
-    range: [93, 94],
+    range: [95, 96],
     loc: {
-      start: { column: 20, line: 3 },
-      end: { column: 21, line: 3 },
+      start: { column: 22, line: 3 },
+      end: { column: 23, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "=>",
 
-    range: [95, 97],
+    range: [97, 99],
     loc: {
-      start: { column: 22, line: 3 },
-      end: { column: 24, line: 3 },
+      start: { column: 24, line: 3 },
+      end: { column: 26, line: 3 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "any",
 
-    range: [98, 101],
+    range: [100, 103],
     loc: {
-      start: { column: 25, line: 3 },
-      end: { column: 28, line: 3 },
+      start: { column: 27, line: 3 },
+      end: { column: 30, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [103, 104],
+    loc: {
+      start: { column: 30, line: 3 },
+      end: { column: 31, line: 3 },
     },
   },
 ]

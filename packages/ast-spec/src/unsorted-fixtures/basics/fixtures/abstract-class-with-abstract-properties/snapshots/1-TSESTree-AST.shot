@@ -18,20 +18,20 @@ Program {
               type: "Identifier",
               name: "bar",
 
-              range: [107, 110],
+              range: [105, 108],
               loc: {
-                start: { column: 13, line: 4 },
-                end: { column: 16, line: 4 },
+                start: { column: 11, line: 4 },
+                end: { column: 14, line: 4 },
               },
             },
             override: false,
             static: false,
             value: null,
 
-            range: [98, 111],
+            range: [96, 109],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 17, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 15, line: 4 },
             },
           },
           TSAbstractPropertyDefinition {
@@ -42,10 +42,10 @@ Program {
               type: "Identifier",
               name: "baz",
 
-              range: [125, 128],
+              range: [121, 124],
               loc: {
-                start: { column: 13, line: 5 },
-                end: { column: 16, line: 5 },
+                start: { column: 11, line: 5 },
+                end: { column: 14, line: 5 },
               },
             },
             override: false,
@@ -55,30 +55,30 @@ Program {
               typeAnnotation: TSNumberKeyword {
                 type: "TSNumberKeyword",
 
-                range: [130, 136],
+                range: [126, 132],
                 loc: {
-                  start: { column: 18, line: 5 },
-                  end: { column: 24, line: 5 },
+                  start: { column: 16, line: 5 },
+                  end: { column: 22, line: 5 },
                 },
               },
 
-              range: [128, 136],
+              range: [124, 132],
               loc: {
-                start: { column: 16, line: 5 },
-                end: { column: 24, line: 5 },
+                start: { column: 14, line: 5 },
+                end: { column: 22, line: 5 },
               },
             },
             value: null,
 
-            range: [116, 137],
+            range: [112, 133],
             loc: {
-              start: { column: 4, line: 5 },
-              end: { column: 25, line: 5 },
+              start: { column: 2, line: 5 },
+              end: { column: 23, line: 5 },
             },
           },
         ],
 
-        range: [92, 139],
+        range: [92, 135],
         loc: {
           start: { column: 19, line: 3 },
           end: { column: 1, line: 6 },
@@ -96,7 +96,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 139],
+      range: [73, 135],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 6 },
@@ -105,7 +105,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 140],
+  range: [73, 136],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 7 },

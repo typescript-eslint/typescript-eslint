@@ -52,15 +52,25 @@ exports[`AST Fixtures unsorted-fixtures basics const-enum AST Alignment - Token 
       type: 'Identifier',
       value: 'foo',
 
-      range: [94, 97],
+      range: [92, 95],
       loc: {
-        start: { column: 4, line: 4 },
-        end: { column: 7, line: 4 },
+        start: { column: 2, line: 4 },
+        end: { column: 5, line: 4 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '=',
+
+      range: [96, 97],
+      loc: {
+        start: { column: 6, line: 4 },
+        end: { column: 7, line: 4 },
+      },
+    },
+    Numeric {
+      type: 'Numeric',
+      value: '1',
 
       range: [98, 99],
       loc: {
@@ -68,41 +78,41 @@ exports[`AST Fixtures unsorted-fixtures basics const-enum AST Alignment - Token 
         end: { column: 9, line: 4 },
       },
     },
-    Numeric {
-      type: 'Numeric',
-      value: '1',
-
-      range: [100, 101],
-      loc: {
-        start: { column: 10, line: 4 },
-        end: { column: 11, line: 4 },
-      },
-    },
     Punctuator {
       type: 'Punctuator',
       value: ',',
 
-      range: [101, 102],
+      range: [99, 100],
       loc: {
-        start: { column: 11, line: 4 },
-        end: { column: 12, line: 4 },
+        start: { column: 9, line: 4 },
+        end: { column: 10, line: 4 },
       },
     },
     Identifier {
       type: 'Identifier',
       value: 'bar',
 
-      range: [107, 110],
+      range: [103, 106],
       loc: {
-        start: { column: 4, line: 5 },
-        end: { column: 7, line: 5 },
+        start: { column: 2, line: 5 },
+        end: { column: 5, line: 5 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ',',
+
+      range: [106, 107],
+      loc: {
+        start: { column: 5, line: 5 },
+        end: { column: 6, line: 5 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '}',
 
-      range: [111, 112],
+      range: [108, 109],
       loc: {
         start: { column: 0, line: 6 },
         end: { column: 1, line: 6 },

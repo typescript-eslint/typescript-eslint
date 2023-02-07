@@ -12,15 +12,14 @@ Program {
           Property {
             type: "Property",
             computed: false,
-            key: Literal {
-              type: "Literal",
-              raw: "'__'",
-              value: "__",
+            key: Identifier {
+              type: "Identifier",
+              name: "__",
 
-              range: [76, 80],
+              range: [76, 78],
               loc: {
                 start: { column: 3, line: 3 },
-                end: { column: 7, line: 3 },
+                end: { column: 5, line: 3 },
               },
             },
             kind: "init",
@@ -31,32 +30,32 @@ Program {
               raw: "null",
               value: null,
 
-              range: [82, 86],
+              range: [80, 84],
               loc: {
-                start: { column: 9, line: 3 },
-                end: { column: 13, line: 3 },
+                start: { column: 7, line: 3 },
+                end: { column: 11, line: 3 },
               },
             },
 
-            range: [76, 86],
+            range: [76, 84],
             loc: {
               start: { column: 3, line: 3 },
-              end: { column: 13, line: 3 },
+              end: { column: 11, line: 3 },
             },
           },
         ],
 
-        range: [74, 88],
+        range: [74, 86],
         loc: {
           start: { column: 1, line: 3 },
-          end: { column: 15, line: 3 },
+          end: { column: 13, line: 3 },
         },
       },
 
-      range: [73, 90],
+      range: [73, 88],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 17, line: 3 },
+        end: { column: 15, line: 3 },
       },
     },
     ExpressionStatement {
@@ -67,15 +66,14 @@ Program {
           Property {
             type: "Property",
             computed: false,
-            key: Literal {
-              type: "Literal",
-              raw: "'__'",
-              value: "__",
+            key: Identifier {
+              type: "Identifier",
+              name: "__",
 
-              range: [95, 99],
+              range: [93, 95],
               loc: {
                 start: { column: 3, line: 5 },
-                end: { column: 7, line: 5 },
+                end: { column: 5, line: 5 },
               },
             },
             kind: "init",
@@ -88,10 +86,10 @@ Program {
                 type: "BlockStatement",
                 body: Array [],
 
-                range: [102, 104],
+                range: [98, 100],
                 loc: {
-                  start: { column: 10, line: 5 },
-                  end: { column: 12, line: 5 },
+                  start: { column: 8, line: 5 },
+                  end: { column: 10, line: 5 },
                 },
               },
               expression: false,
@@ -99,32 +97,32 @@ Program {
               id: null,
               params: Array [],
 
-              range: [99, 104],
+              range: [95, 100],
               loc: {
-                start: { column: 7, line: 5 },
-                end: { column: 12, line: 5 },
+                start: { column: 5, line: 5 },
+                end: { column: 10, line: 5 },
               },
             },
 
-            range: [95, 104],
+            range: [93, 100],
             loc: {
               start: { column: 3, line: 5 },
-              end: { column: 12, line: 5 },
+              end: { column: 10, line: 5 },
             },
           },
         ],
 
-        range: [93, 106],
+        range: [91, 102],
         loc: {
           start: { column: 1, line: 5 },
-          end: { column: 14, line: 5 },
+          end: { column: 12, line: 5 },
         },
       },
 
-      range: [92, 108],
+      range: [90, 104],
       loc: {
         start: { column: 0, line: 5 },
-        end: { column: 16, line: 5 },
+        end: { column: 14, line: 5 },
       },
     },
     ExpressionStatement {
@@ -140,7 +138,7 @@ Program {
               raw: "'__'",
               value: "__",
 
-              range: [114, 118],
+              range: [110, 114],
               loc: {
                 start: { column: 4, line: 7 },
                 end: { column: 8, line: 7 },
@@ -154,14 +152,14 @@ Program {
               raw: "null",
               value: null,
 
-              range: [121, 125],
+              range: [117, 121],
               loc: {
                 start: { column: 11, line: 7 },
                 end: { column: 15, line: 7 },
               },
             },
 
-            range: [113, 125],
+            range: [109, 121],
             loc: {
               start: { column: 3, line: 7 },
               end: { column: 15, line: 7 },
@@ -169,14 +167,14 @@ Program {
           },
         ],
 
-        range: [111, 127],
+        range: [107, 123],
         loc: {
           start: { column: 1, line: 7 },
           end: { column: 17, line: 7 },
         },
       },
 
-      range: [110, 129],
+      range: [106, 125],
       loc: {
         start: { column: 0, line: 7 },
         end: { column: 19, line: 7 },
@@ -196,10 +194,10 @@ Program {
               raw: "'__'",
               value: "__",
 
-              range: [141, 145],
+              range: [139, 143],
               loc: {
-                start: { column: 10, line: 9 },
-                end: { column: 14, line: 9 },
+                start: { column: 2, line: 10 },
+                end: { column: 6, line: 10 },
               },
             },
             override: false,
@@ -209,32 +207,32 @@ Program {
               raw: "null",
               value: null,
 
-              range: [148, 152],
+              range: [146, 150],
               loc: {
-                start: { column: 17, line: 9 },
-                end: { column: 21, line: 9 },
+                start: { column: 9, line: 10 },
+                end: { column: 13, line: 10 },
               },
             },
 
-            range: [141, 152],
+            range: [139, 151],
             loc: {
-              start: { column: 10, line: 9 },
-              end: { column: 21, line: 9 },
+              start: { column: 2, line: 10 },
+              end: { column: 14, line: 10 },
             },
           },
         ],
 
-        range: [139, 154],
+        range: [135, 153],
         loc: {
           start: { column: 8, line: 9 },
-          end: { column: 23, line: 9 },
+          end: { column: 1, line: 11 },
         },
       },
       id: Identifier {
         type: "Identifier",
         name: "X",
 
-        range: [137, 138],
+        range: [133, 134],
         loc: {
           start: { column: 6, line: 9 },
           end: { column: 7, line: 9 },
@@ -242,19 +240,19 @@ Program {
       },
       superClass: null,
 
-      range: [131, 154],
+      range: [127, 153],
       loc: {
         start: { column: 0, line: 9 },
-        end: { column: 23, line: 9 },
+        end: { column: 1, line: 11 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 155],
+  range: [73, 154],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 10 },
+    end: { column: 0, line: 12 },
   },
 }
 `;

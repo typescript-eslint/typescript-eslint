@@ -56,37 +56,47 @@ Array [
     type: "Identifier",
     value: "count",
 
-    range: [108, 113],
+    range: [106, 111],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 9, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 7, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ":",
 
-    range: [113, 114],
+    range: [111, 112],
     loc: {
-      start: { column: 9, line: 4 },
-      end: { column: 10, line: 4 },
+      start: { column: 7, line: 4 },
+      end: { column: 8, line: 4 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "number",
 
-    range: [115, 121],
+    range: [113, 119],
     loc: {
-      start: { column: 11, line: 4 },
-      end: { column: 17, line: 4 },
+      start: { column: 9, line: 4 },
+      end: { column: 15, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [119, 120],
+    loc: {
+      start: { column: 15, line: 4 },
+      end: { column: 16, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [122, 123],
+    range: [121, 122],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 1, line: 5 },
@@ -96,7 +106,7 @@ Array [
     type: "Punctuator",
     value: ";",
 
-    range: [123, 124],
+    range: [122, 123],
     loc: {
       start: { column: 1, line: 5 },
       end: { column: 2, line: 5 },

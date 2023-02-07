@@ -207,16 +207,16 @@ Program {
         },
       },
 
-      range: [73, 130],
+      range: [73, 131],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 6 },
+        end: { column: 2, line: 6 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 131],
+  range: [73, 132],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 7 },

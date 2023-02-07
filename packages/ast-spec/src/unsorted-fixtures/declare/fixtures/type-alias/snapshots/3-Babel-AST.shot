@@ -27,16 +27,16 @@ Program {
         },
       },
 
-      range: [73, 98],
+      range: [73, 99],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 25, line: 3 },
+        end: { column: 26, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 99],
+  range: [73, 100],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

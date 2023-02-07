@@ -68,10 +68,10 @@ Program {
               arguments: Array [
                 Literal {
                   type: "Literal",
-                  raw: "\\"hello!\\"",
+                  raw: "'hello!'",
                   value: "hello!",
 
-                  range: [157, 165],
+                  range: [150, 158],
                   loc: {
                     start: { column: 11, line: 5 },
                     end: { column: 19, line: 5 },
@@ -85,7 +85,7 @@ Program {
                   type: "Identifier",
                   name: "arr",
 
-                  range: [148, 151],
+                  range: [141, 144],
                   loc: {
                     start: { column: 2, line: 5 },
                     end: { column: 5, line: 5 },
@@ -96,14 +96,14 @@ Program {
                   type: "Identifier",
                   name: "push",
 
-                  range: [152, 156],
+                  range: [145, 149],
                   loc: {
                     start: { column: 6, line: 5 },
                     end: { column: 10, line: 5 },
                   },
                 },
 
-                range: [148, 156],
+                range: [141, 149],
                 loc: {
                   start: { column: 2, line: 5 },
                   end: { column: 10, line: 5 },
@@ -111,14 +111,14 @@ Program {
               },
               optional: false,
 
-              range: [148, 166],
+              range: [141, 159],
               loc: {
                 start: { column: 2, line: 5 },
                 end: { column: 20, line: 5 },
               },
             },
 
-            range: [148, 167],
+            range: [141, 160],
             loc: {
               start: { column: 2, line: 5 },
               end: { column: 21, line: 5 },
@@ -126,7 +126,7 @@ Program {
           },
         ],
 
-        range: [114, 179],
+        range: [114, 172],
         loc: {
           start: { column: 41, line: 3 },
           end: { column: 1, line: 6 },
@@ -205,7 +205,7 @@ Program {
         },
       ],
 
-      range: [73, 179],
+      range: [73, 172],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 6 },
@@ -229,7 +229,7 @@ Program {
                   type: "Identifier",
                   name: "arr",
 
-                  range: [222, 225],
+                  range: [215, 218],
                   loc: {
                     start: { column: 2, line: 9 },
                     end: { column: 5, line: 9 },
@@ -240,14 +240,14 @@ Program {
                   type: "Identifier",
                   name: "slice",
 
-                  range: [226, 231],
+                  range: [219, 224],
                   loc: {
                     start: { column: 6, line: 9 },
                     end: { column: 11, line: 9 },
                   },
                 },
 
-                range: [222, 231],
+                range: [215, 224],
                 loc: {
                   start: { column: 2, line: 9 },
                   end: { column: 11, line: 9 },
@@ -255,14 +255,14 @@ Program {
               },
               optional: false,
 
-              range: [222, 233],
+              range: [215, 226],
               loc: {
                 start: { column: 2, line: 9 },
                 end: { column: 13, line: 9 },
               },
             },
 
-            range: [222, 234],
+            range: [215, 227],
             loc: {
               start: { column: 2, line: 9 },
               end: { column: 14, line: 9 },
@@ -275,10 +275,10 @@ Program {
               arguments: Array [
                 Literal {
                   type: "Literal",
-                  raw: "\\"hello!\\"",
+                  raw: "'hello!'",
                   value: "hello!",
 
-                  range: [261, 269],
+                  range: [247, 255],
                   loc: {
                     start: { column: 11, line: 10 },
                     end: { column: 19, line: 10 },
@@ -292,7 +292,7 @@ Program {
                   type: "Identifier",
                   name: "arr",
 
-                  range: [252, 255],
+                  range: [238, 241],
                   loc: {
                     start: { column: 2, line: 10 },
                     end: { column: 5, line: 10 },
@@ -303,14 +303,14 @@ Program {
                   type: "Identifier",
                   name: "push",
 
-                  range: [256, 260],
+                  range: [242, 246],
                   loc: {
                     start: { column: 6, line: 10 },
                     end: { column: 10, line: 10 },
                   },
                 },
 
-                range: [252, 260],
+                range: [238, 246],
                 loc: {
                   start: { column: 2, line: 10 },
                   end: { column: 10, line: 10 },
@@ -318,14 +318,14 @@ Program {
               },
               optional: false,
 
-              range: [252, 270],
+              range: [238, 256],
               loc: {
                 start: { column: 2, line: 10 },
                 end: { column: 20, line: 10 },
               },
             },
 
-            range: [252, 271],
+            range: [238, 257],
             loc: {
               start: { column: 2, line: 10 },
               end: { column: 21, line: 10 },
@@ -333,7 +333,7 @@ Program {
           },
         ],
 
-        range: [218, 283],
+        range: [211, 269],
         loc: {
           start: { column: 37, line: 8 },
           end: { column: 1, line: 11 },
@@ -345,7 +345,7 @@ Program {
         type: "Identifier",
         name: "foo",
 
-        range: [190, 193],
+        range: [183, 186],
         loc: {
           start: { column: 9, line: 8 },
           end: { column: 12, line: 8 },
@@ -365,35 +365,35 @@ Program {
                 elementType: TSStringKeyword {
                   type: "TSStringKeyword",
 
-                  range: [208, 214],
+                  range: [201, 207],
                   loc: {
                     start: { column: 27, line: 8 },
                     end: { column: 33, line: 8 },
                   },
                 },
 
-                range: [208, 216],
+                range: [201, 209],
                 loc: {
                   start: { column: 27, line: 8 },
                   end: { column: 35, line: 8 },
                 },
               },
 
-              range: [199, 216],
+              range: [192, 209],
               loc: {
                 start: { column: 18, line: 8 },
                 end: { column: 35, line: 8 },
               },
             },
 
-            range: [197, 216],
+            range: [190, 209],
             loc: {
               start: { column: 16, line: 8 },
               end: { column: 35, line: 8 },
             },
           },
 
-          range: [194, 216],
+          range: [187, 209],
           loc: {
             start: { column: 13, line: 8 },
             end: { column: 35, line: 8 },
@@ -401,7 +401,7 @@ Program {
         },
       ],
 
-      range: [181, 283],
+      range: [174, 269],
       loc: {
         start: { column: 0, line: 8 },
         end: { column: 1, line: 11 },
@@ -410,7 +410,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 284],
+  range: [73, 270],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 12 },

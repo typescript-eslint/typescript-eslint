@@ -236,7 +236,7 @@ Array [
     type: "Identifier",
     value: "pair",
 
-    range: [157, 161],
+    range: [155, 159],
     loc: {
       start: { column: 2, line: 5 },
       end: { column: 6, line: 5 },
@@ -246,7 +246,7 @@ Array [
     type: "Punctuator",
     value: "[",
 
-    range: [161, 162],
+    range: [159, 160],
     loc: {
       start: { column: 6, line: 5 },
       end: { column: 7, line: 5 },
@@ -256,7 +256,7 @@ Array [
     type: "Numeric",
     value: "1",
 
-    range: [162, 163],
+    range: [160, 161],
     loc: {
       start: { column: 7, line: 5 },
       end: { column: 8, line: 5 },
@@ -266,7 +266,7 @@ Array [
     type: "Punctuator",
     value: "]",
 
-    range: [163, 164],
+    range: [161, 162],
     loc: {
       start: { column: 8, line: 5 },
       end: { column: 9, line: 5 },
@@ -276,7 +276,7 @@ Array [
     type: "Punctuator",
     value: "=",
 
-    range: [165, 166],
+    range: [163, 164],
     loc: {
       start: { column: 10, line: 5 },
       end: { column: 11, line: 5 },
@@ -284,9 +284,9 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"hello!\\"",
+    value: "'hello!'",
 
-    range: [167, 175],
+    range: [165, 173],
     loc: {
       start: { column: 12, line: 5 },
       end: { column: 20, line: 5 },
@@ -296,7 +296,7 @@ Array [
     type: "Punctuator",
     value: ";",
 
-    range: [175, 176],
+    range: [173, 174],
     loc: {
       start: { column: 20, line: 5 },
       end: { column: 21, line: 5 },
@@ -306,7 +306,7 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [190, 191],
+    range: [184, 185],
     loc: {
       start: { column: 0, line: 6 },
       end: { column: 1, line: 6 },

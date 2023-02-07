@@ -62,30 +62,30 @@ exports[`AST Fixtures unsorted-fixtures basics interface-extends-multiple AST Al
       type: 'Identifier',
       value: 'Baz',
 
-      range: [99, 102],
+      range: [100, 103],
       loc: {
-        start: { column: 26, line: 3 },
-        end: { column: 29, line: 3 },
+        start: { column: 27, line: 3 },
+        end: { column: 30, line: 3 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '{',
 
-      range: [103, 104],
+      range: [104, 105],
       loc: {
-        start: { column: 30, line: 3 },
-        end: { column: 31, line: 3 },
+        start: { column: 31, line: 3 },
+        end: { column: 32, line: 3 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '}',
 
-      range: [106, 107],
+      range: [105, 106],
       loc: {
-        start: { column: 0, line: 5 },
-        end: { column: 1, line: 5 },
+        start: { column: 32, line: 3 },
+        end: { column: 33, line: 3 },
       },
     },
   ]"

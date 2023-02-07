@@ -20,10 +20,10 @@ Program {
                 type: "Identifier",
                 name: "createSocket",
 
-                range: [125, 137],
+                range: [123, 135],
                 loc: {
-                  start: { column: 13, line: 4 },
-                  end: { column: 25, line: 4 },
+                  start: { column: 11, line: 4 },
+                  end: { column: 23, line: 4 },
                 },
               },
               kind: "method",
@@ -45,10 +45,10 @@ Program {
                       type: "Identifier",
                       name: "Promise",
 
-                      range: [141, 148],
+                      range: [139, 146],
                       loc: {
-                        start: { column: 29, line: 4 },
-                        end: { column: 36, line: 4 },
+                        start: { column: 27, line: 4 },
+                        end: { column: 34, line: 4 },
                       },
                     },
                     typeParameters: TSTypeParameterInstantiation {
@@ -57,51 +57,51 @@ Program {
                         TSStringKeyword {
                           type: "TSStringKeyword",
 
-                          range: [149, 155],
+                          range: [147, 153],
                           loc: {
-                            start: { column: 37, line: 4 },
-                            end: { column: 43, line: 4 },
+                            start: { column: 35, line: 4 },
+                            end: { column: 41, line: 4 },
                           },
                         },
                       ],
 
-                      range: [148, 156],
+                      range: [146, 154],
                       loc: {
-                        start: { column: 36, line: 4 },
-                        end: { column: 44, line: 4 },
+                        start: { column: 34, line: 4 },
+                        end: { column: 42, line: 4 },
                       },
                     },
 
-                    range: [141, 156],
+                    range: [139, 154],
                     loc: {
-                      start: { column: 29, line: 4 },
-                      end: { column: 44, line: 4 },
+                      start: { column: 27, line: 4 },
+                      end: { column: 42, line: 4 },
                     },
                   },
 
-                  range: [139, 156],
+                  range: [137, 154],
                   loc: {
-                    start: { column: 27, line: 4 },
-                    end: { column: 44, line: 4 },
+                    start: { column: 25, line: 4 },
+                    end: { column: 42, line: 4 },
                   },
                 },
 
-                range: [137, 157],
+                range: [135, 155],
                 loc: {
-                  start: { column: 25, line: 4 },
-                  end: { column: 45, line: 4 },
+                  start: { column: 23, line: 4 },
+                  end: { column: 43, line: 4 },
                 },
               },
 
-              range: [116, 157],
+              range: [114, 155],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 45, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 43, line: 4 },
               },
             },
           ],
 
-          range: [110, 159],
+          range: [110, 157],
           loc: {
             start: { column: 37, line: 3 },
             end: { column: 1, line: 5 },
@@ -119,7 +119,7 @@ Program {
         },
         superClass: null,
 
-        range: [80, 159],
+        range: [80, 157],
         loc: {
           start: { column: 7, line: 3 },
           end: { column: 1, line: 5 },
@@ -129,7 +129,7 @@ Program {
       source: null,
       specifiers: Array [],
 
-      range: [73, 159],
+      range: [73, 157],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -138,10 +138,10 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 159],
+  range: [73, 158],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 1, line: 5 },
+    end: { column: 0, line: 6 },
   },
 }
 `;

@@ -46,15 +46,35 @@ Array [
     type: "Identifier",
     value: "bar",
 
-    range: [97, 100],
+    range: [95, 98],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 7, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 5, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "?",
+
+    range: [98, 99],
+    loc: {
+      start: { column: 5, line: 4 },
+      end: { column: 6, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [99, 100],
+    loc: {
+      start: { column: 6, line: 4 },
+      end: { column: 7, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
 
     range: [100, 101],
     loc: {
@@ -64,7 +84,7 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
-    value: "(",
+    value: ":",
 
     range: [101, 102],
     loc: {
@@ -72,51 +92,31 @@ Array [
       end: { column: 9, line: 4 },
     },
   },
-  Punctuator {
-    type: "Punctuator",
-    value: ")",
-
-    range: [102, 103],
-    loc: {
-      start: { column: 9, line: 4 },
-      end: { column: 10, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ":",
-
-    range: [103, 104],
-    loc: {
-      start: { column: 10, line: 4 },
-      end: { column: 11, line: 4 },
-    },
-  },
   Identifier {
     type: "Identifier",
     value: "any",
 
-    range: [105, 108],
+    range: [103, 106],
     loc: {
-      start: { column: 12, line: 4 },
-      end: { column: 15, line: 4 },
+      start: { column: 10, line: 4 },
+      end: { column: 13, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [108, 109],
+    range: [106, 107],
     loc: {
-      start: { column: 15, line: 4 },
-      end: { column: 16, line: 4 },
+      start: { column: 13, line: 4 },
+      end: { column: 14, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [110, 111],
+    range: [108, 109],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 1, line: 5 },

@@ -136,20 +136,40 @@ Array [
     type: "Keyword",
     value: "return",
 
-    range: [123, 129],
+    range: [121, 127],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 10, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 8, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [127, 128],
+    loc: {
+      start: { column: 8, line: 4 },
+      end: { column: 9, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [130, 131],
+    range: [129, 130],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 1, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [130, 131],
+    loc: {
+      start: { column: 1, line: 5 },
+      end: { column: 2, line: 5 },
     },
   },
 ]

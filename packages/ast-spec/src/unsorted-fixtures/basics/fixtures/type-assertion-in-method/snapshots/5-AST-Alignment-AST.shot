@@ -181,15 +181,15 @@ exports[`AST Fixtures unsorted-fixtures basics type-assertion-in-method AST Alig
                 },
               },
 
-              range: [136, 181],
+              range: [136, 182],
               loc: {
                 start: { column: 2, line: 7 },
-                end: { column: 3, line: 9 },
+                end: { column: 4, line: 9 },
               },
             },
           ],
 
-          range: [90, 183],
+          range: [90, 184],
           loc: {
             start: { column: 17, line: 3 },
             end: { column: 1, line: 10 },
@@ -207,7 +207,7 @@ exports[`AST Fixtures unsorted-fixtures basics type-assertion-in-method AST Alig
         },
         superClass: null,
 
-        range: [73, 183],
+        range: [73, 184],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 10 },
@@ -216,7 +216,7 @@ exports[`AST Fixtures unsorted-fixtures basics type-assertion-in-method AST Alig
     ],
     sourceType: 'script',
 
-    range: [73, 184],
+    range: [73, 185],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 11 },

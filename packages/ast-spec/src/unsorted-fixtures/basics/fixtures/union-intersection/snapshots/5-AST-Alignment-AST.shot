@@ -2,5 +2,558 @@
 
 exports[`AST Fixtures unsorted-fixtures basics union-intersection AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+            id: Identifier {
+              type: 'Identifier',
+              name: 'union',
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSUnionType {
+                  type: 'TSUnionType',
+                  types: Array [
+                    TSNumberKeyword {
+                      type: 'TSNumberKeyword',
+
+                      range: [84, 90],
+                      loc: {
+                        start: { column: 11, line: 3 },
+                        end: { column: 17, line: 3 },
+                      },
+                    },
+                    TSNullKeyword {
+                      type: 'TSNullKeyword',
+
+                      range: [93, 97],
+                      loc: {
+                        start: { column: 20, line: 3 },
+                        end: { column: 24, line: 3 },
+                      },
+                    },
+                    TSUndefinedKeyword {
+                      type: 'TSUndefinedKeyword',
+
+                      range: [100, 109],
+                      loc: {
+                        start: { column: 27, line: 3 },
+                        end: { column: 36, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [84, 109],
+                  loc: {
+                    start: { column: 11, line: 3 },
+                    end: { column: 36, line: 3 },
+                  },
+                },
+
+                range: [82, 109],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 36, line: 3 },
+                },
+              },
+
+              range: [77, 109],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 36, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 109],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 36, line: 3 },
+            },
+          },
+        ],
+        kind: 'let',
+
+        range: [73, 110],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 37, line: 3 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+            id: Identifier {
+              type: 'Identifier',
+              name: 'intersection',
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSIntersectionType {
+                  type: 'TSIntersectionType',
+                  types: Array [
+                    TSNumberKeyword {
+                      type: 'TSNumberKeyword',
+
+                      range: [129, 135],
+                      loc: {
+                        start: { column: 18, line: 4 },
+                        end: { column: 24, line: 4 },
+                      },
+                    },
+                    TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [138, 144],
+                      loc: {
+                        start: { column: 27, line: 4 },
+                        end: { column: 33, line: 4 },
+                      },
+                    },
+                  ],
+
+                  range: [129, 144],
+                  loc: {
+                    start: { column: 18, line: 4 },
+                    end: { column: 33, line: 4 },
+                  },
+                },
+
+                range: [127, 144],
+                loc: {
+                  start: { column: 16, line: 4 },
+                  end: { column: 33, line: 4 },
+                },
+              },
+
+              range: [115, 144],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 33, line: 4 },
+              },
+            },
+            init: null,
+
+            range: [115, 144],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 33, line: 4 },
+            },
+          },
+        ],
+        kind: 'let',
+
+        range: [111, 145],
+        loc: {
+          start: { column: 0, line: 4 },
+          end: { column: 34, line: 4 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+            id: Identifier {
+              type: 'Identifier',
+              name: 'precedence1',
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSUnionType {
+                  type: 'TSUnionType',
+                  types: Array [
+                    TSNumberKeyword {
+                      type: 'TSNumberKeyword',
+
+                      range: [163, 169],
+                      loc: {
+                        start: { column: 17, line: 5 },
+                        end: { column: 23, line: 5 },
+                      },
+                    },
+-                   TSIntersectionType {
+-                     type: 'TSIntersectionType',
+-                     types: Array [
+-                       TSStringKeyword {
+-                         type: 'TSStringKeyword',
++                   TSParenthesizedType {
++                     type: 'TSParenthesizedType',
++                     typeAnnotation: TSIntersectionType {
++                       type: 'TSIntersectionType',
++                       types: Array [
++                         TSStringKeyword {
++                           type: 'TSStringKeyword',
+
+-                         range: [173, 179],
+-                         loc: {
+-                           start: { column: 27, line: 5 },
+-                           end: { column: 33, line: 5 },
++                           range: [173, 179],
++                           loc: {
++                             start: { column: 27, line: 5 },
++                             end: { column: 33, line: 5 },
++                           },
+                          },
+-                       },
+-                       TSBooleanKeyword {
+-                         type: 'TSBooleanKeyword',
++                         TSBooleanKeyword {
++                           type: 'TSBooleanKeyword',
+
+-                         range: [182, 189],
+-                         loc: {
+-                           start: { column: 36, line: 5 },
+-                           end: { column: 43, line: 5 },
++                           range: [182, 189],
++                           loc: {
++                             start: { column: 36, line: 5 },
++                             end: { column: 43, line: 5 },
++                           },
+                          },
++                       ],
++
++                       range: [173, 189],
++                       loc: {
++                         start: { column: 27, line: 5 },
++                         end: { column: 43, line: 5 },
+                        },
+-                     ],
++                     },
+
+-                     range: [173, 189],
++                     range: [172, 190],
+                      loc: {
+-                       start: { column: 27, line: 5 },
+-                       end: { column: 43, line: 5 },
++                       start: { column: 26, line: 5 },
++                       end: { column: 44, line: 5 },
+                      },
+                    },
+                  ],
+
+                  range: [163, 190],
+                  loc: {
+                    start: { column: 17, line: 5 },
+                    end: { column: 44, line: 5 },
+                  },
+                },
+
+                range: [161, 190],
+                loc: {
+                  start: { column: 15, line: 5 },
+                  end: { column: 44, line: 5 },
+                },
+              },
+
+              range: [150, 190],
+              loc: {
+                start: { column: 4, line: 5 },
+                end: { column: 44, line: 5 },
+              },
+            },
+            init: null,
+
+            range: [150, 190],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 44, line: 5 },
+            },
+          },
+        ],
+        kind: 'let',
+
+        range: [146, 191],
+        loc: {
+          start: { column: 0, line: 5 },
+          end: { column: 45, line: 5 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+            id: Identifier {
+              type: 'Identifier',
+              name: 'precedence2',
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSUnionType {
+                  type: 'TSUnionType',
+                  types: Array [
+-                   TSIntersectionType {
+-                     type: 'TSIntersectionType',
+-                     types: Array [
+-                       TSNumberKeyword {
+-                         type: 'TSNumberKeyword',
++                   TSParenthesizedType {
++                     type: 'TSParenthesizedType',
++                     typeAnnotation: TSIntersectionType {
++                       type: 'TSIntersectionType',
++                       types: Array [
++                         TSNumberKeyword {
++                           type: 'TSNumberKeyword',
+
+-                         range: [210, 216],
+-                         loc: {
+-                           start: { column: 18, line: 6 },
+-                           end: { column: 24, line: 6 },
++                           range: [210, 216],
++                           loc: {
++                             start: { column: 18, line: 6 },
++                             end: { column: 24, line: 6 },
++                           },
+                          },
+-                       },
+-                       TSStringKeyword {
+-                         type: 'TSStringKeyword',
++                         TSStringKeyword {
++                           type: 'TSStringKeyword',
+
+-                         range: [219, 225],
+-                         loc: {
+-                           start: { column: 27, line: 6 },
+-                           end: { column: 33, line: 6 },
++                           range: [219, 225],
++                           loc: {
++                             start: { column: 27, line: 6 },
++                             end: { column: 33, line: 6 },
++                           },
+                          },
++                       ],
++
++                       range: [210, 225],
++                       loc: {
++                         start: { column: 18, line: 6 },
++                         end: { column: 33, line: 6 },
+                        },
+-                     ],
++                     },
+
+-                     range: [210, 225],
++                     range: [209, 226],
+                      loc: {
+-                       start: { column: 18, line: 6 },
+-                       end: { column: 33, line: 6 },
++                       start: { column: 17, line: 6 },
++                       end: { column: 34, line: 6 },
+                      },
+                    },
+                    TSBooleanKeyword {
+                      type: 'TSBooleanKeyword',
+
+                      range: [229, 236],
+                      loc: {
+                        start: { column: 37, line: 6 },
+                        end: { column: 44, line: 6 },
+                      },
+                    },
+                  ],
+
+                  range: [209, 236],
+                  loc: {
+                    start: { column: 17, line: 6 },
+                    end: { column: 44, line: 6 },
+                  },
+                },
+
+                range: [207, 236],
+                loc: {
+                  start: { column: 15, line: 6 },
+                  end: { column: 44, line: 6 },
+                },
+              },
+
+              range: [196, 236],
+              loc: {
+                start: { column: 4, line: 6 },
+                end: { column: 44, line: 6 },
+              },
+            },
+            init: null,
+
+            range: [196, 236],
+            loc: {
+              start: { column: 4, line: 6 },
+              end: { column: 44, line: 6 },
+            },
+          },
+        ],
+        kind: 'let',
+
+        range: [192, 237],
+        loc: {
+          start: { column: 0, line: 6 },
+          end: { column: 45, line: 6 },
+        },
+      },
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'unionLeading',
+
+          range: [244, 256],
+          loc: {
+            start: { column: 5, line: 8 },
+            end: { column: 17, line: 8 },
+          },
+        },
+        typeAnnotation: TSUnionType {
+          type: 'TSUnionType',
+          types: Array [
+            TSNumberKeyword {
+              type: 'TSNumberKeyword',
+
+              range: [259, 265],
+              loc: {
+                start: { column: 20, line: 8 },
+                end: { column: 26, line: 8 },
+              },
+            },
+            TSStringKeyword {
+              type: 'TSStringKeyword',
+
+              range: [268, 274],
+              loc: {
+                start: { column: 29, line: 8 },
+                end: { column: 35, line: 8 },
+              },
+            },
+          ],
+
+          range: [259, 274],
+          loc: {
+            start: { column: 20, line: 8 },
+            end: { column: 35, line: 8 },
+          },
+        },
+
+        range: [239, 275],
+        loc: {
+          start: { column: 0, line: 8 },
+          end: { column: 36, line: 8 },
+        },
+      },
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'intersectionLeading',
+
+          range: [281, 300],
+          loc: {
+            start: { column: 5, line: 9 },
+            end: { column: 24, line: 9 },
+          },
+        },
+        typeAnnotation: TSIntersectionType {
+          type: 'TSIntersectionType',
+          types: Array [
+            TSNumberKeyword {
+              type: 'TSNumberKeyword',
+
+              range: [303, 309],
+              loc: {
+                start: { column: 27, line: 9 },
+                end: { column: 33, line: 9 },
+              },
+            },
+            TSStringKeyword {
+              type: 'TSStringKeyword',
+
+              range: [312, 318],
+              loc: {
+                start: { column: 36, line: 9 },
+                end: { column: 42, line: 9 },
+              },
+            },
+          ],
+
+          range: [303, 318],
+          loc: {
+            start: { column: 27, line: 9 },
+            end: { column: 42, line: 9 },
+          },
+        },
+
+        range: [276, 319],
+        loc: {
+          start: { column: 0, line: 9 },
+          end: { column: 43, line: 9 },
+        },
+      },
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'unionLeadingSingle',
+
+          range: [325, 343],
+          loc: {
+            start: { column: 5, line: 10 },
+            end: { column: 23, line: 10 },
+          },
+        },
+        typeAnnotation: TSNumberKeyword {
+          type: 'TSNumberKeyword',
+
+          range: [346, 352],
+          loc: {
+            start: { column: 26, line: 10 },
+            end: { column: 32, line: 10 },
+          },
+        },
+
+        range: [320, 353],
+        loc: {
+          start: { column: 0, line: 10 },
+          end: { column: 33, line: 10 },
+        },
+      },
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'intersectionLeadingSingle',
+
+          range: [359, 384],
+          loc: {
+            start: { column: 5, line: 11 },
+            end: { column: 30, line: 11 },
+          },
+        },
+        typeAnnotation: TSNumberKeyword {
+          type: 'TSNumberKeyword',
+
+          range: [387, 393],
+          loc: {
+            start: { column: 33, line: 11 },
+            end: { column: 39, line: 11 },
+          },
+        },
+
+        range: [354, 394],
+        loc: {
+          start: { column: 0, line: 11 },
+          end: { column: 40, line: 11 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 395],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 12 },
+    },
+  }"
 `;

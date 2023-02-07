@@ -24,10 +24,10 @@ Program {
                     type: "Identifier",
                     name: "one",
 
-                    range: [124, 127],
+                    range: [123, 126],
                     loc: {
-                      start: { column: 3, line: 4 },
-                      end: { column: 6, line: 4 },
+                      start: { column: 2, line: 4 },
+                      end: { column: 5, line: 4 },
                     },
                   },
                   optional: true,
@@ -35,39 +35,39 @@ Program {
                     type: "Identifier",
                     name: "fn",
 
-                    range: [129, 131],
+                    range: [128, 130],
                     loc: {
-                      start: { column: 8, line: 4 },
-                      end: { column: 10, line: 4 },
+                      start: { column: 7, line: 4 },
+                      end: { column: 9, line: 4 },
                     },
                   },
 
-                  range: [124, 131],
+                  range: [123, 130],
                   loc: {
-                    start: { column: 3, line: 4 },
-                    end: { column: 10, line: 4 },
+                    start: { column: 2, line: 4 },
+                    end: { column: 9, line: 4 },
                   },
                 },
                 optional: false,
 
-                range: [124, 133],
+                range: [123, 132],
                 loc: {
-                  start: { column: 3, line: 4 },
-                  end: { column: 12, line: 4 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 11, line: 4 },
                 },
               },
 
-              range: [124, 133],
+              range: [123, 132],
               loc: {
-                start: { column: 3, line: 4 },
-                end: { column: 12, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 11, line: 4 },
               },
             },
 
-            range: [123, 135],
+            range: [123, 133],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 14, line: 4 },
+              end: { column: 12, line: 4 },
             },
           },
           ExpressionStatement {
@@ -87,7 +87,7 @@ Program {
                       type: "Identifier",
                       name: "one",
 
-                      range: [139, 142],
+                      range: [137, 140],
                       loc: {
                         start: { column: 3, line: 5 },
                         end: { column: 6, line: 5 },
@@ -98,21 +98,21 @@ Program {
                       type: "Identifier",
                       name: "two",
 
-                      range: [144, 147],
+                      range: [142, 145],
                       loc: {
                         start: { column: 8, line: 5 },
                         end: { column: 11, line: 5 },
                       },
                     },
 
-                    range: [139, 147],
+                    range: [137, 145],
                     loc: {
                       start: { column: 3, line: 5 },
                       end: { column: 11, line: 5 },
                     },
                   },
 
-                  range: [139, 147],
+                  range: [137, 145],
                   loc: {
                     start: { column: 3, line: 5 },
                     end: { column: 11, line: 5 },
@@ -123,14 +123,14 @@ Program {
                   type: "Identifier",
                   name: "fn",
 
-                  range: [149, 151],
+                  range: [147, 149],
                   loc: {
                     start: { column: 13, line: 5 },
                     end: { column: 15, line: 5 },
                   },
                 },
 
-                range: [138, 151],
+                range: [136, 149],
                 loc: {
                   start: { column: 2, line: 5 },
                   end: { column: 15, line: 5 },
@@ -138,14 +138,14 @@ Program {
               },
               optional: false,
 
-              range: [138, 153],
+              range: [136, 151],
               loc: {
                 start: { column: 2, line: 5 },
                 end: { column: 17, line: 5 },
               },
             },
 
-            range: [138, 154],
+            range: [136, 152],
             loc: {
               start: { column: 2, line: 5 },
               end: { column: 18, line: 5 },
@@ -168,10 +168,10 @@ Program {
                       type: "Identifier",
                       name: "one",
 
-                      range: [158, 161],
+                      range: [155, 158],
                       loc: {
-                        start: { column: 3, line: 6 },
-                        end: { column: 6, line: 6 },
+                        start: { column: 2, line: 6 },
+                        end: { column: 5, line: 6 },
                       },
                     },
                     optional: false,
@@ -179,17 +179,17 @@ Program {
                       type: "Identifier",
                       name: "two",
 
-                      range: [162, 165],
+                      range: [159, 162],
                       loc: {
-                        start: { column: 7, line: 6 },
-                        end: { column: 10, line: 6 },
+                        start: { column: 6, line: 6 },
+                        end: { column: 9, line: 6 },
                       },
                     },
 
-                    range: [158, 165],
+                    range: [155, 162],
                     loc: {
-                      start: { column: 3, line: 6 },
-                      end: { column: 10, line: 6 },
+                      start: { column: 2, line: 6 },
+                      end: { column: 9, line: 6 },
                     },
                   },
                   optional: true,
@@ -197,39 +197,39 @@ Program {
                     type: "Identifier",
                     name: "fn",
 
-                    range: [167, 169],
+                    range: [164, 166],
                     loc: {
-                      start: { column: 12, line: 6 },
-                      end: { column: 14, line: 6 },
+                      start: { column: 11, line: 6 },
+                      end: { column: 13, line: 6 },
                     },
                   },
 
-                  range: [158, 169],
+                  range: [155, 166],
                   loc: {
-                    start: { column: 3, line: 6 },
-                    end: { column: 14, line: 6 },
+                    start: { column: 2, line: 6 },
+                    end: { column: 13, line: 6 },
                   },
                 },
                 optional: false,
 
-                range: [158, 171],
+                range: [155, 168],
                 loc: {
-                  start: { column: 3, line: 6 },
-                  end: { column: 16, line: 6 },
+                  start: { column: 2, line: 6 },
+                  end: { column: 15, line: 6 },
                 },
               },
 
-              range: [158, 171],
+              range: [155, 168],
               loc: {
-                start: { column: 3, line: 6 },
-                end: { column: 16, line: 6 },
+                start: { column: 2, line: 6 },
+                end: { column: 15, line: 6 },
               },
             },
 
-            range: [157, 173],
+            range: [155, 169],
             loc: {
               start: { column: 2, line: 6 },
-              end: { column: 18, line: 6 },
+              end: { column: 16, line: 6 },
             },
           },
           ExpressionStatement {
@@ -252,7 +252,7 @@ Program {
                         type: "Identifier",
                         name: "one",
 
-                        range: [177, 180],
+                        range: [173, 176],
                         loc: {
                           start: { column: 3, line: 7 },
                           end: { column: 6, line: 7 },
@@ -263,14 +263,14 @@ Program {
                         type: "Identifier",
                         name: "two",
 
-                        range: [181, 184],
+                        range: [177, 180],
                         loc: {
                           start: { column: 7, line: 7 },
                           end: { column: 10, line: 7 },
                         },
                       },
 
-                      range: [177, 184],
+                      range: [173, 180],
                       loc: {
                         start: { column: 3, line: 7 },
                         end: { column: 10, line: 7 },
@@ -281,21 +281,21 @@ Program {
                       type: "Identifier",
                       name: "three",
 
-                      range: [186, 191],
+                      range: [182, 187],
                       loc: {
                         start: { column: 12, line: 7 },
                         end: { column: 17, line: 7 },
                       },
                     },
 
-                    range: [177, 191],
+                    range: [173, 187],
                     loc: {
                       start: { column: 3, line: 7 },
                       end: { column: 17, line: 7 },
                     },
                   },
 
-                  range: [177, 191],
+                  range: [173, 187],
                   loc: {
                     start: { column: 3, line: 7 },
                     end: { column: 17, line: 7 },
@@ -306,14 +306,14 @@ Program {
                   type: "Identifier",
                   name: "fn",
 
-                  range: [193, 195],
+                  range: [189, 191],
                   loc: {
                     start: { column: 19, line: 7 },
                     end: { column: 21, line: 7 },
                   },
                 },
 
-                range: [176, 195],
+                range: [172, 191],
                 loc: {
                   start: { column: 2, line: 7 },
                   end: { column: 21, line: 7 },
@@ -321,14 +321,14 @@ Program {
               },
               optional: false,
 
-              range: [176, 197],
+              range: [172, 193],
               loc: {
                 start: { column: 2, line: 7 },
                 end: { column: 23, line: 7 },
               },
             },
 
-            range: [176, 198],
+            range: [172, 194],
             loc: {
               start: { column: 2, line: 7 },
               end: { column: 24, line: 7 },
@@ -354,10 +354,10 @@ Program {
                         type: "Identifier",
                         name: "one",
 
-                        range: [202, 205],
+                        range: [197, 200],
                         loc: {
-                          start: { column: 3, line: 8 },
-                          end: { column: 6, line: 8 },
+                          start: { column: 2, line: 8 },
+                          end: { column: 5, line: 8 },
                         },
                       },
                       optional: false,
@@ -365,17 +365,17 @@ Program {
                         type: "Identifier",
                         name: "two",
 
-                        range: [206, 209],
+                        range: [201, 204],
                         loc: {
-                          start: { column: 7, line: 8 },
-                          end: { column: 10, line: 8 },
+                          start: { column: 6, line: 8 },
+                          end: { column: 9, line: 8 },
                         },
                       },
 
-                      range: [202, 209],
+                      range: [197, 204],
                       loc: {
-                        start: { column: 3, line: 8 },
-                        end: { column: 10, line: 8 },
+                        start: { column: 2, line: 8 },
+                        end: { column: 9, line: 8 },
                       },
                     },
                     optional: true,
@@ -383,17 +383,17 @@ Program {
                       type: "Identifier",
                       name: "three",
 
-                      range: [211, 216],
+                      range: [206, 211],
                       loc: {
-                        start: { column: 12, line: 8 },
-                        end: { column: 17, line: 8 },
+                        start: { column: 11, line: 8 },
+                        end: { column: 16, line: 8 },
                       },
                     },
 
-                    range: [202, 216],
+                    range: [197, 211],
                     loc: {
-                      start: { column: 3, line: 8 },
-                      end: { column: 17, line: 8 },
+                      start: { column: 2, line: 8 },
+                      end: { column: 16, line: 8 },
                     },
                   },
                   optional: true,
@@ -401,39 +401,39 @@ Program {
                     type: "Identifier",
                     name: "fn",
 
-                    range: [218, 220],
+                    range: [213, 215],
                     loc: {
-                      start: { column: 19, line: 8 },
-                      end: { column: 21, line: 8 },
+                      start: { column: 18, line: 8 },
+                      end: { column: 20, line: 8 },
                     },
                   },
 
-                  range: [202, 220],
+                  range: [197, 215],
                   loc: {
-                    start: { column: 3, line: 8 },
-                    end: { column: 21, line: 8 },
+                    start: { column: 2, line: 8 },
+                    end: { column: 20, line: 8 },
                   },
                 },
                 optional: false,
 
-                range: [202, 222],
+                range: [197, 217],
                 loc: {
-                  start: { column: 3, line: 8 },
-                  end: { column: 23, line: 8 },
+                  start: { column: 2, line: 8 },
+                  end: { column: 22, line: 8 },
                 },
               },
 
-              range: [202, 222],
+              range: [197, 217],
               loc: {
-                start: { column: 3, line: 8 },
-                end: { column: 23, line: 8 },
+                start: { column: 2, line: 8 },
+                end: { column: 22, line: 8 },
               },
             },
 
-            range: [201, 224],
+            range: [197, 218],
             loc: {
               start: { column: 2, line: 8 },
-              end: { column: 25, line: 8 },
+              end: { column: 23, line: 8 },
             },
           },
           ExpressionStatement {
@@ -447,32 +447,32 @@ Program {
                   type: "Identifier",
                   name: "one",
 
-                  range: [229, 232],
+                  range: [222, 225],
                   loc: {
-                    start: { column: 3, line: 10 },
-                    end: { column: 6, line: 10 },
+                    start: { column: 2, line: 10 },
+                    end: { column: 5, line: 10 },
                   },
                 },
                 optional: true,
 
-                range: [229, 236],
+                range: [222, 229],
                 loc: {
-                  start: { column: 3, line: 10 },
-                  end: { column: 10, line: 10 },
+                  start: { column: 2, line: 10 },
+                  end: { column: 9, line: 10 },
                 },
               },
 
-              range: [229, 236],
+              range: [222, 229],
               loc: {
-                start: { column: 3, line: 10 },
-                end: { column: 10, line: 10 },
+                start: { column: 2, line: 10 },
+                end: { column: 9, line: 10 },
               },
             },
 
-            range: [228, 238],
+            range: [222, 230],
             loc: {
               start: { column: 2, line: 10 },
-              end: { column: 12, line: 10 },
+              end: { column: 10, line: 10 },
             },
           },
           ExpressionStatement {
@@ -489,7 +489,7 @@ Program {
                     type: "Identifier",
                     name: "one",
 
-                    range: [242, 245],
+                    range: [234, 237],
                     loc: {
                       start: { column: 3, line: 11 },
                       end: { column: 6, line: 11 },
@@ -497,14 +497,14 @@ Program {
                   },
                   optional: true,
 
-                  range: [242, 249],
+                  range: [234, 241],
                   loc: {
                     start: { column: 3, line: 11 },
                     end: { column: 10, line: 11 },
                   },
                 },
 
-                range: [242, 249],
+                range: [234, 241],
                 loc: {
                   start: { column: 3, line: 11 },
                   end: { column: 10, line: 11 },
@@ -512,14 +512,14 @@ Program {
               },
               optional: false,
 
-              range: [241, 252],
+              range: [233, 244],
               loc: {
                 start: { column: 2, line: 11 },
                 end: { column: 13, line: 11 },
               },
             },
 
-            range: [241, 253],
+            range: [233, 245],
             loc: {
               start: { column: 2, line: 11 },
               end: { column: 14, line: 11 },
@@ -532,56 +532,47 @@ Program {
               expression: CallExpression {
                 type: "CallExpression",
                 arguments: Array [],
-                callee: ChainExpression {
-                  type: "ChainExpression",
-                  expression: CallExpression {
-                    type: "CallExpression",
-                    arguments: Array [],
-                    callee: Identifier {
-                      type: "Identifier",
-                      name: "one",
+                callee: CallExpression {
+                  type: "CallExpression",
+                  arguments: Array [],
+                  callee: Identifier {
+                    type: "Identifier",
+                    name: "one",
 
-                      range: [257, 260],
-                      loc: {
-                        start: { column: 3, line: 12 },
-                        end: { column: 6, line: 12 },
-                      },
-                    },
-                    optional: true,
-
-                    range: [257, 264],
+                    range: [248, 251],
                     loc: {
-                      start: { column: 3, line: 12 },
-                      end: { column: 10, line: 12 },
+                      start: { column: 2, line: 12 },
+                      end: { column: 5, line: 12 },
                     },
                   },
+                  optional: true,
 
-                  range: [257, 264],
+                  range: [248, 255],
                   loc: {
-                    start: { column: 3, line: 12 },
-                    end: { column: 10, line: 12 },
+                    start: { column: 2, line: 12 },
+                    end: { column: 9, line: 12 },
                   },
                 },
                 optional: true,
 
-                range: [256, 269],
+                range: [248, 259],
                 loc: {
                   start: { column: 2, line: 12 },
-                  end: { column: 15, line: 12 },
+                  end: { column: 13, line: 12 },
                 },
               },
 
-              range: [256, 269],
+              range: [248, 259],
               loc: {
                 start: { column: 2, line: 12 },
-                end: { column: 15, line: 12 },
+                end: { column: 13, line: 12 },
               },
             },
 
-            range: [256, 270],
+            range: [248, 260],
             loc: {
               start: { column: 2, line: 12 },
-              end: { column: 16, line: 12 },
+              end: { column: 14, line: 12 },
             },
           },
           ExpressionStatement {
@@ -598,7 +589,7 @@ Program {
                     type: "Identifier",
                     name: "one",
 
-                    range: [275, 278],
+                    range: [265, 268],
                     loc: {
                       start: { column: 3, line: 14 },
                       end: { column: 6, line: 14 },
@@ -606,14 +597,14 @@ Program {
                   },
                   optional: true,
 
-                  range: [275, 282],
+                  range: [265, 272],
                   loc: {
                     start: { column: 3, line: 14 },
                     end: { column: 10, line: 14 },
                   },
                 },
 
-                range: [275, 282],
+                range: [265, 272],
                 loc: {
                   start: { column: 3, line: 14 },
                   end: { column: 10, line: 14 },
@@ -624,21 +615,21 @@ Program {
                 type: "Identifier",
                 name: "two",
 
-                range: [284, 287],
+                range: [274, 277],
                 loc: {
                   start: { column: 12, line: 14 },
                   end: { column: 15, line: 14 },
                 },
               },
 
-              range: [274, 287],
+              range: [264, 277],
               loc: {
                 start: { column: 2, line: 14 },
                 end: { column: 15, line: 14 },
               },
             },
 
-            range: [274, 288],
+            range: [264, 278],
             loc: {
               start: { column: 2, line: 14 },
               end: { column: 16, line: 14 },
@@ -646,7 +637,7 @@ Program {
           },
         ],
 
-        range: [119, 290],
+        range: [119, 280],
         loc: {
           start: { column: 46, line: 3 },
           end: { column: 1, line: 15 },
@@ -696,7 +687,7 @@ Program {
         },
       ],
 
-      range: [73, 290],
+      range: [73, 280],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 15 },
@@ -705,7 +696,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 291],
+  range: [73, 281],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 16 },

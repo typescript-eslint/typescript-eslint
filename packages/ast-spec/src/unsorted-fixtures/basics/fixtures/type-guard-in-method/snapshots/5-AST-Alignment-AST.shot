@@ -271,15 +271,15 @@ exports[`AST Fixtures unsorted-fixtures basics type-guard-in-method AST Alignmen
                 },
               },
 
-              range: [151, 218],
+              range: [151, 219],
               loc: {
                 start: { column: 2, line: 7 },
-                end: { column: 3, line: 9 },
+                end: { column: 4, line: 9 },
               },
             },
           ],
 
-          range: [83, 220],
+          range: [83, 221],
           loc: {
             start: { column: 10, line: 3 },
             end: { column: 1, line: 10 },
@@ -297,7 +297,7 @@ exports[`AST Fixtures unsorted-fixtures basics type-guard-in-method AST Alignmen
         },
         superClass: null,
 
-        range: [73, 220],
+        range: [73, 221],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 10 },
@@ -306,7 +306,7 @@ exports[`AST Fixtures unsorted-fixtures basics type-guard-in-method AST Alignmen
     ],
     sourceType: 'script',
 
-    range: [73, 221],
+    range: [73, 222],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 11 },

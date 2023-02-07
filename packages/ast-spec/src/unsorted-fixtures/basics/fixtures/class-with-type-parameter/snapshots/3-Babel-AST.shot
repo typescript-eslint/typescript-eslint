@@ -10,10 +10,10 @@ Program {
         type: "ClassBody",
         body: Array [],
 
-        range: [86, 90],
+        range: [86, 88],
         loc: {
           start: { column: 13, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 15, line: 3 },
         },
       },
       id: Identifier {
@@ -49,19 +49,19 @@ Program {
         },
       },
 
-      range: [73, 90],
+      range: [73, 88],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 15, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 91],
+  range: [73, 89],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 6 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

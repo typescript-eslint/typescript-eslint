@@ -18,10 +18,10 @@ Program {
                 type: "ClassBody",
                 body: Array [],
 
-                range: [152, 155],
+                range: [150, 152],
                 loc: {
-                  start: { column: 30, line: 4 },
-                  end: { column: 33, line: 4 },
+                  start: { column: 28, line: 4 },
+                  end: { column: 30, line: 4 },
                 },
               },
               id: null,
@@ -29,29 +29,29 @@ Program {
                 type: "Identifier",
                 name: "Base",
 
-                range: [147, 151],
+                range: [145, 149],
                 loc: {
-                  start: { column: 25, line: 4 },
-                  end: { column: 29, line: 4 },
+                  start: { column: 23, line: 4 },
+                  end: { column: 27, line: 4 },
                 },
               },
 
-              range: [133, 155],
+              range: [131, 152],
               loc: {
-                start: { column: 11, line: 4 },
-                end: { column: 33, line: 4 },
+                start: { column: 9, line: 4 },
+                end: { column: 30, line: 4 },
               },
             },
 
-            range: [126, 155],
+            range: [124, 153],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 33, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 31, line: 4 },
             },
           },
         ],
 
-        range: [120, 157],
+        range: [120, 155],
         loc: {
           start: { column: 47, line: 3 },
           end: { column: 1, line: 5 },
@@ -171,7 +171,7 @@ Program {
         },
       },
 
-      range: [73, 157],
+      range: [73, 155],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -183,17 +183,17 @@ Program {
         type: "ClassBody",
         body: Array [],
 
-        range: [198, 201],
+        range: [196, 198],
         loc: {
           start: { column: 39, line: 7 },
-          end: { column: 42, line: 7 },
+          end: { column: 41, line: 7 },
         },
       },
       id: Identifier {
         type: "Identifier",
         name: "X",
 
-        range: [165, 166],
+        range: [163, 164],
         loc: {
           start: { column: 6, line: 7 },
           end: { column: 7, line: 7 },
@@ -206,14 +206,14 @@ Program {
             type: "Identifier",
             name: "I",
 
-            range: [196, 197],
+            range: [194, 195],
             loc: {
               start: { column: 37, line: 7 },
               end: { column: 38, line: 7 },
             },
           },
 
-          range: [196, 197],
+          range: [194, 195],
           loc: {
             start: { column: 37, line: 7 },
             end: { column: 38, line: 7 },
@@ -227,7 +227,7 @@ Program {
             type: "Identifier",
             name: "C",
 
-            range: [182, 183],
+            range: [180, 181],
             loc: {
               start: { column: 23, line: 7 },
               end: { column: 24, line: 7 },
@@ -238,7 +238,7 @@ Program {
           type: "Identifier",
           name: "M",
 
-          range: [175, 176],
+          range: [173, 174],
           loc: {
             start: { column: 16, line: 7 },
             end: { column: 17, line: 7 },
@@ -251,7 +251,7 @@ Program {
             TSAnyKeyword {
               type: "TSAnyKeyword",
 
-              range: [177, 180],
+              range: [175, 178],
               loc: {
                 start: { column: 18, line: 7 },
                 end: { column: 21, line: 7 },
@@ -259,24 +259,24 @@ Program {
             },
           ],
 
-          range: [176, 181],
+          range: [174, 179],
           loc: {
             start: { column: 17, line: 7 },
             end: { column: 22, line: 7 },
           },
         },
 
-        range: [175, 184],
+        range: [173, 182],
         loc: {
           start: { column: 16, line: 7 },
           end: { column: 25, line: 7 },
         },
       },
 
-      range: [159, 201],
+      range: [157, 198],
       loc: {
         start: { column: 0, line: 7 },
-        end: { column: 42, line: 7 },
+        end: { column: 41, line: 7 },
       },
     },
     ClassDeclaration {
@@ -285,17 +285,17 @@ Program {
         type: "ClassBody",
         body: Array [],
 
-        range: [211, 214],
+        range: [208, 210],
         loc: {
           start: { column: 8, line: 9 },
-          end: { column: 11, line: 9 },
+          end: { column: 10, line: 9 },
         },
       },
       id: Identifier {
         type: "Identifier",
         name: "C",
 
-        range: [209, 210],
+        range: [206, 207],
         loc: {
           start: { column: 6, line: 9 },
           end: { column: 7, line: 9 },
@@ -303,10 +303,10 @@ Program {
       },
       superClass: null,
 
-      range: [203, 214],
+      range: [200, 210],
       loc: {
         start: { column: 0, line: 9 },
-        end: { column: 11, line: 9 },
+        end: { column: 10, line: 9 },
       },
     },
     TSInterfaceDeclaration {
@@ -315,27 +315,27 @@ Program {
         type: "TSInterfaceBody",
         body: Array [],
 
-        range: [227, 230],
+        range: [223, 225],
         loc: {
           start: { column: 12, line: 10 },
-          end: { column: 15, line: 10 },
+          end: { column: 14, line: 10 },
         },
       },
       id: Identifier {
         type: "Identifier",
         name: "I",
 
-        range: [225, 226],
+        range: [221, 222],
         loc: {
           start: { column: 10, line: 10 },
           end: { column: 11, line: 10 },
         },
       },
 
-      range: [215, 230],
+      range: [211, 225],
       loc: {
         start: { column: 0, line: 10 },
-        end: { column: 15, line: 10 },
+        end: { column: 14, line: 10 },
       },
     },
     TSTypeAliasDeclaration {
@@ -344,7 +344,7 @@ Program {
         type: "Identifier",
         name: "Constructor",
 
-        range: [236, 247],
+        range: [231, 242],
         loc: {
           start: { column: 5, line: 11 },
           end: { column: 16, line: 11 },
@@ -360,7 +360,7 @@ Program {
               type: "Identifier",
               name: "args",
 
-              range: [261, 265],
+              range: [256, 260],
               loc: {
                 start: { column: 30, line: 11 },
                 end: { column: 34, line: 11 },
@@ -373,28 +373,28 @@ Program {
                 elementType: TSAnyKeyword {
                   type: "TSAnyKeyword",
 
-                  range: [267, 270],
+                  range: [262, 265],
                   loc: {
                     start: { column: 36, line: 11 },
                     end: { column: 39, line: 11 },
                   },
                 },
 
-                range: [267, 272],
+                range: [262, 267],
                 loc: {
                   start: { column: 36, line: 11 },
                   end: { column: 41, line: 11 },
                 },
               },
 
-              range: [265, 272],
+              range: [260, 267],
               loc: {
                 start: { column: 34, line: 11 },
                 end: { column: 41, line: 11 },
               },
             },
 
-            range: [258, 272],
+            range: [253, 267],
             loc: {
               start: { column: 27, line: 11 },
               end: { column: 41, line: 11 },
@@ -409,28 +409,28 @@ Program {
               type: "Identifier",
               name: "T",
 
-              range: [277, 278],
+              range: [272, 273],
               loc: {
                 start: { column: 46, line: 11 },
                 end: { column: 47, line: 11 },
               },
             },
 
-            range: [277, 278],
+            range: [272, 273],
             loc: {
               start: { column: 46, line: 11 },
               end: { column: 47, line: 11 },
             },
           },
 
-          range: [274, 278],
+          range: [269, 273],
           loc: {
             start: { column: 43, line: 11 },
             end: { column: 47, line: 11 },
           },
         },
 
-        range: [253, 278],
+        range: [248, 273],
         loc: {
           start: { column: 22, line: 11 },
           end: { column: 47, line: 11 },
@@ -443,7 +443,7 @@ Program {
             type: "TSTypeParameter",
             name: "T",
 
-            range: [248, 249],
+            range: [243, 244],
             loc: {
               start: { column: 17, line: 11 },
               end: { column: 18, line: 11 },
@@ -451,14 +451,14 @@ Program {
           },
         ],
 
-        range: [247, 250],
+        range: [242, 245],
         loc: {
           start: { column: 16, line: 11 },
           end: { column: 19, line: 11 },
         },
       },
 
-      range: [231, 279],
+      range: [226, 274],
       loc: {
         start: { column: 0, line: 11 },
         end: { column: 48, line: 11 },
@@ -467,7 +467,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 280],
+  range: [73, 275],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 12 },

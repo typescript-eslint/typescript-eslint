@@ -105,7 +105,7 @@ Program {
                   type: "Identifier",
                   name: "pair",
 
-                  range: [157, 161],
+                  range: [155, 159],
                   loc: {
                     start: { column: 2, line: 5 },
                     end: { column: 6, line: 5 },
@@ -117,14 +117,14 @@ Program {
                   raw: "1",
                   value: 1,
 
-                  range: [162, 163],
+                  range: [160, 161],
                   loc: {
                     start: { column: 7, line: 5 },
                     end: { column: 8, line: 5 },
                   },
                 },
 
-                range: [157, 164],
+                range: [155, 162],
                 loc: {
                   start: { column: 2, line: 5 },
                   end: { column: 9, line: 5 },
@@ -133,24 +133,24 @@ Program {
               operator: "=",
               right: Literal {
                 type: "Literal",
-                raw: "\\"hello!\\"",
+                raw: "'hello!'",
                 value: "hello!",
 
-                range: [167, 175],
+                range: [165, 173],
                 loc: {
                   start: { column: 12, line: 5 },
                   end: { column: 20, line: 5 },
                 },
               },
 
-              range: [157, 175],
+              range: [155, 173],
               loc: {
                 start: { column: 2, line: 5 },
                 end: { column: 20, line: 5 },
               },
             },
 
-            range: [157, 176],
+            range: [155, 174],
             loc: {
               start: { column: 2, line: 5 },
               end: { column: 21, line: 5 },
@@ -158,7 +158,7 @@ Program {
           },
         ],
 
-        range: [119, 191],
+        range: [119, 185],
         loc: {
           start: { column: 46, line: 3 },
           end: { column: 1, line: 6 },
@@ -237,7 +237,7 @@ Program {
         },
       ],
 
-      range: [73, 191],
+      range: [73, 185],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 6 },
@@ -246,7 +246,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 192],
+  range: [73, 186],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 7 },

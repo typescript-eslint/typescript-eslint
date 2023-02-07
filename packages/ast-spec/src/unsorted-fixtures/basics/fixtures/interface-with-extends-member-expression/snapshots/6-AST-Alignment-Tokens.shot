@@ -82,10 +82,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-extends-member-exp
       type: 'Punctuator',
       value: '}',
 
-      range: [105, 106],
+      range: [104, 105],
       loc: {
-        start: { column: 0, line: 4 },
-        end: { column: 1, line: 4 },
+        start: { column: 31, line: 3 },
+        end: { column: 32, line: 3 },
       },
     },
   ]"

@@ -42,67 +42,67 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-readonly-property AST 
 +     type: 'Identifier',
       value: 'public',
 
-      range: [89, 95],
+      range: [87, 93],
       loc: {
-        start: { column: 4, line: 4 },
-        end: { column: 10, line: 4 },
+        start: { column: 2, line: 4 },
+        end: { column: 8, line: 4 },
       },
     },
     Identifier {
       type: 'Identifier',
       value: 'readonly',
 
-      range: [96, 104],
+      range: [94, 102],
       loc: {
-        start: { column: 11, line: 4 },
-        end: { column: 19, line: 4 },
+        start: { column: 9, line: 4 },
+        end: { column: 17, line: 4 },
       },
     },
     Identifier {
       type: 'Identifier',
       value: 'foo',
 
-      range: [105, 108],
+      range: [103, 106],
       loc: {
-        start: { column: 20, line: 4 },
-        end: { column: 23, line: 4 },
+        start: { column: 18, line: 4 },
+        end: { column: 21, line: 4 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '=',
 
-      range: [109, 110],
+      range: [107, 108],
       loc: {
-        start: { column: 24, line: 4 },
-        end: { column: 25, line: 4 },
+        start: { column: 22, line: 4 },
+        end: { column: 23, line: 4 },
       },
     },
     String {
       type: 'String',
       value: '\\\\'string\\\\'',
 
-      range: [111, 119],
+      range: [109, 117],
       loc: {
-        start: { column: 26, line: 4 },
-        end: { column: 34, line: 4 },
+        start: { column: 24, line: 4 },
+        end: { column: 32, line: 4 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ';',
 
-      range: [119, 120],
+      range: [117, 118],
       loc: {
-        start: { column: 34, line: 4 },
-        end: { column: 35, line: 4 },
+        start: { column: 32, line: 4 },
+        end: { column: 33, line: 4 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '}',
 
-      range: [121, 122],
+      range: [119, 120],
       loc: {
         start: { column: 0, line: 5 },
         end: { column: 1, line: 5 },

@@ -334,9 +334,19 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
+    value: ";",
+
+    range: [218, 219],
+    loc: {
+      start: { column: 3, line: 9 },
+      end: { column: 4, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
     value: "}",
 
-    range: [219, 220],
+    range: [220, 221],
     loc: {
       start: { column: 0, line: 10 },
       end: { column: 1, line: 10 },

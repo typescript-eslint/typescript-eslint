@@ -29,15 +29,15 @@ Program {
                   type: "ReturnStatement",
                   argument: null,
 
-                  range: [133, 139],
+                  range: [131, 138],
                   loc: {
-                    start: { column: 4, line: 4 },
-                    end: { column: 10, line: 4 },
+                    start: { column: 2, line: 4 },
+                    end: { column: 9, line: 4 },
                   },
                 },
               ],
 
-              range: [127, 141],
+              range: [127, 140],
               loc: {
                 start: { column: 54, line: 3 },
                 end: { column: 1, line: 5 },
@@ -124,14 +124,14 @@ Program {
               },
             },
 
-            range: [94, 141],
+            range: [94, 140],
             loc: {
               start: { column: 21, line: 3 },
               end: { column: 1, line: 5 },
             },
           },
 
-          range: [79, 141],
+          range: [79, 140],
           loc: {
             start: { column: 6, line: 3 },
             end: { column: 1, line: 5 },
@@ -143,7 +143,7 @@ Program {
       range: [73, 141],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 5 },
+        end: { column: 2, line: 5 },
       },
     },
   ],

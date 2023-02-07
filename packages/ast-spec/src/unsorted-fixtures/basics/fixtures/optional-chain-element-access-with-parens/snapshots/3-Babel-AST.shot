@@ -21,10 +21,10 @@ Program {
                   type: "Identifier",
                   name: "one",
 
-                  range: [127, 130],
+                  range: [126, 129],
                   loc: {
-                    start: { column: 3, line: 4 },
-                    end: { column: 6, line: 4 },
+                    start: { column: 2, line: 4 },
+                    end: { column: 5, line: 4 },
                   },
                 },
                 optional: true,
@@ -33,31 +33,31 @@ Program {
                   raw: "2",
                   value: 2,
 
-                  range: [133, 134],
+                  range: [132, 133],
                   loc: {
-                    start: { column: 9, line: 4 },
-                    end: { column: 10, line: 4 },
+                    start: { column: 8, line: 4 },
+                    end: { column: 9, line: 4 },
                   },
                 },
 
-                range: [127, 135],
+                range: [126, 134],
                 loc: {
-                  start: { column: 3, line: 4 },
-                  end: { column: 11, line: 4 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 10, line: 4 },
                 },
               },
 
-              range: [127, 135],
+              range: [126, 134],
               loc: {
-                start: { column: 3, line: 4 },
-                end: { column: 11, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 10, line: 4 },
               },
             },
 
-            range: [126, 137],
+            range: [126, 135],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 13, line: 4 },
+              end: { column: 11, line: 4 },
             },
           },
           ExpressionStatement {
@@ -74,7 +74,7 @@ Program {
                     type: "Identifier",
                     name: "one",
 
-                    range: [141, 144],
+                    range: [139, 142],
                     loc: {
                       start: { column: 3, line: 5 },
                       end: { column: 6, line: 5 },
@@ -86,21 +86,21 @@ Program {
                     raw: "2",
                     value: 2,
 
-                    range: [147, 148],
+                    range: [145, 146],
                     loc: {
                       start: { column: 9, line: 5 },
                       end: { column: 10, line: 5 },
                     },
                   },
 
-                  range: [141, 149],
+                  range: [139, 147],
                   loc: {
                     start: { column: 3, line: 5 },
                     end: { column: 11, line: 5 },
                   },
                 },
 
-                range: [141, 149],
+                range: [139, 147],
                 loc: {
                   start: { column: 3, line: 5 },
                   end: { column: 11, line: 5 },
@@ -112,21 +112,21 @@ Program {
                 raw: "3",
                 value: 3,
 
-                range: [151, 152],
+                range: [149, 150],
                 loc: {
                   start: { column: 13, line: 5 },
                   end: { column: 14, line: 5 },
                 },
               },
 
-              range: [140, 153],
+              range: [138, 151],
               loc: {
                 start: { column: 2, line: 5 },
                 end: { column: 15, line: 5 },
               },
             },
 
-            range: [140, 154],
+            range: [138, 152],
             loc: {
               start: { column: 2, line: 5 },
               end: { column: 16, line: 5 },
@@ -146,10 +146,10 @@ Program {
                     type: "Identifier",
                     name: "one",
 
-                    range: [158, 161],
+                    range: [155, 158],
                     loc: {
-                      start: { column: 3, line: 6 },
-                      end: { column: 6, line: 6 },
+                      start: { column: 2, line: 6 },
+                      end: { column: 5, line: 6 },
                     },
                   },
                   optional: false,
@@ -158,17 +158,17 @@ Program {
                     raw: "2",
                     value: 2,
 
-                    range: [162, 163],
+                    range: [159, 160],
                     loc: {
-                      start: { column: 7, line: 6 },
-                      end: { column: 8, line: 6 },
+                      start: { column: 6, line: 6 },
+                      end: { column: 7, line: 6 },
                     },
                   },
 
-                  range: [158, 164],
+                  range: [155, 161],
                   loc: {
-                    start: { column: 3, line: 6 },
-                    end: { column: 9, line: 6 },
+                    start: { column: 2, line: 6 },
+                    end: { column: 8, line: 6 },
                   },
                 },
                 optional: true,
@@ -177,31 +177,31 @@ Program {
                   raw: "3",
                   value: 3,
 
-                  range: [167, 168],
+                  range: [164, 165],
                   loc: {
-                    start: { column: 12, line: 6 },
-                    end: { column: 13, line: 6 },
+                    start: { column: 11, line: 6 },
+                    end: { column: 12, line: 6 },
                   },
                 },
 
-                range: [158, 169],
+                range: [155, 166],
                 loc: {
-                  start: { column: 3, line: 6 },
-                  end: { column: 14, line: 6 },
+                  start: { column: 2, line: 6 },
+                  end: { column: 13, line: 6 },
                 },
               },
 
-              range: [158, 169],
+              range: [155, 166],
               loc: {
-                start: { column: 3, line: 6 },
-                end: { column: 14, line: 6 },
+                start: { column: 2, line: 6 },
+                end: { column: 13, line: 6 },
               },
             },
 
-            range: [157, 171],
+            range: [155, 167],
             loc: {
               start: { column: 2, line: 6 },
-              end: { column: 16, line: 6 },
+              end: { column: 14, line: 6 },
             },
           },
           ExpressionStatement {
@@ -221,7 +221,7 @@ Program {
                       type: "Identifier",
                       name: "one",
 
-                      range: [175, 178],
+                      range: [171, 174],
                       loc: {
                         start: { column: 3, line: 7 },
                         end: { column: 6, line: 7 },
@@ -233,14 +233,14 @@ Program {
                       raw: "2",
                       value: 2,
 
-                      range: [179, 180],
+                      range: [175, 176],
                       loc: {
                         start: { column: 7, line: 7 },
                         end: { column: 8, line: 7 },
                       },
                     },
 
-                    range: [175, 181],
+                    range: [171, 177],
                     loc: {
                       start: { column: 3, line: 7 },
                       end: { column: 9, line: 7 },
@@ -252,21 +252,21 @@ Program {
                     raw: "3",
                     value: 3,
 
-                    range: [184, 185],
+                    range: [180, 181],
                     loc: {
                       start: { column: 12, line: 7 },
                       end: { column: 13, line: 7 },
                     },
                   },
 
-                  range: [175, 186],
+                  range: [171, 182],
                   loc: {
                     start: { column: 3, line: 7 },
                     end: { column: 14, line: 7 },
                   },
                 },
 
-                range: [175, 186],
+                range: [171, 182],
                 loc: {
                   start: { column: 3, line: 7 },
                   end: { column: 14, line: 7 },
@@ -278,21 +278,21 @@ Program {
                 raw: "4",
                 value: 4,
 
-                range: [188, 189],
+                range: [184, 185],
                 loc: {
                   start: { column: 16, line: 7 },
                   end: { column: 17, line: 7 },
                 },
               },
 
-              range: [174, 190],
+              range: [170, 186],
               loc: {
                 start: { column: 2, line: 7 },
                 end: { column: 18, line: 7 },
               },
             },
 
-            range: [174, 191],
+            range: [170, 187],
             loc: {
               start: { column: 2, line: 7 },
               end: { column: 19, line: 7 },
@@ -315,10 +315,10 @@ Program {
                       type: "Identifier",
                       name: "one",
 
-                      range: [195, 198],
+                      range: [190, 193],
                       loc: {
-                        start: { column: 3, line: 8 },
-                        end: { column: 6, line: 8 },
+                        start: { column: 2, line: 8 },
+                        end: { column: 5, line: 8 },
                       },
                     },
                     optional: false,
@@ -327,17 +327,17 @@ Program {
                       raw: "2",
                       value: 2,
 
-                      range: [199, 200],
+                      range: [194, 195],
                       loc: {
-                        start: { column: 7, line: 8 },
-                        end: { column: 8, line: 8 },
+                        start: { column: 6, line: 8 },
+                        end: { column: 7, line: 8 },
                       },
                     },
 
-                    range: [195, 201],
+                    range: [190, 196],
                     loc: {
-                      start: { column: 3, line: 8 },
-                      end: { column: 9, line: 8 },
+                      start: { column: 2, line: 8 },
+                      end: { column: 8, line: 8 },
                     },
                   },
                   optional: true,
@@ -346,17 +346,17 @@ Program {
                     raw: "3",
                     value: 3,
 
-                    range: [204, 205],
+                    range: [199, 200],
                     loc: {
-                      start: { column: 12, line: 8 },
-                      end: { column: 13, line: 8 },
+                      start: { column: 11, line: 8 },
+                      end: { column: 12, line: 8 },
                     },
                   },
 
-                  range: [195, 206],
+                  range: [190, 201],
                   loc: {
-                    start: { column: 3, line: 8 },
-                    end: { column: 14, line: 8 },
+                    start: { column: 2, line: 8 },
+                    end: { column: 13, line: 8 },
                   },
                 },
                 optional: true,
@@ -365,31 +365,31 @@ Program {
                   raw: "4",
                   value: 4,
 
-                  range: [209, 210],
+                  range: [204, 205],
                   loc: {
-                    start: { column: 17, line: 8 },
-                    end: { column: 18, line: 8 },
+                    start: { column: 16, line: 8 },
+                    end: { column: 17, line: 8 },
                   },
                 },
 
-                range: [195, 211],
+                range: [190, 206],
                 loc: {
-                  start: { column: 3, line: 8 },
-                  end: { column: 19, line: 8 },
+                  start: { column: 2, line: 8 },
+                  end: { column: 18, line: 8 },
                 },
               },
 
-              range: [195, 211],
+              range: [190, 206],
               loc: {
-                start: { column: 3, line: 8 },
-                end: { column: 19, line: 8 },
+                start: { column: 2, line: 8 },
+                end: { column: 18, line: 8 },
               },
             },
 
-            range: [194, 213],
+            range: [190, 207],
             loc: {
               start: { column: 2, line: 8 },
-              end: { column: 21, line: 8 },
+              end: { column: 19, line: 8 },
             },
           },
           ExpressionStatement {
@@ -412,7 +412,7 @@ Program {
                         type: "Identifier",
                         name: "one",
 
-                        range: [217, 220],
+                        range: [211, 214],
                         loc: {
                           start: { column: 3, line: 9 },
                           end: { column: 6, line: 9 },
@@ -424,14 +424,14 @@ Program {
                         raw: "2",
                         value: 2,
 
-                        range: [221, 222],
+                        range: [215, 216],
                         loc: {
                           start: { column: 7, line: 9 },
                           end: { column: 8, line: 9 },
                         },
                       },
 
-                      range: [217, 223],
+                      range: [211, 217],
                       loc: {
                         start: { column: 3, line: 9 },
                         end: { column: 9, line: 9 },
@@ -443,14 +443,14 @@ Program {
                       raw: "3",
                       value: 3,
 
-                      range: [226, 227],
+                      range: [220, 221],
                       loc: {
                         start: { column: 12, line: 9 },
                         end: { column: 13, line: 9 },
                       },
                     },
 
-                    range: [217, 228],
+                    range: [211, 222],
                     loc: {
                       start: { column: 3, line: 9 },
                       end: { column: 14, line: 9 },
@@ -462,21 +462,21 @@ Program {
                     raw: "4",
                     value: 4,
 
-                    range: [231, 232],
+                    range: [225, 226],
                     loc: {
                       start: { column: 17, line: 9 },
                       end: { column: 18, line: 9 },
                     },
                   },
 
-                  range: [217, 233],
+                  range: [211, 227],
                   loc: {
                     start: { column: 3, line: 9 },
                     end: { column: 19, line: 9 },
                   },
                 },
 
-                range: [217, 233],
+                range: [211, 227],
                 loc: {
                   start: { column: 3, line: 9 },
                   end: { column: 19, line: 9 },
@@ -488,21 +488,21 @@ Program {
                 raw: "5",
                 value: 5,
 
-                range: [235, 236],
+                range: [229, 230],
                 loc: {
                   start: { column: 21, line: 9 },
                   end: { column: 22, line: 9 },
                 },
               },
 
-              range: [216, 237],
+              range: [210, 231],
               loc: {
                 start: { column: 2, line: 9 },
                 end: { column: 23, line: 9 },
               },
             },
 
-            range: [216, 238],
+            range: [210, 232],
             loc: {
               start: { column: 2, line: 9 },
               end: { column: 24, line: 9 },
@@ -510,7 +510,7 @@ Program {
           },
         ],
 
-        range: [122, 240],
+        range: [122, 234],
         loc: {
           start: { column: 49, line: 3 },
           end: { column: 1, line: 10 },
@@ -560,7 +560,7 @@ Program {
         },
       ],
 
-      range: [73, 240],
+      range: [73, 234],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 10 },
@@ -569,7 +569,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 241],
+  range: [73, 235],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 11 },

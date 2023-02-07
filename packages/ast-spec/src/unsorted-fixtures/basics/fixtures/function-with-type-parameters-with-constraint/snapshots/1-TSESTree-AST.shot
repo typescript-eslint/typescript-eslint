@@ -16,22 +16,22 @@ Program {
               type: "Identifier",
               name: "b",
 
-              range: [120, 121],
+              range: [118, 119],
               loc: {
-                start: { column: 11, line: 4 },
-                end: { column: 12, line: 4 },
+                start: { column: 9, line: 4 },
+                end: { column: 10, line: 4 },
               },
             },
 
-            range: [113, 122],
+            range: [111, 120],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 13, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 11, line: 4 },
             },
           },
         ],
 
-        range: [107, 124],
+        range: [107, 122],
         loc: {
           start: { column: 34, line: 3 },
           end: { column: 1, line: 5 },
@@ -160,7 +160,7 @@ Program {
         },
       },
 
-      range: [73, 124],
+      range: [73, 122],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 5 },
@@ -169,7 +169,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 125],
+  range: [73, 123],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 6 },

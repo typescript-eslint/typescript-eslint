@@ -136,17 +136,27 @@ Array [
     type: "Keyword",
     value: "return",
 
-    range: [136, 142],
+    range: [134, 140],
     loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 10, line: 4 },
+      start: { column: 2, line: 4 },
+      end: { column: 8, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [140, 141],
+    loc: {
+      start: { column: 8, line: 4 },
+      end: { column: 9, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [143, 144],
+    range: [142, 143],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 1, line: 5 },

@@ -11,10 +11,10 @@ Program {
         type: "BlockStatement",
         body: Array [],
 
-        range: [95, 97],
+        range: [89, 91],
         loc: {
-          start: { column: 22, line: 3 },
-          end: { column: 24, line: 3 },
+          start: { column: 16, line: 3 },
+          end: { column: 18, line: 3 },
         },
       },
       expression: false,
@@ -40,42 +40,42 @@ Program {
               type: "Identifier",
               name: "T",
 
-              range: [86, 87],
+              range: [84, 85],
               loc: {
-                start: { column: 13, line: 3 },
-                end: { column: 14, line: 3 },
+                start: { column: 11, line: 3 },
+                end: { column: 12, line: 3 },
               },
             },
             out: false,
 
-            range: [86, 87],
+            range: [84, 85],
             loc: {
-              start: { column: 13, line: 3 },
-              end: { column: 14, line: 3 },
+              start: { column: 11, line: 3 },
+              end: { column: 12, line: 3 },
             },
           },
         ],
 
-        range: [83, 92],
+        range: [83, 86],
         loc: {
           start: { column: 10, line: 3 },
-          end: { column: 19, line: 3 },
+          end: { column: 13, line: 3 },
         },
       },
 
-      range: [73, 97],
+      range: [73, 91],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 24, line: 3 },
+        end: { column: 18, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 97],
+  range: [73, 92],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 24, line: 3 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

@@ -36,16 +36,6 @@ Array [
     type: "Identifier",
     value: "T",
 
-    range: [101, 102],
-    loc: {
-      start: { column: 28, line: 3 },
-      end: { column: 29, line: 3 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ">",
-
     range: [102, 103],
     loc: {
       start: { column: 29, line: 3 },
@@ -54,7 +44,7 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
-    value: "(",
+    value: ">",
 
     range: [103, 104],
     loc: {
@@ -64,7 +54,7 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
-    value: ")",
+    value: "(",
 
     range: [104, 105],
     loc: {
@@ -74,22 +64,32 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
+    value: ")",
+
+    range: [105, 106],
+    loc: {
+      start: { column: 32, line: 3 },
+      end: { column: 33, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
     value: "{",
 
-    range: [106, 107],
+    range: [107, 108],
     loc: {
-      start: { column: 33, line: 3 },
-      end: { column: 34, line: 3 },
+      start: { column: 34, line: 3 },
+      end: { column: 35, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [107, 108],
+    range: [108, 109],
     loc: {
-      start: { column: 34, line: 3 },
-      end: { column: 35, line: 3 },
+      start: { column: 35, line: 3 },
+      end: { column: 36, line: 3 },
     },
   },
 ]

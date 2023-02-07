@@ -10,10 +10,10 @@ Program {
         type: "ClassBody",
         body: Array [],
 
-        range: [145, 147],
+        range: [141, 143],
         loc: {
-          start: { column: 72, line: 3 },
-          end: { column: 74, line: 3 },
+          start: { column: 68, line: 3 },
+          end: { column: 70, line: 3 },
         },
       },
       id: Identifier {
@@ -30,10 +30,10 @@ Program {
         type: "Identifier",
         name: "bar",
 
-        range: [116, 119],
+        range: [114, 117],
         loc: {
-          start: { column: 43, line: 3 },
-          end: { column: 46, line: 3 },
+          start: { column: 41, line: 3 },
+          end: { column: 44, line: 3 },
         },
       },
       superTypeParameters: TSTypeParameterInstantiation {
@@ -45,25 +45,25 @@ Program {
               type: "Identifier",
               name: "A",
 
-              range: [132, 133],
+              range: [128, 129],
               loc: {
-                start: { column: 59, line: 3 },
-                end: { column: 60, line: 3 },
+                start: { column: 55, line: 3 },
+                end: { column: 56, line: 3 },
               },
             },
 
-            range: [132, 133],
+            range: [128, 129],
             loc: {
-              start: { column: 59, line: 3 },
-              end: { column: 60, line: 3 },
+              start: { column: 55, line: 3 },
+              end: { column: 56, line: 3 },
             },
           },
         ],
 
-        range: [120, 144],
+        range: [117, 140],
         loc: {
-          start: { column: 47, line: 3 },
-          end: { column: 71, line: 3 },
+          start: { column: 44, line: 3 },
+          end: { column: 67, line: 3 },
         },
       },
       typeParameters: TSTypeParameterDeclaration {
@@ -76,33 +76,33 @@ Program {
               type: "Identifier",
               name: "A",
 
-              range: [95, 96],
+              range: [93, 94],
               loc: {
-                start: { column: 22, line: 3 },
-                end: { column: 23, line: 3 },
+                start: { column: 20, line: 3 },
+                end: { column: 21, line: 3 },
               },
             },
             out: false,
 
-            range: [95, 96],
+            range: [93, 94],
             loc: {
-              start: { column: 22, line: 3 },
-              end: { column: 23, line: 3 },
+              start: { column: 20, line: 3 },
+              end: { column: 21, line: 3 },
             },
           },
         ],
 
-        range: [83, 107],
+        range: [82, 105],
         loc: {
-          start: { column: 10, line: 3 },
-          end: { column: 34, line: 3 },
+          start: { column: 9, line: 3 },
+          end: { column: 32, line: 3 },
         },
       },
 
-      range: [73, 147],
+      range: [73, 143],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 74, line: 3 },
+        end: { column: 70, line: 3 },
       },
     },
     ClassDeclaration {
@@ -111,17 +111,17 @@ Program {
         type: "ClassBody",
         body: Array [],
 
-        range: [235, 237],
+        range: [232, 234],
         loc: {
-          start: { column: 87, line: 4 },
-          end: { column: 89, line: 4 },
+          start: { column: 37, line: 6 },
+          end: { column: 39, line: 6 },
         },
       },
       id: Identifier {
         type: "Identifier",
         name: "foo2",
 
-        range: [154, 158],
+        range: [150, 154],
         loc: {
           start: { column: 6, line: 4 },
           end: { column: 10, line: 4 },
@@ -131,10 +131,10 @@ Program {
         type: "Identifier",
         name: "bar",
 
-        range: [206, 209],
+        range: [205, 208],
         loc: {
-          start: { column: 58, line: 4 },
-          end: { column: 61, line: 4 },
+          start: { column: 10, line: 6 },
+          end: { column: 13, line: 6 },
         },
       },
       superTypeParameters: TSTypeParameterInstantiation {
@@ -146,25 +146,25 @@ Program {
               type: "Identifier",
               name: "A",
 
-              range: [222, 223],
+              range: [219, 220],
               loc: {
-                start: { column: 74, line: 4 },
-                end: { column: 75, line: 4 },
+                start: { column: 24, line: 6 },
+                end: { column: 25, line: 6 },
               },
             },
 
-            range: [222, 223],
+            range: [219, 220],
             loc: {
-              start: { column: 74, line: 4 },
-              end: { column: 75, line: 4 },
+              start: { column: 24, line: 6 },
+              end: { column: 25, line: 6 },
             },
           },
         ],
 
-        range: [210, 234],
+        range: [208, 231],
         loc: {
-          start: { column: 62, line: 4 },
-          end: { column: 86, line: 4 },
+          start: { column: 13, line: 6 },
+          end: { column: 36, line: 6 },
         },
       },
       typeParameters: TSTypeParameterDeclaration {
@@ -179,17 +179,17 @@ Program {
                 raw: "2",
                 value: 2,
 
-                range: [185, 186],
+                range: [182, 183],
                 loc: {
-                  start: { column: 37, line: 4 },
-                  end: { column: 38, line: 4 },
+                  start: { column: 26, line: 5 },
+                  end: { column: 27, line: 5 },
                 },
               },
 
-              range: [185, 186],
+              range: [182, 183],
               loc: {
-                start: { column: 37, line: 4 },
-                end: { column: 38, line: 4 },
+                start: { column: 26, line: 5 },
+                end: { column: 27, line: 5 },
               },
             },
             in: false,
@@ -197,33 +197,33 @@ Program {
               type: "Identifier",
               name: "A",
 
-              range: [171, 172],
+              range: [168, 169],
               loc: {
-                start: { column: 23, line: 4 },
-                end: { column: 24, line: 4 },
+                start: { column: 12, line: 5 },
+                end: { column: 13, line: 5 },
               },
             },
             out: false,
 
-            range: [171, 186],
+            range: [168, 183],
             loc: {
-              start: { column: 23, line: 4 },
-              end: { column: 38, line: 4 },
+              start: { column: 12, line: 5 },
+              end: { column: 27, line: 5 },
             },
           },
         ],
 
-        range: [159, 197],
+        range: [154, 196],
         loc: {
-          start: { column: 11, line: 4 },
-          end: { column: 49, line: 4 },
+          start: { column: 10, line: 4 },
+          end: { column: 1, line: 6 },
         },
       },
 
-      range: [148, 237],
+      range: [144, 234],
       loc: {
         start: { column: 0, line: 4 },
-        end: { column: 89, line: 4 },
+        end: { column: 39, line: 6 },
       },
     },
     TSInterfaceDeclaration {
@@ -232,10 +232,10 @@ Program {
         type: "TSInterfaceBody",
         body: Array [],
 
-        range: [315, 317],
+        range: [308, 310],
         loc: {
-          start: { column: 77, line: 5 },
-          end: { column: 79, line: 5 },
+          start: { column: 73, line: 7 },
+          end: { column: 75, line: 7 },
         },
       },
       extends: Array [
@@ -245,10 +245,10 @@ Program {
             type: "Identifier",
             name: "bar2",
 
-            range: [285, 289],
+            range: [280, 284],
             loc: {
-              start: { column: 47, line: 5 },
-              end: { column: 51, line: 5 },
+              start: { column: 45, line: 7 },
+              end: { column: 49, line: 7 },
             },
           },
           typeParameters: TSTypeParameterInstantiation {
@@ -260,32 +260,32 @@ Program {
                   type: "Identifier",
                   name: "A",
 
-                  range: [302, 303],
+                  range: [295, 296],
                   loc: {
-                    start: { column: 64, line: 5 },
-                    end: { column: 65, line: 5 },
+                    start: { column: 60, line: 7 },
+                    end: { column: 61, line: 7 },
                   },
                 },
 
-                range: [302, 303],
+                range: [295, 296],
                 loc: {
-                  start: { column: 64, line: 5 },
-                  end: { column: 65, line: 5 },
+                  start: { column: 60, line: 7 },
+                  end: { column: 61, line: 7 },
                 },
               },
             ],
 
-            range: [290, 314],
+            range: [284, 307],
             loc: {
-              start: { column: 52, line: 5 },
-              end: { column: 76, line: 5 },
+              start: { column: 49, line: 7 },
+              end: { column: 72, line: 7 },
             },
           },
 
-          range: [285, 314],
+          range: [280, 307],
           loc: {
-            start: { column: 47, line: 5 },
-            end: { column: 76, line: 5 },
+            start: { column: 45, line: 7 },
+            end: { column: 72, line: 7 },
           },
         },
       ],
@@ -293,10 +293,10 @@ Program {
         type: "Identifier",
         name: "bar",
 
-        range: [248, 251],
+        range: [245, 248],
         loc: {
-          start: { column: 10, line: 5 },
-          end: { column: 13, line: 5 },
+          start: { column: 10, line: 7 },
+          end: { column: 13, line: 7 },
         },
       },
       typeParameters: TSTypeParameterDeclaration {
@@ -309,33 +309,33 @@ Program {
               type: "Identifier",
               name: "A",
 
-              range: [264, 265],
+              range: [259, 260],
               loc: {
-                start: { column: 26, line: 5 },
-                end: { column: 27, line: 5 },
+                start: { column: 24, line: 7 },
+                end: { column: 25, line: 7 },
               },
             },
             out: false,
 
-            range: [264, 265],
+            range: [259, 260],
             loc: {
-              start: { column: 26, line: 5 },
-              end: { column: 27, line: 5 },
+              start: { column: 24, line: 7 },
+              end: { column: 25, line: 7 },
             },
           },
         ],
 
-        range: [252, 276],
+        range: [248, 271],
         loc: {
-          start: { column: 14, line: 5 },
-          end: { column: 38, line: 5 },
+          start: { column: 13, line: 7 },
+          end: { column: 36, line: 7 },
         },
       },
 
-      range: [238, 317],
+      range: [235, 310],
       loc: {
-        start: { column: 0, line: 5 },
-        end: { column: 79, line: 5 },
+        start: { column: 0, line: 7 },
+        end: { column: 75, line: 7 },
       },
     },
     TSInterfaceDeclaration {
@@ -344,10 +344,10 @@ Program {
         type: "TSInterfaceBody",
         body: Array [],
 
-        range: [409, 411],
+        range: [400, 402],
         loc: {
-          start: { column: 91, line: 6 },
-          end: { column: 93, line: 6 },
+          start: { column: 37, line: 9 },
+          end: { column: 39, line: 9 },
         },
       },
       extends: Array [
@@ -357,10 +357,10 @@ Program {
             type: "Identifier",
             name: "bar",
 
-            range: [380, 383],
+            range: [373, 376],
             loc: {
-              start: { column: 62, line: 6 },
-              end: { column: 65, line: 6 },
+              start: { column: 10, line: 9 },
+              end: { column: 13, line: 9 },
             },
           },
           typeParameters: TSTypeParameterInstantiation {
@@ -372,32 +372,32 @@ Program {
                   type: "Identifier",
                   name: "A",
 
-                  range: [396, 397],
+                  range: [387, 388],
                   loc: {
-                    start: { column: 78, line: 6 },
-                    end: { column: 79, line: 6 },
+                    start: { column: 24, line: 9 },
+                    end: { column: 25, line: 9 },
                   },
                 },
 
-                range: [396, 397],
+                range: [387, 388],
                 loc: {
-                  start: { column: 78, line: 6 },
-                  end: { column: 79, line: 6 },
+                  start: { column: 24, line: 9 },
+                  end: { column: 25, line: 9 },
                 },
               },
             ],
 
-            range: [384, 408],
+            range: [376, 399],
             loc: {
-              start: { column: 66, line: 6 },
-              end: { column: 90, line: 6 },
+              start: { column: 13, line: 9 },
+              end: { column: 36, line: 9 },
             },
           },
 
-          range: [380, 408],
+          range: [373, 399],
           loc: {
-            start: { column: 62, line: 6 },
-            end: { column: 90, line: 6 },
+            start: { column: 10, line: 9 },
+            end: { column: 36, line: 9 },
           },
         },
       ],
@@ -405,10 +405,10 @@ Program {
         type: "Identifier",
         name: "bar2",
 
-        range: [328, 332],
+        range: [321, 325],
         loc: {
-          start: { column: 10, line: 6 },
-          end: { column: 14, line: 6 },
+          start: { column: 10, line: 8 },
+          end: { column: 14, line: 8 },
         },
       },
       typeParameters: TSTypeParameterDeclaration {
@@ -423,17 +423,17 @@ Program {
                 raw: "2",
                 value: 2,
 
-                range: [359, 360],
+                range: [350, 351],
                 loc: {
-                  start: { column: 41, line: 6 },
-                  end: { column: 42, line: 6 },
+                  start: { column: 39, line: 8 },
+                  end: { column: 40, line: 8 },
                 },
               },
 
-              range: [359, 360],
+              range: [350, 351],
               loc: {
-                start: { column: 41, line: 6 },
-                end: { column: 42, line: 6 },
+                start: { column: 39, line: 8 },
+                end: { column: 40, line: 8 },
               },
             },
             in: false,
@@ -441,42 +441,42 @@ Program {
               type: "Identifier",
               name: "A",
 
-              range: [345, 346],
+              range: [336, 337],
               loc: {
-                start: { column: 27, line: 6 },
-                end: { column: 28, line: 6 },
+                start: { column: 25, line: 8 },
+                end: { column: 26, line: 8 },
               },
             },
             out: false,
 
-            range: [345, 360],
+            range: [336, 351],
             loc: {
-              start: { column: 27, line: 6 },
-              end: { column: 42, line: 6 },
+              start: { column: 25, line: 8 },
+              end: { column: 40, line: 8 },
             },
           },
         ],
 
-        range: [333, 371],
+        range: [325, 362],
         loc: {
-          start: { column: 15, line: 6 },
-          end: { column: 53, line: 6 },
+          start: { column: 14, line: 8 },
+          end: { column: 51, line: 8 },
         },
       },
 
-      range: [318, 411],
+      range: [311, 402],
       loc: {
-        start: { column: 0, line: 6 },
-        end: { column: 93, line: 6 },
+        start: { column: 0, line: 8 },
+        end: { column: 39, line: 9 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 412],
+  range: [73, 403],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 7 },
+    end: { column: 0, line: 10 },
   },
 }
 `;

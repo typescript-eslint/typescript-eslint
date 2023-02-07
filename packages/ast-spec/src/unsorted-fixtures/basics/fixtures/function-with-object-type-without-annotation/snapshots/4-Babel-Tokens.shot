@@ -46,55 +46,45 @@ Array [
     type: "Identifier",
     value: "bar",
 
-    range: [87, 90],
+    range: [88, 91],
     loc: {
-      start: { column: 14, line: 3 },
-      end: { column: 17, line: 3 },
+      start: { column: 15, line: 3 },
+      end: { column: 18, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ",",
 
-    range: [90, 91],
+    range: [91, 92],
     loc: {
-      start: { column: 17, line: 3 },
-      end: { column: 18, line: 3 },
+      start: { column: 18, line: 3 },
+      end: { column: 19, line: 3 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "baz",
 
-    range: [92, 95],
+    range: [93, 96],
     loc: {
-      start: { column: 19, line: 3 },
-      end: { column: 22, line: 3 },
+      start: { column: 20, line: 3 },
+      end: { column: 23, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [95, 96],
+    range: [97, 98],
     loc: {
-      start: { column: 22, line: 3 },
-      end: { column: 23, line: 3 },
+      start: { column: 24, line: 3 },
+      end: { column: 25, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ":",
-
-    range: [96, 97],
-    loc: {
-      start: { column: 23, line: 3 },
-      end: { column: 24, line: 3 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "{",
 
     range: [98, 99],
     loc: {
@@ -102,94 +92,104 @@ Array [
       end: { column: 26, line: 3 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [100, 101],
+    loc: {
+      start: { column: 27, line: 3 },
+      end: { column: 28, line: 3 },
+    },
+  },
   Identifier {
     type: "Identifier",
     value: "bar",
 
-    range: [99, 102],
+    range: [102, 105],
     loc: {
-      start: { column: 26, line: 3 },
-      end: { column: 29, line: 3 },
+      start: { column: 29, line: 3 },
+      end: { column: 32, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ":",
 
-    range: [102, 103],
+    range: [105, 106],
     loc: {
-      start: { column: 29, line: 3 },
-      end: { column: 30, line: 3 },
+      start: { column: 32, line: 3 },
+      end: { column: 33, line: 3 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "string",
 
-    range: [104, 110],
+    range: [107, 113],
     loc: {
-      start: { column: 31, line: 3 },
-      end: { column: 37, line: 3 },
+      start: { column: 34, line: 3 },
+      end: { column: 40, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
-    value: ",",
+    value: ";",
 
-    range: [110, 111],
+    range: [113, 114],
     loc: {
-      start: { column: 37, line: 3 },
-      end: { column: 38, line: 3 },
+      start: { column: 40, line: 3 },
+      end: { column: 41, line: 3 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "baz",
 
-    range: [112, 115],
+    range: [115, 118],
     loc: {
-      start: { column: 39, line: 3 },
-      end: { column: 42, line: 3 },
+      start: { column: 42, line: 3 },
+      end: { column: 45, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [115, 116],
+    range: [119, 120],
     loc: {
-      start: { column: 42, line: 3 },
-      end: { column: 43, line: 3 },
+      start: { column: 46, line: 3 },
+      end: { column: 47, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ")",
 
-    range: [116, 117],
+    range: [120, 121],
     loc: {
-      start: { column: 43, line: 3 },
-      end: { column: 44, line: 3 },
+      start: { column: 47, line: 3 },
+      end: { column: 48, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [118, 119],
+    range: [122, 123],
     loc: {
-      start: { column: 45, line: 3 },
-      end: { column: 46, line: 3 },
+      start: { column: 49, line: 3 },
+      end: { column: 50, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [121, 122],
+    range: [123, 124],
     loc: {
-      start: { column: 0, line: 5 },
-      end: { column: 1, line: 5 },
+      start: { column: 50, line: 3 },
+      end: { column: 51, line: 3 },
     },
   },
 ]

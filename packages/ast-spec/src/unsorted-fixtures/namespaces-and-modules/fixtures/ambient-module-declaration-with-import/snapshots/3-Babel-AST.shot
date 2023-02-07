@@ -63,7 +63,7 @@ Program {
       declare: true,
       id: Literal {
         type: "Literal",
-        raw: "\\"i-use-things\\"",
+        raw: "'i-use-things'",
         value: "i-use-things",
 
         range: [88, 102],

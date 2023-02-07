@@ -20,10 +20,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'baa',
 
-                range: [93, 96],
+                range: [91, 94],
                 loc: {
-                  start: { column: 4, line: 4 },
-                  end: { column: 7, line: 4 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 5, line: 4 },
                 },
               },
               typeAnnotation: TSTypeAnnotation {
@@ -31,24 +31,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSNumberKeyword {
                   type: 'TSNumberKeyword',
 
-                  range: [98, 104],
+                  range: [96, 102],
                   loc: {
-                    start: { column: 9, line: 4 },
-                    end: { column: 15, line: 4 },
+                    start: { column: 7, line: 4 },
+                    end: { column: 13, line: 4 },
                   },
                 },
 
-                range: [96, 104],
+                range: [94, 102],
                 loc: {
-                  start: { column: 7, line: 4 },
-                  end: { column: 15, line: 4 },
+                  start: { column: 5, line: 4 },
+                  end: { column: 13, line: 4 },
                 },
               },
 
-              range: [93, 105],
+              range: [91, 103],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 16, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 14, line: 4 },
               },
             },
             TSPropertySignature {
@@ -58,10 +58,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'bar',
 
-                range: [110, 113],
+                range: [106, 109],
                 loc: {
-                  start: { column: 4, line: 5 },
-                  end: { column: 7, line: 5 },
+                  start: { column: 2, line: 5 },
+                  end: { column: 5, line: 5 },
                 },
               },
               optional: true,
@@ -70,24 +70,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSNumberKeyword {
                   type: 'TSNumberKeyword',
 
-                  range: [116, 122],
+                  range: [112, 118],
                   loc: {
-                    start: { column: 10, line: 5 },
-                    end: { column: 16, line: 5 },
+                    start: { column: 8, line: 5 },
+                    end: { column: 14, line: 5 },
                   },
                 },
 
-                range: [114, 122],
+                range: [110, 118],
                 loc: {
-                  start: { column: 8, line: 5 },
-                  end: { column: 16, line: 5 },
+                  start: { column: 6, line: 5 },
+                  end: { column: 14, line: 5 },
                 },
               },
 
-              range: [110, 123],
+              range: [106, 119],
               loc: {
-                start: { column: 4, line: 5 },
-                end: { column: 17, line: 5 },
+                start: { column: 2, line: 5 },
+                end: { column: 15, line: 5 },
               },
             },
             TSPropertySignature {
@@ -97,10 +97,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'bax',
 
-                range: [129, 132],
+                range: [123, 126],
                 loc: {
-                  start: { column: 5, line: 6 },
-                  end: { column: 8, line: 6 },
+                  start: { column: 3, line: 6 },
+                  end: { column: 6, line: 6 },
                 },
               },
               typeAnnotation: TSTypeAnnotation {
@@ -108,24 +108,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
 
-                  range: [135, 141],
+                  range: [129, 135],
                   loc: {
-                    start: { column: 11, line: 6 },
-                    end: { column: 17, line: 6 },
+                    start: { column: 9, line: 6 },
+                    end: { column: 15, line: 6 },
                   },
                 },
 
-                range: [133, 141],
+                range: [127, 135],
                 loc: {
-                  start: { column: 9, line: 6 },
-                  end: { column: 17, line: 6 },
+                  start: { column: 7, line: 6 },
+                  end: { column: 15, line: 6 },
                 },
               },
 
-              range: [128, 142],
+              range: [122, 136],
               loc: {
-                start: { column: 4, line: 6 },
-                end: { column: 18, line: 6 },
+                start: { column: 2, line: 6 },
+                end: { column: 16, line: 6 },
               },
             },
             TSPropertySignature {
@@ -135,10 +135,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'baz',
 
-                range: [148, 151],
+                range: [140, 143],
                 loc: {
-                  start: { column: 5, line: 7 },
-                  end: { column: 8, line: 7 },
+                  start: { column: 3, line: 7 },
+                  end: { column: 6, line: 7 },
                 },
               },
               optional: true,
@@ -147,24 +147,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
 
-                  range: [155, 161],
+                  range: [147, 153],
                   loc: {
-                    start: { column: 12, line: 7 },
-                    end: { column: 18, line: 7 },
+                    start: { column: 10, line: 7 },
+                    end: { column: 16, line: 7 },
                   },
                 },
 
-                range: [153, 161],
+                range: [145, 153],
                 loc: {
-                  start: { column: 10, line: 7 },
-                  end: { column: 18, line: 7 },
+                  start: { column: 8, line: 7 },
+                  end: { column: 16, line: 7 },
                 },
               },
 
-              range: [147, 162],
+              range: [139, 154],
               loc: {
-                start: { column: 4, line: 7 },
-                end: { column: 19, line: 7 },
+                start: { column: 2, line: 7 },
+                end: { column: 17, line: 7 },
               },
             },
             TSIndexSignature {
@@ -178,24 +178,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                     typeAnnotation: TSNumberKeyword {
                       type: 'TSNumberKeyword',
 
-                      range: [173, 179],
+                      range: [163, 169],
                       loc: {
-                        start: { column: 10, line: 8 },
-                        end: { column: 16, line: 8 },
+                        start: { column: 8, line: 8 },
+                        end: { column: 14, line: 8 },
                       },
                     },
 
-                    range: [171, 179],
+                    range: [161, 169],
                     loc: {
-                      start: { column: 8, line: 8 },
-                      end: { column: 16, line: 8 },
+                      start: { column: 6, line: 8 },
+                      end: { column: 14, line: 8 },
                     },
                   },
 
-                  range: [168, 179],
+                  range: [158, 169],
                   loc: {
-                    start: { column: 5, line: 8 },
-                    end: { column: 16, line: 8 },
+                    start: { column: 3, line: 8 },
+                    end: { column: 14, line: 8 },
                   },
                 },
               ],
@@ -204,24 +204,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
 
-                  range: [182, 188],
+                  range: [172, 178],
                   loc: {
-                    start: { column: 19, line: 8 },
-                    end: { column: 25, line: 8 },
+                    start: { column: 17, line: 8 },
+                    end: { column: 23, line: 8 },
                   },
                 },
 
-                range: [180, 188],
+                range: [170, 178],
                 loc: {
-                  start: { column: 17, line: 8 },
-                  end: { column: 25, line: 8 },
+                  start: { column: 15, line: 8 },
+                  end: { column: 23, line: 8 },
                 },
               },
 
-              range: [167, 189],
+              range: [157, 179],
               loc: {
-                start: { column: 4, line: 8 },
-                end: { column: 26, line: 8 },
+                start: { column: 2, line: 8 },
+                end: { column: 24, line: 8 },
               },
             },
             TSMethodSignature {
@@ -231,10 +231,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'doo',
 
-                range: [194, 197],
+                range: [182, 185],
                 loc: {
-                  start: { column: 4, line: 9 },
-                  end: { column: 7, line: 9 },
+                  start: { column: 2, line: 9 },
+                  end: { column: 5, line: 9 },
                 },
               },
               kind: 'method',
@@ -246,24 +246,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSVoidKeyword {
                   type: 'TSVoidKeyword',
 
-                  range: [201, 205],
+                  range: [189, 193],
                   loc: {
-                    start: { column: 11, line: 9 },
-                    end: { column: 15, line: 9 },
+                    start: { column: 9, line: 9 },
+                    end: { column: 13, line: 9 },
                   },
                 },
 
-                range: [199, 205],
+                range: [187, 193],
                 loc: {
-                  start: { column: 9, line: 9 },
-                  end: { column: 15, line: 9 },
+                  start: { column: 7, line: 9 },
+                  end: { column: 13, line: 9 },
                 },
               },
 
-              range: [194, 206],
+              range: [182, 194],
               loc: {
-                start: { column: 4, line: 9 },
-                end: { column: 16, line: 9 },
+                start: { column: 2, line: 9 },
+                end: { column: 14, line: 9 },
               },
             },
             TSMethodSignature {
@@ -273,10 +273,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'coo',
 
-                range: [211, 214],
+                range: [197, 200],
                 loc: {
-                  start: { column: 4, line: 10 },
-                  end: { column: 7, line: 10 },
+                  start: { column: 2, line: 10 },
+                  end: { column: 5, line: 10 },
                 },
               },
               kind: 'method',
@@ -287,30 +287,30 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                   type: 'Identifier',
                   name: 'a',
 
-                  range: [216, 217],
+                  range: [202, 203],
                   loc: {
-                    start: { column: 9, line: 10 },
-                    end: { column: 10, line: 10 },
+                    start: { column: 7, line: 10 },
+                    end: { column: 8, line: 10 },
                   },
                 },
                 Identifier {
                   type: 'Identifier',
                   name: 'b',
 
-                  range: [219, 220],
+                  range: [205, 206],
                   loc: {
-                    start: { column: 12, line: 10 },
-                    end: { column: 13, line: 10 },
+                    start: { column: 10, line: 10 },
+                    end: { column: 11, line: 10 },
                   },
                 },
                 Identifier {
                   type: 'Identifier',
                   name: 'c',
 
-                  range: [222, 223],
+                  range: [208, 209],
                   loc: {
-                    start: { column: 15, line: 10 },
-                    end: { column: 16, line: 10 },
+                    start: { column: 13, line: 10 },
+                    end: { column: 14, line: 10 },
                   },
                 },
               ],
@@ -320,24 +320,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSVoidKeyword {
                   type: 'TSVoidKeyword',
 
-                  range: [226, 230],
+                  range: [212, 216],
                   loc: {
-                    start: { column: 19, line: 10 },
-                    end: { column: 23, line: 10 },
+                    start: { column: 17, line: 10 },
+                    end: { column: 21, line: 10 },
                   },
                 },
 
-                range: [224, 230],
+                range: [210, 216],
                 loc: {
-                  start: { column: 17, line: 10 },
-                  end: { column: 23, line: 10 },
+                  start: { column: 15, line: 10 },
+                  end: { column: 21, line: 10 },
                 },
               },
 
-              range: [211, 231],
+              range: [197, 217],
               loc: {
-                start: { column: 4, line: 10 },
-                end: { column: 24, line: 10 },
+                start: { column: 2, line: 10 },
+                end: { column: 22, line: 10 },
               },
             },
             TSMethodSignature {
@@ -347,10 +347,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'loo',
 
-                range: [237, 240],
+                range: [221, 224],
                 loc: {
-                  start: { column: 5, line: 11 },
-                  end: { column: 8, line: 11 },
+                  start: { column: 3, line: 11 },
+                  end: { column: 6, line: 11 },
                 },
               },
               kind: 'method',
@@ -361,30 +361,30 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                   type: 'Identifier',
                   name: 'a',
 
-                  range: [243, 244],
+                  range: [227, 228],
                   loc: {
-                    start: { column: 11, line: 11 },
-                    end: { column: 12, line: 11 },
+                    start: { column: 9, line: 11 },
+                    end: { column: 10, line: 11 },
                   },
                 },
                 Identifier {
                   type: 'Identifier',
                   name: 'b',
 
-                  range: [246, 247],
+                  range: [230, 231],
                   loc: {
-                    start: { column: 14, line: 11 },
-                    end: { column: 15, line: 11 },
+                    start: { column: 12, line: 11 },
+                    end: { column: 13, line: 11 },
                   },
                 },
                 Identifier {
                   type: 'Identifier',
                   name: 'c',
 
-                  range: [249, 250],
+                  range: [233, 234],
                   loc: {
-                    start: { column: 17, line: 11 },
-                    end: { column: 18, line: 11 },
+                    start: { column: 15, line: 11 },
+                    end: { column: 16, line: 11 },
                   },
                 },
               ],
@@ -394,24 +394,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSVoidKeyword {
                   type: 'TSVoidKeyword',
 
-                  range: [253, 257],
+                  range: [237, 241],
                   loc: {
-                    start: { column: 21, line: 11 },
-                    end: { column: 25, line: 11 },
+                    start: { column: 19, line: 11 },
+                    end: { column: 23, line: 11 },
                   },
                 },
 
-                range: [251, 257],
+                range: [235, 241],
                 loc: {
-                  start: { column: 19, line: 11 },
-                  end: { column: 25, line: 11 },
+                  start: { column: 17, line: 11 },
+                  end: { column: 23, line: 11 },
                 },
               },
 
-              range: [236, 258],
+              range: [220, 242],
               loc: {
-                start: { column: 4, line: 11 },
-                end: { column: 26, line: 11 },
+                start: { column: 2, line: 11 },
+                end: { column: 24, line: 11 },
               },
             },
             TSMethodSignature {
@@ -421,10 +421,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 type: 'Identifier',
                 name: 'boo',
 
-                range: [263, 266],
+                range: [245, 248],
                 loc: {
-                  start: { column: 4, line: 12 },
-                  end: { column: 7, line: 12 },
+                  start: { column: 2, line: 12 },
+                  end: { column: 5, line: 12 },
                 },
               },
               kind: 'method',
@@ -434,30 +434,30 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                   type: 'Identifier',
                   name: 'a',
 
-                  range: [270, 271],
+                  range: [252, 253],
                   loc: {
-                    start: { column: 11, line: 12 },
-                    end: { column: 12, line: 12 },
+                    start: { column: 9, line: 12 },
+                    end: { column: 10, line: 12 },
                   },
                 },
                 Identifier {
                   type: 'Identifier',
                   name: 'b',
 
-                  range: [273, 274],
+                  range: [255, 256],
                   loc: {
-                    start: { column: 14, line: 12 },
-                    end: { column: 15, line: 12 },
+                    start: { column: 12, line: 12 },
+                    end: { column: 13, line: 12 },
                   },
                 },
                 Identifier {
                   type: 'Identifier',
                   name: 'c',
 
-                  range: [276, 277],
+                  range: [258, 259],
                   loc: {
-                    start: { column: 17, line: 12 },
-                    end: { column: 18, line: 12 },
+                    start: { column: 15, line: 12 },
+                    end: { column: 16, line: 12 },
                   },
                 },
               ],
@@ -467,17 +467,17 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSVoidKeyword {
                   type: 'TSVoidKeyword',
 
-                  range: [280, 284],
+                  range: [262, 266],
                   loc: {
-                    start: { column: 21, line: 12 },
-                    end: { column: 25, line: 12 },
+                    start: { column: 19, line: 12 },
+                    end: { column: 23, line: 12 },
                   },
                 },
 
-                range: [278, 284],
+                range: [260, 266],
                 loc: {
-                  start: { column: 19, line: 12 },
-                  end: { column: 25, line: 12 },
+                  start: { column: 17, line: 12 },
+                  end: { column: 23, line: 12 },
                 },
               },
               typeParameters: TSTypeParameterDeclaration {
@@ -490,34 +490,34 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
 -                     type: 'Identifier',
 -                     name: 'J',
 -
--                     range: [267, 268],
+-                     range: [249, 250],
 -                     loc: {
--                       start: { column: 8, line: 12 },
--                       end: { column: 9, line: 12 },
+-                       start: { column: 6, line: 12 },
+-                       end: { column: 7, line: 12 },
 -                     },
 -                   },
 -                   out: false,
 +                   name: 'J',
 
-                    range: [267, 268],
+                    range: [249, 250],
                     loc: {
-                      start: { column: 8, line: 12 },
-                      end: { column: 9, line: 12 },
+                      start: { column: 6, line: 12 },
+                      end: { column: 7, line: 12 },
                     },
                   },
                 ],
 
-                range: [266, 269],
+                range: [248, 251],
                 loc: {
-                  start: { column: 7, line: 12 },
-                  end: { column: 10, line: 12 },
+                  start: { column: 5, line: 12 },
+                  end: { column: 8, line: 12 },
                 },
               },
 
-              range: [263, 285],
+              range: [245, 267],
               loc: {
-                start: { column: 4, line: 12 },
-                end: { column: 26, line: 12 },
+                start: { column: 2, line: 12 },
+                end: { column: 24, line: 12 },
               },
             },
             TSConstructSignatureDeclaration {
@@ -528,10 +528,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                   type: 'Identifier',
                   name: 'a',
 
-                  range: [295, 296],
+                  range: [275, 276],
                   loc: {
-                    start: { column: 9, line: 13 },
-                    end: { column: 10, line: 13 },
+                    start: { column: 7, line: 13 },
+                    end: { column: 8, line: 13 },
                   },
                 },
                 Identifier {
@@ -539,10 +539,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                   name: 'b',
                   optional: true,
 
-                  range: [298, 300],
+                  range: [278, 280],
                   loc: {
-                    start: { column: 12, line: 13 },
-                    end: { column: 14, line: 13 },
+                    start: { column: 10, line: 13 },
+                    end: { column: 12, line: 13 },
                   },
                 },
               ],
@@ -552,24 +552,24 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
 
-                  range: [303, 309],
+                  range: [283, 289],
                   loc: {
-                    start: { column: 17, line: 13 },
-                    end: { column: 23, line: 13 },
+                    start: { column: 15, line: 13 },
+                    end: { column: 21, line: 13 },
                   },
                 },
 
-                range: [301, 309],
+                range: [281, 289],
                 loc: {
-                  start: { column: 15, line: 13 },
-                  end: { column: 23, line: 13 },
+                  start: { column: 13, line: 13 },
+                  end: { column: 21, line: 13 },
                 },
               },
 
-              range: [290, 310],
+              range: [270, 290],
               loc: {
-                start: { column: 4, line: 13 },
-                end: { column: 24, line: 13 },
+                start: { column: 2, line: 13 },
+                end: { column: 22, line: 13 },
               },
             },
             TSConstructSignatureDeclaration {
@@ -580,10 +580,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                   type: 'Identifier',
                   name: 'a',
 
-                  range: [323, 324],
+                  range: [301, 302],
                   loc: {
-                    start: { column: 12, line: 14 },
-                    end: { column: 13, line: 14 },
+                    start: { column: 10, line: 14 },
+                    end: { column: 11, line: 14 },
                   },
                 },
                 Identifier {
@@ -591,10 +591,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                   name: 'b',
                   optional: true,
 
-                  range: [326, 328],
+                  range: [304, 306],
                   loc: {
-                    start: { column: 15, line: 14 },
-                    end: { column: 17, line: 14 },
+                    start: { column: 13, line: 14 },
+                    end: { column: 15, line: 14 },
                   },
                 },
               ],
@@ -604,17 +604,17 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
 
-                  range: [331, 337],
+                  range: [309, 315],
                   loc: {
-                    start: { column: 20, line: 14 },
-                    end: { column: 26, line: 14 },
+                    start: { column: 18, line: 14 },
+                    end: { column: 24, line: 14 },
                   },
                 },
 
-                range: [329, 337],
+                range: [307, 315],
                 loc: {
-                  start: { column: 18, line: 14 },
-                  end: { column: 26, line: 14 },
+                  start: { column: 16, line: 14 },
+                  end: { column: 24, line: 14 },
                 },
               },
               typeParameters: TSTypeParameterDeclaration {
@@ -627,39 +627,39 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
 -                     type: 'Identifier',
 -                     name: 'F',
 -
--                     range: [320, 321],
+-                     range: [298, 299],
 -                     loc: {
--                       start: { column: 9, line: 14 },
--                       end: { column: 10, line: 14 },
+-                       start: { column: 7, line: 14 },
+-                       end: { column: 8, line: 14 },
 -                     },
 -                   },
 -                   out: false,
 +                   name: 'F',
 
-                    range: [320, 321],
+                    range: [298, 299],
                     loc: {
-                      start: { column: 9, line: 14 },
-                      end: { column: 10, line: 14 },
+                      start: { column: 7, line: 14 },
+                      end: { column: 8, line: 14 },
                     },
                   },
                 ],
 
-                range: [319, 322],
+                range: [297, 300],
                 loc: {
-                  start: { column: 8, line: 14 },
-                  end: { column: 11, line: 14 },
+                  start: { column: 6, line: 14 },
+                  end: { column: 9, line: 14 },
                 },
               },
 
-              range: [315, 338],
+              range: [293, 316],
               loc: {
-                start: { column: 4, line: 14 },
-                end: { column: 27, line: 14 },
+                start: { column: 2, line: 14 },
+                end: { column: 25, line: 14 },
               },
             },
           ],
 
-          range: [87, 340],
+          range: [87, 318],
           loc: {
             start: { column: 14, line: 3 },
             end: { column: 1, line: 15 },
@@ -676,7 +676,7 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
           },
         },
 
-        range: [73, 340],
+        range: [73, 318],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 15 },
@@ -685,10 +685,10 @@ exports[`AST Fixtures unsorted-fixtures basics interface-with-all-property-types
     ],
     sourceType: 'script',
 
-    range: [73, 342],
+    range: [73, 319],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 17 },
+      end: { column: 0, line: 16 },
     },
   }"
 `;

@@ -117,10 +117,10 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 97],
+  range: [73, 98],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 14, line: 4 },
+    end: { column: 0, line: 5 },
   },
 }
 `;

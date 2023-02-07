@@ -48,7 +48,7 @@ Program {
                     shorthand: false,
                     value: Literal {
                       type: "Literal",
-                      raw: "\\"json\\"",
+                      raw: "'json'",
                       value: "json",
 
                       range: [105, 111],
@@ -89,7 +89,7 @@ Program {
         },
         source: Literal {
           type: "Literal",
-          raw: "\\"foo\\"",
+          raw: "'foo'",
           value: "foo",
 
           range: [80, 85],

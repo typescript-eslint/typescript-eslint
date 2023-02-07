@@ -86,17 +86,17 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [111, 112],
+    range: [110, 111],
     loc: {
-      start: { column: 28, line: 4 },
-      end: { column: 29, line: 4 },
+      start: { column: 27, line: 4 },
+      end: { column: 28, line: 4 },
     },
   },
   Keyword {
     type: "Keyword",
     value: "public",
 
-    range: [116, 122],
+    range: [115, 121],
     loc: {
       start: { column: 2, line: 6 },
       end: { column: 8, line: 6 },
@@ -106,7 +106,7 @@ Array [
     type: "Punctuator",
     value: "[",
 
-    range: [123, 124],
+    range: [122, 123],
     loc: {
       start: { column: 9, line: 6 },
       end: { column: 10, line: 6 },
@@ -116,7 +116,7 @@ Array [
     type: "String",
     value: "'constructor'",
 
-    range: [124, 137],
+    range: [123, 136],
     loc: {
       start: { column: 10, line: 6 },
       end: { column: 23, line: 6 },
@@ -126,7 +126,7 @@ Array [
     type: "Punctuator",
     value: "]",
 
-    range: [137, 138],
+    range: [136, 137],
     loc: {
       start: { column: 23, line: 6 },
       end: { column: 24, line: 6 },
@@ -136,7 +136,7 @@ Array [
     type: "Punctuator",
     value: "(",
 
-    range: [138, 139],
+    range: [137, 138],
     loc: {
       start: { column: 24, line: 6 },
       end: { column: 25, line: 6 },
@@ -146,7 +146,7 @@ Array [
     type: "Punctuator",
     value: ")",
 
-    range: [139, 140],
+    range: [138, 139],
     loc: {
       start: { column: 25, line: 6 },
       end: { column: 26, line: 6 },
@@ -156,7 +156,7 @@ Array [
     type: "Punctuator",
     value: "{",
 
-    range: [141, 142],
+    range: [140, 141],
     loc: {
       start: { column: 27, line: 6 },
       end: { column: 28, line: 6 },
@@ -166,17 +166,17 @@ Array [
     type: "Punctuator",
     value: "}",
 
-    range: [143, 144],
+    range: [141, 142],
     loc: {
-      start: { column: 29, line: 6 },
-      end: { column: 30, line: 6 },
+      start: { column: 28, line: 6 },
+      end: { column: 29, line: 6 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [145, 146],
+    range: [143, 144],
     loc: {
       start: { column: 0, line: 7 },
       end: { column: 1, line: 7 },

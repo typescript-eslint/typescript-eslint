@@ -215,15 +215,15 @@ exports[`AST Fixtures unsorted-fixtures basics type-assertion-with-guard-in-meth
                 },
               },
 
-              range: [146, 201],
+              range: [146, 202],
               loc: {
                 start: { column: 2, line: 7 },
-                end: { column: 3, line: 9 },
+                end: { column: 4, line: 9 },
               },
             },
           ],
 
-          range: [90, 203],
+          range: [90, 204],
           loc: {
             start: { column: 17, line: 3 },
             end: { column: 1, line: 10 },
@@ -241,7 +241,7 @@ exports[`AST Fixtures unsorted-fixtures basics type-assertion-with-guard-in-meth
         },
         superClass: null,
 
-        range: [73, 203],
+        range: [73, 204],
         loc: {
           start: { column: 0, line: 3 },
           end: { column: 1, line: 10 },
@@ -250,7 +250,7 @@ exports[`AST Fixtures unsorted-fixtures basics type-assertion-with-guard-in-meth
     ],
     sourceType: 'script',
 
-    range: [73, 204],
+    range: [73, 205],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 11 },

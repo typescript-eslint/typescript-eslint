@@ -74,7 +74,7 @@ Program {
           type: "TSLiteralType",
           literal: Literal {
             type: "Literal",
-            raw: "\\"B\\"",
+            raw: "'B'",
             value: "B",
 
             range: [118, 121],

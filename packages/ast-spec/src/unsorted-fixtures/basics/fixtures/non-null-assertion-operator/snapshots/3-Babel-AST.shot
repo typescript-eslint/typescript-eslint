@@ -19,10 +19,10 @@ Program {
                   type: "Identifier",
                   name: "e",
 
-                  range: [129, 130],
+                  range: [127, 128],
                   loc: {
-                    start: { column: 19, line: 4 },
-                    end: { column: 20, line: 4 },
+                    start: { column: 17, line: 4 },
+                    end: { column: 18, line: 4 },
                   },
                 },
               ],
@@ -30,25 +30,25 @@ Program {
                 type: "Identifier",
                 name: "validateEntity",
 
-                range: [114, 128],
+                range: [112, 126],
                 loc: {
-                  start: { column: 4, line: 4 },
-                  end: { column: 18, line: 4 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 16, line: 4 },
                 },
               },
               optional: false,
 
-              range: [114, 131],
+              range: [112, 129],
               loc: {
-                start: { column: 4, line: 4 },
-                end: { column: 21, line: 4 },
+                start: { column: 2, line: 4 },
+                end: { column: 19, line: 4 },
               },
             },
 
-            range: [114, 132],
+            range: [112, 130],
             loc: {
-              start: { column: 4, line: 4 },
-              end: { column: 22, line: 4 },
+              start: { column: 2, line: 4 },
+              end: { column: 20, line: 4 },
             },
           },
           VariableDeclaration {
@@ -60,10 +60,10 @@ Program {
                   type: "Identifier",
                   name: "s",
 
-                  range: [141, 142],
+                  range: [137, 138],
                   loc: {
-                    start: { column: 8, line: 5 },
-                    end: { column: 9, line: 5 },
+                    start: { column: 6, line: 5 },
+                    end: { column: 7, line: 5 },
                   },
                 },
                 init: MemberExpression {
@@ -75,17 +75,17 @@ Program {
                       type: "Identifier",
                       name: "e",
 
-                      range: [145, 146],
+                      range: [141, 142],
                       loc: {
-                        start: { column: 12, line: 5 },
-                        end: { column: 13, line: 5 },
+                        start: { column: 10, line: 5 },
+                        end: { column: 11, line: 5 },
                       },
                     },
 
-                    range: [145, 147],
+                    range: [141, 143],
                     loc: {
-                      start: { column: 12, line: 5 },
-                      end: { column: 14, line: 5 },
+                      start: { column: 10, line: 5 },
+                      end: { column: 12, line: 5 },
                     },
                   },
                   optional: false,
@@ -93,38 +93,38 @@ Program {
                     type: "Identifier",
                     name: "name",
 
-                    range: [148, 152],
+                    range: [144, 148],
                     loc: {
-                      start: { column: 15, line: 5 },
-                      end: { column: 19, line: 5 },
+                      start: { column: 13, line: 5 },
+                      end: { column: 17, line: 5 },
                     },
                   },
 
-                  range: [145, 152],
+                  range: [141, 148],
                   loc: {
-                    start: { column: 12, line: 5 },
-                    end: { column: 19, line: 5 },
+                    start: { column: 10, line: 5 },
+                    end: { column: 17, line: 5 },
                   },
                 },
 
-                range: [141, 152],
+                range: [137, 148],
                 loc: {
-                  start: { column: 8, line: 5 },
-                  end: { column: 19, line: 5 },
+                  start: { column: 6, line: 5 },
+                  end: { column: 17, line: 5 },
                 },
               },
             ],
             kind: "let",
 
-            range: [137, 153],
+            range: [133, 149],
             loc: {
-              start: { column: 4, line: 5 },
-              end: { column: 20, line: 5 },
+              start: { column: 2, line: 5 },
+              end: { column: 18, line: 5 },
             },
           },
         ],
 
-        range: [108, 155],
+        range: [108, 151],
         loc: {
           start: { column: 35, line: 3 },
           end: { column: 1, line: 6 },
@@ -184,7 +184,7 @@ Program {
         },
       ],
 
-      range: [73, 155],
+      range: [73, 151],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 1, line: 6 },
@@ -193,10 +193,10 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 155],
+  range: [73, 152],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 1, line: 6 },
+    end: { column: 0, line: 7 },
   },
 }
 `;

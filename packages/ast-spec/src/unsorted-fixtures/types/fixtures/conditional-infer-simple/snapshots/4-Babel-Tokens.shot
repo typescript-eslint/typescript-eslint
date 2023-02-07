@@ -134,7 +134,7 @@ Array [
   },
   Punctuator {
     type: "Punctuator",
-    value: ",",
+    value: ";",
 
     range: [109, 110],
     loc: {

@@ -117,19 +117,19 @@ Program {
         },
       },
 
-      range: [73, 110],
+      range: [73, 111],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 37, line: 3 },
+        end: { column: 38, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 110],
+  range: [73, 112],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 37, line: 3 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

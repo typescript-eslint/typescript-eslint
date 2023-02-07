@@ -173,10 +173,10 @@ Program {
             expression: MemberExpression {
               type: "MemberExpression",
               computed: false,
-              object: ChainExpression {
-                type: "ChainExpression",
-                expression: TSNonNullExpression {
-                  type: "TSNonNullExpression",
+              object: TSNonNullExpression {
+                type: "TSNonNullExpression",
+                expression: ChainExpression {
+                  type: "ChainExpression",
                   expression: MemberExpression {
                     type: "MemberExpression",
                     computed: false,
@@ -209,17 +209,17 @@ Program {
                     },
                   },
 
-                  range: [154, 163],
+                  range: [154, 162],
                   loc: {
                     start: { column: 3, line: 6 },
-                    end: { column: 12, line: 6 },
+                    end: { column: 11, line: 6 },
                   },
                 },
 
-                range: [154, 163],
+                range: [153, 164],
                 loc: {
-                  start: { column: 3, line: 6 },
-                  end: { column: 12, line: 6 },
+                  start: { column: 2, line: 6 },
+                  end: { column: 13, line: 6 },
                 },
               },
               optional: false,

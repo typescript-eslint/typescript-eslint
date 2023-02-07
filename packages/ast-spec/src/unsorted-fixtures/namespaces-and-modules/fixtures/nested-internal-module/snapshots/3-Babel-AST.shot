@@ -21,10 +21,10 @@ Program {
                     type: "Identifier",
                     name: "x",
 
-                    range: [100, 101],
+                    range: [97, 98],
                     loc: {
-                      start: { column: 15, line: 5 },
-                      end: { column: 16, line: 5 },
+                      start: { column: 13, line: 4 },
+                      end: { column: 14, line: 4 },
                     },
                   },
                   init: Literal {
@@ -32,36 +32,36 @@ Program {
                     raw: "'hello world'",
                     value: "hello world",
 
-                    range: [104, 117],
+                    range: [101, 114],
                     loc: {
-                      start: { column: 19, line: 5 },
-                      end: { column: 32, line: 5 },
+                      start: { column: 17, line: 4 },
+                      end: { column: 30, line: 4 },
                     },
                   },
 
-                  range: [100, 117],
+                  range: [97, 114],
                   loc: {
-                    start: { column: 15, line: 5 },
-                    end: { column: 32, line: 5 },
+                    start: { column: 13, line: 4 },
+                    end: { column: 30, line: 4 },
                   },
                 },
               ],
               kind: "var",
 
-              range: [96, 117],
+              range: [93, 115],
               loc: {
-                start: { column: 11, line: 5 },
-                end: { column: 32, line: 5 },
+                start: { column: 9, line: 4 },
+                end: { column: 31, line: 4 },
               },
             },
             exportKind: "value",
             source: null,
             specifiers: Array [],
 
-            range: [89, 117],
+            range: [86, 115],
             loc: {
-              start: { column: 4, line: 5 },
-              end: { column: 32, line: 5 },
+              start: { column: 2, line: 4 },
+              end: { column: 31, line: 4 },
             },
           },
           ExportNamedDeclaration {
@@ -79,10 +79,10 @@ Program {
                       type: "Identifier",
                       name: "constructor",
 
-                      range: [151, 162],
+                      range: [143, 154],
                       loc: {
-                        start: { column: 8, line: 7 },
-                        end: { column: 19, line: 7 },
+                        start: { column: 4, line: 6 },
+                        end: { column: 15, line: 6 },
                       },
                     },
                     kind: "constructor",
@@ -94,10 +94,10 @@ Program {
                         type: "BlockStatement",
                         body: Array [],
 
-                        range: [199, 202],
+                        range: [191, 193],
                         loc: {
-                          start: { column: 56, line: 7 },
-                          end: { column: 59, line: 7 },
+                          start: { column: 52, line: 6 },
+                          end: { column: 54, line: 6 },
                         },
                       },
                       expression: false,
@@ -115,31 +115,31 @@ Program {
                               typeAnnotation: TSNumberKeyword {
                                 type: "TSNumberKeyword",
 
-                                range: [173, 179],
+                                range: [165, 171],
                                 loc: {
-                                  start: { column: 30, line: 7 },
-                                  end: { column: 36, line: 7 },
+                                  start: { column: 26, line: 6 },
+                                  end: { column: 32, line: 6 },
                                 },
                               },
 
-                              range: [171, 179],
+                              range: [163, 171],
                               loc: {
-                                start: { column: 28, line: 7 },
-                                end: { column: 36, line: 7 },
+                                start: { column: 24, line: 6 },
+                                end: { column: 32, line: 6 },
                               },
                             },
 
-                            range: [170, 179],
+                            range: [162, 171],
                             loc: {
-                              start: { column: 27, line: 7 },
-                              end: { column: 36, line: 7 },
+                              start: { column: 23, line: 6 },
+                              end: { column: 32, line: 6 },
                             },
                           },
 
-                          range: [163, 179],
+                          range: [155, 171],
                           loc: {
-                            start: { column: 20, line: 7 },
-                            end: { column: 36, line: 7 },
+                            start: { column: 16, line: 6 },
+                            end: { column: 32, line: 6 },
                           },
                         },
                         TSParameterProperty {
@@ -153,82 +153,82 @@ Program {
                               typeAnnotation: TSNumberKeyword {
                                 type: "TSNumberKeyword",
 
-                                range: [191, 197],
+                                range: [183, 189],
                                 loc: {
-                                  start: { column: 48, line: 7 },
-                                  end: { column: 54, line: 7 },
+                                  start: { column: 44, line: 6 },
+                                  end: { column: 50, line: 6 },
                                 },
                               },
 
-                              range: [189, 197],
+                              range: [181, 189],
                               loc: {
-                                start: { column: 46, line: 7 },
-                                end: { column: 54, line: 7 },
+                                start: { column: 42, line: 6 },
+                                end: { column: 50, line: 6 },
                               },
                             },
 
-                            range: [188, 197],
+                            range: [180, 189],
                             loc: {
-                              start: { column: 45, line: 7 },
-                              end: { column: 54, line: 7 },
+                              start: { column: 41, line: 6 },
+                              end: { column: 50, line: 6 },
                             },
                           },
 
-                          range: [181, 197],
+                          range: [173, 189],
                           loc: {
-                            start: { column: 38, line: 7 },
-                            end: { column: 54, line: 7 },
+                            start: { column: 34, line: 6 },
+                            end: { column: 50, line: 6 },
                           },
                         },
                       ],
 
-                      range: [162, 202],
+                      range: [154, 193],
                       loc: {
-                        start: { column: 19, line: 7 },
-                        end: { column: 59, line: 7 },
+                        start: { column: 15, line: 6 },
+                        end: { column: 54, line: 6 },
                       },
                     },
 
-                    range: [151, 202],
+                    range: [143, 193],
                     loc: {
-                      start: { column: 8, line: 7 },
-                      end: { column: 59, line: 7 },
+                      start: { column: 4, line: 6 },
+                      end: { column: 54, line: 6 },
                     },
                   },
                 ],
 
-                range: [141, 208],
+                range: [137, 197],
                 loc: {
-                  start: { column: 23, line: 6 },
-                  end: { column: 5, line: 8 },
+                  start: { column: 21, line: 5 },
+                  end: { column: 3, line: 7 },
                 },
               },
               id: Identifier {
                 type: "Identifier",
                 name: "Point",
 
-                range: [135, 140],
+                range: [131, 136],
                 loc: {
-                  start: { column: 17, line: 6 },
-                  end: { column: 22, line: 6 },
+                  start: { column: 15, line: 5 },
+                  end: { column: 20, line: 5 },
                 },
               },
               superClass: null,
 
-              range: [129, 208],
+              range: [125, 197],
               loc: {
-                start: { column: 11, line: 6 },
-                end: { column: 5, line: 8 },
+                start: { column: 9, line: 5 },
+                end: { column: 3, line: 7 },
               },
             },
             exportKind: "value",
             source: null,
             specifiers: Array [],
 
-            range: [122, 208],
+            range: [118, 197],
             loc: {
-              start: { column: 4, line: 6 },
-              end: { column: 5, line: 8 },
+              start: { column: 2, line: 5 },
+              end: { column: 3, line: 7 },
             },
           },
           ExportNamedDeclaration {
@@ -254,10 +254,10 @@ Program {
                               type: "Identifier",
                               name: "name",
 
-                              range: [273, 277],
+                              range: [250, 254],
                               loc: {
-                                start: { column: 12, line: 11 },
-                                end: { column: 16, line: 11 },
+                                start: { column: 6, line: 10 },
+                                end: { column: 10, line: 10 },
                               },
                             },
                             typeAnnotation: TSTypeAnnotation {
@@ -265,102 +265,102 @@ Program {
                               typeAnnotation: TSStringKeyword {
                                 type: "TSStringKeyword",
 
-                                range: [279, 285],
+                                range: [256, 262],
                                 loc: {
-                                  start: { column: 18, line: 11 },
-                                  end: { column: 24, line: 11 },
+                                  start: { column: 12, line: 10 },
+                                  end: { column: 18, line: 10 },
                                 },
                               },
 
-                              range: [277, 285],
+                              range: [254, 262],
                               loc: {
-                                start: { column: 16, line: 11 },
-                                end: { column: 24, line: 11 },
+                                start: { column: 10, line: 10 },
+                                end: { column: 18, line: 10 },
                               },
                             },
 
-                            range: [273, 286],
+                            range: [250, 263],
                             loc: {
-                              start: { column: 12, line: 11 },
-                              end: { column: 25, line: 11 },
+                              start: { column: 6, line: 10 },
+                              end: { column: 19, line: 10 },
                             },
                           },
                         ],
 
-                        range: [259, 296],
+                        range: [242, 269],
                         loc: {
-                          start: { column: 28, line: 10 },
-                          end: { column: 9, line: 12 },
+                          start: { column: 24, line: 9 },
+                          end: { column: 5, line: 11 },
                         },
                       },
                       id: Identifier {
                         type: "Identifier",
                         name: "Id",
 
-                        range: [256, 258],
+                        range: [239, 241],
                         loc: {
-                          start: { column: 25, line: 10 },
-                          end: { column: 27, line: 10 },
+                          start: { column: 21, line: 9 },
+                          end: { column: 23, line: 9 },
                         },
                       },
 
-                      range: [246, 296],
+                      range: [229, 269],
                       loc: {
-                        start: { column: 15, line: 10 },
-                        end: { column: 9, line: 12 },
+                        start: { column: 11, line: 9 },
+                        end: { column: 5, line: 11 },
                       },
                     },
                     exportKind: "type",
                     source: null,
                     specifiers: Array [],
 
-                    range: [239, 296],
+                    range: [222, 269],
                     loc: {
-                      start: { column: 8, line: 10 },
-                      end: { column: 9, line: 12 },
+                      start: { column: 4, line: 9 },
+                      end: { column: 5, line: 11 },
                     },
                   },
                 ],
 
-                range: [229, 302],
+                range: [216, 273],
                 loc: {
-                  start: { column: 20, line: 9 },
-                  end: { column: 5, line: 13 },
+                  start: { column: 18, line: 8 },
+                  end: { column: 3, line: 12 },
                 },
               },
               id: Identifier {
                 type: "Identifier",
                 name: "B",
 
-                range: [227, 228],
+                range: [214, 215],
                 loc: {
-                  start: { column: 18, line: 9 },
-                  end: { column: 19, line: 9 },
+                  start: { column: 16, line: 8 },
+                  end: { column: 17, line: 8 },
                 },
               },
 
-              range: [220, 302],
+              range: [207, 273],
               loc: {
-                start: { column: 11, line: 9 },
-                end: { column: 5, line: 13 },
+                start: { column: 9, line: 8 },
+                end: { column: 3, line: 12 },
               },
             },
             exportKind: "value",
             source: null,
             specifiers: Array [],
 
-            range: [213, 302],
+            range: [200, 273],
             loc: {
-              start: { column: 4, line: 9 },
-              end: { column: 5, line: 13 },
+              start: { column: 2, line: 8 },
+              end: { column: 3, line: 12 },
             },
           },
         ],
 
-        range: [82, 304],
+        range: [82, 275],
         loc: {
           start: { column: 9, line: 3 },
-          end: { column: 1, line: 14 },
+          end: { column: 1, line: 13 },
         },
       },
       id: Identifier {
@@ -374,19 +374,19 @@ Program {
         },
       },
 
-      range: [73, 304],
+      range: [73, 275],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 14 },
+        end: { column: 1, line: 13 },
       },
     },
   ],
   sourceType: "module",
 
-  range: [73, 304],
+  range: [73, 276],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 1, line: 14 },
+    end: { column: 0, line: 14 },
   },
 }
 `;

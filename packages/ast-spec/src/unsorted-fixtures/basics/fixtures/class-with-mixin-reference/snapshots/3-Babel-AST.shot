@@ -11,10 +11,10 @@ Program {
         type: "BlockStatement",
         body: Array [],
 
-        range: [119, 122],
+        range: [119, 121],
         loc: {
           start: { column: 46, line: 3 },
-          end: { column: 1, line: 4 },
+          end: { column: 48, line: 3 },
         },
       },
       expression: false,
@@ -140,19 +140,19 @@ Program {
         },
       },
 
-      range: [73, 122],
+      range: [73, 121],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 1, line: 4 },
+        end: { column: 48, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 123],
+  range: [73, 122],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 5 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

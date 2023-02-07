@@ -262,5 +262,15 @@ Array [
       end: { column: 1, line: 6 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [130, 131],
+    loc: {
+      start: { column: 1, line: 6 },
+      end: { column: 2, line: 6 },
+    },
+  },
 ]
 `;

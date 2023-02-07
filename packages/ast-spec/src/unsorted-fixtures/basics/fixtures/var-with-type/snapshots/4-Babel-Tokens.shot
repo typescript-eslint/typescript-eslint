@@ -36,47 +36,47 @@ Array [
     type: "Identifier",
     value: "string",
 
-    range: [82, 88],
+    range: [83, 89],
     loc: {
-      start: { column: 9, line: 3 },
-      end: { column: 15, line: 3 },
+      start: { column: 10, line: 3 },
+      end: { column: 16, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "=",
 
-    range: [89, 90],
+    range: [90, 91],
     loc: {
-      start: { column: 16, line: 3 },
-      end: { column: 17, line: 3 },
+      start: { column: 17, line: 3 },
+      end: { column: 18, line: 3 },
     },
   },
   String {
     type: "String",
-    value: "\\"Nicholas\\"",
+    value: "'Nicholas'",
 
-    range: [91, 101],
+    range: [92, 102],
     loc: {
-      start: { column: 18, line: 3 },
-      end: { column: 28, line: 3 },
+      start: { column: 19, line: 3 },
+      end: { column: 29, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [101, 102],
+    range: [102, 103],
     loc: {
-      start: { column: 28, line: 3 },
-      end: { column: 29, line: 3 },
+      start: { column: 29, line: 3 },
+      end: { column: 30, line: 3 },
     },
   },
   Keyword {
     type: "Keyword",
     value: "var",
 
-    range: [103, 106],
+    range: [104, 107],
     loc: {
       start: { column: 0, line: 4 },
       end: { column: 3, line: 4 },
@@ -86,7 +86,7 @@ Array [
     type: "Identifier",
     value: "foo",
 
-    range: [107, 110],
+    range: [108, 111],
     loc: {
       start: { column: 4, line: 4 },
       end: { column: 7, line: 4 },
@@ -96,7 +96,7 @@ Array [
     type: "Punctuator",
     value: ":",
 
-    range: [110, 111],
+    range: [111, 112],
     loc: {
       start: { column: 7, line: 4 },
       end: { column: 8, line: 4 },
@@ -106,7 +106,7 @@ Array [
     type: "Identifier",
     value: "string",
 
-    range: [112, 118],
+    range: [113, 119],
     loc: {
       start: { column: 9, line: 4 },
       end: { column: 15, line: 4 },
@@ -116,7 +116,7 @@ Array [
     type: "Punctuator",
     value: "=",
 
-    range: [119, 120],
+    range: [120, 121],
     loc: {
       start: { column: 16, line: 4 },
       end: { column: 17, line: 4 },
@@ -124,9 +124,9 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"Bar\\"",
+    value: "'Bar'",
 
-    range: [121, 126],
+    range: [122, 127],
     loc: {
       start: { column: 18, line: 4 },
       end: { column: 23, line: 4 },
@@ -136,7 +136,7 @@ Array [
     type: "Punctuator",
     value: ";",
 
-    range: [126, 127],
+    range: [127, 128],
     loc: {
       start: { column: 23, line: 4 },
       end: { column: 24, line: 4 },

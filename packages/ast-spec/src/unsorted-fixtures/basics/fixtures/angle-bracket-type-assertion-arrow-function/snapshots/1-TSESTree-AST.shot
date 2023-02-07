@@ -35,23 +35,23 @@ Program {
 
                       range: [111, 112],
                       loc: {
-                        start: { column: 38, line: 3 },
-                        end: { column: 39, line: 3 },
+                        start: { column: 9, line: 4 },
+                        end: { column: 10, line: 4 },
                       },
                     },
 
                     range: [104, 113],
                     loc: {
-                      start: { column: 31, line: 3 },
-                      end: { column: 40, line: 3 },
+                      start: { column: 2, line: 4 },
+                      end: { column: 11, line: 4 },
                     },
                   },
                 ],
 
-                range: [102, 115],
+                range: [100, 115],
                 loc: {
-                  start: { column: 29, line: 3 },
-                  end: { column: 42, line: 3 },
+                  start: { column: 27, line: 3 },
+                  end: { column: 1, line: 5 },
                 },
               },
               expression: false,
@@ -62,10 +62,10 @@ Program {
                   type: "Identifier",
                   name: "n",
 
-                  range: [96, 97],
+                  range: [95, 96],
                   loc: {
-                    start: { column: 23, line: 3 },
-                    end: { column: 24, line: 3 },
+                    start: { column: 22, line: 3 },
+                    end: { column: 23, line: 3 },
                   },
                 },
               ],
@@ -73,7 +73,7 @@ Program {
               range: [95, 115],
               loc: {
                 start: { column: 22, line: 3 },
-                end: { column: 42, line: 3 },
+                end: { column: 1, line: 5 },
               },
             },
             typeAnnotation: TSAnyKeyword {
@@ -89,14 +89,14 @@ Program {
             range: [89, 116],
             loc: {
               start: { column: 16, line: 3 },
-              end: { column: 43, line: 3 },
+              end: { column: 2, line: 5 },
             },
           },
 
           range: [77, 116],
           loc: {
             start: { column: 4, line: 3 },
-            end: { column: 43, line: 3 },
+            end: { column: 2, line: 5 },
           },
         },
       ],
@@ -105,7 +105,7 @@ Program {
       range: [73, 117],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 44, line: 3 },
+        end: { column: 3, line: 5 },
       },
     },
   ],
@@ -114,7 +114,7 @@ Program {
   range: [73, 118],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 4 },
+    end: { column: 0, line: 6 },
   },
 }
 `;

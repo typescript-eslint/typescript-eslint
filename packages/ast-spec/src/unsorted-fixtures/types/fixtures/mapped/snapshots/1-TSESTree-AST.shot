@@ -57,47 +57,47 @@ Program {
                   },
                 },
 
-                range: [82, 108],
+                range: [82, 107],
                 loc: {
                   start: { column: 9, line: 3 },
-                  end: { column: 35, line: 3 },
+                  end: { column: 34, line: 3 },
                 },
               },
 
-              range: [80, 108],
+              range: [80, 107],
               loc: {
                 start: { column: 7, line: 3 },
-                end: { column: 35, line: 3 },
+                end: { column: 34, line: 3 },
               },
             },
 
-            range: [77, 108],
+            range: [77, 107],
             loc: {
               start: { column: 4, line: 3 },
-              end: { column: 35, line: 3 },
+              end: { column: 34, line: 3 },
             },
           },
           init: null,
 
-          range: [77, 108],
+          range: [77, 107],
           loc: {
             start: { column: 4, line: 3 },
-            end: { column: 35, line: 3 },
+            end: { column: 34, line: 3 },
           },
         },
       ],
       kind: "let",
 
-      range: [73, 109],
+      range: [73, 108],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 36, line: 3 },
+        end: { column: 35, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 110],
+  range: [73, 109],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

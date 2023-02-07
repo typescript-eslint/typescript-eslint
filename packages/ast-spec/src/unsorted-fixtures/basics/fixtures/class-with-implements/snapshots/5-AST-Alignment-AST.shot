@@ -14,10 +14,10 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-implements AST Alignme
           type: 'ClassBody',
           body: Array [],
 
-          range: [98, 102],
+          range: [98, 100],
           loc: {
             start: { column: 25, line: 3 },
-            end: { column: 1, line: 5 },
+            end: { column: 27, line: 3 },
           },
         },
         id: Identifier {
@@ -55,19 +55,19 @@ exports[`AST Fixtures unsorted-fixtures basics class-with-implements AST Alignme
         ],
         superClass: null,
 
-        range: [73, 102],
+        range: [73, 100],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 1, line: 5 },
+          end: { column: 27, line: 3 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 103],
+    range: [73, 101],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 6 },
+      end: { column: 0, line: 4 },
     },
   }"
 `;

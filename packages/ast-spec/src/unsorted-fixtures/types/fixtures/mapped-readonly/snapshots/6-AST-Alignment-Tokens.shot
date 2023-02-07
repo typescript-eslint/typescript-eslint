@@ -140,32 +140,22 @@ exports[`AST Fixtures unsorted-fixtures types mapped-readonly AST Alignment - To
     },
     Punctuator {
       type: 'Punctuator',
-      value: ';',
+      value: '}',
 
-      range: [115, 116],
+      range: [116, 117],
       loc: {
-        start: { column: 42, line: 3 },
-        end: { column: 43, line: 3 },
+        start: { column: 43, line: 3 },
+        end: { column: 44, line: 3 },
       },
     },
     Punctuator {
       type: 'Punctuator',
-      value: '}',
+      value: ';',
 
       range: [117, 118],
       loc: {
         start: { column: 44, line: 3 },
         end: { column: 45, line: 3 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: ';',
-
-      range: [118, 119],
-      loc: {
-        start: { column: 45, line: 3 },
-        end: { column: 46, line: 3 },
       },
     },
   ]"

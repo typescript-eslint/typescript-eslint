@@ -32,54 +32,44 @@ Array [
       end: { column: 10, line: 3 },
     },
   },
-  Punctuator {
-    type: "Punctuator",
-    value: "(",
-
-    range: [84, 85],
-    loc: {
-      start: { column: 11, line: 3 },
-      end: { column: 12, line: 3 },
-    },
-  },
   Identifier {
     type: "Identifier",
     value: "string",
 
-    range: [85, 91],
+    range: [84, 90],
     loc: {
-      start: { column: 12, line: 3 },
-      end: { column: 18, line: 3 },
+      start: { column: 11, line: 3 },
+      end: { column: 17, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "|",
 
-    range: [92, 93],
+    range: [91, 92],
     loc: {
-      start: { column: 19, line: 3 },
-      end: { column: 20, line: 3 },
+      start: { column: 18, line: 3 },
+      end: { column: 19, line: 3 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "number",
 
-    range: [94, 100],
+    range: [93, 99],
     loc: {
-      start: { column: 21, line: 3 },
-      end: { column: 27, line: 3 },
+      start: { column: 20, line: 3 },
+      end: { column: 26, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
-    value: ")",
+    value: ";",
 
-    range: [100, 101],
+    range: [99, 100],
     loc: {
-      start: { column: 27, line: 3 },
-      end: { column: 28, line: 3 },
+      start: { column: 26, line: 3 },
+      end: { column: 27, line: 3 },
     },
   },
 ]

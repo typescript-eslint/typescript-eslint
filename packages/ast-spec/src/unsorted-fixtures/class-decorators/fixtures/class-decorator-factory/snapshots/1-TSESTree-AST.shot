@@ -10,7 +10,7 @@ Program {
         type: "ClassBody",
         body: Array [],
 
-        range: [129, 131],
+        range: [127, 129],
         loc: {
           start: { column: 19, line: 6 },
           end: { column: 21, line: 6 },
@@ -32,10 +32,10 @@ Program {
                       type: "Identifier",
                       name: "selector",
 
-                      range: [90, 98],
+                      range: [88, 96],
                       loc: {
-                        start: { column: 4, line: 4 },
-                        end: { column: 12, line: 4 },
+                        start: { column: 2, line: 4 },
+                        end: { column: 10, line: 4 },
                       },
                     },
                     kind: "init",
@@ -46,22 +46,22 @@ Program {
                       raw: "'foo'",
                       value: "foo",
 
-                      range: [100, 105],
+                      range: [98, 103],
                       loc: {
-                        start: { column: 14, line: 4 },
-                        end: { column: 19, line: 4 },
+                        start: { column: 12, line: 4 },
+                        end: { column: 17, line: 4 },
                       },
                     },
 
-                    range: [90, 105],
+                    range: [88, 103],
                     loc: {
-                      start: { column: 4, line: 4 },
-                      end: { column: 19, line: 4 },
+                      start: { column: 2, line: 4 },
+                      end: { column: 17, line: 4 },
                     },
                   },
                 ],
 
-                range: [84, 108],
+                range: [84, 106],
                 loc: {
                   start: { column: 11, line: 3 },
                   end: { column: 1, line: 5 },
@@ -80,14 +80,14 @@ Program {
             },
             optional: false,
 
-            range: [74, 109],
+            range: [74, 107],
             loc: {
               start: { column: 1, line: 3 },
               end: { column: 2, line: 5 },
             },
           },
 
-          range: [73, 109],
+          range: [73, 107],
           loc: {
             start: { column: 0, line: 3 },
             end: { column: 2, line: 5 },
@@ -98,7 +98,7 @@ Program {
         type: "Identifier",
         name: "FooComponent",
 
-        range: [116, 128],
+        range: [114, 126],
         loc: {
           start: { column: 6, line: 6 },
           end: { column: 18, line: 6 },
@@ -106,7 +106,7 @@ Program {
       },
       superClass: null,
 
-      range: [73, 131],
+      range: [73, 129],
       loc: {
         start: { column: 0, line: 3 },
         end: { column: 21, line: 6 },
@@ -115,10 +115,10 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 131],
+  range: [73, 130],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 21, line: 6 },
+    end: { column: 0, line: 7 },
   },
 }
 `;

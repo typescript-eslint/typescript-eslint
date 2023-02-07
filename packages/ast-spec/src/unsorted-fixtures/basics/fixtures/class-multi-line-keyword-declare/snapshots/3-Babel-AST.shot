@@ -17,10 +17,10 @@ Program {
         },
       },
 
-      range: [73, 80],
+      range: [73, 81],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 7, line: 3 },
+        end: { column: 8, line: 3 },
       },
     },
     ClassDeclaration {
@@ -29,7 +29,7 @@ Program {
         type: "ClassBody",
         body: Array [],
 
-        range: [89, 91],
+        range: [90, 92],
         loc: {
           start: { column: 8, line: 4 },
           end: { column: 10, line: 4 },
@@ -39,7 +39,7 @@ Program {
         type: "Identifier",
         name: "B",
 
-        range: [87, 88],
+        range: [88, 89],
         loc: {
           start: { column: 6, line: 4 },
           end: { column: 7, line: 4 },
@@ -47,7 +47,7 @@ Program {
       },
       superClass: null,
 
-      range: [81, 91],
+      range: [82, 92],
       loc: {
         start: { column: 0, line: 4 },
         end: { column: 10, line: 4 },
@@ -56,7 +56,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 92],
+  range: [73, 93],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 5 },

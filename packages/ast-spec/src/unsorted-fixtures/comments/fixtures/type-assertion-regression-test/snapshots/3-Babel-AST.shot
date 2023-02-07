@@ -25,10 +25,10 @@ Program {
               type: "Identifier",
               name: "bar",
 
-              range: [101, 104],
+              range: [102, 105],
               loc: {
-                start: { column: 2, line: 4 },
-                end: { column: 5, line: 4 },
+                start: { column: 1, line: 5 },
+                end: { column: 4, line: 5 },
               },
             },
             typeAnnotation: TSTypeReference {
@@ -37,49 +37,49 @@ Program {
                 type: "Identifier",
                 name: "Foo",
 
-                range: [86, 89],
+                range: [89, 92],
                 loc: {
-                  start: { column: 13, line: 3 },
-                  end: { column: 16, line: 3 },
+                  start: { column: 2, line: 4 },
+                  end: { column: 5, line: 4 },
                 },
               },
 
-              range: [86, 89],
+              range: [89, 92],
               loc: {
-                start: { column: 13, line: 3 },
-                end: { column: 16, line: 3 },
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
               },
             },
 
-            range: [85, 104],
+            range: [85, 105],
             loc: {
               start: { column: 12, line: 3 },
-              end: { column: 5, line: 4 },
+              end: { column: 4, line: 5 },
             },
           },
 
-          range: [79, 104],
+          range: [79, 105],
           loc: {
             start: { column: 6, line: 3 },
-            end: { column: 5, line: 4 },
+            end: { column: 4, line: 5 },
           },
         },
       ],
       kind: "const",
 
-      range: [73, 105],
+      range: [73, 106],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 6, line: 4 },
+        end: { column: 5, line: 5 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 106],
+  range: [73, 107],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 5 },
+    end: { column: 0, line: 6 },
   },
 }
 `;

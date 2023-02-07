@@ -76,10 +76,10 @@ exports[`AST Fixtures unsorted-fixtures basics call-signatures AST Alignment - A
                 },
               },
 
-              range: [88, 107],
+              range: [88, 108],
               loc: {
                 start: { column: 2, line: 4 },
-                end: { column: 21, line: 4 },
+                end: { column: 22, line: 4 },
               },
             },
             TSConstructSignatureDeclaration {
@@ -94,24 +94,24 @@ exports[`AST Fixtures unsorted-fixtures basics call-signatures AST Alignment - A
                     typeAnnotation: TSStringKeyword {
                       type: 'TSStringKeyword',
 
-                      range: [117, 123],
+                      range: [119, 125],
                       loc: {
-                        start: { column: 9, line: 5 },
-                        end: { column: 15, line: 5 },
+                        start: { column: 10, line: 5 },
+                        end: { column: 16, line: 5 },
                       },
                     },
 
-                    range: [115, 123],
+                    range: [117, 125],
                     loc: {
-                      start: { column: 7, line: 5 },
-                      end: { column: 15, line: 5 },
+                      start: { column: 8, line: 5 },
+                      end: { column: 16, line: 5 },
                     },
                   },
 
-                  range: [114, 123],
+                  range: [116, 125],
                   loc: {
-                    start: { column: 6, line: 5 },
-                    end: { column: 15, line: 5 },
+                    start: { column: 7, line: 5 },
+                    end: { column: 16, line: 5 },
                   },
                 },
               ],
@@ -121,45 +121,45 @@ exports[`AST Fixtures unsorted-fixtures basics call-signatures AST Alignment - A
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
 
-                  range: [126, 132],
+                  range: [128, 134],
                   loc: {
-                    start: { column: 18, line: 5 },
-                    end: { column: 24, line: 5 },
+                    start: { column: 19, line: 5 },
+                    end: { column: 25, line: 5 },
                   },
                 },
 
-                range: [124, 132],
+                range: [126, 134],
                 loc: {
-                  start: { column: 16, line: 5 },
-                  end: { column: 24, line: 5 },
+                  start: { column: 17, line: 5 },
+                  end: { column: 25, line: 5 },
                 },
               },
 
-              range: [110, 132],
+              range: [111, 135],
               loc: {
                 start: { column: 2, line: 5 },
-                end: { column: 24, line: 5 },
+                end: { column: 26, line: 5 },
               },
             },
           ],
 
-          range: [84, 134],
+          range: [84, 137],
           loc: {
             start: { column: 11, line: 3 },
             end: { column: 1, line: 6 },
           },
         },
 
-        range: [73, 134],
+        range: [73, 138],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 1, line: 6 },
+          end: { column: 2, line: 6 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 135],
+    range: [73, 139],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },

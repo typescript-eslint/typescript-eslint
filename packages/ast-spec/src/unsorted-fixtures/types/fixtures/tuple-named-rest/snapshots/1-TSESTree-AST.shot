@@ -126,16 +126,16 @@ Program {
       ],
       kind: "let",
 
-      range: [73, 107],
+      range: [73, 108],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 34, line: 3 },
+        end: { column: 35, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 108],
+  range: [73, 109],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },

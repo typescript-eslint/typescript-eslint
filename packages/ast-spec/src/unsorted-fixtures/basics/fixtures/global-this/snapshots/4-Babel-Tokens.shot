@@ -116,110 +116,110 @@ Array [
     type: "Identifier",
     value: "let",
 
-    range: [166, 169],
+    range: [165, 168],
     loc: {
-      start: { column: 0, line: 11 },
-      end: { column: 3, line: 11 },
+      start: { column: 0, line: 10 },
+      end: { column: 3, line: 10 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "answer",
 
-    range: [170, 176],
+    range: [169, 175],
     loc: {
-      start: { column: 4, line: 11 },
-      end: { column: 10, line: 11 },
+      start: { column: 4, line: 10 },
+      end: { column: 10, line: 10 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "=",
 
-    range: [177, 178],
+    range: [176, 177],
     loc: {
-      start: { column: 11, line: 11 },
-      end: { column: 12, line: 11 },
+      start: { column: 11, line: 10 },
+      end: { column: 12, line: 10 },
     },
   },
   Numeric {
     type: "Numeric",
     value: "42",
 
-    range: [179, 181],
+    range: [178, 180],
     loc: {
-      start: { column: 13, line: 11 },
-      end: { column: 15, line: 11 },
+      start: { column: 13, line: 10 },
+      end: { column: 15, line: 10 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [181, 182],
+    range: [180, 181],
     loc: {
-      start: { column: 15, line: 11 },
-      end: { column: 16, line: 11 },
+      start: { column: 15, line: 10 },
+      end: { column: 16, line: 10 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "globalThis",
 
-    range: [251, 261],
+    range: [250, 260],
     loc: {
-      start: { column: 0, line: 14 },
-      end: { column: 10, line: 14 },
+      start: { column: 0, line: 13 },
+      end: { column: 10, line: 13 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ".",
 
-    range: [261, 262],
+    range: [260, 261],
     loc: {
-      start: { column: 10, line: 14 },
-      end: { column: 11, line: 14 },
+      start: { column: 10, line: 13 },
+      end: { column: 11, line: 13 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "answer",
 
-    range: [262, 268],
+    range: [261, 267],
     loc: {
-      start: { column: 11, line: 14 },
-      end: { column: 17, line: 14 },
+      start: { column: 11, line: 13 },
+      end: { column: 17, line: 13 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "=",
 
-    range: [269, 270],
+    range: [268, 269],
     loc: {
-      start: { column: 18, line: 14 },
-      end: { column: 19, line: 14 },
+      start: { column: 18, line: 13 },
+      end: { column: 19, line: 13 },
     },
   },
   Numeric {
     type: "Numeric",
     value: "333333",
 
-    range: [271, 277],
+    range: [270, 276],
     loc: {
-      start: { column: 20, line: 14 },
-      end: { column: 26, line: 14 },
+      start: { column: 20, line: 13 },
+      end: { column: 26, line: 13 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [277, 278],
+    range: [276, 277],
     loc: {
-      start: { column: 26, line: 14 },
-      end: { column: 27, line: 14 },
+      start: { column: 26, line: 13 },
+      end: { column: 27, line: 13 },
     },
   },
 ]

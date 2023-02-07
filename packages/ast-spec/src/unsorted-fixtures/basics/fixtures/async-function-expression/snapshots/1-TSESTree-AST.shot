@@ -16,10 +16,10 @@ Program {
             type: "BlockStatement",
             body: Array [],
 
-            range: [96, 99],
+            range: [96, 98],
             loc: {
               start: { column: 23, line: 3 },
-              end: { column: 1, line: 4 },
+              end: { column: 25, line: 3 },
             },
           },
           expression: false,
@@ -36,25 +36,25 @@ Program {
           },
           params: Array [],
 
-          range: [74, 99],
+          range: [74, 98],
           loc: {
             start: { column: 1, line: 3 },
-            end: { column: 1, line: 4 },
+            end: { column: 25, line: 3 },
           },
         },
         optional: false,
 
-        range: [73, 102],
+        range: [73, 101],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 4, line: 4 },
+          end: { column: 28, line: 3 },
         },
       },
 
-      range: [73, 103],
+      range: [73, 102],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 5, line: 4 },
+        end: { column: 29, line: 3 },
       },
     },
   ],
@@ -63,7 +63,7 @@ Program {
   range: [73, 103],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 5, line: 4 },
+    end: { column: 0, line: 4 },
   },
 }
 `;

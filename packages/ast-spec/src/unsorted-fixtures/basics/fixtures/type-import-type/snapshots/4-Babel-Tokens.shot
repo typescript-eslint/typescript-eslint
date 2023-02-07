@@ -144,7 +144,7 @@ Array [
   },
   String {
     type: "String",
-    value: "\\"B\\"",
+    value: "'B'",
 
     range: [118, 121],
     loc: {
