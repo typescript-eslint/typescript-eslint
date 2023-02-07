@@ -1,3 +1,4 @@
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { isBinaryExpression } from 'tsutils';
@@ -451,7 +452,8 @@ function compareNodes(
   }
 
   if (nodeA.type !== nodeB.type) {
-    // special case where nodes are allowed to be non-equal
+    // special cases where nodes are allowed to be non-equal
+
     // a?.b && a.b.c
     // ^^^^ ChainExpression, MemberExpression
     //         ^^^^^ MemberExpression
@@ -523,6 +525,13 @@ function compareNodes(
 
     return NodeComparisonResult.Invalid;
   }
+
+  // switch (nodeA.type) {
+  //   default: {
+  //     const currentVisitorKeys =
+  //   }
+
+  // }
 
   switch (nodeA.type) {
     // these expressions create a new instance each time - so it makes no sense to compare the chain
