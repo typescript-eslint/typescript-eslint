@@ -346,6 +346,10 @@ do {} while (true);
       options: [{ allowConstantLoopConditions: true }],
     },
     `
+let variable = 'abc' as string | void;
+variable?.[0];
+    `,
+    `
 let foo: undefined | { bar: true };
 foo?.bar;
     `,
@@ -544,10 +548,6 @@ interface Foo {
 type OptionalFoo = Foo | undefined;
 declare const foo: OptionalFoo;
 foo?.[1]?.length;
-    `,
-    `
-let variable = 'abc' as string | void;
-variable?.[0];
     `,
   ],
   invalid: [

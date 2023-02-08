@@ -574,15 +574,11 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.MemberExpression
           ? !isNullableOriginFromPrev(node)
           : true;
-      const unionParts = unionTypeParts(type);
-      const possiblyVoid = unionParts.some(
-        part => part.flags & ts.TypeFlags.Void,
-      );
+      const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
-        isTypeAnyType(type) ||
-        isTypeUnknownType(type) ||
-        (isNullableType(type, { allowUndefined: true }) && isOwnNullable) ||
-        (possiblyVoid && isOwnNullable)
+        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+        (isOwnNullable &&
+          (isNullableType(type, { allowUndefined: true }) || possiblyVoid))
       );
     }
 
