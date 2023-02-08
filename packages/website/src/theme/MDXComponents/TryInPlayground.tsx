@@ -8,14 +8,12 @@ export function TryInPlayground({
   eslintrcHash: string;
 }): React.ReactNode {
   return (
-    <div>
-      <a
-        href={`/play#eslintrc=${eslintrcHash}`}
-        className={styles.tryInPlaygroundLink}
-      >
-        Try this rule in the playground ↗
-      </a>
-      <br />
-    </div>
+    <a
+      className={styles.tryInPlaygroundLink}
+      href={`/play#eslintrc=${eslintrcHash}`}
+      target="_blank"
+    >
+      Try this rule in the playground ↗
+    </a>
   );
 }
