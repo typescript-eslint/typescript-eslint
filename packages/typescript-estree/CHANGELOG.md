@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
+
+
+### Features
+
+* **typescript-estree:** cache project glob resolution ([#6367](https://github.com/typescript-eslint/typescript-eslint/issues/6367)) ([afae837](https://github.com/typescript-eslint/typescript-eslint/commit/afae8374df64101627808ccfeb5b715c865e910f))
+
+
+
+
+
+# [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
+
+
+### Bug Fixes
+
+* **typescript-estree:** fix typo in FAQ link ([#6346](https://github.com/typescript-eslint/typescript-eslint/issues/6346)) ([eefc578](https://github.com/typescript-eslint/typescript-eslint/commit/eefc5781b0f455264e4e58e33c27f8a91b3ab5e3))
+
+
+
+
+
 ## [5.48.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.1...v5.48.2) (2023-01-16)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

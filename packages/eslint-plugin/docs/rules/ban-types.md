@@ -72,12 +72,6 @@ The default options provide a set of "best practices", intended to provide safet
   - This is a point of confusion for many developers, who think it means "any object type".
   - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
 
-:::important
-
-The default options suggest using `Record<string, unknown>`; this was a stylistic decision, as the built-in `Record` type is considered to look cleaner.
-
-:::
-
 <details>
 <summary>Default Options</summary>
 
@@ -115,15 +109,16 @@ const defaultTypes = {
   Object: {
     message: [
       'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
     ].join('\n'),
   },
   '{}': {
     message: [
       '`{}` actually means "any non-nullish value".',
-      '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
+      '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
+      '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
     ].join('\n'),
   },
 };

@@ -31,7 +31,7 @@ export function getModifiers(
 export function getDecorators(
   node: ts.Node | null | undefined,
 ): undefined | ts.Decorator[] {
-  if (node == undefined) {
+  if (node == null) {
     return undefined;
   }
 
