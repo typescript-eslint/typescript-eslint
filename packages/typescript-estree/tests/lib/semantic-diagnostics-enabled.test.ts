@@ -10,17 +10,17 @@ import { serializer } from '../../tools/tserror-serializer';
  * Process all fixtures, we will only snapshot the ones that have semantic errors
  * which are ignored by default parsing logic.
  */
-const FIXTURES_DIR = path.join(__dirname, '../../../ast-spec/src');
+const AST_SPEC_DIR = path.join(__dirname, '../../../ast-spec');
 
-const testFiles = glob.sync('**/fixture.ts', {
-  cwd: FIXTURES_DIR,
+const testFiles = glob.sync('{legacy-fixtures,src}/**/fixture.ts', {
+  cwd: AST_SPEC_DIR,
 });
 
 expect.addSnapshotSerializer(serializer);
 
 describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled', () => {
   testFiles.forEach(filename => {
-    const code = readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
+    const code = readFileSync(path.join(AST_SPEC_DIR, filename), 'utf8');
     const fileExtension = path.extname(filename);
     const config: parser.TSESTreeOptions = {
       loc: true,
@@ -30,7 +30,7 @@ describe('Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" 
       errorOnTypeScriptSyntacticAndSemanticIssues: true,
       jsx: isJSXFileType(fileExtension),
     };
-    it(formatSnapshotName(filename, FIXTURES_DIR, fileExtension), () => {
+    it(formatSnapshotName(filename, AST_SPEC_DIR, fileExtension), () => {
       expect.assertions(1);
       try {
         parser.parseAndGenerateServices(code, config);

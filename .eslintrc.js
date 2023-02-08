@@ -332,7 +332,10 @@ module.exports = {
     },
     // ast spec specific standardization
     {
-      files: ['./packages/ast-spec/src/**/*.ts'],
+      files: [
+        './packages/ast-spec/legacy-fixtures/**/*.ts',
+        './packages/ast-spec/src/**/*.ts',
+      ],
       rules: {
         // disallow ALL unused vars
         '@typescript-eslint/no-unused-vars': 'error',
