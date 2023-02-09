@@ -16,6 +16,8 @@ const log = debug(
   'typescript-eslint:typescript-estree:parser:parseSettings:createParseSettings',
 );
 
+let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
+
 export function createParseSettings(
   code: string,
   options: Partial<TSESTreeOptions> = {},
@@ -66,12 +68,12 @@ export function createParseSettings(
     range: options.range === true,
     singleRun,
     tokens: options.tokens === true ? [] : null,
-    tsconfigMatchCache: new ExpiringCache(
+    tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
       singleRun
         ? 'Infinity'
         : options.cacheLifetime?.glob ??
           DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
-    ),
+    )),
     tsconfigRootDir,
   };
 
