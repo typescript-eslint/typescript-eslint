@@ -2793,10 +2793,28 @@ export class Converter {
           type: AST_NODE_TYPES.TSModuleDeclaration,
           // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
           ...(() => {
-            const id = this.convertChild(node.name);
-            const body = this.convertChild(node.body);
+            const id: TSESTree.Identifier | TSESTree.StringLiteral =
+              this.convertChild(node.name);
+            const body:
+              | TSESTree.TSModuleBlock
+              | TSESTree.TSModuleDeclaration
+              | null = this.convertChild(node.body);
+
+            // the constraints checked by this function are syntactically enforced by TS
+            // the checks mostly exist for type's sake
 
             if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+              if (
+                body == null ||
+                body.type === AST_NODE_TYPES.TSModuleDeclaration
+              ) {
+                throw new Error('Expected a valid module body');
+              }
+              if (id.type !== AST_NODE_TYPES.Identifier) {
+                throw new Error(
+                  'global module augmentation must have an Identifier id',
+                );
+              }
               return {
                 kind: 'global',
                 id,
@@ -2806,6 +2824,12 @@ export class Converter {
                 Omit<TSESTree.TSModuleDeclarationGlobal, 'type'>
               >;
             } else if (node.flags & ts.NodeFlags.Namespace) {
+              if (body == null) {
+                throw new Error('Expected a module body');
+              }
+              if (id.type !== AST_NODE_TYPES.Identifier) {
+                throw new Error('`namespace`s must have an Identifier id');
+              }
               return {
                 kind: 'namespace',
                 id,
@@ -2817,7 +2841,7 @@ export class Converter {
               return {
                 kind: 'module',
                 id,
-                body,
+                ...(body != null ? { body } : {}),
               } satisfies TSESTree.OptionalRangeAndLoc<
                 Omit<TSESTree.TSModuleDeclarationModule, 'type'>
               >;
