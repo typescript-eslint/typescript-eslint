@@ -39,7 +39,7 @@ export interface TSModuleDeclaration extends BaseNode {
    * declare global {}
    * ```
    */
-  // TODO(#5020) - make this `false` if not `global`
+  // TODO(#5020) - remove this in the next major (we have `.kind` now)
   global?: boolean;
   /**
    * Whether the module is `declare`d
@@ -51,4 +51,19 @@ export interface TSModuleDeclaration extends BaseNode {
   declare?: boolean;
   // TODO(#4759) - breaking change remove this
   modifiers?: Modifier[];
+
+  /**
+   * THe keyword used to define this module declaration
+   * ```
+   * namespace Foo {}
+   * ^^^^^^^^^
+   *
+   * module 'foo' {}
+   * ^^^^^^
+   *
+   * declare global {}
+   *         ^^^^^^
+   * ```
+   */
+  kind: 'global' | 'module' | 'namespace';
 }

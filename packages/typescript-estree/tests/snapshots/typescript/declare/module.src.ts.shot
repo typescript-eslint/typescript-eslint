@@ -41,6 +41,7 @@ Object {
         ],
         "type": "Identifier",
       },
+      "kind": "module",
       "loc": Object {
         "end": Object {
           "column": 1,

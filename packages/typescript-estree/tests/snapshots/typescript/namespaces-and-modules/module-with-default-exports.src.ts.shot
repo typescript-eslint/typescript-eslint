@@ -322,6 +322,7 @@ Object {
         "type": "Literal",
         "value": "foo",
       },
+      "kind": "module",
       "loc": Object {
         "end": Object {
           "column": 1,
