@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures unsorted-fixtures errorRecovery _error_ interface-multiple-extends Babel - Error 1`] = `[SyntaxError: Unexpected token, expected "," (3:26)]`;

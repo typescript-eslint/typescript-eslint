@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics const-enum TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSEnumDeclaration {
+      type: "TSEnumDeclaration",
+      const: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [84, 87],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+      members: Array [
+        TSEnumMember {
+          type: "TSEnumMember",
+          id: Identifier {
+            type: "Identifier",
+            name: "foo",
+
+            range: [92, 95],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 5, line: 4 },
+            },
+          },
+          initializer: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [98, 99],
+            loc: {
+              start: { column: 8, line: 4 },
+              end: { column: 9, line: 4 },
+            },
+          },
+
+          range: [92, 99],
+          loc: {
+            start: { column: 2, line: 4 },
+            end: { column: 9, line: 4 },
+          },
+        },
+        TSEnumMember {
+          type: "TSEnumMember",
+          id: Identifier {
+            type: "Identifier",
+            name: "bar",
+
+            range: [103, 106],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 5, line: 5 },
+            },
+          },
+
+          range: [103, 106],
+          loc: {
+            start: { column: 2, line: 5 },
+            end: { column: 5, line: 5 },
+          },
+        },
+      ],
+
+      range: [73, 109],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 110],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures unsorted-fixtures errorRecovery _error_ enum-with-keywords Error Alignment 1`] = `"Babel errored but TSESTree didn't"`;

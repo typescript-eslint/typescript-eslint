@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types index-signature-readonly Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [78, 81],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      typeAnnotation: TSTypeLiteral {
+        type: "TSTypeLiteral",
+        members: Array [
+          TSIndexSignature {
+            type: "TSIndexSignature",
+            parameters: Array [
+              Identifier {
+                type: "Identifier",
+                name: "key",
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSNumberKeyword {
+                    type: "TSNumberKeyword",
+
+                    range: [103, 109],
+                    loc: {
+                      start: { column: 17, line: 4 },
+                      end: { column: 23, line: 4 },
+                    },
+                  },
+
+                  range: [101, 109],
+                  loc: {
+                    start: { column: 15, line: 4 },
+                    end: { column: 23, line: 4 },
+                  },
+                },
+
+                range: [98, 109],
+                loc: {
+                  start: { column: 12, line: 4 },
+                  end: { column: 23, line: 4 },
+                },
+              },
+            ],
+            readonly: true,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [112, 118],
+                loc: {
+                  start: { column: 26, line: 4 },
+                  end: { column: 32, line: 4 },
+                },
+              },
+
+              range: [110, 118],
+              loc: {
+                start: { column: 24, line: 4 },
+                end: { column: 32, line: 4 },
+              },
+            },
+
+            range: [88, 119],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 33, line: 4 },
+            },
+          },
+        ],
+
+        range: [84, 121],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+
+      range: [73, 122],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 2, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 123],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

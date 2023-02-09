@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics cast-as-expression TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: TSAsExpression {
+        type: "TSAsExpression",
+        expression: BinaryExpression {
+          type: "BinaryExpression",
+          left: Identifier {
+            type: "Identifier",
+            name: "x",
+
+            range: [74, 75],
+            loc: {
+              start: { column: 1, line: 3 },
+              end: { column: 2, line: 3 },
+            },
+          },
+          operator: "<",
+          right: Identifier {
+            type: "Identifier",
+            name: "y",
+
+            range: [78, 79],
+            loc: {
+              start: { column: 5, line: 3 },
+              end: { column: 6, line: 3 },
+            },
+          },
+
+          range: [74, 79],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 6, line: 3 },
+          },
+        },
+        typeAnnotation: TSBooleanKeyword {
+          type: "TSBooleanKeyword",
+
+          range: [84, 91],
+          loc: {
+            start: { column: 11, line: 3 },
+            end: { column: 18, line: 3 },
+          },
+        },
+
+        range: [73, 91],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 18, line: 3 },
+        },
+      },
+
+      range: [73, 92],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 19, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 93],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

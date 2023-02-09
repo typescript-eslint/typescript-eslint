@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures unsorted-fixtures errorRecovery _error_ decorator-on-interface-declaration TSESTree - Error 1`] = `"NO ERROR"`;

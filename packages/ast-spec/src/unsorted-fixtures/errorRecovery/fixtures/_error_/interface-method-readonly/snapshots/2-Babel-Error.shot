@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures unsorted-fixtures errorRecovery _error_ interface-method-readonly Babel - Error 1`] = `[SyntaxError: 'readonly' modifier can only appear on a property declaration or index signature. (4:2)]`;
