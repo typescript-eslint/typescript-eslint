@@ -2791,22 +2791,41 @@ export class Converter {
       case SyntaxKind.ModuleDeclaration: {
         const result = this.createNode<TSESTree.TSModuleDeclaration>(node, {
           type: AST_NODE_TYPES.TSModuleDeclaration,
-          id: this.convertChild(node.name),
-          kind: 'module',
+          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
+          ...(() => {
+            const id = this.convertChild(node.name);
+            const body = this.convertChild(node.body);
+
+            if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+              return {
+                kind: 'global',
+                id,
+                body,
+                global: true,
+              } satisfies TSESTree.OptionalRangeAndLoc<
+                Omit<TSESTree.TSModuleDeclarationGlobal, 'type'>
+              >;
+            } else if (node.flags & ts.NodeFlags.Namespace) {
+              return {
+                kind: 'namespace',
+                id,
+                body,
+              } satisfies TSESTree.OptionalRangeAndLoc<
+                Omit<TSESTree.TSModuleDeclarationNamespace, 'type'>
+              >;
+            } else {
+              return {
+                kind: 'module',
+                id,
+                body,
+              } satisfies TSESTree.OptionalRangeAndLoc<
+                Omit<TSESTree.TSModuleDeclarationModule, 'type'>
+              >;
+            }
+          })(),
         });
-        if (node.body) {
-          result.body = this.convertChild(node.body);
-        }
-        // apply modifiers first...
         this.applyModifiersToResult(result, getModifiers(node));
-        if (node.flags & ts.NodeFlags.GlobalAugmentation) {
-          result.global = true;
-          result.kind = 'global';
-        } else if (node.flags & ts.NodeFlags.Namespace) {
-          result.kind = 'namespace';
-        } else {
-          result.kind = 'module';
-        }
+
         // ...then check for exports
         return this.fixExports(node, result);
       }
