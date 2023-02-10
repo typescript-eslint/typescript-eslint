@@ -339,6 +339,7 @@ Program {
                   end: { column: 17, line: 8 },
                 },
               },
+              kind: "module",
 
               range: [207, 273],
               loc: {
@@ -374,6 +375,7 @@ Program {
           end: { column: 8, line: 3 },
         },
       },
+      kind: "module",
 
       range: [73, 275],
       loc: {

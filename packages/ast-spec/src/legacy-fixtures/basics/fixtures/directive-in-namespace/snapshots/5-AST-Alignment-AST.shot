@@ -114,6 +114,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
             end: { column: 13, line: 3 },
           },
         },
+-       kind: 'namespace',
 
         range: [73, 135],
         loc: {

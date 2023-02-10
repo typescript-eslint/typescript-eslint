@@ -343,6 +343,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                     end: { column: 17, line: 8 },
                   },
                 },
+-               kind: 'module',
 
                 range: [207, 273],
                 loc: {
@@ -378,6 +379,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
             end: { column: 8, line: 3 },
           },
         },
+-       kind: 'module',
 
         range: [73, 275],
         loc: {

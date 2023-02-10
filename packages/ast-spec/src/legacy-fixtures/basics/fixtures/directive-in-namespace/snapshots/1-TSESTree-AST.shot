@@ -110,6 +110,7 @@ Program {
           end: { column: 13, line: 3 },
         },
       },
+      kind: "namespace",
 
       range: [73, 135],
       loc: {

@@ -114,6 +114,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-module AST Alignment -
             end: { column: 10, line: 3 },
           },
         },
+-       kind: 'module',
 
         range: [73, 132],
         loc: {

@@ -27,6 +27,7 @@ Program {
           end: { column: 21, line: 3 },
         },
       },
+      kind: "namespace",
 
       range: [73, 97],
       loc: {
