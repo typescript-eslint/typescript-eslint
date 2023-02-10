@@ -57,7 +57,16 @@ ScopeManager {
         },
       ],
       name: "T",
-      references: Array [],
+      references: Array [
+        Reference$2 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$5,
+        },
+      ],
       isValueVariable: false,
       isTypeVariable: true,
     },
@@ -98,6 +107,7 @@ ScopeManager {
       isStrict: true,
       references: Array [
         Reference$1,
+        Reference$2,
       ],
       set: Map {
         "T" => Variable$5,

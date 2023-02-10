@@ -3,7 +3,6 @@
 **/tests/fixture-project/**/*
 **/dist
 **/coverage
-**/shared-fixtures
 **/.vscode
 **/.nyc_output
 **/.vs

@@ -118,6 +118,7 @@ Object {
         "type": "Literal",
         "value": "i-use-things",
       },
+      "kind": "module",
       "loc": Object {
         "end": Object {
           "column": 1,

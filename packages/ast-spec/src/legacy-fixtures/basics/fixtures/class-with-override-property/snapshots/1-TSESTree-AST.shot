@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-override-property TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [135, 138],
+              loc: {
+                start: { column: 11, line: 4 },
+                end: { column: 14, line: 4 },
+              },
+            },
+            override: true,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [141, 142],
+              loc: {
+                start: { column: 17, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+
+            range: [126, 143],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 19, line: 4 },
+            },
+          },
+        ],
+
+        range: [122, 145],
+        loc: {
+          start: { column: 49, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "SpecializedComponent",
+
+        range: [79, 99],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 26, line: 3 },
+        },
+      },
+      superClass: Identifier {
+        type: "Identifier",
+        name: "SomeComponent",
+
+        range: [108, 121],
+        loc: {
+          start: { column: 35, line: 3 },
+          end: { column: 48, line: 3 },
+        },
+      },
+
+      range: [73, 145],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 146],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

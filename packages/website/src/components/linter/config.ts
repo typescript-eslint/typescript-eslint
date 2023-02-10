@@ -19,6 +19,7 @@ export const parseSettings: ParseSettings = {
   range: true,
   tokens: [],
   tsconfigRootDir: '/',
+  tsconfigMatchCache: new Map(),
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   singleRun: false,
