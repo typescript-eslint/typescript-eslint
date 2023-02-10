@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ interface-with-construct-signature-with-parameter-accessibility TSESTree - Error 1`] = `"NO ERROR"`;
