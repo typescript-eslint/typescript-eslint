@@ -1,3 +1,4 @@
+import Link from '@docusaurus/Link';
 import React from 'react';
 
 import styles from './TryInPlayground.module.css';
@@ -8,12 +9,12 @@ export function TryInPlayground({
   eslintrcHash: string;
 }): React.ReactNode {
   return (
-    <a
+    <Link
       className={styles.tryInPlaygroundLink}
-      href={`/play#eslintrc=${eslintrcHash}`}
+      to={`/play#eslintrc=${eslintrcHash}`}
       target="_blank"
     >
       Try this rule in the playground ↗
-    </a>
+    </Link>
   );
 }
